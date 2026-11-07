@@ -1,0 +1,46 @@
+{
+  "taskId": "T01",
+  "scope": "minimum CPU isolation/governance verification; not entire T01",
+  "gateSourceCommit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+  "gateGitBlobSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+  "reviewedRawSourceSHA256": "b6579802efb1d770dec3bf744b31730254c3a83cf180e14972904eacb53f8188",
+  "approvalCommit": "89c23cf772ce68c2f801e086375810d58992a0c1",
+  "approvalCardBlobSHA256": "b680ce1fd5b90e788e11e812a5b679c3b09e6e13acb3e3002c58d155c6ba7f2a",
+  "candidateCommit": "89c23cf772ce68c2f801e086375810d58992a0c1",
+  "assignmentRevision": 5,
+  "actualGate": {
+    "meaning": "coordinator CPU verification only",
+    "cases": 84,
+    "git": "real managed worktree/branch/head/ancestry and before-after state verified by gate",
+    "source": "exact reviewed Git blob executable, raw-to-LF text correspondence independently checked",
+    "skip": 0,
+    "admitted": true,
+    "fail": 0,
+    "testFiles": 2
+  },
+  "independentSelfTests": {
+    "includes": "real Git negative fixtures, temp-junction refusal, lifecycle/external-gate refusal, native compatibility",
+    "fail": 0,
+    "cases": 158,
+    "skip": 0
+  },
+  "reviews": [
+    "docs/execution/t01-admission-review.json",
+    "docs/execution/t01-cpu-policy-review.json"
+  ],
+  "consumerCandidates": {
+    "T05a": "Fission pure path policy only; scoped card/subset proof and isolated SDK execution not yet approved",
+    "T02a": "native-reuse characterization only; scoped card/subset proof not yet approved"
+  },
+  "notGranted": [
+    "new feature writer dispatch",
+    "T01 completion",
+    "GUI/graceful-close validation",
+    "remote CI enforcement",
+    "Fission/real media/model/installer/target hardware",
+    "dev integration/main/tag/release"
+  ],
+  "modelCalls": 0,
+  "budgetCNY": "cumulative ceiling50 unchanged, no paid calls permitted without price/spend reconciliation",
+  "recovery": "Use actual Git and immutable approval anchors; next scoped CPU subset review/cards, fresh managed worktrees only after actual admission. Do not rerun stale allocation revision4 as if approved."
+}

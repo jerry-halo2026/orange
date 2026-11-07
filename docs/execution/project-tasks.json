@@ -10,7 +10,8 @@
       "scope": "isolation and minimum admission gates",
       "status": "in_progress",
       "dependsOn": [],
-      "externalGates": []
+      "externalGates": [],
+      "readinessEvidence": "docs/execution/t01-cpu-readiness.json (CPU verification subset only; status remains in_progress)"
     },
     {
       "id": "T03",

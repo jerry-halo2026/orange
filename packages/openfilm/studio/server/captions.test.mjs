@@ -420,3 +420,26 @@ test('a transcript that runs past the end of its file is listed to be made again
   assert.deepEqual(shorter.untranscribed, ['assets/vo.mp3']);
   assert.ok(shorter.cues.length > 0, 'still shown until it is made again');
 });
+
+test('native contract: source seconds map to millisecond marks without invented word ends', async () => {
+  const { parseVtt } = await import('./transcripts.mjs');
+  const words = Object.freeze([
+    Object.freeze({ token: 'Hello', startSec: 0.125 }),
+    Object.freeze({ token: 'world.', startSec: 1.375 }),
+  ]);
+  const lines = spokenLines('Hello world.', words, 2500);
+  assert.equal(lines.length, 1);
+  assert.equal(lines[0].startMs, 125);
+  assert.deepEqual(lines[0].marks, [{ index: 0, startMs: 125 }, { index: 6, startMs: 1375 }]);
+  const vtt = vttOf(lines);
+  assert.match(vtt, /00:00:00\.125 -->/);
+  assert.match(vtt, /Hello <00:00:01\.375>world\./);
+  const reopened = parseVtt(vtt).lines;
+  assert.deepEqual(reopened, lines);
+  for (const line of reopened) for (const mark of line.marks) {
+    assert.deepEqual(Object.keys(mark).sort(), ['index', 'startMs']);
+  }
+  assert.deepEqual(words, [{ token: 'Hello', startSec: 0.125 }, { token: 'world.', startSec: 1.375 }]);
+  assert.ok(words.every((word) => !Object.hasOwn(word, 'endSec')));
+  // The line's endMs is a display bound, not an observed per-word endSec.
+});

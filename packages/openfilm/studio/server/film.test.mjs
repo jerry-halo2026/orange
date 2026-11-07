@@ -105,3 +105,34 @@ test('the revision follows the text, and Studio writes over the file, the rest o
   assert.equal(rev, revOf(readFileSync(join(root, 'film.html'), 'utf8')));
   assert.ok(text.includes('<!-- mine -->') && text.includes('<iframe id="a" src="a.html" at="2"></iframe>') && text.includes('<iframe id="b" src="b.html" at="4"></iframe>'));
 });
+
+test('native contract: Chinese clip IDs edit without touching peers', async () => {
+  const root = folder(film(
+    [{ src: 'a.mp4', id: '片头', at: 1, time: [0.125, 1.375] }, { src: 'b.mp4', id: '片头-2', at: 3, volume: 0.75 }],
+    [{ src: 'bed.wav', id: '音乐', volume: 0.25 }],
+  ));
+  const before = await readProjectFilm(root);
+  const changed = await editProjectFilm(root, before.rev, [{ op: 'set', clip: '片头', field: 'at', value: 2.125 }]);
+  const expected = structuredClone(before.doc);
+  expected.tracks[0].clips[0].at = 2.125;
+  assert.deepEqual(changed.doc, expected);
+  assert.deepEqual((await readProjectFilm(root)).doc, expected);
+  assert.notEqual(changed.rev, before.rev);
+});
+
+test('native contract: revision is native film text hash and excludes sidecar changes', async () => {
+  // Independent SHA-256 known vector: NOT calculated with the implementation under test.
+  assert.equal(revOf('abc'), 'ba7816bf8f01cfea');
+  assert.equal(typeof revOf('abc'), 'string');
+  const root = folder(film([{ src: 'voice.mp3', id: '口播' }]));
+  writeFileSync(join(root, 'voice.vtt'), 'WEBVTT\n\n00:00:00.125 --> 00:00:01.375\nBefore\n');
+  const before = await readProjectFilm(root);
+  writeFileSync(join(root, 'voice.vtt'), 'WEBVTT\n\n00:00:00.125 --> 00:00:01.375\nAfter\n');
+  const sidecarChanged = await readProjectFilm(root);
+  assert.equal(sidecarChanged.text, before.text);
+  assert.equal(sidecarChanged.rev, before.rev, 'native rev does NOT cover VTT; not a cross-resource closure revision');
+  writeFileSync(join(root, 'film.html'), before.text + '\n');
+  const textChanged = await readProjectFilm(root);
+  assert.notEqual(textChanged.rev, before.rev, 'even whitespace is part of the native film text revision');
+  assert.match(textChanged.rev, /^[0-9a-f]{16}$/);
+});

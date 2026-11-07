@@ -327,3 +327,19 @@ test('a folder moves into another with what it holds, back to the top level, and
   assert.deepEqual((await listFolders()).map((f) => [f.name, f.parentId ?? null]), [['A', null], ['B', a.id], ['C', null]]);
   await assert.rejects(moveFolder('nope', null), (e) => e instanceof ProjectError && e.status === 404);
 });
+
+// Native v0.3.0 folderId accepts legacy IDs; generated IDs encode nine random bytes.
+test('native contract: project IDs retain legacy values and native new IDs', async () => {
+  const legacy = join(scratch, 'legacy');
+  mkdirSync(join(legacy, '.film'), { recursive: true });
+  writeFileSync(join(legacy, '.film', 'id'), 'legacy_42\n');
+  const first = await openProject(legacy);
+  assert.equal(first.id, 'legacy_42');
+  assert.equal((await openProject(legacy)).id, 'legacy_42');
+  assert.equal((await projectById('legacy_42')).path, first.path);
+  assert.equal(readFileSync(join(legacy, '.film', 'id'), 'utf8'), 'legacy_42\n');
+  const fresh = await openProject(join(scratch, 'fresh'));
+  assert.match(fresh.id, /^[A-Za-z0-9_-]{12}$/);
+  assert.equal(Buffer.from(fresh.id, 'base64url').length, 9);
+  assert.equal((await projectById(fresh.id)).path, fresh.path);
+});

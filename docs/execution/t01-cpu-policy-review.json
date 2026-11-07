@@ -1,0 +1,28 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 5,
+  "policyPath": "docs/execution/t01-cpu-verification-assignment.json",
+  "policyRawSHA256": "c2dd397c7fcbda5a8d861151350ec890330515e15dc32c77df8e9706bc552dda",
+  "coordinator": "/root",
+  "reviewerAgent": "/root/t01_admission_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "rounds": [
+    {
+      "round": 0,
+      "verdict": "needs-fix",
+      "P2": "runner-only lease omitted original isolation tests own .dev profile scratch"
+    },
+    {
+      "round": 1,
+      "verdict": "approved",
+      "fix": "exclusive worktree .dev lease; retain pre-existing artifacts, no whole-directory cleanup",
+      "P2": 0
+    }
+  ],
+  "executableSourceCommit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+  "tests": "81 exact isolation cases plus3 native no-profile flavor cases",
+  "scope": "T01 CPU verification only, not new feature writer dispatch or whole T01 acceptance",
+  "actualExecution": "pending"
+}

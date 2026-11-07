@@ -1,0 +1,67 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 5,
+  "scope": "coordinator verification of reviewed CPU foundation only; no feature writer dispatch or whole T01 acceptance",
+  "classification": "engineering-governance",
+  "authorAgent": "/root",
+  "actualModelAndEffort": "backend not exposed or attested",
+  "workingBaselineCommit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+  "worktreePath": "E:\\CodexData\\worktrees\\orange-t01-isolation\\orange",
+  "branch": "codex/t01-isolation",
+  "dependencyCommits": [
+    "a5378d524613ea2918e10cd56684aa9c4a7c77b8"
+  ],
+  "writeAllowlist": [
+    "docs/execution/t01-cpu-readiness.json"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": ".dev",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "dependencies": [],
+    "activeCards": [],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+        "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home",
+          "rejects cross-instance junction even if target remains within approved base"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "trust": "approval commit/card Git-BLOB SHA and expected revision/candidate head supplied independently; gate executable will be extracted from reviewed commit and hash-checked, not trusted from mutable candidate",
+  "reviewRequired": "independent policy read before pinned approval commit and real execution",
+  "status": "coordinator-proposed; not admitted",
+  "notGranted": [
+    "T02.a/T05.a writer admission",
+    "whole T01 completion",
+    "GUI/graceful close/media/model/installer validation",
+    "dev integration/cloud push/release"
+  ],
+  "artifactPreservation": "Exclusive .dev lease covers existing test behavior, runner, trusted gate and evidence only; retain all pre-existing artifacts. Only new owned profile scratch and runner test fixtures may be created/cleaned by pinned tests; no whole .dev cleanup is authorized."
+}

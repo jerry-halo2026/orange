@@ -1,0 +1,25 @@
+{
+  "taskId": "T05.a",
+  "assignmentRevision": 1,
+  "policyRawSHA256": "ec83a50ae130d544970b89d8b53ab1372386a826890cabec858e224cd1b5e9bb",
+  "reviewerAgent": "/root/t01_cpu_freeze_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "verdict": "approved",
+  "P1": 0,
+  "P2": 0,
+  "activeT02Card": {
+    "gitBlobSHA256": "097605424b3e6d28ba27125790178d5191c34e9c1a7b850a68f223da6efea8dc",
+    "revision": 2,
+    "writer": "frozen awaiting source review/integration; exclusive lease retained"
+  },
+  "scope": "original Core pure path policy and filtered unit tests only; offline local-cache setup; no host/media/engine",
+  "actualGate": "pending immutable approval and actual execution",
+  "notProven": [
+    "cache/transitive completeness",
+    "SDK/csc compile",
+    "Windows alias security cases",
+    "full worker runtime/whole pilot"
+  ]
+}

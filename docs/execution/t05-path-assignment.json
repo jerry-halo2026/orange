@@ -1,0 +1,180 @@
+{
+  "taskId": "T05.a",
+  "assignmentRevision": 1,
+  "scope": "Fission pure path strategy in original Core/unit project only; host/media/input-move/runtime isolation remains pending",
+  "classification": "native-extension of imported Fission source",
+  "authorAgent": "/root/t05_path_policy",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "workingBaselineCommit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+  "branch": "codex/t05-path-policy",
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "dependencyCommits": [
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "status": "active",
+  "dispatchState": "reserved; writer not started until independently approved policy and actual scoped N5a",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+    "workers/fission/src/Fission.Core/Engine/EnginePaths.cs",
+    "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t02-native-assignment.json",
+        "sha256": "097605424b3e6d28ba27125790178d5191c34e9c1a7b850a68f223da6efea8dc",
+        "assignmentRevision": 2
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-consumer-review.json",
+          "sha256": "4e9b2db1975a6319113ac3b197107a0beeacd62f74c024d562a49d991a1b86db",
+          "gitBlobSha256": "4e9b2db1975a6319113ac3b197107a0beeacd62f74c024d562a49d991a1b86db"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "sourcePin": "workers/fission imported c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9; original EnginePaths/FissionJob.OutDir definitions authoritative",
+  "nativeSymbols": [
+    "EnginePaths",
+    "EnginePaths.ValidateEngines",
+    "FissionJob.OutDir",
+    "existing Fission.UnitTests project"
+  ],
+  "testIntent": [
+    "old default paths cannot obtain task write permission",
+    "explicit roots/task/attempt required; reject relative,root,UNC/device/traversal/ADS/reserved aliases",
+    "job.OutDir must stay within this task output",
+    "different task/attempt cannot share work/out/cache",
+    "real Windows junction/symlink ancestors refuse escape before any creation",
+    "approved read-only engines/assets distinct from writable task paths",
+    "valid Chinese/space paths accepted; policy performs no writes or engine execution"
+  ],
+  "environment": {
+    "childPolicy": "minimal OS/tool environment only; no inherited credentials/private NuGet feeds, model settings or existing OPENFILM state",
+    "sdk": "observed installed10.0.300 only; host runtime10.0.8; verify actual shim/compiler/host selection, do not assume comments prove compatibility",
+    "mappedWithinWorktree": {
+      "HOME": ".dev/t05-state/home",
+      "USERPROFILE": ".dev/t05-state/home",
+      "APPDATA": ".dev/t05-state/appdata",
+      "LOCALAPPDATA": ".dev/t05-state/localappdata",
+      "TEMP": ".dev/t05-state/temp",
+      "TMP": ".dev/t05-state/temp",
+      "TMPDIR": ".dev/t05-state/temp",
+      "DOTNET_CLI_HOME": ".dev/t05-state/dotnet-cli",
+      "NUGET_PACKAGES": ".dev/t05-state/nuget-packages",
+      "NUGET_HTTP_CACHE_PATH": ".dev/t05-state/nuget-http"
+    },
+    "firstRun": "disable telemetry, global-tool PATH edits, certificate/workload setup; no system/security changes",
+    "restore": "offline first, explicit own NuGet.config clearing all feeds and using ONLY default existing local package cache read-only; own packages/results directories. Four fixed package directories observed present, transitive/cache completeness unproven. If missing STOP/report; no automatic network restore.",
+    "readOnlyCache": "C:/Users/Administrator/.nuget/packages (package artifacts only, never read private configs/credentials)",
+    "testHost": "original dotnet test runner-owned local IPC/ephemeral transport only; record actual endpoints if observed, no Fission Web/API/server or application host"
+  },
+  "validation": {
+    "prepare": "inspect existing Core/Steps unit references and compiler shim; original unit compile has no private engine DLL references by read-only audit; verify with actual isolated toolchain",
+    "restoreArgs": [
+      "restore",
+      "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "--configfile",
+      "<own generated offline-only config>",
+      "--packages",
+      "<own .dev/t05-state/nuget-packages>"
+    ],
+    "testArgs": [
+      "test",
+      "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "--no-restore",
+      "--filter",
+      "FullyQualifiedName~EnginePathPolicyTests",
+      "--logger",
+      "trx;LogFileName=path-policy.trx",
+      "--results-directory",
+      "<own .dev/t05-state/results>"
+    ],
+    "expected": "all new pure policy cases actually execute; no fail/skip/inconclusive/zero tests; complete TRX counters. Compiler/import failures are environment/capability RED, not semantic security tests; preserve both before claiming GREEN",
+    "baseline": "original unit project discovery/compile allowed after isolated setup and inspection, no solution/IntegrationTests/CLI/Web/Bench/doctor/stress"
+  },
+  "forbidden": [
+    "new worker/project/launcher/DTO or rewrite to Node",
+    "engine/media/model/browser/app execution",
+    "source audio move or original asset changes",
+    "old default paths as runtime/test working dirs",
+    "network restore/private feed/config access without separate root decision",
+    "SDK/model/global tools install or machine security/CET changes",
+    "Directory.Build.props/csc shim/test project/lock/CI/docs/golden baseline changes without scope extension",
+    "git stage/commit/push/reset/clean by author",
+    "other worktrees/archives"
+  ],
+  "reviewAndRecovery": {
+    "review": "non-author spec+quality for path trust/alias/read-only protection and actual Windows tests, exact source/TRX/fixture hashes; review next available slot",
+    "stop": [
+      "missing cache/SDK/compiler error",
+      "cannot run required Windows alias security test",
+      "need outside-write source change or engine invocation",
+      "new overlap/stale assignment/resource/canonical proof change"
+    ],
+    "recovery": "preserve first failure/all attempts and all pre-existing artifacts; only clean new owned scratch after absolute containment checks; no fake skip/PASS, no system changes; scope escalation to root only"
+  },
+  "fullTaskAccepted": false
+}

@@ -48,11 +48,12 @@
     {
       "id": "T05.a",
       "scope": "Fission pure path isolation",
-      "status": "proposed",
+      "status": "ready",
       "dependsOn": [
         "T01"
       ],
-      "externalGates": []
+      "externalGates": [],
+      "deliverySlice": "pure path policy only; host/real media not admitted"
     },
     {
       "id": "T05.b",

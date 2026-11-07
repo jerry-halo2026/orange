@@ -11,9 +11,10 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Require preinstalled Node 22.18 or newer (no downloads)
         shell: pwsh
         run: node -e "const [a,b]=process.versions.node.split('.').map(Number); if(a<22 || (a===22 && b<18)) process.exit(1)"
@@ -25,4 +26,6 @@ jobs:
           $env:TEMP = "$PWD/.dev/admission-fixtures"
           $env:TMP = $env:TEMP
           $env:TMPDIR = $env:TEMP
-          node --test scripts/phase1-isolation.test.mjs scripts/phase1-admission.test.mjs apps/desktop/src/flavor.test.mjs
+          node --input-type=module -e "import fs from 'node:fs'; import {execFileSync} from 'node:child_process'; import {validateAuthCiProducer} from './scripts/fission-path-ci.mjs'; const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(); if(head!==process.env.GITHUB_SHA) throw Error('CI_SOURCE_MISMATCH'); const paths=['apps/desktop/src/auth-service.mjs','apps/desktop/src/auth-service.test.mjs','packages/openfilm/studio/server/project-access.mjs','packages/openfilm/studio/server/project-access.test.mjs']; const records=paths.map(path=>({path,raw:fs.readFileSync(path),canonical:execFileSync('git',['show',head+':'+path])})); console.log(JSON.stringify({status:'same-head-local-auth-policy-producers-verified',commit:head,expectedCases:331,sources:validateAuthCiProducer(records)}));"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node --test --test-reporter=tap scripts/phase1-isolation.test.mjs scripts/phase1-admission.test.mjs apps/desktop/src/flavor.test.mjs apps/desktop/src/auth-service.test.mjs packages/openfilm/studio/server/project-access.test.mjs

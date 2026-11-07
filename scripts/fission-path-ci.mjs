@@ -1,11 +1,18 @@
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 
-const CLASS = 'Fission.UnitTests.EnginePathPolicyTests';
-const SYMBOLIC_NAMES = [
-  `${CLASS}.Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True)`,
-  `${CLASS}.ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True)`,
-];
+// Only these private descriptors may select a suite. XML and caller options
+// cannot choose the expected class, count or mandatory cases.
+const PATH_SUITE=Object.freeze({key:'pathPolicy',className:'Fission.UnitTests.EnginePathPolicyTests',total:43,mandatory:Object.freeze([
+ 'Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True)',
+ 'ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True)',
+])});
+const IO_SUITE=Object.freeze({key:'engineJobFiles',className:'Fission.UnitTests.EngineJobFilesTests',total:34,mandatory:Object.freeze([
+ 'CopyAudio_TrueFileSymlinkSourceRefuses','CopyAudio_TrueFileSymlinkDestinationRefuses',
+ 'RunAsync_FirstTransitionConcatFailureUsesFreshFallbackAndPreservesFailedEvidence(partialOutput: False)',
+ 'RunAsync_FirstTransitionConcatFailureUsesFreshFallbackAndPreservesFailedEvidence(partialOutput: True)',
+])});
 const XMLNS = 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010';
 const guid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const invalidTrx = () => { throw new Error('TRX_INVALID'); };
@@ -74,7 +81,8 @@ const shape = {
 function children(node,name) { return node.children.filter(child=>child.name===name); }
 function one(node,name) { const found=children(node,name); requireTrx(found.length===1); return found[0]; }
 
-export function verifyPathPolicyTrx(xml) {
+function verifySuiteTrx(xml,suite) {
+  const CLASS=suite.className,total=suite.total;
   try {
     const root=parseTrxXml(xml);requireTrx(root.name==='TestRun'&&root.attrs.xmlns===XMLNS);
     function validate(node,isRoot=false) {
@@ -91,9 +99,9 @@ export function verifyPathPolicyTrx(xml) {
     requireTrx(summary.attrs.outcome==='Completed'||summary.attrs.outcome==='Passed');
     const zero=['failed','error','timeout','aborted','inconclusive','passedButRunAborted','notRunnable','notExecuted','disconnected','warning','completed','inProgress','pending'];
     requireTrx(Object.keys(counters).length===zero.length+3);
-    for(const key of ['total','executed','passed']) requireTrx(counters[key]==='43');
+    for(const key of ['total','executed','passed']) requireTrx(counters[key]===String(total));
     for(const key of zero) requireTrx(counters[key]==='0');
-    requireTrx(results.length===43&&definitions.length===43&&entries.length===43);
+    requireTrx(results.length===total&&definitions.length===total&&entries.length===total);
     const seenIds=new Set(),seenTests=new Set(),seenNames=new Set(),byId=new Map();
     for(const def of definitions) {
       const execution=one(def,'Execution').attrs.id,method=one(def,'TestMethod').attrs;
@@ -116,10 +124,13 @@ export function verifyPathPolicyTrx(xml) {
       const testId=a.testId.toLowerCase(),executionId=a.executionId.toLowerCase();
       requireTrx(byId.get(testId)?.execution===executionId&&seenIds.has(executionId)&&!entryIds.has(executionId));entryIds.add(executionId);
     }
-    for(const name of SYMBOLIC_NAMES) requireTrx(seenNames.has(name));
-    return Object.freeze({total:43,executed:43,passed:43,failed:0,skipped:0,inconclusive:0,testNames:Object.freeze([...seenNames].sort())});
+    for(const name of suite.mandatory) requireTrx(seenNames.has(CLASS+'.'+name));
+    return Object.freeze({total,executed:total,passed:total,failed:0,skipped:0,inconclusive:0,testNames:Object.freeze([...seenNames].sort())});
   } catch { invalidTrx(); }
 }
+
+export function verifyPathPolicyTrx(xml) {return verifySuiteTrx(xml,PATH_SUITE);}
+export function verifyEngineJobFilesTrx(xml) {return verifySuiteTrx(xml,IO_SUITE);}
 
 function safeWindowsPath(value) {
   if(typeof value!=='string'||!/^[A-Za-z]:\\/.test(value)||value.length>240) return false;
@@ -168,10 +179,82 @@ export function buildPathCiEnvironment(options) {
   } catch {throw new Error('CI_ENVIRONMENT_INVALID');}
 }
 
+// This closure is the actual original project graph, not a replacement project.
+const BUILD_ROOTS=Object.freeze(['workers/fission/src/Fission.Core','workers/fission/src/Fission.Steps','workers/fission/src/Fission.Providers','workers/fission/tests/Fission.UnitTests']);
+const BUILD_PINS=Object.freeze({
+ 'workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs':'d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac',
+ 'workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs':'89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5',
+ 'workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs':'4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1',
+ 'workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs':'22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb',
+ 'workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs':'199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a',
+ 'workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj':'1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef',
+ 'workers/fission/src/Fission.Core/Fission.Core.csproj':'11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c',
+ 'workers/fission/src/Fission.Steps/Fission.Steps.csproj':'dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81',
+ 'workers/fission/src/Fission.Providers/Fission.Providers.csproj':'d474483d18b1594f6016d6efa62c1098b2504890a7f7a55d9cd6051f305d722c',
+ 'workers/fission/Directory.Build.props':'f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b',
+ 'workers/fission/tools/csc-shim/csc.bat':'5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0',
+});
+const AUTH_PINS=Object.freeze({
+ 'apps/desktop/src/auth-service.mjs':'007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac',
+ 'apps/desktop/src/auth-service.test.mjs':'fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b',
+ 'packages/openfilm/studio/server/project-access.mjs':'345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71',
+ 'packages/openfilm/studio/server/project-access.test.mjs':'4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4',
+});
+const sha256=data=>createHash('sha256').update(data).digest('hex');
+const canonicalText=bytes=>new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes).replaceAll('\r\n','\n');
+function bindSourceSnapshots(snapshots,expectedPaths,pins) {
+ const bad=()=>{throw new Error('CI_SOURCE_MISMATCH');};
+ if(!Array.isArray(snapshots)||!Array.isArray(expectedPaths)||expectedPaths.length===0||new Set(expectedPaths).size!==expectedPaths.length||snapshots.length!==expectedPaths.length)bad();
+ const expected=new Set(expectedPaths),seen=new Set(),proof=[];
+ for(const item of snapshots) {
+  if(!item||typeof item.path!=='string'||!expected.has(item.path)||seen.has(item.path)||!Buffer.isBuffer(item.raw)||!Buffer.isBuffer(item.canonical))bad();
+  const blob=sha256(item.canonical);
+  // Raw hashes are reported separately: only CRLF -> LF equivalence is allowed,
+  // never BOM stripping, trimming, Unicode folding or bare-CR normalization.
+  if((Object.hasOwn(pins,item.path)&&blob!==pins[item.path])||canonicalText(item.raw)!==canonicalText(item.canonical))bad();
+  seen.add(item.path);proof.push(Object.freeze({path:item.path,gitBlobSha256:blob,rawSha256:sha256(item.raw)}));
+ }
+ for(const file of Object.keys(pins))if(!seen.has(file))bad();
+ return Object.freeze(proof.sort((a,b)=>a.path.localeCompare(b.path,'en')));
+}
+export function validateBuildInputClosure(input) {
+ try {
+  const {trackedPaths,snapshots}=input;
+  if(!Array.isArray(trackedPaths)||!Array.isArray(snapshots)||snapshots.some(item=>item?.linkCount!==1))throw 0;
+  const projects=BUILD_ROOTS.map(root=>root+'/'+root.split('/').at(-1)+'.csproj');
+  for(const file of trackedPaths) {
+   if(typeof file!=='string'||file.split('/').some(part=>!part||part==='.'||part==='..')||file.includes('\\')||(!Object.hasOwn(BUILD_PINS,file)&&!BUILD_ROOTS.some(root=>file.startsWith(root+'/')&&/^[-A-Za-z0-9_/.]+\.cs$/.test(file))))throw 0;
+   if(file.endsWith('.csproj')&&!projects.includes(file))throw 0;
+  }
+  return bindSourceSnapshots(snapshots,trackedPaths,BUILD_PINS);
+ } catch {throw new Error('CI_SOURCE_MISMATCH');}
+}
+export function validateAuthCiProducer(snapshots) {
+ try {return bindSourceSnapshots(snapshots,Object.keys(AUTH_PINS),AUTH_PINS);} catch {throw new Error('CI_SOURCE_MISMATCH');}
+}
+
+export function buildControlledIoCommands(facts) {
+ const context=validatePathCiContext(facts),root=context.ownedRoot;
+ const project=path.win32.join(context.workspace,'workers','fission','tests','Fission.UnitTests','Fission.UnitTests.csproj');
+ const artifacts=path.win32.join(root,'artifacts');
+ const restore=Object.freeze({stage:'restore',args:Object.freeze(['restore',project,'--configfile',path.win32.join(root,'NuGet.config'),'--packages',path.win32.join(root,'packages'),'--artifacts-path',artifacts,'--disable-parallel','--verbosity','quiet'])});
+ const suites=[PATH_SUITE,IO_SUITE].map((suite,index)=>{
+  const name=index===0?'path-policy':'engine-job-files',resultsDirectory=path.win32.join(root,'results',name),trxName=name+'.trx';
+  return Object.freeze({key:suite.key,className:suite.className,total:suite.total,stage:name+'-tests',resultsDirectory,trxName,args:Object.freeze(['test',project,'--no-restore',...(index===1?['--no-build']:[]),'--artifacts-path',artifacts,'--filter','FullyQualifiedName~'+suite.className.split('.').at(-1),'--logger','trx;LogFileName='+trxName,'--results-directory',resultsDirectory,'--verbosity','quiet','--disable-build-servers'])});
+ });
+ return Object.freeze({restore,suites:Object.freeze(suites)});
+}
+
+const PUBLIC_PACKAGES=Object.freeze(["Microsoft.CodeCoverage/17.14.1","Microsoft.NET.Test.Sdk/17.14.1","Microsoft.TestPlatform.ObjectModel/17.14.1","Microsoft.TestPlatform.TestHost/17.14.1","Newtonsoft.Json/13.0.3","System.CodeDom/10.0.14","System.Management/10.0.14","coverlet.collector/6.0.4","xunit.abstractions/2.0.3","xunit.analyzers/1.18.0","xunit.assert/2.9.3","xunit.core/2.9.3","xunit.extensibility.core/2.9.3","xunit.extensibility.execution/2.9.3","xunit.runner.visualstudio/3.1.4","xunit/2.9.3"]);
+export function verifyPublicPackageClosure(packages) {
+ if(!Array.isArray(packages)||packages.length!==PUBLIC_PACKAGES.length||new Set(packages).size!==packages.length||packages.some(name=>!PUBLIC_PACKAGES.includes(name)))throw new Error('CI_SOURCE_MISMATCH');
+ return Object.freeze([...packages].sort());
+}
+
 // Fixed-size diagnostic facts only: no result object/string/error is reflected.
 // This helper cannot grant success; execute() still applies the original gate.
 export function safeSubprocessFailure(stage,result) {
-  const stages=new Set(['git-head','git-root','source-0','source-1','build-input-2','build-input-3','build-input-4','build-input-5','build-input-6','sdk-version','compiler-version','original-shim-version','runtime-versions','restore','path-policy-tests','git-final-head']);
+  const stages=new Set(['git-head','git-root','source-0','source-1','build-input-2','build-input-3','build-input-4','build-input-5','build-input-6','sdk-version','compiler-version','original-shim-version','runtime-versions','restore','path-policy-tests','engine-job-files-tests','source-inventory','source-blob','producer-blob','git-final-head']);
   const safeStage=typeof stage==='string'&&stages.has(stage)?stage:'unknown';
   const freeze=facts=>Object.freeze({...facts,diagnosticCodes:Object.freeze(facts.diagnosticCodes),exceptionTags:Object.freeze(facts.exceptionTags)});
   const unknown=()=>freeze({stage:safeStage,exitCode:null,signal:'UNKNOWN',spawnErrorCode:'UNKNOWN',diagnosticCodes:[],exceptionTags:[]});
@@ -201,8 +284,7 @@ export async function runPathPolicyCi() {
   if(major<22||(major===22&&minor<18)) throw new Error('CI_NODE_UNAVAILABLE');
   const fs=await import('node:fs/promises');
   const {spawnSync}=await import('node:child_process');
-  const {createHash}=await import('node:crypto');
-  const hash = data => createHash('sha256').update(data).digest('hex');
+  const hash=sha256;
   const fail = category => {throw new Error(category);};
   const equalPath = (a,b) => path.win32.normalize(a).replace(/^[a-z]:/,s=>s.toUpperCase())===path.win32.normalize(b).replace(/^[a-z]:/,s=>s.toUpperCase());
   const within = (owner,target) => equalPath(owner,target)||target.startsWith(owner+'\\');
@@ -236,8 +318,10 @@ export async function runPathPolicyCi() {
   }
   await createDirectory(context.ownedRoot);
   const dirs={};
-  for(const name of ['home','user','appdata','localappdata','programdata','temp','nuget','packages','clihome','results','logs','fixtures','toolinventory']) {dirs[name]=path.win32.join(context.ownedRoot,name);await createDirectory(dirs[name]);}
+  for(const name of ['home','user','appdata','localappdata','programdata','temp','nuget','packages','clihome','results','logs','fixtures','toolinventory','artifacts']) {dirs[name]=path.win32.join(context.ownedRoot,name);await createDirectory(dirs[name]);}
   if(dirs.fixtures!==context.fixtureRoot) fail('CI_PATH_UNSAFE');
+  const commandPlan=buildControlledIoCommands(facts);
+  for(const suite of commandPlan.suites) await createDirectory(suite.resultsDirectory);
   const writeOwned = async (filename,data) => {
     if(!within(context.ownedRoot,filename)||!safeWindowsPath(filename)) fail('CI_PATH_UNSAFE');
     await ordinaryDirectory(path.win32.dirname(filename));
@@ -288,24 +372,64 @@ export async function runPathPolicyCi() {
     return result;
   };
   const text = buffer => new TextDecoder('utf-8',{fatal:true}).decode(buffer).trim();
-  const normalize = buffer => new TextDecoder('utf-8',{fatal:true}).decode(buffer).replaceAll('\r\n','\n');
   const actualHead=text((await execute('git-head',git,['-C',context.workspace,'rev-parse','HEAD'])).stdout);
   const actualRoot=text((await execute('git-root',git,['-C',context.workspace,'rev-parse','--show-toplevel'])).stdout);
   if(actualHead!==context.commit||!equalPath(actualRoot,context.workspace)) fail('CI_SOURCE_MISMATCH');
-  const frozen=[['workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs','d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac'],['workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs','89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5']];
-  const sources=[];
-  for(const [file,expected] of frozen) {
-    const canonical=(await execute('source-'+sources.length,git,['-C',context.workspace,'show',context.commit+':'+file])).stdout;
-    const filename=path.win32.join(context.workspace,...file.split('/'));await ordinaryFile(filename);const raw=await fs.readFile(filename);
-    if(hash(canonical)!==expected||normalize(raw)!==normalize(canonical)) fail('CI_SOURCE_MISMATCH');
-    sources.push({path:file,gitBlobSha256:expected,rawSha256:hash(raw)});
+  const fromWorkspace=file=>path.win32.join(context.workspace,...file.split('/'));
+  const trackedOutput=(await execute('source-inventory',git,['-C',context.workspace,'ls-tree','-r','-z','--name-only',context.commit,'--',...BUILD_ROOTS,'workers/fission/Directory.Build.props','workers/fission/tools/csc-shim/csc.bat'])).stdout;
+  const trackedText=new TextDecoder('utf-8',{fatal:true}).decode(trackedOutput);
+  if(!trackedText.endsWith('\0'))fail('CI_SOURCE_MISMATCH');
+  const trackedPaths=trackedText.slice(0,-1).split('\0');
+  // Enumerate the actual default-Compile tree, not just the two advertised
+  // test files. Symlink directories/files and untracked build inputs refuse.
+  const inventoryDisk = async () => {
+    const files=[];
+    const walk=async relative=>{
+      const directory=fromWorkspace(relative);await ordinaryDirectory(directory);
+      for(const entry of await fs.readdir(directory,{withFileTypes:true})) {
+        const child=relative+'/'+entry.name,filename=fromWorkspace(child),stat=await fs.lstat(filename);
+        if(stat.isSymbolicLink())fail('CI_SOURCE_MISMATCH');
+        if(stat.isDirectory())await walk(child);
+        else if(/\.(?:cs|csproj|props|targets|rsp)$/i.test(entry.name)){await ordinaryFile(filename);files.push(child);}
+      }
+    };
+    for(const root of BUILD_ROOTS)await walk(root);
+    for(const file of ['workers/fission/Directory.Build.props','workers/fission/tools/csc-shim/csc.bat']) {await ordinaryFile(fromWorkspace(file));files.push(file);}
+    // An ambient ancestor targets/props/response file could expand the graph
+    // without touching a csproj. Reject it, including case aliases, before restore.
+    const ancestors=new Set(['']);
+    for(const root of BUILD_ROOTS) {const parts=root.split('/');for(let i=1;i<parts.length;i++)ancestors.add(parts.slice(0,i).join('/'));}
+    for(const relative of ancestors) {
+      const directory=relative?fromWorkspace(relative):context.workspace;await ordinaryDirectory(directory);
+      for(const name of await fs.readdir(directory))if(/\.(?:props|targets|rsp)$/i.test(name)) {
+        const file=(relative?relative+'/':'')+name;
+        if(file!=='workers/fission/Directory.Build.props')fail('CI_SOURCE_MISMATCH');
+        await ordinaryFile(fromWorkspace(file));
+      }
+    }
+    return files.sort();
+  };
+  const canonicalByPath=new Map();
+  for(const file of trackedPaths) {
+    // No arbitrary git path/revision is accepted from disk inventory.
+    if(!Object.hasOwn(BUILD_PINS,file)&&!BUILD_ROOTS.some(root=>file.startsWith(root+'/')&&file.endsWith('.cs')))fail('CI_SOURCE_MISMATCH');
+    canonicalByPath.set(file,(await execute('source-blob',git,['-C',context.workspace,'show',context.commit+':'+file])).stdout);
   }
-  // These original build inputs must also be exactly their checked-out commit,
-  // not an environment override or a patched compiler/property/test project.
-  for(const file of ['workers/fission/tools/csc-shim/csc.bat','workers/fission/Directory.Build.props','workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj','workers/fission/src/Fission.Core/Fission.Core.csproj','workers/fission/src/Fission.Steps/Fission.Steps.csproj']) {
-    const canonical=(await execute('build-input-'+sources.length,git,['-C',context.workspace,'show',context.commit+':'+file])).stdout;
-    const filename=path.win32.join(context.workspace,...file.split('/'));await ordinaryFile(filename);const raw=await fs.readFile(filename);
-    if(normalize(raw)!==normalize(canonical)) fail('CI_SOURCE_MISMATCH');sources.push({path:file,gitBlobSha256:hash(canonical),rawSha256:hash(raw)});
+  const readClosure=async()=>{
+    const snapshots=[];
+    for(const file of await inventoryDisk())snapshots.push({path:file,raw:await fs.readFile(fromWorkspace(file)),canonical:canonicalByPath.get(file),linkCount:(await fs.lstat(fromWorkspace(file))).nlink});
+    return validateBuildInputClosure({trackedPaths,snapshots});
+  };
+  const sources=await readClosure();
+  // Bind the CI producer itself to this same candidate, rather than reusing a
+  // prior receipt's runner/script as evidence for new controlled IO coverage.
+  const producerFiles=['scripts/fission-path-ci.mjs','scripts/fission-path-ci.test.mjs','.github/workflows/fission-path-policy.yml','.github/workflows/phase1.yml'];
+  const producers=[];
+  for(const file of producerFiles) {
+    const canonical=(await execute('producer-blob',git,['-C',context.workspace,'show',context.commit+':'+file])).stdout;
+    await ordinaryFile(fromWorkspace(file));const raw=await fs.readFile(fromWorkspace(file));
+    if(canonicalText(raw)!==canonicalText(canonical))fail('CI_SOURCE_MISMATCH');
+    producers.push({path:file,gitBlobSha256:hash(canonical),rawSha256:hash(raw)});
   }
   const sdk=text((await execute('sdk-version',dotnet,['--version'])).stdout);
   if(sdk!=='10.0.403') fail('CI_SDK_UNAVAILABLE');
@@ -320,25 +444,41 @@ export async function runPathPolicyCi() {
     return {name:match[1],version:match[2]};
   });
   if(!runtimes.some(r=>r.name==='Microsoft.NETCore.App'&&r.version.startsWith('10.0.'))) fail('CI_RUNTIME_UNAVAILABLE');
-  const toolSummary={commit:context.commit,node:process.versions.node,sdk,compilerVersion,compilerSha256,runtimes,sources};
-  console.log(JSON.stringify({status:'tool-selection-verified',...toolSummary}));
-  const project=path.win32.join(context.workspace,'workers','fission','tests','Fission.UnitTests','Fission.UnitTests.csproj');
-  await execute('restore',dotnet,['restore',project,'--configfile',publicConfig,'--packages',dirs.packages,'--disable-parallel','--verbosity','quiet'],180000);
-  const testResult=await execute('path-policy-tests',dotnet,['test',project,'--no-restore','--filter','FullyQualifiedName~EnginePathPolicyTests','--logger','trx;LogFileName=path-policy.trx','--results-directory',dirs.results,'--verbosity','quiet','--disable-build-servers'],300000,true);
-  await verifyInventory();await ordinaryDirectory(dirs.results);
-  const resultFiles=(await fs.readdir(dirs.results)).filter(file=>file.toLowerCase().endsWith('.trx'));
-  if(resultFiles.length!==1||resultFiles[0]!=='path-policy.trx') fail('CI_TRX_INVALID');
-  const trxFile=path.win32.join(dirs.results,'path-policy.trx');await ordinaryFile(trxFile);
-  const trx=await fs.readFile(trxFile),trxSha256=hash(trx);
-  console.log(JSON.stringify({status:'test-process-finished',exitCode:testResult.status,trxSha256}));
-  let verified;try {verified=verifyPathPolicyTrx(new TextDecoder('utf-8',{fatal:true}).decode(trx));} catch {fail('CI_TRX_INVALID');}
-  if(testResult.status!==0) fail('CI_TESTS_NOT_PASSED');
+  const hostSha256=hash(await fs.readFile(dotnet));
+  const toolSummary={commit:context.commit,node:process.versions.node,sdk,compilerVersion,compilerSha256,hostSha256,runtimes,sources,producers};
+  console.log(JSON.stringify({status:'tool-and-source-selection-verified',...toolSummary}));
+  await execute(commandPlan.restore.stage,dotnet,commandPlan.restore.args,180000);
+  // The owned artifacts root must contain the original graph's resolved assets,
+  // not extra projects/private dependencies. Original csproj hashes above pin
+  // all direct PackageReference/ProjectReference declarations before any restore.
+  const assets=path.win32.join(dirs.artifacts,'obj','Fission.UnitTests','project.assets.json');await ordinaryFile(assets);
+  const assetsBytes=await fs.readFile(assets),assetsJson=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(assetsBytes));
+  const packages=verifyPublicPackageClosure(Object.entries(assetsJson.libraries).filter(([,value])=>value.type==='package').map(([name])=>name));
+  const assetProjects=Object.entries(assetsJson.libraries).filter(([,value])=>value.type==='project').map(([name])=>name.split('/')[0]).sort();
+  if(JSON.stringify(assetProjects)!==JSON.stringify(['Fission.Core','Fission.Providers','Fission.Steps']))fail('CI_SOURCE_MISMATCH');
+  await readClosure();
+  const suites={};
+  for(const suite of commandPlan.suites) {
+    // Each directory was freshly created empty; there is no shared/stale TRX.
+    await ordinaryDirectory(suite.resultsDirectory);
+    if((await fs.readdir(suite.resultsDirectory)).length!==0)fail('CI_TRX_INVALID');
+    const result=await execute(suite.stage,dotnet,suite.args,240000,true);
+    await verifyInventory();await ordinaryDirectory(suite.resultsDirectory);
+    const resultFiles=await fs.readdir(suite.resultsDirectory);
+    if(resultFiles.length!==1||resultFiles[0]!==suite.trxName)fail('CI_TRX_INVALID');
+    const trxFile=path.win32.join(suite.resultsDirectory,suite.trxName);await ordinaryFile(trxFile);
+    const trx=await fs.readFile(trxFile),trxSha256=hash(trx);
+    console.log(JSON.stringify({status:'test-process-finished',suite:suite.key,exitCode:result.status,trxSha256}));
+    let verified;try {verified=(suite.key==='pathPolicy'?verifyPathPolicyTrx:verifyEngineJobFilesTrx)(new TextDecoder('utf-8',{fatal:true}).decode(trx));} catch {fail('CI_TRX_INVALID');}
+    if(result.status!==0)fail('CI_TESTS_NOT_PASSED');
+    suites[suite.key]=Object.freeze({className:suite.className,...verified,trxSha256,exitCode:result.status});
+  }
   const finalHead=text((await execute('git-final-head',git,['-C',context.workspace,'rev-parse','HEAD'])).stdout);
-  if(finalHead!==context.commit) fail('CI_SOURCE_MISMATCH');
-  // Recheck source bytes after compilation; outputs may be only original
-  // project bin/obj or this attempt's owned directories.
-  for(const source of sources) {const file=path.win32.join(context.workspace,...source.path.split('/'));await ordinaryFile(file);if(hash(await fs.readFile(file))!==source.rawSha256) fail('CI_SOURCE_MISMATCH');}
-  const summary=Object.freeze({status:'passed-pure-path-subset-only',...toolSummary,...verified,trxSha256,exitCodes:exits});
+  if(finalHead!==context.commit||JSON.stringify(await readClosure())!==JSON.stringify(sources))fail('CI_SOURCE_MISMATCH');
+  for(const producer of producers){await ordinaryFile(fromWorkspace(producer.path));if(hash(await fs.readFile(fromWorkspace(producer.path)))!==producer.rawSha256)fail('CI_SOURCE_MISMATCH');}
+  await verifyInventory();await ordinaryFile(dotnet);
+  if(hash(await fs.readFile(dotnet))!==hostSha256)fail('CI_COMPILER_SELECTION_MISMATCH');
+  const summary=Object.freeze({status:'passed-path-and-controlled-file-io-fake-codec-only',scope:'purepath+controlled-fileIO-Fakecodec-only-not-media-host-or-pilot',...toolSummary,packages,assetsSha256:hash(assetsBytes),suites:Object.freeze(suites),exitCodes:exits});
   console.log(JSON.stringify(summary));return summary;
 }
 

@@ -36,7 +36,7 @@ for(const [key,value] of Object.entries({GITHUB_ACTIONS:'false',RUNNER_OS:'Linux
 for (const value of ['','relative','C:relative','\\root','\\\\server\\share','\\\\?\\C:\\work','C:\\','C:\\a\\..\\b','C:\\a\\.\\b','C:/a/b','C:\\a\\','C:\\a\\bad.','C:\\a\\bad ','C:\\a\\CON.txt','C:\\a\\COM¹','C:\\a\\name~1','C:\\a\\file:stream','C:\\a\\bad?name','C:\\a\\bad\nname']) test(`rejects unsafe workspace ${JSON.stringify(value)}`,()=>assert.throws(()=>context({...facts(),GITHUB_WORKSPACE:value}),{message:/^CONTEXT_INVALID$/}));
 for(const value of ['01','1.0','1e2','+1',' 1','1/2']) test(`rejects ambiguous run id ${value}`,()=>assert.throws(()=>context({...facts(),GITHUB_RUN_ID:value}),{message:/^CONTEXT_INVALID$/}));
 test('rejects hostile facts without leaking private exception',()=>assert.throws(()=>context(new Proxy({}, {get(){throw Error('PRIVATE');}})), {message:/^CONTEXT_INVALID$/}));
-test('imports only guarded capabilities and pure review seams without running CI or IO',()=>{assert.deepEqual(Object.keys(api).sort(),['buildPathCiEnvironment','parseCompilerVersion','runPathPolicyCi','safeSubprocessFailure','validatePathCiContext','verifyPathPolicyTrx']);});
+test('imports only guarded capabilities and pure review seams without running CI or IO',()=>{assert.deepEqual(Object.keys(api).sort(),["buildControlledIoCommands","buildPathCiEnvironment","parseCompilerVersion","runPathPolicyCi","safeSubprocessFailure","validateAuthCiProducer","validateBuildInputClosure","validatePathCiContext","verifyEngineJobFilesTrx","verifyPathPolicyTrx","verifyPublicPackageClosure"]);});
 
 test('accepts generated TRX multiline stdout without returning its private text',()=> {
  const result=verify(fixture().replace('</ResultSummary>','<Output><StdOut>adapter starting&#xD;\n  adapter finished\n&lt;safe&gt;</StdOut></Output></ResultSummary>')); assert.equal(result.passed,43); assert.equal(JSON.stringify(result).includes('adapter starting'),false);
@@ -51,7 +51,7 @@ test('import succeeds with filesystem writes and child processes denied',async()
  const moduleUrl=new URL('./fission-path-ci.mjs',import.meta.url);
  const code=`globalThis.fetch=()=>{throw new Error('network forbidden')}; const m=await import(${JSON.stringify(moduleUrl.href)}); console.log(Object.keys(m).sort().join(','));`;
  const child=spawnSync(process.execPath,['--permission','--allow-fs-read='+fileURLToPath(moduleUrl),'--input-type=module','-e',code],{encoding:'utf8',env:{SystemRoot:process.env.SystemRoot},timeout:15000,windowsHide:true});
- assert.equal(child.status,0, 'pure import must need no write or child-process permission');assert.equal(child.stdout.trim(),'buildPathCiEnvironment,parseCompilerVersion,runPathPolicyCi,safeSubprocessFailure,validatePathCiContext,verifyPathPolicyTrx');assert.equal(child.stderr,'');
+ assert.equal(child.status,0, 'pure import must need no write or child-process permission');assert.equal(child.stdout.trim(),"buildControlledIoCommands,buildPathCiEnvironment,parseCompilerVersion,runPathPolicyCi,safeSubprocessFailure,validateAuthCiProducer,validateBuildInputClosure,validatePathCiContext,verifyEngineJobFilesTrx,verifyPathPolicyTrx,verifyPublicPackageClosure");assert.equal(child.stderr,'');
 });
 
 test('rejects duplicate GUID identities disguised by hexadecimal letter casing',()=>{
@@ -128,4 +128,138 @@ test('diagnostics scan only bounded raw-output prefixes and never stringify obje
 });
 test('nonzero test subprocess failure can be summarized without granting TRX success',()=>{
  assert.equal(failure('path-policy-tests',{status:1,stderr:'NU1301 PRIVATE'}).exitCode,1);assert.throws(()=>verify(fixture().replace('outcome="Passed"','outcome="Failed"')),{message:/^TRX_INVALID$/});
+});
+
+// Generated XML below is only a parser fixture, never actual Windows evidence.
+const IO_CLASS='Fission.UnitTests.EngineJobFilesTests';
+const ioMandatory=[
+ 'CopyAudio_TrueFileSymlinkSourceRefuses',
+ 'CopyAudio_TrueFileSymlinkDestinationRefuses',
+ 'RunAsync_FirstTransitionConcatFailureUsesFreshFallbackAndPreservesFailedEvidence(partialOutput: False)',
+ 'RunAsync_FirstTransitionConcatFailureUsesFreshFallbackAndPreservesFailedEvidence(partialOutput: True)',
+].map(name=>IO_CLASS+'.'+name);
+const ioNames=[...ioMandatory,...Array.from({length:30},(_,i)=>IO_CLASS+'.SyntheticIoCase'+i)];
+function ioFixture() {
+ const results=ioNames.map((name,i)=>`<UnitTestResult executionId="${guid(i)}" testId="${guid(i+50)}" testName="${escape(name)}" outcome="Passed"/>`).join('');
+ const definitions=ioNames.map((name,i)=>`<UnitTest id="${guid(i+50)}" name="${escape(name)}"><Execution id="${guid(i)}"/><TestMethod className="${IO_CLASS}" name="${name.slice(IO_CLASS.length+1).split('(')[0]}"/></UnitTest>`).join('');
+ const entries=ioNames.map((_,i)=>`<TestEntry testId="${guid(i+50)}" executionId="${guid(i)}"/>`).join('');
+ return `<?xml version="1.0" encoding="utf-8"?><TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010"><Results>${results}</Results><TestDefinitions>${definitions}</TestDefinitions><TestEntries>${entries}</TestEntries><ResultSummary outcome="Completed"><Counters total="34" executed="34" passed="34" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0"/></ResultSummary></TestRun>`;
+}
+const verifyIo=xml=>{assert.equal(typeof api.verifyEngineJobFilesTrx,'function','missing sealed controlled IO verifier');return api.verifyEngineJobFilesTrx(xml);};
+test('accepts only the sealed 34 linked controlled IO cases including both file links and fallback outcomes',()=>{
+ const result=verifyIo(ioFixture());assert.deepEqual({...result,testNames:[...result.testNames]}, {total:34,executed:34,passed:34,failed:0,skipped:0,inconclusive:0,testNames:[...ioNames].sort()});assert.equal(Object.isFrozen(result),true);assert.equal(Object.isFrozen(result.testNames),true);
+});
+for(const name of ioMandatory)test('refuses missing mandatory controlled IO case '+name,()=>assert.throws(()=>verifyIo(ioFixture().replaceAll(escape(name),escape(name+'Absent'))),{message:/^TRX_INVALID$/}));
+for(const outcome of ['Failed','Skipped','NotExecuted','Inconclusive','Error','Aborted','Timeout','Canceled','Cancelled','Todo','InProgress','Pending'])test('IO refuses '+outcome,()=>assert.throws(()=>verifyIo(ioFixture().replace('outcome="Passed"',`outcome="${outcome}"`)),{message:/^TRX_INVALID$/}));
+const ioInvalid={
+ wrongTotal:x=>x.replaceAll('="34"','="43"'),zero:x=>x.replaceAll('="34"','="0"'),
+ failed:x=>x.replace('failed="0"','failed="1"'),skipped:x=>x.replace('notExecuted="0"','notExecuted="1"'),
+ duplicateId:x=>x.replaceAll(guid(1),guid(0)),duplicateName:x=>x.replaceAll(escape(ioNames[1]),escape(ioNames[0])),
+ missingResult:x=>x.replace(/<UnitTestResult[^>]+\/>/,''),missingDefinition:x=>x.replace(/<UnitTest [\s\S]*?<\/UnitTest>/,''),
+ missingEntry:x=>x.replace(/<TestEntry[^>]+\/>/,''),unlinkedEntry:x=>x.replace('<TestEntry testId="'+guid(50)+'"','<TestEntry testId="'+guid(999)+'"'),
+ wrongClass:x=>x.replaceAll(IO_CLASS,'Other.Class'),wrongMethod:x=>x.replace('name="CopyAudio_TrueFileSymlinkSourceRefuses"','name="Wrong"'),
+ dtd:x=>'<!DOCTYPE TestRun>'+x,externalEntity:x=>'<!DOCTYPE TestRun [<!ENTITY x SYSTEM "file:///private">]>'+x,
+ duplicateAttribute:x=>x.replace('outcome="Passed"','outcome="Passed" outcome="Passed"'),truncated:x=>x.slice(0,-10),
+ unknownElement:x=>x.replace('<Results>','<Unknown/><Results>'),wrongNamespace:x=>x.replace('http://microsoft.com','https://wrong.example'),
+ duplicateSummary:x=>x.replace('</TestRun>','<ResultSummary/></TestRun>'),nestedSummary:x=>x.replace('</Results>','<ResultSummary/></Results>'),
+ badCounter:x=>x.replace('passed="34"','passed="33"'),missingCounter:x=>x.replace('error="0"',''),extraCounter:x=>x.replace('error="0"','error="0" skipped="0"'),
+ rawControl:x=>x+'\u0001',rawEntity:x=>x.replace('SourceRefuses','Source&unknown;Refuses'),nonString:()=>null,
+};
+for(const [name,mutate] of Object.entries(ioInvalid))test('sealed IO rejects '+name,()=>assert.throws(()=>verifyIo(mutate(ioFixture())),{message:/^TRX_INVALID$/}));
+test('neither XML nor caller options can substitute a different sealed suite',()=>{
+ assert.throws(()=>verifyIo(fixture()),{message:/^TRX_INVALID$/});assert.throws(()=>verify(ioFixture()),{message:/^TRX_INVALID$/});
+ assert.throws(()=>api.verifyEngineJobFilesTrx(fixture(),{className:CLASS,total:43,mandatory:[]}),{message:/^TRX_INVALID$/});
+});
+
+const {readFile,readdir,lstat}=await import('node:fs/promises');
+const {createHash}=await import('node:crypto');
+const sha256=data=>createHash('sha256').update(data).digest('hex');
+const buildRoots=['workers/fission/src/Fission.Core','workers/fission/src/Fission.Steps','workers/fission/src/Fission.Providers','workers/fission/tests/Fission.UnitTests'];
+async function closureFixture() {
+ const snapshots=[];
+ async function walk(directory) {for(const entry of await readdir(new URL('../'+directory+'/',import.meta.url),{withFileTypes:true})) {
+  const file=directory+'/'+entry.name;if(entry.isDirectory()) {if(!['bin','obj'].includes(entry.name))await walk(file);}else if(/\.(?:cs|csproj)$/.test(file)) {const raw=await readFile(new URL('../'+file,import.meta.url));snapshots.push({path:file,raw,canonical:Buffer.from(raw.toString('utf8').replaceAll('\r\n','\n')),linkCount:(await lstat(new URL('../'+file,import.meta.url))).nlink});}
+ }}
+ for(const root of buildRoots)await walk(root);
+ for(const file of ['workers/fission/Directory.Build.props','workers/fission/tools/csc-shim/csc.bat']) {const raw=await readFile(new URL('../'+file,import.meta.url));snapshots.push({path:file,raw,canonical:Buffer.from(raw.toString('utf8').replaceAll('\r\n','\n')),linkCount:(await lstat(new URL('../'+file,import.meta.url))).nlink});}
+ return {trackedPaths:snapshots.map(s=>s.path),snapshots};
+}
+const closure=sample=>{assert.equal(typeof api.validateBuildInputClosure,'function','missing closed build input validator');return api.validateBuildInputClosure(sample);};
+test('binds every original compiled source and four projects to candidate Git blobs with explicit CRLF equivalence',async()=>{
+ const sample=await closureFixture(),result=closure(sample);assert.equal(result.length,34);assert.equal(result.filter(s=>s.path.endsWith('.csproj')).length,4);
+ for(const item of sample.snapshots) {const record=result.find(r=>r.path===item.path);assert.equal(record.gitBlobSha256,sha256(item.canonical));assert.equal(record.rawSha256,sha256(item.raw));}
+ assert.equal(Object.isFrozen(result),true);assert.equal(result.every(Object.isFrozen),true);
+ for(const item of sample.snapshots)item.raw=Buffer.from(item.canonical.toString().replaceAll('\n','\r\n'));
+ assert.equal(closure(sample).length,34);
+});
+for(const kind of ['missing','untracked','duplicate','changed-raw','changed-helper','changed-project-reference','extra-project','outside-CLI','traversal','changed-props','changed-shim','extra-targets','missing-providers','case-alias'])test('build closure refuses '+kind,async()=>{
+ const sample=await closureFixture(),find=suffix=>sample.snapshots.find(s=>s.path.endsWith(suffix));
+ if(kind==='missing')sample.snapshots.pop();
+ if(kind==='untracked')sample.snapshots.push({path:buildRoots[0]+'/Injected.cs',raw:Buffer.from('class Injected {}'),canonical:Buffer.from('class Injected {}')});
+ if(kind==='duplicate')sample.snapshots.push(sample.snapshots[0]);
+ if(kind==='changed-raw')sample.snapshots[0].raw=Buffer.from('class Injected {}');
+ const change=suffix=>{const item=find(suffix);item.raw=Buffer.from('changed '+item.raw);item.canonical=Buffer.from(item.raw);};
+ if(kind==='changed-helper')change('/EngineJobFiles.cs');
+ if(kind==='changed-project-reference')change('/Fission.UnitTests.csproj');
+ if(kind==='changed-props')change('/Directory.Build.props');
+ if(kind==='changed-shim')change('/csc.bat');
+ if(['extra-project','outside-CLI','traversal','extra-targets','case-alias'].includes(kind)) {
+  const names={'extra-project':buildRoots[0]+'/Nested.csproj','outside-CLI':'workers/fission/src/Fission.Cli/Program.cs',traversal:buildRoots[0]+'/../Foreign.cs','extra-targets':buildRoots[0]+'/Directory.Build.targets','case-alias':sample.snapshots[0].path.toUpperCase()};
+  const path=names[kind];sample.trackedPaths.push(path);sample.snapshots.push({path,raw:Buffer.from('extra'),canonical:Buffer.from('extra')});
+ }
+ if(kind==='missing-providers'){sample.trackedPaths=sample.trackedPaths.filter(p=>!p.includes('Fission.Providers'));sample.snapshots=sample.snapshots.filter(s=>!s.path.includes('Fission.Providers'));}
+ assert.throws(()=>closure(sample),{message:/^CI_SOURCE_MISMATCH$/});
+});
+const commands=()=>{assert.equal(typeof api.buildControlledIoCommands,'function','missing bounded dual-suite command plan');return api.buildControlledIoCommands(facts());};
+test('one public restore and original two filters share new owned artifacts but have distinct result directories and correct logger arguments',()=>{
+ const plan=commands(),root='D:\\a\\orange\\orange\\.dev\\fission-ci\\123\\1',project='D:\\a\\orange\\orange\\workers\\fission\\tests\\Fission.UnitTests\\Fission.UnitTests.csproj';
+ assert.equal(plan.restore.args[0],'restore');assert.equal(plan.restore.args[1],project);assert.ok(plan.restore.args.includes('--configfile'));assert.ok(plan.restore.args.includes(root+'\\NuGet.config'));
+ assert.deepEqual(plan.suites.map(s=>s.key),['pathPolicy','engineJobFiles']);
+ for(const command of [plan.restore,...plan.suites]) {assert.equal(command.args[command.args.indexOf('--artifacts-path')+1],root+'\\artifacts');assert.equal(Object.isFrozen(command.args),true);}
+ assert.deepEqual(plan.suites.map(s=>s.args[s.args.indexOf('--filter')+1]),['FullyQualifiedName~EnginePathPolicyTests','FullyQualifiedName~EngineJobFilesTests']);
+ assert.deepEqual(plan.suites.map(s=>s.args[s.args.indexOf('--logger')+1]),['trx;LogFileName=path-policy.trx','trx;LogFileName=engine-job-files.trx']);
+ assert.deepEqual(plan.suites.map(s=>s.resultsDirectory),[root+'\\results\\path-policy',root+'\\results\\engine-job-files']);
+ for(const suite of plan.suites) {assert.ok(suite.args.includes('--no-restore'));assert.equal(suite.args[suite.args.indexOf('--results-directory')+1],suite.resultsDirectory);}
+ assert.equal(plan.suites[0].args.includes('--no-build'),false);assert.equal(plan.suites[1].args.includes('--no-build'),true);
+});
+test('command planning keeps context admission mandatory',()=>assert.throws(()=>api.buildControlledIoCommands({...facts(),GITHUB_ACTIONS:'false'}),{message:/^CONTEXT_INVALID$/}));
+test('phase1 runs same-tree native Auth81 and policy92 in addition to existing governance158 without dependency install',async()=>{
+ const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');
+ const command=text.split(/\r?\n/).find(line=>line.trim().startsWith('node --test '));assert.ok(command);
+ for(const file of ['scripts/phase1-isolation.test.mjs','scripts/phase1-admission.test.mjs','apps/desktop/src/flavor.test.mjs','apps/desktop/src/auth-service.test.mjs','packages/openfilm/studio/server/project-access.test.mjs'])assert.ok(command.split(/\s+/).includes(file),file);
+ assert.doesNotMatch(text,/npm install|pnpm install|setup-node|node_modules|stub/i);
+});
+test('Fission workflow retains pinned least-privilege single bounded hosted job while accurately naming controlled IO',async()=>{
+ const text=await readFile(new URL('../.github/workflows/fission-path-policy.yml',import.meta.url),'utf8');
+ assert.match(text,/controlled.*IO/i);assert.match(text,/runs-on: windows-2025/);assert.match(text,/timeout-minutes: 12/);assert.match(text,/actions\/checkout@11d5960a326750d5838078e36cf38b85af677262/);assert.match(text,/persist-credentials: false/);
+ assert.doesNotMatch(text,/upload-artifact|actions\/cache|setup-dotnet|id-token|secrets\.|contents: write|matrix:/i);assert.equal((text.match(/runs-on:/g)||[]).length,1);
+});
+const authPaths=['apps/desktop/src/auth-service.mjs','apps/desktop/src/auth-service.test.mjs','packages/openfilm/studio/server/project-access.mjs','packages/openfilm/studio/server/project-access.test.mjs'];
+async function authFixture() {return Promise.all(authPaths.map(async path=>{const raw=await readFile(new URL('../'+path,import.meta.url));return {path,raw,canonical:Buffer.from(raw.toString('utf8').replaceAll('\r\n','\n'))};}));}
+const authProducer=records=>{assert.equal(typeof api.validateAuthCiProducer,'function','missing same-tree Auth producer proof');return api.validateAuthCiProducer(records);};
+test('Auth proof binds both original implementations and both actual test files without reading real configuration',async()=>{
+ const records=await authFixture(),proof=authProducer(records);assert.equal(proof.length,4);assert.deepEqual(proof.map(p=>p.path).sort(),[...authPaths].sort());assert.equal(Object.isFrozen(proof),true);
+});
+for(const kind of ['missing','duplicate','raw-change','canonical-change','foreign'])test('Auth producer rejects '+kind,async()=>{
+ const records=await authFixture();if(kind==='missing')records.pop();if(kind==='duplicate')records.push(records[0]);if(kind==='raw-change')records[0].raw=Buffer.from('changed');if(kind==='canonical-change'){records[0].canonical=Buffer.from('changed');records[0].raw=Buffer.from('changed');}if(kind==='foreign')records[0].path='apps/desktop/src/foreign.mjs';assert.throws(()=>authProducer(records),{message:/^CI_SOURCE_MISMATCH$/});
+});
+const approvedPackages=['Microsoft.CodeCoverage/17.14.1','Microsoft.NET.Test.Sdk/17.14.1','Microsoft.TestPlatform.ObjectModel/17.14.1','Microsoft.TestPlatform.TestHost/17.14.1','Newtonsoft.Json/13.0.3','System.CodeDom/10.0.14','System.Management/10.0.14','coverlet.collector/6.0.4','xunit.abstractions/2.0.3','xunit.analyzers/1.18.0','xunit.assert/2.9.3','xunit.core/2.9.3','xunit.extensibility.core/2.9.3','xunit.extensibility.execution/2.9.3','xunit.runner.visualstudio/3.1.4','xunit/2.9.3'];
+const packageProof=names=>{assert.equal(typeof api.verifyPublicPackageClosure,'function','missing public package closure proof');return api.verifyPublicPackageClosure(names);};
+test('public restore accepts only the recorded original 16-package graph including Providers dependencies',()=>assert.deepEqual([...packageProof(approvedPackages)],[...approvedPackages].sort()));
+for(const kind of ['missing','extra','duplicate','other-version','private-feed-text'])test('public restore refuses package graph '+kind,()=>{
+ const names=[...approvedPackages];if(kind==='missing')names.pop();if(kind==='extra')names.push('Foreign/1.0.0');if(kind==='duplicate')names.push(names[0]);if(kind==='other-version')names[0]='Microsoft.CodeCoverage/17.14.2';if(kind==='private-feed-text')names[0]='https://private.invalid/PRIVATE';assert.throws(()=>packageProof(names),{message:/^CI_SOURCE_MISMATCH$/});
+});
+test('phase1 producer step validates same-current-head original Auth and policy blobs before executing the full pure test command',async()=>{
+ const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');assert.match(text,/validateAuthCiProducer/);assert.match(text,/GITHUB_SHA/);assert.ok(text.indexOf('validateAuthCiProducer')<text.indexOf('node --test '));assert.match(text,/expectedCases:331/);assert.match(text,/persist-credentials: false/);
+});
+for(const kind of ['bom-raw','bare-cr','invalid-utf8','generated-extra'])test('source closure preserves byte-level refusal '+kind,async()=>{
+ const sample=await closureFixture();
+ if(kind==='bom-raw')sample.snapshots[0].raw=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),sample.snapshots[0].raw]);
+ if(kind==='bare-cr')sample.snapshots[0].raw=Buffer.from(sample.snapshots[0].canonical.toString().replaceAll('\n','\r'));
+ if(kind==='invalid-utf8')sample.snapshots[0].raw=Buffer.from([0xff]);
+ if(kind==='generated-extra')sample.snapshots.push({path:buildRoots[0]+'/obj/Injected.g.cs',raw:Buffer.from('class Injected {}'),canonical:Buffer.from('class Injected {}')});
+ assert.throws(()=>closure(sample),{message:/^CI_SOURCE_MISMATCH$/});
+});
+test('closed build refuses non-single-link source metadata before any restore',async()=>{
+ const sample=await closureFixture();sample.snapshots[0].linkCount=2;assert.throws(()=>closure(sample),{message:/^CI_SOURCE_MISMATCH$/});
 });

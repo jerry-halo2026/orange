@@ -1,4 +1,4 @@
-name: Fission pure Windows path policy
+name: Fission Windows path policy and controlled IO
 on:
   push:
     branches: [codex/t05-path-policy]
@@ -35,6 +35,6 @@ jobs:
       - name: Test only pure result and context validation
         shell: pwsh
         run: node --test --test-reporter=tap scripts/fission-path-ci.test.mjs
-      - name: Verify preinstalled tools and run only frozen original pure path cases
+      - name: Verify original closed graph and run frozen path and controlled IO cases
         shell: pwsh
         run: node scripts/fission-path-ci.mjs

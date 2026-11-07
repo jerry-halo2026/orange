@@ -1,0 +1,25 @@
+{
+  "name": "@orange/desktop",
+  "productName": "橙子创作中心",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "build": "tsc --noEmit --allowImportingTsExtensions && vite build --mode main && vite build --mode preload && vite build --mode renderer"
+  },
+  "dependencies": {
+    "@orange/contracts": "workspace:*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "electron": "45.2.3",
+    "playwright-core": "1.64.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.6"
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:orange:contracts:K01:project-subtitle-text-replace:v1",
+  "title": "K01.project.subtitle_text.replace.v1",
+  "description": "Replace the text of one existing subtitle in an existing project. Validate original JSON bytes with the K01 wire validator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "commandName",
+    "commandId",
+    "idempotencyKey",
+    "subjectRef",
+    "expectedRevision",
+    "payload"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "commandName": {
+      "type": "string",
+      "const": "project.subtitle_text.replace"
+    },
+    "commandId": {
+      "$ref": "#/$defs/uuidV4"
+    },
+    "idempotencyKey": {
+      "$ref": "#/$defs/uuidV4"
+    },
+    "subjectRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "project"
+        },
+        "id": {
+          "$ref": "#/$defs/uuidV4"
+        }
+      }
+    },
+    "expectedRevision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740990
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subtitleId",
+        "text"
+      ],
+      "properties": {
+        "subtitleId": {
+          "$ref": "#/$defs/uuidV4"
+        },
+        "text": {
+          "$ref": "#/$defs/subtitleText"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "uuidV4": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "subtitleText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^[^\\u0000-\\u0009\\u000B-\\u001F\\u007F-\\u009F\\uD800-\\uDFFF]+$(?![\\s\\S])"
+    },
+    "saveResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commandId",
+        "projectRevisionId",
+        "revision"
+      ],
+      "properties": {
+        "commandId": {
+          "$ref": "#/$defs/uuidV4"
+        },
+        "projectRevisionId": {
+          "$ref": "#/$defs/uuidV4"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "path"
+          ],
+          "properties": {
+            "code": {
+              "const": "CONTRACT_INVALID"
+            },
+            "path": {
+              "enum": [
+                "",
+                "/schemaVersion",
+                "/commandName",
+                "/commandId",
+                "/idempotencyKey",
+                "/subjectRef",
+                "/expectedRevision",
+                "/payload",
+                "/actorUserId",
+                "/authorizationContextRef",
+                "/ownerUserId",
+                "/groupId",
+                "/externalAccountKey",
+                "/requestId",
+                "/traceId",
+                "/occurredAt",
+                "/jobId",
+                "/attemptId",
+                "/eventName",
+                "/eventId",
+                "/subjectRef/type",
+                "/subjectRef/id",
+                "/subjectRef/actorUserId",
+                "/subjectRef/authorizationContextRef",
+                "/subjectRef/ownerUserId",
+                "/subjectRef/groupId",
+                "/subjectRef/externalAccountKey",
+                "/subjectRef/requestId",
+                "/subjectRef/traceId",
+                "/subjectRef/occurredAt",
+                "/subjectRef/jobId",
+                "/subjectRef/attemptId",
+                "/subjectRef/eventName",
+                "/subjectRef/eventId",
+                "/payload/subtitleId",
+                "/payload/text",
+                "/payload/actorUserId",
+                "/payload/authorizationContextRef",
+                "/payload/ownerUserId",
+                "/payload/groupId",
+                "/payload/externalAccountKey",
+                "/payload/requestId",
+                "/payload/traceId",
+                "/payload/occurredAt",
+                "/payload/jobId",
+                "/payload/attemptId",
+                "/payload/eventName",
+                "/payload/eventId"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "path"
+          ],
+          "properties": {
+            "code": {
+              "const": "UNSUPPORTED_VERSION"
+            },
+            "path": {
+              "const": "/schemaVersion"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "path"
+          ],
+          "properties": {
+            "code": {
+              "const": "ACCESS_DENIED"
+            },
+            "path": {
+              "const": ""
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "path"
+          ],
+          "properties": {
+            "code": {
+              "const": "IDEMPOTENCY_CONFLICT"
+            },
+            "path": {
+              "const": "/idempotencyKey"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "path"
+          ],
+          "properties": {
+            "code": {
+              "const": "OUTCOME_UNKNOWN"
+            },
+            "path": {
+              "const": ""
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "path",
+            "currentRevision"
+          ],
+          "properties": {
+            "code": {
+              "const": "REVISION_CONFLICT"
+            },
+            "path": {
+              "const": "/expectedRevision"
+            },
+            "currentRevision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          }
+        }
+      ]
+    }
+  },
+  "x-orange-k01": {
+    "wire": "strict-utf8-json-no-bom",
+    "integerToken": "positive-decimal",
+    "schemaVersionTokenMaximum": 9007199254740991,
+    "forbiddenFields": [
+      "actorUserId",
+      "authorizationContextRef",
+      "ownerUserId",
+      "groupId",
+      "externalAccountKey",
+      "requestId",
+      "traceId",
+      "occurredAt",
+      "jobId",
+      "attemptId",
+      "eventName",
+      "eventId"
+    ],
+    "digestDomain": "orange:k01:project.subtitle_text.replace:v1"
+  }
+}

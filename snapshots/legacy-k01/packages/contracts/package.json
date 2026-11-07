@@ -1,0 +1,14 @@
+{
+  "name": "@orange/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/validate.ts"
+  },
+  "scripts": {
+    "contracts:generate": "node ../../tools/contracts/generate.mjs",
+    "contracts:check": "node ../../tools/contracts/generate.mjs --check",
+    "contracts:test": "node ../../tests/contracts/ts/contracts.test.ts"
+  }
+}

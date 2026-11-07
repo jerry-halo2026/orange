@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "plan": "2026-11-05-orange-t01-t02-plan",
+  "approvedScope": "Ethan approved A–F local implementation; original main/index/archive unchanged",
+  "subjectCandidate": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "evidence": "../evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "id": "C",
+  "workPackage": "T01.gate",
+  "state": "actual_candidate_gate_and_K07_readonly_proof_verified_N5a_not_issued",
+  "head": "ebcc2cf80da72b2d5471e11ba84b13786a45a28f",
+  "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t01-gate/orange",
+  "dependencies": [
+    "A"
+  ],
+  "executor": {
+    "agent": "/root/gate_research",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "scope": "G4/G5; historical C author retained in phases and Git mappings"
+  },
+  "review": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/orange-g5-review-ebcc2cf.md",
+    "sha256": "677b515b450cf64c30592e4fa0ca55bc9914e17822b5dcf568b15efe5469bc4c",
+    "reviewer": "/root/gate_review",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "specs": "approved",
+    "quality": "approved"
+  },
+  "integratedCommits": [
+    {
+      "original": "e50dc683f172570f8f6088e1f2bf9b6ba957512f",
+      "integrated": "404ffdf787dfcdfb39b2af500c6357db3fb63d8f"
+    },
+    {
+      "original": "2dba829176e6d38569b4c5d63f8d11ba6616b253",
+      "integrated": "d3fef3888bec9ba56b251a49920acb124f6577e5"
+    },
+    {
+      "original": "084019b26963cee280c2dc8b83fdb6a4bd9d4a2a",
+      "integrated": "bbfa0ebf29b77575fccc4e05b0bf10a5dd370b8e",
+      "parent": "d1759a63e8dc9405daf9cc0caa288fefca4a453a",
+      "rawDeltaSha256": "4f95a160e8bbd7fb58ccd3870f50fa796659ec95e4f0430a3ebab694d7038bb9",
+      "output": "[codex/orange-g2-source bbfa0eb] Verify the frozen K07 slice for read-only admission\n Date: Fri Nov 6 02:26:57 2026 +0800\n 3 files changed, 284 insertions(+), 5 deletions(-)"
+    },
+    {
+      "original": "ebcc2cf80da72b2d5471e11ba84b13786a45a28f",
+      "integrated": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+      "parent": "bbfa0ebf29b77575fccc4e05b0bf10a5dd370b8e",
+      "rawDeltaSha256": "ce7dfa5019fcf60280e78a7345c815c1ed2176814870193dd91f6235f235952e",
+      "output": "[codex/orange-g2-source 9a0d068] Reject Git aliases shadowing frozen K07 paths\n Date: Fri Nov 6 02:40:31 2026 +0800\n 3 files changed, 82 insertions(+), 9 deletions(-)"
+    }
+  ],
+  "tests": {
+    "governance": {
+      "pass": 93,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5-fix-author/g5-batch-results.json",
+      "sha256": "76628a8914bc3ce2e3f2dc0a8693f1183e152053cc35a37dd190920cc346fcf3"
+    },
+    "sameHeadCandidate": {
+      "checks": [
+        "write-set",
+        "imports",
+        "format-types",
+        "dependency-audit",
+        "secret-scan",
+        "import-build-graph",
+        "windows",
+        "contracts",
+        "independent-review"
+      ],
+      "windows": {
+        "pass": 9,
+        "skip": 0,
+        "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/windows-tap.stdout",
+        "sha256": "11ef356fc5e6440e8b531913b5ec3d65b63b25ec3307f8b03ace0ecca80b09b9"
+      },
+      "typescript": {
+        "pass": 125,
+        "skip": 0,
+        "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/contracts-ts-tap.stdout",
+        "sha256": "bfc5b3b76965fa2bf84cfa0a4458bced842e4cba4cf6f54fc219f753821dbfa2"
+      },
+      "dotnet": {
+        "pass": 114,
+        "skip": 0,
+        "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/results/orange-k07.trx",
+        "sha256": "a14a7b7d093d4ca21122ddd0aecdb0dd2db42b3e6bce540a0e82277c99b3ece8"
+      },
+      "sharedFixtureIds": 114,
+      "secret": {
+        "files": 60,
+        "scans": 120,
+        "findings": 0,
+        "unscanned": 0
+      },
+      "audit": {
+        "npm": 61,
+        "nuget": 13,
+        "findings": 0,
+        "offline": true
+      },
+      "raw": {
+        "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5fc-HKzEo1/raw.stdout",
+        "sha256": "9af62d377c1fdaa376f5f28ab7e7e0ab5814a339517f076e119672775c9af64e"
+      },
+      "verified": {
+        "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5fc-HKzEo1/verified.json",
+        "sha256": "6a6c3e36c268cfe74905de1d44450a87c9211066d5bde187255cd3247d7517c5"
+      }
+    },
+    "actualG5ReadOnlyReplay": {
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5-real-replay-CEjvpt/verified.json",
+      "sha256": "a516a64f6a7e66778d1500a61bc703457bdb29fbb0e2664e73ab62c45de1df6f"
+    },
+    "integratedSameHeadReadOnlyReplay": {
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5-same-head-bg90pX/verified.json",
+      "sha256": "9900f689c45e40adf2c58c6dd6ae25745b21f9a96a5bcc7265e212520dc398b3"
+    }
+  },
+  "open": [
+    "N5a actual task-level evidence and E21 runtime"
+  ],
+  "gate": {
+    "exitCode": 0,
+    "admitted": true,
+    "reason": "CANDIDATE_CHECKS_PASSED",
+    "scope": "local candidate",
+    "head": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c"
+  },
+  "allowedWriteSet": [
+    "docs/adr/0002-candidate-gate.md",
+    "tests/governance/admission.test.mjs",
+    "tests/governance/candidate.test.mjs",
+    "tests/governance/imports.test.mjs",
+    "tools/ci/check-admission.mjs",
+    "tools/ci/check-candidate.mjs",
+    "tools/ci/check-imports.mjs"
+  ],
+  "branch": "codex/orange-t01-gate",
+  "baselineCommit": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "workingBaselineCommit": "ae726720703a7223192274d75314684ecb96797b",
+  "phases": [
+    {
+      "id": "C.source-preflight",
+      "base": "405b45f322e29e097dca57efef6c0be90e95f699",
+      "head": "ae726720703a7223192274d75314684ecb96797b",
+      "dependsOn": [
+        "A",
+        "B approved TS5.9.3 artifact for AST mode only"
+      ]
+    },
+    {
+      "id": "C.G1",
+      "base": "ae726720703a7223192274d75314684ecb96797b",
+      "head": "2dba829176e6d38569b4c5d63f8d11ba6616b253",
+      "dependsOn": [
+        "A",
+        "B renderer profile and approved Vite/renderer dependencies"
+      ],
+      "doesNotRequire": [
+        "D K07",
+        "K01",
+        "Studio",
+        "M1"
+      ]
+    },
+    {
+      "id": "C.remaining-gate-and-N5a",
+      "head": null,
+      "dependsOn": [
+        "B real build and Windows test execution",
+        "D actual consumed K07 slice and dual-language tests",
+        "independent task/worktree/resource/control evidence"
+      ]
+    },
+    {
+      "id": "C.G2–G4",
+      "head": "c72932b5bb2ac626f9ee569ec1e5745bd140945b",
+      "priorIntegrated": "d1759a63e8dc9405daf9cc0caa288fefca4a453a"
+    },
+    {
+      "id": "C.G5",
+      "head": "ebcc2cf80da72b2d5471e11ba84b13786a45a28f",
+      "originalFixParent": "084019b26963cee280c2dc8b83fdb6a4bd9d4a2a",
+      "review": {
+        "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/orange-g5-review-ebcc2cf.md",
+        "sha256": "677b515b450cf64c30592e4fa0ca55bc9914e17822b5dcf568b15efe5469bc4c",
+        "reviewer": "/root/gate_review",
+        "model": "gpt-6.1-sol",
+        "effort": "high",
+        "specs": "approved",
+        "quality": "approved"
+      }
+    }
+  ],
+  "admission": {
+    "exitCode": 1,
+    "admitted": false,
+    "reason": "N5A_UNVERIFIED",
+    "eligibility": "read-only-verified",
+    "head": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+    "runner": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+    "reviewedRunner": "ebcc2cf80da72b2d5471e11ba84b13786a45a28f",
+    "runnerEntrySha256": "b9a9da7df26c06c3790a401ae402529123bca4ca8d188bf2bd59d6d5be299010"
+  }
+}

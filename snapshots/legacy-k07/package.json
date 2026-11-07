@@ -1,0 +1,16 @@
+{
+  "name": "orange",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": "24.22.1",
+    "pnpm": "9.15.9"
+  },
+  "scripts": {
+    "build:shell": "pnpm --filter @orange/desktop run build",
+    "test:shell": "node --test tests/windows/shell-smoke.test.mjs",
+    "test": "pnpm run test:shell",
+    "contracts:check": "pnpm --filter @orange/contracts run contracts:check",
+    "contracts:test": "pnpm --filter @orange/contracts run contracts:test"
+  }
+}

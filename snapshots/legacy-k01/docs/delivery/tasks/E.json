@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "plan": "2026-11-05-orange-t01-t02-plan",
+  "approvedScope": "Ethan approved A–F local implementation; original main/index/archive unchanged",
+  "subjectCandidate": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "evidence": "../evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "id": "E",
+  "workPackage": "T02.Studio",
+  "state": "awaiting_separate_controlled_source_reference_approval",
+  "head": null,
+  "dependencies": [
+    "A",
+    "B",
+    "approved controlled upstream source"
+  ],
+  "executor": null,
+  "fixedResearchCommit": "2e18a4bdf54647b2ece3c0975a6f9573720c7821",
+  "implemented": false,
+  "tested": false,
+  "open": [
+    "Ethan authorization for reproducible local controlled OpenFilm reference",
+    "Real isolated Studio mount and its required tests; .research remains read-only"
+  ],
+  "allowedWriteSet": [
+    ".gitmodules",
+    "vendor/openfilm",
+    "packages/film-adapter/package.json",
+    "packages/film-adapter/src/renderer.tsx",
+    "packages/film-adapter/src/node.ts",
+    "apps/desktop/renderer/features/creation/StudioProbe.tsx",
+    "tests/windows/studio-smoke.test.mjs",
+    "docs/adr/0003-film-entry.md",
+    "docs/evidence/film-upstream.md"
+  ],
+  "writeSetState": "proposed; source-reference approval outstanding",
+  "blockedOn": {
+    "authority": "Ethan approval of reproducible controlled local OpenFilm source not received; no integration"
+  },
+  "integration": null,
+  "tests": null,
+  "realUse": false
+}

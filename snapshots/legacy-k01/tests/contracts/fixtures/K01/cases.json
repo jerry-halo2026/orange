@@ -1,0 +1,1068 @@
+{
+  "status": "proposed_for_Ethan_N0_only",
+  "fixtureVersion": 1,
+  "subject": "K01 project.subtitle_text.replace with single K04 text-replace semantics",
+  "baseCandidate": "8bc9a3bc817da362badee19884d716d9ef630c4d",
+  "note": "Synthetic fixture values; writes is expected new commits, not persistence evidence.",
+  "cases": [
+    {
+      "id": "owner_no_cloud_commits_once",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "result": {
+          "commandId": "33333333-3333-4333-8333-333333333333",
+          "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+          "revision": 8
+        },
+        "writes": 1
+      }
+    },
+    {
+      "id": "verified_owner_duplicate_replays_original_at_new_head",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"text\":\"你好，Ethan！\",\"subtitleId\":\"22222222-2222-4222-8222-222222222222\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777",
+          "requestId": "99999999-9999-4999-8999-999999999999"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "result": {
+          "commandId": "33333333-3333-4333-8333-333333333333",
+          "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+          "revision": 8
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "new_key_stale_revision",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"idempotencyKey\":\"88888888-8888-4888-8888-888888888888\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "REVISION_CONFLICT",
+          "path": "/expectedRevision",
+          "currentRevision": 8
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "same_key_changed_text",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"内容已换\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "path": "/idempotencyKey"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "same_key_changed_expected_revision",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":8,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "path": "/idempotencyKey"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "same_key_different_command_id",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"88888888-8888-4888-8888-888888888888\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "path": "/idempotencyKey"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "invalid_session_cannot_replay",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": false,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "ACCESS_DENIED",
+          "path": ""
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "other_owner_same_deny_even_with_stored_receipt",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "66666666-6666-4666-8666-666666666666",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "ACCESS_DENIED",
+          "path": ""
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "missing_project_same_deny",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": null,
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "ACCESS_DENIED",
+          "path": ""
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "wire_rejects_actorUserId",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"actorUserId\":\"66666666-6666-4666-8666-666666666666\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/actorUserId"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "wire_rejects_authorizationContextRef",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"authorizationContextRef\":\"66666666-6666-4666-8666-666666666666\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/authorizationContextRef"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "wire_rejects_ownerUserId",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"ownerUserId\":\"66666666-6666-4666-8666-666666666666\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/ownerUserId"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "wire_rejects_groupId",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"groupId\":\"66666666-6666-4666-8666-666666666666\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/groupId"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "wire_rejects_externalAccountKey",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"externalAccountKey\":\"66666666-6666-4666-8666-666666666666\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/externalAccountKey"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "wire_rejects_eventName",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"eventName\":\"66666666-6666-4666-8666-666666666666\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/eventName"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "unsupported_version",
+      "input": {
+        "wireJson": "{\"schemaVersion\":2,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "UNSUPPORTED_VERSION",
+          "path": "/schemaVersion"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "non_integer_wire_token",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7.0,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/expectedRevision"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "missing_text",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/text"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "null_text",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":null}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/text"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "empty_text",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/text"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "same_text_no_revision",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/text"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "no_such_subtitle_no_insert",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"88888888-8888-4888-8888-888888888888\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/subtitleId"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "decoded_duplicate_text_key",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"t\\u0065xt\":\"different\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/text"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "unpaired_surrogate",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"\\ud800\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/payload/text"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "revision_over_update_limit",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":9007199254740991,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/expectedRevision"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "durable_outcome_unknown_no_new_write",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "outcome": "unknown",
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "OUTCOME_UNKNOWN",
+          "path": ""
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "existing_command_id_cannot_rebind_to_new_key_at_current_revision",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"88888888-8888-4888-8888-888888888888\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":8,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"新的字幕文本\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 8,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            }
+          },
+          "storedOutcome": {
+            "commandId": "33333333-3333-4333-8333-333333333333",
+            "canonicalInput": {
+              "expectedRevision": 7,
+              "subtitleId": "22222222-2222-4222-8222-222222222222",
+              "text": "你好，Ethan！"
+            },
+            "result": {
+              "commandId": "33333333-3333-4333-8333-333333333333",
+              "projectRevisionId": "77777777-7777-4777-8777-777777777777",
+              "revision": 8
+            },
+            "idempotencyKey": "44444444-4444-4444-8444-444444444444"
+          },
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777",
+          "requestId": "99999999-9999-4999-8999-999999999999"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "path": "/idempotencyKey"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "forbidden_field_precedence_is_not_wire_order",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"eventName\":\"fake\",\"ownerUserId\":\"55555555-5555-4555-8555-555555555555\",\"actorUserId\":\"55555555-5555-4555-8555-555555555555\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": "/actorUserId"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "unknown_key_name_is_not_echoed",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"fake-secret-label\":\"not a credential\"}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": ""
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "unknown_duplicate_name_is_not_echoed",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"fake-secret-label\":1,\"fake-secret-label\":2}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_INVALID",
+          "path": ""
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "unsupported_version_precedes_unknown_and_forbidden_fields",
+      "input": {
+        "wireJson": "{\"schemaVersion\":2,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":7,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"},\"actorUserId\":\"55555555-5555-4555-8555-555555555555\",\"unknown-extra\":true}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "UNSUPPORTED_VERSION",
+          "path": "/schemaVersion"
+        },
+        "writes": 0
+      }
+    },
+    {
+      "id": "new_key_future_revision",
+      "input": {
+        "wireJson": "{\"schemaVersion\":1,\"commandName\":\"project.subtitle_text.replace\",\"commandId\":\"33333333-3333-4333-8333-333333333333\",\"idempotencyKey\":\"44444444-4444-4444-8444-444444444444\",\"subjectRef\":{\"type\":\"project\",\"id\":\"11111111-1111-4111-8111-111111111111\"},\"expectedRevision\":8,\"payload\":{\"subtitleId\":\"22222222-2222-4222-8222-222222222222\",\"text\":\"你好，Ethan！\"}}",
+        "trustedFixtureState": {
+          "actorUserId": "55555555-5555-4555-8555-555555555555",
+          "verifiedLocalEditSession": true,
+          "cloudBinding": false,
+          "project": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "ownerUserId": "55555555-5555-4555-8555-555555555555",
+            "headRevision": 7,
+            "subtitle": {
+              "id": "22222222-2222-4222-8222-222222222222",
+              "text": "你好！"
+            }
+          },
+          "storedOutcome": null,
+          "simulatedAllocatedProjectRevisionId": "77777777-7777-4777-8777-777777777777"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "REVISION_CONFLICT",
+          "path": "/expectedRevision",
+          "currentRevision": 7
+        },
+        "writes": 0
+      }
+    }
+  ],
+  "draftRevision": 3
+}

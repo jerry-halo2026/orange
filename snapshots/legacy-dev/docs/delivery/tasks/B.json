@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "plan": "2026-11-05-orange-t01-t02-plan",
+  "approvedScope": "Ethan approved A–F local implementation; original main/index/archive unchanged",
+  "subjectCandidate": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "evidence": "../evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "id": "B",
+  "workPackage": "T01.workspace-shell/K07 local live adapter",
+  "state": "integrated_exact_windows_and_k07_adapter_not_M0",
+  "head": "e6ad2b9e3c1abdba93d1057cb2157b3c71173a76",
+  "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07-root/orange",
+  "dependencies": [
+    "A",
+    "D:K07.desktop-startup.v1 (live-adapter phase only)"
+  ],
+  "executor": {
+    "agent": "/root/t01_shell",
+    "model": "gpt-6.1-sol",
+    "effort": "medium"
+  },
+  "review": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/orange-b-windows-runtime-review-e6ad2b9.md",
+    "sha256": "139e654842308c08b83695057300044151a62c9aef4b8909e61931088e5a662e",
+    "reviewer": "/root/shell_review",
+    "model": "gpt-6.1-sol",
+    "effort": "high"
+  },
+  "integratedCommits": [
+    {
+      "original": "1f4cb60addc80972779f05f5507e7430693f93e6",
+      "integrated": "0b14190634f335909e293a232914bab0de82210d"
+    },
+    {
+      "original": "01d9da616b00ea6b41f09fac653b2a396a0abdce",
+      "integrated": "cc56a6a32ca28db7918afcd2fbec14fbd02777a6"
+    }
+  ],
+  "tests": {
+    "windows": {
+      "pass": 9,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/windows-tap.stdout",
+      "sha256": "11ef356fc5e6440e8b531913b5ec3d65b63b25ec3307f8b03ace0ecca80b09b9"
+    },
+    "subject": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+    "skip": 0
+  },
+  "open": [
+    "Not first-party authentication or business workspace",
+    "Formal visual golden approval not issued",
+    "Studio not integrated"
+  ],
+  "allowedWriteSet": [
+    ".gitignore",
+    "apps/desktop/main/index.ts",
+    "apps/desktop/package.json",
+    "apps/desktop/preload/index.ts",
+    "apps/desktop/renderer/App.tsx",
+    "apps/desktop/renderer/index.html",
+    "apps/desktop/renderer/main.tsx",
+    "apps/desktop/tsconfig.json",
+    "apps/desktop/vite.config.ts",
+    "docs/adr/0001-m0-local-toolchain.md",
+    "docs/evidence/t01-visual-map.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "tests/windows/shell-smoke.test.mjs",
+    "tsconfig.base.json"
+  ],
+  "phases": [
+    {
+      "id": "B.shell",
+      "head": "0dc626daac1907bb7dc4685e972150b9eeb57b4a",
+      "dependsOn": [
+        "A"
+      ],
+      "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t01-shell/orange",
+      "branch": "codex/orange-t01-shell",
+      "base": "405b45f322e29e097dca57efef6c0be90e95f699"
+    },
+    {
+      "id": "B.K07-root-entry",
+      "head": "8bd12582144e6e734f406c45df20c9a3e336470c",
+      "dependsOn": [
+        "D:K07 machine 6b075720"
+      ],
+      "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07-root/orange",
+      "branch": "codex/orange-t02-k07-root",
+      "base": "6b0757200affe0635f853b9099984c47bc6a5421",
+      "executor": {
+        "agent": "/root/t01_shell",
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      }
+    },
+    {
+      "id": "B.live-adapter",
+      "head": "01d9da616b00ea6b41f09fac653b2a396a0abdce",
+      "dependsOn": [
+        "D:K07.desktop-startup.v1 consumer_ready"
+      ],
+      "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07-root/orange",
+      "branch": "codex/orange-t02-k07-root",
+      "base": "18e29f76ea768776acbde2e595e1964c165a35ff"
+    }
+  ],
+  "branch": "codex/orange-t02-k07-root",
+  "baselineCommit": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "workingBaselineCommit": "18e29f76ea768776acbde2e595e1964c165a35ff",
+  "integration": "6b03f7627fc7a76971c6561f7269a765a0b73810"
+}

@@ -1,0 +1,340 @@
+{
+  "date": "2026-11-07",
+  "purpose": "read-only source snapshots; NOT product integration; legacy raw history is private and recoverable",
+  "branch": "codex/archive-consolidated-20261107",
+  "sourceSnapshots": [
+    {
+      "name": "current-openfilm",
+      "originalCommit": "e6ed48764320c537778f052b3083a1f935125771",
+      "originalTree": "9da2e5c26e7e104335e20b2a37a3777e610d08e7",
+      "publishedTree": "9da2e5c26e7e104335e20b2a37a3777e610d08e7",
+      "entries": 2848,
+      "redactions": []
+    },
+    {
+      "name": "legacy-dev",
+      "originalCommit": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+      "originalTree": "a0f340b1fe0ebc8b68dd17e65060265bc9d9f1f2",
+      "publishedTree": "a8ab75248e40745d541c535ee408d06d2d786092",
+      "entries": 87,
+      "redactions": [
+        {
+          "path": "docs/06_橙子生产级重构PRD.md",
+          "originalBlob": "3375b8b02c554565570f2d99ff12727ff0d7f6ff",
+          "publishedBlob": "2e1848b3d6b9fa171ab0e3de6a34b64e0fbc05e5",
+          "privateURLsRemoved": 1
+        },
+        {
+          "path": "docs/discovery/00_讨论基线与决策台账.md",
+          "originalBlob": "46ee2ea79106b614b5ee031cc879b59a201a71b7",
+          "publishedBlob": "bc455f67f5727de18f8d3bf111c70790d9d24dd3",
+          "privateURLsRemoved": 2
+        },
+        {
+          "path": "docs/discovery/04_智尚接口能力与系统协同.md",
+          "originalBlob": "c3d5cb932c713ded7c45a07b4857b13b6d1c8725",
+          "publishedBlob": "553f4098c9b6fd334478d24ed0accd5bd2b46468",
+          "privateURLsRemoved": 13
+        },
+        {
+          "path": "docs/discovery/05_智尚只读验证与身份边界.md",
+          "originalBlob": "84570f22574118aaa0ebc00333478e081bc7be3f",
+          "publishedBlob": "0f3dcc657a691f27cc1a4410930d900576f1449c",
+          "privateURLsRemoved": 1
+        }
+      ]
+    },
+    {
+      "name": "legacy-k01",
+      "originalCommit": "6e8c3133a7a6cd9c3e0b6bf8509e106bec32ddc4",
+      "originalTree": "50cf60f47a9228bcde4601aa3e57b8aec5a4871b",
+      "publishedTree": "e14b2cba0d3cc187c2f1f40b1f71ba44e58238d0",
+      "entries": 70,
+      "redactions": [
+        {
+          "path": "docs/06_橙子生产级重构PRD.md",
+          "originalBlob": "3375b8b02c554565570f2d99ff12727ff0d7f6ff",
+          "publishedBlob": "2e1848b3d6b9fa171ab0e3de6a34b64e0fbc05e5",
+          "privateURLsRemoved": 1
+        },
+        {
+          "path": "docs/discovery/00_讨论基线与决策台账.md",
+          "originalBlob": "46ee2ea79106b614b5ee031cc879b59a201a71b7",
+          "publishedBlob": "bc455f67f5727de18f8d3bf111c70790d9d24dd3",
+          "privateURLsRemoved": 2
+        },
+        {
+          "path": "docs/discovery/04_智尚接口能力与系统协同.md",
+          "originalBlob": "c3d5cb932c713ded7c45a07b4857b13b6d1c8725",
+          "publishedBlob": "553f4098c9b6fd334478d24ed0accd5bd2b46468",
+          "privateURLsRemoved": 13
+        },
+        {
+          "path": "docs/discovery/05_智尚只读验证与身份边界.md",
+          "originalBlob": "84570f22574118aaa0ebc00333478e081bc7be3f",
+          "publishedBlob": "0f3dcc657a691f27cc1a4410930d900576f1449c",
+          "privateURLsRemoved": 1
+        }
+      ]
+    },
+    {
+      "name": "legacy-gate",
+      "originalCommit": "ebcc2cf80da72b2d5471e11ba84b13786a45a28f",
+      "originalTree": "d1f2e67b2b31eba364b8761e235963507e604114",
+      "publishedTree": "8d781f0405a820a318bdc258880b177ab525b106",
+      "entries": 25,
+      "redactions": [
+        {
+          "path": "docs/06_橙子生产级重构PRD.md",
+          "originalBlob": "3375b8b02c554565570f2d99ff12727ff0d7f6ff",
+          "publishedBlob": "2e1848b3d6b9fa171ab0e3de6a34b64e0fbc05e5",
+          "privateURLsRemoved": 1
+        },
+        {
+          "path": "docs/discovery/00_讨论基线与决策台账.md",
+          "originalBlob": "46ee2ea79106b614b5ee031cc879b59a201a71b7",
+          "publishedBlob": "bc455f67f5727de18f8d3bf111c70790d9d24dd3",
+          "privateURLsRemoved": 2
+        },
+        {
+          "path": "docs/discovery/04_智尚接口能力与系统协同.md",
+          "originalBlob": "c3d5cb932c713ded7c45a07b4857b13b6d1c8725",
+          "publishedBlob": "553f4098c9b6fd334478d24ed0accd5bd2b46468",
+          "privateURLsRemoved": 13
+        },
+        {
+          "path": "docs/discovery/05_智尚只读验证与身份边界.md",
+          "originalBlob": "84570f22574118aaa0ebc00333478e081bc7be3f",
+          "publishedBlob": "0f3dcc657a691f27cc1a4410930d900576f1449c",
+          "privateURLsRemoved": 1
+        }
+      ]
+    },
+    {
+      "name": "legacy-k07",
+      "originalCommit": "e6ad2b9e3c1abdba93d1057cb2157b3c71173a76",
+      "originalTree": "1274ad87b01119f4625d99209f2cde65a02b119b",
+      "publishedTree": "80b87b0effc9b9ea6b081ee47ea4089cf384b5c4",
+      "entries": 45,
+      "redactions": [
+        {
+          "path": "docs/06_橙子生产级重构PRD.md",
+          "originalBlob": "3375b8b02c554565570f2d99ff12727ff0d7f6ff",
+          "publishedBlob": "2e1848b3d6b9fa171ab0e3de6a34b64e0fbc05e5",
+          "privateURLsRemoved": 1
+        },
+        {
+          "path": "docs/discovery/00_讨论基线与决策台账.md",
+          "originalBlob": "46ee2ea79106b614b5ee031cc879b59a201a71b7",
+          "publishedBlob": "bc455f67f5727de18f8d3bf111c70790d9d24dd3",
+          "privateURLsRemoved": 2
+        },
+        {
+          "path": "docs/discovery/04_智尚接口能力与系统协同.md",
+          "originalBlob": "c3d5cb932c713ded7c45a07b4857b13b6d1c8725",
+          "publishedBlob": "553f4098c9b6fd334478d24ed0accd5bd2b46468",
+          "privateURLsRemoved": 13
+        },
+        {
+          "path": "docs/discovery/05_智尚只读验证与身份边界.md",
+          "originalBlob": "84570f22574118aaa0ebc00333478e081bc7be3f",
+          "publishedBlob": "0f3dcc657a691f27cc1a4410930d900576f1449c",
+          "privateURLsRemoved": 1
+        }
+      ]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "ref": "refs/heads/codex/docs-realignment",
+      "originalCommit": "e6ed48764320c537778f052b3083a1f935125771",
+      "coveredBySnapshot": "current-openfilm"
+    },
+    {
+      "ref": "refs/heads/codex/orange-auth-candidate",
+      "originalCommit": "8bc9a3bc817da362badee19884d716d9ef630c4d",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-baseline",
+      "originalCommit": "405b45f322e29e097dca57efef6c0be90e95f699",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-c-auth-g1",
+      "originalCommit": "285cd55513acf819a2790e28c82481a845433395",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-c-auth-g2",
+      "originalCommit": "8bc9a3bc817da362badee19884d716d9ef630c4d",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-g2-source",
+      "originalCommit": "c5f9d91a17dd30576d8a22873508d5bd825eea62",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-k01-n1",
+      "originalCommit": "6e8c3133a7a6cd9c3e0b6bf8509e106bec32ddc4",
+      "coveredBySnapshot": "legacy-k01"
+    },
+    {
+      "ref": "refs/heads/codex/orange-m0-candidate",
+      "originalCommit": "67e974da976a88591ec93b14411b4d3376f74a7a",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-m0-live-candidate",
+      "originalCommit": "d788b3ba9a8c8c78ca28cfbf7f63381672e98124",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-redblack-auth",
+      "originalCommit": "1fc7f7675f426714bbe49c519269c4d9782f99ce",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-bridge-contract",
+      "originalCommit": "d9271f561e2e79e6abc17dae19e23a1dad1ad773",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-build",
+      "originalCommit": "e10196e01d71ce73492b5b3d463f0270960cf57f",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c0-proof",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c1-final",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c1-formal",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c2-clean-rehearsal",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c2-exec",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c2-proof",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c3-exec",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c4-final-exec",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c4-r4-tech",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-c4-tech-exec",
+      "originalCommit": "f7113a99246d0fde220c9da35cd5bc01c0815382",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-experience",
+      "originalCommit": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-host",
+      "originalCommit": "6fc27ebea697acfe6113f59a2c2b95dc24105deb",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-ordinary-formal",
+      "originalCommit": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-ordinary-gates",
+      "originalCommit": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-ref",
+      "originalCommit": "4b0574593b407ad771fa9ca93b4e8da02520a7bc",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-studio-ui",
+      "originalCommit": "814daca0544768710272e976f8b7cce720e0de83",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-t01-gate",
+      "originalCommit": "ebcc2cf80da72b2d5471e11ba84b13786a45a28f",
+      "coveredBySnapshot": "legacy-gate"
+    },
+    {
+      "ref": "refs/heads/codex/orange-t01-integration",
+      "originalCommit": "1de30d8a9888d45ba1e17478881deab4e308c052",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-t01-shell",
+      "originalCommit": "0dc626daac1907bb7dc4685e972150b9eeb57b4a",
+      "coveredBySnapshot": "legacy-dev"
+    },
+    {
+      "ref": "refs/heads/codex/orange-t02-k07",
+      "originalCommit": "6b0757200affe0635f853b9099984c47bc6a5421",
+      "coveredBySnapshot": "legacy-k07"
+    },
+    {
+      "ref": "refs/heads/codex/orange-t02-k07-root",
+      "originalCommit": "e6ad2b9e3c1abdba93d1057cb2157b3c71173a76",
+      "coveredBySnapshot": "legacy-k07"
+    },
+    {
+      "ref": "refs/heads/codex/orangeflim-base",
+      "originalCommit": "2e18a4bdf54647b2ece3c0975a6f9573720c7821",
+      "coveredBySnapshot": "current-openfilm"
+    },
+    {
+      "ref": "refs/heads/codex/orangeflim-v0.3.0",
+      "originalCommit": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73",
+      "coveredBySnapshot": "current-openfilm"
+    },
+    {
+      "ref": "refs/heads/dev",
+      "originalCommit": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+      "coveredBySnapshot": "legacy-dev"
+    }
+  ],
+  "privateRecovery": {
+    "bundle": "all-local-branches.bundle",
+    "sha256": "bbacaa7a4a5a24858929e091d7574839de7550201a1dee24ecda568edb51e4b4",
+    "bytes": 56165820,
+    "refs": 36,
+    "verified": "git bundle verify, independent bare fetch, git fsck --full, all source refs compared"
+  },
+  "wip": "4 ordinary-gates files backed up privately; not included in public snapshots",
+  "excluded": "private original repository index/archive/API configuration, uncommitted work, ignored runtimes, raw legacy commit ancestry",
+  "licenses": "Source notices retained; OpenFilm MIT and original trademark notices remain; no original vendor media or engine binaries added",
+  "redactionPolicy": "Only private Feishu/Lark documentation URLs replaced; test identities and hash pins confirmed synthetic/nonsecret by independent review. Original raw commit OIDs are references, not archive parents."
+}

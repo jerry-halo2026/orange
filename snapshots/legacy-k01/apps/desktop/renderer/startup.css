@@ -1,0 +1,83 @@
+:root {
+  color-scheme: dark;
+  --page: #0b0b0b;
+  --shell: #101010;
+  --panel: #151515;
+  --line: #303030;
+  --red: #b9362b;
+  --text: #f3f2f0;
+  --muted: #aaa7a4;
+  --red-text: #ed8a80;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--page); color: var(--text); }
+body { font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif; }
+.shell {
+  min-height: 72px;
+  padding: 14px clamp(18px, 4vw, 42px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--shell);
+  border-bottom: 1px solid var(--line);
+}
+.brand, .nav, .actions, .caption { display: flex; align-items: center; }
+.brand { gap: 13px; }
+.mark {
+  width: 38px; height: 38px;
+  display: grid; place-items: center; flex: none;
+  background: var(--red); color: #fff;
+  font-size: 21px; font-weight: 750; line-height: 1;
+}
+h1 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: .04em; line-height: 1.4; }
+.landing {
+  min-height: calc(100vh - 72px);
+  padding: 40px clamp(20px, 6vw, 76px);
+  display: grid;
+  place-items: center;
+}
+.workspace { padding: clamp(24px, 5vw, 64px) clamp(20px, 6vw, 76px); }
+.panel {
+  width: min(100%, 600px);
+  padding: clamp(22px, 4vw, 40px);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--red);
+  border-radius: 4px;
+  background: var(--panel);
+}
+.caption { gap: 8px; font-size: 12px; color: var(--red-text); font-weight: 650; letter-spacing: .11em; }
+.caption span { width: 7px; height: 7px; background: var(--red); flex: none; }
+h2 { margin: 14px 0 10px; font-size: clamp(23px, 3vw, 32px); line-height: 1.35; letter-spacing: -.035em; font-weight: 750; }
+p { color: var(--muted); font-size: 15px; line-height: 1.75; margin: 0; overflow-wrap: anywhere; }
+.notice span { display: block; }
+.actions, .nav { gap: 12px; flex-wrap: wrap; }
+.actions { margin-top: 20px; }
+.actions p { font-size: 13px; }
+button, .nav a {
+  font: inherit; font-weight: 650;
+  min-height: 38px; padding: 7px 14px;
+  border: 1px solid transparent; border-radius: 3px;
+  color: #fff; background: var(--red);
+}
+button:not(:disabled) { cursor: pointer; }
+button:not(:disabled):hover { background: #a22f26; }
+button:disabled { color: var(--muted); background: #222; border-color: #393939; }
+button.secondary { background: #191919; border-color: #444; }
+button.secondary:not(:disabled):hover { background: #252525; }
+.nav a { text-decoration: none; display: flex; align-items: center; }
+.login { margin-top: 20px; display: grid; gap: 12px; }
+.login .actions { margin-top: 2px; }
+label { display: grid; gap: 6px; color: var(--text); font-size: 14px; }
+input {
+  width: 100%; min-width: 0; min-height: 40px;
+  padding: 8px 10px; color: var(--text); background: var(--page);
+  border: 1px solid #555; border-radius: 3px; font: inherit;
+}
+:where(a, button, input):focus-visible { outline: 2px solid var(--red-text); outline-offset: 3px; }
+.error { color: var(--red-text); }
+@media (max-height: 460px) {
+  .landing { min-height: 0; padding-top: 34px; padding-bottom: 34px; }
+}

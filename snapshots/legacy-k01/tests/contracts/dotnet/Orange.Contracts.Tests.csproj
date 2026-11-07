@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" PrivateAssets="all" />
+    <Compile Include="../../../packages/contracts/generated/dotnet/K01.g.cs" Link="K01.g.cs" />
+    <Compile Include="../../../packages/contracts/generated/dotnet/K07.g.cs" Link="K07.g.cs" />
+    <None Include="../fixtures/K01/cases.json" Link="K01.cases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../fixtures/K07/cases.json" Link="cases.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

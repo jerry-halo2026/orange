@@ -1,0 +1,137 @@
+{
+  "slices": {
+    "K07.desktop-startup.v1": {
+      "pack": "K07",
+      "schemaVersion": 1,
+      "status": "consumer_ready",
+      "machineReview": "passed",
+      "design": {
+        "sha256": "8198457fe6188d0a372da864bdbe2338eb64bebcc0305f53c6ec0b501ee05d7e",
+        "workingBase": "0dc626daac1907bb7dc4685e972150b9eeb57b4a",
+        "roles": [
+          {
+            "role": "B producer",
+            "result": "approved"
+          },
+          {
+            "role": "F collection consumer proxy",
+            "result": "approved"
+          },
+          {
+            "role": "non-author N0 review",
+            "result": "approved"
+          },
+          {
+            "role": "technical coordinator",
+            "result": "design_ready"
+          }
+        ]
+      },
+      "producer": "Electron desktop main (T01.B; not wired)",
+      "consumer": "Local Windows desktop verification collector (F; not wired)",
+      "schema": {
+        "path": "packages/contracts/schemas/K07/v1.schema.json",
+        "sha256": "05ab9b80f10c5e4fbd59c2b09ff7975f18197108fd18e82430715f3dbd95d345"
+      },
+      "fixtures": {
+        "path": "tests/contracts/fixtures/K07/cases.json",
+        "sha256": "81b0a6008518675719fb1e7261eb927bf39b843138ef3c8113be165eb9620693",
+        "count": 114
+      },
+      "compatibility": {
+        "acceptedVersions": [
+          1
+        ],
+        "unsupportedVersion": "CONTRACT_VERSION"
+      },
+      "excludes": [
+        "other K07 events",
+        "production telemetry/audit",
+        "external data",
+        "real Electron pipe and failure injection",
+        "E12",
+        "N5a",
+        "K01",
+        "E film/Studio",
+        "M0"
+      ],
+      "registrationReviewRequired": true,
+      "n1": {
+        "signoff": {
+          "path": "orange-k07-desktop-startup-n1-signoff.json",
+          "sha256": "bc41ba5f2eeca4aec400b42cbf8aa34f8354da674915669402d5b72912daedfd"
+        },
+        "machineHead": "6b0757200affe0635f853b9099984c47bc6a5421",
+        "rootValidationHead": "8bd12582144e6e734f406c45df20c9a3e336470c",
+        "lock": {
+          "path": "pnpm-lock.yaml",
+          "sha256": "661d5ae66caed613baf1d9620d2e2257177caa59db9537b9acddeb2a37e50a45"
+        },
+        "tools": {
+          "node": "24.22.1",
+          "pnpm": "9.15.9",
+          "dotnet": "10.0.300",
+          "windowsCompiler": "same SDK csc.dll via dotnet exec; no CET change"
+        },
+        "evidence": {
+          "author": "k07-root-entry-evidence/evidence.json",
+          "authorSha256": "74d6311af43dfc0d1732e422b544a314dfdc43e1c76a8f9a2efef45de9429929",
+          "independentTree": "k07-root-independent-CCX62Y/verified-tree.json",
+          "independentTreeSha256": "df063811f0597e26fea906a53bc15635b8575dfd7cf9ea25ef960155dd4533df",
+          "checks": [
+            {
+              "command": "pnpm run contracts:check",
+              "exitCode": 0
+            },
+            {
+              "command": "pnpm run contracts:test -- --pack K07",
+              "passed": 125,
+              "skipped": 0,
+              "exitCode": 0
+            },
+            {
+              "command": "dotnet test tests/contracts/dotnet/Orange.Contracts.Tests.csproj --filter Pack=K07",
+              "passed": 114,
+              "skipped": 0,
+              "exitCode": 0
+            }
+          ]
+        },
+        "approvals": [
+          {
+            "role": "B producer consumption preparation",
+            "agent": "/root/t01_shell",
+            "model": "gpt-6.1-sol",
+            "effort": "medium",
+            "result": "approved"
+          },
+          {
+            "role": "F consumer representative preparation",
+            "agent": "/root/gate_research",
+            "model": "gpt-6.1-sol",
+            "effort": "medium",
+            "result": "approved"
+          },
+          {
+            "role": "independent machine and root entry review",
+            "agent": "/root/k07_n0_review",
+            "model": "gpt-6.1-sol",
+            "effort": "medium",
+            "result": "approved"
+          },
+          {
+            "role": "technical coordinator",
+            "agent": "/root",
+            "result": "N1 verified; repository freeze record pending"
+          }
+        ],
+        "limitations": [
+          "current v1 values only; nonblocking P3 broader string escaping",
+          "no Electron production adapter or real startup failure acceptance",
+          "no E12/N5a/M0 approval",
+          "no K01/E scope expansion"
+        ]
+      }
+    }
+  }
+}

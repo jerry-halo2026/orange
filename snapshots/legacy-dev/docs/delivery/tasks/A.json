@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "plan": "2026-11-05-orange-t01-t02-plan",
+  "approvedScope": "Ethan approved A–F local implementation; original main/index/archive unchanged",
+  "subjectCandidate": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "evidence": "../evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "id": "A",
+  "workPackage": "T01.baseline",
+  "state": "local_baseline_verified",
+  "head": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "branch": "codex/orange-baseline",
+  "dependencies": [],
+  "executor": {
+    "agent": "/root",
+    "model": null,
+    "modelNote": "Primary runtime identifier not exposed; not guessed"
+  },
+  "reviewer": {
+    "agent": "/root/baseline_review",
+    "model": "gpt-6.1-sol",
+    "effort": "medium"
+  },
+  "verified": {
+    "whitelistFiles": 18,
+    "originalMain": "unborn",
+    "originalHeadSha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
+    "originalIndexSha256": "c8150ffb1e42a8d78675d7ce00345596746ea7257235f8956bcf4c84aaf534d7"
+  },
+  "open": [
+    "Windows media/Fission runtime not accepted"
+  ],
+  "allowedWriteSet": [
+    "docs/05_业务拓扑与逻辑全景.md",
+    "docs/06_橙子生产级重构PRD.md",
+    "docs/discovery/00_讨论基线与决策台账.md",
+    "docs/discovery/01_工程治理与证伪框架.md",
+    "docs/discovery/02_历史组合去重与容量评估.md",
+    "docs/discovery/03_交接业务复核与账号映射.md",
+    "docs/discovery/04_智尚接口能力与系统协同.md",
+    "docs/discovery/05_智尚只读验证与身份边界.md",
+    "docs/discovery/06_整体架构与业务闭环.md",
+    "docs/discovery/07_统一数据契约草案.md",
+    "docs/discovery/08_整体方案审视与缺口清单.md",
+    "docs/discovery/09_文档权威与多Agent开发协作规范.md",
+    "docs/discovery/10_首条最小业务闭环与任务拆分.md",
+    "docs/discovery/11_测试验收与问题定位规范.md",
+    "docs/discovery/12_前端视觉延续与交互标准.md",
+    "docs/discovery/13_技术架构与目录依赖基线.md",
+    "docs/discovery/14_新会话启动与开发交付流程.md",
+    "docs/discovery/research-sources.json"
+  ],
+  "verifiedBoundary": "18 whitelisted docs, original main HEAD and index unchanged, archive not operated on"
+}

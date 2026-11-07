@@ -1,0 +1,2957 @@
+{
+  "pack": "K07",
+  "slice": "K07.desktop-startup.v1",
+  "sentinels": [
+    "SYNTHETIC_PRIVATE_TOKEN",
+    "SYNTHETIC_PRIVATE_PATH",
+    "SYNTHETIC_SENSITIVE_KEY",
+    "REVIEW_SENTINEL"
+  ],
+  "cases": [
+    {
+      "kind": "object",
+      "id": "valid-begin",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.begin",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.000Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "valid-finish",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": 42
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.finish",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.042Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info",
+          "outcome": "ok",
+          "durationMs": 42
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "valid-failed",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "failed",
+        "durationMs": 42,
+        "errorCode": "SHELL_LOAD_FAILED"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.finish",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.042Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "error",
+          "outcome": "failed",
+          "durationMs": 42,
+          "errorCode": "SHELL_LOAD_FAILED"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "valid-zero",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": 0
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.finish",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.042Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info",
+          "outcome": "ok",
+          "durationMs": 0
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "valid-integer-boundary",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": 9007199254740991
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.finish",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.042Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info",
+          "outcome": "ok",
+          "durationMs": 9007199254740991
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "gregorian-leap-year",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2000-02-29T23:59:59.999Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.begin",
+          "component": "desktop.main",
+          "timestamp": "2000-02-29T23:59:59.999Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "min-year-and-max-version-segments",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "0001-01-01T00:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "999999999.0.1",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.begin",
+          "component": "desktop.main",
+          "timestamp": "0001-01-01T00:00:00.000Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "999999999.0.1",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "max-year",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "9999-12-31T23:59:59.999Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.begin",
+          "component": "desktop.main",
+          "timestamp": "9999-12-31T23:59:59.999Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "unknown-version",
+      "input": {
+        "schemaVersion": 2,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "null-version",
+      "input": {
+        "schemaVersion": null,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "string-version",
+      "input": {
+        "schemaVersion": "1",
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "missing-version",
+      "input": {
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "version-before-unknown-key",
+      "input": {
+        "schemaVersion": 2,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "SYNTHETIC_SENSITIVE_KEY": 1
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "root-is-null",
+      "input": null,
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "root-is-array",
+      "input": [
+        {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.begin",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.000Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info"
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "extra-key",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "SYNTHETIC_SENSITIVE_KEY": 1
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "shape-before-known-field",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "bad",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "SYNTHETIC_SENSITIVE_KEY": 1
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "missing-common-field",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "begin-outcome",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "begin-duration",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "durationMs": 0
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "ok-error",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": 42,
+        "errorCode": "SHELL_START_FAILED"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "failed-no-error",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "failed",
+        "durationMs": 42
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "finish-no-duration",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "bad-event-name",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.unknown",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.eventName"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "nonlocal-environment",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "cloud",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.environment"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "bad-component",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.renderer",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.component"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "invalid-timestamp-null",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": null,
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "offset-timestamp",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000+00:00",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "leap-second",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:60.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "hour-24",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T24:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "non-leap-century",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "1900-02-29T00:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "year-zero",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "0000-01-01T00:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "one-digit-milliseconds",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.0Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "trailing-newline-timestamp",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z\n",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.timestamp"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "all-zero-trace",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "00000000000000000000000000000000",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.traceId"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "uppercase-event-id",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4ABC-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.eventId"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "wrong-uuid-version",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-5abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.eventId"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "wrong-uuid-variant",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-7abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.eventId"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "uppercase-sha",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.buildCommit"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "version-leading-zero",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "00.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.appVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "version-segment-oversize",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "1000000000.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.appVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "version-suffix",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.begin",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.000Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0-beta",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.appVersion"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "negative-duration",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": -1
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "fractional-duration",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": 0.5
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "unsafe-duration",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "ok",
+        "durationMs": 9007199254740992
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "null-outcome",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": null,
+        "durationMs": 42
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.outcome"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "failed-info",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "info",
+        "outcome": "failed",
+        "durationMs": 42,
+        "errorCode": "SHELL_LOAD_FAILED"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.severity"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "ok-error-severity",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "ok",
+        "durationMs": 42
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.severity"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "unapproved-error",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "failed",
+        "durationMs": 42,
+        "errorCode": "SYNTHETIC_PRIVATE_TOKEN"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.errorCode"
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "id": "raw-exception-field",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "failed",
+        "durationMs": 42,
+        "errorCode": "SHELL_LOAD_FAILED",
+        "error": {
+          "message": "SYNTHETIC_PRIVATE_TOKEN",
+          "stack": "C:\\SYNTHETIC_PRIVATE_PATH\\missing"
+        }
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "encode",
+      "id": "encode-fixed-order",
+      "input": {
+        "durationMs": 42,
+        "outcome": "ok",
+        "severity": "info",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "appVersion": "0.0.0",
+        "environment": "local",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "traceId": "11111111111111111111111111111111",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "component": "desktop.main",
+        "eventName": "desktop.shell.start.finish",
+        "schemaVersion": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+      }
+    },
+    {
+      "kind": "encode",
+      "id": "encode-failed-canonical",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "failed",
+        "durationMs": 42,
+        "errorCode": "SHELL_LOAD_FAILED"
+      },
+      "expected": {
+        "ok": true,
+        "value": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"error\",\"outcome\":\"failed\",\"durationMs\":42,\"errorCode\":\"SHELL_LOAD_FAILED\"}\n"
+      }
+    },
+    {
+      "kind": "encode",
+      "id": "encoder-rejects-private-payload",
+      "input": {
+        "schemaVersion": 1,
+        "eventName": "desktop.shell.start.finish",
+        "component": "desktop.main",
+        "timestamp": "2026-11-05T08:00:00.042Z",
+        "traceId": "11111111111111111111111111111111",
+        "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+        "environment": "local",
+        "appVersion": "0.0.0",
+        "buildCommit": "1111111111111111111111111111111111111111",
+        "severity": "error",
+        "outcome": "failed",
+        "durationMs": 42,
+        "errorCode": "SHELL_LOAD_FAILED",
+        "message": "SYNTHETIC_PRIVATE_TOKEN"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "projection",
+      "id": "startup-error-allowlist",
+      "input": {
+        "stage": "startup",
+        "cause": {
+          "message": "SYNTHETIC_PRIVATE_TOKEN",
+          "stack": "C:\\SYNTHETIC_PRIVATE_PATH\\missing"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "errorCode": "SHELL_START_FAILED",
+          "category": "system",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "kind": "projection",
+      "id": "load-error-allowlist",
+      "input": {
+        "stage": "loadFile",
+        "cause": {
+          "message": "SYNTHETIC_PRIVATE_TOKEN",
+          "stack": "C:\\SYNTHETIC_PRIVATE_PATH\\missing"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "errorCode": "SHELL_LOAD_FAILED",
+          "category": "system",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "begin-ok",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "begin": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.begin",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.000Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info"
+          },
+          "finish": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.finish",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.042Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info",
+            "outcome": "ok",
+            "durationMs": 42
+          }
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "begin-failed",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"error\",\"outcome\":\"failed\",\"durationMs\":42,\"errorCode\":\"SHELL_LOAD_FAILED\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "begin": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.begin",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.000Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info"
+          },
+          "finish": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.finish",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.042Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "error",
+            "outcome": "failed",
+            "durationMs": 42,
+            "errorCode": "SHELL_LOAD_FAILED"
+          }
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "fragmented-byte-chunks",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"sch"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "emaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "\n{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "begin": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.begin",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.000Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info"
+          },
+          "finish": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.finish",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.042Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info",
+            "outcome": "ok",
+            "durationMs": 42
+          }
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "deduplicate-exact-replays",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "begin": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.begin",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.000Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info"
+          },
+          "finish": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.finish",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.042Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info",
+            "outcome": "ok",
+            "durationMs": 42
+          }
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "wall-clock-backward",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T07:59:59.999Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "begin": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.begin",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T08:00:00.000Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-8abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info"
+          },
+          "finish": {
+            "schemaVersion": 1,
+            "eventName": "desktop.shell.start.finish",
+            "component": "desktop.main",
+            "timestamp": "2026-11-05T07:59:59.999Z",
+            "traceId": "11111111111111111111111111111111",
+            "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+            "environment": "local",
+            "appVersion": "0.0.0",
+            "buildCommit": "1111111111111111111111111111111111111111",
+            "severity": "info",
+            "outcome": "ok",
+            "durationMs": 42
+          }
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "begin-only",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_INCOMPLETE",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "no-frames",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_INCOMPLETE",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "no-eof-even-with-pair",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "deadline"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_INCOMPLETE",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "orphan-finish",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_CONFLICT",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "same-id-different-content",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_CONFLICT",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "second-begin-distinct-id",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_CONFLICT",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "two-terminal-outcomes",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-aabc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"error\",\"outcome\":\"failed\",\"durationMs\":42,\"errorCode\":\"SHELL_LOAD_FAILED\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_CONFLICT",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "wrong-child",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "other-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_MISMATCH",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "wrong-trace",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"22222222222222222222222222222222\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_MISMATCH",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "self-reported-version-is-not-authority",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "1.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_MISMATCH",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "self-reported-commit-is-not-authority",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "2222222222222222222222222222222222222222"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_MISMATCH",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "wrong-finish-version",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"1.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_MISMATCH",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "wrong-finish-commit",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"2222222222222222222222222222222222222222\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_MISMATCH",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "utf8-bom",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "﻿{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "crlf",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\r\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "cr-before-unknown-field",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"SYNTHETIC_SENSITIVE_KEY\":1}\r\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "empty-line",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "invalid-utf8",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "hex": "c3280a"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "invalid-json-no-parser-leak",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"SYNTHETIC_PRIVATE_TOKEN\":}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "truncated",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "duplicate-key",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"schemaVersion\":1}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "duplicate-key-escaped-spelling",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"schemaVersi\\u006fn\":1}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "duplicate-before-unknown-version",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":2,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"schemaVersion\":2}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "nested-duplicate-before-shape",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"extra\":{\"a\":1,\"a\":2}}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "version-before-shape-and-canonical",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{ \"schemaVersion\":2,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"SYNTHETIC_SENSITIVE_KEY\":1}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "unknown-key-before-canonical",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{ \"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"SYNTHETIC_SENSITIVE_KEY\":1}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "invalid-field-before-canonical",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{ \"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"00.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.appVersion"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "raw-field-private-value",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"error\",\"outcome\":\"failed\",\"durationMs\":42,\"errorCode\":\"SYNTHETIC_PRIVATE_TOKEN\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.errorCode"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "wrong-key-order",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"severity\":\"info\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"appVersion\":\"0.0.0\",\"environment\":\"local\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"traceId\":\"11111111111111111111111111111111\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"component\":\"desktop.main\",\"eventName\":\"desktop.shell.start.begin\",\"schemaVersion\":1}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "whitespace",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{ \"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "escaped-ascii",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.\\u006dain\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "exponent-spelling",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42e0}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "rounds-to-integer",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42.0000000000000001}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "underflow-is-not-zero",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":1e-999}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "rounds-to-version",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1.0000000000000001,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "769-bytes-before-newline",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "
+          }
+        ],
+        "completion": "deadline"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "768-bytes-not-yet-a-frame",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+          }
+        ],
+        "completion": "deadline"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_INCOMPLETE",
+          "path": "$stream"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "fifth-line-aborts",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "fifth-line-first-byte-aborts",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{"
+          }
+        ],
+        "completion": "deadline"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "id": "first-rejected-line-stays-rejected",
+      "input": {
+        "expectedBinding": {
+          "childId": "synthetic-child",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111"
+        },
+        "items": [
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.begin\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.000Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\"}\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "\n"
+          },
+          {
+            "childId": "synthetic-child",
+            "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+          }
+        ],
+        "completion": "eof"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-version-token-rounding",
+      "input": {
+        "text": "{\"schemaVersion\":1.0000000000000001,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_VERSION",
+          "path": "$.schemaVersion"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-duration-token-rounding",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":9007199254740990.9}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-negative-underflow",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":-1e-324}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "json-encode",
+      "id": "json-encode-negative-underflow",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":-1e-324}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-duplicate-decoded-key-precedes-shape",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42,\"REVIEW_SENTINEL\":1,\"REVIEW_SEN\\u0054INEL\":2}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json-encode",
+      "id": "json-encode-duplicate-decoded-key",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42,\"REVIEW_SENTINEL\":1,\"REVIEW_SEN\\u0054INEL\":2}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-unknown-key-safe",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42,\"REVIEW_SENTINEL\":1}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_SHAPE",
+          "path": "$"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-invalid-utf8",
+      "input": {
+        "hex": "c328"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-bom",
+      "input": {
+        "text": "﻿{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-unmatched-surrogate",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.\\ud800\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-bounded-before-parse",
+      "input": {
+        "text": "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "DIAGNOSTIC_FRAME",
+          "path": "$frame"
+        }
+      }
+    },
+    {
+      "kind": "json",
+      "id": "json-object-whitespace-and-exact-integer",
+      "input": {
+        "text": " \r\n{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":4.2e1}\n"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": 1,
+          "eventName": "desktop.shell.start.finish",
+          "component": "desktop.main",
+          "timestamp": "2026-11-05T08:00:00.042Z",
+          "traceId": "11111111111111111111111111111111",
+          "eventId": "12345678-1234-4abc-9abc-1234567890ab",
+          "environment": "local",
+          "appVersion": "0.0.0",
+          "buildCommit": "1111111111111111111111111111111111111111",
+          "severity": "info",
+          "outcome": "ok",
+          "durationMs": 42
+        }
+      }
+    },
+    {
+      "kind": "json-encode",
+      "id": "json-encode-accepted-object-normalizes",
+      "input": {
+        "text": " {\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":4.2e1}"
+      },
+      "expected": {
+        "ok": true,
+        "value": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-9abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":42}\n"
+      }
+    },
+    {
+      "kind": "json-encode",
+      "id": "json-encode-fraction-duration",
+      "input": {
+        "text": "{\"schemaVersion\":1,\"eventName\":\"desktop.shell.start.finish\",\"component\":\"desktop.main\",\"timestamp\":\"2026-11-05T08:00:00.042Z\",\"traceId\":\"11111111111111111111111111111111\",\"eventId\":\"12345678-1234-4abc-8abc-1234567890ab\",\"environment\":\"local\",\"appVersion\":\"0.0.0\",\"buildCommit\":\"1111111111111111111111111111111111111111\",\"severity\":\"info\",\"outcome\":\"ok\",\"durationMs\":9007199254740990.9}"
+      },
+      "expected": {
+        "ok": false,
+        "error": {
+          "code": "CONTRACT_FIELD",
+          "path": "$.durationMs"
+        }
+      }
+    }
+  ]
+}

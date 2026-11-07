@@ -1,0 +1,60 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 4,
+  "scope": "minimum executable N5a CPU admission bootstrap; not whole T01/pilot",
+  "classification": "engineering-governance",
+  "authorAgent": "/root/t01_admission",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendModelVerified": false,
+  "workingBaselineCommit": "31778156ccf210090a4f63d898a6c120b670aa39",
+  "worktreePath": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+  "branch": "codex/t01-isolation",
+  "writeAllowlist": [
+    "scripts/phase1-admission.mjs",
+    "scripts/phase1-admission.test.mjs",
+    ".github/workflows/phase1.yml"
+  ],
+  "forbidden": [
+    "task registry/card/review/fixture expectation self-authorizing changes",
+    "workspace/lock/native application/worker changes",
+    "other worktrees/archive",
+    "desktop/GPU/media/model/network/private config",
+    "merge/push/release/remote settings"
+  ],
+  "references": [
+    "docs/discovery/09_文档权威与多Agent开发协作规范.md",
+    "docs/discovery/11_测试验收与问题定位规范.md",
+    "docs/superpowers/plans/2026-11-07-phase1-execution.md"
+  ],
+  "dependencyCommits": [
+    "31778156ccf210090a4f63d898a6c120b670aa39"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "directory",
+      "value": "worktree .dev/admission-fixtures",
+      "exclusive": true
+    },
+    {
+      "exclusive": false,
+      "kind": "cpu"
+    }
+  ],
+  "requirements": [
+    "consume existing project-tasks.json and approved immutable task card, no second task registry",
+    "trusted approval commit/card hash separate from candidate; candidate cannot widen its own write/tests/review policy",
+    "real Git worktree/branch/head/baseline/dependency/diff including staged unstaged untracked and rename ends",
+    "canonical file case/path containment plus overlapping writer/root lock/shared-file and resource collisions",
+    "only declared consumer subset needs exact dependency commit/source hash/non-author review; unrelated K/M1 pending does not block CPU task",
+    "execute trusted declared node tests, verify named required cases really ran successfully; reject nonzero/zero/missing/skip/todo/cancel/incomplete reports",
+    "explicit compatibility failure negative and independent-CPU ready positive",
+    "fail closed CLI with sanitized errors, no shell execution of arbitrary candidate commands",
+    "CI local pure tests on Windows, explicit dev/codex/**/PR/manual trigger, no official release or package/runtime/model download"
+  ],
+  "expectedRed": "tests expose absent admission behavior, then each actual rejection and positive behavior; no source-text assertions",
+  "expectedGreen": "actual negative fixtures rejected and independent ready CPU example admitted; non-author review before consumer use",
+  "review": "fresh non-author spec/quality, exact source/log hashes and current Git evidence",
+  "status": "assigned",
+  "notGranted": "parallel implementation admission, dev integration or all T01 acceptance"
+}

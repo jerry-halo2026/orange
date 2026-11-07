@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "T01 real Node/HTTP lifecycle and Electron service startup observed; reviewed runtime fixes; GUI/normal close/N5a still pending",
+  "phase": "T01 N5a CPU admission bootstrap in progress; GUI/normal close and full T01 still pending",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -59,7 +59,7 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t01-admission-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
   "currentSliceReview": "docs/execution/t01-runtime-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",

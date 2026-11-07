@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "docs-and-source-alignment-candidate",
+  "phase": "phase1-plan-awaiting-Ethan-confirmation",
   "branch": "codex/docs-realignment",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -33,7 +33,8 @@
     "state": "future-candidate-not-created"
   },
   "worktreeCleanup": {
-    "state": "not-performed; cloud backup is not isolation or ignored-data backup"
+    "state": "private-recovery-verified; 3-unoccupied-local-refs-removed; 39-worktrees-retained-native-tool-unavailable",
+    "receipt": "2026-11-07-phase1-archive-delivery.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
   "publication": "verify actual remote refs and delivery receipt; no dev/main/tag integration or release"

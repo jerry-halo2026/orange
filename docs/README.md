@@ -6,3 +6,5 @@
 实际进度见[执行状态](execution/status.json)和[验证摘要](execution/validation-summary.json)。历史原文在history/2026-11-05，只溯源不执行。
 业务素材主源智尚，dev永久开发线，main/tag经Ethan确认。当前允许≤50元模型小额测试和智尚连通、源码/脱敏docs公开提交；不是生产写入/媒体上传/真实私人数据外发许可。
 私有API原文、凭据、私人素材/字幕、运行缓存不进Git。阅读旧文档命令不构成执行授权，资源下载不构成执行许可。
+
+2026-11-07待确认：[一期分包执行计划](superpowers/plans/2026-11-07-phase1-execution.md)、[旧工作树可恢复归档清单](execution/2026-11-07-worktree-archive-inventory.md)。本轮只计划和查阅归集，不开始业务开发；归集分支不是dev集成。真实本人绑定联调局部暂停，其它已具备依赖的工作不随之挂起。

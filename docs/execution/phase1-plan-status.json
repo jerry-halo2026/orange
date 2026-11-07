@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-07",
+  "state": "proposed-awaiting-Ethan-confirmation",
+  "sourceBaseline": "e6ed48764320c537778f052b3083a1f935125771",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+  "businessImplementationStarted": false,
+  "developmentGoalRecreated": false,
+  "packages": [
+    {"id":"T01","scope":"isolation and minimum admission gates","state":"proposed","depends":[]},
+    {"id":"T02","scope":"per-consumer a/b/c/d contracts, access and revision ports","state":"proposed","depends":["T01 needed isolation"]},
+    {"id":"T03","scope":"original HOME and real auth navigation","state":"proposed","depends":["T01","T02.a"]},
+    {"id":"T04.a","scope":"shared assets and scoped Zhishang fixture adapter","state":"proposed","depends":["T01","T02.a","T02.b"]},
+    {"id":"T04.b","scope":"real personal Zhishang read-only integration","state":"blocked_personal_binding","depends":["T04.a","verified personal binding"]},
+    {"id":"T05.a","scope":"Fission pure path isolation","state":"proposed","depends":["T01"]},
+    {"id":"T05.b","scope":"controlled Fission host and media","state":"proposed","depends":["T05.a","T02.c"]},
+    {"id":"T06","scope":"actual FrozenPlan and original editable project handoff","state":"proposed","depends":["T05.b","T02.c","scoped asset and project ports"]},
+    {"id":"T07","scope":"speech analysis and time mapping without project writes","state":"proposed","depends":["T02.d"]},
+    {"id":"T08","scope":"strict original edit, shared commit coordinator, recovery and CLI","state":"proposed","depends":["T02.a","T02.d"]},
+    {"id":"T09","scope":"speech cutting in original subtitle UI","state":"proposed","depends":["T03 shared UI writer released","T07","T08"]},
+    {"id":"T10","scope":"serial candidate integration and reviewed dev cutover proposal","state":"proposed","depends":["relevant packages independently reviewed","actual integrated gates"]}
+  ],
+  "concurrency": {
+    "policy": "C89 dynamic consumer-ready, isolated trees/writes/resources, N5a; next free slot prioritizes reviews",
+    "observedSlotLimitIncludingCoordinator": 4,
+    "implementationConcurrencyStarted": false,
+    "nativeWorktreeTools": "list_artifacts Transport closed; no manual bypass",
+    "sharedFiles": "single writer, explicit handoff, serial integration"
+  },
+  "research": [
+    {"agent":"/root/phase1_source_plan","scope":"read-only original source seams and tests","model":"inherited runtime; explicit model not exposed in spawn result"},
+    {"agent":"/root/legacy_lineage_audit","scope":"read-only all branch lineage and archive coverage","model":"inherited runtime; explicit model not exposed in spawn result"},
+    {"agent":"/root/phase1_plan_review","scope":"independent plan/spec builder review","model":"inherited runtime; explicit model not exposed in spawn result"},
+    {"agent":"/root/archive_publication_review","scope":"independent privacy and archival publication review","model":"inherited runtime; explicit model not exposed in spawn result"}
+  ],
+  "notClaimed": ["new contracts consumer-ready","product build or tests passed this turn","personal material connectivity","ASR or paid model call success","dev/main integration","worktrees archived or disk released"]
+}

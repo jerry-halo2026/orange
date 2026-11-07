@@ -1,0 +1,33 @@
+{
+  "$schema": "align-strategies.schema.json",
+  "version": "1.0.0",
+  "note": "八策略真值表 + 示例。L=视频轨总时长, R=目标时长(配音/固定)。动作: trim=裁掉(-t截断) | speed=变速(atempo, 变速不变调) | loop=循环垫底(-stream_loop -1)。策略名 = 原版原文枚举。单测表驱动（PRD FR-4.2）。",
+  "actions": {
+    "trim": "视频轨截断到目标时长",
+    "speed": "atempo 变速对齐（[0.5,2.0] 单次有效域，超界自动链：x>2 → atempo=2,atempo=x/2；x<0.5 → atempo=0.5,atempo=x/0.5）",
+    "loop": "循环垫底补足时长（-stream_loop -1 + -t 截断）"
+  },
+  "strategies": [
+    { "id": 1, "name": "较长者裁掉多余", "L_gt_R": "trim", "L_lt_R": "trimR", "note": "L<R 时目标侧不动，视频轨按目标截取可用长度（不足按策略仍裁 = 取 L）" },
+    { "id": 2, "name": "若右边长则裁掉，若右边短则变速", "L_gt_R": "speed", "L_lt_R": "trim" },
+    { "id": 3, "name": "若右边长则裁掉，若右边短则循环", "L_gt_R": "loop", "L_lt_R": "trim" },
+    { "id": 4, "name": "若右边长则变速，若右边短则变速", "L_gt_R": "speed", "L_lt_R": "speed" },
+    { "id": 5, "name": "若右边长则变速，若右边短则循环", "L_gt_R": "loop", "L_lt_R": "speed" },
+    { "id": 6, "name": "若左边长则裁掉，若左边短则变速", "L_gt_R": "trim", "L_lt_R": "speed" },
+    { "id": 7, "name": "若左边长则裁掉，若左边短则循环", "L_gt_R": "trim", "L_lt_R": "loop" },
+    { "id": 8, "name": "若左边长则变速，若左边短则循环", "L_gt_R": "speed", "L_lt_R": "loop" }
+  ],
+  "examples": [
+    { "strategy": 1, "L": 40, "R": 30, "expect": { "action": "trim", "outDur": 30 } },
+    { "strategy": 2, "L": 20, "R": 30, "expect": { "action": "speed", "outDur": 30, "tempo": 1.5 } },
+    { "strategy": 2, "L": 40, "R": 30, "expect": { "action": "speed", "outDur": 30, "tempo": 0.75 } },
+    { "strategy": 3, "L": 20, "R": 60, "expect": { "action": "loop", "outDur": 60, "loops": 3 } },
+    { "strategy": 4, "L": 90, "R": 30, "expect": { "action": "speed", "tempo": 3.0, "chain": "atempo=2.0,atempo=1.5" } },
+    { "strategy": 5, "L": 15, "R": 45, "expect": { "action": "speed", "tempo": 0.3333, "chain": "atempo=0.5,atempo=0.6667" } },
+    { "strategy": 6, "L": 50, "R": 25, "expect": { "action": "trim", "outDur": 25 } },
+    { "strategy": 6, "L": 25, "R": 50, "expect": { "action": "speed", "tempo": 2.0 } },
+    { "strategy": 7, "L": 25, "R": 100, "expect": { "action": "loop", "outDur": 100, "loops": 4 } },
+    { "strategy": 8, "L": 100, "R": 25, "expect": { "action": "speed", "tempo": 0.25, "chain": "atempo=0.5,atempo=0.5" } },
+    { "strategy": 8, "L": 25, "R": 75, "expect": { "action": "loop", "outDur": 75, "loops": 3 } }
+  ]
+}

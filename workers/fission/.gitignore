@@ -1,0 +1,41 @@
+# ===== Fission .gitignore（PRD §9.4：密钥与运行时产物绝不入库）=====
+
+# .NET 构建产物
+bin/
+obj/
+publish/
+*.user
+*.suo
+.vs/
+.vscode/
+.idea/
+artifacts/
+
+# 运行时目录
+work/
+out/
+logs/
+temp/
+
+# 密钥与运行时令牌（绝不入库 —— PRD §13.2）
+config/keys.json
+config/runtime-token
+*.pfx
+*.key
+
+# 自产资产（用户资产，走备份不走 git —— ADR-006/007）
+assets/bgm/library/
+assets/voice/upload/
+assets/voice/generated/
+
+# 本地环境差异
+config/appsettings.local.json
+
+# 本地临时
+_build.log
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# 基准产物（表格入库 docs/bench，原始大文件不入）
+tests/Fission.Bench/results/

@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-07",
+  "upstream": {
+    "version": "0.3.0",
+    "commit": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73"
+  },
+  "fission": {
+    "commit": "c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9",
+    "files": 70,
+    "imported": true,
+    "buildTestedInOrange": false,
+    "runtimePathsIsolated": false
+  },
+  "phase": "docs-and-source-alignment-candidate",
+  "branch": "codex/docs-realignment",
+  "businessFeatureImplementation": false,
+  "docsMaintainedHere": true,
+  "originalRepositoryIndexAndArchiveUntouched": true,
+  "authorization": {
+    "modelBudgetCNY": 50,
+    "publicSourceAndSanitizedDocsApproved": true,
+    "zhishangConnectivityApproved": true,
+    "privateMediaExternalUploadApproved": false,
+    "productionWritesApproved": false,
+    "mainOrTagApproved": false
+  },
+  "gitPolicy": {
+    "dev": "permanent integration line after phase-one validation/review; subsequent task baseline",
+    "main": "confirmed release line",
+    "legacyDevMigration": "pending preserve old refs and review; no force or blind unrelated merge"
+  },
+  "resourceCloud": {
+    "state": "future-candidate-not-created"
+  },
+  "worktreeCleanup": {
+    "state": "not-performed; cloud backup is not isolation or ignored-data backup"
+  },
+  "remoteTarget": "https://github.com/jerry-halo2026/orange",
+  "publication": "verify actual remote refs and delivery receipt; no dev/main/tag integration or release"
+}

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fission.Core\Fission.Core.csproj" />
+    <ProjectReference Include="..\Fission.Steps\Fission.Steps.csproj" />
+    <ProjectReference Include="..\Fission.Providers\Fission.Providers.csproj" />
+    <ProjectReference Include="..\Fission.AI\Fission.AI.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

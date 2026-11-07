@@ -1,0 +1,4 @@
+# User-provided private API configuration is not a public development document.
+*云管家api文档*.txt
+private/
+.env*

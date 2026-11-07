@@ -1,3 +1,9 @@
+# orangeflim 开发仓库
+
+基于原版OpenFilm v0.3.0完整desktop/Studio增量开发，固定7713d38，不是官方发行版。开发入口见[docs/README.md](docs/README.md)；Fission源码在workers/fission，未包含原厂资产/用户媒体/凭据，未宣称已独立运行。dev为永久开发线，main/tag须Ethan确认。下方保留上游原说明作为来源，不表示orangeflim已经完成整合或发布。
+
+---
+
 <p align="center">
   <br>
   <img src="docs/logo-light.svg#gh-light-mode-only" alt="OpenFilm" height="72">

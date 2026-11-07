@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Fission.AI/Fission.AI.csproj" />
+    <Project Path="src/Fission.Cli/Fission.Cli.csproj" />
+    <Project Path="src/Fission.Core/Fission.Core.csproj" />
+    <Project Path="src/Fission.Providers/Fission.Providers.csproj" />
+    <Project Path="src/Fission.Steps/Fission.Steps.csproj" />
+    <Project Path="src/Fission.Web/Fission.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Fission.Bench/Fission.Bench.csproj" />
+    <Project Path="tests/Fission.IntegrationTests/Fission.IntegrationTests.csproj" />
+    <Project Path="tests/Fission.UnitTests/Fission.UnitTests.csproj" />
+  </Folder>
+</Solution>

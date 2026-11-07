@@ -1,0 +1,70 @@
+[
+  {
+    "relativePath": "06_橙子生产级重构PRD.md",
+    "sha256": "A9709DB65D15B14A2CB49F1F9AB076BECE6A17B2A3CB4224B45376D3EC7FE222"
+  },
+  {
+    "relativePath": "discovery/00_讨论基线与决策台账.md",
+    "sha256": "4E4620148586FF5B3495ED90C6B17678A181FAE28E2C946FE2C33B9A7E40F595"
+  },
+  {
+    "relativePath": "discovery/01_工程治理与证伪框架.md",
+    "sha256": "69D2CC4E92AB05D34E1E856C8E8E5305730665C3CBB732D1A5CE07538794E969"
+  },
+  {
+    "relativePath": "discovery/02_历史组合去重与容量评估.md",
+    "sha256": "CBBF64B02A91FF2DF0C03416AD17B6C170A095865FF4D43ABCFE7447712EE15E"
+  },
+  {
+    "relativePath": "discovery/03_交接业务复核与账号映射.md",
+    "sha256": "F8703796F3F93374DE207DA8CA1062C7CEEC0742652362AF062FC8E6E3490F14"
+  },
+  {
+    "relativePath": "discovery/04_智尚接口能力与系统协同.md",
+    "sha256": "FD482BDBBB603482F10500289A6A94E5D3987EF1E45E76220C929DC41DFD04C8"
+  },
+  {
+    "relativePath": "discovery/05_智尚只读验证与身份边界.md",
+    "sha256": "24F10AA645898C1B347C87EABB5A7E7984D09AA3FC1F5DD35482EAEFEF9100CE"
+  },
+  {
+    "relativePath": "discovery/06_整体架构与业务闭环.md",
+    "sha256": "87AA79256E8F106EEF3545D1B1E355A6C3EB8DCEDC76ADE08263AA8F38D22BBC"
+  },
+  {
+    "relativePath": "discovery/07_统一数据契约草案.md",
+    "sha256": "D07C9CD0E618CC8047FD2618A645745EBCC9E10159517F57184AE4DA8AD70B0D"
+  },
+  {
+    "relativePath": "discovery/08_整体方案审视与缺口清单.md",
+    "sha256": "38326D6629B4CDE6C1074ED1553BE456A5105A6507EE2B5384644ABBF4B799DB"
+  },
+  {
+    "relativePath": "discovery/09_文档权威与多Agent开发协作规范.md",
+    "sha256": "142C235472DCA77DA72C1F98A84DF8CCFB72B370B1A141946453E7259B0F8B7A"
+  },
+  {
+    "relativePath": "discovery/10_首条最小业务闭环与任务拆分.md",
+    "sha256": "6C3C8A42D6C258A06C397885886B473C94538C84645AE0428589DE2D61F9FBF1"
+  },
+  {
+    "relativePath": "discovery/11_测试验收与问题定位规范.md",
+    "sha256": "B8E2486436EB3C5B7C9E9505CB2ED9894D5ADE0A4031A8A5D70D4FCF60DBEC22"
+  },
+  {
+    "relativePath": "discovery/12_前端视觉延续与交互标准.md",
+    "sha256": "D3ACCF0B8AD86AB1FC10BCFA94337E32E24B4F3E19EC48286425F3DF6C91BDC4"
+  },
+  {
+    "relativePath": "discovery/13_技术架构与目录依赖基线.md",
+    "sha256": "0C40D510566476FC3766EC8427A8F38B1B3C1EF9350DAB7E3764AFE1D0BF987F"
+  },
+  {
+    "relativePath": "discovery/14_新会话启动与开发交付流程.md",
+    "sha256": "75DD67555788224C182661B129904C53F3806A4BF7A84AD458CCE246AB0FCC98"
+  },
+  {
+    "relativePath": "discovery/research-sources.json",
+    "sha256": "0C680757B025488690D79337F358B0BF036E5C754EBB351DB2D2B4553BA4EAF3"
+  }
+]

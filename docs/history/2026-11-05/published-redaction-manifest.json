@@ -1,0 +1,102 @@
+{
+  "originalLocalFilesUnchanged": true,
+  "copiesMayBeRedacted": true,
+  "files": [
+    {
+      "path": "docs/history/2026-11-05/06_橙子生产级重构PRD.md",
+      "sourceSha256": "a9709db65d15b14a2cb49f1f9ab076bece6a17b2a3cb4224b45376d3ec7fe222",
+      "publishedSha256": "ed31e0a49fbef0530492cba556ec28a09cdb5d09383b7d74a097be9ba8e519c3",
+      "redacted": true
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/00_讨论基线与决策台账.md",
+      "sourceSha256": "4e4620148586ff5b3495ed90c6b17678a181fae28e2c946fe2c33b9a7e40f595",
+      "publishedSha256": "06044a5a21f6b12182294e96918eb4004285a384dddca6cf0cf922ade8bf3a7c",
+      "redacted": true
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/01_工程治理与证伪框架.md",
+      "sourceSha256": "69d2cc4e92ab05d34e1e856c8e8e5305730665c3cbb732d1a5ce07538794e969",
+      "publishedSha256": "69d2cc4e92ab05d34e1e856c8e8e5305730665c3cbb732d1a5ce07538794e969",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/02_历史组合去重与容量评估.md",
+      "sourceSha256": "cbbf64b02a91ff2df0c03416ad17b6c170a095865ff4d43abcfe7447712ee15e",
+      "publishedSha256": "cbbf64b02a91ff2df0c03416ad17b6c170a095865ff4d43abcfe7447712ee15e",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/03_交接业务复核与账号映射.md",
+      "sourceSha256": "f8703796f3f93374de207da8ca1062c7ceec0742652362af062fc8e6e3490f14",
+      "publishedSha256": "f8703796f3f93374de207da8ca1062c7ceec0742652362af062fc8e6e3490f14",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/04_智尚接口能力与系统协同.md",
+      "sourceSha256": "fd482bdbbb603482f10500289a6a94e5d3987ef1e45e76220c929dc41dfd04c8",
+      "publishedSha256": "6922eedf134bae9cf99ab2c4853e536f9c107673e2815768f43f0e8d5e5cbbb8",
+      "redacted": true
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/05_智尚只读验证与身份边界.md",
+      "sourceSha256": "24f10aa645898c1b347c87eabb5a7e7984d09aa3fc1f5dd35482eaefef9100ce",
+      "publishedSha256": "bdc262568e98b3ab6fdec8f4a0c388cf6580c32f5bba108f61e89c23c0ab8a62",
+      "redacted": true
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/06_整体架构与业务闭环.md",
+      "sourceSha256": "87aa79256e8f106eef3545d1b1e355a6c3eb8dcedc76ade08263aa8f38d22bbc",
+      "publishedSha256": "87aa79256e8f106eef3545d1b1e355a6c3eb8dcedc76ade08263aa8f38d22bbc",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/07_统一数据契约草案.md",
+      "sourceSha256": "d07c9cd0e618cc8047fd2618a645745ebcc9e10159517f57184ae4da8ad70b0d",
+      "publishedSha256": "d07c9cd0e618cc8047fd2618a645745ebcc9e10159517f57184ae4da8ad70b0d",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/08_整体方案审视与缺口清单.md",
+      "sourceSha256": "38326d6629b4cde6c1074ed1553be456a5105a6507ee2b5384644abbf4b799db",
+      "publishedSha256": "38326d6629b4cde6c1074ed1553be456a5105a6507ee2b5384644abbf4b799db",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/09_文档权威与多Agent开发协作规范.md",
+      "sourceSha256": "142c235472dca77da72c1f98a84df8ccfb72b370b1a141946453e7259b0f8b7a",
+      "publishedSha256": "142c235472dca77da72c1f98a84df8ccfb72b370b1a141946453e7259b0f8b7a",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/10_首条最小业务闭环与任务拆分.md",
+      "sourceSha256": "6c3c8a42d6c258a06c397885886b473c94538c84645ae0428589de2d61f9fbf1",
+      "publishedSha256": "6c3c8a42d6c258a06c397885886b473c94538c84645ae0428589de2d61f9fbf1",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/11_测试验收与问题定位规范.md",
+      "sourceSha256": "b8e2486436eb3c5b7c9e9505cb2ed9894d5ade0a4031a8a5d70d4fcf60dbec22",
+      "publishedSha256": "b8e2486436eb3c5b7c9e9505cb2ed9894d5ade0a4031a8a5d70d4fcf60dbec22",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/12_前端视觉延续与交互标准.md",
+      "sourceSha256": "d3accf0b8ad86ab1fc10bcfa94337e32e24b4f3e19ec48286425f3df6c91bdc4",
+      "publishedSha256": "d3accf0b8ad86ab1fc10bcfa94337e32e24b4f3e19ec48286425f3df6c91bdc4",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/13_技术架构与目录依赖基线.md",
+      "sourceSha256": "0c40d510566476fc3766ec8427a8f38b1b3c1ef9350dab7e3764afe1d0bf987f",
+      "publishedSha256": "0c40d510566476fc3766ec8427a8f38b1b3c1ef9350dab7e3764afe1d0bf987f",
+      "redacted": false
+    },
+    {
+      "path": "docs/history/2026-11-05/discovery/14_新会话启动与开发交付流程.md",
+      "sourceSha256": "75dd67555788224c182661b129904c53f3806a4bf7a84ad458cce246ab0fcc98",
+      "publishedSha256": "75dd67555788224c182661b129904c53f3806a4bf7a84ad458cce246ab0fcc98",
+      "redacted": false
+    }
+  ]
+}

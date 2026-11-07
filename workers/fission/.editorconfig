@@ -1,0 +1,44 @@
+# Fission 代码风格（PRD §8）—— .editorconfig 为唯一事实源
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# 源码统一 LF（.gitattributes 配合），解决方案/工程文件 CRLF
+[*.cs]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+
+[*.{csproj,sln,slnx,props,targets}]
+indent_style = space
+indent_size = 2
+end_of_line = crlf
+
+[*.{json,yml,yaml,md,html,js,css}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# C# 命名（PRD §8.2）
+[*.cs]
+dotnet_naming_rule.interface_severe.import_to_ide.severity = suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+csharp_prefer_braces = true:warning
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_expression_bodied_methods = when_on_single_line:silent
+
+# 格式化
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+dotnet_separate_import_directive_groups = false
+dotnet_sort_system_directives_first = true
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+
+# XML 文档（公共 API 中文注释，PRD §8.6）
+dotnet_diagnostic.CS1591.severity = suggestion

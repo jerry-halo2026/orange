@@ -1,0 +1,291 @@
+{
+  "sourceType": "user-owned fixed Git snapshot; local full clone retained outside tracked tree",
+  "commit": "c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9",
+  "historyMerged": false,
+  "nestedGitMetadataCopied": false,
+  "trackedFiles": 70,
+  "tree": "2a050237c692404e62c4928d1bea9e5806c3617f",
+  "files": [
+    {
+      "path": ".editorconfig",
+      "sha256": "928904CFB1A5BB4F9A5523854C7895B3BBFBF6BF2951EFF393C0BD91463D8B05"
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "C88B15F6FD1E7C85250BE59431D6E941FBA784EA3FFCDF85D114F40DE4FF956B"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "69A4FA77C1B4DF22EAC12266D6434A63EB24E3DD1449EC875EFED22229DF8516"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "BC6CE8E7BEB1F0DB3731E8D257ACC701F49283B9AC8F0A61EE8DF002814B39D1"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "DBE82861E94326EB58D6D17E6E1EA97ECB34107B50407011EDC6F232337CF063"
+    },
+    {
+      "path": "Fission.slnx",
+      "sha256": "5EDDC1C9DB9766A536CAC690D1355DEFAA3F8B07D50836D90F2DD2FC2FC31D8F"
+    },
+    {
+      "path": "PRD.md",
+      "sha256": "F76C8837A598BE93FE373EFE7695188822E32F7B65F2164B66F9CFB830D184E2"
+    },
+    {
+      "path": "README.md",
+      "sha256": "21930542B169D327BC19E051972BB4C209B4EC35D07E180F74422EDD180D4E8A"
+    },
+    {
+      "path": "docs/adr/001-dependency-composition.md",
+      "sha256": "26FB2DDA90DEA38A73AA4E8ABBB2361577997CC768069DEC56B0AA422B54C8FA"
+    },
+    {
+      "path": "docs/adr/002-material-transaction.md",
+      "sha256": "D83F6D17C201EB5C936B31C329FFC637EFADF69C08C35328927106421281B3DA"
+    },
+    {
+      "path": "docs/adr/003-contracts-ini-errors.md",
+      "sha256": "012FD3DDDD6A064473AFC547036061B106027604C8664574DFCDB16FAE941135"
+    },
+    {
+      "path": "docs/adr/004-bench-environment.md",
+      "sha256": "AC071267AB7908112D65B649E6C36774BEA8EC08EE69E2C14354D75EFC37FCA9"
+    },
+    {
+      "path": "docs/adr/005-pipeline-ordering.md",
+      "sha256": "BB887CC9913A346DFD7B2C453C2C3ADD5642FC1C76103EEDB82E41989025DD16"
+    },
+    {
+      "path": "docs/adr/006-bgm-asset-library.md",
+      "sha256": "83C2F0D45EB7292145B916CB4841BF88D1967EA9A41103798369042D6AF36046"
+    },
+    {
+      "path": "docs/adr/007-voice-asset-library.md",
+      "sha256": "4170BC93ACC4919024FD937B4A4BB97FBBC80CAFAD08745CDE0C9F21E405BA3F"
+    },
+    {
+      "path": "docs/bench/m1-normalize.md",
+      "sha256": "F42DC3E9CCF2623D461C32400F3DDF36A7D2E3D7950D97AFFB63C39160C234EF"
+    },
+    {
+      "path": "docs/contracts/align-strategies.json",
+      "sha256": "0A03357EBA421BB737101CA5AEC85BBADEC2AE5E1000898304144E9DD2DBEF0B"
+    },
+    {
+      "path": "docs/contracts/error-messages.zh.json",
+      "sha256": "0E752D9BC09692DA591CFE436980DB1DA5B260A9E4FF670F95F5CF84349D9EEB"
+    },
+    {
+      "path": "docs/contracts/ini-mapping-spec.md",
+      "sha256": "A87821EF85E69603FC1FBB3ABF76EC3317E63318013C61E5210186FB5485DAC0"
+    },
+    {
+      "path": "src/Fission.AI/Abstractions.cs",
+      "sha256": "54F233C52364F73C9357A6DB2168037C784FC7C2F2B163F97AAECE07E0D12D51"
+    },
+    {
+      "path": "src/Fission.AI/AiKeyStore.cs",
+      "sha256": "B584EB8B7B1273C4EB2680EE88FDA01AFEA32288B940D2FB92628EBA82C62B92"
+    },
+    {
+      "path": "src/Fission.AI/DeepSeekProvider.cs",
+      "sha256": "7D94AEAE6A868DC57B71618A7183E7EECD1954DA10336878FFDA2BD07A513AC6"
+    },
+    {
+      "path": "src/Fission.AI/DoubaoTtsProvider.cs",
+      "sha256": "26618B655DE84199F00945D27A716B90C527861A11003085440B479400B8F2D5"
+    },
+    {
+      "path": "src/Fission.AI/Fission.AI.csproj",
+      "sha256": "7B86A3CB31D83F4E8AF04FC2A2E0A9D70F32E82648F460E3E9615124F8805E47"
+    },
+    {
+      "path": "src/Fission.AI/OfflineScriptProvider.cs",
+      "sha256": "FD3E8F511889F306ED78C388CC03CAC61048EB791829AB5802780B1F5ACBDEA0"
+    },
+    {
+      "path": "src/Fission.AI/PromptTemplates.cs",
+      "sha256": "AC47DD8406C8D67F152CCE17B67991521C03EC8C05970B6B54E030D79DFC2FAF"
+    },
+    {
+      "path": "src/Fission.AI/VoiceCatalog.cs",
+      "sha256": "4DC877F3E43FB46C793670AB1294391157F446168DBACFA8EBBD1A98B83314C7"
+    },
+    {
+      "path": "src/Fission.Cli/Fission.Cli.csproj",
+      "sha256": "5212F51590D0D2E4542D913B26CF226CD2E85249B46F79B166689286CCC16E51"
+    },
+    {
+      "path": "src/Fission.Cli/Program.cs",
+      "sha256": "903CDA2AFE67FEDFA5B5D64E0523E5A22681451F72494EC2884AE08935D24F51"
+    },
+    {
+      "path": "src/Fission.Core/Abstractions/IMediaProbe.cs",
+      "sha256": "2E2F54451FAE2EB1BE2B970663968C15C9CE59C62EC1498B57EC266CCAE3B52E"
+    },
+    {
+      "path": "src/Fission.Core/Abstractions/IVideoEngine.cs",
+      "sha256": "77BB57BF437F519BBBE44A2CCABF20E2706426831BFFDDF19A11211231416E43"
+    },
+    {
+      "path": "src/Fission.Core/Engine/EnginePaths.cs",
+      "sha256": "7E09D8BA7E17A50EB6D66613B32F33A7DDD0823645442850B19E4458EEEB8EFF"
+    },
+    {
+      "path": "src/Fission.Core/Errors/FissionException.cs",
+      "sha256": "5812FC693F6644EB42496A3CEF718A51FFFEA53E69051EE9C6E19A00D7F3D6C3"
+    },
+    {
+      "path": "src/Fission.Core/Fission.Core.csproj",
+      "sha256": "61E3F2D043E37F0DB4BE1D8083DD31BEBBFBB8FDE2CF027327DB2556C16BC385"
+    },
+    {
+      "path": "src/Fission.Core/Jobs/FissionJob.cs",
+      "sha256": "10320A745721A3F8E7AB2EDDFD1AF90973FA4EAB082E47DC1E4D6C9DF09927F1"
+    },
+    {
+      "path": "src/Fission.Core/Jobs/JobEventBus.cs",
+      "sha256": "76E20D76BE2AD2EFEABE90146DD591E1824E4F79D5B66F875E1C5501286F76E7"
+    },
+    {
+      "path": "src/Fission.Core/Jobs/JobModels.cs",
+      "sha256": "852E16AA6173BEE9D5C8236C9ECBF379AB474A5BD87459767EE82C6826A234EA"
+    },
+    {
+      "path": "src/Fission.Core/Materials/MaterialPool.cs",
+      "sha256": "ACD74C7B975D88BE0EAD61A8D0DF53937C21497B680DBA9D7DEF8FB568D12F28"
+    },
+    {
+      "path": "src/Fission.Core/Pipeline/AlignStrategy.cs",
+      "sha256": "B6BB095652DE5A6B04E4F787773E92A89BCBF64874CB7064F6E080FCBC12C5A8"
+    },
+    {
+      "path": "src/Fission.Core/Pipeline/SplitPlanner.cs",
+      "sha256": "D1FB228A218924E0D1C20795CDB47B328AC86EE1697270FD09865214F863994B"
+    },
+    {
+      "path": "src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+      "sha256": "688E49C4908BD95BB239F4AFADBAEFCFF6BB8A433BFCA77175E15DC0BB29369C"
+    },
+    {
+      "path": "src/Fission.Core/Process/ProcessPool.cs",
+      "sha256": "13E7A79D029C413F96493C1841D8CDB58DFD2DCFDA65FA52CA83BEC67C2E58D1"
+    },
+    {
+      "path": "src/Fission.Core/Steps/StepAbstractions.cs",
+      "sha256": "9FA12C7B84220E282448409E504827621D65494A55D3EA7196123A52D89BA6FB"
+    },
+    {
+      "path": "src/Fission.Core/Util/Sanitize.cs",
+      "sha256": "26E2A9308453BD2C37CAF5A9C85FFF674FF19BD74B8CDD35689DDD19C8FCA117"
+    },
+    {
+      "path": "src/Fission.Providers/Assets/AssetRegistry.cs",
+      "sha256": "D931F94EF07B664C49A5F911F54816ADF988826CC62D6A748C871BDF3E490487"
+    },
+    {
+      "path": "src/Fission.Providers/Diagnostics/DoctorService.cs",
+      "sha256": "9D9297CA7A5429031C378B98A7245C23CA0E1F223BCEDFA3104BA2C0B5E11CD2"
+    },
+    {
+      "path": "src/Fission.Providers/Fission.Providers.csproj",
+      "sha256": "9061F927E9A98CE0CE0F6CD602FCBDE90D55A6C66737184BD7EC7D7061DCA11A"
+    },
+    {
+      "path": "src/Fission.Providers/Hardware/HardwareDetector.cs",
+      "sha256": "A1847CE58D51E8ECA194745DF353AAF9337AC04299B72CB7045967AEE0949D6F"
+    },
+    {
+      "path": "src/Fission.Providers/Media/CommandBuilders.cs",
+      "sha256": "12558C0E6AAD6B8B28ED11A4B3D40B2405FDB95ABA0D16AC9712756ED8A37D77"
+    },
+    {
+      "path": "src/Fission.Providers/Media/FFmpegProvider.cs",
+      "sha256": "77005CFE5DC26B8E9573525452D3DD9E987F8E9B8F8C83F9C7EDD50CBB841B62"
+    },
+    {
+      "path": "src/Fission.Providers/Media/FFprobeProvider.cs",
+      "sha256": "336772AC5AAD4EAA5CB3BDCC878DA77B387D07A1573943FC9A65DAF81E6069AC"
+    },
+    {
+      "path": "src/Fission.Providers/Media/SceneDetector.cs",
+      "sha256": "1E56D8BC1BEB713880997F59E23A25BA0CBD782841B9031606C7F34A618C3CE1"
+    },
+    {
+      "path": "src/Fission.Providers/Media/TransitionCatalog.cs",
+      "sha256": "03F2A388EAC7898C6B9A7B0E0EE7DBAA4F37C75512F1CC9BE6F0BD2C4E1D6083"
+    },
+    {
+      "path": "src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "sha256": "C78E1A1EB7BE6140A1C0FD513F48FE1F74FF70918DB54C407CAB4C3388A41DD2"
+    },
+    {
+      "path": "src/Fission.Steps/Fission.Steps.csproj",
+      "sha256": "7B86A3CB31D83F4E8AF04FC2A2E0A9D70F32E82648F460E3E9615124F8805E47"
+    },
+    {
+      "path": "src/Fission.Web/Fission.Web.csproj",
+      "sha256": "57470526817CC00F171458170D04C1CBE4498D18AA1B3FC127C47DD51B96D469"
+    },
+    {
+      "path": "src/Fission.Web/Program.cs",
+      "sha256": "FB4CD0C1DF6DFE2F4E2ED9F84A6CBF574F97B3B9C22082E9F25A1DA8A5BF7B94"
+    },
+    {
+      "path": "src/Fission.Web/Properties/launchSettings.json",
+      "sha256": "C67D73044037D4D64137ED6CABF711EC2085A83EDD35209B9322F91265710F70"
+    },
+    {
+      "path": "src/Fission.Web/appsettings.Development.json",
+      "sha256": "817DB0BF2ECCA78364C41DBAF7949BF2504CF47A1C3D0D54F3BE8178FEFC030B"
+    },
+    {
+      "path": "src/Fission.Web/appsettings.json",
+      "sha256": "2D8BB40059DF22089B94C025BE8BAAD5A869B72D4D755D199C872F03BFE6F225"
+    },
+    {
+      "path": "src/Fission.Web/wwwroot/index.html",
+      "sha256": "B915F70A1A4780C50D9244A7DC0B7C7C7CCE4E8E3481C8B0841E2F8AC4377F60"
+    },
+    {
+      "path": "tests/Fission.Bench/Fission.Bench.csproj",
+      "sha256": "FFE5BD094E46FA8B937FF6DE227EBAFA5A744FFE193DB75D4A6CD3FFB6667754"
+    },
+    {
+      "path": "tests/Fission.Bench/Program.cs",
+      "sha256": "2ED5A38D46E2040A755D0BD3EFEED9C6A7140370248100AB3D5B2AEE2A34921E"
+    },
+    {
+      "path": "tests/Fission.IntegrationTests/AiProviderTests.cs",
+      "sha256": "F6476FEBF8BFDFDD1688C349A23B0ED9A2744531DEF1927FD1ADF106B732AE31"
+    },
+    {
+      "path": "tests/Fission.IntegrationTests/CommandBuilderTests.cs",
+      "sha256": "63AA118AC26B069F03D0D7DEA2EF8CC6FEF5BF0B34434729101439D7ABFE4CDF"
+    },
+    {
+      "path": "tests/Fission.IntegrationTests/Fission.IntegrationTests.csproj",
+      "sha256": "6DD2E32FF6729518B51812BF0119D202B5006C8102C412047251F7D82000EAF8"
+    },
+    {
+      "path": "tests/Fission.UnitTests/CoreLogicTests.cs",
+      "sha256": "9712689A974A7257064FDBCCE439B228C2EE8B967E2FA9B65238074445C01B65"
+    },
+    {
+      "path": "tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "sha256": "C7A65190E98D2FF3028335DEA91DB3EEADA00A499E320981C11DBD03C4BEFAEF"
+    },
+    {
+      "path": "tools/csc-shim/README.md",
+      "sha256": "877AB2209EE615CE25E9FAB0C1AD0D57BE594EC1AA84163705B8CD787280DE0E"
+    },
+    {
+      "path": "tools/csc-shim/csc.bat",
+      "sha256": "5E385B1979523C8A0E366B24E088041E0447F04D5853B68A82737BF48EE6ABA0"
+    }
+  ],
+  "buildOrMediaRun": false
+}

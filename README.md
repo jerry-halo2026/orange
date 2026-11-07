@@ -1,3 +1,9 @@
+# orangeflim development repository
+
+Based on the original OpenFilm v0.3.0 desktop and Studio, fixed at 7713d38. This is not an official OpenFilm release. Development authority and current delivery state: [docs/README.md](docs/README.md). Fission source is under workers/fission; no engine assets, user media or credentials are included. dev is the permanent integration line; main and tags require operator confirmation. The upstream README below is retained for provenance, not a claim that Orange integration is complete.
+
+---
+
 <p align="center">
   <br>
   <img src="docs/logo-light.svg#gh-light-mode-only" alt="OpenFilm" height="72">

@@ -1263,7 +1263,8 @@
     "docs/execution/t05-path-readiness.json",
     "docs/execution/t01-fission-ci-runtime-validation.json",
     "docs/execution/t01-controlled-io-ci-runtime-validation.json",
-    "docs/execution/t05-controlled-io-readiness.json"
+    "docs/execution/t05-controlled-io-readiness.json",
+    "docs/execution/t01-auth-ci-refresh-runtime-validation.json"
   ],
   "preparationBoundary": "Actual hostedWindows43purepathpassed and localinternalaccesspolicyready are partialprep, no PG/V acceptance or trialscopeEthan signoff, no fullruntime/media/install/hardware."
 }

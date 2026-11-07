@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CIpinrefresh b869 sourcepeer/Rootactualshallow300+fullhistory353/N5a84 passed; runtime16realWindows proposed, no newhostedpassyet",
+  "phase": "Authd008CI/refreshedb869 acceptedactualsamebdcWindows300/43/34+353 withsource/runtimeindependentreview; nextprojects-admission actualconsumer, fullN1/pilotnotready",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -59,7 +59,7 @@
     "receipt": "2026-11-07-worktree-cleanup.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
-  "publication": "reviewedsource/sanitizeddocs topic1a28c5b published; actualWindows43+34 and companion331 passed; subsequent74f56fc receipt/currentreadiness localonly; dev41b/main/tag/settingsunchanged",
+  "publication": "auditedsource/sanitizeddocs topicbdc8857 published; actualWindows300+43+34 andcompanion353success; subsequentfc87receipt/currentledger localonly; dev41b/main/tag/remoteconfigunchanged",
   "handoff": "docs/discovery/18_Goal新会话交接包.md",
   "pilotReadiness": "docs/execution/pilot-readiness.json",
   "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
@@ -83,7 +83,7 @@
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
   "currentSliceReview": "docs/execution/t01-auth-ci-refresh-source-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
-  "runtimeVerification": "docs/execution/t01-controlled-io-ci-runtime-validation.json",
+  "runtimeVerification": "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
   "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
   "latestLocalEvidence": [
@@ -101,7 +101,8 @@
     "docs/execution/t05-material-pool-validation.json",
     "docs/execution/t02-auth-invalidation-validation.json",
     "docs/execution/t02-auth-invalidation-readiness.json",
-    "docs/execution/t01-auth-ci-refresh-validation.json"
+    "docs/execution/t01-auth-ci-refresh-validation.json",
+    "docs/execution/t01-auth-ci-refresh-runtime-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -116,8 +117,8 @@
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
-    "remoteTopicHead": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
-    "latestRuntimeReceiptCommit": "74f56fc54b1f834b586955ef13b699e29518645f",
+    "remoteTopicHead": "bdc88574797000291cb0c2b3be57df783254cedc",
+    "latestRuntimeReceiptCommit": "fc87f71308997f526f22d8e1e2bddd93d987adf7",
     "latestSourceAssembly": "b869ba207ecb6e194dd904c005ccb6f121e7b986"
   },
   "currentBlockers": [
@@ -144,9 +145,9 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "oneRootstandardWindows43+34+353 runtimeverification afterpolicy/audit/gates, not rerunoldhandle",
-    "projects-admission subset2source+2tests actualoriginalprojectsconsumer, privatecontrolleddeny marker only; no productioncontrolledactivation untilserver/pages/CLI/backgroundretain/drain consumerscomplete",
-    "realAuth D12purpose/identity stillpending, productmodelcalls0 unchanged"
+    "projects-admission guard withbrandedtrustedNode injection/OSstabledefaultcoord, actualprojectsIOincludingreadState/studioKey/libraryprefs beforewrite; no neweditor/protocol/owner",
+    "thenactualserver/pages/CLI plusoriginalexports/fetch/watch/autoVersions/hostpipeline retain/drain beforeproductioncontrolledactivation/owner/desktopAuthview; no foreverBUSYfakecompletion",
+    "realAuth D12purpose/identity unansweredonlycloudblocked; no budget reset orpaidmodelcalls"
   ],
   "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
@@ -226,10 +227,91 @@
       },
       "jobLogSHA256": "cc63934e30b1b71698ea670a354babde5c21748b3aca61365618c4c398bbc77b"
     },
-    "pendingAuthProducer": "newb869pinsAuthd008/103 andphase353 updatedandlocalverified, butactualhostednew353 stillpending; public1a28old331historyunchanged"
+    "pendingAuthProducer": "none for sourceAuthd008/b869CI; actual353passed, priorproducerreadiness.CI fields arefreeze-time historicalonly, currentruntime receipt authoritative",
+    "latestAuthAndNative": {
+      "head": "bdc88574797000291cb0c2b3be57df783254cedc",
+      "AuthSource": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+      "CISource": "b869ba207ecb6e194dd904c005ccb6f121e7b986",
+      "runId": 42426527222,
+      "jobId": 128565878701,
+      "actualImage": "windows-2025-vs2026",
+      "pureCounters": {
+        "tests": 300,
+        "pass": 300,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "path": {
+        "executed": 43,
+        "passed": 43,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0,
+        "trxSHA256": "6b376eafcbfa940b2b77ac30abfec6be4163fcd2e51d3219c1d2677087775dea"
+      },
+      "controlledIO": {
+        "executed": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0,
+        "trxSHA256": "14c1295b69ac0dea28e5bd6b09b71e0656dd7517385c7b8f2f9b7f98584f8d53",
+        "requiredTrueFileSymlinkCases": 2,
+        "transitionFallbackCases": 2
+      },
+      "companion": {
+        "id": 42426527245,
+        "url": "https://github.com/jerry-halo2026/orange/actions/runs/42426527245",
+        "head": "bdc88574797000291cb0c2b3be57df783254cedc",
+        "status": "completed",
+        "conclusion": "success",
+        "notProductAcceptance": true,
+        "jobId": 128565878646,
+        "counters": {
+          "tests": 353,
+          "pass": 353,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "sameHeadProducerProof": {
+          "status": "same-head-local-auth-policy-producers-verified",
+          "commit": "bdc88574797000291cb0c2b3be57df783254cedc",
+          "expectedCases": 353,
+          "sources": [
+            {
+              "path": "apps/desktop/src/auth-service.mjs",
+              "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+              "rawSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+            },
+            {
+              "path": "apps/desktop/src/auth-service.test.mjs",
+              "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+              "rawSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+            },
+            {
+              "path": "packages/openfilm/studio/server/project-access.mjs",
+              "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+              "rawSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+            },
+            {
+              "path": "packages/openfilm/studio/server/project-access.test.mjs",
+              "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+              "rawSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+            }
+          ]
+        },
+        "jobLogSHA256": "6f8cadd530dc47dcc5842f3d253d44b92c40edc61d53577f23ace9516152be58"
+      },
+      "sourceAndActualEvidenceReviews": "approved0P1/P2",
+      "noFullProductAcceptance": true
+    }
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-auth-ci-refresh-runtime-policy-review.json",
-  "nextOperation": "runtime16independentreview/immutableN5a/allnewhistoryaudit/freshpublictarget beforeonesource-triggeredWindowsjob; Nativeprojectsadmission4filecardnext, notwholebackgroundfence"
+  "currentMetadataReview": "docs/execution/t01-auth-ci-refresh-ledger-review.json",
+  "nextOperation": "freezeprojects-admission-v1 2source+2tests taskcard/policy/immutableN5a onmanagedE2; actualoriginalprojects APIsconsume sharedlease/deny markers, no productioncontrolledactivation beforeallrealconsumers"
 }

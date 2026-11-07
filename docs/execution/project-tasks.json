@@ -136,9 +136,11 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "Authd008sync103/policy92/CPU84Root279 ready localDI; CIpinsb869local300/353ready buthostedpending; actualnativeAuth/owner/UI/access/N1stillpending",
+      "deliverySlice": "Authd008103/policy92 localproducer/sourcepeer/Root279 plusactualbdcWindows353CI ready; nativeprojects/owner/HTTPWS/pages/CLI/UI/N1pending",
       "consumerDependency": "T01 cpu-isolation exact subset only",
-      "readinessEvidence": "docs/execution/t02-auth-invalidation-readiness.json"
+      "readinessEvidence": "docs/execution/t02-auth-invalidation-readiness.json",
+      "ciEvidence": "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
+      "ciEvidenceNotice": "priorfrozenproducerreadiness.CI metadata isfreeze-time only, currentCIevidence here; sourcebytes unchanged"
     },
     {
       "id": "T02.b",

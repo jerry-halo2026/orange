@@ -317,7 +317,8 @@ Classification native-extension, T02.a rev5. Engineering choice under Ethan-appr
 - [x] Add newbehavioral tests on actualcreateAuthService with optionalown-data hook; genuineRED before sourcechange. Preserveoriginal81 and exact6public methods. Strictbaddeps/getter/hookthrow/abortorder, reentrantdispose/signOut/clock/reentrantlogin, nativePromise rejection andunreadthenable negatives.
 - [x] Minimal synchronous notification after localgeneration/session/flight/state invalidation and before external cancellation. No recursivehook, no newauthorization fromcallback orlateeffects. Trustedvoid hook only; no generic callbackframework orarbitraryPromise securityclaim.
 - [x] Allnew+old81/policy92/CPU84pass0skip, syntax/diff0, source/secrecy/test logs report. Non-authorcodeSPEC/QUALITY andRootfreshverify/N5a beforelocalcommit/producerfreeze.
-- [ ] Laterconsumer mustimport actualfrozenproducer in originalutility/serverauthority; no standalonehelper declaredwholeAuth. Root CI singleton updates fixedproducer pins/counts onlyafternewsourcefreeze/review underseparatecard; authorscannoteditCI. ActualAuth/ownerpersistence/HTTPWS/pages/CLI/UI/保全/N1/T03 stillpending, fullpilot unchanged.
+- [ ] Laterconsumer mustimport actualfrozenproducer in originalutility/serverauthority; no standalonehelper declaredwholeAuth. ActualAuth/ownerpersistence/HTTPWS/pages/CLI/UI/保全/N1/T03 stillpending, fullpilot unchanged.
+- [x] Root separateCI15/16 singlewriter refreshedfrozenAuthd008 hashes/count353 atb869; actualsameheadbdc353passed underindependentreview. This closesonly theCI substep, notnativeconsumer/N1. AuthorsnevermodifiedCIoutsidetheirapprovedCIcard.
 
 ## 2026-11-08 original MaterialPool regression
 
@@ -338,6 +339,8 @@ Auth producer冻结回执：d008，源b4ddbc/test032130，原81字节前缀不�
 
 T01rev15, engineering-verification, Root-owned sharedCI singleton delegatedoneauthor inmanagedE3. SourceAuthd008 localproducerready andold81prefix preserved, new103/policy92/old158=353. Published1a28/331is historicalonly, no currentCIclaim. Exact3filewrite/card andproducerproof: execution/t01-auth-ci-refresh-assignment.json / t02-auth-ci-refresh-consumer-review.json. CI25e44 is editableGitbaseline, not immutableworkingbytes; do not repeatAuthrev5 inputclassification defect. Auth/policy/CPU/IOsource dependencies remainunchanged frozeninputs.
 
-- [ ] NewcurrentAuthfixture/retiredpin/count353 RED againstoldCIpin, minimal2hash+countliteral update andspecifictests only. Preserveold299security assertions/parser/43+34/graph/toolenv/workflowboundaries.
-- [ ] PureCItests plusphase1actual353pass0skip andsyntax/diff0; all34C#inputrawunchanged. Sourceauthor no .NET/entry/jobs/network/Gitwrites.
-- [ ] Freezeexactdiff/non-authorSPECQUALITY/Rootfreshverify+N5a andlocalcommit beforepublication. Rootactualremotejob staysseparatelease/audit/publictargetgate, no implicit newpass.
+- [x] NewcurrentAuthfixture/retiredpin/count353 RED againstoldCIpin, minimal2hash+countliteral update andspecifictests only. Preserveold299security assertions/parser/43+34/graph/toolenv/workflowboundaries.
+- [x] PureCItests plusphase1actual353pass0skip andsyntax/diff0; all34C#inputrawunchanged. Sourceauthor no .NET/entry/jobs/network/Gitwrites.
+- [x] Freezeexactdiff/non-authorSPECQUALITY/Rootfreshverify+N5a andlocalcommit beforepublication. Rootactualremotejob staysseparatelease/audit/publictargetgate, no implicit newpass.
+
+CI实际回执（2026-11-08）：代码b869/不可变运行候选bdc，Rootruntime16全部审查/新历史审计/即时public与旧终态/84门禁后只推单一codex主题。actualFission42426527222/job128565878701：Node22.23.4、SDK10.0.403、pure300和原43+34全0skip；同headcompanion42426527245/job128565878646实际353/353、4Auth/policy源码pin正确。两份日志/安全摘要/计数/工具/源/包闭包分别独审，回执fc87保留旧失败。新case只证明currenttuple/oldpin不再选，不声称旧bytes直接负例；depth1历史对象缺陷真实复现修复，Root误把phase1353套depth1的350/3实验亦保留，actualphase1是depth0。仅此CI任务局部完成，生产Auth/原nativeconsumers/owner/UI/N1/媒体安装/PG仍未完成。

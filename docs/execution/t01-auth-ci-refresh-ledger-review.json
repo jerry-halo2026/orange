@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/ci_refresh_source_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "medium",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "sourceBase": "fc87f71308997f526f22d8e1e2bddd93d987adf7",
+  "files": [
+    {
+      "path": "docs/discovery/07_统一数据契约草案.md",
+      "sha256": "5469d9f8bf10523ba2b760a02edc7067ce78b70b36d3aad9a9d94cec58d22b61"
+    },
+    {
+      "path": "docs/execution/status.json",
+      "sha256": "e6bb98f6317cf7b329cd3823ab435568dec081700eef8469ce13b64b73bb383f"
+    },
+    {
+      "path": "docs/execution/project-tasks.json",
+      "sha256": "96c05dd3627d13c7cd283e551934900f8bac33090e2c0a76a7c9343fa94dc6fd"
+    },
+    {
+      "path": "docs/execution/validation-summary.json",
+      "sha256": "eb0f3b4e864b1d0fc33bdfc5dc4e2bfbe14cdbbdd7973dd2f89d471d7b9a1dab"
+    },
+    {
+      "path": "docs/execution/pilot-readiness.json",
+      "sha256": "1cc47ab822f3106fd133070481be7cfb59ab718a8489388517a7b0eda7acc4e5"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+      "sha256": "cce93c01cb4831716c8ebaf8c3f66c6270ba221e93612e0cdd01b9f4f1c86823"
+    }
+  ],
+  "scope": "current6doc status accuracy only, source/actualruntime independentreviews separate",
+  "verifiedCurrentCI": {
+    "candidate": "bdc88574797000291cb0c2b3be57df783254cedc",
+    "primaryRun": 42426527222,
+    "primaryJob": 128565878701,
+    "companionRun": 42426527245,
+    "companionJob": 128565878646
+  },
+  "historicalProofsNotRewritten": true,
+  "remainingPG": 12,
+  "remainingV": 61,
+  "nextNativeWriterDispatched": false,
+  "fullTaskAccepted": false
+}

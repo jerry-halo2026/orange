@@ -405,3 +405,22 @@ test('an attribute holding JSON (Studio\'s data-props) is written in single quot
   assert.deepEqual(back.problems, []);
   assert.equal(back.value.tracks[0].clips[0].attrs['data-props'], list);
 });
+
+// Synthetic HTML only: Chinese native IDs are not UUIDs or a normalized business ID.
+test('native contract: Chinese clip IDs round trip without normalization', () => {
+  assert.equal(clipIdFor('assets/片头.mp4', []), '片头');
+  assert.equal(clipIdFor('assets/片头.mp4', ['片头']), '片头-2');
+  const text = page([[
+    '<video id="片头" src="assets/a.mp4#t=0.125,1.375"></video>',
+    '<video id="片头-2" src="assets/b.mp4#t=0,2" at="1.375"></video>',
+  ]]);
+  const first = readFilmFile(text);
+  assert.deepEqual(first.problems, []);
+  assert.deepEqual(first.doc.tracks[0].clips.map((clip) => clip.id), ['片头', '片头-2']);
+  assert.deepEqual(first.doc.tracks[0].clips[0].time, [0.125, 1.375]);
+  const html = filmHtml(first.value, text);
+  assert.equal(html, text);
+  const reopened = readFilmFile(html);
+  assert.deepEqual(reopened.problems, []);
+  assert.deepEqual(reopened.doc, first.doc);
+});

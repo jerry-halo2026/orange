@@ -66,3 +66,22 @@ test('isolated CLI installer refuses a linked bin directory before writing a com
     assert.throws(()=>installOpenfilmCommand(p.paths.userData,{env}),/link|alias/);assert.equal(existsSync(join(outside,'openfilm.cmd')),false);
   }finally{rmSync(root,{recursive:true,force:true})}
 });
+
+test('native contract: bundled CLI binds the workspace package entry', async () => {
+  const { readFileSync, realpathSync } = await import('node:fs');
+  const { fileURLToPath } = await import('node:url');
+  const { openfilmCli } = await import('./openfilm-command.mjs');
+  const packageRoot = fileURLToPath(new URL('../../../packages/openfilm/', import.meta.url));
+  const manifest = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8'));
+  assert.equal(manifest.name, 'openfilm');
+  assert.equal(manifest.version, '0.3.0');
+  assert.equal(manifest.bin.openfilm, 'bin/openfilm.mjs');
+  const cli = openfilmCli();
+  assert.equal(realpathSync(cli), realpathSync(join(packageRoot, 'bin', 'openfilm.mjs')));
+  const dir = mkdtempSync(join(tmpdir(), 'native-cli-binding-'));
+  const bin = installOpenfilmCommand(dir, { node: process.execPath, platform: 'win32' });
+  const launcher = readFileSync(join(bin, 'openfilm.cmd'), 'utf8');
+  assert.equal(launcher, commandScriptWindows(process.execPath, cli));
+  assert.ok(launcher.includes('"' + process.execPath + '" "' + cli + '" %*'));
+  assert.doesNotMatch(launcher, /npx|@latest|npm exec/);
+});

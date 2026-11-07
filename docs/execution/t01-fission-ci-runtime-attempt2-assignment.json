@@ -1,0 +1,171 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 12,
+  "authorAgent": "/root",
+  "actualModelAndEffort": "root backend/runtime not exposed or attested",
+  "classification": "engineering-governance/bounded-real-Windows-CI-verification",
+  "scope": "rootonly deliberate new validation after independently reviewedsource5ef; retainfirstterminalfailure, no automatic rerun/skip or new productscope",
+  "workingBaselineCommit": "5efdf773385ece34febb0250300559078e753587",
+  "dependencyCommits": [
+    "5efdf773385ece34febb0250300559078e753587",
+    "2785a2051fe0fb38834b1b500144ddc9d0ec7843",
+    "32c86cfacc1d5acdfbfb4406c970b6825e79e168",
+    "7d78d655574123578d05d990872c1f2cb307a088",
+    "4d32213f85bfc4d92648e7f05842704530500ff2",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "reservedattempt2; no remotejobactive/leaseissued, pendingpeer/immutableN5a/fullhistory/freshtargetchecks",
+  "writeAllowlist": [
+    "docs/execution/t01-fission-ci-runtime-validation.json"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "5efdf773385ece34febb0250300559078e753587",
+        "authorAgent": "/root/fission_ci_impl",
+        "source": [
+          {
+            "path": "scripts/fission-path-ci.mjs",
+            "sha256": "9f9a49a844a4a2a2afe51a6a79cb14f5ad4804f7f78720a533323e4774bed7a0",
+            "gitBlobSha256": "9f9a49a844a4a2a2afe51a6a79cb14f5ad4804f7f78720a533323e4774bed7a0"
+          },
+          {
+            "path": ".github/workflows/fission-path-policy.yml",
+            "sha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075",
+            "gitBlobSha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/fission-path-ci.test.mjs",
+            "sha256": "b448b336b1301a1cbeeb7d8d1ac95ef27df66a3b1aa0c10671888f842bc5313d",
+            "gitBlobSha256": "b448b336b1301a1cbeeb7d8d1ac95ef27df66a3b1aa0c10671888f842bc5313d"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-fission-ci-repair-source-review.json",
+          "sha256": "b7004d1f35165d01dda572a0b892bd91028ec49700a9a7809a38bedb065a94e9",
+          "gitBlobSha256": "b7004d1f35165d01dda572a0b892bd91028ec49700a9a7809a38bedb065a94e9"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "4d32213f85bfc4d92648e7f05842704530500ff2",
+        "authorAgent": "/root/t05_path_policy",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+            "sha256": "2c5e727ba0424bb4637969879484d8de657030df2f3300dbc3d49a74db8a3c80",
+            "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+            "sha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+            "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t05-ci-consumer-review.json",
+          "sha256": "99d593a8326b8f7701fbc6b67a1a2f459969a24b45d5dbd1f59c95fcd2dcbae8",
+          "gitBlobSha256": "99d593a8326b8f7701fbc6b67a1a2f459969a24b45d5dbd1f59c95fcd2dcbae8"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "remoteReservation": {
+    "state": "proposedattempt2, NOT running",
+    "owner": "/root",
+    "repository": "jerry-halo2026/orange",
+    "requiredVisibility": "public",
+    "branch": "codex/t05-path-policy",
+    "workflow": ".github/workflows/fission-path-policy.yml",
+    "runner": "standard windows-2025",
+    "maxActiveFissionRuns": 1,
+    "timeoutMinutes": 12,
+    "publication": "single nonforce fastforward explicitSHA:refs/heads/codex/t05-path-policy; no tags/main/dev/settings",
+    "companion": "existing phase1 pure governance workflow may also run on push in separate hosted checkout, no shared desktop/GPU/localdirectory",
+    "localN5aBoundary": "existing checker models local exclusiveE3/write set/source proofs; it does not claim remote runner allocation enforcement. Remote separation/concurrency is enforced by reviewedworkflow+GitHub job isolation and root record bound actualrepository/ref/commit/runID.",
+    "financial": "officialGitHub publicstandardrunner compute free, recheckpublictarget immediately beforepush; no paid/larger runner/artifact/cache/model usage",
+    "sources": [
+      "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+      "https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md"
+    ],
+    "previousRun": {
+      "id": 42406704504,
+      "head": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+      "status": "completed",
+      "conclusion": "failure",
+      "preservedReceipt": "docs/execution/t01-fission-ci-runtime-validation.json"
+    },
+    "expectedRemoteTopicHead": "ffe78966885f0a72c2fadfcbffa05997b3c43aed"
+  },
+  "preflight": [
+    "allsourceauthorsfrozen; repair5ef peer spec+qualitypass/root218pure+N5a84+latestcombo218/92/6/47/202(2oldPOSIXskip)/74nofail, no actual43yet",
+    "fresh publicOrange/origin/actions and exactexpectedremote topicffe; priorrun42406704504 muststillterminal; nevercancel/restartit",
+    "audit everyunpublishedblob beyondalready-public41b includinghistory, no privatekey/credential/JWT/runtime/rawuserdata or unrelatedarchives; selectedsource/privacyreviews supplements not replaces",
+    "onlyreviewedsource andsanitizeddocs staged; no .dev/node_modules/bin/obj/keys/runconfig/media/logs or artifacts",
+    "after peerreview immutablecommit, reusecleanmanagedE3 FF, externaltrustedN5a84 onactualtree/head before anypush",
+    "do not change remotepermissions/defaultbranch/protection/workflowsettings"
+  ],
+  "execution": [
+    "new source-triggeredrun, not rerunningoldfailedhandle; preserve firstattemptobjects in validation receipt before addingattempt2",
+    "publish reviewedtopic exactlyonce totriggernewworkflow without defaultbranch changes",
+    "read actualrun+jobs viaexistingGHCLI/API for same repo/ref/immutablepublishedhead, neverfaketest or call realmodel/Auth",
+    "observe actualstandardWindowsimage/node/SDK10.0.403/compilerhash/CLIshimequality and real43fullyexecuted includesbothsymbolic:true cases",
+    "rootpollsame verifiedlivehandle on timeout; no auto restart/cancel/rerun basedonlyobservation expiration",
+    "save sanitizedURL/jobstatus/exitcodes/tool/source/TRXhash/counts; no rawprivateoutput/uploadartifacts; result distinctpassed/ENVfailed/capabilitymissing/unknown",
+    "all43mustpasszero failed/skip/inconclusive; 142selftests/YAML/process0/oldsource/screenshot cannot substitute"
+  ],
+  "forbidden": [
+    "production/cloudbusinesswrites/auth/testaccounts/media/modelcalls",
+    "SDK/model/globaltoolinstall/OSsecuritypolicychanges/enginehost/Web/Bench/IntegrationTests",
+    "main/dev/tag/release/protectionconfig/forcepush",
+    "artifact/cache/rawlogs/TRX/workspace/privatefile uploads",
+    "changeCI/CSharp/checker/source while thisruntimecardactive; failure needsnewboundedsourcehandoff/card+TDD/review not muting tests"
+  ],
+  "recovery": "localtrees/archive/ignored/evidencepreserved; remotejob terminal failure staysfailure, gate notwaived; no destructive cleanup. CurrentunknowncapabilitydoesnotcompleteT05 orpilot.",
+  "fullTaskAccepted": false,
+  "remoteEvidenceUncertainty": "localProgramFilesX86 restoredSDK10.0.300, remoteexactstderrwasunavailable; actualrepair efficacy only established bynew10.0.403run"
+}

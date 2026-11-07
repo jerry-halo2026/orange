@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 12,
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardGitBlobSHA256": "b05f03af40cfa64158fd93ca78cce7ae18cc2f09a805cc9456401f848b84631b",
+  "scope": "new repairedsource-triggered single standardpublicWindows validation, preserves oldterminalfailure; no execution expansion",
+  "remaining": [
+    "actualE3immutableN5a84",
+    "historyaudit",
+    "freshexactremotetopic/oldrunterminal/publictarget/actions",
+    "rootleaseissue thennewsourcepush"
+  ],
+  "notProven": "remoteSDK10.0.403restore/testhost/43symbolic assertions stillpending"
+}

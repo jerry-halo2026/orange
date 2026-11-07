@@ -1,0 +1,46 @@
+{
+  "taskId": "T01",
+  "commit": "5efdf773385ece34febb0250300559078e753587",
+  "authorAgent": "/root/fission_ci_impl",
+  "reviewerAgent": "/root/fission_ci_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "9f9a49a844a4a2a2afe51a6a79cb14f5ad4804f7f78720a533323e4774bed7a0",
+      "gitBlobSha256": "9f9a49a844a4a2a2afe51a6a79cb14f5ad4804f7f78720a533323e4774bed7a0"
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "sha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075",
+      "gitBlobSha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "b448b336b1301a1cbeeb7d8d1ac95ef27df66a3b1aa0c10671888f842bc5313d",
+      "gitBlobSha256": "b448b336b1301a1cbeeb7d8d1ac95ef27df66a3b1aa0c10671888f842bc5313d"
+    }
+  ],
+  "scope": "two-file repairedcode approved for bounded actualWindowsCI verification only; no actualremote success yet",
+  "model": {
+    "requestedReviewer": "gpt-6-astra",
+    "effort": "high",
+    "backendAttested": false
+  },
+  "reviewFindings": {
+    "P1": 0,
+    "P2": 0
+  },
+  "TDD": "218total140pass78fail ->218pass0fail/skip/todo/cancel",
+  "changes": [
+    "vettedreadonly ProgramFiles(x86) explicitOSfact only",
+    "runtime-reused bounded fixedsafe subprocess diagnostics; no rawoutput or failure relaxation"
+  ],
+  "sourceAndWorkflowAndCSharpPins": "workflow6a and frozenCS d8/89 unchanged; context/TRX gate prefix unchanged",
+  "rootIndependentProofSHA256": "cda533f4d213f1bfcad0a7eaac73c84d45ac0d6dad16d2196cf1c231c42eda0d",
+  "originalFirstRemoteRun": "42406704504 remainsfailed; localSDK10.0.300 evidence notremote10.0.403proof",
+  "N5a": "actual84before/postsource/exactcommitted5ef"
+}

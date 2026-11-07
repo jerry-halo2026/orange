@@ -14,7 +14,7 @@
     "unitSubsetAccepted": false,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "first actualpublicWindowsCI failed afterverifiedSDK/compiler; companiongovernance passed; controlled offline A/B isolated missingProgramFiles(x86) localNugetdefect, new2file repaircard proposed",
+  "phase": "firstactualCI failurepreserved; 2fileOSfact/diagnosticrepair5ef peer+root218+latestcombinedtested; Rootattempt2card proposed pendingruntimegates, no activejob",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -63,9 +63,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-fission-ci-repair-assignment.json",
+  "currentTaskCard": "docs/execution/t01-fission-ci-runtime-attempt2-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t02-access-validation.json",
+  "currentSliceReview": "docs/execution/t01-fission-ci-repair-validation.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-fission-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -75,7 +75,8 @@
     "docs/execution/t02-native-validation.json",
     "docs/execution/t05-path-validation.json",
     "docs/execution/t01-canvas-validation.json",
-    "docs/execution/t02-access-validation.json"
+    "docs/execution/t02-access-validation.json",
+    "docs/execution/t01-fission-ci-repair-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -141,6 +142,6 @@
       "notFissionProof": true
     },
     "localDiagnosis": "ProgramFiles(x86)-only makesofflineSDK10.0.300restore0; currentbuilder andSystemDrive-onlyrestore1 ConfigurationDefaults; notsameasremoteSDK",
-    "currentSourceState": "7d78reviewedinitialprep; repair11proposed no sourcewriter yet"
+    "currentSourceState": "5ef peer-approved repair/source root218/wholecomboregressions; actualretry notstarted"
   }
 }

@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 11,
+  "approvalCommit": "2785a2051fe0fb38834b1b500144ddc9d0ec7843",
+  "approvalCardGitBlobSHA256": "eb172dde0823a6e7835789f28f62be25d6b9c900b8e324018b01ae3d38849646",
+  "sourceCommit": "5efdf773385ece34febb0250300559078e753587",
+  "authorAgent": "/root/fission_ci_impl",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "review": "docs/execution/t01-fission-ci-repair-source-review.json",
+  "root": {
+    "head": "2785a2051fe0fb38834b1b500144ddc9d0ec7843",
+    "source": {
+      ".github/workflows/fission-path-policy.yml": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075",
+      "scripts/fission-path-ci.mjs": "9f9a49a844a4a2a2afe51a6a79cb14f5ad4804f7f78720a533323e4774bed7a0",
+      "scripts/fission-path-ci.test.mjs": "b448b336b1301a1cbeeb7d8d1ac95ef27df66a3b1aa0c10671888f842bc5313d"
+    },
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "unit",
+        "exitCode": 0,
+        "counts": {
+          "tests": 218,
+          "pass": 218,
+          "fail": 0,
+          "skip": 0,
+          "cancel": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "module-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "test-syntax",
+        "exitCode": 0
+      }
+    ],
+    "sourceUnchanged": true,
+    "noDotnetOrEntryExecution": true,
+    "scope": "CI unit/parser/context/envbuilder only; no actualWindows43/SDK/host/media/remote success"
+  },
+  "reportSHA256": "2b9883d546004ab427c0222b5651248866d82aa63752e75f6b5020fb17d4ea2b",
+  "latestCombined": {
+    "head": "5efdf773385ece34febb0250300559078e753587",
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "CI-pure",
+        "exitCode": 0,
+        "tests": 218,
+        "pass": 218,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "access-policy",
+        "exitCode": 0,
+        "tests": 92,
+        "pass": 92,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-characterization",
+        "exitCode": 0,
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-pure-regression",
+        "exitCode": 0,
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "combined-affected",
+        "exitCode": 0,
+        "tests": 202,
+        "pass": 200,
+        "fail": 0,
+        "skip": 2,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "admission-self-tests",
+        "exitCode": 0,
+        "tests": 74,
+        "pass": 74,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      }
+    ],
+    "scope": "isolated dependency assembly regression only; no .NET/host/media/realAuth/wholePG/dev integration"
+  },
+  "latestCombinedSHA256": "7ec652b6b24dd243aa4d86ff05bda8557cfd3de1feb10e200a6686470861796f",
+  "exactSourceN5a": {
+    "head": "5efdf773385ece34febb0250300559078e753587",
+    "cases": 84,
+    "artifactSHA256": "83f326b0ba3483503853f322270a61587d32ac60c6375d1e108dbbfef85d1abc"
+  },
+  "actualRemoteResult": "firstffe run failed; repairedsource never run remotely yet",
+  "scope": "localrepair verification only",
+  "fullTaskAccepted": false
+}

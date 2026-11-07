@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 6,
+  "reviewerAgent": "/root/auth_hook_pool_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "84b360ff17c896d74a73000e9544842e08c8818fbdbde3fa5b13ed34182731bd",
+  "rootCause": "rev5 editableAuthsource/test wronglydeclared unchangedrawconsumerdependencies; actualDEPENDENCY_HASHcorrect, preserved",
+  "scopeChange": "none; sourcefrozen/no newedits, same2fileallowlist/author/API/tests/resources/prohibitions",
+  "baselineProofSHA256": "b60a38dae9e063f61581401ddc096179dc904f38c7964bb26cd49bcc3a82beb1",
+  "sourceReview": "auth_invalidation_review astra/high specqualitypass0P1/P2",
+  "rootActualTests": 279,
+  "coverageBoundary": "N5a unchangedimmutableCPU+policy/worktree/writelease gate ONLY; newnativeExtensionBaseline NOT automaticallycheckedbyN5a. SeparateimmutableGit/old81prefix/newhash/diff/peer/Root279required.",
+  "executionOrder": [
+    "immutableanchor",
+    "targettreeupdatepreserve2dirtysource",
+    "strongnewhashcheck",
+    "actualunmodifiedN5a",
+    "strongnewhashcheckagain",
+    "thenlocalcandidatecommit"
+  ],
+  "rev5FailureReclassifiedAsPass": false,
+  "newCloudMediaOrCIPermission": false,
+  "fullTaskAccepted": false
+}

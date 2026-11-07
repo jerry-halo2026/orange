@@ -285,7 +285,7 @@ Only files registered as this helper's current attempt-owned audio copy/generate
 - [x] Genuine new file-symlink cases must exist; local EPERM is an ENV failure, not return/skip/PASS. Historical local ENV failures remain recorded. The separately reviewed hostedCI run42419906355 has now executed both truefilelink cases and all34passed, so this local-ENV gate is closed only for the controlled-fileIO subset. Old43 proof alone never covered new I/O.
 - [x] SDK help actually advertises --artifacts-path for restore/test/build; use owned new per-project artifacts and verify paths, no overwriting old bin/obj; absent capability stops. Compile actual Providers via original Unit graph, not stub/reflection/temp project. Root independent tests and non-author source/runtime-scope review beforecommit.
 
-- [ ] Separately rerun original standalone MaterialPool confirm-count tests under a new bounded approved test card before claiming those original test cases passed. Source/fixtures are unchanged, and the selected43+34 classes exercise originalPool behavior through RunAsync, but do not substitute for this standalone suite. No new runtime filter was smuggled into rev14.
+- [x] Separately rerun original standalone MaterialPool confirm-count tests under a new bounded approved test card before claiming those original test cases passed. Source/fixtures are unchanged, and the selected43+34 classes exercise originalPool behavior through RunAsync, but do not substitute for this standalone suite. No new runtime filter was smuggled into rev14.
 
 ### Handoff limits
 No real CLI/Web/config/hardware/media/private engine or worker/admission/actualPlan protocol launch. Original early hardware probes/config defaults remain unsafe. RuntimePathsIsolated staysfalse; only protected file-copy/archive/original-callsite behavior under Fake codecs may be claimed. New csproj graph and added files require coordinator's later separate CI input-closure+new test-result gate change; source author cannot touch CI. No original43/oldhead green used as new helper coverage. Source, logs, package versions, scope failures, all first attempts retained under .dev/fission-io. Mac arm64 still untested.
@@ -323,6 +323,10 @@ Classification native-extension, T02.a rev5. Engineering choice under Ethan-appr
 
 Classification native-reuse, T05.a rev3 Rootverificationonly; this discharges explicitlyunrun originalstandalone suite, notnewfeature ormedia capacity. Exact6 in-memory tests reside originalCoreLogicTests.cs, not a newfile; sourceandalgorithmunmodified. The originalConcurrent20Workers unit is only syntheticmemory reservation, not20realmedia load. Inputs/exacttools/paths/commands in execution/t05-material-pool-assignment.json.
 
-- [ ] Non-authorsafeinput/cardreview, immutableN5a84 on managedE3 before Rootlocal.NET; no existingNugetconfig/privatefeed/network/SDKinstall.
-- [ ] Freshownoffline16packagecache/artifacts, preinstalledSDK10.0.300 oneSDKinventory andrealX64host/pfx86; unchangedoriginal4project forcedcompile/4Csc, then exactMaterialPoolTests6only.
-- [ ] Record exact6/6/allnames/0skip withrealTRX/source/compiler/hash; failures remainfail, no automatic rerun/weaken. Peeractualscope review andN5a, onlythenclose priorstandalone pendingcheckbox. No realhost/media/T05.b/fullT05/PG inference.
+- [x] Non-authorsafeinput/cardreview, immutableN5a84 on managedE3 before Rootlocal.NET; no existingNugetconfig/privatefeed/network/SDKinstall.
+- [x] Freshownoffline16packagecache/artifacts, preinstalledSDK10.0.300 oneSDKinventory andrealX64host/pfx86; unchangedoriginal4project forcedcompile/4Csc, then exactMaterialPoolTests6only.
+- [x] Record exact6/6/allnames/0skip withrealTRX/source/compiler/hash; failures remainfail, no automatic rerun/weaken. Peeractualscope review andN5a, onlythenclose priorstandalone pendingcheckbox. No realhost/media/T05.b/fullT05/PG inference.
+
+Auth producer门禁建模纠正（2026-11-08）：rev5已完成103Auth+92policy+84CPU与非作者源码审查，但Root错误把本次允许修改的Auth源码/测试列入必须保持旧raw字节的admission.dependencies，故写后外置N5a正确拒绝DEPENDENCY_HASH。修订rev6仅将274b列作editable native baseline（Git源码pin/旧81前缀/实际diff/独审/Root279为证），保留不可变Git原件；实际消费且不修改的acc27策略及CPU仍在原immutabledependency验证。作者已冻结，不再改源；新卡独审、不可变提交及实际N5a通过后才可提交候选。检查器、写集、测试、权限和高风险语义均不放宽，旧拒绝保留。
+
+原MaterialPool独立回归回执：4152242记录实际6/6、0skip，Root新隔离offlineSDK10.0.300/4项目4Csc/X64；非作者material_pool_actual_review规格/质量批准，写后及精确回执提交N5a84通过。仅该先前未选测项关闭，不将内存20worker单测冒充媒体负载。

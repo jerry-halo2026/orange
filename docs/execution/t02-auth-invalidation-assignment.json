@@ -1,6 +1,6 @@
 {
   "taskId": "T02.a",
-  "assignmentRevision": 5,
+  "assignmentRevision": 6,
   "authorAgent": "/root/auth_invalidation_impl",
   "requestedModel": "gpt-6.1-sol",
   "requestedEffort": "high",
@@ -11,12 +11,13 @@
   "dependencyCommits": [
     "23ec01647c5e6565fa384bf0c815a04ef509f379",
     "274b80850dc08297d2b9c9f3631793c79af375d8",
-    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+    "9079c513d163441dc639fff5fc282c38a8bd7c94",
+    "acc27c4d119fd150331b788b84067858b48be9f4"
   ],
   "worktreePath": "E:/CodexData/worktrees/orange-t02-native/orange",
   "branch": "codex/t02-native-characterization",
   "status": "active",
-  "dispatchState": "reserved notdispatched untilpolicyreview/immutableN5a",
+  "dispatchState": "authorfrozen; reservedhandoff only gateverification/commit afternewpolicyreview/N5a, nonewsourcechanges",
   "writeAllowlist": [
     "apps/desktop/src/auth-service.mjs",
     "apps/desktop/src/auth-service.test.mjs"
@@ -67,14 +68,9 @@
       },
       {
         "taskId": "T02.a",
-        "commit": "274b80850dc08297d2b9c9f3631793c79af375d8",
-        "authorAgent": "/root/auth_service_impl",
+        "commit": "acc27c4d119fd150331b788b84067858b48be9f4",
+        "authorAgent": "/root/access_policy_impl",
         "source": [
-          {
-            "path": "apps/desktop/src/auth-service.mjs",
-            "sha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
-            "gitBlobSha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac"
-          },
           {
             "path": "packages/openfilm/studio/server/project-access.mjs",
             "sha256": "4e895438f0f818f7ce6b628a07ca5dc78dae2738480f090dea3ad5cb31d4b001",
@@ -83,20 +79,15 @@
         ],
         "fixtures": [
           {
-            "path": "apps/desktop/src/auth-service.test.mjs",
-            "sha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
-            "gitBlobSha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b"
-          },
-          {
             "path": "packages/openfilm/studio/server/project-access.test.mjs",
             "sha256": "7d13b1ceb8440bbac187065cd7c8eaab39049ebaa1d894fa6d4e31cc616c36c4",
             "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
           }
         ],
         "review": {
-          "path": "docs/execution/t02-auth-hook-consumer-review.json",
-          "sha256": "124e8b10f439f8b68629036370db2bf89105ff2bfbbd8e8ae98e2f14c6f2c2cc",
-          "gitBlobSha256": "124e8b10f439f8b68629036370db2bf89105ff2bfbbd8e8ae98e2f14c6f2c2cc"
+          "path": "docs/execution/t02-access-auth-consumer-review.json",
+          "sha256": "d37292c8f63386777cc89876e19327484f322d099b697baa37d52b82d1b6973f",
+          "gitBlobSha256": "d37292c8f63386777cc89876e19327484f322d099b697baa37d52b82d1b6973f"
         }
       }
     ],
@@ -156,5 +147,44 @@
     "Gitstage/commit/merge/push/reset/clean/cleanup orsubagents"
   ],
   "report": ".dev/auth-invalidation/report.json",
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "nativeExtensionBaseline": {
+    "commit": "274b80850dc08297d2b9c9f3631793c79af375d8",
+    "authorAgent": "/root/auth_service_impl",
+    "kind": "editable originalnative implementation, NOT unchangedconsumedworktreeinput",
+    "source": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "gitBlobSha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac"
+      }
+    ],
+    "fixtures": [
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "gitBlobSha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b"
+      }
+    ],
+    "requiredEvidence": "originalGit producerblobs remainimmutable, exact2filetaskdiff underallowlist plus unchangedold81prefix/newbehavioralRED/sourcepeer andRoot279 verified; no claimmodifiedworkingbytes equalbaseline",
+    "frozenNewCandidate": {
+      "moduleSHA256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "testSHA256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "sourceReviewer": "/root/auth_invalidation_review",
+      "spec": "approved",
+      "quality": "approved",
+      "P1": 0,
+      "P2": 0,
+      "rootPureTests": 279,
+      "sourceChangesAfterReview": false
+    }
+  },
+  "handoff": {
+    "previousRevision": 5,
+    "previousApprovalCommit": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+    "previousCardSHA256": "350e4080529e311921d5704758196cc2371ac01b73adf1932b78296a55578412",
+    "reason": "RootmisclassifiededitableAuthsource/test as unchangedfrozenconsumerinputs; trustedpostwriteactualDENIED DEPENDENCY_HASH correctly",
+    "newSourceEditsAllowed": false,
+    "scopeChange": "none; same2paths/hookAPI/tests/resources/author onlypropernativeextensionlineage vsunchangedpolicydependency",
+    "required": "freshnon-authorpolicyreview/immutableanchor/targetFFpreserving2frozenmodifiedfiles/freshN5a beforecommit; no checkermodification/muting/forcedpass",
+    "oldFailurePreserved": ".dev/native-identity-next/auth-post-write-admission.stderr"
+  }
 }

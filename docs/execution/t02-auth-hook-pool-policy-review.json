@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/auth_hook_pool_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCards": {
+    "Auth": "a6ac68c57c02b8ac4ba551a0dea56971b35433c8ca2fe3fad66898cdfa307bf8",
+    "Pool": "36105f0c126bf3bfc9bdc7f0ccf051763030dbb9d2e78736d6b7d250177547ee"
+  },
+  "frozenCards": {
+    "Auth": "350e4080529e311921d5704758196cc2371ac01b73adf1932b78296a55578412",
+    "Pool": "564125293cbdeda026a161f38c1baffb20447bcee1c95672193f2c0376cc5d6c"
+  },
+  "finalOnlyChanges": "approvedproofverdicts andsource/card/activecarddigestrefs, no scope/permission/APIchange",
+  "consumerProofs": [
+    {
+      "path": "docs/execution/t02-auth-hook-consumer-review.json",
+      "sha256": "124e8b10f439f8b68629036370db2bf89105ff2bfbbd8e8ae98e2f14c6f2c2cc"
+    },
+    {
+      "path": "docs/execution/t05-material-pool-consumer-review.json",
+      "sha256": "c164fc2007d909212d561b07fe9f54eff0d663343c8022e12bf0c541b24f35d5"
+    }
+  ],
+  "actualCodeRisk": "existing request /auth/v1/user401403 aborts before revalidate invalidation; author mustcapture actualbehavior RED andretire actualoldpolicyhandle beforeabort/bodycancel, not onlyappendhook to invalidate",
+  "requiredRemaining": [
+    "immutablecardcommit",
+    "managedtreesFF/currentrawsourceproofs",
+    "trustedexternalN5a84 actualeach target",
+    "authsourceTDD andnon-authorreview/rootverify",
+    "Rootnewownedofflineexact6actualtests andpeer evidence"
+  ],
+  "wholeTaskAccepted": false
+}

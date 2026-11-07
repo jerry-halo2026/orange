@@ -308,3 +308,21 @@ Coordinator single-root-CI writer taskT01rev13 consumes source-reviewed IO6048 a
 计划状态审查纠正（2026-11-08）：受控IO source6048及真实Windows34通过已证步骤逐项勾选，避免恢复时重复实现；原独立MaterialPool confirm-count测试未在本次43+34过滤器选择，单列未完成，不能因代码未改而声称已实跑。该剩余选测及完整宿主/媒体/试用门禁保留，不缩试用范围。
 
 同类状态精确化：Authservice local refinement四项也已由274b与t02-auth-service-validation的81Auth/92policy/84CPU及独审/总控验证满足，勾选只覆盖本地注入服务，不代表真实Auth/父通道/持久归属/UI或N1/T03。D12与保全/资源退役仍待后续原生接线。
+
+
+## 2026-11-08 Auth synchronous invalidation producer
+
+Classification native-extension, T02.a rev5. Engineering choice under Ethan-approved N0: future actualAuth and access authority share originalStudio utility, not copiedcrossprocessdeadline. First freeze the smallest missing synchronous signal producer, before anydependentcontroller/sourcewriter. Exact API/order/reentrancy/negativefixtures andtwofile write set: execution/t02-auth-invalidation-assignment.json; Auth274b andpolicyacc27 are inputs, not a declaration of N1.
+
+- [ ] Add newbehavioral tests on actualcreateAuthService with optionalown-data hook; genuineRED before sourcechange. Preserveoriginal81 and exact6public methods. Strictbaddeps/getter/hookthrow/abortorder, reentrantdispose/signOut/clock/reentrantlogin, nativePromise rejection andunreadthenable negatives.
+- [ ] Minimal synchronous notification after localgeneration/session/flight/state invalidation and before external cancellation. No recursivehook, no newauthorization fromcallback orlateeffects. Trustedvoid hook only; no generic callbackframework orarbitraryPromise securityclaim.
+- [ ] Allnew+old81/policy92/CPU84pass0skip, syntax/diff0, source/secrecy/test logs report. Non-authorcodeSPEC/QUALITY andRootfreshverify/N5a beforelocalcommit/producerfreeze.
+- [ ] Laterconsumer mustimport actualfrozenproducer in originalutility/serverauthority; no standalonehelper declaredwholeAuth. Root CI singleton updates fixedproducer pins/counts onlyafternewsourcefreeze/review underseparatecard; authorscannoteditCI. ActualAuth/ownerpersistence/HTTPWS/pages/CLI/UI/保全/N1/T03 stillpending, fullpilot unchanged.
+
+## 2026-11-08 original MaterialPool regression
+
+Classification native-reuse, T05.a rev3 Rootverificationonly; this discharges explicitlyunrun originalstandalone suite, notnewfeature ormedia capacity. Exact6 in-memory tests reside originalCoreLogicTests.cs, not a newfile; sourceandalgorithmunmodified. The originalConcurrent20Workers unit is only syntheticmemory reservation, not20realmedia load. Inputs/exacttools/paths/commands in execution/t05-material-pool-assignment.json.
+
+- [ ] Non-authorsafeinput/cardreview, immutableN5a84 on managedE3 before Rootlocal.NET; no existingNugetconfig/privatefeed/network/SDKinstall.
+- [ ] Freshownoffline16packagecache/artifacts, preinstalledSDK10.0.300 oneSDKinventory andrealX64host/pfx86; unchangedoriginal4project forcedcompile/4Csc, then exactMaterialPoolTests6only.
+- [ ] Record exact6/6/allnames/0skip withrealTRX/source/compiler/hash; failures remainfail, no automatic rerun/weaken. Peeractualscope review andN5a, onlythenclose priorstandalone pendingcheckbox. No realhost/media/T05.b/fullT05/PG inference.

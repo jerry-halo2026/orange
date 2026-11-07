@@ -1,0 +1,175 @@
+{
+  "taskId": "T05.a",
+  "assignmentRevision": 3,
+  "authorAgent": "/root",
+  "actualModelAndEffort": "root backendnotexposed",
+  "classification": "native-reuse/isolatedoriginalunitregression",
+  "scope": "originalMaterialPoolTests exact6 in-memory cases, originalsource unchanged, no newfilter/job/CI/media or production code",
+  "workingBaselineCommit": "23ec01647c5e6565fa384bf0c815a04ef509f379",
+  "dependencyCommits": [
+    "23ec01647c5e6565fa384bf0c815a04ef509f379",
+    "25e44b9f274a8133df7e8d641ac18152842b3862",
+    "6048b20fe212ceac88ecf729d465213e2b8d362b",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "reserved notrunning untilpolicyreview/immutableN5a",
+  "writeAllowlist": [
+    "docs/execution/t05-material-pool-validation.json"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t02-auth-invalidation-assignment.json",
+        "assignmentRevision": 5,
+        "sha256": "350e4080529e311921d5704758196cc2371ac01b73adf1932b78296a55578412"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "25e44b9f274a8133df7e8d641ac18152842b3862",
+        "authorAgent": "/root/ci_io_expansion_impl",
+        "source": [
+          {
+            "path": "scripts/fission-path-ci.mjs",
+            "sha256": "a8b62577dc81f38f8087d81cbb4a68e33898ccaecb1d3e771b265d2c61939d2f",
+            "gitBlobSha256": "a8b62577dc81f38f8087d81cbb4a68e33898ccaecb1d3e771b265d2c61939d2f"
+          },
+          {
+            "path": ".github/workflows/fission-path-policy.yml",
+            "sha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5",
+            "gitBlobSha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5"
+          },
+          {
+            "path": ".github/workflows/phase1.yml",
+            "sha256": "87760b8503659337ed95489f5915085c80b5753648fbcb196b9649ac003ddecb",
+            "gitBlobSha256": "87760b8503659337ed95489f5915085c80b5753648fbcb196b9649ac003ddecb"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/fission-path-ci.test.mjs",
+            "sha256": "01f98d8dfd8811872607180835421f7c551ef5c3b7ff93b31c188f243d81b26d",
+            "gitBlobSha256": "58cc6048a7db909b56cf4dbd2dff3448225321f3fbd366ba5df45f85638172cc"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-controlled-io-ci-source-review.json",
+          "sha256": "0fd752f90904543c7e91ec0da561e75c5115d42d45a89301e66a6500b68b0e99",
+          "gitBlobSha256": "0fd752f90904543c7e91ec0da561e75c5115d42d45a89301e66a6500b68b0e99"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+        "authorAgent": "/root/fission_io_impl",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245",
+            "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+            "sha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+            "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+            "sha256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c",
+            "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+            "sha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28",
+            "gitBlobSha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+            "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+            "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+            "sha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65",
+            "gitBlobSha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t05-material-pool-consumer-review.json",
+          "sha256": "c164fc2007d909212d561b07fe9f54eff0d663343c8022e12bf0c541b24f35d5",
+          "gitBlobSha256": "c164fc2007d909212d561b07fe9f54eff0d663343c8022e12bf0c541b24f35d5"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-original-materialpool-regression",
+  "runtime": {
+    "toolchain": "existingSDK10.0.300 only, ownsingleSDKinventoryjunction plusrealX64host/pfx86, originalprops/shim/CSunchanged, actualcompiler/version/hash andrealtesthostrecorded",
+    "paths": "own new .dev/material-pool/run1 only for HOME/ProgramData/Nuget/cache/temp/globaljson/artifacts/results; checkedordinaryancestors no old bin/obj overwrite, sourcebefore/after hashes",
+    "restore": "freshgeneratedclearofflineconfig pointsreadonlyown E3 .dev/fission-io/offline-feed16approvednupkg artifacts only; ownnewpackagecache/artifacts. NOexistingNugetconfigread/publicnetwork/feed/install/auditdisable/SDKworkloads.",
+    "commands": [
+      "dotnet restore originalUnit --configfile ownoffline --packages ownnewpackages --artifacts-path ownnewbuild",
+      "dotnet build originalUnit --no-restore --no-incremental --artifacts-path ownnewbuild -v:diag",
+      "dotnet test originalUnit --no-build --no-restore --artifacts-path ownnewbuild --filter FullyQualifiedName~Fission.UnitTests.MaterialPoolTests --logger trx;LogFileName=material-pool.trx --results-directory ownresults"
+    ],
+    "cases": [
+      "Reserve_ThenConfirm_AudioConsumedOnce",
+      "Reserve_SameVideoCannotDoubleReserve",
+      "AudioUses_N_AllowsNConfirmations",
+      "Release_RollbackMakesAudioAvailableAgain",
+      "CombinationDedup_SameAudioSameVideosRejected",
+      "Concurrent20Workers_ZeroDoubleReservation"
+    ],
+    "expected": "exact6executed6passed0skip/fail/inconclusive/allnames unique andclassmatches. Original Concurrent20Workers is only in-memory syntheticunit, NOT20media workload/stress/hardwarecapacity.",
+    "build": "sameoriginalUnit/Core/Steps/Providers graph4actualCsc targets, sourceclosureunchanged provenCI34inputs; no alternateharness/stub/testproject/enginebinary",
+    "noSourceChanges": true
+  },
+  "forbidden": [
+    "source/CSharp/props/shim/project/lock/CI/docsotherthanownedreceipt/checker changes",
+    "wholeSolution/otherfilters/testdiscovery/Integration/CLI/Web/doctor/Bench/media/hardware/ProcessPool/privatecodec",
+    "network/privateconfig/SDK/auditsecuritychanges/model/remotejobs/push/production/cloudbusinesswrites",
+    "eraseoldartifacts/untracked/archive/otherworktrees"
+  ],
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,55 @@
+{
+  "taskId": "T05.a",
+  "commit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+  "authorAgent": "/root/fission_io_impl",
+  "reviewerAgent": "/root/auth_hook_pool_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245",
+      "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "sha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+      "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "sha256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c",
+      "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+      "sha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28",
+      "gitBlobSha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+      "sha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65",
+      "gitBlobSha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65"
+    }
+  ],
+  "scope": "safe bounded originalMaterialPoolTests6 verificationinput only, no sourcewrite, nottestpass yet",
+  "provenance": "IO4files by fission_io_impl; MaterialPool/CoreLogic unchanged originalc28810b import, not falsely newlyauthored",
+  "priorIOReady": "docs/execution/t05-controlled-io-readiness.json",
+  "fullTaskAccepted": false,
+  "approval": {
+    "date": "2026-11-08",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "safeexactconsumerinput only, notnewimplementation/testpass"
+  }
+}

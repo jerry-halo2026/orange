@@ -16,7 +16,7 @@
     "unitSubsetScope": "EnginePathPolicyTests43 only, actual hostedWindows; originalwholeengine/media nottested",
     "purePolicyReadiness": "docs/execution/t05-path-readiness.json"
   },
-  "phase": "Auth2file localDI and originalFission4file controlledIO designs independently approved; actualsourcewriters require immutableper-treeN5a, realAuth/host/media notadmitted",
+  "phase": "T02.a Authservice rev4 and T05.a controlledIO rev2 actualper-treeN5a84admitted; two originalsourcewriters TDD active, no realAuth/host/media",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -121,15 +121,42 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "immutablecards, reuseactualmanagedE2/E3 fromdeclaredreviewed06e737 andactualtrustedN5a84each",
-    "Auth localDI and originalFission directRunAsync/Fakecodec IO canimplement independently; no realAuth/cloudmedia/host"
+    "reviews next available slot; no shared source/CI/rootlock writers",
+    "realAuth/D12pending onlyrealrequests; Root later separateactualCIclosure update fornewIO notold43coverage"
   ],
   "parallelTaskCards": [
     "docs/execution/t02-auth-service-assignment.json",
     "docs/execution/t05-controlled-io-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
-  "activeWriters": [],
+  "activeWriters": [
+    {
+      "agent": "/root/auth_service_impl",
+      "taskId": "T02.a",
+      "assignmentRevision": 4,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "cardSHA256": "d342d9546e9f2a99a7e89e70b9c4849b8061468cf1e677be9cfe8aece16564b0",
+      "N5a": 84,
+      "sourceScope": "2desktopAuthfiles, injectedtransportonly"
+    },
+    {
+      "agent": "/root/fission_io_impl",
+      "taskId": "T05.a",
+      "assignmentRevision": 2,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "cardSHA256": "37bda3a47e3d30faa4d58edfa118de3879a9b0fe907b3cad2d5704a295df53f5",
+      "N5a": 84,
+      "sourceScope": "4Core/Providers/Unitfiles, syntheticfileIO/Fakecodeconly"
+    }
+  ],
   "ciReadiness": {
     "firstActualRun": {
       "id": 42406704504,

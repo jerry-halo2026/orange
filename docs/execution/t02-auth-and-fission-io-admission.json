@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-08",
+  "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+  "trustedGateCommit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+  "trustedGateGitBlobSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+  "actualTrees": [
+    {
+      "id": "auth",
+      "admitted": true,
+      "cases": 84,
+      "head": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "revision": 4,
+      "artifactSHA256": "9bb0647b1a9513a2ccd152c08e7ce4eefa3f6b28c88ce46c82f7582919401d04"
+    },
+    {
+      "id": "io",
+      "admitted": true,
+      "cases": 84,
+      "head": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "revision": 2,
+      "artifactSHA256": "c5106c0235b53820458ca94a00b185f9ac6d3bcabe5732e3c55528ee000cf60c"
+    }
+  ],
+  "writerModels": [
+    {
+      "agent": "/root/auth_service_impl",
+      "taskId": "T02.a",
+      "assignmentRevision": 4,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "cardSHA256": "d342d9546e9f2a99a7e89e70b9c4849b8061468cf1e677be9cfe8aece16564b0",
+      "N5a": 84,
+      "sourceScope": "2desktopAuthfiles, injectedtransportonly"
+    },
+    {
+      "agent": "/root/fission_io_impl",
+      "taskId": "T05.a",
+      "assignmentRevision": 2,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "cardSHA256": "37bda3a47e3d30faa4d58edfa118de3879a9b0fe907b3cad2d5704a295df53f5",
+      "N5a": 84,
+      "sourceScope": "4Core/Providers/Unitfiles, syntheticfileIO/Fakecodeconly"
+    }
+  ],
+  "sourceStarted": true,
+  "newTestsPassed": false,
+  "realAuthRequests": 0,
+  "realCodecProcesses": 0,
+  "cloudBusinessWrites": 0,
+  "scope": "admissiononly; no implementation acceptance or newIOcoverage fromold43"
+}

@@ -1,0 +1,75 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 4,
+  "scope": "N5a CPU admission gate source; not real consumer admission",
+  "baseline": "31778156ccf210090a4f63d898a6c120b670aa39",
+  "approvalCommit": "5bf11257eacb3eb333451e0212342d47677cf981",
+  "authorAgent": "/root/t01_admission",
+  "requestedAuthorModel": "gpt-6.1-sol",
+  "requestedAuthorEffort": "high",
+  "reviewerAgent": "/root/t01_admission_review",
+  "requestedReviewerModel": "gpt-6-astra",
+  "requestedReviewerEffort": "high",
+  "backendModelAttested": false,
+  "reviews": [
+    {
+      "quality": "needs-fix",
+      "P1": "unchecked test-temp junction permitted writes beyond approved root",
+      "round": 0,
+      "P2": "blocked/unknown registry lifecycle and external gates admitted",
+      "spec": "needs-fix"
+    },
+    {
+      "fix": "full temp-chain containment checks before mkdir and spawn; exact ready statuses plus empty external gates; exact native flavor test permitted",
+      "round": 1,
+      "spec": "approved",
+      "P1": 0,
+      "P2": 0,
+      "quality": "approved"
+    },
+    {
+      "quality": "approved",
+      "P1": 0,
+      "round": 2,
+      "P2": 0,
+      "fix": "test-only explicit pure-decision fixture; separate factual Git collector retains out-of-scope metadata paths and WRITE rejection",
+      "spec": "approved"
+    }
+  ],
+  "sourceHashes": {
+    "tests": "e61f81f372df95fbc50849b7d7fe279d562984437d333461136d3a010bfbc495",
+    "gate": "b6579802efb1d770dec3bf744b31730254c3a83cf180e14972904eacb53f8188",
+    "workflow": "494b13b584d6c969f10da1edd795eb80347c0ccca2ed2a41a73d755113c2b463"
+  },
+  "actualControllerTest": {
+    "nativeFlavor": 3,
+    "command": "node --test --test-reporter=tap scripts/phase1-isolation.test.mjs scripts/phase1-admission.test.mjs apps/desktop/src/flavor.test.mjs",
+    "skip": 0,
+    "cancelled": 0,
+    "fail": 0,
+    "admission": 74,
+    "pass": 158,
+    "todo": 0,
+    "isolation": 81
+  },
+  "realRevision4CLI": {
+    "actualAdmission": false,
+    "exitCode": 1,
+    "code": "MISSING_TEST_POLICY"
+  },
+  "trust": "immutable approved Git blob separate from candidate; source baseline ancestry separate from approved actor diff; raw and blob hash representations explicit",
+  "scopeLimits": [
+    "flat TAP and two explicit production pure test paths",
+    "snapshot governance not OS locks or cryptographic identity proof",
+    "coordinator still must pin executable policy and run actual positive CLI",
+    "remote CI/enforcement not executed",
+    "full T01/GUI/media/install/pilot pending"
+  ],
+  "preparationEvidence": {
+    "T02": "existing native film-doc+film tests44/44; source audit only, not task admission",
+    "T05": "existing Core/Steps unit compile has no private engine DLL link by source audit; SDK/restore/run not tested"
+  },
+  "integration": "none; local reviewed source checkpoint only",
+  "formatPrecommit": "non-author confirmed exactly one trailing ASCII space removal; source semantics unchanged",
+  "preservedFailure": "17 deterministic precommit failures with coordinator metadata staged; no commit made; fixture ambient-Git coupling fixed without weakening production collector or write policy"
+}

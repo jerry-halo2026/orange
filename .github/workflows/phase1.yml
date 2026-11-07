@@ -1,0 +1,28 @@
+name: Phase one pure governance tests
+on:
+  push:
+    branches: [dev, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pure-tests:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require preinstalled Node 22.18 or newer (no downloads)
+        shell: pwsh
+        run: node -e "const [a,b]=process.versions.node.split('.').map(Number); if(a<22 || (a===22 && b<18)) process.exit(1)"
+      # Self-tests exercise synthetic approvals, not independent CI approval of branch cards.
+      - name: Run built-in pure tests without dependencies or runtime downloads
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .dev/admission-fixtures | Out-Null
+          $env:TEMP = "$PWD/.dev/admission-fixtures"
+          $env:TMP = $env:TEMP
+          $env:TMPDIR = $env:TEMP
+          node --test scripts/phase1-isolation.test.mjs scripts/phase1-admission.test.mjs apps/desktop/src/flavor.test.mjs

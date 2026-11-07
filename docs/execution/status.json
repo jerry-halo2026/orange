@@ -14,7 +14,7 @@
     "unitSubsetAccepted": false,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "Canvas whole-impact P1 fixed, independently reviewed and root-verified locally; no dev integration; T05 real Windows symlink tests still environment-blocked",
+  "phase": "reviewed native dependency assembly42b5230 tested; next internal access-policy and WindowsCI cards independently approved, actual per-tree admission pending",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -25,7 +25,8 @@
     "zhishangConnectivityApproved": true,
     "privateMediaExternalUploadApproved": false,
     "productionWritesApproved": false,
-    "mainOrTagApproved": false
+    "mainOrTagApproved": false,
+    "pendingClarification": "D12 orange development Auth environment purpose and existing test identity scope asked asynchronously; no real Auth attempted"
   },
   "gitPolicy": {
     "dev": "native baseline 8b8ef16 established; branch from latest dev and integrate reviewed/tested candidates into dev",
@@ -62,9 +63,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-canvas-assignment.json",
+  "currentTaskCard": "docs/execution/t02-access-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-canvas-validation.json",
+  "currentSliceReview": "docs/execution/t02-access-and-ci-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -82,10 +83,11 @@
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
     "t02Head": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
-    "t05SourceState": "two reviewed frozen untracked files, not yet committed",
+    "t05SourceState": "reviewed-source WIP3198 plus formatting-only4d322 committed locally; actual43/43 still pending",
     "devIntegration": false,
     "remotePushThisGoal": false,
-    "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0"
+    "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
+    "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac"
   },
   "currentBlockers": [
     "T05 two required genuine Windows symlink fixtures unavailable with existing local rights; no security-policy changes",
@@ -110,7 +112,12 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "T02.a approved identity boundary pure-policy slice design only; actual new card/consumer freeze pending",
-    "bounded Windows CI path-policy validation preparation after reviewed source/checkpoint and explicit new write/network scope; no workflow change yet"
-  ]
+    "freeze two reviewed cards then FF existingE2/E3 with explicit dependencyassembly and actual trusted N5a84 each",
+    "Access internal CPU-only implementation and CI3files pure local preparation can proceed independently; root publication/remote job separate"
+  ],
+  "parallelTaskCards": [
+    "docs/execution/t02-access-assignment.json",
+    "docs/execution/t01-fission-ci-assignment.json"
+  ],
+  "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json"
 }

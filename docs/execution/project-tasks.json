@@ -136,7 +136,7 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "native characterization accepted only at5b700da; three identity/ownership/offline N0 boundaries approved by Ethan2026-11-08; business implementation/tests/independent review and N1 pending",
+      "deliverySlice": "native characterization accepted at5b700da; Ethan approved3N0boundaries; internal access-policy rev3 design independently approved, immutable N5a/writer/tests/review pending; fullAuth/N1 not ready",
       "consumerDependency": "T01 cpu-isolation exact subset only",
       "readinessEvidence": "docs/execution/t02-native-validation.json"
     },

@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-08",
+  "coordinator": "/root",
+  "scope": "isolated topic assembly for exact dependency/CI validation only, NOT dev/pilot acceptance",
+  "head": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
+  "originalCommits": {
+    "nativeCharacterization": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
+    "Canvas": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
+    "FissionWIP": "3198e196a2cefa3fa305f4b6e0f75599276e84eb",
+    "FissionFormatOnly": "4d32213f85bfc4d92648e7f05842704530500ff2"
+  },
+  "assemblyMerges": [
+    "282fa2f6b7f5302075442a673786c86a674a1bde",
+    "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac"
+  ],
+  "reviews": "T02nativepeer reviewed; Canvas scopedP1peer pass; T05source peer pass/runtimeNOTpass; format-only3198..4d322 peer spec+quality pass",
+  "baseline": {
+    "head": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "native-characterization",
+        "exitCode": 0,
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-pure-regression",
+        "exitCode": 0,
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "combined-affected",
+        "exitCode": 0,
+        "tests": 202,
+        "pass": 200,
+        "fail": 0,
+        "skip": 2,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "admission-self-tests",
+        "exitCode": 0,
+        "tests": 74,
+        "pass": 74,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      }
+    ],
+    "scope": "isolated dependency assembly regression only; no .NET/host/media/Auth/wholePG/dev integration"
+  },
+  "baselineSHA256": "a2abe426bfa23c53ab4a43a06c33c07e44bd36c76c4c0650171d45baca691931",
+  "initialControllerFailure": "duplicate TAP reporter argument in native-pure-regression after first6passed; source unchanged; first logs preserved; exact approved args attempt2pass",
+  "fissionCurrentTests": "no .NET run on new format-only head; prior43/41/2ENV/0skip stays prior fact",
+  "devChanged": false,
+  "remotePush": false,
+  "fullTaskAccepted": false
+}

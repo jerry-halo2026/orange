@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "scope": "AccessT02rev3 internal pure policy and CI T01rev7 bounded verification design; exact CPU/T05 verification-only consumer proof extensions",
+  "rounds": [
+    {
+      "round": 0,
+      "spec": "needs-fix",
+      "quality": "needs-fix",
+      "P2": [
+        "material discriminator/expiry location unspecified",
+        "required frozenFISSION_PATH_POLICY_TEST_ROOT missing"
+      ],
+      "clarification": "legal predefined/numeric XML escapes vs forbidden DTD/custom/external entities"
+    },
+    {
+      "round": 1,
+      "spec": "approved",
+      "quality": "approved",
+      "P1": 0,
+      "P2": 0,
+      "planSHA256": "86936df98745dee9c0252a7de60b66aeb7867bac198c27b59650ea25253b2704",
+      "reviewedAccessPolicySHA256": "fd96cae5cc95b111e0f71e34b1384327899f10e41a02332dde6abfb7f706b4aa",
+      "reviewedCIPolicySHA256": "4b45bb29342b1d28e7665a8f63cbe27bc0cc86e68e840ce9f0c6b0bf583fdd3d"
+    }
+  ],
+  "finalRecordOnlyChanges": "record actual approved proof verdicts and update raw/Gitblob references, one-way active-card SHA and pre-dispatch status; no source permissions/API/plan changes",
+  "frozenDocuments": [
+    {
+      "path": "docs/execution/t02-access-assignment.json",
+      "sha256": "390672be0d13eb2328556f708bafa89a1ca82194428e67f4e733d417ba559b9f"
+    },
+    {
+      "path": "docs/execution/t01-fission-ci-assignment.json",
+      "sha256": "1bc9cbf44a2793bc9785af8b4fb6c90a685915daa681b3540cb8225f93ae62bd"
+    },
+    {
+      "path": "docs/execution/t01-cpu-access-consumer-review.json",
+      "sha256": "bbd0eed7621946686ac90ef7d01e0cd96348215f3fe6c21498f94f0cafbc0f5c"
+    },
+    {
+      "path": "docs/execution/t05-ci-consumer-review.json",
+      "sha256": "99d593a8326b8f7701fbc6b67a1a2f459969a24b45d5dbd1f59c95fcd2dcbae8"
+    }
+  ],
+  "actualN5a": "not run yet; writer still not dispatched",
+  "notClaimed": [
+    "Auth or owner provenance",
+    "N1 or T03 release",
+    "actual WindowsCI/43pass",
+    "fullT01/T02/T05/PG",
+    "dev/main/tag or remote changes"
+  ]
+}

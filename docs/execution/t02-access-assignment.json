@@ -1,0 +1,203 @@
+{
+  "workingBaselineCommit": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
+  "dependencyCommits": [
+    "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "status": "independently approved policy; pending immutable commit and actual N5a",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "business-addition",
+  "requestedModel": "gpt-6.1-sol",
+  "taskId": "T02.a",
+  "assignmentRevision": 3,
+  "authorAgent": "/root/access_policy_impl",
+  "worktreePath": "E:/CodexData/worktrees/orange-t02-native/orange",
+  "branch": "codex/t02-native-characterization",
+  "scope": "approvedN0 original Studio internal in-memory access policy only; no Auth integration, persistent ownership, transport, UI or fullK01N1",
+  "humanSignoff": "Ethan2026-11-08 explicitly approved all3N0boundaries; D09 known-revocation hide per existing rule; see specs/2026-11-08-identity-access-n0.md",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/project-access.mjs",
+    "packages/openfilm/studio/server/project-access.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-access-consumer-review.json",
+          "sha256": "bbd0eed7621946686ac90ef7d01e0cd96348215f3fe6c21498f94f0cafbc0f5c",
+          "gitBlobSha256": "bbd0eed7621946686ac90ef7d01e0cd96348215f3fe6c21498f94f0cafbc0f5c"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/superpowers/plans/2026-11-08-access-and-path-ci.md#access",
+  "api": {
+    "export": "createProjectAccessPolicy(sessionEvidence, {monotonicNow})",
+    "returnedMethods": [
+      "bindProject(projectEvidence)",
+      "decide(context, projectHandle, access)",
+      "revoke(sessionContext)",
+      "beginSwitch(sessionContext)",
+      "completeSwitch(sessionContext, switchHandle)",
+      "dispose()"
+    ],
+    "sessionFields": [
+      "environmentId",
+      "subjectId",
+      "instanceId",
+      "epoch",
+      "establishedAtMs",
+      "expiresAtMs"
+    ],
+    "projectFields": [
+      "environmentId",
+      "ownerSubjectId",
+      "projectId",
+      "ownership",
+      "material"
+    ],
+    "material": {
+      "discriminator": "kind",
+      "variants": [
+        {
+          "kind": "metadata-only"
+        },
+        {
+          "kind": "applicable",
+          "expiresAtMs": "finite nonnegative absolute monotonic milliseconds in this instance domain"
+        }
+      ],
+      "unknownFields": "reject, including wrong key or nested deadline/TTL; no coercion"
+    },
+    "requestFields": [
+      "environmentId",
+      "subjectId",
+      "instanceId",
+      "epoch",
+      "projectId"
+    ],
+    "access": [
+      "metadata",
+      "restricted"
+    ],
+    "resultFields": [
+      "allowed",
+      "reason",
+      "view",
+      "recovery"
+    ],
+    "resultVocabulary": "fixed reasons; view retain or lock-hide; recovery always retain; successful bind/begin adds opaque identity-registered frozen handle only"
+  },
+  "validation": {
+    "tdd": "watch genuine behavioral RED before implementation; no stubs/golden rewrite; all positive/negative cases run, no skip/todo/cancel",
+    "commands": [
+      [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "packages/openfilm/studio/server/project-access.test.mjs"
+      ],
+      [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "packages/openfilm/src/film-doc.test.mjs",
+        "packages/openfilm/studio/server/film.test.mjs"
+      ],
+      [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ]
+    ],
+    "environment": "minimal OS/tool env only, HOME/USERPROFILE/APPDATA/LOCALAPPDATA/TEMP/TMP/TMPDIR/cache under E2 .dev/access-policy; no inherited credentials/profile/provider/model settings; no server or network",
+    "tests": [
+      "valid opaque native projectID, identity environment/subject/instance/epoch exact",
+      "missing online-established evidence and old-instance/cached shapes denied; pure tests DO NOT prove actual online authentication",
+      "unknown owner/other subject and malformed fields failclosed; do NOT claim public scalar evidence proves provenance",
+      "metadata-only never grants restricted; all material evidence required and once-snapshotted",
+      "session/material earlier cutoff, exact boundary no grace, no per-request expiry/TTL renewal",
+      "input/result mutation, forged/copied/cross-policy handles cannot grant",
+      "same clock allowed; rollback/negative/NaN/Infinity/throw sticky deny, no later recovery",
+      "current revoke sticky lock-hide/recovery-retain, stale context cannot revoke new policy",
+      "switch barrier tied original context, blocks new access; only trusted completion event before all relevant expiries and once; not real保存 proof",
+      "dispose terminal; malformed/getter/proxy inputs and thrown sensitive sentinels yield only fixed safe outcomes, no logs/IO",
+      "material exact {kind:metadata-only} or {kind:applicable,expiresAtMs}; missing/wrong discriminator/nested expiry/unknown keys/type reject"
+    ]
+  },
+  "forbidden": [
+    "factory or trusted mutator exposed to renderer/bridge/CLI/API",
+    "session verified:true flag as cryptographic authorization",
+    "source outside2files, source history/archive/secret-shaped fixture copying",
+    "real Auth/Supabase/config/account reads, network/model/cloud/SDKinstall/server/desktop/media",
+    "rootworkspace/lock/07/CI/fixtures/golden changes",
+    "stage/commit/push/merge/reset/clean/subagents by implementer"
+  ],
+  "reviewAndRecovery": {
+    "review": "non-author spec+quality exactdiff/TDD/hash; onlypure-policy-ready freeze, no T03Auth or real ownership/storage/UI claim",
+    "stop": "need additional write/source/side-effect or semantic plan conflict -> root; do not widen",
+    "preserve": "all original tree/artifacts retained; only named own new scratch; no broadcleanup"
+  },
+  "fullTaskAccepted": false
+}

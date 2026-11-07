@@ -1,0 +1,36 @@
+{
+  "taskId": "T05.a",
+  "commit": "4d32213f85bfc4d92648e7f05842704530500ff2",
+  "authorAgent": "/root/t05_path_policy",
+  "reviewerAgent": "/root/slices_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+      "sha256": "2c5e727ba0424bb4637969879484d8de657030df2f3300dbc3d49a74db8a3c80",
+      "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+      "sha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+      "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+    }
+  ],
+  "consumerScope": "source safe for isolated CI verification only, NOT runtime/host/business consumer-ready",
+  "sourceReview": "prior /root/t05_path_review source spec+quality approved; readonly format-only3198..4d322 approved, three blank lines removed, no behavior changes",
+  "actualTests": "prior byte versions43executed41pass2requiredWindows-symlink-setupENVfail0skip; no test run claimed on format-only head",
+  "representation": "E3 retained mixed-CRLF raw policy2c5 versus canonicalGitblobd8; test raw/blob89db. Explicit text-EOL-only distinction; neither raw hash silently equated.",
+  "runtimeAccepted": false,
+  "reviewState": "independently approved by /root/slices_policy_review2026-11-08 for exact bounded consumer scope only",
+  "approval": {
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0
+  },
+  "formattingWriter": "/root (EOF only); principal semantic author unchanged"
+}

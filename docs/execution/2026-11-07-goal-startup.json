@@ -1,0 +1,130 @@
+{
+  "date": "2026-11-07",
+  "subjectCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "goal": "Windows internal pilot candidate per PG01-PG12; full scope unchanged",
+  "authorizationSource": "Ethan explicit goal in current chat",
+  "primaryRoot": "D:/dev/orange",
+  "primaryBranch": "dev",
+  "primaryCleanAtStart": true,
+  "pathRuling": "D:/dev/orange/dev denotes root D:/dev/orange on branch dev; no dev subdirectory exists; consistent with README/14 and actual Git",
+  "remoteDev": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "remoteVerified": true,
+  "repository": {
+    "name": "jerry-halo2026/orange",
+    "defaultBranch": "dev",
+    "visibility": "public"
+  },
+  "worktree": {
+    "branch": "codex/t01-isolation",
+    "nativeOperationId": "5a4addc1-d693-4850-9f53-295621251e35",
+    "creation": "native tool completed and attached",
+    "writeAccess": "elevated approved execution required",
+    "path": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+    "base": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf"
+  },
+  "sourceVerification": {
+    "fissionHashMismatches": 0,
+    "upstreamPin": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73",
+    "nativeSourceDeltaSinceApprovedBaseline": "none in apps/packages/workers",
+    "additionalFile": "README.orangeflim.md (import provenance, outside 70-file source snapshot)",
+    "fissionManifestFiles": 70,
+    "fissionTrackedFiles": 71
+  },
+  "tools": {
+    "dotnetSdk": "10.0.300",
+    "nodeModules": true,
+    "dshOnPath": false,
+    "pnpmObserved": "11.25.0",
+    "ffmpegOnPath": false,
+    "node": "26.13.0",
+    "pnpmUsableForInstall": true,
+    "pnpmRequired": "9.15.9",
+    "ffprobeOnPath": false,
+    "pinnedPnpmVerified": "9.15.9 via isolated npm exec cache; exit 0",
+    "dependencyInstall": "pnpm9.15.9 install --frozen-lockfile --ignore-scripts --store-dir .dev/pnpm-store; exit0; no runtime downloads/scripts; lock unchanged"
+  },
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 4060 Ti",
+    "gpuDriver": "31.0.15.3758",
+    "ramBytes": 34164097024,
+    "cpu": "Intel Core i5-13400F",
+    "targetTierTested": false,
+    "os": "Windows build 26200",
+    "macArm64Tested": false
+  },
+  "ci": {
+    "pushBranches": [
+      "main"
+    ],
+    "effectiveRequiredChecks": "not reverified; no claim of enforcement",
+    "pullRequest": true,
+    "devRunList": [],
+    "workflowDispatch": true,
+    "rootWorkflowExists": true
+  },
+  "tests": [
+    {
+      "command": "node --test apps/desktop/src/flavor.test.mjs",
+      "passed": 3,
+      "failed": 0,
+      "boundary": "original flavor characterization only; confirms unsafe shared defaults, NOT launch isolation",
+      "exit": 0,
+      "skipped": 0
+    },
+    {
+      "passed": 55,
+      "command": "node --test scripts/phase1-isolation.test.mjs",
+      "skipped": 0,
+      "exit": 0,
+      "boundary": "profile validation only; not launch isolation/N5a",
+      "failed": 0
+    },
+    {
+      "exit": 0,
+      "boundary": "all existing workspace typecheck scripts",
+      "command": "pnpm9.15.9 typecheck"
+    },
+    {
+      "exit": 0,
+      "boundary": "original Studio UI + desktop shell builds, NOT installer or runtime",
+      "command": "pnpm9.15.9 build",
+      "warnings": [
+        "Vite chunks over 500kB",
+        "Rollup removes unrecognized @__PURE__ annotation in zod 4.6.6"
+      ]
+    },
+    {
+      "passed": 81,
+      "failed": 0,
+      "boundary": "Windows profile policy only; root independent rerun",
+      "skipped": 0,
+      "command": "node --test scripts/phase1-isolation.test.mjs (Windows fix1)",
+      "exit": 0
+    }
+  ],
+  "productModelBudget": {
+    "cumulative": true,
+    "actualCumulativeSpendVerified": false,
+    "historicalReceiptCalls": 0,
+    "ceilingCNY": 50,
+    "currentRunCalls": 0,
+    "resume": "reconcile prior spend and provider price/output/tool bounds before any call",
+    "newCallsAllowed": false
+  },
+  "notRun": [
+    "desktop startup",
+    "Fission build/Web/doctor/Bench/stress/media",
+    "cloud business read or write",
+    "model",
+    "Windows E2E/install/target load",
+    "main/tag/release",
+    "full test suite pending vetted isolation; build/typecheck ran separately"
+  ],
+  "nativeSeamAudit": "read-only /root/t01_seam_audit; model inherited, backend not attested",
+  "remaining": [
+    "T01 profile validator review then native launch wiring and resource/N5a gates",
+    "personal binding only blocks actual cloud chain",
+    "fees unavailable only block paid calls",
+    "no full PG gate passed"
+  ]
+}

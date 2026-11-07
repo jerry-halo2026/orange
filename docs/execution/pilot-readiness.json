@@ -3,7 +3,7 @@
   "status": "handoff-not-product-ready",
   "referenceSourceCommit": "3a29a38ea35e488f4769927d816721e19e238076",
   "businessImplementationStarted": false,
-  "newGoalCreated": false,
+  "newGoalCreated": true,
   "completionPolicy": "All applicable PG gates and V01-V61 plus speech checks evidenced on actual integration candidate, non-author review and Ethan scope acceptance. Exclusions require explicit named approval. No silent scope reduction or release.",
   "platforms": {
     "Windows": "phase-one target; not accepted",
@@ -1213,7 +1213,7 @@
     }
   ],
   "authorization": {
-    "implementation": "bind explicit next-goal instruction; docs alone do not start implementation",
+    "implementation": "Ethan explicit /goal 2026-11-07; approved current plan local implementation and isolation tests",
     "modelValidationBudgetCNY": 50,
     "modelBudgetIsCumulative": true,
     "privateMediaExternalUpload": false,
@@ -1252,7 +1252,7 @@
   ],
   "lastEvidence": "docs/execution/status.json routes to subject-bound receipts; no product gate inferred",
   "primaryWorkspace": "D:/dev/orange",
-  "workingBaselineCommit": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
   "developmentBranch": "dev",
   "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance",
   "taskRegistry": "docs/execution/project-tasks.json"

@@ -1,14 +1,14 @@
 {
   "docset": "U1",
   "authority": "Only current task IDs, dependency edges and lifecycle state. Plans contain steps; 17 contains acceptance.",
-  "executionAuthorized": false,
+  "executionAuthorized": true,
   "root": "D:/dev/orange",
   "branch": "dev",
   "tasks": [
     {
       "id": "T01",
       "scope": "isolation and minimum admission gates",
-      "status": "proposed",
+      "status": "in_progress",
       "dependsOn": [],
       "externalGates": []
     },

@@ -1,0 +1,46 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 1,
+  "scope": "Initial fail-closed runtime profile validation slice; not entire T01 or N5a",
+  "classification": "native-extension",
+  "authorAgent": "/root/t01_profile",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendModelVerified": false,
+  "baselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [],
+  "worktreePath": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+  "writeAllowlist": [
+    "scripts/phase1-isolation.mjs",
+    "scripts/phase1-isolation.test.mjs"
+  ],
+  "forbidden": [
+    "native startup until profile reviewed",
+    "root lock",
+    "other worktrees",
+    "archives",
+    "Fission startup",
+    "network/model calls",
+    "push/merge"
+  ],
+  "references": [
+    "docs/discovery/13_技术架构与目录依赖基线.md",
+    "docs/discovery/16_OpenFilm原生接口与平台对齐.md",
+    "docs/superpowers/plans/2026-11-07-phase1-execution.md#T01"
+  ],
+  "nativeSymbols": [
+    "apps/desktop/src/flavor.mjs:FLAVORS",
+    "apps/desktop/src/environment.mjs:launcherEnvironment",
+    "apps/desktop/src/main.mjs:start",
+    "packages/openfilm/src/locations.mjs"
+  ],
+  "redGreenCommand": "node --test scripts/phase1-isolation.test.mjs",
+  "resourceLeases": [
+    "CPU-only pure tests; synthetic filesystem fixtures under this worktree .dev"
+  ],
+  "productModelCallsThisRun": 0,
+  "review": "docs/execution/t01-profile-review.json",
+  "resume": "validate profile first, then native startup wiring and N5a",
+  "status": "slice-reviewed; native-integration-pending"
+}

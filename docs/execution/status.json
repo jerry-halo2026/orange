@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "U1-active-documentation-unified; awaiting explicit new development goal",
+  "phase": "R0 verified; T01 isolated bootstrap in progress",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -57,5 +57,9 @@
   "originalStatePreservation": "User-approved complete backup of files/index/common Git; source files archived outside primary; see primary-dev-cutover receipt",
   "docset": "U1",
   "documentationReview": "docs/execution/documentation-unification.json",
-  "taskRegistry": "docs/execution/project-tasks.json"
+  "taskRegistry": "docs/execution/project-tasks.json",
+  "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
+  "currentTaskCard": "docs/execution/t01-assignment.json",
+  "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
+  "currentSliceReview": "docs/execution/t01-profile-review.json"
 }

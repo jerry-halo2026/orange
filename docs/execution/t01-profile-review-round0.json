@@ -1,0 +1,29 @@
+{
+  "taskId": "T01",
+  "slice": "pure-profile-validator",
+  "round": 0,
+  "baseline": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "reviewer": "/root/t01_profile_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "needs-fix",
+  "quality": "needs-fix",
+  "findings": [
+    {
+      "verified": "reviewer no-write resolver reproduction",
+      "issue": "Windows reserved device aliases COM superscript1-3 / LPT superscript1-3 accepted in root components; inspect CONIN$/CONOUT$",
+      "severity": "P2",
+      "file": "scripts/phase1-isolation.mjs",
+      "line": 10
+    }
+  ],
+  "reviewedHashes": {
+    "test": "0B3A600E4ABF6FED5BEDD30249009CF1DE30D39D4733B89E938628FECC8E3B30",
+    "module": "CBC9D83C2F5FFF210267663E471391011021574CE87628C037635BE0CCDE4BF4"
+  },
+  "docs": "no additional blocking findings",
+  "next": "original author TDD fix round1, scoped non-author re-review",
+  "t01Complete": false,
+  "n5aPassed": false
+}

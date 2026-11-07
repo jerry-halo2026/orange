@@ -1,0 +1,58 @@
+{
+  "taskId": "T01",
+  "slice": "read-only profile validator; not full T01",
+  "reviewer": "/root/t01_profile_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "rounds": [
+    {
+      "round": 0,
+      "P2": "Windows device aliases missing",
+      "quality": "needs-fix",
+      "spec": "needs-fix"
+    },
+    {
+      "round": 1,
+      "P2": "new Windows-only assertions unconditional on Mac",
+      "quality": "needs-fix",
+      "originalFinding": "addressed"
+    },
+    {
+      "round": 2,
+      "P2": 0,
+      "quality": "pass",
+      "P1": 0,
+      "spec": "pass"
+    }
+  ],
+  "moduleSHA256": "a173f5786a25e96bcbe9221642411ddc025518058fef5cca3731884b7199dde2",
+  "testSHA256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+  "authorRedGreen": {
+    "fix1RedFailed": 20,
+    "fix2WindowsPassed": 81,
+    "securitySkips": 0,
+    "initialGreenPassed": 55,
+    "initialRedFailed": 55,
+    "fix1GreenPassed": 81
+  },
+  "controllerVerification": {
+    "skipped": 0,
+    "typecheckExit": 0,
+    "buildExit": 0,
+    "finalPassed": 81,
+    "failed": 0,
+    "syntaxExit": 0
+  },
+  "remaining": [
+    "native launch wiring, effective preferences and downstream write validation",
+    "port lease and refusal of other instances",
+    "N5a admission gate rejection cases",
+    "full isolated suite and Windows runtime/media/install/E2E",
+    "Mac runtime pending"
+  ],
+  "consumerReady": false,
+  "t01Complete": false,
+  "integration": "none; topic-branch checkpoint only",
+  "cloudPush": "not performed"
+}

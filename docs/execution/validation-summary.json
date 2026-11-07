@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-07",
+  "date": "2026-11-08",
   "upstreamSelectedChecks": {
     "builds": 2,
     "typecheckScopes": 5,
@@ -57,12 +57,12 @@
     },
     "t05": {
       "total": 43,
-      "inconclusive": 0,
       "executed": 43,
-      "failed": 2,
-      "passed": 41,
+      "passed": 43,
+      "failed": 0,
       "skipped": 0,
-      "accepted": false
+      "inconclusive": 0,
+      "accepted": "pure-policy subset only, actualhostedWindows notlocalprivilegechange"
     },
     "desktop": {
       "gracefulCloses": 2,
@@ -70,5 +70,22 @@
       "realAuthMediaInstall": false
     },
     "notAnIntegrationCandidate": true
+  },
+  "currentWindowsPurePath": {
+    "sourceCandidate": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "run": 42410466762,
+    "producer": "4d32213f85bfc4d92648e7f05842704530500ff2",
+    "counts": {
+      "total": 43,
+      "executed": 43,
+      "passed": 43,
+      "failed": 0,
+      "skip": 0,
+      "inconclusive": 0
+    },
+    "trueSymbolicAssertions": 2,
+    "readiness": "docs/execution/t05-path-readiness.json",
+    "runtimeReceipt": "docs/execution/t01-fission-ci-runtime-validation.json",
+    "notHostMediaInstallerOrPilot": true
   }
 }

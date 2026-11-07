@@ -11,10 +11,12 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false,
     "unitSubsetCompiled": true,
-    "unitSubsetAccepted": false,
-    "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
+    "unitSubsetAccepted": true,
+    "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission.",
+    "unitSubsetScope": "EnginePathPolicyTests43 only, actual hostedWindows; originalwholeengine/media nottested",
+    "purePolicyReadiness": "docs/execution/t05-path-readiness.json"
   },
-  "phase": "firstactualCI failurepreserved; 2fileOSfact/diagnosticrepair5ef peer+root218+latestcombinedtested; Rootattempt2card proposed pendingruntimegates, no activejob",
+  "phase": "actual hostedWindows path43/43 inclbothrealsymlinks independently accepted; T05purepolicyready only, runtime/media/Auth/installer/fullPG pending",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -65,7 +67,7 @@
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
   "currentTaskCard": "docs/execution/t01-fission-ci-runtime-attempt2-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-fission-ci-repair-validation.json",
+  "currentSliceReview": "docs/execution/t05-path-readiness.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-fission-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -90,14 +92,16 @@
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
-    "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0"
+    "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
+    "remoteTopicHead": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "latestRuntimeReceiptCommit": "4ea3c669eefdb5f6dc86a31c19d306f71f3e3dfd"
   },
   "currentBlockers": [
-    "T05 two required genuine Windows symlink fixtures unavailable with existing local rights; no security-policy changes",
     "T02.a internal policy peer-approved223tests; actual trustedAuth/persistentowner/consumerwiring/N1/T03 still pending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
-    "actualFissionWindowsCI failed;43mandatory cases notaccepted; source repair/true rerun needed; completePG/V pending"
+    "T05host/media/immutableinput/AudioUses protection and T02.c protocol/realadmission not ready; pure43doesnotreleaseT05.b",
+    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted"
   ],
   "identityBoundary": {
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
@@ -116,8 +120,8 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "freeze two reviewed cards then FF existingE2/E3 with explicit dependencyassembly and actual trusted N5a84 each",
-    "Access internal CPU-only implementation and CI3files pure local preparation can proceed independently; root publication/remote job separate"
+    "T02.a localDI Authservice design fromofficialsources; D12/testidentitypurposeonlyblocksrealcalls",
+    "T02.c worker/actualplan/admission minimaldesign and controlled FissionIOadapter tests neednewscopedcards; purepathdependency nowready"
   ],
   "parallelTaskCards": [
     "docs/execution/t02-access-assignment.json",
@@ -130,18 +134,30 @@
       "id": 42406704504,
       "head": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
       "conclusion": "failure",
-      "actualSDK": "10.0.403",
-      "compilerVersion": "5.9.0-1.26523.112",
-      "passed43": false,
-      "category": "CI_SUBPROCESS_FAILED",
-      "remoteExactCause": "notcaptured"
+      "preserved": true
     },
-    "companion": {
-      "id": 42406704514,
+    "actualAcceptedPurePathRun": {
+      "id": 42410466762,
+      "jobId": 128517294040,
+      "head": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
       "conclusion": "success",
-      "notFissionProof": true
+      "total": 43,
+      "executed": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "trueWindowsSymbolicCases": 2,
+      "sourceProducer": "4d32213f85bfc4d92648e7f05842704530500ff2",
+      "scope": "purepoint-in-time policy only"
     },
-    "localDiagnosis": "ProgramFiles(x86)-only makesofflineSDK10.0.300restore0; currentbuilder andSystemDrive-onlyrestore1 ConfigurationDefaults; notsameasremoteSDK",
-    "currentSourceState": "5ef peer-approved repair/source root218/wholecomboregressions; actualretry notstarted"
-  }
+    "companionGovernance": {
+      "id": 42410466814,
+      "conclusion": "success",
+      "notProductAcceptance": true
+    },
+    "runtimeHostMediaAccepted": false,
+    "remoteChecksRequiredByProtection": "notconfigured/verified as mandatory; no settingschanged"
+  },
+  "localWindowsSymlinkCreation": "stillEPERM onlocal machine; notclaimed fixed. Requiredpurepolicyassertions actuallypassed onhostedWindows."
 }

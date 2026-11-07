@@ -1259,7 +1259,9 @@
   "preparationEvidence": [
     "docs/execution/t01-desktop-validation-20261108.json",
     "docs/execution/t02-native-validation.json",
-    "docs/execution/t05-path-validation.json"
+    "docs/execution/t05-path-validation.json",
+    "docs/execution/t05-path-readiness.json",
+    "docs/execution/t01-fission-ci-runtime-validation.json"
   ],
-  "preparationBoundary": "These partial local receipts do not pass any PG/V gate; no combined dev candidate or Ethan scope acceptance yet."
+  "preparationBoundary": "Actual hostedWindows43purepathpassed and localinternalaccesspolicyready are partialprep, no PG/V acceptance or trialscopeEthan signoff, no fullruntime/media/install/hardware."
 }

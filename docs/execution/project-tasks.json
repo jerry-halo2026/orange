@@ -48,15 +48,13 @@
     {
       "id": "T05.a",
       "scope": "Fission pure path isolation",
-      "status": "blocked_environment",
+      "status": "in_progress",
       "dependsOn": [
         "T01"
       ],
-      "externalGates": [
-        "required genuine Windows symlink fixtures/privilege in an isolated approved environment"
-      ],
-      "deliverySlice": "frozen source independently reviewed; 43 executed/41 pass/2 environment failures/0 skip, no runtime/host admission",
-      "readinessEvidence": "docs/execution/t05-path-validation.json"
+      "externalGates": [],
+      "deliverySlice": "exact pure EnginePathPolicy/ValidateJob consumer-ready producer4d322, actualWindows43/43incl2truesymlinks; originalEnginePaths/host/inputconsumption notwired/accepted",
+      "readinessEvidence": "docs/execution/t05-path-readiness.json"
     },
     {
       "id": "T05.b",

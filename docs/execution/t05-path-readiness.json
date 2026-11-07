@@ -1,0 +1,90 @@
+{
+  "taskId": "T05.a",
+  "subset": "pure point-in-time path policy only",
+  "commit": "4d32213f85bfc4d92648e7f05842704530500ff2",
+  "authorAgent": "/root/t05_path_policy",
+  "formattingWriter": "/root (EOF-only3198..4d322)",
+  "reviewerAgent": "/root/t05_path_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+      "sha256": "2c5e727ba0424bb4637969879484d8de657030df2f3300dbc3d49a74db8a3c80",
+      "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+      "sha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+      "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+    }
+  ],
+  "actualWindows": {
+    "candidate": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "runId": 42410466762,
+    "jobId": 128517294040,
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42410466762",
+    "runnerLabels": [
+      "windows-2025"
+    ],
+    "node": "22.23.4",
+    "sdk": "10.0.403",
+    "compilerVersion": "5.9.0-1.26523.112 (5a2162bea6845eabc1fc721624a43568c65db3b1)",
+    "compilerSHA256": "f9ea6e4b51f4ac07b9005fddf3e5a0022d9d60cf95a1c404809de63ba6d0eb3b",
+    "total": 43,
+    "executed": 43,
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0,
+    "trueSymbolicNames": [
+      "Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True)",
+      "ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True)"
+    ],
+    "trxSha256": "c2a8a6d582cbcf415eb56bd80ba0f3a1e6a343e9fe60d74a11ae2be7a15187c9",
+    "exitCodes": {
+      "git-head": 0,
+      "git-root": 0,
+      "source-0": 0,
+      "source-1": 0,
+      "build-input-2": 0,
+      "build-input-3": 0,
+      "build-input-4": 0,
+      "build-input-5": 0,
+      "build-input-6": 0,
+      "sdk-version": 0,
+      "compiler-version": 0,
+      "original-shim-version": 0,
+      "runtime-versions": 0,
+      "restore": 0,
+      "path-policy-tests": 0,
+      "git-final-head": 0
+    },
+    "summarySHA256": "8bbb6132bb98e9ea25806c1f2031ad08afbed6cd6395830f2efcccc35697ee8c"
+  },
+  "representation": "producer4d322 canonicalGit policy d8 versus retainedE3 mixedCRLF raw2c5; actualrunner rawd8, exactsamecanonicaltext. Testsraw/blob89. OriginalpreEOF4db/fe7 and43/41/2ENV kept inoldreceipt.",
+  "readiness": "pure-policy-ready: exact EnginePathPolicy/ValidateJob point-in-time subset only",
+  "localRights": "same localmachine genuine symlink creation stillEPERM; actualrequired43 passed on realhostedWindows, notLinux/junction substitution",
+  "historicalFailurePreserved": "runtime-validation.attempts[0] run42406704504 remainsfailed, new run42410466762 success on newsource after reviewedrepair",
+  "excludedClaims": [
+    "FissionEngine/Web/CLI/input audio protection/actualhost execution",
+    "TOCTOU or OSsandbox",
+    "realmedia/cancel/recovery/worker/FrozenPlan/installer/10-50-100hardware",
+    "macOSarm64",
+    "wholeT05/fullPG/pilot/devmainrelease"
+  ],
+  "approval": {
+    "date": "2026-11-08",
+    "reviewerAgent": "/root/t05_path_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "reviewedProposedDocumentSHA256": "6ea5c6ca23c730a7ff04a47e2118a2de036db1db8ebe6a894d266df5c395652c",
+    "P1": 0,
+    "P2": 0,
+    "reviewMethod": "read stored realCI log and sanitizedsummary/source/blob metadata, no repeatedtest/job/network"
+  },
+  "fullTaskAccepted": false
+}

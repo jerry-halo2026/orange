@@ -21,7 +21,7 @@
 | `E:/CodexData/archives/orange-20261107` | 私有完整36ref bundle及WIP4文件，已恢复演练；不得上传PUBLIC |
 | `D:/dev/orange-legacy-primary-20261107` | 原D文件已保全到此；完整暂存/Git备份另在E归档目录before-dev-cutover，不得公开或覆盖。D:/dev/orange现在是正式dev工作区 |
 
-当前记录：上轮清理后34本地分支，旧dev改名保全并新建原版dev后35；39树仍保留。原生工具曾Transport closed，W19–W22索引元数据异常待核；W36四文件已在归档分支保存但原树未重置、未作功能验收；必要ignored资料仍未全部保全。新会话重核，不把旧数量/失联状态当永恒事实；清理按[逐树清单](../execution/2026-11-07-worktree-archive-inventory.md)。
+最新清理：原39棵登记含主仓，37棵附属树已在完整文件/忽略项/Git保全及恢复演练后实际移除；当前仅D主仓和本会话当前E树。当前E的移动/归档被权限审查要求单独批准，尚未执行，不能绕过。W36修改及额外发现的E旧副本分别保存，不能把归档当功能验收。读[最新清理回执](../execution/2026-11-07-worktree-cleanup.json)并重核实际Git；[原逐树清单](../execution/2026-11-07-worktree-archive-inventory.md)仅作清理前历史，不重复派发已移除项。
 
 ## 3. 阅读与权威
 

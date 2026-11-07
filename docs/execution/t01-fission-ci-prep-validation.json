@@ -1,0 +1,157 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 9,
+  "sourceCommit": "7d78d655574123578d05d990872c1f2cb307a088",
+  "approvalCommit": "86301f912a1017d1657bdc8226880d932cd71cb6",
+  "cardGitBlobSHA256": "a0e8ebebeb81165562ed70ef63e004b315217f2bc91b585d16293b151340397c",
+  "author": {
+    "agent": "/root/fission_ci_impl",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false
+  },
+  "review": "docs/execution/t01-fission-ci-source-review.json",
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "51c420c32cfd785e6083d18bf7cc8c1ea46a4b255fc8fc366e7833e1debea6b9",
+      "gitBlobSha256": "51c420c32cfd785e6083d18bf7cc8c1ea46a4b255fc8fc366e7833e1debea6b9"
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "sha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075",
+      "gitBlobSha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "cb7de2526160bd6ee124d9056bb4313b1894511d7b36f633d1b32d08ddfe9db4",
+      "gitBlobSha256": "cb7de2526160bd6ee124d9056bb4313b1894511d7b36f633d1b32d08ddfe9db4"
+    }
+  ],
+  "rootVerification": {
+    "head": "86301f912a1017d1657bdc8226880d932cd71cb6",
+    "source": {
+      ".github/workflows/fission-path-policy.yml": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075",
+      "scripts/fission-path-ci.mjs": "51c420c32cfd785e6083d18bf7cc8c1ea46a4b255fc8fc366e7833e1debea6b9",
+      "scripts/fission-path-ci.test.mjs": "cb7de2526160bd6ee124d9056bb4313b1894511d7b36f633d1b32d08ddfe9db4"
+    },
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "unit",
+        "exitCode": 0,
+        "counts": {
+          "tests": 142,
+          "pass": 142,
+          "fail": 0,
+          "skip": 0,
+          "cancel": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "module-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "test-syntax",
+        "exitCode": 0
+      }
+    ],
+    "sourceUnchanged": true,
+    "noDotnetOrEntryExecution": true,
+    "scope": "CI unit/parser/context/envbuilder only; no actualWindows43/SDK/host/media/remote success"
+  },
+  "reportSHA256": "31393bf83b16396c3f0e9d403f06e6f580c52cdd0c956640c97a54ef102f0eb4",
+  "priorReportSHA256": "7a349c3311d6af4ffbb9965ef600a48727a1a28a7418c78756a43a4ae584fcd8",
+  "N5a": {
+    "beforeSource": 84,
+    "postSource": 84,
+    "exactCommittedSourceHead": 84,
+    "committedHead": "7d78d655574123578d05d990872c1f2cb307a088",
+    "committedProofSHA256": "f7cb6da337f29d7465282d655dc53a9cfe50e41f4982d672b48febe8cffc3c5e"
+  },
+  "latestIsolatedSourceAssembly": {
+    "head": "32c86cfacc1d5acdfbfb4406c970b6825e79e168",
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "CI-pure",
+        "exitCode": 0,
+        "tests": 142,
+        "pass": 142,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "access-policy",
+        "exitCode": 0,
+        "tests": 92,
+        "pass": 92,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-characterization",
+        "exitCode": 0,
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-pure-regression",
+        "exitCode": 0,
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "combined-affected",
+        "exitCode": 0,
+        "tests": 202,
+        "pass": 200,
+        "fail": 0,
+        "skip": 2,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "admission-self-tests",
+        "exitCode": 0,
+        "tests": 74,
+        "pass": 74,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      }
+    ],
+    "scope": "isolated dependency assembly regression only; no .NET/host/media/realAuth/wholePG/dev integration"
+  },
+  "latestAssemblyProofSHA256": "df970a788e2356c8e1006b43c2753b95c0b8a94478d4fb4c12bc4ec64452a835",
+  "localToolProbe": {
+    "scope": "versions only on localSDK10.0.300, no compile/restore/testhost, not remote10.0.403proof",
+    "proofSHA256": "353b6945202db019af80560ba9825c887aaf5ccac0ea6264c9074cbf9b8fd75b"
+  },
+  "boundaries": [
+    "no local .NET/entry/real or mockedCI execution by sourceauthor",
+    "no remotejob/publication yet",
+    "originalCSharp43mandatorycases unchanged, prior2requiredsymlink ENVfail remain",
+    "pure142parser/context/env tests are not actualWindows proof",
+    "CInewfiles diff--no-index --check exit1 meansnewfilecontentdifference withzero whitespace diagnostics, not exit0"
+  ],
+  "fullTaskAccepted": false
+}

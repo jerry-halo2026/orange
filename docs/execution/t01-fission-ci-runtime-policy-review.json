@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 10,
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardGitBlobSHA256": "f0de5d77090b09641a75773c31a8bd65d27f1311d4026e606b6e35a1a1308181",
+  "scope": "rootonly bounded audited source publication and singlepublicstandardWindows Fission verificationjob; lease remainsunissued untilpreflight",
+  "sourceAndReceiptReferences": [
+    "docs/execution/t01-fission-ci-source-review.json",
+    "docs/execution/t01-fission-ci-prep-validation.json"
+  ],
+  "notProven": [
+    "remote43cases",
+    "testhost/runtime",
+    "fullT05/T01/PG",
+    "dev/main/tag/release"
+  ],
+  "remainingBeforeLease": [
+    "immutablecommit and actualE3 trustedN5a84",
+    "allunpublishedhistory audit",
+    "immediate publicremote/actions/topicverification"
+  ]
+}

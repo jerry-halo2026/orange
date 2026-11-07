@@ -1,0 +1,48 @@
+{
+  "taskId": "T01",
+  "commit": "7d78d655574123578d05d990872c1f2cb307a088",
+  "authorAgent": "/root/fission_ci_impl",
+  "reviewerAgent": "/root/fission_ci_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "51c420c32cfd785e6083d18bf7cc8c1ea46a4b255fc8fc366e7833e1debea6b9",
+      "gitBlobSha256": "51c420c32cfd785e6083d18bf7cc8c1ea46a4b255fc8fc366e7833e1debea6b9"
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "sha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075",
+      "gitBlobSha256": "6a96211aab427ca2e7a12b36ff6765190bdaafcfae036557a49c904e488e8075"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "cb7de2526160bd6ee124d9056bb4313b1894511d7b36f633d1b32d08ddfe9db4",
+      "gitBlobSha256": "cb7de2526160bd6ee124d9056bb4313b1894511d7b36f633d1b32d08ddfe9db4"
+    }
+  ],
+  "scope": "safe for bounded standard public Windows CI verification only, not actual43passed/host/media/PG",
+  "requestedReviewerModel": "gpt-6-astra",
+  "requestedReviewerEffort": "high",
+  "backendAttested": false,
+  "round0": {
+    "spec": "needs-fix",
+    "quality": "needs-fix",
+    "P1": "regex rejects realRoslyn version pluscommit suffix"
+  },
+  "fix1": {
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "RED": "142total110pass32fail",
+    "GREEN": "142pass0fail/skip/todo/cancel",
+    "changes": "runtime-reused strict compiler parser and pure clean env builder; direct/shim/DLLverification retained; X64 runtime points realinstallation, genericROOT remainsinventory"
+  },
+  "extraPureExports": "parseCompilerVersion and buildPathCiEnvironment approved internal CI test seams within3files; no package/product/CLI/transport expansion",
+  "rootIndependentProofSHA256": "bd0eaa448e7ee9e34d22c48fd5355bd05975b776752d536ee5a42cf256520f01",
+  "actualWindowsPassed": false
+}

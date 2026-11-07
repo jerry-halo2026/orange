@@ -1,0 +1,87 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 2,
+  "scope": "Native opt-in development isolation wiring through original launcher/main/Studio/CLI; no desktop launch until independent review",
+  "classification": "native-extension",
+  "authorAgent": "/root/t01_profile",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendModelVerified": false,
+  "baselineCommit": "2e25e338a7a846e9ed1703d3faf72deab97e4524",
+  "workingBaselineCommit": "2e25e338a7a846e9ed1703d3faf72deab97e4524",
+  "dependencyCommits": [
+    "2e25e338a7a846e9ed1703d3faf72deab97e4524"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+  "writeAllowlist": [
+    "scripts/phase1-isolation.mjs",
+    "scripts/phase1-isolation.test.mjs",
+    "apps/desktop/scripts/start.mjs",
+    "apps/desktop/scripts/start.test.mjs",
+    "apps/desktop/src/isolation.mjs",
+    "apps/desktop/src/isolation.test.mjs",
+    "apps/desktop/src/environment.mjs",
+    "apps/desktop/src/environment.test.mjs",
+    "apps/desktop/src/main.mjs",
+    "apps/desktop/src/studio.mjs",
+    "apps/desktop/src/studio.test.mjs",
+    "apps/desktop/src/studio-process.mjs",
+    "apps/desktop/src/openfilm-command.mjs",
+    "apps/desktop/src/openfilm-command.test.mjs",
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/server/server-isolation.test.mjs",
+    "packages/openfilm/src/locations.mjs",
+    "packages/openfilm/src/locations.test.mjs",
+    "packages/openfilm/studio/server/exports.mjs",
+    "packages/openfilm/studio/server/exports-isolation.test.mjs",
+    "packages/openfilm/studio/client.mjs",
+    "packages/openfilm/studio/client-isolation.test.mjs",
+    "packages/openfilm/studio/client.test.mjs",
+    "packages/openfilm/src/development-isolation.mjs",
+    "packages/openfilm/src/development-isolation.test.mjs",
+    "packages/openfilm/package.json",
+    "packages/openfilm/studio/server/projects.mjs",
+    "packages/openfilm/studio/server/projects-isolation.test.mjs"
+  ],
+  "references": [
+    "docs/discovery/13_技术架构与目录依赖基线.md",
+    "docs/discovery/16_OpenFilm原生接口与平台对齐.md",
+    "docs/discovery/15_OpenFilm资源来源与分发边界.md",
+    "docs/superpowers/plans/2026-11-07-phase1-execution.md"
+  ],
+  "nativeSymbols": [
+    "launcherEnvironment",
+    "childEnvironment",
+    "startWindowStudio",
+    "startStudio",
+    "installOpenfilmCommand"
+  ],
+  "resourceLeases": [
+    "single code writer; synthetic tests/worktree .dev only; no desktop/GPU"
+  ],
+  "forbidden": [
+    "other worktrees/archives",
+    "renderer feature changes",
+    "lock/workspace/CI change without extension",
+    "Fission or desktop launch",
+    "network/model calls",
+    "commit/merge/push"
+  ],
+  "requirements": [
+    "fail closed explicit profile before startup side effects",
+    "preserve original no-profile consumers",
+    "profile survives launcher and child env",
+    "Electron paths isolated before ready",
+    "original Studio/CLI uses same profile",
+    "no old Studio takeover or random-port fallback in isolation",
+    "no automatic runtime download",
+    "effective prefs/outdir must not defeat configured roots",
+    "native package helper owns one validator; root script reexports, no package-to-desktop imports",
+    "project gate before first mkdir and stored folder lookup",
+    "isolated remote capability refusals do not redefine final product scope"
+  ],
+  "tests": "TDD targeted original-module tests plus profile tests; real filesystem fixtures under worktree .dev; no broad runtime tests until review",
+  "review": "docs/execution/t01-native-review.json",
+  "status": "native-source-reviewed; real-runtime-pending",
+  "stop": "new write-set need, unavailable runtime evidence or unsafe launch; continue read-only preparation"
+}

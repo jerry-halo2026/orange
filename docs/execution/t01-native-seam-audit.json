@@ -1,0 +1,52 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 2,
+  "baseline": "2e25e338a7a846e9ed1703d3faf72deab97e4524",
+  "auditor": "/root/t01_seam_audit",
+  "scope": "read-only original native source seams; no execution proof",
+  "automaticRemote": [
+    {
+      "method": "GET",
+      "callee": "listExamples",
+      "caller": "App sourcesApi.preload and ExamplesGallery",
+      "route": "/api/examples"
+    },
+    {
+      "method": "GET",
+      "callee": "freshProviders",
+      "caller": "useProviders/useServices",
+      "route": "/api/providers"
+    },
+    {
+      "method": "POST",
+      "callee": "readDiscover",
+      "caller": "ProjectStarters/Discover",
+      "route": "/api/skills/catalog"
+    }
+  ],
+  "remoteOnCacheMiss": [
+    "/api/library/file",
+    "/api/library/pages/*",
+    "/api/examples/:id/canvas",
+    "/api/examples/:id/files/*"
+  ],
+  "explicitRemoteWrites": [
+    "/api/library/fetch",
+    "/api/projects/fetch",
+    "/api/examples/:id/folder"
+  ],
+  "localPreserve": [
+    "/api/skills",
+    "/api/library",
+    "/api/library/voices"
+  ],
+  "pathRisks": [
+    "projects.openProject makes asked/.film before realpath; reject before first mkdir",
+    "projectById trusts persisted external folder; revalidate before use",
+    "exports defaultDrafts writes actual Jianying/CapCut system folder; isolated drafts callback null plus folder guard"
+  ],
+  "ruling": "Explicit development isolation mode refuses remote capabilities; original no-profile behavior and full pilot scope unchanged",
+  "runtimeProven": false,
+  "nativeStartupAllowed": false,
+  "modelCalls": 0
+}

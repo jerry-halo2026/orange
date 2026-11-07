@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { after, before, test } from 'node:test';
+import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { readIsolationProfile, isolationEnvironment } from '../../src/development-isolation.mjs';
+import { createExports } from './exports.mjs';
+let root, profile;
+before(() => { root = mkdtempSync(join(tmpdir(), 'exports-isolation-')); const c = { baseRoot: join(root, 'approved'), instanceId: 'instance-a', taskId: 'T01', attemptId: 'attempt-1', ports: { studio: 18471, film: 18472 } }; profile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), OPENFILM_ISOLATION_ROOT: c.baseRoot }); Object.assign(process.env, isolationEnvironment(profile)); });
+after(() => rmSync(root, { recursive: true, force: true }));
+test('native export queue rejects an external override synchronously before publishing any job or folder', () => { const outside = join(root, 'outside'); const queue = createExports(); assert.throws(() => queue.start({ id: 'native-id', name: 'Native', path: join(profile.paths.projects, 'native') }, { kind: 'project' }, { folder: outside }), /isolat/); assert.equal(existsSync(outside), false); });

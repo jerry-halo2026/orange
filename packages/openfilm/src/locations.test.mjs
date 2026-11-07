@@ -86,3 +86,18 @@ test('with a shared home, the folder chosen there is the library; a folder insid
   assert.equal(libraryRoot(), join(home, 'X', 'Projects'), 'the shared one, not its own');
   assert.throws(() => usableFolder(join(shared, 'inside')), /own settings/);
 });
+
+test('isolated effective projects preferences and folder selection cannot escape before mkdir', async () => {
+  const { readIsolationProfile, isolationEnvironment } = await import('./development-isolation.mjs');
+  const { chooseFolder } = await import('./locations.mjs');
+  const c={baseRoot:join(home,'approved'),instanceId:'instance-a',taskId:'T01',attemptId:'attempt-1',ports:{studio:18471,film:18472}};
+  const p=readIsolationProfile({OPENFILM_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),OPENFILM_ISOLATION_ROOT:c.baseRoot});
+  const env=isolationEnvironment(p);const old=Object.fromEntries(Object.keys(env).map(k=>[k,process.env[k]]));
+  try{
+    Object.assign(process.env,env);mkdirSync(p.paths.sharedHome,{recursive:true});
+    writeFileSync(join(p.paths.sharedHome,'prefs.json'),JSON.stringify({projectsFolder:join(home,'outside')}));
+    assert.throws(()=>libraryRoot(),/isolat/);
+    assert.throws(()=>chooseFolder('projectsFolder',join(home,'outside')),/isolat/);
+    const outside=join(home,'new-external');assert.throws(()=>usableFolder(outside),/isolat/);assert.equal(existsSync(outside),false);
+  }finally{for(const[k,v]of Object.entries(old)){if(v===undefined)delete process.env[k];else process.env[k]=v}}
+});

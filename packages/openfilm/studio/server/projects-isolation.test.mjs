@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import { after, before, test } from 'node:test';
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { readIsolationProfile, isolationEnvironment } from '../../src/development-isolation.mjs';
+import { openProject, projectById } from './projects.mjs';
+let root, profile;
+before(() => { root = mkdtempSync(join(tmpdir(), 'projects-isolation-')); const c = { baseRoot: join(root, 'approved'), instanceId: 'instance-a', taskId: 'T01', attemptId: 'attempt-1', ports: { studio: 18471, film: 18472 } }; profile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), OPENFILM_ISOLATION_ROOT: c.baseRoot }); Object.assign(process.env, isolationEnvironment(profile)); });
+after(() => rmSync(root, { recursive: true, force: true }));
+test('openProject rejects outside destination before its first mkdir', async () => { const outside = join(root, 'outside'); await assert.rejects(() => openProject(outside), /isolat/); assert.equal(existsSync(outside), false); });
+test('stored project lookup refuses outside root before describing files', async () => { mkdirSync(profile.paths.home, { recursive: true }); writeFileSync(join(profile.paths.home, 'studio.json'), JSON.stringify({ recent: [{ id: 'original-id', path: join(root, 'external'), openedAt: 1 }], folders: [] })); await assert.rejects(() => projectById('original-id'), /isolat/); });
+test('original project format and non-UUID identifier remain usable inside isolated projects', async () => { const dir = join(profile.paths.projects, 'native'); mkdirSync(join(dir, '.film'), { recursive: true }); writeFileSync(join(dir, '.film', 'id'), 'native_123\n'); const result = await openProject(dir); assert.equal(result.id, 'native_123'); assert.ok(existsSync(join(dir, 'film.html'))); });
+test('openProject rejects linked .film before writing native metadata', async () => {
+    const { symlinkSync } = await import('node:fs');
+    const dir = join(profile.paths.projects, 'linked-meta');
+    const external = join(root, 'external-meta');
+    mkdirSync(dir, { recursive: true });
+    mkdirSync(external);
+    symlinkSync(external, join(dir, '.film'), 'junction');
+    await assert.rejects(() => openProject(dir), /link|alias|isolat/);
+    assert.equal(existsSync(join(external, '.gitignore')), false);
+});

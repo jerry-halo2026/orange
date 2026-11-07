@@ -21,6 +21,8 @@ import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { startStudio } from 'openfilm/studio';
 import { launch } from 'openfilm/host';
+import { readIsolationProfile } from './isolation.mjs';
+const isolation = readIsolationProfile(process.env);
 
 const parent = process.parentPort;
 const send = (message) => parent.postMessage(message);
@@ -68,6 +70,7 @@ try {
   studio = await startStudio({
     port: Number.isInteger(port) ? port : 0,
     advertise: true,
+    isolation: Boolean(isolation),
     openBrowser: (url) => send({ type: 'open', url }),
     /* another app (or `openfilm open`) asked this Studio to stop: the window still needs it, so it stays and says so */
     stays: true,
@@ -84,6 +87,10 @@ try {
 
 send({ type: 'ffmpeg', found: ['ffmpeg', 'ffprobe'].every((bin) => !spawnSync(bin, ['-version'], { stdio: 'ignore', windowsHide: true }).error) });
 
+/* Isolated development never installs or bootstraps runtime downloads automatically. */
+if (isolation) {
+  send({type:'browser',state:'failed',message:'Automatic browser setup is unavailable in isolated development; supply an approved local runtime.'});
+} else {
 /* Studio draws pages' pictures in Playwright's headless browser: download it once, the first time (about 100 MB) */
 try {
   await (await launch()).close();
@@ -98,4 +105,6 @@ try {
     child.once('exit', (code) => send(code === 0 ? { type: 'browser', state: 'ready' } : { type: 'browser', state: 'failed', message: `the download stopped (${code})` }));
     child.once('error', (error) => send({ type: 'browser', state: 'failed', message: error.message }));
   }
+}
+
 }

@@ -12,8 +12,9 @@
  * Both answer only requests addressed to 127.0.0.1, localhost or [::1] at their own port (ownHost): another site
  * whose name is pointed at this machine (DNS rebinding) gets nothing, not even /api/health.
  */
+import { readIsolationProfile, assertIsolationPath } from '../../src/development-isolation.mjs';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import { createReadStream, existsSync, mkdirSync, openSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { createReadStream, existsSync, lstatSync, mkdirSync, openSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { basename, dirname, extname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'node:http';
@@ -53,7 +54,7 @@ import { installedFonts } from './fonts.mjs';
 import { addTextFont, isFontFile, projectFonts, resolveIn } from './project-fonts.mjs';
 import { FILM_PAGE, PageFrameError, closePageFrames, filmPoster, pageFacts, pageFrame, warmFilmPoster } from './pageframes.mjs';
 import { COVER_FRAME_W, CoverError, clearCover, readCover, readCoverBody, setCover, setCoverFromFile } from './cover.mjs';
-import { BUILT_IN, fetchItem, libraryFavorites, libraryFileFetched, libraryIndex, libraryVoices, notHere, setLibraryFavorites } from './library.mjs';
+import { BUILT_IN, fetchItem, libraryFavorites, libraryFile, libraryFileFetched, libraryIndex, libraryVoices, notHere, setLibraryFavorites } from './library.mjs';
 import { SavedError, TEXT_COMPONENT, TEXT_OWN_FONTS, bundlePoster, libraryPath, libraryRel, libraryRoot as savedLibrary, listLibrary, bringClip, saveClip, saveFile, saveGroup, takeSaved } from './saved.mjs';
 import { FILM_FILE, clipKind, isPage } from '../../src/film-doc.mjs';
 import { listenLocal } from '../../src/host.mjs';
@@ -116,9 +117,16 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * is working in right now (an app with a chat), which cannot be renamed or deleted meanwhile. `askAgent`: in an app with
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent }} [options]
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent } = {}) {
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false } = {}) {
+  const isolation = readIsolationProfile();
+  if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
+  if (isolation) {
+    if (port !== isolation.ports.studio) throw new Error('Studio port does not match the isolated pair.');
+    assertIsolationPath(isolation,studioHome(),'home');
+    if (advertise && lstatSync(join(studioHome(),'run.json'),{throwIfNoEntry:false})) throw new Error('An isolated run.json already exists; takeover is disabled.');
+  }
   let COOKIE = cookieName(port);
   let FRAMED = framedCookieName(port);
   /** The key from either session cookie. */
@@ -231,7 +239,8 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     }
 
     authorize(req);
-    const parts = path.slice('/api/'.length).split('/').map(decodeURIComponent);
+    const parts = studioApiParts(path);
+    return isolationResourceCall(isolation,parts,req.method,async () => {
 
     /* stop: another app is taking over this machine's Studio, or `openfilm open` starts it afresh (`whenIdle`: not
        while an export runs or media is made — it would be lost). `pages`: how many were open, to come back */
@@ -424,7 +433,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     if (parts[0] === 'library') {
       if (parts.length === 1 && req.method === 'GET') return json(res, 200, libraryIndex());
       if (parts[1] === 'voices' && parts.length === 2 && req.method === 'GET') return json(res, 200, libraryVoices());
-      if (parts[1] === 'file' && parts.length === 2 && req.method === 'GET') return sendMedia(req, res, await libraryFileFetched(url.searchParams.get('path')), { check: true });
+      if (parts[1] === 'file' && parts.length === 2 && req.method === 'GET') return sendMedia(req, res, await studioLibraryFile(isolation,url.searchParams.get('path')), { check: true });
       /* which of these things still need fetching before they go in (a sound, an emoji, a template's music): { ids } */
       if (parts[1] === 'missing' && parts.length === 2 && req.method === 'POST') return json(res, 200, { ids: notHere((/** @type {{ ids?: unknown }} */ (await readJson(req) ?? {})).ids) });
       /* one of them fetched now: { ok } */
@@ -433,7 +442,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       if (parts[1] === 'pages' && parts.length > 2 && req.method === 'GET') {
         /* a page of it, as a page, and what it loads beside it by its own place (its fonts, its pictures): what a click
            tries over the viewer's picture */
-        const file = await libraryFileFetched(parts.slice(2).join('/'));
+        const file = await studioLibraryFile(isolation,parts.slice(2).join('/'));
         if (!file) throw new HttpError(404, 'no such file');
         const type = /** @type {Record<string, string>} */ ({ '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.otf': 'font/otf' })[extname(file).toLowerCase()];
         if (!type) return sendMedia(req, res, file, { check: true });
@@ -673,7 +682,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       return json(res, 200, { project: await locateProject(parts[1], folder) });
     }
     const project = await projectById(parts[1]);
-    const rest = parts.slice(2).join('/');
+    const rest = projectApiOperation(parts);
     /* Never enter or write into a project removed outside Studio, even if cache writers left its folder behind.
        `film`: false where film.html alone missing is no reason to refuse (the project itself, as its page opens) */
     const requireProject = ({ film = true } = {}) => {
@@ -1166,6 +1175,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       return json(res, 200, { path: await makeFolder(project.path, String(folder ?? '')) });
     }
     throw new HttpError(404, 'no such API');
+    });
   }
 
   const editor = createServer((req, res) => {
@@ -1221,9 +1231,9 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   });
   await listenLocal(editor, port);
   /* the examples index is asked for as Studio starts, so the Examples tab has GitHub's newest when it opens */
-  void listExamples().catch(() => {});
+  void bootstrapStudioResources(isolation,{examples:listExamples,providers:freshProviders,discover:readDiscover},advertise);
   /* and what each service offers (OpenFilm's models are its service's to say), so Settings → Services opens with them */
-  void freshProviders().catch(() => {});
+  // Resource bootstrap above respects the opt-in isolation policy.
   const address = /** @type {import('node:net').AddressInfo} */ (editor.address());
   origin = `http://127.0.0.1:${address.port}`;
   COOKIE = cookieName(address.port);
@@ -1238,7 +1248,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   filmOrigin = pages.origin;
   if (advertise) {
     /* Discover read as Studio starts, so its skills are there when it first opens (and on an empty conversation) */
-    readDiscover({ fresh: 60_000 }).catch(() => { /* offline: what was read before, said so when Discover opens */ });
+    // Discover is refreshed by the same admitted bootstrap, not separately.
     mkdirSync(studioHome(), { recursive: true });
     /* `supervisor`: the process that starts this one again if it ends unexpectedly (main.mjs), stopped with it */
     const supervisor = Number(process.env.OPENFILM_STUDIO_SUPERVISOR) || undefined;
@@ -1486,3 +1496,47 @@ function sendMedia(req, res, file, { keep = false, check = false } = {}) {
   pipeline(createReadStream(file, { start: from, end: to }), res, () => {});
   return undefined;
 }
+
+/** Original remote refreshes, omitted only for explicit isolated development.
+ * @param {unknown} profile
+ * @param {{examples:()=>unknown,providers:()=>unknown,discover:(options:{fresh:number})=>unknown}} resources
+ * @param {boolean} advertise
+ */
+export async function bootstrapStudioResources(profile, { examples, providers, discover }, advertise) {
+  if (profile) return;
+  await Promise.allSettled([Promise.resolve().then(examples),Promise.resolve().then(providers),...(advertise ? [Promise.resolve().then(()=>discover({fresh:60_000}))] : [])]);
+}
+
+/** Admission runs before original route handlers; unavailable is not fake empty success.
+ * @template T
+ * @param {unknown} profile @param {string[]} parts @param {string | undefined} method @param {()=>T | Promise<T>} run
+ * @returns {Promise<T>}
+ */
+export async function isolationResourceCall(profile, parts, method, run) {
+  const projectModelOperation = method === 'POST' && parts[0] === 'projects'
+    && ['subtitles/transcribe', 'subtitles/translate', 'caption-tracks/translate'].includes(projectApiOperation(parts));
+  if (profile && (parts[0] === 'get' || projectModelOperation || parts[0] === 'providers' || parts[0] === 'local-models' || parts[0] === 'examples' || parts[0] === 'update'
+    || (parts[0] === 'skills' && ['catalog','install','update'].includes(parts[1]))
+    || (parts[0] === 'skills' && parts[2] === 'update')
+    || (parts[0] === 'library' && parts[1] === 'fetch')
+    || (parts[0] === 'projects' && parts[1] === 'fetch'))) {
+    throw new HttpError(503,'This remote capability is unavailable in isolated development.',{code:'isolation-capability-unavailable'});
+  }
+  return run();
+}
+
+/** Keep the real bundled/cached Library; never fetch on an isolated preview miss.
+ * @param {unknown} profile @param {unknown} rel
+ * @param {{local?:(rel:unknown)=>string|null,remote?:(rel:unknown)=>Promise<string|null>}} options
+ */
+export async function studioLibraryFile(profile, rel, {local=libraryFile,remote=libraryFileFetched} = {}) {
+  if (!profile) return remote(rel);
+  const file = local(rel);
+  if (!file) throw new HttpError(503,'Library resource is not cached in isolated development.',{code:'isolation-capability-unavailable'});
+  return file;
+}
+/** Original Studio route decoding, shared by dispatch and raw-URL admission tests. @param {string} pathname */
+export const studioApiParts = (pathname) => pathname.slice('/api/'.length).split('/').map(decodeURIComponent);
+
+/** The effective project operation used by both native dispatch and isolation admission. @param {string[]} parts */
+const projectApiOperation = (parts) => parts.slice(2).join('/');

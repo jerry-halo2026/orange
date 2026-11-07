@@ -14,6 +14,7 @@
  * can use it.
  */
 import { execFile, spawn } from 'node:child_process';
+import { readIsolationProfile, isolationEnvironment } from 'openfilm/development-isolation';
 import { existsSync, readdirSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
 import { isAbsolute, join } from 'node:path';
@@ -457,10 +458,11 @@ export const LAUNCHER_FLAGS = ['OPENFILM_DESKTOP_FLAVOR', 'OPENFILM_DESKTOP_CAPT
 
 /** Electron's environment when run from source: the OS identity, the login shell's PATH, LAUNCHER_FLAGS. */
 export function launcherEnvironment(source, path) {
+  const profile = readIsolationProfile(source);
   const env = osEnvironment(source);
   for (const key of LAUNCHER_FLAGS) if (typeof source[key] === 'string') env[key] = source[key];
   env.PATH = path || mergePath('', env.HOME ?? env.USERPROFILE);
-  return env;
+  return profile ? { ...env, ...isolationEnvironment(profile) } : env;
 }
 
 /**
@@ -474,5 +476,6 @@ export function childEnvironment({ source = process.env, shell = {}, extra = {},
     else env[key] = value;
   }
   env.PATH = shell.PATH || mergePath('', env.HOME ?? env.USERPROFILE);
-  return { ...env, ...extra };
+  const profile = readIsolationProfile(source);
+  return { ...env, ...extra, ...(profile ? isolationEnvironment(profile) : {}) };
 }

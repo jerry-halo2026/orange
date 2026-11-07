@@ -10,8 +10,8 @@
  * port, and the other one is asked again every few seconds until it has stopped. Its pages lose their Studio then;
  * the window, agents' `openfilm` commands and run.json are the app's from the start.
  */
-import { utilityProcess } from 'electron';
-import { readFileSync } from 'node:fs';
+import { readIsolationProfile } from './isolation.mjs';
+import { lstatSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -63,7 +63,8 @@ async function takeOver(home, log) {
  *           onBrowser: (state: { state: string, message?: string }) => void, onAsk?: AskHandler, log: (line: string) => void }} options
  * @returns {Promise<{ origin: string, filmOrigin: string, key: string, child: Electron.UtilityProcess }>}
  */
-function fork({ port, env, onOpen, onBrowser, onAsk, log }) {
+async function fork({ port, env, onOpen, onBrowser, onAsk, log }) {
+  const { utilityProcess } = await import('electron');
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(ENTRY, [], {
       serviceName: 'OpenFilm Studio',
@@ -109,15 +110,20 @@ function fork({ port, env, onOpen, onBrowser, onAsk, log }) {
  *           onBrowser: (state: { state: string, message?: string }) => void, onExit: (code: number) => void,
  *           onAsk?: AskHandler, log: (line: string) => void }} options
  */
-export async function startWindowStudio(options) {
-  await takeOver(options.home, options.log);
+export async function startWindowStudio(options, {takeover=takeOver,forkStudio=fork} = {}) {
+  const isolation = readIsolationProfile(options.env);
+  if (isolation) {
+    if (options.home !== isolation.paths.home || options.port !== isolation.ports.studio) throw new Error('Studio options do not match the isolated profile.');
+    if (lstatSync(join(options.home,'run.json'),{throwIfNoEntry:false})) throw new Error('An isolated run.json already exists; takeover is disabled.');
+  } else await takeover(options.home, options.log);
   let studio;
   try {
-    studio = await fork(options);
+    studio = await forkStudio(options);
   } catch (e) {
+    if (isolation) throw e;
     if (e.code !== 'EADDRINUSE' && e.code !== 'EACCES') throw e;
     options.log(`port ${options.port} is taken; Studio takes another\n`);
-    studio = await fork({ ...options, port: 0 });
+    studio = await forkStudio({ ...options, port: 0 });
   }
   let quitting = false;
   studio.child.once('exit', (code) => { if (!quitting) options.onExit(code); });

@@ -1,0 +1,27 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 2,
+  "reviewRound": 0,
+  "reviewer": "/root/t01_profile_review",
+  "spec": "needs-fix",
+  "quality": "needs-fix",
+  "P1": {
+    "issue": "isolated remote/model refusal misses direct model and subtitle routes",
+    "routes": [
+      "GET /api/get",
+      "POST /api/get",
+      "POST /api/projects/:id/subtitles/transcribe",
+      "POST /api/projects/:id/subtitles/translate",
+      "POST /api/projects/:id/caption-tracks/translate"
+    ],
+    "lines": "1516-1520",
+    "file": "packages/openfilm/studio/server/server.mjs",
+    "repro": "real isolationResourceCall with counting handler admitted all five; no network",
+    "required": "503 before handler/provider/Agent; preserve local caption read/write and no-profile behavior"
+  },
+  "sourceHashesVerified": 26,
+  "logHashesVerified": 15,
+  "authorFix": "original /root/t01_profile assigned TDD round1/5",
+  "nativeRuntimeAllowed": false,
+  "integration": "none"
+}

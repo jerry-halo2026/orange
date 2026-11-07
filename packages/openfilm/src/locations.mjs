@@ -13,16 +13,19 @@
  */
 import { accessSync, constants, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, statfsSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
+import { readIsolationProfile, assertIsolationPath } from './development-isolation.mjs';
 import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 
 /** Studio's own home (its settings and keys, not the person's work): OPENFILM_HOME, else ~/.openfilm. */
-export const studioHomeDir = () => process.env.OPENFILM_HOME || join(homedir(), '.openfilm');
+/** @param {string} key @param {()=>string} fallback */
+const isolatedLocation = (key, fallback) => { const p = readIsolationProfile(); return p ? assertIsolationPath(p,p.paths[key],key) : fallback(); };
+export const studioHomeDir = () => isolatedLocation('home', () => process.env.OPENFILM_HOME || join(homedir(), '.openfilm'));
 
 /**
  * The Studio home whose prefs.json holds what every OpenFilm on this computer shares (where the library is, the skills
  * turned off): OPENFILM_SHARED_HOME, else Studio's own.
  */
-export const sharedHome = () => process.env.OPENFILM_SHARED_HOME || studioHomeDir();
+export const sharedHome = () => isolatedLocation('sharedHome', () => process.env.OPENFILM_SHARED_HOME || studioHomeDir());
 
 /** One value of the shared prefs.json (`home`: the home that holds it), or undefined. @param {string} key */
 export function sharedPref(key, home = sharedHome()) {
@@ -48,24 +51,24 @@ export function setSharedPref(key, value, home = sharedHome()) {
 }
 
 /** Where new projects go unless the person chose: OPENFILM_LIBRARY, else ~/Movies/OpenFilm/Projects on macOS, ~/Videos/OpenFilm/Projects elsewhere. */
-export const libraryDefault = () => process.env.OPENFILM_LIBRARY
-  || join(homedir(), process.platform === 'darwin' ? 'Movies' : 'Videos', 'OpenFilm', 'Projects');
+export const libraryDefault = () => isolatedLocation('projects', () => process.env.OPENFILM_LIBRARY
+  || join(homedir(), process.platform === 'darwin' ? 'Movies' : 'Videos', 'OpenFilm', 'Projects'));
 
 /**
  * Where exports go unless a folder is picked when exporting: OPENFILM_EXPORTS, else `exports` in OPENFILM_HOME when
  * that is set (a Studio kept apart, for work on OpenFilm itself, leaves nothing in the person's own folder), else the
  * Desktop.
  */
-export const exportsDefault = () => process.env.OPENFILM_EXPORTS
+export const exportsDefault = () => isolatedLocation('exports', () => process.env.OPENFILM_EXPORTS
   || (process.env.OPENFILM_HOME ? join(process.env.OPENFILM_HOME, 'exports') : '')
-  || join(homedir(), 'Desktop');
+  || join(homedir(), 'Desktop'));
 
 /**
  * Where what the person saved goes (clips and files kept to use again in any project, studio/server/saved.mjs): beside
  * the projects' default folder, `Saved` (~/Movies/OpenFilm/Saved on macOS), else OPENFILM_SAVED. Not moved with the
  * projects folder: what was saved stays where it was found.
  */
-export const savedRoot = () => process.env.OPENFILM_SAVED || join(dirname(libraryDefault()), 'Saved');
+export const savedRoot = () => isolatedLocation('saved', () => process.env.OPENFILM_SAVED || join(dirname(libraryDefault()), 'Saved'));
 
 /** The folders the person can choose, by their key in prefs.json. */
 export const LOCATION_KEYS = /** @type {const} */ ({ projects: 'projectsFolder' });
@@ -73,6 +76,8 @@ export const LOCATION_KEYS = /** @type {const} */ ({ projects: 'projectsFolder' 
 /** A folder the person chose, as kept in prefs.json: an absolute path, or null (none chosen, or not one). */
 export function chosenFolder(/** @type {'projectsFolder'} */ key) {
   const value = sharedPref(key);
+  const profile = readIsolationProfile();
+  if (profile && value !== undefined && value !== null) assertIsolationPath(profile,value,'projects');
   return typeof value === 'string' && isAbsolute(value) ? resolve(value) : null;
 }
 
@@ -81,6 +86,8 @@ export function chosenFolder(/** @type {'projectsFolder'} */ key) {
  * @param {'projectsFolder'} key @param {string | null} value
  */
 export function chooseFolder(key, value) {
+  const profile = readIsolationProfile();
+  if (profile && value !== null) assertIsolationPath(profile,value,'projects');
   setSharedPref(key, value);
 }
 
@@ -133,6 +140,8 @@ export function locations() {
  */
 export function usableFolder(value) {
   if (typeof value !== 'string' || !isAbsolute(value)) throw new Error('Choose a folder by its full path.');
+  const profile = readIsolationProfile();
+  if (profile) assertIsolationPath(profile,value,'projects');
   const path = resolve(value);
   if (dirname(path) === path) throw new Error('Choose a folder on that disk, not the disk itself.');
   for (const home of new Set([resolve(studioHomeDir()), resolve(sharedHome())])) {

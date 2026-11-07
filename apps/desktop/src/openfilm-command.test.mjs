@@ -38,3 +38,31 @@ test('a script run after as-node.mjs is the main module, with its arguments, and
     assert.deepEqual(out, { main: true, argv: [script, '--flag', 'x'], runAsNode: null });
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('isolated installed CLI retains all approved paths even when the invoking shell changes them', async () => {
+  const { readIsolationProfile, isolationEnvironment } = await import('openfilm/development-isolation');
+  const dir = mkdtempSync(join(tmpdir(),'isolated-cli-'));
+  try {
+    const c={baseRoot:join(dir,'profile%literal'),instanceId:'instance-a',taskId:'T01',attemptId:'attempt-1',ports:{studio:18471,film:18472}};
+    const declared={OPENFILM_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),OPENFILM_ISOLATION_ROOT:c.baseRoot};
+    const profile=readIsolationProfile(declared);
+    // Probe only the generated original CLI launcher; never run Electron or media.
+    const probe=join(dir,process.platform==='win32'?'probe.cmd':'probe');
+    writeFileSync(probe,process.platform==='win32'?`@echo off\r\n"${process.execPath}" -e "process.stdout.write(JSON.stringify(process.env))"\r\n`:`#!/bin/sh\nexec '${process.execPath}' -e 'process.stdout.write(JSON.stringify(process.env))'\n`);
+    if(process.platform!=='win32')chmodSync(probe,0o755);
+    const bin=installOpenfilmCommand(profile.paths.userData,{node:probe,env:declared});
+    const out=process.platform==='win32'?execFileSync(process.env.ComSpec??'cmd.exe',['/d','/c','openfilm.cmd'],{encoding:'utf8',cwd:bin}):execFileSync(join(bin,'openfilm'),{encoding:'utf8'});
+    const actual=JSON.parse(out);const expected=isolationEnvironment(profile);
+    for(const[key,want]of Object.entries(expected))assert.equal(actual[key],want,key);
+  } finally {rmSync(dir,{recursive:true,force:true})}
+});
+
+test('isolated CLI installer refuses a linked bin directory before writing a command', async () => {
+  const {mkdirSync,symlinkSync,existsSync}=await import('node:fs');const {readIsolationProfile}=await import('openfilm/development-isolation');
+  const root=mkdtempSync(join(tmpdir(),'isolated-command-link-'));
+  try{const c={baseRoot:join(root,'approved'),instanceId:'instance-a',taskId:'T01',attemptId:'attempt-1',ports:{studio:18471,film:18472}};
+    const env={OPENFILM_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),OPENFILM_ISOLATION_ROOT:c.baseRoot};const p=readIsolationProfile(env);
+    mkdirSync(p.paths.userData,{recursive:true});const outside=join(root,'outside');mkdirSync(outside);symlinkSync(outside,join(p.paths.userData,'bin'),'junction');
+    assert.throws(()=>installOpenfilmCommand(p.paths.userData,{env}),/link|alias/);assert.equal(existsSync(join(outside,'openfilm.cmd')),false);
+  }finally{rmSync(root,{recursive:true,force:true})}
+});

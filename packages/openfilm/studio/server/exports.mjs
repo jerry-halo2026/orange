@@ -1,3 +1,4 @@
+import { readIsolationProfile, assertIsolationPath } from '../../src/development-isolation.mjs';
 // @ts-check
 /**
  * Exports: the film as a video (any codec this machine's ffmpeg encodes, any delivery frame), a GIF, its sound (the
@@ -156,7 +157,7 @@ export async function exportCapabilities() {
 }
 
 /** 剪映's or CapCut's drafts folder on this computer, or null. @param {'jianying' | 'capcut'} app */
-const defaultDrafts = (app) => draftsRoot(app, { home: homedir(), localAppData: process.env.LOCALAPPDATA, exists: existsSync });
+const defaultDrafts = (app) => readIsolationProfile() ? null : draftsRoot(app, { home: homedir(), localAppData: process.env.LOCALAPPDATA, exists: existsSync });
 /** Which of 剪映 and CapCut are on this computer (their drafts folders are there): an editing project goes into its drafts. */
 export const draftApps = () => ({ jianying: Boolean(defaultDrafts('jianying')), capcut: Boolean(defaultDrafts('capcut')) });
 
@@ -399,6 +400,8 @@ function checked(/** @type {ExportAsk} */ ask) {
 
 /** Where to write: the folder asked (absolute, or under ~), else the exports folder. */
 function folderOf(/** @type {unknown} */ folder) {
+  const profile = readIsolationProfile();
+  if (profile) return assertIsolationPath(profile,folder === undefined || folder === null || folder === '' ? profile.paths.exports : folder,'exports');
   if (folder === undefined || folder === null || folder === '') return exportsRoot();
   if (typeof folder !== 'string') throw new ExportError('folder: a path');
   const path = folder === '~' ? homedir() : folder.startsWith('~/') ? join(homedir(), folder.slice(2)) : folder;
@@ -776,6 +779,8 @@ async function rasterize(browser, file, w, h, out) {
  * @param {string} dir
  */
 export async function writableFolder(dir) {
+  const profile = readIsolationProfile();
+  if (profile) assertIsolationPath(profile,dir,'exports');
   try {
     await rmdir(await mkdtemp(join(dir, '.openfilm-')));
     return true;
@@ -1187,7 +1192,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     const app = ask.format === 'jianying' || ask.format === 'capcut' ? ask.format : null;
     /* a draft goes where its app lists its drafts, when the app is on this computer; a drafts folder that refuses the
        write (security software, or the app's own permissions on it) leaves the draft in the exports folder, said so */
-    const draftsDir = app ? drafts(app) : null;
+    const draftsDir = app && !readIsolationProfile() ? drafts(app) : null;
     const dir = draftsDir && await writableFolder(draftsDir) ? draftsDir : out;
     if (draftsDir && dir !== draftsDir) update(job, { draftsRefused: draftsDir });
     if (dir !== out) await sweep(dir, LEFT.output);

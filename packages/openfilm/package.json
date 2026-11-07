@@ -26,6 +26,7 @@
     "openfilm": "bin/openfilm.mjs"
   },
   "exports": {
+    "./development-isolation": "./src/development-isolation.mjs",
     "./film-doc": "./src/film-doc.mjs",
     "./host": "./src/host.mjs",
     "./shared": "./src/shared.mjs",

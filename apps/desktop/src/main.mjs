@@ -37,6 +37,10 @@ import { PATH_SEP } from './environment.mjs';
 import { firstWindowsApps } from './windows-apps.mjs';
 import { createTabs, projectGone } from './tabs.mjs';
 import { restartDelay } from './studio-restart.mjs';
+import { prepareDesktopIsolation, isolationEnvironment } from './isolation.mjs';
+
+const isolation = prepareDesktopIsolation(app,process.env);
+if (isolation) Object.assign(process.env,isolationEnvironment(isolation));
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 const mac = process.platform === 'darwin';
@@ -60,9 +64,9 @@ if (mac) {
 
 /* each flavour its own name, data folder and single-instance lock (flavor.mjs) */
 app.setName(PRODUCT_NAME);
-app.setPath('userData', IDENTITY.userData ?? join(app.getPath('appData'), PRODUCT_NAME));
+if (!isolation) app.setPath('userData', IDENTITY.userData ?? join(app.getPath('appData'), PRODUCT_NAME));
 const DATA = app.getPath('userData');
-const LOGS = join(DATA, 'logs');
+const LOGS = isolation?.paths.logs ?? join(DATA, 'logs');
 mkdirSync(LOGS, { recursive: true });
 const log = (line) => { try { appendFileSync(join(LOGS, 'studio.log'), line); } catch { /* no log */ } };
 
@@ -433,7 +437,7 @@ async function runStudio(env) {
   studio = await startWindowStudio({
     onAsk: answerStudio,
     home: env.OPENFILM_HOME,
-    port: IDENTITY.studioPort,
+    port: isolation?.ports.studio ?? IDENTITY.studioPort,
     /* Studio serves the window's page as its editor (shell/: its editor with the chat beside it) */
     /* its diagnostic file takes the app's own logs too (Studio's diagnostics.mjs) */
     env: { ...env, OPENFILM_EDITOR_DIR: here('../shell/dist/'), OPENFILM_APP_LOGS: LOGS },
@@ -467,7 +471,7 @@ async function runStudio(env) {
 
 async function start() {
   /* updates (updates.mjs): Restart waits while an agent's turn runs or Studio exports, either would be lost */
-  updates = startUpdates({
+  updates = isolation ? null : startUpdates({
     dataDir: DATA,
     productName: PRODUCT_NAME,
     getWindow: () => win,
@@ -493,7 +497,7 @@ async function start() {
     },
   });
   /* an update quitting did not install is installed now, before anything else opens (update-launch.mjs) */
-  const launch = await updates.installAtLaunch({ language: state.language });
+  const launch = updates ? await updates.installAtLaunch({ language: state.language }) : {installing:false,dismiss(){}};
   if (launch.installing) return;
   /* Windows' registered apps, read from now on: the first look at the agents and a conversation reopened at once wait for them */
   if (windows) void firstWindowsApps();
@@ -523,10 +527,10 @@ async function start() {
      is up (they find it the moment it lands); the browser, Studio downloads the first time (studio-process.mjs) */
   const runtime = app.isPackaged ? join(process.resourcesPath, 'runtime') : null;
   const ownFfmpeg = runtime && ffmpegIn(join(runtime, 'ffmpeg')) ? join(runtime, 'ffmpeg') : null;
-  const needFfmpeg = !ownFfmpeg && !ffmpegOnPath(env.PATH) && ffmpegDownloadable();
+  const needFfmpeg = !isolation && !ownFfmpeg && !ffmpegOnPath(env.PATH) && ffmpegDownloadable();
   const ffmpegHere = ownFfmpeg ?? (needFfmpeg ? ffmpegDir(DATA) : null);
   if (ffmpegHere) env.PATH = [ffmpegHere, env.PATH].join(PATH_SEP);
-  const browsers = runtime && existsSync(join(runtime, 'ms-playwright')) ? { PLAYWRIGHT_BROWSERS_PATH: join(runtime, 'ms-playwright') } : {};
+  const browsers = isolation ? {PLAYWRIGHT_BROWSERS_PATH:env.PLAYWRIGHT_BROWSERS_PATH} : runtime && existsSync(join(runtime, 'ms-playwright')) ? { PLAYWRIGHT_BROWSERS_PATH: join(runtime, 'ms-playwright') } : {};
   Object.assign(env, browsers);
 
   const display = screen.getPrimaryDisplay().workArea;
@@ -644,9 +648,10 @@ async function start() {
     onConnectionResult: (id, error) => roster?.recordConnectionResult(id, error),
     /* the `openfilm` command first (with the app's ffmpeg and browser in it); the app's ffmpeg last, for a computer
        that has none of its own: the person's own ffmpeg and browsers are what the agent's commands use */
-    binDir: installOpenfilmCommand(DATA, { ffmpeg: ffmpegHere, env: browsers }),
+    binDir: installOpenfilmCommand(DATA, { ffmpeg: ffmpegHere, env: { ...browsers, ...(isolation ? isolationEnvironment(isolation) : {}) } }),
     fallbackDir: ffmpegHere,
     env: {
+      ...(isolation ? isolationEnvironment(isolation) : {}),
       OPENFILM_HOME: env.OPENFILM_HOME,
       ...(env.OPENFILM_LIBRARY ? { OPENFILM_LIBRARY: env.OPENFILM_LIBRARY } : {}),
       ...(env.OPENFILM_SHARED_HOME ? { OPENFILM_SHARED_HOME: env.OPENFILM_SHARED_HOME } : {}),

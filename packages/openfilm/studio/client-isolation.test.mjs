@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import { after, before, test } from 'node:test';
+import { createHash } from 'node:crypto';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { readIsolationProfile, isolationEnvironment } from '../src/development-isolation.mjs';
+import { running, ensureStudio } from './client.mjs';
+let root, profile, originalFetch;
+before(() => { root = mkdtempSync(join(tmpdir(), 'client-isolation-')); const c = { baseRoot: join(root, 'approved'), instanceId: 'instance-a', taskId: 'T01', attemptId: 'attempt-1', ports: { studio: 18471, film: 18472 } }; profile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), OPENFILM_ISOLATION_ROOT: c.baseRoot }); Object.assign(process.env, isolationEnvironment(profile)); mkdirSync(profile.paths.home, { recursive: true }); originalFetch = globalThis.fetch; });
+after(() => { globalThis.fetch = originalFetch; rmSync(root, { recursive: true, force: true }); });
+const run = p => ({ origin: `http://127.0.0.1:${p.ports.studio}`, filmOrigin: `http://127.0.0.1:${p.ports.film}`, key: 'synthetic' });
+test('isolated client refuses hostile run.json before contacting its origin or revealing key', async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify({ ...run(profile), origin: 'https://unapproved.invalid' })); let requests = 0; globalThis.fetch = async () => { requests++; throw new Error('must not fetch'); }; await assert.rejects(() => running(), /isolat|origin/); assert.equal(requests, 0); });
+test('isolated client requires health home binding and paired origins, without fallback', async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify(run(profile))); globalThis.fetch = async () => ({ json: async () => ({ product: 'openfilm-studio', home: 'wrong', filmOrigin: run(profile).filmOrigin }) }); await assert.rejects(() => running(), /isolat|home/); });
+test('isolated CLI uses matching native Studio without replacing old versions', async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify(run(profile))); globalThis.fetch = async () => ({ json: async () => ({ product: 'openfilm-studio', home: createHash('sha256').update(profile.paths.home).digest('hex'), filmOrigin: run(profile).filmOrigin, version: '0.0.1' }) }); const up = await ensureStudio(); assert.equal(up.origin, run(profile).origin); await assert.rejects(() => ensureStudio(() => { }, { fresh: true }), /isolat|restart/); });
+test('isolated CLI does not auto-start a supervisor or make logs when desktop is absent', async () => { rmSync(join(profile.paths.home, 'run.json')); let requests = 0; globalThis.fetch = async () => { requests++; throw new Error('must not probe fallback'); }; await assert.rejects(() => ensureStudio(), /isolat|running/); assert.equal(requests, 0); });

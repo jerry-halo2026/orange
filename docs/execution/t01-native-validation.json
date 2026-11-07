@@ -1,0 +1,58 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 2,
+  "baseline": "2e25e338a7a846e9ed1703d3faf72deab97e4524",
+  "state": "native source wiring reviewed; controlled real runtime validation pending",
+  "frozenSourceFiles": 26,
+  "sourceHashMismatches": 0,
+  "controllerTests": {
+    "registryIntegrationTest": "not executed: real HKCU mutation outside isolated resources",
+    "tests": 173,
+    "failed": 0,
+    "log": ".superpowers/sdd/2026-11-07-phase1-execution/t01-native-controller-fix2.log",
+    "passed": 171,
+    "skipped": 2,
+    "newIsolationSecuritySkips": 0
+  },
+  "typecheck": {
+    "scope": "all workspace typecheck scripts",
+    "exitCode": 0,
+    "log": ".superpowers/sdd/2026-11-07-phase1-execution/t01-native-controller-typecheck.log"
+  },
+  "build": {
+    "warnings": [
+      "Vite chunks above500kB",
+      "Rollup zod PURE annotation removal"
+    ],
+    "scope": "original Studio UI and desktop shell",
+    "exitCode": 0,
+    "log": ".superpowers/sdd/2026-11-07-phase1-execution/t01-native-controller-build.log"
+  },
+  "standaloneHelperPackaging": {
+    "exportPresent": true,
+    "productMetadataUnchanged": true,
+    "fullInstallOrRelease": false,
+    "files": 1861,
+    "helperImport": "pass after extraction",
+    "tool": "npm pack --ignore-scripts"
+  },
+  "review": {
+    "reviewer": "/root/t01_profile_review",
+    "state": "pass after two fix rounds",
+    "suspectedGap": "closed by shared native effective operation parsing; actual runtime remains unverified"
+  },
+  "notRun": [
+    "Electron",
+    "actual Studio listener/UI",
+    "Fission/media",
+    "whole pnpm suite",
+    "N5a",
+    "Windows installer/E2E/load",
+    "Mac arm64"
+  ],
+  "modelCallsThisTurn": 0,
+  "budget": "cumulative CNY50 unchanged; no price/spend reconciliation so no paid calls",
+  "integration": "none; native wiring uncommitted",
+  "primaryDev": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "completion": "T01 and complete pilot not achieved"
+}

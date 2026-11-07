@@ -10,10 +10,11 @@
  * (`ffmpeg`) and the headless browser it draws pages in (`env`, PLAYWRIGHT_BROWSERS_PATH). The agent's own commands run
  * with the person's ffmpeg and their own browsers, as in their terminal.
  */
-import { chmodSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { nodeBinary } from './node-runtime.mjs';
+import { readIsolationProfile, isolationEnvironment, assertIsolationPath } from 'openfilm/development-isolation';
 
 const require = createRequire(import.meta.url);
 
@@ -34,8 +35,10 @@ export function commandScript(node, cli, { ffmpeg = null, env = {} } = {}) {
 
 /** The same for Windows: a `.cmd` (what a command line there finds as `openfilm`). */
 export function commandScriptWindows(node, cli, { ffmpeg = null, env = {} } = {}) {
-  const set = [...Object.entries(env).map(([k, v]) => `set "${k}=${v}"\r\n`), ...(ffmpeg ? [`set "PATH=${ffmpeg};%PATH%"\r\n`] : [])];
-  return `@echo off\r\nrem OpenFilm's own copy of the openfilm command (written by the app; changes are lost)\r\nsetlocal\r\n${set.join('')}set ELECTRON_RUN_AS_NODE=1\r\nset OPENFILM_NO_UPDATE_CHECK=1\r\n"${node}" "${cli}" %*\r\n`;
+  const isolated = Boolean(readIsolationProfile(env));
+  const batch = (value) => String(value).replace(/%/g, '%%');
+  const set = [...Object.entries(env).map(([k, v]) => `set "${k}=${batch(v)}"\r\n`), ...(ffmpeg ? [`set "PATH=${ffmpeg};%PATH%"\r\n`] : [])];
+  return `@echo off\r\nrem OpenFilm's own copy of the openfilm command (written by the app; changes are lost)\r\nsetlocal${isolated ? ' DisableDelayedExpansion' : ''}\r\n${set.join('')}set ELECTRON_RUN_AS_NODE=1\r\nset OPENFILM_NO_UPDATE_CHECK=1\r\n"${node}" "${cli}" %*\r\n`;
 }
 
 /**
@@ -53,7 +56,18 @@ export function openfilmCommand(bin, platform = process.platform) {
  * all it prints, the manual too.
  */
 export function installOpenfilmCommand(dir, { node = nodeBinary(), platform = process.platform, ffmpeg = null, env = {} } = {}) {
+  const profile = readIsolationProfile(env);
+  if (profile) {
+    assertIsolationPath(profile,dir,'userData');
+    env = {...env,...isolationEnvironment(profile)};
+  }
   const bin = join(dir, 'bin');
+  if (profile) {
+    assertIsolationPath(profile,bin,'userData');
+    const target = join(bin,platform === 'win32' ? 'openfilm.cmd' : 'openfilm');
+    const info = lstatSync(target,{throwIfNoEntry:false});
+    if (info && (!info.isFile() || info.isSymbolicLink())) throw new Error('Isolated CLI command must not be a linked alias.');
+  }
   mkdirSync(bin, { recursive: true });
   if (platform === 'win32') {
     writeFileSync(join(bin, 'openfilm.cmd'), commandScriptWindows(node, openfilmCli(), { ffmpeg, env }));

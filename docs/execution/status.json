@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "R0 verified; T01 isolated bootstrap in progress",
+  "phase": "T01 native source wiring reviewed; actual runtime isolation/N5a pending",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -59,7 +59,8 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-profile-review.json"
+  "currentSliceReview": "docs/execution/t01-native-review.json",
+  "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json"
 }

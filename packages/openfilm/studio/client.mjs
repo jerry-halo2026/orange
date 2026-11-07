@@ -4,9 +4,10 @@
  * background, and ask it to open a folder or get media for one. One Studio per machine, like one editor window per
  * project.
  */
+import { readIsolationProfile, assertIsolationPath } from '../src/development-isolation.mjs';
 import { createHash } from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, openSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, openSync, readFileSync, writeFileSync } from 'node:fs';
 import { request } from 'node:http';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -35,7 +36,23 @@ async function health(/** @type {string} */ origin, ms = 1500) {
 export async function running() {
   /** @type {Running | null} */
   let run = null;
+  const isolation = readIsolationProfile();
+  if (isolation) {
+    assertIsolationPath(isolation,studioHome(),'home');
+    const info = lstatSync(join(studioHome(),'run.json'),{throwIfNoEntry:false});
+    if (info && (!info.isFile() || info.isSymbolicLink())) throw new Error('Isolated run.json must be an ordinary file.');
+  }
   try { run = JSON.parse(readFileSync(join(studioHome(), 'run.json'), 'utf8')); } catch { /* none advertised */ }
+  if (isolation) {
+    if (!run) return null;
+    const origin = `http://127.0.0.1:${isolation.ports.studio}`;
+    const filmOrigin = `http://127.0.0.1:${isolation.ports.film}`;
+    if (run.origin !== origin || run.filmOrigin !== filmOrigin || typeof run.key !== 'string' || !run.key) throw new Error('Invalid isolated Studio origin in run.json.');
+    const said = await health(origin);
+    if (!said) return null;
+    if (said.home !== createHash('sha256').update(isolation.paths.home).digest('hex') || said.filmOrigin !== filmOrigin) throw new Error('Isolated Studio health home or paired origin does not match.');
+    return { ...run, version: said.version, ...(said.app ? { app:true } : {}) };
+  }
   if (run) {
     const said = await health(run.origin);
     if (said) return { ...run, version: said.version, ...(said.app ? { app: true } : {}) };
@@ -87,7 +104,7 @@ export function olderThanThis(/** @type {string | undefined} */ version, mine = 
  * @returns {Promise<{ latest: string | null, checkedAt: number | null }>}
  */
 export async function npmOpenfilm({ network = true, waitMs = 1500, force = false } = {}) {
-  if (process.env.OPENFILM_NO_UPDATE_CHECK) return { latest: null, checkedAt: null };
+  if (readIsolationProfile() || process.env.OPENFILM_NO_UPDATE_CHECK) return { latest: null, checkedAt: null };
   const file = join(studioHome(), 'update.json');
   /** @type {{ checkedAt?: number, latest?: string }} */
   let known = {};
@@ -150,6 +167,12 @@ async function replace(/** @type {Running} */ old) {
  * @param {(line: string) => void} [say] @param {{ fresh?: boolean }} [options] @returns {Promise<Running & { pages?: number }>}
  */
 export async function ensureStudio(say = () => {}, { fresh = false } = {}) {
+  if (readIsolationProfile()) {
+    if (fresh) throw new Error('Isolated CLI cannot restart or replace Studio.');
+    const found = await running();
+    if (!found) throw new Error('Isolated desktop Studio is not running; automatic supervisor startup is disabled.');
+    return found;
+  }
   const found = (await running()) ?? (await restarting());
   if (found && !fresh && !olderThanThis(found.version)) return found;
   let pages = 0;
@@ -194,6 +217,7 @@ export async function ensureStudio(say = () => {}, { fresh = false } = {}) {
  * @param {(line: string) => void} [say] @returns {Promise<{ ok: boolean, lines: string[] }>}
  */
 export async function updateOpenfilm(say = () => {}) {
+  if (readIsolationProfile()) throw new Error('Updates are unavailable in isolated development.');
   if (FROM_SOURCE) return { ok: true, lines: [`openfilm ${VERSION} runs from a source checkout: git pull updates it.`] };
   const found = (await running()) ?? (await restarting());
   if (found?.app) return { ok: true, lines: ['Studio is the OpenFilm app\'s: it updates with the app (OpenFilm → Check for Updates…).'] };

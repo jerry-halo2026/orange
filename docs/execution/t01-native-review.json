@@ -1,0 +1,154 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 2,
+  "baseline": "2e25e338a7a846e9ed1703d3faf72deab97e4524",
+  "author": "/root/t01_profile",
+  "reviewer": "/root/t01_profile_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "rounds": [
+    {
+      "quality": "needs-fix",
+      "round": 0,
+      "P1": "direct model routes not refused",
+      "spec": "needs-fix"
+    },
+    {
+      "quality": "needs-fix",
+      "round": 1,
+      "P1": "encoded separator guard/dispatch disagreement",
+      "spec": "needs-fix"
+    },
+    {
+      "quality": "pass",
+      "round": 2,
+      "P1": 0,
+      "P2": 0,
+      "spec": "pass"
+    }
+  ],
+  "resolution": "guard and original route dispatcher share effective operation parser; literal and encoded model calls refused before handler",
+  "fileHashes": [
+    {
+      "path": "scripts/phase1-isolation.mjs",
+      "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+    },
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf"
+    },
+    {
+      "path": "apps/desktop/scripts/start.mjs",
+      "sha256": "f75948f2243383b8837cba7f7b0f70410961f12f17488d15fbb0e93e3e0386f5"
+    },
+    {
+      "path": "apps/desktop/scripts/start.test.mjs",
+      "sha256": "df46c1146a00ffef249300c45f94deb1cebafbaa8b7af284967b09c13cace49c"
+    },
+    {
+      "path": "apps/desktop/src/isolation.mjs",
+      "sha256": "da5156add48b83d74a6298c02adf4b35a02978c4b0e532d9f431947b508479f7"
+    },
+    {
+      "path": "apps/desktop/src/isolation.test.mjs",
+      "sha256": "d807c1a386c6d54773f627f3123e1fcc6129c0e47f169fb9581ac4665ba9bec9"
+    },
+    {
+      "path": "apps/desktop/src/environment.mjs",
+      "sha256": "31cc926c9fce9340a6abefcf05ea8ac4a485adb160b80b579f315236faf15c6b"
+    },
+    {
+      "path": "apps/desktop/src/main.mjs",
+      "sha256": "54bd32af05d6923e0de2148c41aa59a0126f61ec645c5864bf9f91efbf4527e8"
+    },
+    {
+      "path": "apps/desktop/src/studio.mjs",
+      "sha256": "29ce1ba58952331c2788c852ca9214c0eb8701be5d68a5ca5d625a94370f6bf2"
+    },
+    {
+      "path": "apps/desktop/src/studio.test.mjs",
+      "sha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324"
+    },
+    {
+      "path": "apps/desktop/src/studio-process.mjs",
+      "sha256": "f34038223e2d3d72602e73ed49d292cf345477a57f9e6545b47d577a182526a9"
+    },
+    {
+      "path": "apps/desktop/src/openfilm-command.mjs",
+      "sha256": "d0a98cd9e1cb7cc20e39201f2b4e3b82966a2e5f4099bf0d818fc1b247f4d374"
+    },
+    {
+      "path": "apps/desktop/src/openfilm-command.test.mjs",
+      "sha256": "e23f1b334e9acac927493041aefce88ee3c9958fe3613447fc6b3228c3043c28"
+    },
+    {
+      "path": "packages/openfilm/package.json",
+      "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    },
+    {
+      "path": "packages/openfilm/src/locations.mjs",
+      "sha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52"
+    },
+    {
+      "path": "packages/openfilm/src/locations.test.mjs",
+      "sha256": "c1c1c113b05e395d6df07fa993de093f81d9ab1f399eeb68726f19934b2f3fd1"
+    },
+    {
+      "path": "packages/openfilm/studio/client.mjs",
+      "sha256": "5d8d24501597b336e05b10468969b51078086bed63eca80f0a29918b78747e3e"
+    },
+    {
+      "path": "packages/openfilm/studio/client-isolation.test.mjs",
+      "sha256": "d81a40bdc339b73cba7f662b7cc5c1ab3f3c120f99adecdfa39e95e0823978c7"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "ef7a27cc4c484c88ea036acfd86464421488cd72176c16479c16ab404c3cc373"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-isolation.test.mjs",
+      "sha256": "d8ca186fb405e585c65610eecd84994dc491cc9d841ad44bb29a931a90299d9d"
+    },
+    {
+      "path": "packages/openfilm/studio/server/exports.mjs",
+      "sha256": "52e2063e4dcda0de20264a57996e22e5477ad85ea9e2026f4b20273f0607ce88"
+    },
+    {
+      "path": "packages/openfilm/studio/server/exports-isolation.test.mjs",
+      "sha256": "58e3584e8fb5aedc273ee5d4ac40207a9addf7058512335b1a85d401b2f3b8e8"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "3bff1da0644594d8e1bacc5c75dd0cc66c6568c3935d2d255dad917e627bfbb5"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-isolation.test.mjs",
+      "sha256": "9bfb7d0037a46f686336aba292a03e3877c4c4f665e4ebb0a3fb74949f2ff13f"
+    }
+  ],
+  "actualTests": {
+    "newIsolationSecuritySkips": 0,
+    "total": 173,
+    "fail": 0,
+    "registryTest": "pending, real HKCU mutation deliberately not executed",
+    "existingPlatformSkips": 2,
+    "pass": 171
+  },
+  "runtime": "not executed; review not T01/N5a acceptance",
+  "remaining": [
+    "real Electron/Studio/CLI process and paired-port lifecycle",
+    "whole isolated suite and N5a拒绝反例",
+    "Windows E2E/media/install/target hardware",
+    "Mac arm64 not tested"
+  ],
+  "mergePush": "none"
+}

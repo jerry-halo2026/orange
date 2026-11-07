@@ -1,0 +1,35 @@
+{
+  "taskId": "T02.a",
+  "commit": "acc27c4d119fd150331b788b84067858b48be9f4",
+  "authorAgent": "/root/access_policy_impl",
+  "reviewerAgent": "/root/auth_io_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "4e895438f0f818f7ce6b628a07ca5dc78dae2738480f090dea3ad5cb31d4b001",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "7d13b1ceb8440bbac187065cd7c8eaab39049ebaa1d894fa6d4e31cc616c36c4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "scope": "only six-field internal evidence compatibility with original policy factory in same-tree tests; no realAuth/ownership/UI/N1",
+  "priorReview": "docs/execution/t02-access-validation.json sourcepeer+root223pass",
+  "representation": "retainedE2 raw CRLF4e/7d versus canonicalGit345/4d52; explicit EOL-only distinction",
+  "approval": {
+    "reviewerAgent": "/root/auth_io_policy_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "only stated unchanged producer/test setup or evidence shape, not newservice/IO tested"
+  },
+  "reviewState": "independently approved for exact local consumer scope before implementation"
+}

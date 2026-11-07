@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/auth_io_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "approvedOriginalHashes": {
+    "auth": "155caf64cef285f27589d12816b3f6bc0ff616b28ec3884fa6161701c8bc8a7a",
+    "IO": "58863f231324a3ffe5a51fd55a5ebcb19f5dba0e5a3f7bbc41592797b429c1ca"
+  },
+  "finalRecordOnlyChanges": "record approved producer proofs and update their exact raw/Gitblob digests +onewayactivecard pointer; no source/API/permissions change",
+  "finalHashes": [
+    {
+      "path": "docs/execution/t02-auth-service-assignment.json",
+      "sha256": "d342d9546e9f2a99a7e89e70b9c4849b8061468cf1e677be9cfe8aece16564b0"
+    },
+    {
+      "path": "docs/execution/t05-controlled-io-assignment.json",
+      "sha256": "37bda3a47e3d30faa4d58edfa118de3879a9b0fe907b3cad2d5704a295df53f5"
+    },
+    {
+      "path": "docs/execution/t01-cpu-auth-io-consumer-review.json",
+      "sha256": "1aaa05dfef945d8176d8987563c072d77186f451fbf99cb94f32076093636c9f"
+    },
+    {
+      "path": "docs/execution/t02-access-auth-consumer-review.json",
+      "sha256": "d37292c8f63386777cc89876e19327484f322d099b697baa37d52b82d1b6973f"
+    }
+  ],
+  "plan": "canonical phase1 plan appended two refinements; no parallelregistry",
+  "humanSignedThreeN0BoundariesUnchanged": true,
+  "scope": "local injected Auth2files and originalFissionIO4files/Fakecodec only; realAuth/host/media/CIextension/newsymlinkcapability stillpending",
+  "actualN5a": "pending immutablecommit and actualE2/E3 execution",
+  "newImplementationsPassed": false
+}

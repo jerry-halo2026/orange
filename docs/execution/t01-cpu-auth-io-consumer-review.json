@@ -1,0 +1,59 @@
+{
+  "taskId": "T01",
+  "subset": "cpu-isolation",
+  "authorAgent": "/root/t01_profile",
+  "reviewerAgent": "/root/auth_io_policy_review",
+  "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    }
+  ],
+  "representation": "exact Git blob bytes and fresh managed checkout LF raw bytes; no binary normalization",
+  "priorReview": "docs/execution/t01-native-review.json (source/helper unchanged; fixture CRLF/LF distinction explicit)",
+  "actualTests": {
+    "skip": 0,
+    "fail": 0,
+    "boundary": "fresh managed checkout pure Node tests: admission74+isolation81+flavor3+helper10",
+    "log": "T02 preparation tree .dev/cpu-freeze-evidence/tests.log",
+    "cases": 168
+  },
+  "consumerScope": [
+    "T02.a original desktop injected Authservice local transport/clock tests only",
+    "T05.a original Core/Providers controlled fileIO with fake codecs tests only"
+  ],
+  "excludedClaims": [
+    "whole T01 completion",
+    "business identity/access contract ready",
+    "real media/ASR/cloud/Jianying/installer",
+    "GUI/graceful close/Mac support",
+    "feature writer dispatched before scoped N5a"
+  ],
+  "reviewState": "independently approved for exact local consumer scope before implementation",
+  "priorSourceReview": "docs/execution/t01-cpu-consumer-review.json",
+  "approval": {
+    "reviewerAgent": "/root/auth_io_policy_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "only stated unchanged producer/test setup or evidence shape, not newservice/IO tested"
+  }
+}

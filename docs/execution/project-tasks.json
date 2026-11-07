@@ -53,7 +53,7 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "exact pure EnginePathPolicy/ValidateJob consumer-ready producer4d322, actualWindows43/43incl2truesymlinks; originalEnginePaths/host/inputconsumption notwired/accepted",
+      "deliverySlice": "purepolicy43ready; originalEngine controlledIO rev2 four-file design approved pendingN5a/implementation, no host/T05.b release",
       "readinessEvidence": "docs/execution/t05-path-readiness.json"
     },
     {
@@ -134,7 +134,7 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "native characterization5b and internal access policyacc27 pure-policy-ready, peer+root223pass; realAuth/persistentownership/wiring/N1pending",
+      "deliverySlice": "native characterization+internalpolicyready; Authservice rev4 localDI design approved, no implementation/realAuth/persistentowner/wiring/N1",
       "consumerDependency": "T01 cpu-isolation exact subset only",
       "readinessEvidence": "docs/execution/t02-access-validation.json (pure-policy-ready only, no T03 release)"
     },

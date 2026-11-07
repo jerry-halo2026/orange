@@ -1,0 +1,170 @@
+{
+  "taskId": "T05.a",
+  "assignmentRevision": 2,
+  "authorAgent": "/root/fission_io_impl",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension original controlled fileIO consumption",
+  "workingBaselineCommit": "06e737ecc2288b14201d3d4fb230be651cbfb8ce",
+  "dependencyCommits": [
+    "06e737ecc2288b14201d3d4fb230be651cbfb8ce",
+    "4d32213f85bfc4d92648e7f05842704530500ff2",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "status": "active",
+  "dispatchState": "reserved, no writer until independently approved immutable policy and N5a",
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "scope": "actual original Core helper+Providers compile and FissionEngine controlledentry behavior with fake codec/probe over syntheticbytes; no realmedia/host/CLI/Web or workerDTO",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+    "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+    "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+    "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t02-auth-service-assignment.json",
+        "sha256": "d342d9546e9f2a99a7e89e70b9c4849b8061468cf1e677be9cfe8aece16564b0",
+        "assignmentRevision": 4
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-auth-io-consumer-review.json",
+          "sha256": "1aaa05dfef945d8176d8987563c072d77186f451fbf99cb94f32076093636c9f",
+          "gitBlobSha256": "1aaa05dfef945d8176d8987563c072d77186f451fbf99cb94f32076093636c9f"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "4d32213f85bfc4d92648e7f05842704530500ff2",
+        "authorAgent": "/root/t05_path_policy",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+            "sha256": "2c5e727ba0424bb4637969879484d8de657030df2f3300dbc3d49a74db8a3c80",
+            "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+            "sha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+            "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t05-path-readiness.json",
+          "sha256": "b2c0e0bb5387b461ecf9bd9fa5d2077f145bd2b1d10d65e17c2e7c113d55d192",
+          "gitBlobSha256": "b2c0e0bb5387b461ecf9bd9fa5d2077f145bd2b1d10d65e17c2e7c113d55d192"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-t05a-controlled-fileio-refinement",
+  "nativeFacts": {
+    "currentUnsafe": "RunAsyncjob.Validate then arbitraryOutDir/mkdir; BuildPoolAudiooriginalpaths; shared _paths.WorkRootcache; afterConfirm AudioUses1 File.Move sourceadjacent_consumed",
+    "minimalChange": "new originalCore EngineJobFiles consumed by original controlled FissionEngine constructor/RunAsync/BuildPool/archive branches; originallegacy ctor remains explicitly unisolated; no second_paths conflictingpolicy",
+    "ProvidersDependency": "originalProviders.csproj onlyCore + publicSystem.Management10.0.14; no privateDLL reference; originalUnitprojectaddProvidersref is4thpermission so directoriginalentrytests alsocompileactualcaller",
+    "metadata": "FindScriptText still uses original job.AudioDir parentmeta.json and audiofilename; preservebasename/jobAudioDir, no fake newproject/DTO/consumeLogfields"
+  },
+  "validation": {
+    "tdd": "new realfilesystem helper+directactualRunAsync tests fail before code; sourceAudio never moved/deleted; no conditional earlyreturn/skip countedpass",
+    "SDK": "preinstalled10.0.300 only, actualversion/compiler/shim recorded; no install/security/props/shim changes",
+    "environment": "coordinator proven minimal Windows tool facts incl validated ProgramFiles(x86), actual preinstalledSDK10.0.300, realX64host and ownsingleSDKinventory; own ignored runner constructs clean allowlist (no CIentry/imported runtime sideeffects), own E3 .dev/fission-io HOME/ProgramData/cache/Nuget/CLIHOME/temp/results/fixtures. No inherited privateconfig/credentials.",
+    "restore": "offlineapprovedartifactcachefirst, freshgeneratedclearconfig no existingNugetconfigread. IfmissingSystem.Management10.0.14+neededtransitive, rootexplicitly approves only publicnuget.org restore of originalUnit+Core/Steps/Providers graph intoownedcache; recordresolvedexactpackages, no otherfeed/SDK/workload/modeldownload.",
+    "output": "actualSDKhelp shows --artifacts-path onrestore/test/build; use owned new artifactsroot toavoid overwritingexistingbin/obj. IfSDKdoesnot honor per-project outputisolation stoproot, no fallback.",
+    "commands": [
+      "dotnet restore originalFission.UnitTests.csproj --configfile ownclearconfig --packages ownpackages --artifacts-path ownbuild",
+      "dotnet test sameproject --no-restore --filter FullyQualifiedName~EngineJobFilesTests --artifacts-path ownbuild --logger trx --results-directory ownresults"
+    ],
+    "requiredCases": [
+      "policy ValidateJob/dirchecks beforemkdir/probe; invalidOutDir actualRunAsync calls0 anddirsabsent",
+      "actualoriginalRunAsync full syntheticflow uses stagedaudio inFakeProbe andmerge requests, originalbytes/hash/pathunchanged, onlyregisteredcopyarchivedafterConfirm",
+      "attemptcache/work/out/stagedfilesdifferent; olddefaultRootsuntouched",
+      "CreateNew targetcollision/relative/escape/junction/precreated or hardlinkedtarget/unregisteredsourceorotherattemptarchive rejected; no source-hardlink identity proof claimed frompaths; cancellation/copyfailureoriginalunchanged",
+      "basename+originaljobAudioDir/meta.json FindScriptText/sub.ass preserved viaoriginalcallsite",
+      "actualProviderscompiled fromnewUnitreference; no fakeassembly/reflection/tempnewlauncher/testsproject"
+    ],
+    "codecBoundary": "FakeIVideoEngine/IMediaProbe Coreinterfaces recordcalls, validateknowncommandshapes/targetsunderownedtask thenwritesyntheticoutputbytes; neverinstantiateProcessPool/Hardware/FFmpeg/FFprobe or spawncodec. This is NOTrealrender/mediaevidence.",
+    "realSymlinks": "localrightsEPERM known. Newtruefile-symlink securitycases mustbeimplemented andrecorded ifunavailable asENVnotpass, no skip/earlyreturn; root can later extend actualhostedCI under separatecard. AuthorcannoteditCI/filter/parser to hide cases.",
+    "scopeCeiling": "Core/Providerscompile+actualoriginalentrysyntheticfileIO andcopy/archive/guard tests only, not runtimePathsIsolated/fullinputclosure/realhost/T02c/media."
+  },
+  "forbidden": [
+    "CLI/Web/doctor/Bench/stress/hardware/ProcessPool/realprobe/codec/media/enginebinary execution",
+    "realassets/olddefaultDpaths/privateconfig/credentials/model/SDK/securitypolicy/CET changes",
+    "job/MaterialItem/ConsumeLog/worker/ActualPlan/authorization DTO changes; newframework/worker/protocol/editor/projectformat",
+    "changeexistingEnginePathPolicy/old43fixture/buildprops/shim/rootworkspace/lock/CI/docs/07/golden by sourceauthor",
+    "whole solutionrestore/integrationtestdiscovery or anyunapprovedpackagefeed",
+    "git stage/commit/merge/push/reset/clean or subagents"
+  ],
+  "CIHandoff": "coordinatorlaterseparateCIcard expands build-inputclosure/Providers+newhelper+newtests/sourceguard andnewclassresultgate; old43proofstays oldscope, currentCI43filter does notcover thisnewI/O andmustnotbeclaimedcoverage",
+  "reviewAndRecovery": {
+    "review": "non-author spec+quality source4file+actualhelper/directcall/TDD/TRX/packages/hashes; rootindependentverify beforecommit; newtruefilelinkENV remainspendinguntilrealWindowsproof",
+    "stop": "need extra source/C#dependency/privatebinary/media invocation/sourcepathoutsideowned/testcapability failures -> root. Do notweaken/skip requiredcase or installSDK.",
+    "preserve": "all existing ignored/data/archives/firstfails retained; ownednewartifacts only, originalsourceuserdata neverchanged"
+  },
+  "fullTaskAccepted": false,
+  "runtimePathsIsolated": false
+}

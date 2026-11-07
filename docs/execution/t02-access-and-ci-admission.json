@@ -27,5 +27,12 @@
     "Auth/N1",
     "T05 passed",
     "dev publication/integration"
-  ]
+  ],
+  "CIRevision8": {
+    "approvalCommit": "66cb3bce40cfca9a07b27a6fb8a7762a0cc908e5",
+    "admitted": false,
+    "reason": "RESOURCE",
+    "cause": "local admission only recognizes cpu/directory/port/database/desktop/gpu; invented ci-runner resource invalid. Author never had remote execution permission; corrected local preparation resource list retains exclusiveE3+sharedCPU and records future root-only remote execution separately",
+    "writerStarted": false
+  }
 }

@@ -11,7 +11,7 @@
   "classification": "engineering-verification",
   "requestedModel": "gpt-6.1-sol",
   "taskId": "T01",
-  "assignmentRevision": 8,
+  "assignmentRevision": 9,
   "authorAgent": "/root/fission_ci_impl",
   "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
   "branch": "codex/t05-path-policy",
@@ -29,11 +29,6 @@
     {
       "kind": "directory",
       "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
-      "exclusive": true
-    },
-    {
-      "kind": "ci-runner",
-      "value": "one standard windows-2025 public Orange job only",
       "exclusive": true
     }
   ],
@@ -146,7 +141,8 @@
       "variable": "FISSION_PATH_POLICY_TEST_ROOT",
       "value": "<validated owned .dev/fission-ci/run/attempt>/fixtures",
       "required": "create ordinary owned fixtures directory after raw lexical/ancestor/realpath containment checks; set explicitly in clean dotnet child environment; frozen source Fixture refuses missing/empty root"
-    }
+    },
+    "remoteExecutionLease": "NOT ISSUED by this local source-writing admission. Root alone may later reserve/trigger one standard public Windows job after exact source/privacy/publication gates; CI author is forbidden any remote job/API/push. Workflow design preserves single Fission job,12min, one concurrent Fission run per named branch."
   },
   "api": {
     "exports": "verifyPathPolicyTrx(xml), validatePathCiContext(facts), runPathPolicyCi() main entry (names may stay exact minimal only)",
@@ -196,5 +192,5 @@
     "preserve": "all prior scratch/43failureTRX retained; no deletion; local tests must be inert pure module only"
   },
   "fullTaskAccepted": false,
-  "dispatchState": "reserved for CI writer; rev7 actual gate denied CARD_REVISION, rev8 pending scoped review/immutable admission"
+  "dispatchState": "local source preparation reserved; rev8 actual gate denied unsupported resource kind ci-runner; rev9 pending independent review/admission"
 }

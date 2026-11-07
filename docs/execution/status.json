@@ -14,7 +14,7 @@
     "unitSubsetAccepted": false,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "Access internal policy rev3 actualN5a84 admitted and TDD author active inE2; CIrev7 refused CARD_REVISION, scopedrev8 policy correction pending",
+  "phase": "Accessrev3 TDD active inE2; CIrev9 local3file preparation policy independently approved after CARD_REVISION/RESOURCE refusals, actual rev9N5a pending",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,

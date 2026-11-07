@@ -156,16 +156,40 @@ export function parseCompilerVersion(output) {
 // SDK child-host hint must instead reach the real preinstalled host/runtimes.
 export function buildPathCiEnvironment(options) {
   try {
-    const {systemRoot,installation,ownedRoot}=options;
-    if(![systemRoot,installation,ownedRoot].every(safeWindowsPath)) throw 0;
+    const {systemRoot,installation,ownedRoot,programFilesX86}=options;
+    if(![systemRoot,installation,ownedRoot,programFilesX86].every(safeWindowsPath)) throw 0;
     const overlaps=(a,b)=>a.toLowerCase()===b.toLowerCase()||a.toLowerCase().startsWith(b.toLowerCase()+'\\')||b.toLowerCase().startsWith(a.toLowerCase()+'\\');
-    if(overlaps(ownedRoot,installation)||overlaps(ownedRoot,systemRoot)) throw 0;
+    if(overlaps(ownedRoot,installation)||overlaps(ownedRoot,systemRoot)||overlaps(ownedRoot,programFilesX86)) throw 0;
     const owned=name=>{const result=path.win32.join(ownedRoot,name);if(!safeWindowsPath(result)) throw 0;return result;};
     const dirs=Object.fromEntries(['home','user','appdata','localappdata','programdata','temp','nuget','packages','clihome','toolinventory'].map(name=>[name,owned(name)]));
     const system32=path.win32.join(systemRoot,'System32'),command=path.win32.join(system32,'cmd.exe'),emptyGitConfig=owned('git.config');
-    const environment={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:command,PATH:[installation,system32,systemRoot].join(';'),PATHEXT:'.COM;.EXE;.BAT;.CMD',HOME:dirs.home,USERPROFILE:dirs.user,APPDATA:dirs.appdata,LOCALAPPDATA:dirs.localappdata,ProgramData:dirs.programdata,ALLUSERSPROFILE:dirs.programdata,TEMP:dirs.temp,TMP:dirs.temp,TMPDIR:dirs.temp,NUGET_PACKAGES:dirs.packages,NUGET_HTTP_CACHE_PATH:dirs.nuget,NUGET_PLUGINS_CACHE_PATH:dirs.nuget,NUGET_SCRATCH:dirs.temp,DOTNET_CLI_HOME:dirs.clihome,DOTNET_ROOT:dirs.toolinventory,DOTNET_ROOT_X64:installation,DOTNET_HOST_PATH:path.win32.join(installation,'dotnet.exe'),DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1',DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_NOLOGO:'1',DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'0',DOTNET_GENERATE_ASPNET_CERTIFICATE:'false',DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE:'true',DOTNET_MULTILEVEL_LOOKUP:'0',DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER:'1',MSBUILDDISABLENODEREUSE:'1',GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyGitConfig,GIT_TERMINAL_PROMPT:'0',FISSION_PATH_POLICY_TEST_ROOT:owned('fixtures')};
+    const environment={'ProgramFiles(x86)':programFilesX86,SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:command,PATH:[installation,system32,systemRoot].join(';'),PATHEXT:'.COM;.EXE;.BAT;.CMD',HOME:dirs.home,USERPROFILE:dirs.user,APPDATA:dirs.appdata,LOCALAPPDATA:dirs.localappdata,ProgramData:dirs.programdata,ALLUSERSPROFILE:dirs.programdata,TEMP:dirs.temp,TMP:dirs.temp,TMPDIR:dirs.temp,NUGET_PACKAGES:dirs.packages,NUGET_HTTP_CACHE_PATH:dirs.nuget,NUGET_PLUGINS_CACHE_PATH:dirs.nuget,NUGET_SCRATCH:dirs.temp,DOTNET_CLI_HOME:dirs.clihome,DOTNET_ROOT:dirs.toolinventory,DOTNET_ROOT_X64:installation,DOTNET_HOST_PATH:path.win32.join(installation,'dotnet.exe'),DOTNET_SKIP_FIRST_TIME_EXPERIENCE:'1',DOTNET_CLI_TELEMETRY_OPTOUT:'1',DOTNET_NOLOGO:'1',DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:'0',DOTNET_GENERATE_ASPNET_CERTIFICATE:'false',DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE:'true',DOTNET_MULTILEVEL_LOOKUP:'0',DOTNET_CLI_DO_NOT_USE_MSBUILD_SERVER:'1',MSBUILDDISABLENODEREUSE:'1',GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyGitConfig,GIT_TERMINAL_PROMPT:'0',FISSION_PATH_POLICY_TEST_ROOT:owned('fixtures')};
     return Object.freeze(Object.assign(Object.create(null),environment));
   } catch {throw new Error('CI_ENVIRONMENT_INVALID');}
+}
+
+// Fixed-size diagnostic facts only: no result object/string/error is reflected.
+// This helper cannot grant success; execute() still applies the original gate.
+export function safeSubprocessFailure(stage,result) {
+  const stages=new Set(['git-head','git-root','source-0','source-1','build-input-2','build-input-3','build-input-4','build-input-5','build-input-6','sdk-version','compiler-version','original-shim-version','runtime-versions','restore','path-policy-tests','git-final-head']);
+  const safeStage=typeof stage==='string'&&stages.has(stage)?stage:'unknown';
+  const freeze=facts=>Object.freeze({...facts,diagnosticCodes:Object.freeze(facts.diagnosticCodes),exceptionTags:Object.freeze(facts.exceptionTags)});
+  const unknown=()=>freeze({stage:safeStage,exitCode:null,signal:'UNKNOWN',spawnErrorCode:'UNKNOWN',diagnosticCodes:[],exceptionTags:[]});
+  try {
+    if(result===null||typeof result!=='object') return unknown();
+    const status=result.status,rawSignal=result.signal,error=result.error;
+    const exitCode=Number.isInteger(status)&&status>=-2147483648&&status<=4294967295?status:null;
+    const signals=new Set(['SIGTERM','SIGKILL','SIGINT','SIGABRT','SIGSEGV','SIGILL','SIGFPE','SIGBREAK','SIGHUP']);
+    const signal=rawSignal===null||rawSignal===undefined?null:typeof rawSignal==='string'&&signals.has(rawSignal)?rawSignal:'UNKNOWN';
+    const errors=new Set(['ENOENT','EACCES','EPERM','ETIMEDOUT','ENOBUFS','EINVAL','ENOMEM','E2BIG','ENOTDIR','EISDIR','EIO','ENOEXEC']);
+    const code=error===null||error===undefined?null:typeof error==='object'?error.code:undefined;
+    const spawnErrorCode=error===null||error===undefined?null:typeof code==='string'&&errors.has(code)?code:'UNKNOWN';
+    const prefix=value=>typeof value==='string'?value.slice(0,65536):Buffer.isBuffer(value)?Buffer.prototype.toString.call(Buffer.prototype.subarray.call(value,0,65536),'utf8'):'';
+    const output=prefix(result.stdout)+'\n'+prefix(result.stderr);
+    const diagnosticCodes=[...new Set([...output.matchAll(/(?:^|[^A-Za-z0-9_])((?:NU|MSB|CS|CA|NETSDK)[0-9]{4})(?=$|[^A-Za-z0-9_])/g)].map(match=>match[1]))].sort().slice(0,8);
+    const exceptionTags=['ConfigurationDefaults','FileNotFoundException','NuGetConfigurationException','TypeInitializationException','UnauthorizedAccessException'].filter(tag=>new RegExp('(?:^|[^A-Za-z0-9_])'+tag+'(?=$|[^A-Za-z0-9_])').test(output));
+    return freeze({stage:safeStage,exitCode,signal,spawnErrorCode,diagnosticCodes,exceptionTags});
+  } catch {return unknown();}
 }
 
 export async function runPathPolicyCi() {
@@ -219,11 +243,11 @@ export async function runPathPolicyCi() {
     await ordinaryDirectory(path.win32.dirname(filename));
     await fs.writeFile(filename,data,{flag:'wx'});await ordinaryFile(filename);
   };
-  // Read only these two machine-location variables. Do not inherit process.env
+  // Read only these three machine-location variables. Do not inherit process.env
   // or provider/account/feed settings into dotnet, git, cmd or the compiler.
-  const systemRoot=process.env.SystemRoot,programFiles=process.env.ProgramFiles;
-  if(!safeWindowsPath(systemRoot)||!safeWindowsPath(programFiles)) fail('CI_SYSTEM_UNAVAILABLE');
-  await ordinaryDirectory(systemRoot);await ordinaryDirectory(programFiles);
+  const systemRoot=process.env.SystemRoot,programFiles=process.env.ProgramFiles,programFilesX86=process.env['ProgramFiles(x86)'];
+  if(!safeWindowsPath(systemRoot)||!safeWindowsPath(programFiles)||!safeWindowsPath(programFilesX86)) fail('CI_SYSTEM_UNAVAILABLE');
+  await ordinaryDirectory(systemRoot);await ordinaryDirectory(programFiles);await ordinaryDirectory(programFilesX86);
   const system32=path.win32.join(systemRoot,'System32'),command=path.win32.join(system32,'cmd.exe');
   const installation=path.win32.join(programFiles,'dotnet'),dotnet=path.win32.join(installation,'dotnet.exe');
   const git=path.win32.join(programFiles,'Git','cmd','git.exe');
@@ -250,11 +274,12 @@ export async function runPathPolicyCi() {
   const emptyGitConfig=path.win32.join(context.ownedRoot,'git.config');await writeOwned(emptyGitConfig,'');
   // Every writable user/cache/config location belongs to this exact attempt.
   // PATH resolves the real installed muxer, not the owned inventory directory.
-  const env=buildPathCiEnvironment({systemRoot,installation,ownedRoot:context.ownedRoot});
+  const env=buildPathCiEnvironment({systemRoot,installation,ownedRoot:context.ownedRoot,programFilesX86});
   const exits={};let commandNumber=0;
   const execute = async (label,executable,args,timeout=15000,allowFailure=false,verbatim=false) => {
-    await ordinaryDirectory(context.ownedRoot);await ordinaryDirectory(dirs.logs);await ordinaryDirectory(dirs.fixtures);await ordinaryFile(executable);await verifyInventory();
+    await ordinaryDirectory(context.ownedRoot);await ordinaryDirectory(dirs.logs);await ordinaryDirectory(dirs.fixtures);await ordinaryFile(executable);await ordinaryDirectory(programFilesX86);await verifyInventory();
     const result=spawnSync(executable,args,{cwd:context.ownedRoot,env,timeout,maxBuffer:8*1024*1024,windowsHide:true,windowsVerbatimArguments:verbatim,killSignal:'SIGKILL'});
+    if(result.error||result.signal||result.status!==0) console.log(JSON.stringify({status:'subprocess-not-passed',...safeSubprocessFailure(label,result)}));
     const prefix=String(++commandNumber).padStart(2,'0')+'-'+label;
     await writeOwned(path.win32.join(dirs.logs,prefix+'.stdout.log'),result.stdout||Buffer.alloc(0));
     await writeOwned(path.win32.join(dirs.logs,prefix+'.stderr.log'),result.stderr||Buffer.alloc(0));

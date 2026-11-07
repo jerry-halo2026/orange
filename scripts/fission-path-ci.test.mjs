@@ -36,7 +36,7 @@ for(const [key,value] of Object.entries({GITHUB_ACTIONS:'false',RUNNER_OS:'Linux
 for (const value of ['','relative','C:relative','\\root','\\\\server\\share','\\\\?\\C:\\work','C:\\','C:\\a\\..\\b','C:\\a\\.\\b','C:/a/b','C:\\a\\','C:\\a\\bad.','C:\\a\\bad ','C:\\a\\CON.txt','C:\\a\\COM¹','C:\\a\\name~1','C:\\a\\file:stream','C:\\a\\bad?name','C:\\a\\bad\nname']) test(`rejects unsafe workspace ${JSON.stringify(value)}`,()=>assert.throws(()=>context({...facts(),GITHUB_WORKSPACE:value}),{message:/^CONTEXT_INVALID$/}));
 for(const value of ['01','1.0','1e2','+1',' 1','1/2']) test(`rejects ambiguous run id ${value}`,()=>assert.throws(()=>context({...facts(),GITHUB_RUN_ID:value}),{message:/^CONTEXT_INVALID$/}));
 test('rejects hostile facts without leaking private exception',()=>assert.throws(()=>context(new Proxy({}, {get(){throw Error('PRIVATE');}})), {message:/^CONTEXT_INVALID$/}));
-test('imports only guarded capabilities and pure review seams without running CI or IO',()=>{assert.deepEqual(Object.keys(api).sort(),['buildPathCiEnvironment','parseCompilerVersion','runPathPolicyCi','validatePathCiContext','verifyPathPolicyTrx']);});
+test('imports only guarded capabilities and pure review seams without running CI or IO',()=>{assert.deepEqual(Object.keys(api).sort(),['buildPathCiEnvironment','parseCompilerVersion','runPathPolicyCi','safeSubprocessFailure','validatePathCiContext','verifyPathPolicyTrx']);});
 
 test('accepts generated TRX multiline stdout without returning its private text',()=> {
  const result=verify(fixture().replace('</ResultSummary>','<Output><StdOut>adapter starting&#xD;\n  adapter finished\n&lt;safe&gt;</StdOut></Output></ResultSummary>')); assert.equal(result.passed,43); assert.equal(JSON.stringify(result).includes('adapter starting'),false);
@@ -51,7 +51,7 @@ test('import succeeds with filesystem writes and child processes denied',async()
  const moduleUrl=new URL('./fission-path-ci.mjs',import.meta.url);
  const code=`globalThis.fetch=()=>{throw new Error('network forbidden')}; const m=await import(${JSON.stringify(moduleUrl.href)}); console.log(Object.keys(m).sort().join(','));`;
  const child=spawnSync(process.execPath,['--permission','--allow-fs-read='+fileURLToPath(moduleUrl),'--input-type=module','-e',code],{encoding:'utf8',env:{SystemRoot:process.env.SystemRoot},timeout:15000,windowsHide:true});
- assert.equal(child.status,0, 'pure import must need no write or child-process permission');assert.equal(child.stdout.trim(),'buildPathCiEnvironment,parseCompilerVersion,runPathPolicyCi,validatePathCiContext,verifyPathPolicyTrx');assert.equal(child.stderr,'');
+ assert.equal(child.status,0, 'pure import must need no write or child-process permission');assert.equal(child.stdout.trim(),'buildPathCiEnvironment,parseCompilerVersion,runPathPolicyCi,safeSubprocessFailure,validatePathCiContext,verifyPathPolicyTrx');assert.equal(child.stderr,'');
 });
 
 test('rejects duplicate GUID identities disguised by hexadecimal letter casing',()=>{
@@ -63,7 +63,7 @@ test('rejects duplicate test definition GUID identities disguised by casing',()=
 
 const compilerVersion = output => { assert.equal(typeof api.parseCompilerVersion,'function','missing strict compiler-version capability'); return api.parseCompilerVersion(output); };
 const environment = options => { assert.equal(typeof api.buildPathCiEnvironment,'function','missing clean CI environment capability'); return api.buildPathCiEnvironment(options); };
-const environmentOptions = () => ({systemRoot:'C:\\Windows',installation:'C:\\Program Files\\dotnet',ownedRoot:'D:\\a\\orange\\orange\\.dev\\fission-ci\\123\\1'});
+const environmentOptions = () => ({systemRoot:'C:\\Windows',programFilesX86:'C:\\Program Files (x86)',installation:'C:\\Program Files\\dotnet',ownedRoot:'D:\\a\\orange\\orange\\.dev\\fission-ci\\123\\1'});
 for(const version of [
  '5.6.0-2.26230.102 (caa81fa4971f74880cdab61990cb1b11420939ec)',
  '5.6.0-2.26230.102', '5.6.0', '5.6.0 (caa81fa4971f74880cdab61990cb1b11420939ec)',
@@ -93,3 +93,39 @@ test('clean environment owns user cache config and temp locations without inheri
 });
 for(const [key,value] of [['systemRoot','relative'],['installation','\\\\host\\share'],['ownedRoot','D:\\a\\..\\escape'],['ownedRoot','C:\\Program Files\\dotnet\\scratch']]) test(`rejects unsafe environment location ${key} ${value}`,()=>assert.throws(()=>environment({...environmentOptions(),[key]:value}),{message:/^CI_ENVIRONMENT_INVALID$/}));
 test('environment construction sanitizes hostile input errors',()=>assert.throws(()=>environment(new Proxy({}, {get(){throw Error('PRIVATE');}})),{message:/^CI_ENVIRONMENT_INVALID$/}));
+
+test('clean environment includes only the explicit read-only ProgramFiles(x86) OS fact',()=>{
+ const env=environment({...environmentOptions(),ProgramFiles:'PRIVATE',ProgramW6432:'PRIVATE',SystemDrive:'PRIVATE'});assert.equal(env['ProgramFiles(x86)'],'C:\\Program Files (x86)');for(const key of ['ProgramFiles','ProgramW6432','SystemDrive','CommonProgramFiles','CommonProgramFiles(x86)','CommonProgramW6432'])assert.equal(Object.hasOwn(env,key),false);
+});
+for(const value of [undefined,null,'','relative','C:relative','C:\\Program Files (x86)\\..\\escape','\\\\server\\share','\\\\?\\C:\\Program Files (x86)','C:\\bad.','C:\\bad%name','D:\\a\\orange\\orange\\.dev\\fission-ci\\123\\1','D:\\a\\orange\\orange\\.dev\\fission-ci\\123\\1\\nuget','D:\\a\\orange\\orange']) test(`rejects invalid or owned-overlapping ProgramFiles(x86) ${JSON.stringify(value)}`,()=>assert.throws(()=>environment({...environmentOptions(),programFilesX86:value}),{message:/^CI_ENVIRONMENT_INVALID$/}));
+const failure = (stage,result) => {assert.equal(typeof api.safeSubprocessFailure,'function','missing bounded subprocess diagnostic capability');return api.safeSubprocessFailure(stage,result);};
+test('failure summary exposes only fixed stage numeric exit status and bounded diagnostic facts',()=>{
+ const result=failure('restore',{status:1,signal:null,error:null,stdout:Buffer.from('PRIVATE path user token NU1301 : private feed\nMSB4018 failed ConfigurationDefaults'),stderr:'System.TypeInitializationException PRIVATE args CS0518 CA1859 NETSDK1045 NU1301',args:['PRIVATE'],env:{TOKEN:'PRIVATE'}});
+ assert.deepEqual(JSON.parse(JSON.stringify(result)),{stage:'restore',exitCode:1,signal:null,spawnErrorCode:null,diagnosticCodes:['CA1859','CS0518','MSB4018','NETSDK1045','NU1301'],exceptionTags:['ConfigurationDefaults','TypeInitializationException']});assert.equal(JSON.stringify(result).includes('PRIVATE'),false);assert.equal(Object.isFrozen(result),true);assert.equal(Object.isFrozen(result.diagnosticCodes),true);assert.equal(Object.isFrozen(result.exceptionTags),true);
+});
+for(const stage of ['git-head','git-root','source-0','source-1','build-input-2','build-input-3','build-input-4','build-input-5','build-input-6','sdk-version','compiler-version','original-shim-version','runtime-versions','restore','path-policy-tests','git-final-head'])test(`retains known subprocess stage ${stage}`,()=>assert.equal(failure(stage,{status:1}).stage,stage));
+for(const stage of ['PRIVATE','restore\nPRIVATE','source-99',null,{},new Proxy({}, {get(){throw Error('PRIVATE');}})])test('unknown subprocess stage never reflects supplied label',()=>assert.equal(failure(stage,{status:1}).stage,'unknown'));
+for(const code of ['ENOENT','EACCES','EPERM','ETIMEDOUT','ENOBUFS','EINVAL','ENOMEM','E2BIG','ENOTDIR','EISDIR','EIO','ENOEXEC']) test(`retains allowlisted spawn error code ${code}`,()=>{
+ const result=failure('restore',{status:null,signal:null,error:{code,get message(){throw Error('PRIVATE');}}});assert.equal(result.spawnErrorCode,code);assert.equal(result.exitCode,null);
+});
+for(const signal of ['SIGTERM','SIGKILL','SIGINT','SIGABRT','SIGSEGV','SIGILL','SIGFPE','SIGBREAK','SIGHUP'])test(`retains allowlisted subprocess signal ${signal}`,()=>assert.equal(failure('path-policy-tests',{status:null,signal}).signal,signal));
+test('unknown signal and spawn error are fixed enums not supplied text',()=>{
+ const result=failure('restore',{status:1,signal:'PRIVATE',error:{code:'PRIVATE',message:'PRIVATE'},stdout:'PRIVATE',stderr:'PRIVATE'});assert.equal(result.signal,'UNKNOWN');assert.equal(result.spawnErrorCode,'UNKNOWN');assert.equal(JSON.stringify(result).includes('PRIVATE'),false);
+});
+for(const value of ['1',NaN,Infinity,1.5,-2147483649,4294967296,{},null])test(`unsafe subprocess exit code becomes null ${typeof value}`,()=>assert.equal(failure('restore',{status:value}).exitCode,null));
+for(const value of [0,1,-2147483648,3221225477,4294967295])test(`preserves numeric subprocess exit code ${value}`,()=>assert.equal(failure('restore',{status:value}).exitCode,value));
+test('hostile subprocess getters and nonobjects return fixed safe unknown facts',()=>{
+ for(const value of [null,undefined,'PRIVATE',new Proxy({}, {get(){throw Error('PRIVATE');}})]) {
+  const result=failure('restore',value);assert.deepEqual(JSON.parse(JSON.stringify(result)),{stage:'restore',exitCode:null,signal:'UNKNOWN',spawnErrorCode:'UNKNOWN',diagnosticCodes:[],exceptionTags:[]});assert.equal(JSON.stringify(result).includes('PRIVATE'),false);
+ }
+});
+test('diagnostic matching rejects embedded or oversized codes and limits unique codes',()=>{
+ const stdout=['PRIVATE_NU1301','xCS0518','MSB12345','NETSDK10450','CA1859extra',...Array.from({length:20},(_,i)=>'NU'+String(1000+i))].join(' ');
+ assert.deepEqual(failure('restore',{status:1,stdout}).diagnosticCodes,['NU1000','NU1001','NU1002','NU1003','NU1004','NU1005','NU1006','NU1007']);
+});
+test('diagnostics scan only bounded raw-output prefixes and never stringify objects',()=>{
+ const hostile={toString(){throw Error('PRIVATE');},toJSON(){throw Error('PRIVATE');}};assert.deepEqual(failure('restore',{status:1,stdout:hostile,stderr:'x'.repeat(65536)+' NU1301 ConfigurationDefaults'}).diagnosticCodes,[]);assert.deepEqual(failure('restore',{status:1,stdout:'x'.repeat(65536)+' ConfigurationDefaults'}).exceptionTags,[]);
+});
+test('nonzero test subprocess failure can be summarized without granting TRX success',()=>{
+ assert.equal(failure('path-policy-tests',{status:1,stderr:'NU1301 PRIVATE'}).exitCode,1);assert.throws(()=>verify(fixture().replace('outcome="Passed"','outcome="Failed"')),{message:/^TRX_INVALID$/});
+});

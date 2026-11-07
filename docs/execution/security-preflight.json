@@ -1,6 +1,6 @@
 {
   "scope": "new source/docs only; regex and exact supplied-config-value checks, not full secret certification",
-  "checkedFiles": 121,
+  "checkedFiles": 122,
   "privateConfigValuesChecked": 2,
   "blocking": [],
   "redactions": []

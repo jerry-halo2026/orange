@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "T01 minimum CPU gate verification actually passed84 approved cases;158 gate tests passed; consumer-specific admission/full T01 pending",
+  "phase": "CPU subset independently frozen; T02 native-reuse policy approved, actual scoped admission pending; T05 pure policy preparation",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -59,10 +59,11 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-cpu-verification-assignment.json",
+  "currentTaskCard": "docs/execution/t02-native-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-cpu-policy-review.json",
+  "currentSliceReview": "docs/execution/t02-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-runtime-validation.json",
-  "cpuReadiness": "docs/execution/t01-cpu-readiness.json"
+  "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
+  "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json"
 }

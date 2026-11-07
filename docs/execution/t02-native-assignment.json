@@ -1,0 +1,214 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 1,
+  "scope": "native-reuse characterization only; business identity/access additions and full T02.a remain pending",
+  "classification": "native-reuse",
+  "authorAgent": "/root/t02_native_reuse",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "medium",
+  "backendAttested": false,
+  "workingBaselineCommit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+  "branch": "codex/t02-native-characterization",
+  "worktreePath": "E:/CodexData/worktrees/orange-t02-native/orange",
+  "dependencyCommits": [
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "status": "active",
+  "dispatchState": "CPU write/resource reservation; writer not dispatched until actual scoped admission",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/projects.test.mjs",
+    "packages/openfilm/src/film-doc.test.mjs",
+    "packages/openfilm/studio/server/film.test.mjs",
+    "packages/openfilm/studio/server/captions.test.mjs",
+    "apps/desktop/src/openfilm-command.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-consumer-review.json",
+          "sha256": "4e9b2db1975a6319113ac3b197107a0beeacd62f74c024d562a49d991a1b86db",
+          "gitBlobSha256": "4e9b2db1975a6319113ac3b197107a0beeacd62f74c024d562a49d991a1b86db"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeSourcePin": "OpenFilm v0.3.0 7713d38c8ddc860e1b8e517bb8b0f180988f8f73; current dependency9079",
+  "nativeSymbols": [
+    "folderId/newId/openProject/projectById",
+    "readFilmFile/filmHtml/clipIdFor/FilmClip.id",
+    "revOf/editProjectFilm",
+    "spokenLines/vttOf/parseVtt",
+    "openfilmCli/installOpenfilmCommand"
+  ],
+  "testIntent": [
+    "legacy_42 project ID survives open/reopen/byId; fresh ID12base64url",
+    "Chinese clip ID read/html/read and original set operation preserves other clips",
+    "revOf abc known ba7816bf8f01cfea and VTT-only original limitation",
+    "fractional source seconds -> native millisecond marks; no invented endSec",
+    "bundled CLI binds actual workspace package/bin, not global latest"
+  ],
+  "tddBoundary": "native-reuse characterization may pass existing source immediately; never fake RED or rewrite production to force convention. Actual mismatch/new behavior needs failure evidence and separate scope.",
+  "environment": {
+    "childPolicy": "build minimal allowlisted environment; never spread process.env into test children",
+    "preserve": [
+      "PATH",
+      "Path",
+      "SystemRoot",
+      "windir",
+      "WINDIR",
+      "ComSpec",
+      "PATHEXT",
+      "PROCESSOR_ARCHITECTURE",
+      "NUMBER_OF_PROCESSORS"
+    ],
+    "explicitlyAbsent": [
+      "OPENFILM_TEST_OTHER_DISK",
+      "RUNNER_TEMP",
+      "OPENFILM_ISOLATION_PROFILE",
+      "OPENFILM_ISOLATION_ROOT",
+      "OPENFILM_SHARED_HOME",
+      "OPENFILM_LIBRARY",
+      "OPENFILM_EXPORTS",
+      "CODEX_HOME",
+      "CLAUDE_CONFIG_DIR",
+      "cloud/model credential variables"
+    ],
+    "mappedWithinWorktree": {
+      "HOME": ".dev/t02-state/home",
+      "USERPROFILE": ".dev/t02-state/home",
+      "APPDATA": ".dev/t02-state/appdata",
+      "LOCALAPPDATA": ".dev/t02-state/localappdata",
+      "TEMP": ".dev/t02-state/temp",
+      "TMP": ".dev/t02-state/temp",
+      "TMPDIR": ".dev/t02-state/temp",
+      "XDG_CACHE_HOME": ".dev/t02-state/cache",
+      "OPENFILM_HOME": ".dev/t02-state/openfilm-home",
+      "OPENFILM_TRASH_DIR": ".dev/t02-state/trash"
+    },
+    "fixed": {
+      "OPENFILM_NO_UPDATE_CHECK": "1",
+      "ELECTRON_SKIP_BINARY_DOWNLOAD": "1"
+    },
+    "dependencyInstall": "if needed only pinnedpnpm9.15.9 frozenlock ignore-scripts, cache/store/temp this worktree; no runtime/model download"
+  },
+  "forbidden": [
+    "production/source interface changes",
+    "new DTO/schema/auth service",
+    "credentials/private config/cloud requests",
+    "desktop/servers/media/Fission/realmodel",
+    "root lock/workspace/CI/07/golden baseline rewrites",
+    "Git staging/commit/push by implementer",
+    "other worktrees/archives"
+  ],
+  "fullTaskAccepted": false,
+  "developmentValidation": {
+    "testSelection": "new characterization tests MUST use native contract: prefix and six required names; never execute full captions/projects suite under this CPU card",
+    "requiredNames": [
+      "native contract: project IDs retain legacy values and native new IDs",
+      "native contract: Chinese clip IDs round trip without normalization",
+      "native contract: Chinese clip IDs edit without touching peers",
+      "native contract: revision is native film text hash and excludes sidecar changes",
+      "native contract: source seconds map to millisecond marks without invented word ends",
+      "native contract: bundled CLI binds the workspace package entry"
+    ],
+    "commands": [
+      {
+        "executable": "process.execPath",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "--test-name-pattern=^native contract:",
+          "packages/openfilm/studio/server/projects.test.mjs",
+          "packages/openfilm/src/film-doc.test.mjs",
+          "packages/openfilm/studio/server/film.test.mjs",
+          "packages/openfilm/studio/server/captions.test.mjs",
+          "apps/desktop/src/openfilm-command.test.mjs"
+        ],
+        "expected": "all six required pure cases executed; no fail/skip/todo/cancel; no server listener/model/media/external fixture"
+      },
+      {
+        "executable": "process.execPath",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "packages/openfilm/src/film-doc.test.mjs",
+          "packages/openfilm/studio/server/film.test.mjs"
+        ],
+        "expected": "existing no-profile pure parse/edit regressions plus relevant new characterization pass; isolated temp only"
+      }
+    ],
+    "cliExecution": "actual --version may run only after inspecting native dispatcher early exit proves no Studio/agent/update/network start; otherwise stop/report, path-binding assertions remain",
+    "fullSuite": "broader captions/projects/workspace suite remains separately pending; selection is explicit, not full-suite claim"
+  },
+  "reviewAndRecovery": {
+    "review": "fresh non-author spec/quality on exact files/hashes, complete result counts and independent expected constants; task remains incomplete until root verifies",
+    "stop": [
+      "unexpected server/network/media/tool invocation",
+      "native source behavior contradicts characterization intent",
+      "need production/source/golden fixture changes outside allowlist",
+      "test fails due environment rather than intended native behavior"
+    ],
+    "recovery": "preserve first failure/all attempts/source hashes and existing artifacts; no git reset/clean, no archive/other tree edits; freeze writer before reassignment",
+    "artifactPreservation": "retain all pre-existing artifacts; only new named scratch under this worktree may be cleaned after absolute containment check",
+    "remainingScope": "business access additions/N1 and Ethan high-risk human signoff pending; this slice cannot release T03 Auth"
+  }
+}

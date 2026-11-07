@@ -126,12 +126,14 @@
     },
     {
       "id": "T02.a",
-      "status": "proposed",
+      "status": "ready",
       "scope": "native identity/command characterization and access additions",
       "dependsOn": [
         "T01"
       ],
-      "externalGates": []
+      "externalGates": [],
+      "deliverySlice": "native-reuse characterization only; access additions remain pending",
+      "consumerDependency": "T01 cpu-isolation exact subset only"
     },
     {
       "id": "T02.b",

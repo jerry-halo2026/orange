@@ -1228,5 +1228,9 @@
     "actualIntegratedTestEvidence",
     "blockerAndResumeCondition"
   ],
-  "lastEvidence": "docs/execution/2026-11-07-phase1-archive-delivery.json (historical administrative work, not product completion)"
+  "lastEvidence": "docs/execution/2026-11-07-phase1-archive-delivery.json (historical administrative work, not product completion)",
+  "primaryWorkspace": "D:/dev/orange",
+  "workingBaselineCommit": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
+  "developmentBranch": "dev",
+  "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance"
 }

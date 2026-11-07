@@ -676,7 +676,7 @@ C40 的实现约束：不能只因心跳或短租约到期，就把可能仍在�
 
 当前真实旧业务库及生产绑定写端尚未完整交接，源码归档不是数据备份或迁移证据。C77明确缺关键要素、无法核验可用的历史隔离不可投入使用；补齐验证后恢复，不按同名猜归属或从MP4伪造工程。原记录和来源缺口保留；缺原组合的历史不能宣称已回填完整去重范围。
 
-业务依据：[交接复核](discovery/03_交接业务复核与账号映射.md)、[声音与录制需求入口](D:/dev/orange/web/studio.js#L45)、[创作历史及恢复](D:/dev/orange/orange/agent_growth.py#L30)、[网页个人素材库](D:/dev/orange/central/local-library.js#L48)。以上为静态证据，不是线上验收。
+业务依据：[交接复核](discovery/03_交接业务复核与账号映射.md)、[声音与录制需求入口](D:/dev/orange-legacy-primary-20261107/web/studio.js#L45)、[创作历史及恢复](D:/dev/orange-legacy-primary-20261107/orange/agent_growth.py#L30)、[网页个人素材库](D:/dev/orange-legacy-primary-20261107/central/local-library.js#L48)。以上为静态证据，不是线上验收。
 
 ## 10 工程级质量与交付规范
 

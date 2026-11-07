@@ -21,10 +21,10 @@ orangeflim是企业内部Windows短视频生产客户端，直接在OpenFilm完�
 | 项目 | 核验事实 |
 | --- | --- |
 | 原版 | OpenFilm v0.3.0，7713d38c8ddc860e1b8e517bb8b0f180988f8f73 |
-| 工作树 | E:/CodexData/worktrees/orangeflim-base/orange |
+| 工作树 | D:/dev/orange |
 | 原版基线分支 | codex/orangeflim-v0.3.0；当前文档工作分支见execution/status.json |
 | 同一Git | D:/dev/orange/.git；不新建orange-openfilm仓库 |
-| 历史 | 旧2e18基线分支、旧dev、原main/暂存区/归档保留 |
+| 历史 | 旧2e18基线保留；旧dev改名归档，原D文件/暂存已完整迁出备份；main未创建提交 |
 | 原版证据 | 两项构建、五项类型、四文件52项选定测试通过；原首页/Edit/Canvas/Library/General/Services已在隔离Windows实例观察 |
 | 非通过项 | 上述不是全量测试、剪口播、Auth整合、Fission交接、剪映或生产验收 |
 | 独立预览 | 网页式UI提案退出主路径、专用服务已停止；源码/图片留历史，不迁入第二壳 |
@@ -173,11 +173,11 @@ M0–M4、PRD首版全部范围及Windows/跨语言/权限/媒体/E2E/CI-CD/发�
 
 ## 13. 文档同步状态
 
-正式PRD/discovery已导入当前仓库并按2026-11-07确认重对齐；D盘原件/暂存区/归档不动。当前入口为docs/README.md与09，旧原文在docs/history。当前联调/付费/远端提交是允许方向但受50元预算、本人安全绑定、费用控制和脱敏白名单等执行门槛约束，不再一概挂起。实际提交/远端状态须核Git引用，本文不自行证明已推送；机器契约未冻结。
+正式PRD/discovery已导入当前仓库并按2026-11-07确认重对齐；随后按用户最新确认，原D现场已完整保全后切为主仓dev；保全档案保持不动。当前入口为docs/README.md与09，旧原文在docs/history。当前联调/付费/远端提交是允许方向但受50元预算、本人安全绑定、费用控制和脱敏白名单等执行门槛约束，不再一概挂起。实际提交/远端状态须核Git引用，本文不自行证明已推送；机器契约未冻结。
 
 ## 14. 源码证据和工程待核
 
-根E:/CodexData/worktrees/orangeflim-base/orange，固定7713d38：
+根D:/dev/orange，固定7713d38：
 - packages/openfilm/bin/openfilm.mjs:5–18、201–224：实际CLI命令，无剪口播/edit命令。
 - packages/openfilm/studio/server/server.mjs:167–175、233、859–867：本地鉴权与原编辑API。
 - packages/openfilm/studio/ui/src/components/Timeline.tsx:4035–4082：用户DOM对应工具栏/分割。
@@ -193,3 +193,6 @@ M0–M4、PRD首版全部范围及Windows/跨语言/权限/媒体/E2E/CI-CD/发�
 ## 15. 旧审查的范围
 
 此前builder-check针对源整合稿，不自动作为本轮文档迁入/Fission公开导入的审查。新差异需独立审查和本轮记录。
+
+## 16. 主仓/dev纠偏后的当前执行口径
+D:/dev/orange是主工作目录，原版基座8b8ef16已作为dev起点；后续功能从最新dev分出并回dev，main只PR。旧dev和原D现场已完整保全，与新代码隔离。本文之前等待一期完成才迁dev或以E文档工作树为主入口的时间性表述已被最新00确认覆盖；以execution主仓纠偏回执为实际证据，不改历史测试subject。

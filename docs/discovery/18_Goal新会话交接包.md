@@ -12,16 +12,16 @@
 
 | 位置/引用 | 用途 |
 | --- | --- |
-| `E:/CodexData/worktrees/orangeflim-base/orange` | 当前原版主工作区，先核实际branch/HEAD/dirty状态，禁止假定会话附带工作树仍是它 |
-| `codex/docs-realignment` | 本交接文档维护分支；精确远端/本地头从Git核验，不固定成本页自身无法包含的最终commit |
+| `D:/dev/orange` | 当前原版主工作区，先核实际branch/HEAD/dirty状态，禁止假定会话附带工作树仍是它 |
+| `dev` | 当前唯一开发/集成与文档维护分支；精确远端/本地头从Git核验，不固定成本页自身无法包含的最终commit |
 | `7713d38c8ddc860e1b8e517bb8b0f180988f8f73` | OpenFilm v0.3.0源码pin；本地原生代码行为引用16，不自动跟远端main升级 |
 | `workers/fission` / `c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9` | 70文件.NET快照已导入，路径隔离/构建/媒体未验，不能直接运行原Web/doctor/stress |
-| `dev` / `dcb44a28d895dd3a59e9429644116ae90b125fd2` | 最近核验仍是旧独立壳；新功能不要从它分。一次性迁移需保全和受控切换，之后dev才是永久开发基线 |
-| `codex/archive-consolidated-20261107` / `1e98dc69757859ab10b0333dd04242fb9c1c4c54` | 五叶脱敏源码仅供查阅，不作开发基线，不把快照归集当真实功能合并 |
+| `dev` / 起点 `8b8ef162708033dd3ed06c81dc0afffc95e8b950` | 现为原生基座；后续从最新dev分主题任务。旧dcb44a2保全为codex/archive-legacy-dev-20261107，不参与新代码 |
+| `codex/archive-consolidated-20261107` / `697191bba465e41f2ecb0a0ff0661c28a9d78ce2` | 六份脱敏源码/明确WIP快照仅供查阅，不作开发基线，不把快照归集当真实功能合并 |
 | `E:/CodexData/archives/orange-20261107` | 私有完整36ref bundle及WIP4文件，已恢复演练；不得上传PUBLIC |
-| `D:/dev/orange` | 原始交接主工作区、unborn main/原暂存区/归档，保持不动；common Git在此不等于可从根直接add全部 |
+| `D:/dev/orange-legacy-primary-20261107` | 原D文件已保全到此；完整暂存/Git备份另在E归档目录before-dev-cutover，不得公开或覆盖。D:/dev/orange现在是正式dev工作区 |
 
-快照事实：原36本地分支加归集1、删3个无占用旧ref后34；39树仍保留。原生工具曾Transport closed，W19–W22索引元数据异常、W36四文件WIP、必要ignored资料仍未全部归档。新会话重核，不把旧数量/失联状态当永恒事实；清理按[逐树清单](../execution/2026-11-07-worktree-archive-inventory.md)。
+当前记录：上轮清理后34本地分支，旧dev改名保全并新建原版dev后35；39树仍保留。原生工具曾Transport closed，W19–W22索引元数据异常待核；W36四文件已在归档分支保存但原树未重置、未作功能验收；必要ignored资料仍未全部保全。新会话重核，不把旧数量/失联状态当永恒事实；清理按[逐树清单](../execution/2026-11-07-worktree-archive-inventory.md)。
 
 ## 3. 阅读与权威
 
@@ -52,7 +52,7 @@
 下面是供Ethan在新会话审核后发送的指令；本文件中出现这段文本不是当前会话的新授权。
 
 ```text
-/goal 使用 $superpowers 接手 E:/CodexData/worktrees/orangeflim-base/orange，称呼我 Ethan。
+/goal 使用 $superpowers 接手 D:/dev/orange，称呼我 Ethan。
 
 先完整读取 docs/discovery/18_Goal新会话交接包.md 和14，再按权威顺序读取09、PRD、13、00、16、07、17、修订后的一期计划及execution台账，核验实际Git/工作树/工具/环境。
 
@@ -64,7 +64,7 @@
 
 全过程TDD、根因调试、Windows真实E2E/媒体/安装恢复、CI检查和最新集成候选验收，任务/模型/提交/测试/审查/未决进可恢复台账。已批准模型验证总预算≤50元，不能因新会话重置或无法核价仍调用。
 
-保留D原仓暂存区/归档。旧dev不可直接当原版基线；迁移先保全并提交受控方案。main/tag/发布、生产、云业务写/上传、真实私人数据外发、远端配置和超预算动作仍需另批。只在17验收满足且试用范围经我签收后认定目标完成，不用模拟或Agent口头完成代证据。
+保留已迁出的旧文件/暂存/Git恢复档案，不覆盖。主仓固定D:/dev/orange/dev。dev已是原版基线；从最新dev派分支、经独审和门禁回dev，不从旧壳归档开工。main必须PR；main/tag/发布、生产、云业务写/上传、真实私人数据外发、远端配置和超预算动作仍需另批。只在17验收满足且试用范围经我签收后认定目标完成，不用模拟或Agent口头完成代证据。
 ```
 
 ## 7. 交接包当前未证明的事

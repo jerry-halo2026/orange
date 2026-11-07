@@ -104,7 +104,7 @@
     },
     {
       "id": "T10",
-      "scope": "serial candidate integration and reviewed dev cutover proposal",
+      "scope": "serial integration into existing native dev and phase-one acceptance",
       "state": "proposed",
       "depends": [
         "relevant packages independently reviewed",
@@ -151,5 +151,9 @@
   ],
   "planRevision": 2,
   "priorReview": "revision1 at 3a29a38 only; revised docs require new review",
-  "completionGate": "docs/discovery/17_小范围试用交付与Goal验收.md"
+  "completionGate": "docs/discovery/17_小范围试用交付与Goal验收.md",
+  "primaryWorkspace": "D:/dev/orange",
+  "workingBaselineCommit": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
+  "developmentBranch": "dev",
+  "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance"
 }

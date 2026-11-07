@@ -11,11 +11,11 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "native-first-goal-handoff-prepared; no business implementation",
-  "branch": "codex/docs-realignment",
+  "phase": "canonical-primary-dev-ready; product implementation not started",
+  "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
-  "originalRepositoryIndexAndArchiveUntouched": true,
+  "originalRepositoryIndexAndArchiveUntouched": false,
   "authorization": {
     "modelBudgetCNY": 50,
     "publicSourceAndSanitizedDocsApproved": true,
@@ -25,9 +25,11 @@
     "mainOrTagApproved": false
   },
   "gitPolicy": {
-    "dev": "permanent integration line after phase-one validation/review; subsequent task baseline",
-    "main": "confirmed release line",
-    "legacyDevMigration": "pending preserve old refs and review; no force or blind unrelated merge"
+    "dev": "native baseline 8b8ef16 established; branch from latest dev and integrate reviewed/tested candidates into dev",
+    "main": "PR required and Ethan confirmation; no main commit created this turn",
+    "legacyDev": "preserved as codex/archive-legacy-dev-20261107 at dcb44a2",
+    "remoteDefault": "dev",
+    "mainRulesetId": 26751877
   },
   "resourceCloud": {
     "state": "future-candidate-not-created"
@@ -37,7 +39,7 @@
     "receipt": "2026-11-07-phase1-archive-delivery.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
-  "publication": "verify actual remote refs and delivery receipt; no dev/main/tag integration or release",
+  "publication": "Native dev pushed; main PR rules read back; no product release",
   "handoff": "docs/discovery/18_Goal新会话交接包.md",
   "pilotReadiness": "docs/execution/pilot-readiness.json",
   "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
@@ -50,5 +52,7 @@
       "Mac Universal"
     ],
     "macValidated": false
-  }
+  },
+  "primaryWorkspace": "D:/dev/orange",
+  "originalStatePreservation": "User-approved complete backup of files/index/common Git; source files archived outside primary; see primary-dev-cutover receipt"
 }

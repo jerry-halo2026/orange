@@ -26,7 +26,7 @@
 - Fission 路径和输入消费行为未隔离前，不启动 Web/doctor/stress/Bench/媒体；既有 Web 不是另一个产品 UI。
 - 模型测试总额≤人民币50元，合成/无敏感输入、不自动重试，费用或工具边界不可核则仅停模型子项；不外发智尚真实素材/字幕，不自动安装模型。
 - 生产、业务云写/上传、真实扣分规则、发布、main/tag 和远端保护配置不随本计划自动获批。素材审核/上传/正式沉淀/团队共享保留真人最终确认。
-- E 盘工作树和缓存；正式集成门禁留 D 盘获准候选区。旧仓暂存区/归档、main、旧dev 本轮不改；不强推、不盲合不相关旧壳。
+- E 盘工作树和缓存；正式集成门禁留 D 盘获准候选区。旧文件/暂存/Git已按用户确认完整归档保全；D主仓dev已就位；main不提交/不推送；不强推、不盲合不相关旧壳。
 - 一期是本轮工程增量，不等于 PRD 全首版/M4 已完成；剪映、录音、AI补素材、模板技能治理等原确认范围不因这四条工作线被删除。
 
 ## Review Focus
@@ -185,35 +185,35 @@ T05.a 的路径纯函数、T07 的合成样例/纯算法准备可先做，不消
 - [ ] Windows实际应用→原轨道多段音画字幕同步合拢→保存重开→一次Undo/Redo；CLI失败不报成功，改文字不自动剪音视频。
 - [ ] 非作者规格/质量审查及原版前后截图，提交；没有真实ASR的场景明确 `fixture_only`，不得冒充完整识别验收。
 
-### T10 串行集成、一期验收与dev一次性切换候选（不是整个goal终点）
+### T10 串行集成、一期验收与现有dev回归（不是整个goal终点）
 **前置：** 相应包独审通过，非作者核影响集合和当前提交；只暂停缺的子轨。
 **文件：** 集成台账/根CI/支持矩阵/恢复报告；不让功能作者关闭自己检查。
 - [ ] 每个合入候选串行生成真实组合提交，重新运行受影响类型/构建/单元/契约/权限/媒体/E2E；相邻包各自绿色不作为组合通过。
 - [ ] D盘正式候选实测：真实登录→原首页→有权本地/已验证智尚素材→Fission与Studio复用→原工程续编/保存重开→剪口播确认/Undo→视频导出，原设置/Edit/Canvas回归。
 - [ ] 真云绑定、真ASR、目标档位、剪映开改存重开、安装升级、10/50/100负载分别记录未测/阻塞，不用本机一条小样例冒充M4发布。
-- [ ] dev迁移单独方案：已归档保留旧dev精确OID/成果，核旧dev工作树/WIP和占用；先形成基于原版的候选并独审，再按获批方案一次切换。不能普通merge无共同祖先旧壳或强推改历史；本次仅计划，不移动dev。
-- [ ] 实际合入dev后从该精确头分后续主题树；main/tag/发布待Ethan另行确认。提交/测试/审查/恢复及未决全部进执行台账。
+- [x] Git基座纠偏（非功能验收）：Ethan明确当前原版可作dev起点；D:/dev/orange已切dev@8b8ef16，旧dev/源文件/暂存完整保全。后续功能从最新dev分支，独审和实际候选门禁后串行回dev，不再重复规划切换或从旧壳开工。
+- [ ] 每次实际合入dev后从该精确头分后续主题树；main必须PR且Ethan确认，tag/发布仍另批。提交/测试/审查/恢复及未决全部进执行台账。
 
 ## 5. 命令和证据（待实施时运行，不是本轮已通过）
 
 从批准的候选绝对路径运行，Node/pnpm版本先核对（根Node≥22.18，pnpm9.15.9，原lock）；不用裸dev启动污染共享用户目录。
 
 ```powershell
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" --filter openfilm typecheck
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" --filter "@openfilm/desktop" typecheck
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" build
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" --filter "@openfilm/desktop" test
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" --filter openfilm test
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" audit:public
-pnpm -C "E:/CodexData/worktrees/orangeflim-base/orange" check:pack
+pnpm -C "D:/dev/orange" --filter openfilm typecheck
+pnpm -C "D:/dev/orange" --filter "@openfilm/desktop" typecheck
+pnpm -C "D:/dev/orange" build
+pnpm -C "D:/dev/orange" --filter "@openfilm/desktop" test
+pnpm -C "D:/dev/orange" --filter openfilm test
+pnpm -C "D:/dev/orange" audit:public
+pnpm -C "D:/dev/orange" check:pack
 ```
 
 精准RED/GREEN选测沿原`timeline-edit/timeline-split/caption-edits`、editor `undo/steps`、server `film/caption-tracks/transcripts/closure`及desktop `tabs/page-presentation/shell-page`测试入口；每张任务卡固定实际命令/退出码/输入hash，不以全量长测替代RED根因。
 
 仅T05隔离/编译壳审查后，.NET候选命令：
 ```powershell
-dotnet test "E:/CodexData/worktrees/orangeflim-base/orange/workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj"
-dotnet test "E:/CodexData/worktrees/orangeflim-base/orange/workers/fission/tests/Fission.IntegrationTests/Fission.IntegrationTests.csproj"
+dotnet test "D:/dev/orange/workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj"
+dotnet test "D:/dev/orange/workers/fission/tests/Fission.IntegrationTests/Fission.IntegrationTests.csproj"
 ```
 测试目录名不是媒体实测证据；缺资源早退不算PASS。新增TS模块用Node测试/现有TS编译配置接入，确切命令在T01交付前验证，不杜撰当前不存在的script。
 

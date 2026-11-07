@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-07",
+  "date": "2026-11-08",
   "upstream": {
     "version": "0.3.0",
     "commit": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73"
@@ -9,9 +9,12 @@
     "files": 70,
     "imported": true,
     "buildTestedInOrange": false,
-    "runtimePathsIsolated": false
+    "runtimePathsIsolated": false,
+    "unitSubsetCompiled": true,
+    "unitSubsetAccepted": false,
+    "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "CPU subset independently frozen; T02 native-reuse policy approved, actual scoped admission pending; T05 pure policy preparation",
+  "phase": "foundation whole-impact review found Canvas P1; bounded native TDD repair takes priority; no source publication/dev integration",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -59,11 +62,44 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t02-native-assignment.json",
+  "currentTaskCard": "docs/execution/t05-path-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t02-policy-review.json",
+  "currentSliceReview": "docs/execution/t05-path-validation.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
-  "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json"
+  "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
+  "latestLocalEvidence": [
+    "docs/execution/t01-desktop-validation-20261108.json",
+    "docs/execution/t02-native-validation.json",
+    "docs/execution/t05-path-validation.json"
+  ],
+  "localGit": {
+    "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+    "primaryBranch": "dev",
+    "primaryClean": true,
+    "coordinationBranch": "codex/t01-isolation",
+    "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
+    "t02Head": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
+    "t05SourceState": "two reviewed frozen untracked files, not yet committed",
+    "devIntegration": false,
+    "remotePushThisGoal": false
+  },
+  "currentBlockers": [
+    "Canvas native API bypasses development project root (P1); source publication and expanded runtime/CI paused pending original-author TDD fix and non-author scoped review",
+    "T05 two required genuine Windows symlink fixtures unavailable with existing local rights; no security-policy changes",
+    "T02.a identity/access N0 three boundaries now approved; machine tests, non-author review and N1 still pending; T03 not released",
+    "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
+    "model cost/call boundaries unreconciled; product model calls remain zero",
+    "remote CI not yet executed; complete PG/V matrix pending"
+  ],
+  "identityBoundary": {
+    "N0": "Ethan approved all three boundaries in chat 2026-11-08",
+    "spec": "docs/superpowers/specs/2026-11-08-identity-access-n0.md",
+    "N1": false,
+    "implementationStarted": false,
+    "developmentAuthEnvironmentUse": "not yet confirmed",
+    "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state"
+  },
+  "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json"
 }

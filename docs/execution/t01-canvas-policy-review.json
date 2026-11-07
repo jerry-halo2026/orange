@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 6,
+  "policy": "docs/execution/t01-canvas-assignment.json",
+  "policyRawSHA256": "568339b62c4ce1cd56a696d5a68b492c140eb0fe3b3ac10cc1c31a5d50275841",
+  "reviewerAgent": "/root/t05_path_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "rounds": [
+    {
+      "round": 0,
+      "spec": "needs-fix",
+      "quality": "needs-fix",
+      "P2": "existing actual HTTP regressions require18771-18774 in addition to new18775/6"
+    },
+    {
+      "round": 1,
+      "spec": "approved",
+      "quality": "approved",
+      "P1": 0,
+      "P2": 0,
+      "fix": "all six ports exclusive lease, server permission, closure checks; existing tests unchanged"
+    }
+  ],
+  "scope": "two Canvas files bounded TDD/real synthetic HTTP repair only; no publication/CI/expanded runtime",
+  "actualN5a": "pending immutable commit and execution"
+}

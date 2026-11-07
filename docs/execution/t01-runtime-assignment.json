@@ -61,5 +61,19 @@
     "red": "real Electron44.9.3 exit1 before Studio, null.packaged at showMenu",
     "author": "/root/t01_profile",
     "greenRequired": "same original launcher fresh profile actually reaches Studio and original window, then clean close; root desktop resource only"
+  },
+  "uiRetry": {
+    "scope": "original isolated Electron window only, no auth/media/model/server scope expansion",
+    "clientDate": "2026-11-08",
+    "stop": "permission/auth/security prompts, ambiguous target window or repeated activation failure; no input on stale state",
+    "operatorConfirmation": "Ethan: desktop unlocked and session connected",
+    "cleanup": "try native close; if unavailable preserve diagnostic and never call forced termination graceful",
+    "executor": "/root",
+    "resourceLeases": [
+      "Windows session1 desktop exclusive",
+      "display GPU exclusive for this UI observation",
+      "own .dev/runtime-validation desktop03 profile and private evidence"
+    ],
+    "otherTasks": "T02 frozen/committed; T05 source frozen after review, no app/GPU work"
   }
 }

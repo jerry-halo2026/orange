@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/foundation_impact_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "baseline": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "candidate": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
+  "spec": "needs-fix",
+  "quality": "needs-fix",
+  "P1": 1,
+  "P2": 0,
+  "findings": [
+    {
+      "id": "canvas-path-bypass",
+      "severity": "P1",
+      "route": "POST /api/canvas",
+      "chain": "isolationResourceCall permits route -> server direct agentCanvasRoute -> resolve(body.folder), stat film.html -> readCanvas/writeCanvas outside approved profile",
+      "locations": [
+        "packages/openfilm/studio/server/server.mjs:363",
+        "packages/openfilm/studio/server/server.mjs:1515-1525",
+        "packages/openfilm/studio/server/canvas.mjs:514-527"
+      ],
+      "impact": "legitimate isolated launch key can read/write an existing external native project without project-path validation",
+      "required": "before first project-file read/write validate root and actual Canvas metadata ancestry/terminal links; retain unprofiled native behavior; genuine request-chain regression"
+    }
+  ],
+  "execution": "read-only static independent review; no exploit/app/test execution by reviewer",
+  "publicationApproved": false,
+  "devIntegrationApproved": false,
+  "pilotAccepted": false,
+  "notClaimed": [
+    "all routes isolated",
+    "OS sandbox",
+    "whole historical privacy audit",
+    "actual CI",
+    "Mac",
+    "Auth/Fission/media"
+  ]
+}

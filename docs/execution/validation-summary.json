@@ -40,5 +40,35 @@
     "Fission-runtime-and-editable-handoff",
     "Windows-Jianying",
     "resource-cloud-distribution"
-  ]
+  ],
+  "currentLocalEvidence": {
+    "date": "2026-11-08",
+    "receipts": [
+      "docs/execution/t01-desktop-validation-20261108.json",
+      "docs/execution/t02-native-validation.json",
+      "docs/execution/t05-path-validation.json"
+    ],
+    "t02": {
+      "cases": 6,
+      "pureRegressions": 47,
+      "fail": 0,
+      "skip": 0,
+      "head": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1"
+    },
+    "t05": {
+      "total": 43,
+      "inconclusive": 0,
+      "executed": 43,
+      "failed": 2,
+      "passed": 41,
+      "skipped": 0,
+      "accepted": false
+    },
+    "desktop": {
+      "gracefulCloses": 2,
+      "restoredSyntheticProject": true,
+      "realAuthMediaInstall": false
+    },
+    "notAnIntegrationCandidate": true
+  }
 }

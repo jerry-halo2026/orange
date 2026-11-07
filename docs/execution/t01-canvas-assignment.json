@@ -1,0 +1,125 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 6,
+  "scope": "bounded native Canvas path bypass repair only; no wider runtime/CI publication",
+  "classification": "native-extension/security-regression",
+  "authorAgent": "/root/t01_profile",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "workingBaselineCommit": "8ad729d0232382ef97387719216c4648e10e0fde",
+  "worktreePath": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+  "branch": "codex/t01-isolation",
+  "dependencyCommits": [
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "status": "active",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/canvas.mjs",
+    "packages/openfilm/studio/server/canvas-isolation.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18775,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18776,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18771,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18772,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18773,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18774,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+        "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home",
+          "rejects cross-instance junction even if target remains within approved base"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "defect": "docs/execution/t01-foundation-impact-review.json P1 canvas-path-bypass",
+  "testIntent": [
+    "actual HTTP POST /api/canvas outside existing synthetic native project read and write are403 stable isolation-path before reading/writing/changing callback; outside bytes/metadata unchanged",
+    "project-root/.film/nested Canvas directory junction escape refused before read/write; no mandatory new Windows true-symlink requirement added to this local card because rights unavailable",
+    "terminal Canvas file link must not leak external data or mutate target; fixture capability limitations explicitly recorded, not skipped/PASS",
+    "valid in-profile native Canvas operations remain usable; default/unprofiled original tests retain behavior",
+    "cover native selected secondary board path if that can be affected; do not widen business protocol"
+  ],
+  "validation": {
+    "TDD": "write failing real request-chain regression and watch semantic RED before code; preserve first failure and all runs",
+    "ownScratch": ".dev/canvas-p1 plus existing plan ignored evidence only; never delete old .dev",
+    "environment": "minimal OS allowlist, own HOME/APPDATA/cache/temp/profile paths; no inherited private credential/config/model variables; all synthetic files including outside fixture remain inside own .dev/canvas-p1",
+    "server": "actual original startStudio isolation:true: new Canvas pair127.0.0.1:18775/editor and localhost:18776/film; existing client/project regressions reserve18771/18772 and18773/18774 exclusively. No browser/Electron/Agent/model/media/provider calls; external fetch observer rejects attempts",
+    "commands": [
+      "new canvas-isolation.test.mjs exact class at fixed lease",
+      "original canvas.test.mjs",
+      "existing server-isolation/projects-isolation/client-isolation and affected native regressions with documented2oldPOSIXskips only"
+    ],
+    "cleanup": "native Studio close removes own advertisements; verify all six leased18771-18776 listeners closed; no force termination as graceful evidence"
+  },
+  "forbidden": [
+    "server/new endpoint/protocol/parallel app",
+    "profile helper/frozen CPU proof/root lock/package/workspace/CI/shared source changes without root extension",
+    "real project/archive/other worktree read-write",
+    "app GUI/engine/media/model/cloud/private config",
+    "stage/commit/push/merge/reset/clean by author",
+    "security policy/privilege/SDK changes"
+  ],
+  "reviewAndRecovery": {
+    "required": "original P1 reviewer non-author scoped source+spec+quality review after RED/GREEN and root verification; full T01 remains incomplete",
+    "stop": "need extra source write or missing fixture/capability -> root, no silent bypass; immutable approved card+actual N5a before writer",
+    "artifactPreservation": "preserve all prior attempts/fixtures; clean only this new owned fixture after absolute-path containment checks"
+  },
+  "fullTaskAccepted": false
+}

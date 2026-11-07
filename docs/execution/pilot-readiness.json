@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-07",
+  "date": "2026-11-08",
   "status": "handoff-not-product-ready",
   "referenceSourceCommit": "3a29a38ea35e488f4769927d816721e19e238076",
   "businessImplementationStarted": false,
@@ -1255,5 +1255,11 @@
   "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
   "developmentBranch": "dev",
   "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance",
-  "taskRegistry": "docs/execution/project-tasks.json"
+  "taskRegistry": "docs/execution/project-tasks.json",
+  "preparationEvidence": [
+    "docs/execution/t01-desktop-validation-20261108.json",
+    "docs/execution/t02-native-validation.json",
+    "docs/execution/t05-path-validation.json"
+  ],
+  "preparationBoundary": "These partial local receipts do not pass any PG/V gate; no combined dev candidate or Ethan scope acceptance yet."
 }

@@ -1,0 +1,149 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T05.a",
+  "classification": "native-extension",
+  "scope": "pure path policy only; not wired into existing EnginePaths or any runtime host",
+  "baseline": "8ad729d0232382ef97387719216c4648e10e0fde",
+  "assignmentRevision": 1,
+  "approvalCardGitBlobSHA256": "ec83a50ae130d544970b89d8b53ab1372386a826890cabec858e224cd1b5e9bb",
+  "author": {
+    "agent": "/root/t05_path_policy",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false
+  },
+  "review": {
+    "agent": "/root/t05_path_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "spec": "pass for frozen source",
+    "quality": "pass for frozen source",
+    "runtimeAcceptance": "not passed",
+    "P1": 0,
+    "P2": 0,
+    "evidence": "non-author review transcript plus root source/report/seven TRX hash verification"
+  },
+  "sourceHashes": [
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+      "sha256": "4db98c607e5638fa70da02910759e7d50f7a0dd0f73f3b64edaa7b15df4995da"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+      "sha256": "fe7b618c9620c0a9b0019a33fb1d5a3f666dfaed108d0bf4f927ea875fd0c840"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePaths.cs",
+      "sha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff"
+    },
+    {
+      "path": "workers/fission/tools/csc-shim/csc.bat",
+      "sha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
+    },
+    {
+      "path": "workers/fission/Directory.Build.props",
+      "sha256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063"
+    }
+  ],
+  "sourceCommit": null,
+  "implementationReportSHA256": "22abcfd1fe5cdaca5772e2a7ad67b664b38bf87e7cd80a1a9bd4e5fbfc642a9d",
+  "scopedAdmission": "actual trusted CPU N5a 84 cases passed before source writer",
+  "toolchain": {
+    "sdk": "10.0.300",
+    "infoExit": 1,
+    "cacheCompleteness": "offline original Core/Steps/Unit restore exit0",
+    "host": "10.0.8",
+    "restoreExit": 1,
+    "compiler": "Unchanged original csc.bat help succeeded compiler 5.6.0-2.26230.102; original Core/Steps/Unit compiled SDK10.0.300 with canonical child ComSpec; no source fix",
+    "os": "Windows x64",
+    "infoOsVarsAttempt2Exit": 1,
+    "restoreOsVarsAttempt2Exit": 0,
+    "capabilityProbeExit": 1,
+    "capabilityNativeComSpecExit": 0,
+    "originalShimHelpNativeExeExit": 0,
+    "compilerDll": "C:/Program Files/dotnet/sdk/10.0.300/Roslyn/bincore/csc.dll",
+    "compilerDllSHA256": "5d03664b92a3c91bafb63466d1796d1aa863a5cbab3d6b79a30ba1b13d192cd2",
+    "compilerVersion": "5.6.0-2.26230.102 (caa81fa4971f74880cdab61990cb1b11420939ec)",
+    "windowsVersion": "10.0.26200.9711 (actual native cmd ver control)"
+  },
+  "semanticRed": "missing capability 37/37 fail; unvalidated seam 37 run, 1 pass,36 fail; includes the two setup privilege failures, not 37 reached policy assertions",
+  "reviewFix": {
+    "focusedRed": "review-case-alias-red:6executed/1pass/5fail",
+    "focusedGreen": "review-case-alias-green:6executed/6pass/0skip",
+    "finding": "P2: missing Windows writable path components accepted multiple case aliases before creation",
+    "fullClass": "review-full-class-after-case-fix:43executed/41pass/2ENVfail/0skip",
+    "rootCause": "Filesystem cannot report canonical spelling after first absent ancestor; old loop stopped without deterministic case constraint",
+    "policy": "Only missing Windows managed writable suffix: cased letters must be lowercase ASCII; uncased Unicode including Chinese/spaces preserved. Existing ancestors exact actual filesystem spelling; read-only/native filenames unchanged; no ID rewriting"
+  },
+  "finalCounters": {
+    "total": 43,
+    "inconclusive": 0,
+    "executed": 43,
+    "failed": 2,
+    "passed": 41,
+    "skipped": 0
+  },
+  "trx": [
+    {
+      "path": ".dev/t05-state/results/green-policy-attempt1/green-policy-attempt1.trx",
+      "sha256": "eee4f9e79fcff43c73b61a8b297e825a3935b0d84ef79967565c28fad347014d",
+      "counters": "<Counters total=\"37\" executed=\"37\" passed=\"16\" failed=\"21\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    },
+    {
+      "path": ".dev/t05-state/results/green-policy-attempt2/green-policy-attempt2.trx",
+      "sha256": "be84aa21228b59a6dd50f789ea01ed0a001d4aa16b773dfc2aa1de32dc60627e",
+      "counters": "<Counters total=\"37\" executed=\"37\" passed=\"35\" failed=\"2\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    },
+    {
+      "path": ".dev/t05-state/results/red-missing-capability/red-missing-capability.trx",
+      "sha256": "bae57abe179586a7300d614b91a33c2f0e67a31e2e38e234be95ecda976e2585",
+      "counters": "<Counters total=\"37\" executed=\"37\" passed=\"0\" failed=\"37\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    },
+    {
+      "path": ".dev/t05-state/results/red-security-behavior/red-security-behavior.trx",
+      "sha256": "87d7ab36bda93517b951c913289b1f624131f179ffe8b523dc6adef3227e117f",
+      "counters": "<Counters total=\"37\" executed=\"37\" passed=\"1\" failed=\"36\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    },
+    {
+      "path": ".dev/t05-state/results/review-case-alias-green/review-case-alias-green.trx",
+      "sha256": "e4f2b38a4c1a0add041eb8c3b9d7c5d9cc0dae4acc7a8819ffe01e5266844ea0",
+      "counters": "<Counters total=\"6\" executed=\"6\" passed=\"6\" failed=\"0\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    },
+    {
+      "path": ".dev/t05-state/results/review-case-alias-red/review-case-alias-red.trx",
+      "sha256": "0145536fe28c45af1711fc9ae031132946b493fe187992246b097be9af724b92",
+      "counters": "<Counters total=\"6\" executed=\"6\" passed=\"1\" failed=\"5\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    },
+    {
+      "path": ".dev/t05-state/results/review-full-class-after-case-fix/review-full-class-after-case-fix.trx",
+      "sha256": "ff924fad36b61d042b52d7866bba66cc75094c629225fb623556f592d156f8d3",
+      "counters": "<Counters total=\"43\" executed=\"43\" passed=\"41\" failed=\"2\" error=\"0\" timeout=\"0\" aborted=\"0\" inconclusive=\"0\" passedButRunAborted=\"0\" notRunnable=\"0\" notExecuted=\"0\" disconnected=\"0\" warning=\"0\" completed=\"0\" inProgress=\"0\" pending=\"0\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" />"
+    }
+  ],
+  "environmentFailures": [
+    "ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True): Directory.CreateSymbolicLink IOException client lacks required privilege",
+    "Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True): same privilege failure"
+  ],
+  "correctedOverstatement": "Earlier agent message overstated genuine symlink setup success in semantic RED; actual TRX has two privilege capability failures there too. Only junction setup was proven then. No symlink case has passed; all failures preserved.",
+  "boundary": "original Core/Steps/Unit offline restore and compile succeeded; original csc shim/props/70 imported source files unchanged. No Fission Web/CLI/doctor/Bench/stress/media/engine execution.",
+  "docker": {
+    "cliPresent": true,
+    "verifiedServerOS": "linux",
+    "localEndpoint": true,
+    "daemonChanged": false,
+    "containersRun": 0,
+    "imageDownloads": 0,
+    "conclusion": "Linux Docker cannot substitute for required genuine Windows symlink assertions; utility-image whitelist had no existing match, not an inventory claim about all images"
+  },
+  "status": "blocked_environment",
+  "requiredTestsSkipped": 0,
+  "fullTaskAccepted": false,
+  "runtimePathsIsolated": false,
+  "integrationCommit": null,
+  "pending": [
+    "actual Windows execution of both required genuine symlink cases",
+    "full policy test run without fail/skip/inconclusive/zero count",
+    "runtime EnginePaths/host/input consumption isolation separately gated"
+  ]
+}

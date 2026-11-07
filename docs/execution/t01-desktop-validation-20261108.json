@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "subjectCommit": "8ad729d0232382ef97387719216c4648e10e0fde",
+  "sourceCorrectionCommit": "31778156ccf210090a4f63d898a6c120b670aa39",
+  "sourceMainSHA256": "9bc276012a4e7afa846de25d64545b6ae686a082a611e7b6916fe36372918940",
+  "executor": "/root",
+  "scope": "actual original Electron44.9.3 desktop and Studio0.3.0; synthetic empty project and own desktop03 profile only",
+  "operatorAssistance": [
+    "Ethan confirmed unlocked connected Windows desktop",
+    "after helper activation failures Ethan manually put OpenFilm Dev in foreground"
+  ],
+  "actualObservations": [
+    "original project launcher rendered",
+    "New Project opened native project oC2SK6k7AxXk in Edit",
+    "original Canvas opened",
+    "same SettingsModal General and Services opened; version0.3.0 and isolated projects folder visible",
+    "All Projects reopened same synthetic project",
+    "native window close exited0 and removed own run advertisement",
+    "same profile native reopen automatically retained same project ID and original1920x1080 canvas",
+    "second native close exited0, no forced termination"
+  ],
+  "nativeProjectId": "oC2SK6k7AxXk",
+  "lifecycleStates": [
+    {
+      "path": ".superpowers/sdd/2026-11-07-phase1-execution/t01-desktop-runtime03-graceful-state.json",
+      "sha256": "d705ffebd907c9d2f9f74a71989147353b88d25e0e0d82a73a80ffa55507b868",
+      "subject": "16fbb520d8bc56cf5385237372964c281011506e plus reviewed runtime3 fixes",
+      "boundary": "actual original Electron desktop, fresh synthetic profile; no model/media",
+      "stage": "exited",
+      "ports": [
+        18581,
+        18582
+      ],
+      "startedAt": "2026-11-07T16:46:33.492Z",
+      "pid": 49496,
+      "origin": "http://127.0.0.1:18581",
+      "filmOrigin": "http://localhost:18582",
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "path": ".superpowers/sdd/2026-11-07-phase1-execution/t01-desktop-runtime-state.json",
+      "sha256": "694ceee304e6ec1ff724d1497ca17d5e4230ee97346885927697e461af3bb14e",
+      "subject": "16fbb520d8bc56cf5385237372964c281011506e plus reviewed runtime3 fixes",
+      "boundary": "actual original Electron desktop, fresh synthetic profile; no model/media",
+      "stage": "exited",
+      "ports": [
+        18581,
+        18582
+      ],
+      "startedAt": "2026-11-07T17:21:28.581Z",
+      "pid": 54876,
+      "origin": "http://127.0.0.1:18581",
+      "filmOrigin": "http://localhost:18582",
+      "exitCode": 0,
+      "signal": null
+    }
+  ],
+  "resourceRelease": {
+    "reservedPorts": [
+      18571,
+      18572,
+      18581,
+      18582,
+      18771,
+      18772,
+      18773,
+      18774
+    ],
+    "listenersAtResume": 0,
+    "ownRunExistsAtResume": false,
+    "desktopLease": "released"
+  },
+  "privacy": {
+    "rawLogs": "ignored private evidence, not published",
+    "temporaryTestNonce": "own generated localhost test nonce was exposed by early UI text; regenerated locally before reopen without printing value; no real account credential involved",
+    "sensitiveValuesIncluded": false
+  },
+  "historicalFailuresPreserved": [
+    "attempt01 original null update controller crash and reviewed correction",
+    "attempt02 helper activation failure then deliberate own-process crash test; NOT graceful",
+    "attempt03 repeated activation failures before manual foreground; no stale target input"
+  ],
+  "notClaimed": [
+    "real first-party Auth",
+    "editing values/Undo/Redo",
+    "actual media/preview/render",
+    "OS-wide containment proof",
+    "100/125/150 scaling matrix",
+    "installation/recovery",
+    "Mac support",
+    "whole T01 or pilot"
+  ],
+  "businessModelCalls": 0,
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "classification": "native-reuse",
+  "slice": "native characterization only",
+  "sourceCommit": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
+  "immutableApprovalCommit": "546c14f07495b6c7a6ce0abb0e17e3279738d36e",
+  "assignmentRevision": 2,
+  "approvalCardGitBlobSHA256": "097605424b3e6d28ba27125790178d5191c34e9c1a7b850a68f223da6efea8dc",
+  "authors": [
+    {
+      "agent": "/root/t02_native_reuse",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "backendAttested": false
+    }
+  ],
+  "review": {
+    "agent": "/root/t02_native_review",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "spec": "pass",
+    "quality": "pass",
+    "P1": 0,
+    "P2": 0,
+    "evidence": "prior turn non-author review transcript; root rechecked exact source hashes and tests; no invented reviewer-signed artifact"
+  },
+  "sourceFiles": [
+    {
+      "path": "packages/openfilm/studio/server/projects.test.mjs",
+      "sha256": "68faf24544dad2a9218e2460a334ac7cd16cc4dc79e03148d48354394c58f5da"
+    },
+    {
+      "path": "packages/openfilm/src/film-doc.test.mjs",
+      "sha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94"
+    },
+    {
+      "path": "packages/openfilm/studio/server/film.test.mjs",
+      "sha256": "ab98d1b214571f79b6b9aeb80efeb50442ce6bca285b9d49de3ca88c238fb56a"
+    },
+    {
+      "path": "packages/openfilm/studio/server/captions.test.mjs",
+      "sha256": "610d97cbb1a004da8519729c9c19f9680fed9dd013390dee3d01f5b150897d2d"
+    },
+    {
+      "path": "apps/desktop/src/openfilm-command.test.mjs",
+      "sha256": "7e8db1b5e04523c1dc11ef1d57b4f9a63ccea76c69a0510ba72a360288f640b2"
+    }
+  ],
+  "implementationReportSHA256": "8edf657b985b6d145fdef43e2963b23546c571151153722a651a14947ee4d088",
+  "rootVerification": {
+    "date": "2026-11-08",
+    "head": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
+    "command": "isolated controller-run.mjs executes the two exact commands in immutable T02 rev2 policy, then native CLI --version",
+    "results": [
+      {
+        "exitCode": 0,
+        "cases": 6,
+        "required": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      {
+        "exitCode": 0,
+        "cases": 47,
+        "required": 3,
+        "fail": 0,
+        "skip": 0
+      }
+    ],
+    "cliVersion": "0.3.0",
+    "sourceUnchanged": true,
+    "evidence": ".dev/resume-20261108/controller-result.json",
+    "evidenceSHA256": "3858c15fa399eff4acad79721cc90ad60c681124abee4de725e670b8cdd703b6"
+  },
+  "scopedN5a": {
+    "admitted": true,
+    "requiredCases": 84,
+    "finalCandidateHead": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
+    "artifactSHA256": "8e5720a74453e1fd1ff1d1185608b9cfbd071494f6df1083aaa1921af129c854",
+    "boundary": "CPU native-reuse card only"
+  },
+  "initialFailure": "5 pass and one actual missing playwright-core import; preserved before locked dependency install. No manufactured semantic RED for native-reuse.",
+  "dependencies": {
+    "installer": "actual pnpm9.15.9 frozen lock ignore-scripts; 217 locked packages; own cache/store; bootstrap pnpm11.25.0 warning preserved, not actual installer claim",
+    "networkScope": "public package download only; no model/browser/Electron download for this slice"
+  },
+  "acceptedSlice": true,
+  "fullTaskAccepted": false,
+  "N1AccessFrozen": false,
+  "T03AuthReleased": false,
+  "integrationCommit": null,
+  "pending": [
+    "trusted subject and project ownership additions",
+    "Ethan high-risk identity/access boundary signoff",
+    "consumer review and N1",
+    "full suite and latest combined candidate"
+  ]
+}

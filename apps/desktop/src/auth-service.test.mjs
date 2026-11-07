@@ -794,3 +794,211 @@ test('15 public outputs contain no credentials, URL, upstream prose, user, metad
   for (const secret of secrets) assert.equal(encoded.includes(secret), false);
   assert.equal(h.calls.length, 4);
 });
+
+test('16 invalidation hook is optional own-data only and is snapshotted', () => {
+  let reads = 0;
+  for (const value of [undefined, null, 1, {}, 'callback'])
+    assert.throws(() => createAuthService(config(), { ...deps(), onInvalidated: value }), { message: 'invalid-configuration' });
+  const getter = deps();
+  Object.defineProperty(getter, 'onInvalidated', { get() { reads++; return () => {}; } });
+  assert.throws(() => createAuthService(config(), getter), { message: 'invalid-configuration' });
+  assert.throws(() => createAuthService(config(), Object.assign(Object.create({ onInvalidated() {} }), deps())), { message: 'invalid-configuration' });
+  assert.throws(() => createAuthService(config(), { ...deps(), onInvalidated() {}, extra: true }), { message: 'invalid-configuration' });
+  assert.equal(reads, 0);
+  let notified = 0;
+  const d = { ...deps(), onInvalidated() { notified++; } };
+  const s = createAuthService(config(), d);
+  d.onInvalidated = () => { throw new Error('replacement must not run'); };
+  exactState(s.dispose(), 'disposed', 'disposed');
+  assert.equal(notified, 1);
+});
+
+for (const status of [401, 403]) test(`17 definitive ${status} retires actual policy before abort and body cancellation`, async () => {
+  const observations = [];
+  let policy, handle, context;
+  const observe = (event) => observations.push({ event, allowed: policy.decide(context, handle, 'metadata').allowed });
+  const h = setup(undefined, { deps: { onInvalidated(state) {
+    exactState(state, 'revoked', 'authentication-rejected');
+    assert.equal(h.service.getVerifiedEvidence(), null);
+    policy.dispose();
+    observe('hook');
+  } } });
+  assert.equal((await h.service.signIn(credentials())).ok, true);
+  policy = createProjectAccessPolicy(h.service.getVerifiedEvidence(), { monotonicNow: () => 100 });
+  handle = policy.bindProject({ environmentId: 'synthetic-env', ownerSubjectId: A, projectId: 'synthetic-native-id', ownership: 'controlled', material: { kind: 'metadata-only' } }).handle;
+  context = { environmentId: 'synthetic-env', subjectId: A, instanceId: 'synthetic-instance', epoch: 1, projectId: 'synthetic-native-id' };
+  assert.equal(policy.decide(context, handle, 'metadata').allowed, true);
+  h.sequence.push((_url, init) => {
+    init.signal.addEventListener('abort', () => observe('abort'));
+    return { status, redirected: false, body: { cancel() { observe('body'); } } };
+  });
+  const result = await h.service.revalidate();
+  exactResult(result, false, 'authentication-rejected', 'revoked', 'authentication-rejected');
+  assert.deepEqual(observations, [{ event: 'hook', allowed: false }, { event: 'abort', allowed: false }, { event: 'body', allowed: false }]);
+});
+
+for (const action of ['signOut', 'dispose', 'expiry', 'clock']) test(`18 ${action} clears evidence synchronously and notifies before pending abort`, async () => {
+  const seen = [];
+  const waiting = deferred();
+  let notifications = 0;
+  let policy, handle, context;
+  const h = setup(undefined, { deps: { onInvalidated(state) {
+    notifications++;
+    policy.dispose();
+    assert.ok(Object.isFrozen(state));
+    assert.deepEqual(Object.keys(state).sort(), ['kind', 'reason']);
+    assert.equal(h.service.getVerifiedEvidence(), null);
+    seen.push('hook');
+  } } });
+  await h.service.signIn(credentials());
+  policy = createProjectAccessPolicy(h.service.getVerifiedEvidence(), { monotonicNow: () => 100 });
+  handle = policy.bindProject({ environmentId: 'synthetic-env', ownerSubjectId: A, projectId: 'synthetic-native-id', ownership: 'controlled', material: { kind: 'metadata-only' } }).handle;
+  context = { environmentId: 'synthetic-env', subjectId: A, instanceId: 'synthetic-instance', epoch: 1, projectId: 'synthetic-native-id' };
+  assert.equal(policy.decide(context, handle, 'metadata').allowed, true);
+  const abortRights = [];
+  h.sequence.push((_url, init) => { init.signal.addEventListener('abort', () => {
+    seen.push('abort');
+    abortRights.push(policy.decide(context, handle, 'metadata').allowed);
+  }); return waiting.promise; });
+  const pending = h.service.revalidate();
+  if (action === 'signOut') { h.sequence.push(() => new Response(null, { status: 204 })); await h.service.signOut(); }
+  if (action === 'dispose') h.service.dispose();
+  if (action === 'expiry') { h.setNow(10100); h.service.getPublicState(); }
+  if (action === 'clock') { h.setNow(99); h.service.getPublicState(); }
+  await pending;
+  assert.deepEqual(seen, ['hook', 'abort']);
+  assert.deepEqual(abortRights, [false]);
+  assert.equal(notifications, 1);
+  waiting.resolve(json(user()));
+  await pause(0);
+  assert.notEqual(h.service.getPublicState().kind, 'active');
+});
+
+test('19 unknown revalidation failure keeps original deadline without notifying', async () => {
+  let notifications = 0;
+  const h = setup(undefined, { deps: { onInvalidated() { notifications++; } } });
+  await h.service.signIn(credentials());
+  const original = h.service.getVerifiedEvidence();
+  h.sequence.push(() => { throw new Error('synthetic offline'); });
+  exactResult(await h.service.revalidate(), false, 'verification-unconfirmed', 'active');
+  assert.equal(h.service.getVerifiedEvidence(), original);
+  assert.equal(notifications, 0);
+  h.setNow(10100);
+  assert.equal(h.service.getVerifiedEvidence(), null);
+  assert.equal(notifications, 1);
+});
+
+for (const mode of ['throw', 'rejected-promise', 'thenable']) test(`20 callback ${mode} cannot escape, suppress cancel, or grant rights`, async () => {
+  let reads = 0, aborted = 0, notifications = 0;
+  const waiting = deferred();
+  const h = setup(undefined, { deps: { onInvalidated() {
+    notifications++;
+    if (mode === 'throw') throw new Error('synthetic-raw-hook-sentinel');
+    if (mode === 'rejected-promise') return Promise.reject(new Error('synthetic-raw-hook-sentinel'));
+    return { get then() { reads++; throw new Error('synthetic-raw-hook-sentinel'); } };
+  } } });
+  await h.service.signIn(credentials());
+  h.sequence.push((_url, init) => { init.signal.addEventListener('abort', () => aborted++); return waiting.promise; });
+  const pending = h.service.revalidate();
+  exactState(h.service.dispose(), 'disposed', 'disposed');
+  assert.equal((await pending).code, 'disposed');
+  await pause(0);
+  assert.equal(aborted, 1);
+  assert.equal(notifications, 1);
+  assert.equal(reads, 0);
+  assert.equal(h.service.getVerifiedEvidence(), null);
+  waiting.resolve(json(user()));
+});
+
+for (const nested of ['dispose', 'signOut', 'clock']) test(`21 nested ${nested} advances terminal state without recursive notification or login`, async () => {
+  let calls = 0;
+  const outcomes = [];
+  const h = setup(undefined, { deps: { onInvalidated() {
+    calls++;
+    outcomes.push(h.service.signIn(credentials()), h.service.revalidate());
+    if (nested === 'dispose') h.service.dispose();
+    if (nested === 'signOut') outcomes.push(h.service.signOut());
+    if (nested === 'clock') { h.setNow(99); h.service.getPublicState(); }
+  } } });
+  await h.service.signIn(credentials());
+  h.sequence.push(() => ({ status: 401, redirected: false, body: { cancel() {} } }));
+  const result = await h.service.revalidate();
+  assert.equal(result.ok, false);
+  assert.equal(h.service.getPublicState().kind, nested === 'dispose' ? 'disposed' : nested === 'clock' ? 'clock-anomaly' : 'signed-out');
+  assert.equal(calls, 1);
+  const results = await Promise.all(outcomes);
+  assert.equal(results[0].code, 'busy');
+  assert.equal(results[1].code, 'busy');
+  assert.equal(h.calls.length, 3);
+  assert.equal(h.service.getVerifiedEvidence(), null);
+});
+
+test('22 notification during preactivation blocks reentrant login and ignores late success', async () => {
+  const pendingResponse = deferred();
+  const outcomes = [];
+  const h = setup([() => pendingResponse.promise], { deps: { onInvalidated() { outcomes.push(h.service.signIn(credentials()), h.service.revalidate()); } } });
+  const first = h.service.signIn(credentials());
+  await h.service.signOut();
+  assert.equal((await first).code, 'superseded');
+  assert.equal(outcomes.length, 2);
+  for (const r of await Promise.all(outcomes)) assert.equal(r.code, 'busy');
+  assert.equal(h.calls.length, 1);
+  pendingResponse.resolve(json(session()));
+  await pause(0);
+  exactState(h.service.getPublicState(), 'signed-out');
+});
+test('23 native promise rejection sink never reads an overridden then getter', async () => {
+  let reads = 0, notifications = 0;
+  const s = createAuthService(config(), { ...deps(), onInvalidated() {
+    notifications++;
+    const p = Promise.reject(new Error('synthetic-raw-hook-sentinel'));
+    Object.defineProperty(p, 'then', { get() { reads++; throw new Error('synthetic-raw-hook-sentinel'); } });
+    return p;
+  } });
+  exactState(s.dispose(), 'disposed', 'disposed');
+  await pause(0);
+  assert.equal(notifications, 1);
+  assert.equal(reads, 0);
+});
+
+for (const status of [401, 403]) test(`24 initial online ${status} notifies before cancellation and preserves rejection`, async () => {
+  const events = [];
+  const h = setup([() => json(session()), (_url, init) => {
+    init.signal.addEventListener('abort', () => events.push('abort'));
+    return { status, redirected: false, body: { cancel() { events.push('body'); } } };
+  }], { deps: { onInvalidated(state) {
+    exactState(state, 'signed-out', 'authentication-rejected');
+    events.push('hook');
+  } } });
+  exactResult(await h.service.signIn(credentials()), false, 'authentication-rejected', 'signed-out', 'authentication-rejected');
+  assert.deepEqual(events, ['hook', 'abort', 'body']);
+  assert.equal(h.service.getVerifiedEvidence(), null);
+});
+
+for (const [response, reason] of [
+  [user({ id: B }), 'identity-mismatch'],
+  [user({ is_anonymous: true }), 'anonymous-user'],
+  [user({ factors: [{ status: 'verified' }] }), 'unsupported-auth-flow'],
+]) test(`25 definitive ${reason} notifies synchronously with no token or evidence`, async () => {
+  const states = [];
+  const h = setup(undefined, { deps: { onInvalidated(state) {
+    states.push(state);
+    assert.equal(h.service.getVerifiedEvidence(), null);
+  } } });
+  await h.service.signIn(credentials());
+  h.sequence.push(() => json(response));
+  exactResult(await h.service.revalidate(), false, reason, 'revoked', reason);
+  assert.deepEqual(states, [{ kind: 'revoked', reason }]);
+  assert.equal(JSON.stringify(states).includes('synthetic-access-sentinel'), false);
+});
+
+test('26 nested dispose during signOut prevents remote launch and preserves stronger terminal', async () => {
+  let notifications = 0;
+  const h = setup(undefined, { deps: { onInvalidated() { notifications++; h.service.dispose(); } } });
+  await h.service.signIn(credentials());
+  const r = await h.service.signOut();
+  exactState(r.state, 'disposed', 'disposed');
+  assert.equal(r.remote, 'not-attempted');
+  assert.equal(h.calls.length, 2);
+  assert.equal(notifications, 1);
+});

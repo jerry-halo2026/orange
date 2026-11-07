@@ -1,6 +1,7 @@
 const CONFIG = ['environmentId', 'authOrigin', 'publishableKey', 'instanceId', 'epoch'];
 const DEPS = ['fetch', 'monotonicNow', 'requestTimeoutMs'];
 const MAX_BYTES = 65536;
+const nativeThen = Promise.prototype.then;
 const encoder = new TextEncoder();
 const finiteTime = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0;
 const stableId = (value) =>
@@ -79,7 +80,7 @@ export function createAuthService(configuration, dependencies) {
   let config, deps, origin;
   try {
     config = snapshot(configuration, CONFIG);
-    deps = snapshot(dependencies, DEPS);
+    deps = snapshot(dependencies, DEPS) || snapshot(dependencies, [...DEPS, 'onInvalidated']);
     if (
       !config ||
       !deps ||
@@ -91,6 +92,7 @@ export function createAuthService(configuration, dependencies) {
       /[\s\\]/.test(config.authOrigin) ||
       !header(config.publishableKey) ||
       privilegedKey(config.publishableKey) ||
+      (Object.hasOwn(deps, 'onInvalidated') && typeof deps.onInvalidated !== 'function') ||
       typeof deps.fetch !== 'function' ||
       typeof deps.monotonicNow !== 'function' ||
       !Number.isInteger(deps.requestTimeoutMs) ||
@@ -122,6 +124,7 @@ export function createAuthService(configuration, dependencies) {
   let everActivated = false;
   let lastNow;
   let sampling = false;
+  let notifying = false;
   const setState = (kind, reason = null) => {
     state = Object.freeze({ kind, reason });
   };
@@ -132,11 +135,32 @@ export function createAuthService(configuration, dependencies) {
     session = null;
     flight = null;
     setState(kind, reason);
-    for (const cancel of [...requests]) cancel();
+    try {
+      if (!notifying && deps.onInvalidated) {
+        notifying = true;
+        try {
+          const returned = deps.onInvalidated(state);
+          // Trusted void notification. Do not inspect/assimilate thenables.
+          // Native promises get only a defensive rejection sink; species hooks
+          // are not a security boundary, so keep reentrancy guarded throughout.
+          try {
+            nativeThen.call(returned, undefined, () => {});
+          } catch {
+            /* Not a native promise. */
+          }
+        } catch {
+          /* Notification failure cannot restore authority or escape. */
+        } finally {
+          notifying = false;
+        }
+      }
+    } finally {
+      for (const cancel of [...requests]) cancel();
+    }
   }
 
   function tick() {
-    if (hardTerminal()) return;
+    if (hardTerminal() || (sampling && notifying)) return;
     if (sampling) {
       invalidate('clock-anomaly', 'clock-anomaly');
       return;
@@ -163,7 +187,8 @@ export function createAuthService(configuration, dependencies) {
     tick();
     if (hardTerminal()) return state.kind;
     if (state.kind === 'expired') return 'expired';
-    if (operation.generation !== generation) return 'superseded';
+    if (operation.generation !== generation)
+      return operation.rejectedGeneration === generation ? 'authentication-rejected' : 'superseded';
     return null;
   }
   function check(operation) {
@@ -210,7 +235,8 @@ export function createAuthService(configuration, dependencies) {
       }
       stopReader();
     };
-    const invalidateRequest = () => cancel('superseded');
+    const invalidateRequest = () =>
+      cancel(operation.rejectedGeneration === generation ? 'authentication-rejected' : 'superseded');
     requests.add(invalidateRequest);
     const timer = setTimeout(() => cancel('request-timeout'), deps.requestTimeoutMs);
     const work = (async () => {
@@ -236,7 +262,10 @@ export function createAuthService(configuration, dependencies) {
       if (status === 204) return { status, data: null };
       // An online 401/403 is definitive even if its error body never completes.
       if (path === '/auth/v1/user' && (status === 401 || status === 403)) {
-        controller.abort();
+        // Definitive rejection must retire scalar-evidence consumers BEFORE
+        // abort/body callbacks, not later in revalidate's awaited continuation.
+        operation.rejectedGeneration = generation + 1;
+        invalidate(session ? 'revoked' : 'signed-out', 'authentication-rejected');
         try {
           Promise.resolve(response.body?.cancel()).catch(() => {});
         } catch {
@@ -331,6 +360,7 @@ export function createAuthService(configuration, dependencies) {
   }
 
   async function signIn(input) {
+    if (notifying) return result(false, 'busy');
     tick();
     if (hardTerminal()) return result(false, state.kind);
     if (everActivated) return result(false, 'switch-required');
@@ -401,6 +431,7 @@ export function createAuthService(configuration, dependencies) {
   }
 
   async function revalidate() {
+    if (notifying) return result(false, 'busy');
     tick();
     if (hardTerminal()) return result(false, state.kind);
     if (flight) return result(false, 'busy');
@@ -447,13 +478,15 @@ export function createAuthService(configuration, dependencies) {
     // A repeated local logout must not cancel the first remote acknowledgement.
     if (!token && !flight && state.kind === 'signed-out')
       return Object.freeze({ state: publicState(), remote: 'not-attempted' });
+    const logoutGeneration = generation + 1;
     if (!hardTerminal()) invalidate('signed-out', null);
     else {
       session = null;
       generation++;
       for (const cancel of [...requests]) cancel();
     }
-    if (!token || hardTerminal()) return Object.freeze({ state: publicState(), remote: 'not-attempted' });
+    if (!token || hardTerminal() || generation !== logoutGeneration)
+      return Object.freeze({ state: publicState(), remote: 'not-attempted' });
     const operation = { generation };
     let remote = 'unconfirmed';
     try {

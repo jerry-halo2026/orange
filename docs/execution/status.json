@@ -12,13 +12,14 @@
     "runtimePathsIsolated": false,
     "unitSubsetCompiled": true,
     "unitSubsetAccepted": true,
-    "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission.",
-    "unitSubsetScope": "EnginePathPolicyTests43 only, actual hostedWindows; originalwholeengine/media nottested",
+    "buildBoundary": "Original Core/Steps/Providers/Unit graph compiled and selectedpath43/controlledIO34 passed onhostedWindows; whole runtime/media/CLI/Web nottested",
+    "unitSubsetScope": "path43 plus controlledIO34 Fakecodec-only; notactualmedia orlocalclientacceptance",
     "purePolicyReadiness": "docs/execution/t05-path-readiness.json",
     "controlledIOSubsetCompiled": true,
-    "controlledIOClassAccepted": false
+    "controlledIOClassAccepted": true,
+    "controlledIOReadiness": "docs/execution/t05-controlled-io-readiness.json"
   },
-  "phase": "CIclosure25e44b sourcepeer/root299+331pure/N5a84approved; newactualWindows43+34pending Rootruntime14",
+  "phase": "controlledIO6048 consumer-ready Fakecodec-only after actualsamehead Windows43+34/sourcepeer/evidencepeer; next originalidentitynativewiring design, not wholepilot",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -47,7 +48,7 @@
     "receipt": "2026-11-07-worktree-cleanup.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
-  "publication": "reviewedsource/sanitizeddocs topicremote2dbc only (actualold43passed); Auth274b/IO6048/CI25e44b and latermetadata remainlocal; dev41b/main/tag unchanged",
+  "publication": "reviewedsource/sanitizeddocs topic1a28c5b published; actualWindows43+34 and companion331 passed; subsequent74f56fc receipt/currentreadiness localonly; dev41b/main/tag/settingsunchanged",
   "handoff": "docs/discovery/18_Goal新会话交接包.md",
   "pilotReadiness": "docs/execution/pilot-readiness.json",
   "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
@@ -69,9 +70,9 @@
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
   "currentTaskCard": "docs/execution/t01-controlled-io-ci-runtime-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-controlled-io-ci-source-review.json",
+  "currentSliceReview": "docs/execution/t05-controlled-io-readiness.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
-  "runtimeVerification": "docs/execution/t01-fission-ci-runtime-validation.json",
+  "runtimeVerification": "docs/execution/t01-controlled-io-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
   "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
   "latestLocalEvidence": [
@@ -83,7 +84,9 @@
     "docs/execution/t01-fission-ci-repair-validation.json",
     "docs/execution/t02-auth-service-validation.json",
     "docs/execution/t05-controlled-io-validation.json",
-    "docs/execution/t01-controlled-io-ci-validation.json"
+    "docs/execution/t01-controlled-io-ci-validation.json",
+    "docs/execution/t01-controlled-io-ci-runtime-validation.json",
+    "docs/execution/t05-controlled-io-readiness.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -92,23 +95,22 @@
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
     "t02Head": "274b80850dc08297d2b9c9f3631793c79af375d8",
-    "t05SourceState": "controlledIO6048 peer-approved and Rootcompiled34/32pass2ENV; CI25e44b sourceapproved299+331, actualnewWindows34pending",
+    "t05SourceState": "source6048 independentlyreviewed, actualhostedWindows34/34 including2truefilelinks+2fallback; controlled-fileIO-ready only, host/media/T05.b notaccepted",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
-    "remoteTopicHead": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
-    "latestRuntimeReceiptCommit": "4ea3c669eefdb5f6dc86a31c19d306f71f3e3dfd",
+    "remoteTopicHead": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
+    "latestRuntimeReceiptCommit": "74f56fc54b1f834b586955ef13b699e29518645f",
     "latestSourceAssembly": "25e44b9f274a8133df7e8d641ac18152842b3862"
   },
   "currentBlockers": [
     "T02.a policyacc27/Auth274b sourcepeer/root localDI tests passed; actualtrustedAuth/owner/consumerwiring/N1/T03 pending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
-    "T05host/media/immutableinput/AudioUses protection and T02.c protocol/realadmission not ready; pure43doesnotreleaseT05.b",
-    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted",
-    "newFissionIOclass source6048 concatfallback fix1 peer-approved/Rootsamepolicycompiled; actualWindows34including2newtruefilelinks and CIclosure gate stillpending (old43notcoverage)"
+    "T05host/media/immutablefullinputclosure/T02.c protocol/realadmission remainpending; controlledcopy/archive source6048 readyonlyunderoriginalRunAsync Fakecodec; no T05.b release",
+    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted"
   ],
   "identityBoundary": {
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
@@ -127,8 +129,9 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "Rootruntime14 source/historyaudit/freshpublictarget/oldjobsterminal/independentpolicyreview/immutableN5a beforeoneactualnewWindows43+34job",
-    "nextidentitynativeintegration design: sameutilityAuth+policy authority, originalparentchannel; no new sourceauthor/card yet; realAuthD12pending"
+    "freeze originalutility same-processAuth+policy authority/startStudio factory/control lifecycle contract, Authsyncinvalidationhook TDD andoriginalparentchannel, no crossprocessdeadline/token/evidence",
+    "freeze originalprojects ownership commit+unknownhistoryreadonly quarantine andHTTP/WS/pages cachedpreview enforcement; parallelonlyafterconsumercontractfreeze/N5a/writeleases",
+    "realAuth D12purpose/existingtestidentity stillpending, onlyrealcloud trackpaused; otherlocalready taskscontinue"
   ],
   "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
@@ -161,8 +164,56 @@
       "notProductAcceptance": true
     },
     "runtimeHostMediaAccepted": false,
-    "remoteChecksRequiredByProtection": "notconfigured/verified as mandatory; no settingschanged"
+    "remoteChecksRequiredByProtection": "notconfigured/verified as mandatory; no settingschanged",
+    "actualControlledIO": {
+      "id": 42419906355,
+      "jobId": 128545885418,
+      "head": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
+      "conclusion": "success",
+      "actualImage": "windows-2025-vs2026",
+      "path": {
+        "executed": 43,
+        "passed": 43,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0,
+        "trxSHA256": "c18096bb6ead62a0263d405c26e5c3cc50d8de36c06d0d00448ebaed84e75720"
+      },
+      "controlledIO": {
+        "executed": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0,
+        "trxSHA256": "3182abe818c3a1c451526f5acf90031ffe32fb3e6ca8fb842b6298a44a995fff",
+        "requiredTrueFileSymlinkCases": 2,
+        "transitionFallbackCases": 2
+      },
+      "sourceProducer": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+      "readiness": "docs/execution/t05-controlled-io-readiness.json",
+      "scope": "purepath+controlled-fileIO-Fakecodec-only-not-media-host-or-pilot"
+    },
+    "latestCompanionGovernance": {
+      "id": 42419906370,
+      "url": "https://github.com/jerry-halo2026/orange/actions/runs/42419906370",
+      "head": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
+      "status": "completed",
+      "conclusion": "success",
+      "notProductAcceptance": true,
+      "jobId": 128545885409,
+      "counters": {
+        "tests": 331,
+        "pass": 331,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "jobLogSHA256": "cc63934e30b1b71698ea670a354babde5c21748b3aca61365618c4c398bbc77b"
+    }
   },
-  "localWindowsSymlinkCreation": "stillEPERM onlocal machine; notclaimed fixed. Requiredpurepolicyassertions actuallypassed onhostedWindows.",
-  "reviewQueue": []
+  "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
+  "reviewQueue": [],
+  "currentMetadataReview": "docs/execution/t05-controlled-io-ledger-review.json",
+  "nextOperation": "prepare originalutilityAuth+policy/nativeprojectownership contracts and boundedcards; no writer beforepeerfreeze/N5a; fullgoalactive"
 }

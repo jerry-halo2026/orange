@@ -31,7 +31,10 @@
   },
   "fission": {
     "sourceSnapshotVerified": true,
-    "buildOrMediaRun": false
+    "buildOrMediaRun": false,
+    "controlledSubsetGraphCompiled": true,
+    "controlledSubsetPassed": true,
+    "fullRuntimeOrMediaRun": false
   },
   "notVerified": [
     "full-product-CI",
@@ -46,7 +49,12 @@
     "receipts": [
       "docs/execution/t01-desktop-validation-20261108.json",
       "docs/execution/t02-native-validation.json",
-      "docs/execution/t05-path-validation.json"
+      "docs/execution/t05-path-validation.json",
+      "docs/execution/t02-auth-service-validation.json",
+      "docs/execution/t05-controlled-io-validation.json",
+      "docs/execution/t01-controlled-io-ci-validation.json",
+      "docs/execution/t01-controlled-io-ci-runtime-validation.json",
+      "docs/execution/t05-controlled-io-readiness.json"
     ],
     "t02": {
       "cases": 6,
@@ -87,5 +95,54 @@
     "readiness": "docs/execution/t05-path-readiness.json",
     "runtimeReceipt": "docs/execution/t01-fission-ci-runtime-validation.json",
     "notHostMediaInstallerOrPilot": true
+  },
+  "currentWindowsControlledIO": {
+    "date": "2026-11-08",
+    "receipt": "docs/execution/t01-controlled-io-ci-runtime-validation.json",
+    "readiness": "docs/execution/t05-controlled-io-readiness.json",
+    "sourceCommit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+    "candidate": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
+    "runId": 42419906355,
+    "jobId": 128545885418,
+    "actualImage": "windows-2025-vs2026",
+    "scope": "purepath+controlled-fileIO-Fakecodec-only-not-media-host-or-pilot",
+    "pathPolicy": {
+      "executed": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "trxSHA256": "c18096bb6ead62a0263d405c26e5c3cc50d8de36c06d0d00448ebaed84e75720"
+    },
+    "controlledIO": {
+      "executed": 34,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "trxSHA256": "3182abe818c3a1c451526f5acf90031ffe32fb3e6ca8fb842b6298a44a995fff",
+      "requiredTrueFileSymlinkCases": 2,
+      "transitionFallbackCases": 2
+    },
+    "companionGovernance": {
+      "id": 42419906370,
+      "url": "https://github.com/jerry-halo2026/orange/actions/runs/42419906370",
+      "head": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
+      "status": "completed",
+      "conclusion": "success",
+      "notProductAcceptance": true,
+      "jobId": 128545885409,
+      "counters": {
+        "tests": 331,
+        "pass": 331,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "jobLogSHA256": "cc63934e30b1b71698ea670a354babde5c21748b3aca61365618c4c398bbc77b"
+    },
+    "sourceAndEvidenceIndependentReviews": "approved0P1/P2",
+    "fullProductAccepted": false
   }
 }

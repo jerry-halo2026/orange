@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/controlled_io_ledger_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "medium",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "sourceBase": "74f56fc54b1f834b586955ef13b699e29518645f",
+  "files": [
+    {
+      "path": "docs/discovery/07_统一数据契约草案.md",
+      "sha256": "ae7df2ef1818be29ace3f3cfd5a8bdfedc7794571c7f35f73e2ce8a56ecfd4b5"
+    },
+    {
+      "path": "docs/execution/status.json",
+      "sha256": "6e81e46c4f0aa1bb3a685c7d8b6056305285d32f69b631eb41082a64e63e237b"
+    },
+    {
+      "path": "docs/execution/project-tasks.json",
+      "sha256": "4a0c6c01493e5e1d08b23bde7df0991df13f1340f57f72ee509d6b554e8aa3dd"
+    },
+    {
+      "path": "docs/execution/validation-summary.json",
+      "sha256": "9af7b8c43153d1550665334c964fee35b1956c420f9ef3403e3f20d3b32bb590"
+    },
+    {
+      "path": "docs/execution/pilot-readiness.json",
+      "sha256": "fe6babe2dde7bc7f41bc8b432671788e7d1a568c43c9382ce5ffd5d3f7778ca3"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+      "sha256": "ad0c79dcd296a3f5ab121d188e59f05668c32fb859d74b2897d18b40f2f50706"
+    },
+    {
+      "path": "docs/execution/t05-controlled-io-readiness.json",
+      "sha256": "263db3273e41799475f9d63dc960d7bb1109886ebae42e55b2010dfffa543423"
+    }
+  ],
+  "scope": "current7doc metadata/rawcanonicalconsumerreadiness only; actualsource/evidenceindependentreviews separatelyrecorded",
+  "corrections": [
+    "uniqueplan oldIOuncheckedsteps correctedonlyevidence-backeditems, originalstandaloneMaterialPool teststillpending",
+    "sameexistingAuthlocalDI4steps checkedbasedon274b81/92/84actualreceipt, no realAuth/N1/T03claim"
+  ],
+  "reviewMethod": "readonly diffs and existing subject-bound receipts, no tests/network/apps/writes",
+  "PGstillPending": 12,
+  "VstillPending": 61,
+  "fullTaskAccepted": false
+}

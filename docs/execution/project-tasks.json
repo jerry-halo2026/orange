@@ -47,14 +47,15 @@
     },
     {
       "id": "T05.a",
-      "scope": "Fission pure path isolation",
+      "scope": "originalFission path and controlled fileIO isolation",
       "status": "in_progress",
       "dependsOn": [
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "purepolicy43ready; originalEngine controlledIO rev2 four-file design approved pendingN5a/implementation, no host/T05.b release",
-      "readinessEvidence": "docs/execution/t05-path-readiness.json"
+      "deliverySlice": "purepolicy43ready and originalRunAsync controlledIO34ready at6048 after actualWindowsCI42419906355; Fakecodec+BCL only, notfullruntime/host/media/T05.b",
+      "readinessEvidence": "docs/execution/t05-path-readiness.json",
+      "controlledIOReadinessEvidence": "docs/execution/t05-controlled-io-readiness.json"
     },
     {
       "id": "T05.b",

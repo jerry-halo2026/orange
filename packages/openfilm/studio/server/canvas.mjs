@@ -29,12 +29,14 @@
  *
  *   POST /api/canvas { folder, ops?, by? } → { ok: true, canvas, added } or { ok: false, text }
  */
+import { lstatSync } from 'node:fs';
+import { readIsolationProfile, assertIsolationPath } from '../../src/development-isolation.mjs';
 import { mkdir, readFile, readdir, rename, stat } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { FILM_FILE } from '../../src/film-doc.mjs';
 import { writeAtomic } from './atomic.mjs';
 import { HttpError, json, readJson } from './http.mjs';
-import { TOOL_DIR } from './projects.mjs';
+import { ProjectError, TOOL_DIR } from './projects.mjs';
 import { moveToTrash } from './trash.mjs';
 import { noteMade } from './canvas-history.mjs';
 
@@ -163,13 +165,38 @@ function readMake(n) {
   return Object.fromEntries(Object.entries(fields).filter(([, v]) => v !== undefined));
 }
 
+/** Development-only admission before native film/metadata access. Not a filesystem sandbox.
+ * @param {string} root @param {string} [board]
+ */
+function guardCanvas(root, board = MAIN_BOARD) {
+  const profile = readIsolationProfile();
+  if (!profile) return;
+  try {
+    assertIsolationPath(profile, root, 'projects');
+    if (board !== MAIN_BOARD && !BOARD_ID.test(board)) throw new Error('Invalid board.');
+    assertIsolationPath(profile, join(root, TOOL_DIR), 'projects');
+    assertIsolationPath(profile, join(root, BOARDS_DIR), 'projects');
+    const selected = board === MAIN_BOARD ? join(root, CANVAS_FILE) : join(root, BOARDS_DIR, board + '.json');
+    // The frozen directory capability deliberately does not accept terminal files.
+    // Reject linked/reparse terminals and multiply-linked files before reads as
+    // well as writes: atomic replacement alone would still leak their contents.
+    for (const file of [join(root, FILM_FILE), selected, join(root, TOOL_DIR, 'canvas-made.json')]) {
+      const info = lstatSync(file, { throwIfNoEntry: false });
+      if (info && (info.isSymbolicLink() || !info.isFile() || info.nlink !== 1)) throw new Error('Linked Canvas terminal.');
+    }
+  } catch {
+    throw new ProjectError('Canvas path is not available in this isolated instance.', 403, 'isolation-path');
+  }
+}
+
 /** where a board is kept. @param {string} root @param {string} board */
-const boardFile = (root, board) => (board === MAIN_BOARD ? join(root, CANVAS_FILE) : join(root, BOARDS_DIR, `${board}.json`));
+const boardFile = (root, board) => { guardCanvas(root, board); return board === MAIN_BOARD ? join(root, CANVAS_FILE) : join(root, BOARDS_DIR, `${board}.json`); };
 /** @param {string} root @param {string} board */
 const isBoard = async (root, board) => board === MAIN_BOARD || (BOARD_ID.test(board) && Boolean((await stat(boardFile(root, board)).catch(() => null))?.isFile()));
 
 /** @param {string} root @param {string} [board] @returns {Promise<Canvas>} */
 export async function readCanvas(root, board = MAIN_BOARD) {
+  guardCanvas(root, board);
   try {
     return parseCanvas(JSON.parse(await readFile(boardFile(root, board), 'utf8')));
   } catch { return { nodes: [], edges: [] }; }
@@ -177,6 +204,7 @@ export async function readCanvas(root, board = MAIN_BOARD) {
 
 /** The board kept; written without a name, it keeps the one it has. @param {string} root @param {unknown} canvas @param {string} [board] @returns {Promise<Canvas>} */
 export async function writeCanvas(root, canvas, board = MAIN_BOARD) {
+  guardCanvas(root, board);
   if (!isRecord(canvas) || !Array.isArray(canvas.nodes)) throw new HttpError(400, 'canvas: { nodes: [{ id, x, y, text | path }], edges: [{ id, from, to }] }');
   const kept = parseCanvas(canvas);
   if (!('name' in canvas)) {
@@ -192,6 +220,7 @@ export async function writeCanvas(root, canvas, board = MAIN_BOARD) {
 
 /** The project's boards: the first, then the others as they were made (their ids go up). @param {string} root */
 export async function listBoards(root) {
+  guardCanvas(root);
   const others = (await readdir(join(root, BOARDS_DIR)).catch(() => /** @type {string[]} */ ([])))
     .flatMap((f) => (f.endsWith('.json') && BOARD_ID.test(f.slice(0, -5)) ? [f.slice(0, -5)] : [])).sort((a, b) => a.length - b.length || (a < b ? -1 : 1));
   return Promise.all([MAIN_BOARD, ...others].map(async (id) => {
@@ -514,7 +543,9 @@ function settle(nodes, added) {
 export async function agentCanvasRoute(req, res, changed) {
   if (req.method !== 'POST') throw new HttpError(404, 'no such API');
   const body = /** @type {{ folder?: unknown, ops?: unknown, by?: unknown }} */ (await readJson(req));
-  const root = resolve(String(body.folder ?? ''));
+  const requested = String(body.folder ?? '');
+  guardCanvas(requested);
+  const root = resolve(requested);
   if (!(await stat(join(root, FILM_FILE)).catch(() => null))?.isFile()) return json(res, 200, { ok: false, code: 2, text: `${root} is not a project; \`openfilm open\` makes one` });
   /* the board the person has in front of them */
   const showing = shown.get(root);

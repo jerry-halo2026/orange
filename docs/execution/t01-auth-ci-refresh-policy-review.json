@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 15,
+  "reviewerAgent": "/root/ci_refresh_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCardSHA256": "8093fdd2c61553113e55e7456559bb572008e71681e970f2abe803e8793f6218",
+  "frozenCardSHA256": "0f801c87a70e4bc22747de17a73035f247557b0679b49289d5b762c7e19d564d",
+  "producerProofSHA256": "eb708dc0f7b00adb5f1d2e3e0603800920bfcbfd7047199dc412562fa2970047",
+  "finalOnlyChanges": "recordproducerapproval/digestrefs, 4CI-files typo->3, inheritedoldspecpointer->alreadyreviewedcanonicalplan sameexactscope",
+  "requiredBeforeWriter": [
+    "immutableanchor",
+    "managedE3FFfrom4152242",
+    "targetAuthb4/032stronghash+immutableinputs",
+    "actualtrustedN5a84"
+  ],
+  "new353CIValidated": false,
+  "fullTaskAccepted": false
+}

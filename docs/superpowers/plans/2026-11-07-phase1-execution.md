@@ -332,3 +332,12 @@ Auth producer门禁建模纠正（2026-11-08）：rev5已完成103Auth+92policy+
 原MaterialPool独立回归回执：4152242记录实际6/6、0skip，Root新隔离offlineSDK10.0.300/4项目4Csc/X64；非作者material_pool_actual_review规格/质量批准，写后及精确回执提交N5a84通过。仅该先前未选测项关闭，不将内存20worker单测冒充媒体负载。
 
 Auth producer冻结回执：d008，源b4ddbc/test032130，原81字节前缀不变；新103Auth/92policy/84CPU在最新组合Root279通过、源码独审批准。nativebaseline rev6不可变d6b4e61、目标更新前后/门禁前后新哈希独立验证、实际N5a84及精确源提交再次84。仅生产者局部完成；最后消费者/CI步骤未勾，不把旧331当新353。
+
+
+## 2026-11-08 CI Auth producer refresh
+
+T01rev15, engineering-verification, Root-owned sharedCI singleton delegatedoneauthor inmanagedE3. SourceAuthd008 localproducerready andold81prefix preserved, new103/policy92/old158=353. Published1a28/331is historicalonly, no currentCIclaim. Exact3filewrite/card andproducerproof: execution/t01-auth-ci-refresh-assignment.json / t02-auth-ci-refresh-consumer-review.json. CI25e44 is editableGitbaseline, not immutableworkingbytes; do not repeatAuthrev5 inputclassification defect. Auth/policy/CPU/IOsource dependencies remainunchanged frozeninputs.
+
+- [ ] NewcurrentAuthfixture/retiredpin/count353 RED againstoldCIpin, minimal2hash+countliteral update andspecifictests only. Preserveold299security assertions/parser/43+34/graph/toolenv/workflowboundaries.
+- [ ] PureCItests plusphase1actual353pass0skip andsyntax/diff0; all34C#inputrawunchanged. Sourceauthor no .NET/entry/jobs/network/Gitwrites.
+- [ ] Freezeexactdiff/non-authorSPECQUALITY/Rootfreshverify+N5a andlocalcommit beforepublication. Rootactualremotejob staysseparatelease/audit/publictargetgate, no implicit newpass.

@@ -1,0 +1,55 @@
+{
+  "taskId": "T02.a",
+  "commit": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+  "authorAgent": "/root/auth_invalidation_impl",
+  "reviewerAgent": "/root/ci_refresh_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "scope": "same-current-head pureCI nativeAuth103+unchangedpolicy92 producerpins andfixtures only, no realAuth/utility/UI/N1/353CIpassed claim",
+  "provenance": {
+    "Auth": "d008 originalsource extension by auth_invalidation_impl, sourcepeer auth_invalidation_review",
+    "policy": "unchangedacc27 originalaccess_policy_impl, sourcepeer access_policy_review"
+  },
+  "sourceReadiness": "docs/execution/t02-auth-invalidation-readiness.json",
+  "sourceReadinessSHA256": "736f156031d2b5c138653eb5c9accd3eb9ba81ba888475b14c9ce786ce408f46",
+  "actualRootEvidence": "latestd008Root279pass0skip andsourcepeer, original81exactbyteprefix+22newtests",
+  "representation": "freshfutureE3consumerLF hashes explicit; originalproducerE2policyraw4e/7d vs canonical345/4d52 acknowledged. E3willFFfrozenbasebeforeactualN5a. Authnewb4/032raw=canonicalLF.",
+  "excludedClaims": [
+    "actualnew353CIpass",
+    "realAuth/owner/parent/UI/N1",
+    "media/host/pilot/Mac"
+  ],
+  "fullTaskAccepted": false,
+  "approval": {
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "CI-only103Auth+92policy input, notnewCIpass"
+  }
+}

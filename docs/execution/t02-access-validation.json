@@ -1,0 +1,436 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 3,
+  "classification": "business-addition/internal-native-Studio-policy",
+  "sourceCommit": "acc27c4d119fd150331b788b84067858b48be9f4",
+  "approvalCommit": "9daee7f31c65836f36b470cdf2297e55d9630a00",
+  "approvalCardGitBlobSHA256": "390672be0d13eb2328556f708bafa89a1ca82194428e67f4e733d417ba559b9f",
+  "author": {
+    "agent": "/root/access_policy_impl",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false
+  },
+  "review": {
+    "reviewerAgent": "/root/access_policy_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "evidence": "read both full new source files; verified card/report/source and all20 log hashes; selectively inspected RED/final TAP evidence; no duplicate tests"
+  },
+  "readiness": "pure-policy-ready only",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "rawSha256": "4e895438f0f818f7ce6b628a07ca5dc78dae2738480f090dea3ad5cb31d4b001",
+      "canonicalLfSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "bytes": 8126,
+      "gitBlobSHA256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "currentCoordinationRawSHA256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "rawSha256": "7d13b1ceb8440bbac187065cd7c8eaab39049ebaa1d894fa6d4e31cc616c36c4",
+      "canonicalLfSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "bytes": 20900,
+      "gitBlobSHA256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "currentCoordinationRawSHA256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "reportSHA256": "51aba3b1c93e6c20317b2862164421a029dfacd4684f92cfb5585b0e31f9bddf",
+  "rootProofSHA256": "74a5bbd9ad7786b55f8cbdd095d9e67534672d0db19c9210052eca79211339de",
+  "rootVerification": {
+    "head": "9daee7f31c65836f36b470cdf2297e55d9630a00",
+    "node": "26.13.0",
+    "source": [
+      {
+        "path": "packages/openfilm/studio/server/project-access.mjs",
+        "rawSha256": "4e895438f0f818f7ce6b628a07ca5dc78dae2738480f090dea3ad5cb31d4b001",
+        "canonicalLfSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+        "bytes": 8126
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-access.test.mjs",
+        "rawSha256": "7d13b1ceb8440bbac187065cd7c8eaab39049ebaa1d894fa6d4e31cc616c36c4",
+        "canonicalLfSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+        "bytes": 20900
+      }
+    ],
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "policy",
+        "exitCode": 0,
+        "counters": {
+          "tests": 92,
+          "pass": 92,
+          "fail": 0,
+          "skip": 0,
+          "todo": 0,
+          "cancel": 0
+        }
+      },
+      {
+        "name": "native",
+        "exitCode": 0,
+        "counters": {
+          "tests": 47,
+          "pass": 47,
+          "fail": 0,
+          "skip": 0,
+          "todo": 0,
+          "cancel": 0
+        }
+      },
+      {
+        "name": "CPU",
+        "exitCode": 0,
+        "counters": {
+          "tests": 84,
+          "pass": 84,
+          "fail": 0,
+          "skip": 0,
+          "todo": 0,
+          "cancel": 0
+        }
+      },
+      {
+        "name": "module-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "test-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "server-typecheck",
+        "exitCode": 0
+      },
+      {
+        "name": "UI-typecheck",
+        "exitCode": 0
+      }
+    ],
+    "totalTests": 223,
+    "fail": 0,
+    "skip": 0,
+    "typecheckLimit": "existing native server checkJs:false; .mjs validated by syntax/runtime tests, not strict TS",
+    "scope": "internal pure policy only, no realAuth/ownerpersistence/UI/safe-save/N1/PG"
+  },
+  "actualN5a": {
+    "beforeWrite": {
+      "head": "9daee7f31c65836f36b470cdf2297e55d9630a00",
+      "cases": 84
+    },
+    "postSource": {
+      "cases": 84
+    },
+    "committedHead": {
+      "head": "acc27c4d119fd150331b788b84067858b48be9f4",
+      "cases": 84,
+      "artifactSHA256": "ff4430075644ceb4f856a7548a8295288b8c0a67fb88b442509da11af50e3080"
+    },
+    "note": "gate result body contains counts; caller immutable input/head anchors are recorded separately and checked against actualGit"
+  },
+  "TDD": {
+    "firstCapabilityRed": "missing-module0/1pass",
+    "inertLifecycleGreen": "1/1",
+    "behavioral": "85run21pass64fail ->85/85",
+    "inputProxyReentry": "89run87pass2fail ->89/89",
+    "clockReentry": "92run91pass1fail ->92/92",
+    "final": "92policy+47native+84CPU allpass0skip",
+    "logs": [
+      {
+        "log": ".dev/access-policy/01-first-red.tap",
+        "sha256": "b1d9b51151c854f591e5653c506e6297fe3633064fd9348d61a3536a08aa057e",
+        "status": 1,
+        "counters": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 0,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/02-inert-green.tap",
+        "sha256": "5cdbfc9e62cb35c7f9e599e4f4b5ecdf257caa09a309bdad320223b2112b600b",
+        "status": 0,
+        "counters": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/03-behavior-red.tap",
+        "sha256": "12b48301932ac90d869fa24c343fcf68ade4c8542956666fd1519597fb811946",
+        "status": 1,
+        "counters": {
+          "tests": 85,
+          "suites": 0,
+          "pass": 21,
+          "fail": 64,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/04-behavior-green.tap",
+        "sha256": "65aad27cbf584d9dc35b37ada9e989aebfcea209282ad580d234ed909fb6db61",
+        "status": 0,
+        "counters": {
+          "tests": 85,
+          "suites": 0,
+          "pass": 85,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/05-reentrant-red.tap",
+        "sha256": "bd502a389f8d8220494765cf0bad5b671269bf7d8fbd6f41be7918632bb94bb6",
+        "status": 1,
+        "counters": {
+          "tests": 89,
+          "suites": 0,
+          "pass": 87,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/06-reentrant-green.tap",
+        "sha256": "5626637fba11359d4ef1b2ed038da912043763b294dde23faa6715b7473115bc",
+        "status": 0,
+        "counters": {
+          "tests": 89,
+          "suites": 0,
+          "pass": 89,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/07-native-regression.tap",
+        "sha256": "53f59d5af126e79a71ca9d2b9749db05da36d19b72089cb57a380000bf62f48e",
+        "status": 0,
+        "counters": {
+          "tests": 47,
+          "suites": 0,
+          "pass": 47,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/08-cpu-regression.tap",
+        "sha256": "cb7b526b3d2d05e0cd58bf31e0a630d54c7d52eae131992db83ad460c578b500",
+        "status": 0,
+        "counters": {
+          "tests": 84,
+          "suites": 0,
+          "pass": 84,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/09-module-syntax.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/10-test-syntax.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/11-native-server-typecheck.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/12-native-ui-typecheck.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/13-clock-reentrancy-red.tap",
+        "sha256": "7d8f14aba190fec416be419d41e0578067dbcc4d750e6a3fd94f1667d9c4754c",
+        "status": 1,
+        "counters": {
+          "tests": 92,
+          "suites": 0,
+          "pass": 91,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/14-final-policy-green.tap",
+        "sha256": "0bfdf06b95dc495945c46780c11fdca4100c612a2a95cb51bb295dce745e1635",
+        "status": 0,
+        "counters": {
+          "tests": 92,
+          "suites": 0,
+          "pass": 92,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/15-final-module-syntax.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/16-final-test-syntax.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/17-final-native-server-typecheck.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/18-final-native-ui-typecheck.tap",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 0,
+        "counters": {}
+      },
+      {
+        "log": ".dev/access-policy/19-final-native-regression.tap",
+        "sha256": "650cfa7b9cae73db4d8b9fd543f9c3f8fe0a341a7fc3160330473bc52e2d4b76",
+        "status": 0,
+        "counters": {
+          "tests": 47,
+          "suites": 0,
+          "pass": 47,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "log": ".dev/access-policy/20-final-cpu-regression.tap",
+        "sha256": "c0583bd3b10657d123aba1c1ad294921b5de00c4da2cb7177d3c8bace91955a0",
+        "status": 0,
+        "counters": {
+          "tests": 84,
+          "suites": 0,
+          "pass": 84,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      }
+    ]
+  },
+  "isolatedAssemblyVerification": {
+    "head": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "access-policy",
+        "exitCode": 0,
+        "tests": 92,
+        "pass": 92,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-characterization",
+        "exitCode": 0,
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-pure-regression",
+        "exitCode": 0,
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "combined-affected",
+        "exitCode": 0,
+        "tests": 202,
+        "pass": 200,
+        "fail": 0,
+        "skip": 2,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "admission-self-tests",
+        "exitCode": 0,
+        "tests": 74,
+        "pass": 74,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      }
+    ],
+    "scope": "isolated dependency assembly regression only; no .NET/host/media/realAuth/wholePG/dev integration"
+  },
+  "assemblyProofSHA256": "d23b1b3667b41bece1924010c93703bd5d5cbbf70c5dff98338c59769bdcc05f",
+  "existingTypecheckLimit": "servercheckJs:false; typecheck0 is originalcompatibility only, not strictnew.mjsproof",
+  "scope": "snapshotted trusted-input identity/owner/time policy, opaquehandles, stickyrevocation/clockfailure, trusted switchbarrier; trusted scalar source is NOT proven by thismodule",
+  "notClaimed": [
+    "realAuth/environment/account verification",
+    "persistent trustedowner store",
+    "realrenderer masking or safesave/resource retirement",
+    "HTTP/WS/preview/CLI/Agent enforcement",
+    "fullK01N1/T02.a/T03/PG accepted",
+    "dev integration/publication"
+  ],
+  "fullTaskAccepted": false,
+  "realModelCalls": 0
+}

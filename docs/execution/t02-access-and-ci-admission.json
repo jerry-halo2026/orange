@@ -34,5 +34,17 @@
     "reason": "RESOURCE",
     "cause": "local admission only recognizes cpu/directory/port/database/desktop/gpu; invented ci-runner resource invalid. Author never had remote execution permission; corrected local preparation resource list retains exclusiveE3+sharedCPU and records future root-only remote execution separately",
     "writerStarted": false
+  },
+  "CIRevision9": {
+    "approvalCommit": "86301f912a1017d1657bdc8226880d932cd71cb6",
+    "cardGitBlobSHA256": "a0e8ebebeb81165562ed70ef63e004b315217f2bc91b585d16293b151340397c",
+    "admitted": true,
+    "cases": 84,
+    "artifactSHA256": "f7cb6da337f29d7465282d655dc53a9cfe50e41f4982d672b48febe8cffc3c5e",
+    "writer": "/root/fission_ci_impl",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "remotePermissionIssued": false
   }
 }

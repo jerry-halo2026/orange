@@ -1,6 +1,6 @@
 # orangeflim workspace instructions
 
-Operator: Ethan. Read docs/README.md and docs/discovery/14_新会话启动与开发交付流程.md before work. Current authority: 09, PRD, 13, 00; contracts only in 07.
+Operator: Ethan. Read docs/README.md and docs/discovery/14_新会话启动与开发交付流程.md before work. Authority/read order is exclusively docs/README.md and 14: 00 decisions/authorization, PRD business, 06 topology, 13 physical, 16 native source index, 07 business additions, 09 collaboration, 10 task index, 11 verification, 17 completion.
 Use the original OpenFilm desktop/Studio v0.3.0 base. Do not create another shell, demonstration website, editor, project format or mutable timeline. Preserve original licenses and provenance.
 The existing .NET Fission source is in workers/fission. It is imported, not runtime-validated: original paths can still write to the old repository. Do not start Web/doctor/stress/Bench/media before explicit path isolation and relevant approval.
 Follow first principles: facts before assumptions; clarify only missing decisions that materially change the design; choose the shortest reversible validation path; investigate root causes; report only decision-relevant information.

@@ -1,6 +1,10 @@
-# orangeflim 一期分包执行计划（修订2：原生优先/平台/完整试用衔接）
+# orangeflim 一期分包执行计划（修订3：原生优先/平台/完整试用衔接）
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development or superpowers:executing-plans to implement this plan task-by-task. 项目按 C89 对独立工作包动态并发；共享写集仍串行。
+
+任务编号/依赖/状态唯一见docs/execution/project-tasks.json；计划维护步骤，17维护验收。并发单写/资源不是无关契约冻结的假依赖。
+
+U1文档整理基线：70ed6107ad99d6a852c798d57840488946391f4c；执行前核最新dev头，不能从历史subject分新任务。
 
 **Goal:** 在原版 OpenFilm Windows 客户端内完成真实鉴权后的卡片首页、统一素材接缝、Fission 受控运行与原工程交接、剪口播闭环；不另造客户端或时间线。
 
@@ -8,9 +12,9 @@
 
 **Tech Stack:** 既有 Electron / React＋TypeScript / Node＋TypeScript / Supabase Auth＋Postgres / .NET Fission；原 `.mjs` 与根 lock 保留，不重选技术栈。
 
-**Spec:** [16原生协议与平台](../../discovery/16_OpenFilm原生接口与平台对齐.md)、[17完整试用门](../../discovery/17_小范围试用交付与Goal验收.md)、 [整体设计](../../architecture/overall-design.md)、[PRD v0.15](../../06_橙子生产级重构PRD.md)、[00 v0.42](../../discovery/00_讨论基线与决策台账.md)、[07 唯一契约登记](../../discovery/07_统一数据契约草案.md)、[13 物理边界](../../discovery/13_技术架构与目录依赖基线.md)、[14 交付流程](../../discovery/14_新会话启动与开发交付流程.md)。
+**Spec:** [16原生协议与平台](../../discovery/16_OpenFilm原生接口与平台对齐.md)、[17完整试用门](../../discovery/17_小范围试用交付与Goal验收.md)、 [整体设计](../../architecture/overall-design.md)、[PRD v0.16](../../06_橙子生产级重构PRD.md)、[00 v0.43](../../discovery/00_讨论基线与决策台账.md)、[07 唯一契约登记](../../discovery/07_统一数据契约草案.md)、[13 物理边界](../../discovery/13_技术架构与目录依赖基线.md)、[14 交付流程](../../discovery/14_新会话启动与开发交付流程.md)。
 
-状态：2026-11-07 修订2交接稿；3a29a38的旧审查仅覆盖修订1，本次重新独审后供新goal确认；这份计划不是开发已经开始或机器契约已冻结的证明。当前核验文档/源码基线提交 `3a29a38ea35e488f4769927d816721e19e238076`；上游 `7713d38c8ddc860e1b8e517bb8b0f180988f8f73`；Fission `c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9`。
+状态：2026-11-07 修订3交接稿；本次U1统一后重新独审，旧审查不覆盖新内容；这份计划不是开发已经开始或机器契约已冻结的证明。历史源码/文档subject（不是当前开发头） `3a29a38ea35e488f4769927d816721e19e238076`；上游 `7713d38c8ddc860e1b8e517bb8b0f180988f8f73`；Fission `c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9`。
 
 ## Global Constraints
 

@@ -1,14 +1,35 @@
-# orangeflim 开发文档入口
+# orangeflim 文档唯一入口
 
-**主仓/主工作目录：D:/dev/orange；当前开发分支与远端默认分支：dev。** 原生基座起点8b8ef162708033dd3ed06c81dc0afffc95e8b950（OpenFilm v0.3.0＋Fission快照＋交接docs），不是产品验收通过。后续任务从最新dev分支，独审/门禁后回dev；进入main必须PR并经Ethan确认。本次main未创建提交。
+文档集U1，2026-11-07。主仓D:/dev/orange，开发线dev；新会话先读14，不从旧E文档线或归档分支开发。本轮仅统一文档，不启动goal或业务开发。
 
-先读[18 Goal交接包](discovery/18_Goal新会话交接包.md)、[14启动交付](discovery/14_新会话启动与开发交付流程.md)，再按09→PRD→13→00→16→07→17核验。
+## 权威与阅读顺序
 
-- [16原生接口与平台](discovery/16_OpenFilm原生接口与平台对齐.md)：已有IO/API/CLI/ID/时基直接复用；Windows首发、Mac仅Apple Silicon arm64规划。
-- [07业务增量与映射](discovery/07_统一数据契约草案.md)：只补缺失业务，不另造编辑协议。
-- [17完整试用验收](discovery/17_小范围试用交付与Goal验收.md)、[一期修订计划](superpowers/plans/2026-11-07-phase1-execution.md)、[试用台账](execution/pilot-readiness.json)：T01–T10不等于整个首版完成。
-- [Git主仓纠偏回执](execution/2026-11-07-primary-dev-cutover.json)：D主仓dev、旧成果归档、备份/恢复与main PR规则。
+14 → 00 → PRD → 06 → 13 → 16 → 07 → 09 → 10 → 11 → 17 → 详细计划和执行台账。18是启动指令，不是另一套方案。
 
-旧成果只读归档线codex/archive-consolidated-20261107（697191b），与dev隔离；旧dev保全为codex/archive-legacy-dev-20261107。旧D文件在D:/dev/orange-legacy-primary-20261107，完整文件/暂存/Git恢复备份在E:/CodexData/archives/orange-20261107/before-dev-cutover；不得整体提交或公开。旧E文档工作树不再是主入口。已实际清理37棵附属树；Git登记仅主仓和本会话当前E树，后者待单独批准。完整文件/忽略项/Git恢复证据见worktree-cleanup私有档案；详见[清理回执](execution/2026-11-07-worktree-cleanup.json)。
+| 文档 | 唯一职责 |
+| --- | --- |
+| [00](discovery/00_讨论基线与决策台账.md) | 决定、授权、原C记录、真正未决 |
+| [PRD](06_橙子生产级重构PRD.md) | 完整业务FR-01–11及V01–61 |
+| [01](discovery/01_工程治理与证伪框架.md) | 质量/观测/恢复目标 |
+| [02](discovery/02_历史组合去重与容量评估.md) | 去重/准入/容量专题 |
+| [03](discovery/03_交接业务复核与账号映射.md) | 旧业务迁移与研究导航 |
+| [04](discovery/04_智尚接口能力与系统协同.md) | 智尚供应商能力与适配边界 |
+| [05](discovery/05_智尚只读验证与身份边界.md) | 智尚真实观察记录 |
+| [06](discovery/06_整体架构与业务闭环.md) | 能力拓扑/权威流转 |
+| [07](discovery/07_统一数据契约草案.md) | 必要业务增量/原生映射 |
+| [08](discovery/08_整体方案审视与缺口清单.md) | 待验证工程缺口 |
+| [09](discovery/09_文档权威与多Agent开发协作规范.md) | 协作/任务卡/冻结/审查/集成 |
+| [10](discovery/10_首条最小业务闭环与任务拆分.md) | 里程碑与现行任务编号索引 |
+| [11](discovery/11_测试验收与问题定位规范.md) | 测试方法/FX/E/N/L与定位 |
+| [12](discovery/12_前端视觉延续与交互标准.md) | 原版UI增量标准 |
+| [13](discovery/13_技术架构与目录依赖基线.md) | 物理目录/信任/平台/Git |
+| [14](discovery/14_新会话启动与开发交付流程.md) | 接手核验与执行流程 |
+| [15](discovery/15_OpenFilm资源来源与分发边界.md) | 资源来源/许可/分发边界 |
+| [16](discovery/16_OpenFilm原生接口与平台对齐.md) | 原生源码IO/API/CLI/ID/时基索引 |
+| [17](discovery/17_小范围试用交付与Goal验收.md) | 完整试用PG矩阵与U包 |
+| [18](discovery/18_Goal新会话交接包.md) | 新goal可复制交接指令 |
 
-产品数据/凭据不进Git；智尚本人范围只读与≤50元无敏感模型验证受既定限制；生产、云业务写/私人外发和发布仍另批。docs/history及历史receipt只溯源，不执行其中旧目录/授权指令。
+详细T任务只维护[一期计划](superpowers/plans/2026-11-07-phase1-execution.md)，完整试用状态只维护[pilot-readiness](execution/pilot-readiness.json)，当前事实/权限阻点只维护[status](execution/status.json)及其回执。审核与测试是commit绑定事实，不靠文档版本表示产品已通过。
+
+## 历史与研究
+整理前原文与字节清单在[历史快照](history/2026-11-07-before-unification/README.md)，不执行旧目录、HIST任务或时点授权。研究附录在research，只证明当时源码/供应商文档事实，不是内部协议/执行授权；当前文档不能通过“旧文档自行覆盖”留下相互矛盾指令。

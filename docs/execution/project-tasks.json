@@ -1,0 +1,264 @@
+{
+  "docset": "U1",
+  "authority": "Only current task IDs, dependency edges and lifecycle state. Plans contain steps; 17 contains acceptance.",
+  "executionAuthorized": false,
+  "root": "D:/dev/orange",
+  "branch": "dev",
+  "tasks": [
+    {
+      "id": "T01",
+      "scope": "isolation and minimum admission gates",
+      "status": "proposed",
+      "dependsOn": [],
+      "externalGates": []
+    },
+    {
+      "id": "T03",
+      "scope": "original HOME and real auth navigation",
+      "status": "proposed",
+      "dependsOn": [
+        "T01",
+        "T02.a"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T04.a",
+      "scope": "shared assets and scoped Zhishang fixture adapter",
+      "status": "proposed",
+      "dependsOn": [
+        "T01",
+        "T02.a",
+        "T02.b"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T04.b",
+      "scope": "real personal Zhishang read-only integration",
+      "status": "blocked_personal_binding",
+      "dependsOn": [
+        "T04.a"
+      ],
+      "externalGates": [
+        "verified personal binding"
+      ]
+    },
+    {
+      "id": "T05.a",
+      "scope": "Fission pure path isolation",
+      "status": "proposed",
+      "dependsOn": [
+        "T01"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T05.b",
+      "scope": "controlled Fission host and media",
+      "status": "proposed",
+      "dependsOn": [
+        "T05.a",
+        "T02.c"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T06",
+      "scope": "actual FrozenPlan and original editable project handoff",
+      "status": "proposed",
+      "dependsOn": [
+        "T05.b",
+        "T02.c"
+      ],
+      "externalGates": [
+        "scoped asset and project ports"
+      ]
+    },
+    {
+      "id": "T07",
+      "scope": "speech analysis and time mapping without project writes",
+      "status": "proposed",
+      "dependsOn": [
+        "T02.d"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T08",
+      "scope": "strict original edit, shared commit coordinator, recovery and CLI",
+      "status": "proposed",
+      "dependsOn": [
+        "T02.a",
+        "T02.d"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T09",
+      "scope": "speech cutting in original subtitle UI",
+      "status": "proposed",
+      "dependsOn": [
+        "T07",
+        "T08"
+      ],
+      "externalGates": [
+        "T03共享UI写者交接"
+      ]
+    },
+    {
+      "id": "T10",
+      "scope": "serial integration into existing native dev and phase-one acceptance",
+      "status": "proposed",
+      "dependsOn": [
+        "T03",
+        "T04.a",
+        "T05.b",
+        "T06",
+        "T07",
+        "T08",
+        "T09"
+      ],
+      "externalGates": [
+        "本包组合候选与非作者审查，不等于全部PG完成"
+      ]
+    },
+    {
+      "id": "T02.a",
+      "status": "proposed",
+      "scope": "native identity/command characterization and access additions",
+      "dependsOn": [
+        "T01"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T02.b",
+      "status": "proposed",
+      "scope": "asset/rights references and scoped provider mappings",
+      "dependsOn": [
+        "T01",
+        "T02.a"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T02.c",
+      "status": "proposed",
+      "scope": "worker/actual-plan/admission additions",
+      "dependsOn": [
+        "T01",
+        "T02.a"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "T02.d",
+      "status": "proposed",
+      "scope": "speech/time/confirmation/strict-commit additions",
+      "dependsOn": [
+        "T01",
+        "T02.a"
+      ],
+      "externalGates": []
+    },
+    {
+      "id": "U01",
+      "status": "proposed",
+      "scope": "17所述U01补齐能力",
+      "dependsOn": [
+        "T06",
+        "T08"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U02",
+      "status": "proposed",
+      "scope": "17所述U02补齐能力",
+      "dependsOn": [
+        "T04.a",
+        "T07"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U03",
+      "status": "proposed",
+      "scope": "17所述U03补齐能力",
+      "dependsOn": [
+        "T04.b"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U04",
+      "status": "proposed",
+      "scope": "17所述U04补齐能力",
+      "dependsOn": [
+        "T02.a",
+        "T04.a",
+        "T08"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U05",
+      "status": "proposed",
+      "scope": "17所述U05补齐能力",
+      "dependsOn": [
+        "T02.c"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U06",
+      "status": "proposed",
+      "scope": "17所述U06补齐能力",
+      "dependsOn": [
+        "T02.a"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U07",
+      "status": "proposed",
+      "scope": "17所述U07补齐能力",
+      "dependsOn": [
+        "T01",
+        "T10"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    },
+    {
+      "id": "U08",
+      "status": "proposed",
+      "scope": "17所述U08补齐能力",
+      "dependsOn": [
+        "T02.a",
+        "T08"
+      ],
+      "externalGates": [
+        "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
+      ]
+    }
+  ],
+  "umbrella": [
+    "T02 is a grouping, not a separate schema task"
+  ],
+  "dispatchRules": "Single writer/resources/N5a are admission constraints, not false dependency chains; only consumed additions freeze. Reviews next free slot, integration serial."
+}

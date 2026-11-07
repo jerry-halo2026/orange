@@ -1,0 +1,135 @@
+{
+  "base": "70ed6107ad99d6a852c798d57840488946391f4c",
+  "files": [
+    {
+      "path": "docs/discovery/00_讨论基线与决策台账.md",
+      "sha256": "5c5d2a8f32104814120dfa76a4f0658ee705018c91aace00a0e731a9fdeec3b1",
+      "bytes": 85953
+    },
+    {
+      "path": "docs/discovery/01_工程治理与证伪框架.md",
+      "sha256": "41b5393baeb86f5f7ce679eeccc23e99c213a0824f88befd17d9d9f439523405",
+      "bytes": 34555
+    },
+    {
+      "path": "docs/discovery/02_历史组合去重与容量评估.md",
+      "sha256": "19882aaab21e98e183b6e8a72c664572b4a682a622d3a8f436c3666508a45575",
+      "bytes": 20124
+    },
+    {
+      "path": "docs/discovery/03_交接业务复核与账号映射.md",
+      "sha256": "049920b89c415955a9e2fcc24bb31936b45393f3892a5c6f467504951ed53555",
+      "bytes": 33406
+    },
+    {
+      "path": "docs/discovery/04_智尚接口能力与系统协同.md",
+      "sha256": "bb88536c167d23e0ff58886bfa826b1e5c26ac819cf33220f0f8764a03f8228e",
+      "bytes": 44175
+    },
+    {
+      "path": "docs/discovery/05_智尚只读验证与身份边界.md",
+      "sha256": "001862a1dae215b52b0919582a7faeac458ea9b29d0b4b685b82d406bc508eaf",
+      "bytes": 10108
+    },
+    {
+      "path": "docs/discovery/06_整体架构与业务闭环.md",
+      "sha256": "5ef5dc845cdcd2cfff4acc59a2e28a3bbd20616b13ffe65f8257a4d1b61e4346",
+      "bytes": 53012
+    },
+    {
+      "path": "docs/discovery/07_统一数据契约草案.md",
+      "sha256": "8912ed209d06ccdfe55fb640bbf20fb09fd64fa60ae735f43df0891f2a6b600b",
+      "bytes": 99609
+    },
+    {
+      "path": "docs/discovery/08_整体方案审视与缺口清单.md",
+      "sha256": "3285ecafcaf464a5ada88655ca93e770824f8e99408730ad877c288dffc76327",
+      "bytes": 34434
+    },
+    {
+      "path": "docs/discovery/09_文档权威与多Agent开发协作规范.md",
+      "sha256": "301de2ac360620b05b391684eaa5f932813473ac6c48ebd127e0af3b5d7f0319",
+      "bytes": 38803
+    },
+    {
+      "path": "docs/discovery/10_首条最小业务闭环与任务拆分.md",
+      "sha256": "2b24de3951dab095e25e0a30eacee2ef9bf7f8882d37b8f491dad481de9e07da",
+      "bytes": 25919
+    },
+    {
+      "path": "docs/discovery/11_测试验收与问题定位规范.md",
+      "sha256": "3d06868c04baf98d06f242739c730832b4afba42069c621d93c327d20335899f",
+      "bytes": 35316
+    },
+    {
+      "path": "docs/discovery/12_前端视觉延续与交互标准.md",
+      "sha256": "7e1b77334f7e82bf1424b10114f42dccb6dc19e43d561385a2f0f4cbe8b2fd34",
+      "bytes": 3666
+    },
+    {
+      "path": "docs/discovery/13_技术架构与目录依赖基线.md",
+      "sha256": "b14f7809ddc4d4ad9b3ef19d3d11f50a3e59097e420bb2c1134ba3f79ecc1177",
+      "bytes": 7375
+    },
+    {
+      "path": "docs/discovery/14_新会话启动与开发交付流程.md",
+      "sha256": "dce7a8040d6f198220a1cb0d7d7a97ca28434b2b7944e0fbf600329bc273854b",
+      "bytes": 6344
+    },
+    {
+      "path": "docs/discovery/15_OpenFilm资源来源与分发边界.md",
+      "sha256": "0647e1d69376944dc9d993985da006da56ee87700c81af910517c870609405ac",
+      "bytes": 7218
+    },
+    {
+      "path": "docs/discovery/16_OpenFilm原生接口与平台对齐.md",
+      "sha256": "cd7bda625e179d3891bb69518cdd3e44322a0c5cc0451c047f9013b9961a0ff5",
+      "bytes": 11062
+    },
+    {
+      "path": "docs/discovery/17_小范围试用交付与Goal验收.md",
+      "sha256": "2bcd625853f960df3cefa9613976176497a001ef6641d0cebbf2441a95a2898b",
+      "bytes": 10867
+    },
+    {
+      "path": "docs/discovery/18_Goal新会话交接包.md",
+      "sha256": "8bc0059a3b0b918e1681723d197d72669362db5a6e901c91253eb2ed15b9ad31",
+      "bytes": 8812
+    },
+    {
+      "path": "docs/06_橙子生产级重构PRD.md",
+      "sha256": "cff56fdded2acdae156fcec48a5847d1f21bf1115a5fc3e0be43385a1238bdee",
+      "bytes": 132292
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "35066d7193170087d4f640abb0a4f05872db3a43f879fb22924e000ead5dfeb8",
+      "bytes": 3501
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "77e1de2efa84c840561a5e020ac294b2f864ec6280727ca3b17d27ba589b144d",
+      "bytes": 2097
+    },
+    {
+      "path": "docs/architecture/overall-design.md",
+      "sha256": "54dfbf295a77edfc1cfeb239a84da194a36e787c2c3d704dd6b7d5e998cbde3e",
+      "bytes": 17803
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+      "sha256": "cb636b39cc50cb5b47c8c67923f36be74b0cacca1e2e40128c1a73ba391051bd",
+      "bytes": 26469
+    },
+    {
+      "path": "docs/execution/status.json",
+      "sha256": "01aee366abe99dc30059ee949d7e12b64f64b305b6b51ca7956be2c7cc7ecd44",
+      "bytes": 2274
+    },
+    {
+      "path": "docs/execution/phase1-plan-status.json",
+      "sha256": "34a87eefa51f41c92ac3558ac5b194bfe41151fb0c4fe3dedb0b9a05a490939d",
+      "bytes": 4596
+    }
+  ]
+}

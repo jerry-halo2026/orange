@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-07",
+  "upstream": {
+    "version": "0.3.0",
+    "commit": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73"
+  },
+  "fission": {
+    "commit": "c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9",
+    "files": 70,
+    "imported": true,
+    "buildTestedInOrange": false,
+    "runtimePathsIsolated": false
+  },
+  "phase": "canonical-primary-dev-ready; product implementation not started",
+  "branch": "dev",
+  "businessFeatureImplementation": false,
+  "docsMaintainedHere": true,
+  "originalRepositoryIndexAndArchiveUntouched": false,
+  "authorization": {
+    "modelBudgetCNY": 50,
+    "publicSourceAndSanitizedDocsApproved": true,
+    "zhishangConnectivityApproved": true,
+    "privateMediaExternalUploadApproved": false,
+    "productionWritesApproved": false,
+    "mainOrTagApproved": false
+  },
+  "gitPolicy": {
+    "dev": "native baseline 8b8ef16 established; branch from latest dev and integrate reviewed/tested candidates into dev",
+    "main": "PR required and Ethan confirmation; no main commit created this turn",
+    "legacyDev": "preserved as codex/archive-legacy-dev-20261107 at dcb44a2",
+    "remoteDefault": "dev",
+    "mainRulesetId": 26751877
+  },
+  "resourceCloud": {
+    "state": "future-candidate-not-created"
+  },
+  "worktreeCleanup": {
+    "state": "37 of 38 linked trees physically removed after preservation; current E pending explicit approval",
+    "receipt": "2026-11-07-worktree-cleanup.json"
+  },
+  "remoteTarget": "https://github.com/jerry-halo2026/orange",
+  "publication": "Native dev pushed; main PR rules read back; no product release",
+  "handoff": "docs/discovery/18_Goal新会话交接包.md",
+  "pilotReadiness": "docs/execution/pilot-readiness.json",
+  "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
+  "platformScope": {
+    "first": "Windows",
+    "planned": "macOS Apple Silicon arm64",
+    "excluded": [
+      "Intel Mac",
+      "Linux client",
+      "Mac Universal"
+    ],
+    "macValidated": false
+  },
+  "primaryWorkspace": "D:/dev/orange",
+  "originalStatePreservation": "User-approved complete backup of files/index/common Git; source files archived outside primary; see primary-dev-cutover receipt"
+}

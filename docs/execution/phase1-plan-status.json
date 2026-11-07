@@ -1,122 +1,15 @@
 {
   "date": "2026-11-07",
-  "state": "revision-2-handoff-awaiting-explicit-new-goal-scope",
+  "state": "U1-documentation-only; bind explicit next-goal scope",
   "sourceBaseline": "3a29a38ea35e488f4769927d816721e19e238076",
   "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
   "businessImplementationStarted": false,
   "developmentGoalRecreated": false,
-  "packages": [
-    {
-      "id": "T01",
-      "scope": "isolation and minimum admission gates",
-      "state": "proposed",
-      "depends": []
-    },
-    {
-      "id": "T02",
-      "scope": "native interface inventory, characterization tests and only necessary per-consumer business additions",
-      "state": "proposed",
-      "depends": [
-        "T01 needed isolation"
-      ]
-    },
-    {
-      "id": "T03",
-      "scope": "original HOME and real auth navigation",
-      "state": "proposed",
-      "depends": [
-        "T01",
-        "T02.a"
-      ]
-    },
-    {
-      "id": "T04.a",
-      "scope": "shared assets and scoped Zhishang fixture adapter",
-      "state": "proposed",
-      "depends": [
-        "T01",
-        "T02.a",
-        "T02.b"
-      ]
-    },
-    {
-      "id": "T04.b",
-      "scope": "real personal Zhishang read-only integration",
-      "state": "blocked_personal_binding",
-      "depends": [
-        "T04.a",
-        "verified personal binding"
-      ]
-    },
-    {
-      "id": "T05.a",
-      "scope": "Fission pure path isolation",
-      "state": "proposed",
-      "depends": [
-        "T01"
-      ]
-    },
-    {
-      "id": "T05.b",
-      "scope": "controlled Fission host and media",
-      "state": "proposed",
-      "depends": [
-        "T05.a",
-        "T02.c"
-      ]
-    },
-    {
-      "id": "T06",
-      "scope": "actual FrozenPlan and original editable project handoff",
-      "state": "proposed",
-      "depends": [
-        "T05.b",
-        "T02.c",
-        "scoped asset and project ports"
-      ]
-    },
-    {
-      "id": "T07",
-      "scope": "speech analysis and time mapping without project writes",
-      "state": "proposed",
-      "depends": [
-        "T02.d"
-      ]
-    },
-    {
-      "id": "T08",
-      "scope": "strict original edit, shared commit coordinator, recovery and CLI",
-      "state": "proposed",
-      "depends": [
-        "T02.a",
-        "T02.d"
-      ]
-    },
-    {
-      "id": "T09",
-      "scope": "speech cutting in original subtitle UI",
-      "state": "proposed",
-      "depends": [
-        "T03 shared UI writer released",
-        "T07",
-        "T08"
-      ]
-    },
-    {
-      "id": "T10",
-      "scope": "serial integration into existing native dev and phase-one acceptance",
-      "state": "proposed",
-      "depends": [
-        "relevant packages independently reviewed",
-        "actual integrated gates"
-      ]
-    }
-  ],
   "concurrency": {
     "policy": "C89 dynamic consumer-ready, isolated trees/writes/resources, N5a; next free slot prioritizes reviews",
     "observedSlotLimitIncludingCoordinator": 4,
     "implementationConcurrencyStarted": false,
-    "nativeWorktreeTools": "list_artifacts Transport closed; no manual bypass",
+    "nativeWorktreeTools": "Reverify actual connection; independent connection worked, 37 linked trees removed",
     "sharedFiles": "single writer, explicit handoff, serial integration"
   },
   "research": [
@@ -142,18 +35,16 @@
     }
   ],
   "notClaimed": [
-    "new contracts consumer-ready",
-    "product build or tests passed this turn",
-    "personal material connectivity",
-    "ASR or paid model call success",
-    "dev/main integration",
-    "worktrees archived or disk released"
+    "new business integration accepted",
+    "product tests passed by docs",
+    "current E workspace cleanup approved"
   ],
-  "planRevision": 2,
-  "priorReview": "revision1 at 3a29a38 only; revised docs require new review",
+  "planRevision": 3,
+  "priorReview": "Historical receipts bind original commit; U1 requires new review",
   "completionGate": "docs/discovery/17_小范围试用交付与Goal验收.md",
   "primaryWorkspace": "D:/dev/orange",
   "workingBaselineCommit": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
   "developmentBranch": "dev",
-  "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance"
+  "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance",
+  "taskRegistry": "docs/execution/project-tasks.json"
 }

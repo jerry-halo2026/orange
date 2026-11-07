@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "canonical-primary-dev-ready; product implementation not started",
+  "phase": "U1-active-documentation-unified; awaiting explicit new development goal",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -54,5 +54,8 @@
     "macValidated": false
   },
   "primaryWorkspace": "D:/dev/orange",
-  "originalStatePreservation": "User-approved complete backup of files/index/common Git; source files archived outside primary; see primary-dev-cutover receipt"
+  "originalStatePreservation": "User-approved complete backup of files/index/common Git; source files archived outside primary; see primary-dev-cutover receipt",
+  "docset": "U1",
+  "documentationReview": "docs/execution/documentation-unification.json",
+  "taskRegistry": "docs/execution/project-tasks.json"
 }

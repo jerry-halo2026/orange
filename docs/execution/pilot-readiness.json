@@ -76,9 +76,13 @@
         "V52"
       ],
       "taskOwners": [
-        "T02",
+        "T02.a",
+        "T02.b",
+        "T02.c",
+        "T02.d",
         "T03",
-        "T04"
+        "T04.a",
+        "T04.b"
       ],
       "status": "pending",
       "integrationCandidateCommit": null,
@@ -89,7 +93,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG02",
@@ -119,7 +124,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG03",
@@ -137,7 +143,8 @@
         "V48"
       ],
       "taskOwners": [
-        "T04",
+        "T04.a",
+        "T04.b",
         "U02",
         "U03"
       ],
@@ -150,7 +157,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG04",
@@ -168,7 +176,8 @@
         "V56"
       ],
       "taskOwners": [
-        "T05",
+        "T05.a",
+        "T05.b",
         "T06",
         "U05"
       ],
@@ -181,7 +190,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG05",
@@ -204,7 +214,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG06",
@@ -234,7 +245,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG07",
@@ -264,7 +276,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG08",
@@ -292,7 +305,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG09",
@@ -324,7 +338,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG10",
@@ -346,7 +361,10 @@
       ],
       "taskOwners": [
         "T01",
-        "T02",
+        "T02.a",
+        "T02.b",
+        "T02.c",
+        "T02.d",
         "T10",
         "U05",
         "U06",
@@ -361,7 +379,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG11",
@@ -389,7 +408,8 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": []
     },
     {
       "id": "PG12",
@@ -405,8 +425,7 @@
       "taskOwners": [
         "T10",
         "U07",
-        "U08",
-        "Ethan"
+        "U08"
       ],
       "status": "pending",
       "integrationCandidateCommit": null,
@@ -417,7 +436,10 @@
       "qualityReview": null,
       "humanSignoff": null,
       "blockingConditions": [],
-      "exclusionApproval": null
+      "exclusionApproval": null,
+      "humanSignoffRoles": [
+        "Ethan"
+      ]
     }
   ],
   "requirements": [
@@ -515,7 +537,7 @@
     {
       "id": "V09",
       "scenario": "真实分类/标签、创建回执、资源标签回读和本人权限",
-      "acceptance": "文档字段映射与真实数据一致，唯一真源和创建先后顺序成立；联调仍挂起",
+      "acceptance": "文档字段映射与真实数据一致，唯一真源和创建先后顺序成立；本人绑定真实联调未就绪",
       "gates": [
         "PG03",
         "PG07"
@@ -1228,9 +1250,10 @@
     "actualIntegratedTestEvidence",
     "blockerAndResumeCondition"
   ],
-  "lastEvidence": "docs/execution/2026-11-07-phase1-archive-delivery.json (historical administrative work, not product completion)",
+  "lastEvidence": "docs/execution/status.json routes to subject-bound receipts; no product gate inferred",
   "primaryWorkspace": "D:/dev/orange",
   "workingBaselineCommit": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
   "developmentBranch": "dev",
-  "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance"
+  "gitSetup": "approved native dev baseline established; old dev preserved separately; not product acceptance",
+  "taskRegistry": "docs/execution/project-tasks.json"
 }

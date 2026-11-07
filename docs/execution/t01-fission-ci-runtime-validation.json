@@ -1,83 +1,91 @@
 {
   "date": "2026-11-08",
   "taskId": "T01",
-  "assignmentRevision": 10,
+  "assignmentRevision": 12,
   "executor": "/root",
-  "approvalCommit": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
-  "approvalCardGitBlobSHA256": "f0de5d77090b09641a75773c31a8bd65d27f1311d4026e606b6e35a1a1308181",
-  "policyReview": "docs/execution/t01-fission-ci-runtime-policy-review.json",
-  "sourceCandidate": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+  "approvalCommit": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+  "approvalCardGitBlobSHA256": "b05f03af40cfa64158fd93ca78cce7ae18cc2f09a805cc9456401f848b84631b",
+  "policyReview": "docs/execution/t01-fission-ci-runtime-attempt2-policy-review.json",
+  "sourceCandidate": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
   "remoteLease": {
     "issued": true,
+    "state": "terminal success",
     "owner": "/root",
     "repository": "jerry-halo2026/orange",
     "ref": "refs/heads/codex/t05-path-policy",
     "workflow": ".github/workflows/fission-path-policy.yml",
-    "runner": "standard windows-2025 planned; actualjobimagepending",
+    "runner": "standard windows-2025 planned, actualjobpending",
     "maxActiveFissionRuns": 1,
     "timeoutMinutes": 12,
-    "issuedAtUTC": "2026-11-07T19:32:23.059Z",
+    "issuedAtUTC": "2026-11-07T20:19:06.960Z",
+    "previousRunConfirmedTerminal": 42406704504,
     "noPaidModelOrArtifactOrCache": true,
-    "state": "terminal failed, no automatic rerun",
-    "completedAtUTC": "2026-11-07T19:32:55Z"
+    "completedAtUTC": "2026-11-07T20:19:52Z"
   },
   "preflight": {
-    "candidate": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
-    "root": "E3 managed clean",
+    "candidate": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
     "repository": {
       "archived": false,
       "default_branch": "dev",
       "full_name": "jerry-halo2026/orange",
       "visibility": "public"
     },
-    "actions": {
-      "enabled": true,
-      "allowed_actions": "all"
-    },
+    "actionsEnabled": true,
+    "expectedPreviousTopic": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
     "remoteDev": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
-    "remoteTopic": "absent",
-    "customHookConfigured": false,
-    "prePushHookExists": false,
-    "historyAuditSHA256": "741c57eb6d903d03ef2a7fd0f77f49deb4c0df7fe2fcdefcc6a86ce1a46d816e",
-    "newHistoryCommits": 27,
-    "newHistoryBlobs": 132,
-    "findings": 0,
-    "remoteJobStarted": false,
-    "sourcePublication": false
+    "oldRun": {
+      "conclusion": "failure",
+      "head_sha": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+      "html_url": "https://github.com/jerry-halo2026/orange/actions/runs/42406704504",
+      "id": 42406704504,
+      "run_attempt": 1,
+      "status": "completed"
+    },
+    "historyCommits": 4,
+    "historyBlobs": 11,
+    "historyFindings": 0,
+    "historyAuditSHA256": "e203ff8400ba246b2d0ce195a5de0f3741fb7c8983c7165f2521f92b399589ac",
+    "hooksPresent": false,
+    "sourcePublication": false,
+    "newRemoteStarted": false
   },
   "localN5a": {
     "cases": 84,
-    "artifactSHA256": "e4390640ea05aab1e779b98c1593cfaa4904024a8dc45a800759eebdd191cca3",
-    "boundary": "localcard/write/approvedsource/fixture checks, notremote43proof"
+    "artifactSHA256": "1148033a36220c6f3589cfb42d82bc667696466d8c626bd651df2527b9bf7adf",
+    "scope": "local rootcard/source/write checks only"
   },
   "publication": {
     "state": "verified-pushed",
-    "commit": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+    "commit": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
     "branch": "codex/t05-path-policy",
+    "expectedPreviousHead": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
     "devUpdated": false,
     "mainOrTagUpdated": false,
-    "verifiedAtUTC": "2026-11-07T19:32:27.422Z",
-    "remoteHead": "ffe78966885f0a72c2fadfcbffa05997b3c43aed"
+    "remoteHead": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "verifiedAtUTC": "2026-11-07T20:19:11.332Z"
   },
   "run": {
-    "id": 42406704504,
-    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42406704504",
-    "head_sha": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+    "conclusion": "success",
+    "created_at": "2026-11-07T20:19:07Z",
+    "head_branch": "codex/t05-path-policy",
+    "head_sha": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "html_url": "https://github.com/jerry-halo2026/orange/actions/runs/42410466762",
+    "id": 42410466762,
+    "name": "Fission pure Windows path policy",
+    "run_attempt": 1,
     "status": "completed",
-    "conclusion": "failure",
-    "jobId": 128505840826,
-    "summary": {
-      "run": 42406704504,
-      "job": 128505840826,
+    "updated_at": "2026-11-07T20:19:52Z",
+    "job": {
+      "id": 128517294040,
+      "name": "pure-path-policy",
       "status": "completed",
-      "conclusion": "failure",
-      "runner_name": "GitHub Actions 1000000001",
-      "runner_group_name": "GitHub Actions",
+      "conclusion": "success",
       "labels": [
         "windows-2025"
       ],
-      "started_at": "2026-11-07T19:32:27Z",
-      "completed_at": "2026-11-07T19:32:55Z",
+      "runner_name": "GitHub Actions 1000000003",
+      "started_at": "2026-11-07T20:19:10Z",
+      "completed_at": "2026-11-07T20:19:52Z",
       "steps": [
         {
           "name": "Set up job",
@@ -102,7 +110,7 @@
         {
           "name": "Verify preinstalled tools and run only frozen original pure path cases",
           "status": "completed",
-          "conclusion": "failure"
+          "conclusion": "success"
         },
         {
           "name": "Post Checkout this exact candidate without stored credentials",
@@ -118,7 +126,7 @@
     },
     "actualTools": {
       "status": "tool-selection-verified",
-      "commit": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+      "commit": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
       "node": "22.23.4",
       "sdk": "10.0.403",
       "compilerVersion": "5.9.0-1.26523.112 (5a2162bea6845eabc1fc721624a43568c65db3b1)",
@@ -261,25 +269,234 @@
     }
   },
   "result": {
-    "state": "failed after verified tool selection, no43pass proof",
-    "passed43": false,
+    "state": "actualstandardWindowsCI succeeded",
+    "passed43": true,
+    "finalProof": {
+      "status": "passed-pure-path-subset-only",
+      "commit": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+      "node": "22.23.4",
+      "sdk": "10.0.403",
+      "compilerVersion": "5.9.0-1.26523.112 (5a2162bea6845eabc1fc721624a43568c65db3b1)",
+      "compilerSha256": "f9ea6e4b51f4ac07b9005fddf3e5a0022d9d60cf95a1c404809de63ba6d0eb3b",
+      "runtimes": [
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "8.0.6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "8.0.22"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "8.0.33"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "9.0.6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "9.0.22"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "10.0.8"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "10.0.11"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "10.0.14"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "8.0.6"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "8.0.22"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "8.0.33"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "9.0.6"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "9.0.22"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "10.0.8"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "10.0.11"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "10.0.14"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "8.0.6"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "8.0.22"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "8.0.33"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "9.0.6"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "9.0.22"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "10.0.8"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "10.0.11"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "10.0.14"
+        }
+      ],
+      "sources": [
+        {
+          "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+          "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+          "rawSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+        },
+        {
+          "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+          "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+          "rawSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+        },
+        {
+          "path": "workers/fission/tools/csc-shim/csc.bat",
+          "gitBlobSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0",
+          "rawSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
+        },
+        {
+          "path": "workers/fission/Directory.Build.props",
+          "gitBlobSha256": "f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b",
+          "rawSha256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063"
+        },
+        {
+          "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+          "gitBlobSha256": "f970bf2954edbf3631ba7238a9c9e0910610fdfd2abb3a3a5b946862df31d949",
+          "rawSha256": "c7a65190e98d2ff3028335dea91db3eeada00a499e320981c11dbd03c4befaef"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Fission.Core.csproj",
+          "gitBlobSha256": "11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c",
+          "rawSha256": "61e3f2d043e37f0db4be1d8083dd31bebbfbb8fde2cf027327db2556c16bc385"
+        },
+        {
+          "path": "workers/fission/src/Fission.Steps/Fission.Steps.csproj",
+          "gitBlobSha256": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81",
+          "rawSha256": "7b86a3cb31d83f4e8af04fc2a2e0a9d70f32e82648f460e3e9615124f8805e47"
+        }
+      ],
+      "total": 43,
+      "executed": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "testNames": [
+        "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_ExistingTrustedCaseAndChineseManagedNames_ArePreserved",
+        "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingCasedUnicodeWritableComponent_Rejects(component: \"Älias\")",
+        "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingCasedUnicodeWritableComponent_Rejects(component: \"älias\")",
+        "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingCasedUnicodeWritableComponent_Rejects(component: \"Kache\")",
+        "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingOnlyOutputLeafOrIntermediate_RejectsWithoutCreating",
+        "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingOnlyWritableRootLeaf_RejectsWithoutCreating",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_ExplicitChineseAndSpaceRoots_DerivesTaskAttemptWithoutWriting",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: False)",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True)",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_OmittedOrNonAbsoluteWritableRoot_Rejects",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_ReadOnlyAndWritableTreesOverlapInEitherDirection_Rejects",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnapprovedMissingReadOnlyLocations_RejectsOriginalDefaults",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \".\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"..\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"../escape\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"Task-a\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"a/b\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"a\\\\b\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"com1\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"con\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"task \")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"task.\")",
+        "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"task:stream\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateJob_OutDirMustStayInsideThisTaskOutput_AndDoesNotMutateJob",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_CaseAndSeparatorAliasesAndExistingFileAncestor_Rejects",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_LinkIntroducedAfterConstruction_IsRechecked",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_OriginalDefaultsAndReadOnlyAssets_CannotGainWritePermission",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: False)",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True)",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_TasksAttemptsAndRolesCannotShareWritableDirectories",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \".\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"..\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"COM1.txt\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"COM¹\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"LPT9\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"NUL\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"bad?name\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"con.txt\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"file \")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"file.\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"file:stream\")",
+        "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"name~1\")"
+      ],
+      "trxSha256": "c2a8a6d582cbcf415eb56bd80ba0f3a1e6a343e9fe60d74a11ae2be7a15187c9",
+      "exitCodes": {
+        "git-head": 0,
+        "git-root": 0,
+        "source-0": 0,
+        "source-1": 0,
+        "build-input-2": 0,
+        "build-input-3": 0,
+        "build-input-4": 0,
+        "build-input-5": 0,
+        "build-input-6": 0,
+        "sdk-version": 0,
+        "compiler-version": 0,
+        "original-shim-version": 0,
+        "runtime-versions": 0,
+        "restore": 0,
+        "path-policy-tests": 0,
+        "git-final-head": 0
+      }
+    },
+    "testProcess": {
+      "status": "test-process-finished",
+      "exitCode": 0,
+      "trxSha256": "c2a8a6d582cbcf415eb56bd80ba0f3a1e6a343e9fe60d74a11ae2be7a15187c9"
+    },
     "fullT05Accepted": false,
-    "pilotAccepted": false,
-    "failureCategory": "CI_SUBPROCESS_FAILED",
-    "failedSubprocessLabel": "not emitted by first version; exactremote stderr not available"
+    "pilotAccepted": false
   },
   "notClaimed": [
     "actual43 or realWindows symlink assertion passed",
     "Auth/media/installer/pilotaccepted",
     "dev/main/tag/release/business cloudwrite"
   ],
-  "companionPureGovernance": {
-    "id": 42406704514,
-    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42406704514",
-    "head_sha": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
-    "conclusion": "success",
-    "notFissionProof": true
-  },
   "localDiagnostic": {
     "scope": "fresh offline restore only, no compile/test/network/privateconfigread, localSDK10.0.300 NOT remote10.0.403",
     "groups": [
@@ -358,10 +575,345 @@
     "sourceUnchanged": true
   },
   "evidence": {
-    "privatePublicJobLog": "ignored .dev/fission-ci-runtime/first-job-private.log; notuploaded/committed",
-    "jobLogSHA256": "437420c577bb5f0d51b2032935a741a6268733d0c12fe67478dfb4e4a6cfacc7",
-    "offlineABSHA256": "cbb631082b0fcbf4c7a6edb28fd457e635b0692c3cd4c8f9eb197ab31c9544eb",
-    "singleVariableSHA256": "cb28f0ab69c907ae0eb1b6dddb9bb24f07c6194afa81aa754066192861b87aa7"
+    "summarySHA256": "8bbb6132bb98e9ea25806c1f2031ad08afbed6cd6395830f2efcccc35697ee8c",
+    "publicJobLogSHA256": "00b4116cb4b9b3eae339e646bbab8ca51ae0c0fc372af730b43ce752ea68f134",
+    "rawJobLog": "ignoredprivateownedfile notcommitted/uploaded"
   },
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "attempts": [
+    {
+      "assignmentRevision": 10,
+      "approvalCommit": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+      "sourceCandidate": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+      "publication": {
+        "state": "verified-pushed",
+        "commit": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+        "branch": "codex/t05-path-policy",
+        "devUpdated": false,
+        "mainOrTagUpdated": false,
+        "verifiedAtUTC": "2026-11-07T19:32:27.422Z",
+        "remoteHead": "ffe78966885f0a72c2fadfcbffa05997b3c43aed"
+      },
+      "remoteLease": {
+        "issued": true,
+        "owner": "/root",
+        "repository": "jerry-halo2026/orange",
+        "ref": "refs/heads/codex/t05-path-policy",
+        "workflow": ".github/workflows/fission-path-policy.yml",
+        "runner": "standard windows-2025 planned; actualjobimagepending",
+        "maxActiveFissionRuns": 1,
+        "timeoutMinutes": 12,
+        "issuedAtUTC": "2026-11-07T19:32:23.059Z",
+        "noPaidModelOrArtifactOrCache": true,
+        "state": "terminal failed, no automatic rerun",
+        "completedAtUTC": "2026-11-07T19:32:55Z"
+      },
+      "run": {
+        "id": 42406704504,
+        "url": "https://github.com/jerry-halo2026/orange/actions/runs/42406704504",
+        "head_sha": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+        "status": "completed",
+        "conclusion": "failure",
+        "jobId": 128505840826,
+        "summary": {
+          "run": 42406704504,
+          "job": 128505840826,
+          "status": "completed",
+          "conclusion": "failure",
+          "runner_name": "GitHub Actions 1000000001",
+          "runner_group_name": "GitHub Actions",
+          "labels": [
+            "windows-2025"
+          ],
+          "started_at": "2026-11-07T19:32:27Z",
+          "completed_at": "2026-11-07T19:32:55Z",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout this exact candidate without stored credentials",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Require preinstalled Node without downloads",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Test only pure result and context validation",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify preinstalled tools and run only frozen original pure path cases",
+              "status": "completed",
+              "conclusion": "failure"
+            },
+            {
+              "name": "Post Checkout this exact candidate without stored credentials",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        "actualTools": {
+          "status": "tool-selection-verified",
+          "commit": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+          "node": "22.23.4",
+          "sdk": "10.0.403",
+          "compilerVersion": "5.9.0-1.26523.112 (5a2162bea6845eabc1fc721624a43568c65db3b1)",
+          "compilerSha256": "f9ea6e4b51f4ac07b9005fddf3e5a0022d9d60cf95a1c404809de63ba6d0eb3b",
+          "runtimes": [
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "8.0.6"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "8.0.22"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "8.0.33"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "9.0.6"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "9.0.22"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "10.0.8"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "10.0.11"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App",
+              "version": "10.0.14"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "8.0.6"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "8.0.22"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "8.0.33"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "9.0.6"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "9.0.22"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "10.0.8"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "10.0.11"
+            },
+            {
+              "name": "Microsoft.NETCore.App",
+              "version": "10.0.14"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "8.0.6"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "8.0.22"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "8.0.33"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "9.0.6"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "9.0.22"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "10.0.8"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "10.0.11"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App",
+              "version": "10.0.14"
+            }
+          ],
+          "sources": [
+            {
+              "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+              "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+              "rawSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+            },
+            {
+              "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+              "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+              "rawSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+            },
+            {
+              "path": "workers/fission/tools/csc-shim/csc.bat",
+              "gitBlobSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0",
+              "rawSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
+            },
+            {
+              "path": "workers/fission/Directory.Build.props",
+              "gitBlobSha256": "f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b",
+              "rawSha256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063"
+            },
+            {
+              "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+              "gitBlobSha256": "f970bf2954edbf3631ba7238a9c9e0910610fdfd2abb3a3a5b946862df31d949",
+              "rawSha256": "c7a65190e98d2ff3028335dea91db3eeada00a499e320981c11dbd03c4befaef"
+            },
+            {
+              "path": "workers/fission/src/Fission.Core/Fission.Core.csproj",
+              "gitBlobSha256": "11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c",
+              "rawSha256": "61e3f2d043e37f0db4be1d8083dd31bebbfbb8fde2cf027327db2556c16bc385"
+            },
+            {
+              "path": "workers/fission/src/Fission.Steps/Fission.Steps.csproj",
+              "gitBlobSha256": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81",
+              "rawSha256": "7b86a3cb31d83f4e8af04fc2a2e0a9d70f32e82648f460e3e9615124f8805e47"
+            }
+          ]
+        }
+      },
+      "result": {
+        "state": "failed after verified tool selection, no43pass proof",
+        "passed43": false,
+        "fullT05Accepted": false,
+        "pilotAccepted": false,
+        "failureCategory": "CI_SUBPROCESS_FAILED",
+        "failedSubprocessLabel": "not emitted by first version; exactremote stderr not available"
+      },
+      "localDiagnostic": {
+        "scope": "fresh offline restore only, no compile/test/network/privateconfigread, localSDK10.0.300 NOT remote10.0.403",
+        "groups": [
+          {
+            "group": "A-current-builder",
+            "actualSDK": "10.0.300",
+            "remoteSDKEquivalent": false,
+            "addedStandardOSKeys": [],
+            "restoreExitCode": 1,
+            "signal": null,
+            "errorCode": null,
+            "diagnosticCodes": [],
+            "knownExceptionTypes": [
+              "ConfigurationDefaults"
+            ],
+            "source": "fresh own offline-only config reads approved existing nupkg artifacts only; no existingNugetconfig read/publicnetwork/SDKinstall/compile/test/audit-disable",
+            "rawOutputPublic": false
+          },
+          {
+            "group": "B-plus-standard-OS-locations",
+            "actualSDK": "10.0.300",
+            "remoteSDKEquivalent": false,
+            "addedStandardOSKeys": [
+              "ProgramFiles",
+              "ProgramFiles(x86)",
+              "ProgramW6432",
+              "CommonProgramFiles",
+              "CommonProgramFiles(x86)",
+              "CommonProgramW6432",
+              "SystemDrive"
+            ],
+            "restoreExitCode": 0,
+            "signal": null,
+            "errorCode": null,
+            "diagnosticCodes": [],
+            "knownExceptionTypes": [],
+            "source": "fresh own offline-only config reads approved existing nupkg artifacts only; no existingNugetconfig read/publicnetwork/SDKinstall/compile/test/audit-disable",
+            "rawOutputPublic": false
+          }
+        ],
+        "singleVariableGroups": [
+          {
+            "group": "C-SystemDrive-only",
+            "actualSDK": "10.0.300",
+            "remoteSDKEquivalent": false,
+            "addedStandardOSKeys": [
+              "SystemDrive"
+            ],
+            "restoreExitCode": 1,
+            "signal": null,
+            "errorCode": null,
+            "diagnosticCodes": [],
+            "knownExceptionTypes": [
+              "ConfigurationDefaults"
+            ],
+            "source": "fresh own offline-only config reads approved existing nupkg artifacts only; no existingNugetconfig read/publicnetwork/SDKinstall/compile/test/audit-disable",
+            "rawOutputPublic": false
+          },
+          {
+            "group": "D-ProgramFilesX86-only",
+            "actualSDK": "10.0.300",
+            "remoteSDKEquivalent": false,
+            "addedStandardOSKeys": [
+              "ProgramFiles(x86)"
+            ],
+            "restoreExitCode": 0,
+            "signal": null,
+            "errorCode": null,
+            "diagnosticCodes": [],
+            "knownExceptionTypes": [],
+            "source": "fresh own offline-only config reads approved existing nupkg artifacts only; no existingNugetconfig read/publicnetwork/SDKinstall/compile/test/audit-disable",
+            "rawOutputPublic": false
+          }
+        ],
+        "conclusion": "local currentbuilder fails ConfigurationDefaults; only ProgramFiles(x86) addition restores0, SystemDrive-only stillfails. This confirms a local environment-contract defect, not the unobserved exact remote stderr.",
+        "sourceUnchanged": true
+      },
+      "evidence": {
+        "privatePublicJobLog": "ignored .dev/fission-ci-runtime/first-job-private.log; notuploaded/committed",
+        "jobLogSHA256": "437420c577bb5f0d51b2032935a741a6268733d0c12fe67478dfb4e4a6cfacc7",
+        "offlineABSHA256": "cbb631082b0fcbf4c7a6edb28fd457e635b0692c3cd4c8f9eb197ab31c9544eb",
+        "singleVariableSHA256": "cb28f0ab69c907ae0eb1b6dddb9bb24f07c6194afa81aa754066192861b87aa7"
+      },
+      "companionPureGovernance": {
+        "id": 42406704514,
+        "url": "https://github.com/jerry-halo2026/orange/actions/runs/42406704514",
+        "head_sha": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+        "conclusion": "success",
+        "notFissionProof": true
+      }
+    }
+  ],
+  "companionPureGovernance": {
+    "id": 42410466814,
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42410466814",
+    "head_sha": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "conclusion": "success",
+    "notFissionProof": true
+  }
 }

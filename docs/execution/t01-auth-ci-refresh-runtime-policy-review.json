@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 16,
+  "reviewerAgent": "/root/ci_refresh_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "7e0160f4314d8eae2daf3978a1be24f8c114e58249024e01332ed2f414311a68",
+  "sourceProofSHA256": "f18f7754c37453fbc1285d1116bcf7ff8aecc87be2b756cc18861afbc2b050b0",
+  "sourceCandidate": "b869ba207ecb6e194dd904c005ccb6f121e7b986",
+  "verifiedRootLocal": "actualdepth1CI300 andfullhistory353, failures299/1and350/3preserved, no test/workflowweakened",
+  "requiredRemaining": [
+    "immutableanchor",
+    "actualtrustedN5a",
+    "allunpublishedhistoryprivacy audit",
+    "immediatepublicrepo/target/officialbilling/oldrunterminalchecks",
+    "Rootonejoblease"
+  ],
+  "newHosted353Passed": false,
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "b869ba207ecb6e194dd904c005ccb6f121e7b986",
+  "authorAgent": "/root/auth_ci_pin_impl",
+  "reviewerAgent": "/root/ci_refresh_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/medium",
+  "requestedReviewerModel": "gpt-6.1-sol/medium",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "sha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb",
+      "gitBlobSha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "50f62137d5fb6e8e8c6cd259ff8207cf2b70d5df6bec6aee1327e47c31c3e318",
+      "gitBlobSha256": "a176bf3b6421b028fec44581756326a703b17e3e234f8b1c5fa1f0f01b9de307"
+    }
+  ],
+  "scope": "source safe for RootboundedactualWindowsvalidation only, no new353CIpass yet",
+  "producerInput": "d008Auth/acc27policy immutable; CIpins3files editableGitbaseline25e44 (notunchangedinput)",
+  "actualRoot": {
+    "shallow300": true,
+    "phase1FullHistory353": true,
+    "proofSHA256": "20d8cfe52984af8c37e988e71a1e61b86242c8411d35c168918121b81ebb9b5e"
+  },
+  "retiredCaseMeaning": "fixedcurrent4digesttuple +oldpininequality, originalgenericbadbyte/digestreject regressions unchanged; NOTexecutionofoldbytes",
+  "historicalObjectDefect": "actualdepth1oldcase299pass1fail reproduced, final300pass0skip withoutoldobject",
+  "harnessCorrection": "phase1353firstapplieddepth1 produced350pass3GIT; realphase1 fetchdepth0, Rootproperfullhistory353passed. Failurepreserved, no workflow/test/gateweakened",
+  "old299Retained": true,
+  "oldCS34AndAuthPolicyRawUnchanged": true,
+  "authorReportSHA256": "3318aa7868f46343d36fc57d37bb0e5d9043a5785045d8def60515083b003d70",
+  "N5a": {
+    "before84": true,
+    "postWrite84": true,
+    "onExactCommit84": true
+  },
+  "newActualCI": false,
+  "fullTaskAccepted": false
+}

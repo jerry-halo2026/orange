@@ -1,0 +1,323 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 15,
+  "sourceCommit": "b869ba207ecb6e194dd904c005ccb6f121e7b986",
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+    },
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "50f62137d5fb6e8e8c6cd259ff8207cf2b70d5df6bec6aee1327e47c31c3e318",
+      "gitBlobSha256": "a176bf3b6421b028fec44581756326a703b17e3e234f8b1c5fa1f0f01b9de307"
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "sha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb",
+      "gitBlobSha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb"
+    }
+  ],
+  "review": {
+    "reviewerAgent": "/root/ci_refresh_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "authorReportSHA256": "3318aa7868f46343d36fc57d37bb0e5d9043a5785045d8def60515083b003d70",
+  "authorTDD": {
+    "existing": {
+      "tests": 299,
+      "pass": 298,
+      "fail": 1
+    },
+    "supersededDuplicateRetiredCases": {
+      "tests": 301,
+      "pass": 297,
+      "fail": 4,
+      "note": "Two duplicate retired-pair tests reduced to one before any production edits; original RED preserved."
+    },
+    "finalRed": {
+      "tests": 300,
+      "pass": 297,
+      "fail": 3
+    },
+    "green": {
+      "tests": 300,
+      "pass": 300,
+      "fail": 0
+    },
+    "original299": "retained; only Auth81 title to103 and expectedCases331 assertion to353 updated"
+  },
+  "authorLogs": [
+    {
+      "path": ".dev/auth-ci-refresh/diff-check-shallow-fix.log",
+      "sha256": "64b9786d12c8f9a180def4fcb65f699fd3670bf3ebb79cca2a73fddce61b47a0",
+      "counters": {}
+    },
+    {
+      "path": ".dev/auth-ci-refresh/diff-check.log",
+      "sha256": "64b9786d12c8f9a180def4fcb65f699fd3670bf3ebb79cca2a73fddce61b47a0",
+      "counters": {}
+    },
+    {
+      "path": ".dev/auth-ci-refresh/green-ci-shallow-fix.log",
+      "sha256": "a7ff38c3666385d95d7bbd49b49b64853fdd1f614dc7e15b22a8cb8bd3edd397",
+      "counters": {
+        "tests": 300,
+        "pass": 300,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/green-ci.log",
+      "sha256": "9ce965d93b2b04a61b2fa6cb83dd8c9fde43fc0b1f6691e36b22ad59058826ab",
+      "counters": {
+        "tests": 300,
+        "pass": 300,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/green-phase1-shallow-fix.log",
+      "sha256": "3aa7007fbbad9881d2a16fe54894184b294674d184e68496d4f88f7e936b2c1d",
+      "counters": {
+        "tests": 353,
+        "pass": 353,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/green-phase1.log",
+      "sha256": "b4697eb19aa4695d0f7faebf3c4e6ec6552fb980f545a249e26107a52b82743c",
+      "counters": {
+        "tests": 353,
+        "pass": 353,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/red-existing.tap",
+      "sha256": "ad9e7db2c58f86c670a672723dad9e2000c7df8844e959f65e1278073a5b27a1",
+      "counters": {
+        "tests": 299,
+        "pass": 298,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/red-final-tests.tap",
+      "sha256": "2120606517d0fce1260f72f2a90cf3235657d1e272eee1a0d45a97b324292e40",
+      "counters": {
+        "tests": 300,
+        "pass": 297,
+        "fail": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/red-new-tests.tap",
+      "sha256": "e49b77ec18e4496bb84754142b826e578dc729956422c7e79c00f3079ec60d9f",
+      "counters": {
+        "tests": 301,
+        "pass": 297,
+        "fail": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev/auth-ci-refresh/syntax-module-shallow-fix.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    },
+    {
+      "path": ".dev/auth-ci-refresh/syntax-module.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    },
+    {
+      "path": ".dev/auth-ci-refresh/syntax-test-shallow-fix.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    },
+    {
+      "path": ".dev/auth-ci-refresh/syntax-test.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    }
+  ],
+  "executionRefusal": ".dev/auth-ci-refresh/execution-refusals.json",
+  "refusalHandling": "dynamiccardcommand refusedbeforeedits, no bypass; explicit5puretestfiles narrower normalapproval executed, noCIentry",
+  "rootIndependent": {
+    "date": "2026-11-07T23:29:34.737Z",
+    "sourceHead": "b3d756ae51ca547b0c5a3a53803b50af15186707",
+    "sourceHashes": {
+      "scripts/fission-path-ci.mjs": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "scripts/fission-path-ci.test.mjs": "50f62137d5fb6e8e8c6cd259ff8207cf2b70d5df6bec6aee1327e47c31c3e318",
+      ".github/workflows/phase1.yml": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb"
+    },
+    "sourceUnchanged": true,
+    "kind": "localtestfixture no newmanagedtaskworktree/realCI/remote",
+    "shallowFissionWorkflow": {
+      "actualDepth": 1,
+      "oldObjectMissing": true,
+      "originalDefectReproduced": {
+        "name": "old-case-depth1-failure",
+        "exitCode": 1,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 300,
+          "pass": 299,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "43ef599054f832a9057a22ccda37a447966ec6472f1e48a726680e6c7635d225",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "finalCases": 300,
+      "allPassed": true
+    },
+    "phase1Workflow": {
+      "actualConfiguredDepth": 0,
+      "rootVerificationOnOriginalFullHistorySource": true,
+      "finalCases": 353,
+      "allPassed": true
+    },
+    "harnessScopeCorrection": {
+      "firstOverbroadExperiment": {
+        "name": "final-phase353-depth1",
+        "exitCode": 1,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 353,
+          "pass": 350,
+          "fail": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "179cb41f2be504cc949c12c151d01ce10a316e31af8727fd9d333b2cce89acb8",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "reason": "original3historicalapprovalselftests needoldGitobjects, actualphase1workflow intentionallyfetchdepth0; applying353toFissiondepth1 notrepresentative. Preservefailure, no source/test/guard/workflowweakened.",
+      "newProductionRegressionClaimed": false
+    },
+    "logs": [
+      {
+        "name": "verified-depth1",
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "verified-depth1-count",
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "verified-old-object-missing",
+        "exitCode": 128,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "092d5e3d1e4d647b26300d5d38edc7db86dec1a8518cc37d5c6b88015995b205"
+      },
+      {
+        "name": "correct-scope-shallow-ci300",
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 300,
+          "pass": 300,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "08772973768c89fe4effb5d35656058b3374b597159e62bf2c15d935c35416cb",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "correct-scope-deep-phase353",
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 353,
+          "pass": 353,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "91f4bf58b6cfb67d3cae9293c4f82f039614c4d3ea04f46d4bb3c8c39c475dd7",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "final-syntax-module",
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "final-syntax-test",
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "newActualGitHubCIPassed": false,
+    "noNETEntryNetworkRealAuthMedia": true
+  },
+  "N5a": {
+    "before84": true,
+    "postWrite84": true,
+    "onExactCommit84": true
+  },
+  "onCommitN5aSHA256": "d7bffcc8679b1db0a0133333f77a732f8080bd3d5c5b59a18c6549c60c13aa98",
+  "actualNew353CI": false,
+  "scope": "localpurevalidator/shallow300 +fullhistory353 only",
+  "fullTaskAccepted": false,
+  "productModelCalls": 0
+}

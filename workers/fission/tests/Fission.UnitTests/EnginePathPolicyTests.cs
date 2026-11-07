@@ -378,5 +378,3 @@ public sealed class EnginePathPolicyTests
         }
     }
 }
-
-

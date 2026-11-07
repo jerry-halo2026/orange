@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 11,
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCardSHA256": "45368a06f28c6b5b270e96bd300e697a0f31d692203a385e31d90a539785db7e",
+  "finalCardSHA256": "eb172dde0823a6e7835789f28f62be25d6b9c900b8e324018b01ae3d38849646",
+  "finalOnlyChange": "reviewer requested nonblocking wording on3files -> two-file diff+frozen workflow SHA; permissions and behavior scope unchanged",
+  "evidence": "actual firstCI failed/no43pass; local single-variable ProgramFiles(x86) restore0 vs current/SystemDriveonlyrestore1, SDKdifference explicit",
+  "actualN5a": "pending immutable commit/treeexecution",
+  "notApproved": [
+    "local .NET by sourceauthor",
+    "remote rerun",
+    "C#/workflow/checker changes",
+    "SDK/security/audit changes",
+    "actualCI fix claim"
+  ]
+}

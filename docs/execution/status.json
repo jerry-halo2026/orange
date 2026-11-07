@@ -14,7 +14,7 @@
     "unitSubsetAccepted": false,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "Access223pass sourceacc27/assembled63cab latestregression passed; CI142puretests and sourcefix1 peer-approved, rootverification/publication/actualWindows43 pending",
+  "phase": "first actualpublicWindowsCI failed afterverifiedSDK/compiler; companiongovernance passed; controlled offline A/B isolated missingProgramFiles(x86) localNugetdefect, new2file repaircard proposed",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -43,7 +43,7 @@
     "receipt": "2026-11-07-worktree-cleanup.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
-  "publication": "Native dev pushed; main PR rules read back; no product release",
+  "publication": "reviewedsource/sanitizeddocs published only codex/t05-path-policy atffe7896; remote dev41b unchanged, no release",
   "handoff": "docs/discovery/18_Goal新会话交接包.md",
   "pilotReadiness": "docs/execution/pilot-readiness.json",
   "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
@@ -63,11 +63,11 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-fission-ci-assignment.json",
+  "currentTaskCard": "docs/execution/t01-fission-ci-repair-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
   "currentSliceReview": "docs/execution/t02-access-validation.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
-  "runtimeVerification": "docs/execution/t01-runtime-validation.json",
+  "runtimeVerification": "docs/execution/t01-fission-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
   "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
   "latestLocalEvidence": [
@@ -86,7 +86,7 @@
     "t02Head": "acc27c4d119fd150331b788b84067858b48be9f4",
     "t05SourceState": "reviewed-source WIP3198 plus formatting-only4d322 committed locally; actual43/43 still pending",
     "devIntegration": false,
-    "remotePushThisGoal": false,
+    "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0"
@@ -96,7 +96,7 @@
     "T02.a internal policy peer-approved223tests; actual trustedAuth/persistentowner/consumerwiring/N1/T03 still pending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
-    "remote CI not yet executed; complete PG/V matrix pending"
+    "actualFissionWindowsCI failed;43mandatory cases notaccepted; source repair/true rerun needed; completePG/V pending"
   ],
   "identityBoundary": {
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
@@ -125,9 +125,22 @@
   "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
   "activeWriters": [],
   "ciReadiness": {
-    "localPrep": "fix1 source frozen142/142zero skip; /root/fission_ci_review spec+qualityapproved CompilerP1closed; rootindependenttests pending",
-    "actualWindowsRuntime": "not started or passed",
-    "originalCSharp": "unchanged frozen policy and43mandatorytests, historical2ENVfail remain",
-    "sourcePublication": false
+    "firstActualRun": {
+      "id": 42406704504,
+      "head": "ffe78966885f0a72c2fadfcbffa05997b3c43aed",
+      "conclusion": "failure",
+      "actualSDK": "10.0.403",
+      "compilerVersion": "5.9.0-1.26523.112",
+      "passed43": false,
+      "category": "CI_SUBPROCESS_FAILED",
+      "remoteExactCause": "notcaptured"
+    },
+    "companion": {
+      "id": 42406704514,
+      "conclusion": "success",
+      "notFissionProof": true
+    },
+    "localDiagnosis": "ProgramFiles(x86)-only makesofflineSDK10.0.300restore0; currentbuilder andSystemDrive-onlyrestore1 ConfigurationDefaults; notsameasremoteSDK",
+    "currentSourceState": "7d78reviewedinitialprep; repair11proposed no sourcewriter yet"
   }
 }

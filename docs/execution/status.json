@@ -35,8 +35,8 @@
     "state": "future-candidate-not-created"
   },
   "worktreeCleanup": {
-    "state": "private-recovery-verified; 3-unoccupied-local-refs-removed; 39-worktrees-retained-native-tool-unavailable",
-    "receipt": "2026-11-07-phase1-archive-delivery.json"
+    "state": "37 of 38 linked trees physically removed after preservation; current E pending explicit approval",
+    "receipt": "2026-11-07-worktree-cleanup.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
   "publication": "Native dev pushed; main PR rules read back; no product release",

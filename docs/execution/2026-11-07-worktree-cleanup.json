@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-07",
+  "state": "37-linked-worktrees-removed; current-E-worktree-awaiting-explicit-approval",
+  "primary": "D:/dev/orange",
+  "branch": "dev",
+  "baselineCommit": "38cf059b769b49ab5672c6b608b5b444586ef0d9",
+  "initialRegisteredWorktreesIncludingPrimary": 39,
+  "initialLinkedWorktrees": 38,
+  "physicallyRemovedLinkedWorktrees": 37,
+  "removalRoutes": {
+    "ordinaryGitCLI": 8,
+    "nativePhysicalArchive": 24,
+    "postNativeManagementArchiveMigrationResidual": 5
+  },
+  "nativeManagementArchiveReceipts": 29,
+  "remaining": [
+    {
+      "reason": "canonical primary dev; retain",
+      "path": "D:/dev/orange"
+    },
+    {
+      "reason": "current chat workspace; explicit approval requested after automatic permission-review rejection",
+      "path": "E:/CodexData/worktrees/orangeflim-base/orange"
+    }
+  ],
+  "privateRecovery": "E:/CodexData/archives/orange-20261107/worktree-cleanup",
+  "preservation": {
+    "fullOrdinaryFileRestoreErrors": 0,
+    "extraOrphanEBytes": 1827187,
+    "externalLinks": 0,
+    "bundleRefs": 91,
+    "danglingLinks": 0,
+    "sourceFullRescanChanges": 0,
+    "bundleComplete": true,
+    "logicalBytes": 14756405027,
+    "limitations": [
+      "Git registration restoration via native restore not exercised",
+      "ACL/ADS/original hardlink topology not certified",
+      "Private archives must not be uploaded"
+    ],
+    "sourceIndependentRecovery": {
+      "W06Files": 46,
+      "success": true,
+      "X23Files": 81,
+      "sourceDirectoriesRead": false
+    },
+    "extraOrphanPrivateCommit": "e37e23e6c2e4e4d267a14f4eebe02be846a0791f",
+    "ordinaryFiles": 169021,
+    "gitMetadataFiles": 515,
+    "internalLinks": 4259,
+    "gitMetadataBytes": 62329537,
+    "extraOrphanEFiles": 81,
+    "specialJunction": "Original malformed Content.IE5 metadata preserved; recovery copy normalized internal target only"
+  },
+  "baselineContents": {
+    "openfilmPin": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73",
+    "openfilmVersion": "0.3.0",
+    "nativeAppStudioSharedLockDiff": "zero",
+    "fissionRuntimeIntegrationValidated": false,
+    "fissionVersion": "0.4.0 source snapshot",
+    "fissionPin": "c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9",
+    "gitBlobMismatches": 0,
+    "originalFilesCompared": 70
+  },
+  "currentEBlocker": {
+    "currentChatProcessesReferencePath": true,
+    "operationExecuted": false,
+    "nestedGitStillPresent": true,
+    "noIndirectBypass": true,
+    "attemptedOperation": "Move complete nested Fission research clone to private retention before native archive",
+    "permissionReviewRejectedBeforeExecution": true,
+    "userApproval": "requested asynchronously; pending"
+  },
+  "mainModified": false,
+  "productSourceModified": false,
+  "productTestsRun": false,
+  "branchRefsDeletedThisTurn": 0,
+  "reviews": {
+    "provenanceAndResidualSafety": "/root/archive_close_review",
+    "scope": "preservation, recovery and cleanup safety; not product acceptance",
+    "preservation": "/root/worktree_preservation_review"
+  }
+}

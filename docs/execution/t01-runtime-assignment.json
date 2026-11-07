@@ -1,0 +1,65 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 3,
+  "baseline": "16fbb520d8bc56cf5385237372964c281011506e",
+  "classification": "native-extension/runtime-verification",
+  "scope": "actual Windows native Studio lifecycle + native localhost film origin compatibility; then controlled Electron attempt",
+  "authorAgent": "/root/t01_profile",
+  "coordinator": "/root",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "worktreePath": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+  "writeAllowlist": [
+    "packages/openfilm/studio/client.mjs",
+    "packages/openfilm/studio/client-isolation.test.mjs"
+  ],
+  "resources": {
+    "temp": "worktree .dev/runtime-validation",
+    "coordinatorStudioPair": [
+      18571,
+      18572
+    ],
+    "GPU": "not used",
+    "desktop": "not yet started; coordinator only",
+    "authorStudioPair": [
+      18771,
+      18772
+    ]
+  },
+  "nativeSource": "pages.mjs215-217 original filmOrigin localhost intentionally distinct site from editor127",
+  "test": "RED original real startStudio advertisement fails client running(), GREEN exact native origin with wrong-home/port/remote refusals preserved",
+  "forbidden": [
+    "private data",
+    "model/media/Fission",
+    "remote app requests",
+    "other worktrees/archive",
+    "merge/push/release"
+  ],
+  "modelCalls": 0,
+  "status": "source compatibility fix in progress; actual desktop pending",
+  "followupSlice": {
+    "green": "exact403+stable native error code, no metadata side effect/no stack, original no-profile behavior retained",
+    "scope": "map isolated project-path refusal to existing native ProjectError before HTTP boundary",
+    "ports": [
+      18773,
+      18774
+    ],
+    "status": "assigned",
+    "writeAllowlist": [
+      "packages/openfilm/studio/server/projects.mjs",
+      "packages/openfilm/studio/server/projects-isolation.test.mjs"
+    ],
+    "red": "actual HTTP outside project returns500 and logs stack",
+    "author": "/root/t01_profile",
+    "review": "separate non-author after current client review"
+  },
+  "desktopFailureSlice": {
+    "rootCause": "isolation disabled updates by null but original menu consumes controller; unpackaged startUpdates already supplies inert controller",
+    "status": "assigned",
+    "file": "apps/desktop/src/main.mjs",
+    "red": "real Electron44.9.3 exit1 before Studio, null.packaged at showMenu",
+    "author": "/root/t01_profile",
+    "greenRequired": "same original launcher fresh profile actually reaches Studio and original window, then clean close; root desktop resource only"
+  }
+}

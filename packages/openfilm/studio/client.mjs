@@ -46,7 +46,8 @@ export async function running() {
   if (isolation) {
     if (!run) return null;
     const origin = `http://127.0.0.1:${isolation.ports.studio}`;
-    const filmOrigin = `http://127.0.0.1:${isolation.ports.film}`;
+    // Native pages.mjs intentionally uses another browser site, not only another port.
+    const filmOrigin = `http://localhost:${isolation.ports.film}`;
     if (run.origin !== origin || run.filmOrigin !== filmOrigin || typeof run.key !== 'string' || !run.key) throw new Error('Invalid isolated Studio origin in run.json.');
     const said = await health(origin);
     if (!said) return null;

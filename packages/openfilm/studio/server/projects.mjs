@@ -106,7 +106,10 @@ async function writeState(/** @type {StudioState} */ state) {
 /** Folders that are never a project: the disk's root, the home folder, and Studio's own. */
 function refuse(/** @type {string} */ folder) {
   const profile = readIsolationProfile();
-  if (profile) { assertIsolationPath(profile,folder,'projects'); assertIsolationPath(profile,join(folder,TOOL_DIR),'projects'); }
+  if (profile) {
+    try { assertIsolationPath(profile,folder,'projects'); assertIsolationPath(profile,join(folder,TOOL_DIR),'projects'); }
+    catch { throw new ProjectError('Project path is not available in this isolated instance.', 403, 'isolation-path'); }
+  }
   const home = homedir();
   if (folder === dirname(folder)) throw new ProjectError('the root of a disk cannot be a project; make a folder for it');
   if (folder === home) throw new ProjectError('your home folder cannot be a project; make a folder for it');
@@ -150,7 +153,10 @@ async function folderId(/** @type {string} */ folder, /** @type {StudioState} */
  */
 export async function openProject(path, { create = true } = {}) {
   const profile = readIsolationProfile();
-  if (profile) assertIsolationPath(profile,path,'projects');
+  if (profile) {
+    try { assertIsolationPath(profile,path,'projects'); }
+    catch { throw new ProjectError('Project path is not available in this isolated instance.', 403, 'isolation-path'); }
+  }
   const asked = resolve(path);
   refuse(asked);
   if (existsSync(asked) && !statSync(asked).isDirectory()) throw new ProjectError(`${asked} is a file; a project is a folder`);
@@ -202,7 +208,10 @@ function folderName(/** @type {string} */ name) {
  */
 const describe = (/** @type {Recent} */ r) => {
   const profile = readIsolationProfile();
-  if (profile) { assertIsolationPath(profile,r.path,'projects'); assertIsolationPath(profile,join(r.path,TOOL_DIR),'projects'); }
+  if (profile) {
+    try { assertIsolationPath(profile,r.path,'projects'); assertIsolationPath(profile,join(r.path,TOOL_DIR),'projects'); }
+    catch { throw new ProjectError('Project path is not available in this isolated instance.', 403, 'isolation-path'); }
+  }
   const created = statSync(r.path, { throwIfNoEntry: false });
   const missingReason = projectMissing(r.path);
   const duration = filmDuration(r.path);
@@ -402,7 +411,10 @@ export async function locateProject(id, path) {
     const entry = state.recent.find((r) => r.id === id);
     if (!entry) throw new ProjectError('no such project', 404);
     const profile = readIsolationProfile();
-    if (profile) assertIsolationPath(profile,path,'projects');
+    if (profile) {
+      try { assertIsolationPath(profile,path,'projects'); }
+      catch { throw new ProjectError('Project path is not available in this isolated instance.', 403, 'isolation-path'); }
+    }
     const asked = resolve(path);
     refuse(asked);
     if (!existsSync(asked) || !statSync(asked).isDirectory()) throw new ProjectError('That folder does not exist.', 404, 'not-found');

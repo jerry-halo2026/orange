@@ -1,0 +1,48 @@
+{
+  "taskId": "T01",
+  "scope": "runtime3 reviewed corrections only",
+  "baseline": "16fbb520d8bc56cf5385237372964c281011506e",
+  "reviewer": "/root/t01_profile_review",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "reviews": [
+    {
+      "spec": "pass",
+      "slice": "native client origin",
+      "test": "real startStudio advertised run -> client running health RED/GREEN",
+      "quality": "pass",
+      "cause": "new client contradicted native pages intentional localhost film site"
+    },
+    {
+      "spec": "pass",
+      "slice": "native project path errors",
+      "test": "real HTTP403 isolation-path/no metadata/no stack; originalProjectError reused",
+      "quality": "pass",
+      "cause": "plain isolated guard error mapped to generic500"
+    },
+    {
+      "spec": "pass",
+      "slice": "desktop update-controller lifecycle",
+      "test": "actual Electron RED exit1 -> corrected native controller reaches original Studio; GUI content still unverified",
+      "quality": "pass",
+      "cause": "new isolation-null branch violated original menu/controller contract"
+    }
+  ],
+  "sourceHashes": {
+    "projectsTest": "005579d45326275a61e0f219f6a22f62a04820f4ef6bb8ed5fc41f21aa98770a",
+    "main": "9bc276012a4e7afa846de25d64545b6ae686a082a611e7b6916fe36372918940",
+    "client": "127e91571a05210eebf37e668b89064080ea75710a8c763b1a50a58ae568307f",
+    "clientTest": "281cdbdffb689f6d9f42770899aa125b0541793e46044a805a5645b223b0fab9",
+    "projects": "a0b52cba6c3d8795a034f77b5905bf819cab56a43c8c4d637c511cdd612b00f1"
+  },
+  "notProven": [
+    "rendered desktop first screen",
+    "graceful Electron close/restart",
+    "OS-wide write/network containment",
+    "whole test suite/registry integration",
+    "N5a/CI/pilot"
+  ],
+  "sourceSafeForFurtherValidation": true,
+  "integration": "none"
+}

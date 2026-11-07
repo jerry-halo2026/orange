@@ -1,0 +1,69 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 3,
+  "subject": "16fbb520d8bc56cf5385237372964c281011506e",
+  "previousTurn": "progress",
+  "boundary": "real Windows Node original Studio, synthetic project; not Electron or OS sandbox",
+  "actualRuntimeChecks": [
+    "paired editor127/film localhost listener origins",
+    "own advertised run.json matches pair",
+    "eight real HTTP remote/model requests explicitly refused503",
+    "original project create/read with native string ID/16hex hash",
+    "external project path denied before .film creation",
+    "close removes own advertisement",
+    "restart same fixed port pair"
+  ],
+  "externalFetchObserver": {
+    "attempts": 0,
+    "scope": "global Node fetch observer; not complete OS network proof"
+  },
+  "initialFailure": {
+    "sourceFix": "client native localhost correction reviewed spec/quality PASS",
+    "nativeFact": "pages.mjs intentionally uses localhost for distinct site",
+    "cause": "harness and new isolated client incorrectly expect film127"
+  },
+  "unexpectedRejection": {
+    "case": "outside project path",
+    "state": "native ProjectError403 isolation-path fix reviewed spec/quality PASS; exact realHTTP evidence",
+    "status": "generic500 plus stack trace"
+  },
+  "electron": {
+    "processId": 25328,
+    "version": "44.9.3 from installed locked package",
+    "state": "installer completed exit0; pinned44.9.3 binary version verified",
+    "installerHandle": 42364,
+    "appStarted": true,
+    "firstDesktopAttempt": {
+      "exit": 1,
+      "fix": "original author minimal reuse of inert native update controller",
+      "error": "updates null controller violates native showMenu packaged field contract",
+      "pid": 2100,
+      "stage": "before Studio ready"
+    },
+    "binarySHA256": "61F45E6F522C666C6156222680712870B38F3A4ACBD2E847B987F53DDB613544",
+    "repair": "independently reviewed native controller restoration; actual Electron second attempt reaches real Studio correct port pair",
+    "observedDesktop": {
+      "remainingListeners": 0,
+      "renderedContentProven": false,
+      "jsAsset": 200,
+      "activation": "Windows helper failed after refreshed binding; stopped inputs",
+      "closeMode": "deliberate force termination of own identity-checked five-process tree, NOT graceful close",
+      "httpHtml": 200,
+      "healthyService": true,
+      "staleAdvertisement": "preserved; real start/CLI refused takeover/autostart without overwriting",
+      "remainingProcesses": 0,
+      "nativeWindowReturned": true
+    }
+  },
+  "cloudModelCalls": 0,
+  "complete": false,
+  "finalControllerRegression": {
+    "existingPlatformSkips": 2,
+    "pass": 178,
+    "total": 180,
+    "registry": "explicitly excluded/pending",
+    "fail": 0,
+    "newSecuritySkips": 0,
+    "wholeWorkspaceTypecheck": "pnpm9.15.9 typecheck exit0, all original workspace scripts, current runtime3 source"
+  }
+}

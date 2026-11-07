@@ -471,7 +471,7 @@ async function runStudio(env) {
 
 async function start() {
   /* updates (updates.mjs): Restart waits while an agent's turn runs or Studio exports, either would be lost */
-  updates = isolation ? null : startUpdates({
+  updates = startUpdates({
     dataDir: DATA,
     productName: PRODUCT_NAME,
     getWindow: () => win,

@@ -14,9 +14,11 @@
     "unitSubsetAccepted": true,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission.",
     "unitSubsetScope": "EnginePathPolicyTests43 only, actual hostedWindows; originalwholeengine/media nottested",
-    "purePolicyReadiness": "docs/execution/t05-path-readiness.json"
+    "purePolicyReadiness": "docs/execution/t05-path-readiness.json",
+    "controlledIOSubsetCompiled": true,
+    "controlledIOClassAccepted": false
   },
-  "phase": "Authlocaltransport274bready; IO6048sourcepeer/Rootactual4Csc34/32pass2ENV preserved; CIclosure dual43+34/Node331 policy13approved pendingN5a/localimplementation",
+  "phase": "CIclosure25e44b sourcepeer/root299+331pure/N5a84approved; newactualWindows43+34pending Rootruntime14",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -45,7 +47,7 @@
     "receipt": "2026-11-07-worktree-cleanup.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
-  "publication": "reviewedsource and sanitizeddocs only topiccodex/t05-path-policy at2dbc82d, actualWindows43pass; subsequent4ea/06e metadata-only local; dev41b/main/tag unchanged",
+  "publication": "reviewedsource/sanitizeddocs topicremote2dbc only (actualold43passed); Auth274b/IO6048/CI25e44b and latermetadata remainlocal; dev41b/main/tag unchanged",
   "handoff": "docs/discovery/18_Goal新会话交接包.md",
   "pilotReadiness": "docs/execution/pilot-readiness.json",
   "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
@@ -65,9 +67,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-controlled-io-ci-assignment.json",
+  "currentTaskCard": "docs/execution/t01-controlled-io-ci-runtime-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-controlled-io-ci-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-controlled-io-ci-source-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-fission-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -79,7 +81,9 @@
     "docs/execution/t01-canvas-validation.json",
     "docs/execution/t02-access-validation.json",
     "docs/execution/t01-fission-ci-repair-validation.json",
-    "docs/execution/t02-auth-service-validation.json"
+    "docs/execution/t02-auth-service-validation.json",
+    "docs/execution/t05-controlled-io-validation.json",
+    "docs/execution/t01-controlled-io-ci-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -88,7 +92,7 @@
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
     "t02Head": "274b80850dc08297d2b9c9f3631793c79af375d8",
-    "t05SourceState": "source6048 controlledIO candidate fix1 sourcequalityapproved and Rootactual4Csc/34class32pass2ENV; safeverificationinputonly, trueWindowsnew34/host/media notaccepted",
+    "t05SourceState": "controlledIO6048 peer-approved and Rootcompiled34/32pass2ENV; CI25e44b sourceapproved299+331, actualnewWindows34pending",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
@@ -96,10 +100,10 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
     "latestRuntimeReceiptCommit": "4ea3c669eefdb5f6dc86a31c19d306f71f3e3dfd",
-    "latestSourceAssembly": "3f146597b45c7c67e19ea5635b6c252d1a2a21d3"
+    "latestSourceAssembly": "25e44b9f274a8133df7e8d641ac18152842b3862"
   },
   "currentBlockers": [
-    "T02.a internal policy peer-approved223tests; actual trustedAuth/persistentowner/consumerwiring/N1/T03 still pending",
+    "T02.a policyacc27/Auth274b sourcepeer/root localDI tests passed; actualtrustedAuth/owner/consumerwiring/N1/T03 pending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
     "T05host/media/immutableinput/AudioUses protection and T02.c protocol/realadmission not ready; pure43doesnotreleaseT05.b",
@@ -123,13 +127,10 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "reuseE3withimmutableCI13andactualN5a84 thensingleCIauthor4fileslocalTDD",
-    "realWindowsnew34/filelinks+Providersclosure onlynewRootruntimeaftersource/audit, no old43substitute"
+    "Rootruntime14 source/historyaudit/freshpublictarget/oldjobsterminal/independentpolicyreview/immutableN5a beforeoneactualnewWindows43+34job",
+    "nextidentitynativeintegration design: sameutilityAuth+policy authority, originalparentchannel; no new sourceauthor/card yet; realAuthD12pending"
   ],
-  "parallelTaskCards": [
-    "docs/execution/t02-auth-service-assignment.json",
-    "docs/execution/t05-controlled-io-assignment.json"
-  ],
+  "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
   "activeWriters": [],
   "ciReadiness": {
@@ -163,12 +164,5 @@
     "remoteChecksRequiredByProtection": "notconfigured/verified as mandatory; no settingschanged"
   },
   "localWindowsSymlinkCreation": "stillEPERM onlocal machine; notclaimed fixed. Requiredpurepolicyassertions actuallypassed onhostedWindows.",
-  "reviewQueue": [
-    {
-      "agent": "/root/fission_io_review",
-      "scope": "originalconcatfallback P2fix1 plus newdiffregression and correctedbuildproof",
-      "sourceHead": "a4ff46056013140fb02abf5f546cc65effc687c6",
-      "codeDirty": "4allowedfilesfrozen"
-    }
-  ]
+  "reviewQueue": []
 }

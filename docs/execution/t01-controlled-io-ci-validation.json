@@ -1,0 +1,308 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 13,
+  "sourceCommit": "25e44b9f274a8133df7e8d641ac18152842b3862",
+  "classification": "engineering-verification-source-only",
+  "author": "/root/ci_io_expansion_impl",
+  "sourceReviewer": "/root/ci_io_expansion_review",
+  "requestedModels": {
+    "author": "gpt-6.1-sol/high",
+    "sourceReviewer": "gpt-6-astra/high",
+    "root": "backendnotexposed"
+  },
+  "backendAttested": false,
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "a8b62577dc81f38f8087d81cbb4a68e33898ccaecb1d3e771b265d2c61939d2f",
+      "gitBlobSha256": "a8b62577dc81f38f8087d81cbb4a68e33898ccaecb1d3e771b265d2c61939d2f"
+    },
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "01f98d8dfd8811872607180835421f7c551ef5c3b7ff93b31c188f243d81b26d",
+      "gitBlobSha256": "58cc6048a7db909b56cf4dbd2dff3448225321f3fbd366ba5df45f85638172cc"
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "sha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5",
+      "gitBlobSha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5"
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "sha256": "87760b8503659337ed95489f5915085c80b5753648fbcb196b9649ac003ddecb",
+      "gitBlobSha256": "87760b8503659337ed95489f5915085c80b5753648fbcb196b9649ac003ddecb"
+    }
+  ],
+  "TDD": {
+    "firstRED": {
+      "tests": 281,
+      "passed": 218,
+      "failed": 63
+    },
+    "allAuthorLogDigestsIndependentlyVerified": true,
+    "attemptsRetained": [
+      {
+        "path": ".dev/ci-io-expansion/baseline-218.tap",
+        "sha256": "79c0644fb48af72e031da0c44d4f75f1ccd5b2b62c3c881bc455291e14ccbfe0",
+        "counters": {
+          "tests": 218,
+          "pass": 218,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/green-298.tap",
+        "sha256": "d3c1fb97fda0e24b01ce3c5675c38ba5a7100f4494f1d617ae95815b4989174e",
+        "counters": {
+          "tests": 298,
+          "pass": 298,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/green-299.tap",
+        "sha256": "c713940e2537f93d18515543a3bc87f9c2aae1adf01d4e26edaa3a4da2f74327",
+        "counters": {
+          "tests": 299,
+          "pass": 299,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/green-attempt-1.tap",
+        "sha256": "a0597fafd6855dda45252d25d43423e07db0b174497648917f00cf0c729ac9e5",
+        "counters": {
+          "tests": 287,
+          "pass": 284,
+          "fail": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/green-attempt-2.tap",
+        "sha256": "ae560facd5df0287f6a5c1adda5d40ea7602effa10a65567efeec5999ab59146",
+        "counters": {
+          "tests": 294,
+          "pass": 293,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/phase1-331.tap",
+        "sha256": "b243abc3863a0ac1021e341b76cd5fe95951e403cb2634e6e932aed8a92a5f31",
+        "counters": {
+          "tests": 331,
+          "pass": 331,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/phase1-final-331.tap",
+        "sha256": "18590b7e53991ce0be9f1fc6fc2e1c61e49f60f7f8b62e8e58eb518080172991",
+        "counters": {
+          "tests": 331,
+          "pass": 331,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/red-1.tap",
+        "sha256": "8f978d3a3e421be090f9c8135dff69a1c485570e29630f8ce7995ebfaebe7e97",
+        "counters": {
+          "tests": 281,
+          "pass": 218,
+          "fail": 63,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/red-2.tap",
+        "sha256": "2aa4083a55c9516a00d4ceaa078504d9629eeb5a177777120075897c18e0c0cf",
+        "counters": {
+          "tests": 287,
+          "pass": 218,
+          "fail": 69,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/red-3.tap",
+        "sha256": "cd4fd37cbddde9a377af12a979199810da3d131389ee2f98f6ba7add53aa8ca6",
+        "counters": {
+          "tests": 294,
+          "pass": 284,
+          "fail": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/red-4.tap",
+        "sha256": "28a6e5e6c9b511ef1c5f7ad71ca648800558e0843d49b136a89fed6e6c1ca349",
+        "counters": {
+          "tests": 298,
+          "pass": 297,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "path": ".dev/ci-io-expansion/red-5.tap",
+        "sha256": "2f07b9ac1831a762377abce55b39906d343b8d2cbac0666105667b43cb3f098e",
+        "counters": {
+          "tests": 299,
+          "pass": 298,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      }
+    ],
+    "old218AssertionsRetained": true
+  },
+  "rootIndependent": {
+    "proofSHA256": "1a8d60d2e4a7cc8803ebe5ced8df40837c1b5b80ed4d6e29396c093d6b41fc77",
+    "results": [
+      {
+        "name": "ci299",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--test",
+          "--test-reporter=tap",
+          "scripts/fission-path-ci.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 299,
+          "pass": 299,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "1d643a1433a194656df9a0c7a91be87bfd98a035ae0bff3c1bc1a23112db188e",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "phase331",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--test",
+          "--test-reporter=tap",
+          "scripts/phase1-isolation.test.mjs",
+          "scripts/phase1-admission.test.mjs",
+          "apps/desktop/src/flavor.test.mjs",
+          "packages/openfilm/studio/server/project-access.test.mjs",
+          "apps/desktop/src/auth-service.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 331,
+          "pass": 331,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "1440ffc1c66ea47a94c92d224b077d9d690b562596896fc591e5e25697e810b8",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-source",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--check",
+          "scripts/fission-path-ci.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-tests",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--check",
+          "scripts/fission-path-ci.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "sourceUnchanged": true,
+    "diffCheckExitCode": 0
+  },
+  "N5a": {
+    "cardSHA256": "500600bda42b1f79a58200a1481a8d0ee843f4d2e7f7b61a9da0488eaa410495",
+    "admission84": true,
+    "postWriter84": true,
+    "onSourceCommit84": true
+  },
+  "review": {
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "preservedSource": {
+    "trackedCSProjectPropsShimRawUnchanged": 51,
+    "closureCompiledFiles34": true
+  },
+  "coverage": "Node TRX/context/source/package/commandplan/producersvalidation only; generated TRX fixtures NOT realWindowsresults",
+  "actualWindowsDualSuitePassed": false,
+  "priorWindows43Only": {
+    "id": 42410466762,
+    "head": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
+    "newIOCovered": false
+  },
+  "localNewIO": {
+    "executed": 34,
+    "passed": 32,
+    "failedENV": 2,
+    "overallPassed": false,
+    "sourceCommit": "6048b20fe212ceac88ecf729d465213e2b8d362b"
+  },
+  "sourcePublication": "not yet, remote remains2dbc",
+  "fullTaskAccepted": false,
+  "productModelCalls": 0
+}

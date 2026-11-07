@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "25e44b9f274a8133df7e8d641ac18152842b3862",
+  "authorAgent": "/root/ci_io_expansion_impl",
+  "reviewerAgent": "/root/ci_io_expansion_review",
+  "requestedAuthorModel": "gpt-6.1-sol",
+  "requestedReviewModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "a8b62577dc81f38f8087d81cbb4a68e33898ccaecb1d3e771b265d2c61939d2f",
+      "gitBlobSha256": "a8b62577dc81f38f8087d81cbb4a68e33898ccaecb1d3e771b265d2c61939d2f"
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "sha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5",
+      "gitBlobSha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5"
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "sha256": "87760b8503659337ed95489f5915085c80b5753648fbcb196b9649ac003ddecb",
+      "gitBlobSha256": "87760b8503659337ed95489f5915085c80b5753648fbcb196b9649ac003ddecb"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "sha256": "01f98d8dfd8811872607180835421f7c551ef5c3b7ff93b31c188f243d81b26d",
+      "gitBlobSha256": "58cc6048a7db909b56cf4dbd2dff3448225321f3fbd366ba5df45f85638172cc"
+    }
+  ],
+  "scope": "CI source safe for Root-bounded actual Windows43+34 verification, plus same-head331pure; not actualnew34/media/N1/pilot acceptance",
+  "reviewedBaseline": "a102dad6f1eb8f875cfe33ce1883f5f122acb3af",
+  "cardSHA256": "500600bda42b1f79a58200a1481a8d0ee843f4d2e7f7b61a9da0488eaa410495",
+  "authorReportSHA256": "2da3fb2263c650cc6ba01ca45d8627401e60ab257a02b9e311fcd186a8805482",
+  "rootProofSHA256": "1a8d60d2e4a7cc8803ebe5ced8df40837c1b5b80ed4d6e29396c093d6b41fc77",
+  "pureCases": 299,
+  "phaseCases": 331,
+  "allZeroFailSkipTodoCancel": true,
+  "prior218Retained": true,
+  "actualSourceN5a": {
+    "beforeAndAfterWriter84": true,
+    "onCommittedSource84": true,
+    "proofSHA256": "5497787f41393d4daa3c8019a0a028cbce563baf2cd373594b3dc828732daeec"
+  },
+  "fullTaskAccepted": false
+}

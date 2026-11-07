@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 14,
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "8deededa5f1176cd22d3f85a4623258c9622071773e87557b0f79d8eb909347c",
+  "sourceProofSHA256": "0fd752f90904543c7e91ec0da561e75c5115d42d45a89301e66a6500b68b0e99",
+  "validationSHA256": "fea27cf8e09473bff9bcd1b237110a29e4ff1721fd440149db1d8a3a7c7ea121",
+  "scope": "Root runtime14 and three associated metadata/status readonly review; independent source CI review separatelyrecorded",
+  "requiredRemaining": [
+    "immutablefreeze",
+    "actualtrustedN5a",
+    "allnewhistoryaudit",
+    "immediatepublictargetandpreviousjobs terminal checks",
+    "Rootonejobleasebeforepublication"
+  ],
+  "actualNewWindows77Passed": false,
+  "fullTaskAccepted": false
+}

@@ -223,7 +223,7 @@ test('one public restore and original two filters share new owned artifacts but 
  assert.equal(plan.suites[0].args.includes('--no-build'),false);assert.equal(plan.suites[1].args.includes('--no-build'),true);
 });
 test('command planning keeps context admission mandatory',()=>assert.throws(()=>api.buildControlledIoCommands({...facts(),GITHUB_ACTIONS:'false'}),{message:/^CONTEXT_INVALID$/}));
-test('phase1 runs same-tree native Auth81 and policy92 in addition to existing governance158 without dependency install',async()=>{
+test('phase1 runs same-tree native Auth103 and policy92 in addition to existing governance158 without dependency install',async()=>{
  const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');
  const command=text.split(/\r?\n/).find(line=>line.trim().startsWith('node --test '));assert.ok(command);
  for(const file of ['scripts/phase1-isolation.test.mjs','scripts/phase1-admission.test.mjs','apps/desktop/src/flavor.test.mjs','apps/desktop/src/auth-service.test.mjs','packages/openfilm/studio/server/project-access.test.mjs'])assert.ok(command.split(/\s+/).includes(file),file);
@@ -250,7 +250,7 @@ for(const kind of ['missing','extra','duplicate','other-version','private-feed-t
  const names=[...approvedPackages];if(kind==='missing')names.pop();if(kind==='extra')names.push('Foreign/1.0.0');if(kind==='duplicate')names.push(names[0]);if(kind==='other-version')names[0]='Microsoft.CodeCoverage/17.14.2';if(kind==='private-feed-text')names[0]='https://private.invalid/PRIVATE';assert.throws(()=>packageProof(names),{message:/^CI_SOURCE_MISMATCH$/});
 });
 test('phase1 producer step validates same-current-head original Auth and policy blobs before executing the full pure test command',async()=>{
- const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');assert.match(text,/validateAuthCiProducer/);assert.match(text,/GITHUB_SHA/);assert.ok(text.indexOf('validateAuthCiProducer')<text.indexOf('node --test '));assert.match(text,/expectedCases:331/);assert.match(text,/persist-credentials: false/);
+ const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');assert.match(text,/validateAuthCiProducer/);assert.match(text,/GITHUB_SHA/);assert.ok(text.indexOf('validateAuthCiProducer')<text.indexOf('node --test '));assert.match(text,/expectedCases:353/);assert.match(text,/persist-credentials: false/);
 });
 for(const kind of ['bom-raw','bare-cr','invalid-utf8','generated-extra'])test('source closure preserves byte-level refusal '+kind,async()=>{
  const sample=await closureFixture();
@@ -262,4 +262,18 @@ for(const kind of ['bom-raw','bare-cr','invalid-utf8','generated-extra'])test('s
 });
 test('closed build refuses non-single-link source metadata before any restore',async()=>{
  const sample=await closureFixture();sample.snapshots[0].linkCount=2;assert.throws(()=>closure(sample),{message:/^CI_SOURCE_MISMATCH$/});
+});
+
+// The returned proof binds the current tuple without requiring historical Git objects.
+test('Auth producer pins d008 tuple and retires the prior tuple',async()=>{
+ const proof=authProducer(await authFixture());
+ const pins=Object.fromEntries(proof.map(item=>[item.path,item.gitBlobSha256]));
+ assert.deepEqual(pins,{
+  'apps/desktop/src/auth-service.mjs':'b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66',
+  'apps/desktop/src/auth-service.test.mjs':'032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b',
+  'packages/openfilm/studio/server/project-access.mjs':'345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71',
+  'packages/openfilm/studio/server/project-access.test.mjs':'4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4',
+ });
+ assert.notEqual(pins['apps/desktop/src/auth-service.mjs'],'007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac');
+ assert.notEqual(pins['apps/desktop/src/auth-service.test.mjs'],'fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b');
 });

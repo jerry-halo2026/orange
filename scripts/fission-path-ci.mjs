@@ -195,8 +195,8 @@ const BUILD_PINS=Object.freeze({
  'workers/fission/tools/csc-shim/csc.bat':'5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0',
 });
 const AUTH_PINS=Object.freeze({
- 'apps/desktop/src/auth-service.mjs':'007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac',
- 'apps/desktop/src/auth-service.test.mjs':'fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b',
+ 'apps/desktop/src/auth-service.mjs':'b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66',
+ 'apps/desktop/src/auth-service.test.mjs':'032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b',
  'packages/openfilm/studio/server/project-access.mjs':'345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71',
  'packages/openfilm/studio/server/project-access.test.mjs':'4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4',
 });

@@ -314,9 +314,9 @@ Coordinator single-root-CI writer taskT01rev13 consumes source-reviewed IO6048 a
 
 Classification native-extension, T02.a rev5. Engineering choice under Ethan-approved N0: future actualAuth and access authority share originalStudio utility, not copiedcrossprocessdeadline. First freeze the smallest missing synchronous signal producer, before anydependentcontroller/sourcewriter. Exact API/order/reentrancy/negativefixtures andtwofile write set: execution/t02-auth-invalidation-assignment.json; Auth274b andpolicyacc27 are inputs, not a declaration of N1.
 
-- [ ] Add newbehavioral tests on actualcreateAuthService with optionalown-data hook; genuineRED before sourcechange. Preserveoriginal81 and exact6public methods. Strictbaddeps/getter/hookthrow/abortorder, reentrantdispose/signOut/clock/reentrantlogin, nativePromise rejection andunreadthenable negatives.
-- [ ] Minimal synchronous notification after localgeneration/session/flight/state invalidation and before external cancellation. No recursivehook, no newauthorization fromcallback orlateeffects. Trustedvoid hook only; no generic callbackframework orarbitraryPromise securityclaim.
-- [ ] Allnew+old81/policy92/CPU84pass0skip, syntax/diff0, source/secrecy/test logs report. Non-authorcodeSPEC/QUALITY andRootfreshverify/N5a beforelocalcommit/producerfreeze.
+- [x] Add newbehavioral tests on actualcreateAuthService with optionalown-data hook; genuineRED before sourcechange. Preserveoriginal81 and exact6public methods. Strictbaddeps/getter/hookthrow/abortorder, reentrantdispose/signOut/clock/reentrantlogin, nativePromise rejection andunreadthenable negatives.
+- [x] Minimal synchronous notification after localgeneration/session/flight/state invalidation and before external cancellation. No recursivehook, no newauthorization fromcallback orlateeffects. Trustedvoid hook only; no generic callbackframework orarbitraryPromise securityclaim.
+- [x] Allnew+old81/policy92/CPU84pass0skip, syntax/diff0, source/secrecy/test logs report. Non-authorcodeSPEC/QUALITY andRootfreshverify/N5a beforelocalcommit/producerfreeze.
 - [ ] Laterconsumer mustimport actualfrozenproducer in originalutility/serverauthority; no standalonehelper declaredwholeAuth. Root CI singleton updates fixedproducer pins/counts onlyafternewsourcefreeze/review underseparatecard; authorscannoteditCI. ActualAuth/ownerpersistence/HTTPWS/pages/CLI/UI/保全/N1/T03 stillpending, fullpilot unchanged.
 
 ## 2026-11-08 original MaterialPool regression
@@ -330,3 +330,5 @@ Classification native-reuse, T05.a rev3 Rootverificationonly; this discharges ex
 Auth producer门禁建模纠正（2026-11-08）：rev5已完成103Auth+92policy+84CPU与非作者源码审查，但Root错误把本次允许修改的Auth源码/测试列入必须保持旧raw字节的admission.dependencies，故写后外置N5a正确拒绝DEPENDENCY_HASH。修订rev6仅将274b列作editable native baseline（Git源码pin/旧81前缀/实际diff/独审/Root279为证），保留不可变Git原件；实际消费且不修改的acc27策略及CPU仍在原immutabledependency验证。作者已冻结，不再改源；新卡独审、不可变提交及实际N5a通过后才可提交候选。检查器、写集、测试、权限和高风险语义均不放宽，旧拒绝保留。
 
 原MaterialPool独立回归回执：4152242记录实际6/6、0skip，Root新隔离offlineSDK10.0.300/4项目4Csc/X64；非作者material_pool_actual_review规格/质量批准，写后及精确回执提交N5a84通过。仅该先前未选测项关闭，不将内存20worker单测冒充媒体负载。
+
+Auth producer冻结回执：d008，源b4ddbc/test032130，原81字节前缀不变；新103Auth/92policy/84CPU在最新组合Root279通过、源码独审批准。nativebaseline rev6不可变d6b4e61、目标更新前后/门禁前后新哈希独立验证、实际N5a84及精确源提交再次84。仅生产者局部完成；最后消费者/CI步骤未勾，不把旧331当新353。

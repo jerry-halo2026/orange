@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-08",
+  "sourceApprovalCommit": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+  "managedTreesReused": true,
+  "independentPolicyReview": "docs/execution/t02-auth-hook-pool-policy-review.json",
+  "entries": [
+    {
+      "taskId": "T02.a",
+      "revision": 5,
+      "agent": "/root/auth_invalidation_impl",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "card": "docs/execution/t02-auth-invalidation-assignment.json",
+      "evidence": ".dev/native-identity-next/auth-admission.json",
+      "state": "two-filelocalNodeTDD active",
+      "approvalCommit": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+      "cardSHA256": "350e4080529e311921d5704758196cc2371ac01b73adf1932b78296a55578412",
+      "admissionSHA256": "c1b6c1f6855a670902017e818fb27a031c85dd88512d00e21026f38b929e262d",
+      "N5aCases": 84,
+      "backendAttested": false
+    },
+    {
+      "taskId": "T05.a",
+      "revision": 3,
+      "agent": "/root",
+      "requestedModel": "root backendnotexposed",
+      "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "card": "docs/execution/t05-material-pool-assignment.json",
+      "evidence": ".dev/native-identity-next/pool-admission.json",
+      "state": "boundedoriginalMaterialPoolTests6 actualrun started",
+      "execSessionId": 20499,
+      "approvalCommit": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+      "cardSHA256": "564125293cbdeda026a161f38c1baffb20447bcee1c95672193f2c0376cc5d6c",
+      "admissionSHA256": "1e9aa7bee718272c431e68fcdac1012e0ae4f05e4550d96ab1c8a832546f5716",
+      "N5aCases": 84,
+      "backendAttested": false
+    }
+  ],
+  "sourceReviewPending": true,
+  "actualPoolPassPending": true,
+  "productModelCalls": 0,
+  "fullTaskAccepted": false,
+  "recordKind": "dispatch-time evidence, NOT currentlivewriterstate; currentstatus andsubjectreceipts authoritative",
+  "currentOutcomes": {
+    "Auth": "d008sourcepeer/Root279/handoff6N5a84 accepted produceronly; CI353notyetverified",
+    "Pool": "4152242 real6passed/source+runtimeevidencepeer andN5a84 accepted"
+  }
+}

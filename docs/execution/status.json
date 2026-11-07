@@ -17,9 +17,20 @@
     "purePolicyReadiness": "docs/execution/t05-path-readiness.json",
     "controlledIOSubsetCompiled": true,
     "controlledIOClassAccepted": true,
-    "controlledIOReadiness": "docs/execution/t05-controlled-io-readiness.json"
+    "controlledIOReadiness": "docs/execution/t05-controlled-io-readiness.json",
+    "originalMaterialPoolRegression": {
+      "sourceCandidate": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+      "receiptCommit": "4152242a0037e2382a9c0b74a5506437e7a3dbd5",
+      "executed": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "scope": "originalsyntheticin-memoryunit only notmedia20capacity",
+      "review": "approved0P1/P2"
+    }
   },
-  "phase": "controlledIO6048 consumer-ready Fakecodec-only after actualsamehead Windows43+34/sourcepeer/evidencepeer; next originalidentitynativewiring design, not wholepilot",
+  "phase": "Authsyncretirementd008 localproducerready afterRoot279/sourcepeer/handoff6N5a+separatehashes; originalMaterialPool6accepted; nextCIpins353 andoriginalStudio actualconsumers",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -68,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-controlled-io-ci-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t02-auth-invalidation-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t05-controlled-io-readiness.json",
+  "currentSliceReview": "docs/execution/t02-auth-invalidation-readiness.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-controlled-io-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -86,7 +97,10 @@
     "docs/execution/t05-controlled-io-validation.json",
     "docs/execution/t01-controlled-io-ci-validation.json",
     "docs/execution/t01-controlled-io-ci-runtime-validation.json",
-    "docs/execution/t05-controlled-io-readiness.json"
+    "docs/execution/t05-controlled-io-readiness.json",
+    "docs/execution/t05-material-pool-validation.json",
+    "docs/execution/t02-auth-invalidation-validation.json",
+    "docs/execution/t02-auth-invalidation-readiness.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -94,7 +108,7 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
-    "t02Head": "274b80850dc08297d2b9c9f3631793c79af375d8",
+    "t02Head": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
     "t05SourceState": "source6048 independentlyreviewed, actualhostedWindows34/34 including2truefilelinks+2fallback; controlled-fileIO-ready only, host/media/T05.b notaccepted",
     "devIntegration": false,
     "remotePushThisGoal": true,
@@ -103,10 +117,10 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
     "latestRuntimeReceiptCommit": "74f56fc54b1f834b586955ef13b699e29518645f",
-    "latestSourceAssembly": "25e44b9f274a8133df7e8d641ac18152842b3862"
+    "latestSourceAssembly": "d008e9685931ab4e7229f8678fdb2b11768f8daa"
   },
   "currentBlockers": [
-    "T02.a policyacc27/Auth274b sourcepeer/root localDI tests passed; actualtrustedAuth/owner/consumerwiring/N1/T03 pending",
+    "T02.a Authd008syncinvalidation/policyacc27 sourcepeer+Root279 readyonlylocalDI; actualtrustedAuth/ownerstore/nativeHTTPWS/pages/CLI/UI/N1stillpending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
     "T05host/media/immutablefullinputclosure/T02.c protocol/realadmission remainpending; controlledcopy/archive source6048 readyonlyunderoriginalRunAsync Fakecodec; no T05.b release",
@@ -119,7 +133,7 @@
     "implementationStarted": true,
     "developmentAuthEnvironmentUse": "not yet confirmed",
     "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state",
-    "implementationBoundary": "internalpolicyacc27 and Authservice274b localinjectedtransport only; realAuth/ownerstore/IPC/UI/N1stillpending"
+    "implementationBoundary": "Authd008103/policyacc27 localDI ready inclsynchronousinvalidationbeforecancel; realAuth/originalutility/ownerstore/UI/accessenforcement/N1pending"
   },
   "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json",
   "canvasIsolationP1": {
@@ -129,12 +143,12 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "freeze originalutility same-processAuth+policy authority/startStudio factory/control lifecycle contract, Authsyncinvalidationhook TDD andoriginalparentchannel, no crossprocessdeadline/token/evidence",
-    "freeze originalprojects ownership commit+unknownhistoryreadonly quarantine andHTTP/WS/pages cachedpreview enforcement; parallelonlyafterconsumercontractfreeze/N5a/writeleases",
-    "realAuth D12purpose/existingtestidentity stillpending, onlyrealcloud trackpaused; otherlocalready taskscontinue"
+    "CI solewriter3files updatefixedAuthd008 hashes/count353 withgenuineRED/non-author/root; old331historicalnotnewpass",
+    "originalnativecontrolleddomain guard/read-onlydefaultdeny first actualstartStudio consumer, then ownertransactions andincrementalrealaccess; originalCLI look/render bypass mustguard before sideeffects",
+    "realAuth D12purpose/identity stillunanswered onlycloudtrackblocked; no paidmodelcalls"
   ],
   "parallelTaskCards": [],
-  "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
+  "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
   "ciReadiness": {
     "firstActualRun": {
@@ -210,10 +224,11 @@
         "todo": 0
       },
       "jobLogSHA256": "cc63934e30b1b71698ea670a354babde5c21748b3aca61365618c4c398bbc77b"
-    }
+    },
+    "pendingAuthProducer": "Authd008 has103 tests; existingphase1 pinsstill274b/81+old331, new353 notCIverified, no publication ofnewAuthyet"
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t05-controlled-io-ledger-review.json",
-  "nextOperation": "prepare originalutilityAuth+policy/nativeprojectownership contracts and boundedcards; no writer beforepeerfreeze/N5a; fullgoalactive"
+  "currentMetadataReview": "docs/execution/t02-auth-invalidation-ledger-review.json",
+  "nextOperation": "RootseparateCI sourcepin/count update353afterproducerfreeze; then freeze originalstartStudio/projects/pages/CLI actualcontrolledconsumer7filecard underreview/N5a"
 }

@@ -55,7 +55,8 @@
       "externalGates": [],
       "deliverySlice": "purepolicy43ready and originalRunAsync controlledIO34ready at6048 after actualWindowsCI42419906355; Fakecodec+BCL only, notfullruntime/host/media/T05.b",
       "readinessEvidence": "docs/execution/t05-path-readiness.json",
-      "controlledIOReadinessEvidence": "docs/execution/t05-controlled-io-readiness.json"
+      "controlledIOReadinessEvidence": "docs/execution/t05-controlled-io-readiness.json",
+      "originalMaterialPoolRegression": "docs/execution/t05-material-pool-validation.json (actual6/6localSDK10.0.300, source unchanged)"
     },
     {
       "id": "T05.b",
@@ -135,9 +136,9 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "native/Accesspolicy+Authservice274b localtransport ready; peer/root257pass/latestnativecompatpassed; realAuth/ownerstore/IPC/UI/N1pending",
+      "deliverySlice": "Authd008 syncinvalidation103+policy92+CPU84 Root279 localDI/sourcepeer/84handoffready; originalnativeAuth/owner/HTTPWS/pages/CLI/UI/N1pending, CI353staleuntilRootupdate",
       "consumerDependency": "T01 cpu-isolation exact subset only",
-      "readinessEvidence": "docs/execution/t02-auth-service-validation.json (localinjectedonly)"
+      "readinessEvidence": "docs/execution/t02-auth-invalidation-readiness.json"
     },
     {
       "id": "T02.b",

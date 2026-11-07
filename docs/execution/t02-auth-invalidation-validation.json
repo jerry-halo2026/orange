@@ -1,0 +1,375 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "sourceCommit": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+  "authorAgent": "/root/auth_invalidation_impl",
+  "reviewerAgent": "/root/auth_invalidation_review",
+  "source": [
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    }
+  ],
+  "TDD": [
+    {
+      "stage": "baseline",
+      "tests": 81,
+      "pass": 81,
+      "fail": 0
+    },
+    {
+      "stage": "new optional hook missing configuration RED",
+      "tests": 96,
+      "pass": 81,
+      "fail": 15,
+      "cause": "Existing exact-three-field deps rejects valid optional onInvalidated."
+    },
+    {
+      "stage": "after minimal config support behavioral RED",
+      "tests": 96,
+      "pass": 85,
+      "fail": 11,
+      "cause": "Hook absent; actual policy old handle stays allowed:true from actual /user 401/403 abort/body cancellation callbacks, plus missing sync notification and nested terminal updates."
+    },
+    {
+      "stage": "minimal producer GREEN",
+      "tests": 96,
+      "pass": 96,
+      "fail": 0
+    },
+    {
+      "stage": "supplementary edge coverage GREEN",
+      "tests": 103,
+      "pass": 103,
+      "fail": 0,
+      "note": "Seven supplementary tests and stronger assertions added after first GREEN, without subsequent semantic source changes. They are coverage extension, not a separate claimed preimplementation RED."
+    },
+    {
+      "stage": "final exact-card combined suite",
+      "tests": 279,
+      "pass": 279,
+      "fail": 0,
+      "breakdown": {
+        "authOriginal": 81,
+        "authAdded": 22,
+        "policy": 92,
+        "cpu": 84
+      },
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  ],
+  "preservation": {
+    "original81TestsUnchangedPrefix": true,
+    "originalSixMethodsCoveredByExistingTest": true,
+    "scalarEvidenceShapeUnchanged": true,
+    "newDependenciesOrPackageExports": false,
+    "gitStatus": "M apps/desktop/src/auth-service.mjs\n M apps/desktop/src/auth-service.test.mjs",
+    "changedFiles": [
+      "apps/desktop/src/auth-service.mjs",
+      "apps/desktop/src/auth-service.test.mjs"
+    ],
+    "gitWritesPerformed": false
+  },
+  "authorLogs": [
+    {
+      "path": ".dev\\auth-invalidation\\baseline.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 0,
+      "sha256": "d2f453010313278630b178c04bcc8eb9fb5971d469ff453a1902ab3bca6d04c4",
+      "counters": {
+        "tests": 81,
+        "suites": 0,
+        "pass": 81,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\red-config.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 1,
+      "sha256": "349437ace7470b4cb3af1b34a13e217367b6e2fa35f4778ed23bfa05f345bb2e",
+      "counters": {
+        "tests": 96,
+        "suites": 0,
+        "pass": 81,
+        "fail": 15,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\red-behavior.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 1,
+      "sha256": "73e3a05db5f0cc71bbccf03469c28a63c3e20e1f44faddb9f9770e6a74ce6bcb",
+      "counters": {
+        "tests": 96,
+        "suites": 0,
+        "pass": 85,
+        "fail": 11,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\green-attempt1.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 0,
+      "sha256": "10d328ab3a20ceeb0bb4db4b654fa4350631ca0b9a7331648810f634c850b3f4",
+      "counters": {
+        "tests": 96,
+        "suites": 0,
+        "pass": 96,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\green-extended.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 0,
+      "sha256": "a31b69a1da0b57e530001c00ae200716c1a9c89655c78677fd0ee068164d4256",
+      "counters": {
+        "tests": 103,
+        "suites": 0,
+        "pass": 103,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\final-combined.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs packages/openfilm/studio/server/project-access.test.mjs scripts/phase1-isolation.test.mjs apps/desktop/src/flavor.test.mjs",
+      "exitCode": 0,
+      "sha256": "14933584d9c1d6d2fc107cb50aa0d3a5299f05f21e9b14ecfc67657e31ce02be",
+      "counters": {
+        "tests": 279,
+        "suites": 0,
+        "pass": 279,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\final-auth.log",
+      "command": "node --test --test-reporter=tap apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 0,
+      "sha256": "8c923b631cd1ce40a8557a75b825d41919959ed0aeb1ed35e6e555355a05cb81",
+      "counters": {
+        "tests": 103,
+        "suites": 0,
+        "pass": 103,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\final-policy.log",
+      "command": "node --test --test-reporter=tap packages/openfilm/studio/server/project-access.test.mjs",
+      "exitCode": 0,
+      "sha256": "6ca24a9fd06a445e66b25ae5864c039501d80011a5a357fec5952ae4b09b4f95",
+      "counters": {
+        "tests": 92,
+        "suites": 0,
+        "pass": 92,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\final-cpu.log",
+      "command": "node --test --test-reporter=tap scripts/phase1-isolation.test.mjs apps/desktop/src/flavor.test.mjs",
+      "exitCode": 0,
+      "sha256": "ebe78b3534fa17d95b3804e9a4647cdc0f3ae6313615605eb9aa7c4a4c4b78de",
+      "counters": {
+        "tests": 84,
+        "suites": 0,
+        "pass": 84,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    {
+      "path": ".dev\\auth-invalidation\\syntax-source.log",
+      "command": "node --check apps/desktop/src/auth-service.mjs",
+      "exitCode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    },
+    {
+      "path": ".dev\\auth-invalidation\\syntax-test.log",
+      "command": "node --check apps/desktop/src/auth-service.test.mjs",
+      "exitCode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    },
+    {
+      "path": ".dev\\auth-invalidation\\diff-check.log",
+      "command": "git diff --check",
+      "exitCode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {}
+    }
+  ],
+  "rootIndependent": {
+    "date": "2026-11-07T23:02:09.216Z",
+    "head": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+    "source": {
+      "apps/desktop/src/auth-service.mjs": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "apps/desktop/src/auth-service.test.mjs": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    },
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "native-auth279",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "apps/desktop/src/auth-service.test.mjs",
+          "packages/openfilm/studio/server/project-access.test.mjs",
+          "scripts/phase1-isolation.test.mjs",
+          "apps/desktop/src/flavor.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 279,
+          "pass": 279,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "0bf31e58bced54de6f4d38569fb7c8cb9b56ce0baf53bc636bcaa8e1d354c058",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "source-syntax",
+        "args": [
+          "--check",
+          "apps/desktop/src/auth-service.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "test-syntax",
+        "args": [
+          "--check",
+          "apps/desktop/src/auth-service.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "diffCheckExitCode": 0,
+    "reportSHA256": "c42206bc172ec664445bcd71cf842c31c64aeef46cf6c151291f845d16de5b2b",
+    "noRealFetchConfigNetworkUIorCIEntry": true,
+    "notN1": true
+  },
+  "nativeBaselineVerification": {
+    "date": "2026-11-07T22:58:18.362Z",
+    "kind": "separateimmutableGitbaselineverification for editable nativeextension, not unchanged-worktreeinput",
+    "base": "274b80850dc08297d2b9c9f3631793c79af375d8",
+    "records": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "originalGitBlobSHA256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+        "currentRawSHA256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+        "old81ExactPrefixPreserved": null
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "originalGitBlobSHA256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+        "currentRawSHA256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+        "old81ExactPrefixPreserved": true
+      }
+    ],
+    "authorLogsIndependentlyVerified": 12,
+    "allLogDigestsMatch": true,
+    "noSecretValueEmitted": true,
+    "proofSHA256": "b60a38dae9e063f61581401ddc096179dc904f38c7964bb26cd49bcc3a82beb1"
+  },
+  "review": {
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "method": "readonlyfullU10diff/allsource/actualpolicy/12logdigests/behaviorREDthenGREEN"
+  },
+  "gate": {
+    "rev5Postwrite": "DENIED DEPENDENCY_HASH correctly becauseRootmisclassifiededitableAuthbaseline asunchangedinput; preservednotpass",
+    "rev6Approval": "d6b4e615184c2bffbb6a6c7cb38ac799dff5f0c2",
+    "rev6CardSHA256": "84b360ff17c896d74a73000e9544842e08c8818fbdbde3fa5b13ed34182731bd",
+    "rev6ActualN5a": 84,
+    "onExactSourceCommitN5a": 84,
+    "N5aDoesNotValidateNativeExtensionBaselineField": true,
+    "separateNewCandidateHashChecks": true,
+    "separateSourcePeerAndRoot279": true
+  },
+  "handOffPolicy": "docs/execution/t02-auth-native-baseline-handoff-review.json",
+  "priorDenialSHA256": "464121d8b4d8b89f94b904ded2eb4524e89b6e7463e1def3cbb3f269de304e64",
+  "onSourceCommitN5aSHA256": "503c2f2702c423e58fc7e2bf60c8f07312e92c8d0525a43543c9fd1f8e94b723",
+  "formalMinimumProducer": "docs/execution/t02-auth-invalidation-readiness.json",
+  "CI": {
+    "currentPublishedHead": "1a28c5b2ab589c0665c6453be11b8f7bef2a3c3a",
+    "oldAuthPins": "274b/81 Auth/331 combined historicalonly",
+    "newAuthCIValidated": false,
+    "newExpectedCombinedCases": 353,
+    "requiresSeparateRootSingleWriterPinUpdate": true
+  },
+  "unexecutedAndUnproven": [
+    "dev integration andlatestfullproductcandidate acceptance notdone",
+    "separateRootCIproducerpins/countd008/353 update andactualCIrun pending, old274b/331historicalonly",
+    "originalstartStudio/parent/main/ownerstore/HTTPWS/pages/CLI/UI consumers andsafe-preservation/recovery/N1/T03 pending",
+    "realAuth developmentenvironment purpose/existingtestidentity unconfirmed; no privateconfig/account/network validation",
+    "fullWindowsclientmedia/install/recovery/load/PG andMacarm64 tests notaccepted"
+  ],
+  "fullTaskAccepted": false,
+  "productModelCalls": 0,
+  "authorDeliveryHistoricalUnproven": {
+    "stateAtAuthorHandoff": "before sourcepeer/Rootverification/localcommit; historical NOTcurrentpending",
+    "items": [
+      "Non-author SPEC/QUALITY source review, Root fresh N5a, local commit/integration, and updated CI pins remain pending.",
+      "No actual fetch/network/environment/private config/account/SDK/model/media/server/Electron/.NET or CI entry executed.",
+      "No future Auth controller, UI retirement, owner persistence, HTTP/WS/pages/CLI enforcement, N1 or whole-pilot acceptance claimed.",
+      "Current CI fixed old producer pins/counts become stale; author did not modify CI or infer acceptance from them.",
+      "Trusted void hook only. No promise of arbitrary malicious Promise-subclass constructor/species zero callback. Existing string-memory erasure limitations remain.",
+      "Exact-card CPU suite uses its existing ephemeral .dev/t01-profile-* synthetic directories and self-cleanup; author-created logs/scripts remain confined to .dev/auth-invalidation. No fixture source edits."
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-08",
+  "reviewerAgent": "/root/auth_hook_pool_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "sourceBase": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+  "files": [
+    {
+      "path": "docs/discovery/07_统一数据契约草案.md",
+      "sha256": "a3e7b545b8bf6b6bb8857c3163248c1f4a39223dcae123b10950db697687d28b"
+    },
+    {
+      "path": "docs/execution/status.json",
+      "sha256": "30cab6c2a8bbc7298b0661a508ac573afb17e91735293a90d5d7c43825227c93"
+    },
+    {
+      "path": "docs/execution/project-tasks.json",
+      "sha256": "8c804b7b1d5985bac26e15b8f92257f50d01e823a4c9afded691230e2a54503e"
+    },
+    {
+      "path": "docs/execution/validation-summary.json",
+      "sha256": "fd61db04fa9ac2d35a67eed02e11050bbd7771c38bd1abd01e53a7505cb6913b"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+      "sha256": "9eddea58bc689d1d548037f43f3df274180bd976f70f96d4cc6340d316b183df"
+    },
+    {
+      "path": "docs/execution/t02-auth-hook-pool-admission.json",
+      "sha256": "dd86ea11ee2881af1a36913cff505b8e3e5cbac85a3dec59515de312c74b51e9"
+    },
+    {
+      "path": "docs/execution/t02-auth-invalidation-readiness.json",
+      "sha256": "736f156031d2b5c138653eb5c9accd3eb9ba81ba888475b14c9ce786ce408f46"
+    },
+    {
+      "path": "docs/execution/t02-auth-invalidation-validation.json",
+      "sha256": "e1bea25c2f48ab44170e8ccf66b620b13a48ba81394ca28e6c91e569d2f596f0"
+    }
+  ],
+  "scope": "current8doc accuracy andminimumAuthproducerfreeze, notnewsource/fullcandidateacceptance",
+  "fix1": "authorhandoff oldpending preservedasexplicit historical state, currentunexecutedlist correctedtoonly dev/CI353/nativeconsumers/realAuth/PG; statusnowcurrentreview",
+  "N5aBoundary": "nativeExtensionBaseline notautomaticallychecked; immutableinputs/writeleases byunchangedN5a, actualnewsource by independentGitprefix/hash/diff/peer/Root279",
+  "notApproved": [
+    "devintegration",
+    "new353CIgreen",
+    "nativefirstpartyAuth/owner/UI/N1/T03alreadyenforced",
+    "fullT05/pilot/Mac"
+  ],
+  "actualReadOnlyReview": true,
+  "fullTaskAccepted": false
+}

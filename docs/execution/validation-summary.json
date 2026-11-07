@@ -54,7 +54,9 @@
       "docs/execution/t05-controlled-io-validation.json",
       "docs/execution/t01-controlled-io-ci-validation.json",
       "docs/execution/t01-controlled-io-ci-runtime-validation.json",
-      "docs/execution/t05-controlled-io-readiness.json"
+      "docs/execution/t05-controlled-io-readiness.json",
+      "docs/execution/t02-auth-invalidation-validation.json",
+      "docs/execution/t05-material-pool-validation.json"
     ],
     "t02": {
       "cases": 6,
@@ -144,5 +146,16 @@
     },
     "sourceAndEvidenceIndependentReviews": "approved0P1/P2",
     "fullProductAccepted": false
+  },
+  "currentNativeAuthInvalidation": {
+    "sourceCommit": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+    "receipt": "docs/execution/t02-auth-invalidation-validation.json",
+    "readiness": "docs/execution/t02-auth-invalidation-readiness.json",
+    "Root279pass0skip": true,
+    "newAuthCases": 103,
+    "spec": "approved",
+    "quality": "approved",
+    "actualCI353": false,
+    "actualNativeConsumersAndN1": false
   }
 }

@@ -134,9 +134,9 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "native characterization+internalpolicyready; Authservice rev4 localDI design approved, no implementation/realAuth/persistentowner/wiring/N1",
+      "deliverySlice": "native/Accesspolicy+Authservice274b localtransport ready; peer/root257pass/latestnativecompatpassed; realAuth/ownerstore/IPC/UI/N1pending",
       "consumerDependency": "T01 cpu-isolation exact subset only",
-      "readinessEvidence": "docs/execution/t02-access-validation.json (pure-policy-ready only, no T03 release)"
+      "readinessEvidence": "docs/execution/t02-auth-service-validation.json (localinjectedonly)"
     },
     {
       "id": "T02.b",

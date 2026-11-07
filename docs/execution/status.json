@@ -16,7 +16,7 @@
     "unitSubsetScope": "EnginePathPolicyTests43 only, actual hostedWindows; originalwholeengine/media nottested",
     "purePolicyReadiness": "docs/execution/t05-path-readiness.json"
   },
-  "phase": "T02.a Authservice rev4 and T05.a controlledIO rev2 actualper-treeN5a84admitted; two originalsourcewriters TDD active, no realAuth/host/media",
+  "phase": "Authservice274b local257pass/peer/latest3f146combo and nativecompatpassed; FissionIOfix1 frozen34/32pass2ENV awaiting scopedpeer+root, no fullhost/media",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -67,7 +67,7 @@
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
   "currentTaskCard": "docs/execution/t02-auth-service-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t02-auth-and-fission-io-policy-review.json",
+  "currentSliceReview": "docs/execution/t02-auth-service-validation.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-fission-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -78,7 +78,8 @@
     "docs/execution/t05-path-validation.json",
     "docs/execution/t01-canvas-validation.json",
     "docs/execution/t02-access-validation.json",
-    "docs/execution/t01-fission-ci-repair-validation.json"
+    "docs/execution/t01-fission-ci-repair-validation.json",
+    "docs/execution/t02-auth-service-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -86,8 +87,8 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
-    "t02Head": "acc27c4d119fd150331b788b84067858b48be9f4",
-    "t05SourceState": "purepathproducer4d322 actualWindows43passed/consumer-ready; controlledIO notyetimplemented",
+    "t02Head": "274b80850dc08297d2b9c9f3631793c79af375d8",
+    "t05SourceState": "controlledIO implemented four-file candidate; fix1 concatfallback and ownedSDKhost-policy correction frozen under scopedreview; fullnew34realWindows/file-symlink acceptance pending",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
@@ -95,14 +96,15 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "2dbc82d6cd0a3aef3de2fa2f08b793cae93ecca6",
     "latestRuntimeReceiptCommit": "4ea3c669eefdb5f6dc86a31c19d306f71f3e3dfd",
-    "latestSourceAssembly": "5efdf773385ece34febb0250300559078e753587"
+    "latestSourceAssembly": "3f146597b45c7c67e19ea5635b6c252d1a2a21d3"
   },
   "currentBlockers": [
     "T02.a internal policy peer-approved223tests; actual trustedAuth/persistentowner/consumerwiring/N1/T03 still pending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
     "T05host/media/immutableinput/AudioUses protection and T02.c protocol/realadmission not ready; pure43doesnotreleaseT05.b",
-    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted"
+    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted",
+    "newFissionIOclass sourceP2concatfallback fix/review and realWindowsnewclass/file-symlinks gate outstanding; old43notnewcoverage"
   ],
   "identityBoundary": {
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
@@ -111,7 +113,7 @@
     "implementationStarted": true,
     "developmentAuthEnvironmentUse": "not yet confirmed",
     "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state",
-    "implementationBoundary": "pure-policy-ready only atacc27; trustedAuth/persistentowner/UI/enforcement/N1 still pending"
+    "implementationBoundary": "internalpolicyacc27 and Authservice274b localinjectedtransport only; realAuth/ownerstore/IPC/UI/N1stillpending"
   },
   "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json",
   "canvasIsolationP1": {
@@ -129,34 +131,7 @@
     "docs/execution/t05-controlled-io-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
-  "activeWriters": [
-    {
-      "agent": "/root/auth_service_impl",
-      "taskId": "T02.a",
-      "assignmentRevision": 4,
-      "requestedModel": "gpt-6.1-sol",
-      "requestedEffort": "high",
-      "backendAttested": false,
-      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
-      "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
-      "cardSHA256": "d342d9546e9f2a99a7e89e70b9c4849b8061468cf1e677be9cfe8aece16564b0",
-      "N5a": 84,
-      "sourceScope": "2desktopAuthfiles, injectedtransportonly"
-    },
-    {
-      "agent": "/root/fission_io_impl",
-      "taskId": "T05.a",
-      "assignmentRevision": 2,
-      "requestedModel": "gpt-6.1-sol",
-      "requestedEffort": "high",
-      "backendAttested": false,
-      "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
-      "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
-      "cardSHA256": "37bda3a47e3d30faa4d58edfa118de3879a9b0fe907b3cad2d5704a295df53f5",
-      "N5a": 84,
-      "sourceScope": "4Core/Providers/Unitfiles, syntheticfileIO/Fakecodeconly"
-    }
-  ],
+  "activeWriters": [],
   "ciReadiness": {
     "firstActualRun": {
       "id": 42406704504,
@@ -187,5 +162,13 @@
     "runtimeHostMediaAccepted": false,
     "remoteChecksRequiredByProtection": "notconfigured/verified as mandatory; no settingschanged"
   },
-  "localWindowsSymlinkCreation": "stillEPERM onlocal machine; notclaimed fixed. Requiredpurepolicyassertions actuallypassed onhostedWindows."
+  "localWindowsSymlinkCreation": "stillEPERM onlocal machine; notclaimed fixed. Requiredpurepolicyassertions actuallypassed onhostedWindows.",
+  "reviewQueue": [
+    {
+      "agent": "/root/fission_io_review",
+      "scope": "originalconcatfallback P2fix1 plus newdiffregression and correctedbuildproof",
+      "sourceHead": "a4ff46056013140fb02abf5f546cc65effc687c6",
+      "codeDirty": "4allowedfilesfrozen"
+    }
+  ]
 }

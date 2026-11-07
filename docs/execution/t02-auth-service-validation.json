@@ -1,0 +1,253 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 4,
+  "classification": "native-extension/internal-desktop injectedAuth transport",
+  "sourceCommit": "274b80850dc08297d2b9c9f3631793c79af375d8",
+  "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+  "approvalCardGitBlobSHA256": "d342d9546e9f2a99a7e89e70b9c4849b8061468cf1e677be9cfe8aece16564b0",
+  "author": {
+    "agent": "/root/auth_service_impl",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false
+  },
+  "review": {
+    "reviewerAgent": "/root/auth_service_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "method": "read bothfullnewsourcefiles, verifiedsource/card/report hashes and selectivelyinspectedactualretainedTDDlogs, no testduplicate"
+  },
+  "source": [
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+      "canonicalSha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+      "canonicalization": "UTF-8 without BOM; CRLF normalized to LF; no other rewriting",
+      "bytes": 17195,
+      "gitBlobSHA256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+      "canonicalSha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+      "canonicalization": "UTF-8 without BOM; CRLF normalized to LF; no other rewriting",
+      "bytes": 29233,
+      "gitBlobSHA256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b"
+    }
+  ],
+  "readiness": "local injected transport-policy-ready only",
+  "rootVerification": {
+    "head": "a4ff46056013140fb02abf5f546cc65effc687c6",
+    "node": "26.13.0",
+    "source": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "sha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+        "canonicalSha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+        "canonicalization": "UTF-8 without BOM; CRLF normalized to LF; no other rewriting",
+        "bytes": 17195
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "sha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+        "canonicalSha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+        "canonicalization": "UTF-8 without BOM; CRLF normalized to LF; no other rewriting",
+        "bytes": 29233
+      }
+    ],
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "Auth",
+        "exitCode": 0,
+        "counts": {
+          "tests": 81,
+          "pass": 81,
+          "fail": 0,
+          "skip": 0,
+          "cancel": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "policy",
+        "exitCode": 0,
+        "counts": {
+          "tests": 92,
+          "pass": 92,
+          "fail": 0,
+          "skip": 0,
+          "cancel": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "CPU",
+        "exitCode": 0,
+        "counts": {
+          "tests": 84,
+          "pass": 84,
+          "fail": 0,
+          "skip": 0,
+          "cancel": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "module-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "test-syntax",
+        "exitCode": 0
+      }
+    ],
+    "totalExecutedTests": 257,
+    "fail": 0,
+    "skip": 0,
+    "scope": "local injectedtransport/clock policy only, no realAuth/config/renderer/store/N1",
+    "typecheck": "author existingchat/shell attempted but TS2688vite/clientmissing; not claimedpass or strictnewmjs"
+  },
+  "reportSHA256": "cd8c3c4f73ff4e5ad777ed045bf52fd7903ce5f780ca3e1309d0087b37093d72",
+  "rootProofSHA256": "53a2edc32bc813f5689cd1aa7cc168f23bda33739100ac4bc11fa8066efede6b",
+  "TDD": {
+    "firstCapability": "0/1pass",
+    "HTTPSbehavior": "expectedexceptionmissing RED beforecode",
+    "fullBehavior": "1/78 ->78/78 afteridempotentlogoutackfix",
+    "extraRegressions": "definitive401stalledbody/403oversize remainauthrejection beforebody; final81/81",
+    "attemptCount": 25,
+    "sourceAllLogsRetained": true
+  },
+  "N5a": {
+    "preWrite": 84,
+    "postSource": 84,
+    "committedHead": "274b80850dc08297d2b9c9f3631793c79af375d8",
+    "committedHeadCases": 84,
+    "proofSHA256": "9bb0647b1a9513a2ccd152c08e7ce4eefa3f6b28c88ce46c82f7582919401d04"
+  },
+  "typecheck": {
+    "E2AuthorAttempt": "existingnativechat/shell TS2688vite/clientmissing, preservednotpass",
+    "rootLatestE1": {
+      "scope": "actuallatestE1 nativechat/shell compatibility with realexistingpinneddependencies, notstrictAuthmjs typeproof",
+      "head": "3f146597b45c7c67e19ea5635b6c252d1a2a21d3",
+      "E2missingViteClient": "priorblockedattempt preserved, no fake/stub or sourcechange",
+      "results": [
+        {
+          "name": "native-chat",
+          "exitCode": 0
+        },
+        {
+          "name": "native-shell",
+          "exitCode": 0
+        }
+      ]
+    },
+    "limit": "native configs do not strictly check new .mjs; syntax/runtime tests distinct"
+  },
+  "latestCombined": {
+    "head": "3f146597b45c7c67e19ea5635b6c252d1a2a21d3",
+    "node": "26.13.0",
+    "results": [
+      {
+        "name": "Auth-service",
+        "exitCode": 0,
+        "tests": 81,
+        "pass": 81,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "CI-pure",
+        "exitCode": 0,
+        "tests": 218,
+        "pass": 218,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "access-policy",
+        "exitCode": 0,
+        "tests": 92,
+        "pass": 92,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-characterization",
+        "exitCode": 0,
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "native-pure-regression",
+        "exitCode": 0,
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "combined-affected",
+        "exitCode": 0,
+        "tests": 202,
+        "pass": 200,
+        "fail": 0,
+        "skip": 2,
+        "cancel": 0,
+        "todo": 0
+      },
+      {
+        "name": "admission-self-tests",
+        "exitCode": 0,
+        "tests": 74,
+        "pass": 74,
+        "fail": 0,
+        "skip": 0,
+        "cancel": 0,
+        "todo": 0
+      }
+    ],
+    "scope": "isolated dependency assembly regression only; no .NET/host/media/realAuth/wholePG/dev integration"
+  },
+  "syntheticConfigRejectionFixture": {
+    "file": "apps/desktop/src/auth-service.test.mjs",
+    "line": 96,
+    "authorConfirmedNewSynthetic": true,
+    "nonAuthorConfirmedExplicitMarkerAndRejectPurpose": true,
+    "scope": "onlythisfreshliteral; no oldarchive/configcredentialapproval",
+    "additionalScanAndSemanticConfirmation": {
+      "valueOutput": false,
+      "decodedValueOutput": false,
+      "credentialValueHashOutput": false
+    },
+    "fullSourceReviewToolMayContainSyntheticLiteral": true,
+    "limit": "specificfreshsyntheticfixture, notrealcredential andnotallworkflow nooutputassertion"
+  },
+  "boundaries": [
+    "no actualtransport/network/projectAPI/account/configread/SupabaseSDK",
+    "no renderer/main/preload/utility/Studio/CLI integration",
+    "no ownerstore/resource/view retirement/safesave or fullK01N1/T03",
+    "sixfieldevidence scalar data only, requiresfuturetrustedcontroller forprovenance/retirement",
+    "no modelcalls or budgetreset, no Macarm64test"
+  ],
+  "fullTaskAccepted": false,
+  "realAuthVerified": false
+}

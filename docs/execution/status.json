@@ -14,9 +14,9 @@
     "unitSubsetAccepted": false,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "reviewed native dependency assembly42b5230 tested; next internal access-policy and WindowsCI cards independently approved, actual per-tree admission pending",
+  "phase": "Access internal policy rev3 actualN5a84 admitted and TDD author active inE2; CIrev7 refused CARD_REVISION, scopedrev8 policy correction pending",
   "branch": "dev",
-  "businessFeatureImplementation": false,
+  "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
   "originalRepositoryIndexAndArchiveUntouched": false,
   "authorization": {
@@ -100,9 +100,10 @@
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
     "spec": "docs/superpowers/specs/2026-11-08-identity-access-n0.md",
     "N1": false,
-    "implementationStarted": false,
+    "implementationStarted": true,
     "developmentAuthEnvironmentUse": "not yet confirmed",
-    "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state"
+    "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state",
+    "implementationBoundary": "internal CPU policy only; not Auth/persistence/UI/N1"
   },
   "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json",
   "canvasIsolationP1": {
@@ -119,5 +120,19 @@
     "docs/execution/t02-access-assignment.json",
     "docs/execution/t01-fission-ci-assignment.json"
   ],
-  "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json"
+  "dependencyAssembly": "docs/execution/2026-11-08-dependency-assembly.json",
+  "activeWriters": [
+    {
+      "agent": "/root/access_policy_impl",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "card": "docs/execution/t02-access-assignment.json",
+      "revision": 3,
+      "approvalCommit": "9daee7f31c65836f36b470cdf2297e55d9630a00",
+      "approvalCardGitBlobSHA256": "390672be0d13eb2328556f708bafa89a1ca82194428e67f4e733d417ba559b9f",
+      "actualAdmissionCases": 84
+    }
+  ]
 }

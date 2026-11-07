@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 8,
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "policyGitBlobSHA256": "15bc089cffb30ff5335103ab2d0970eaa3bd10dd34ec658adc444ea3d65dcf6d",
+  "activeAccessLifecycleSHA256": "ab23bccfc96d8ebe3191fc3337e955741ec9fdd569be1e233708af289ef9c908",
+  "priorDeniedRevision": 7,
+  "changes": [
+    "coordinator-only access lifecycle snapshot active; worker original rev3 anchor retained",
+    "CI declares already-consumed4d322 ancestor explicitly",
+    "CI points to active access snapshot; unchanged semantic write/network/resource scope"
+  ],
+  "actualN5a": "pending immutable revision8 execution",
+  "notApproved": [
+    "CI implementation complete",
+    "remote execution",
+    "Auth/N1/PG",
+    "dev/main/tag/publication"
+  ]
+}

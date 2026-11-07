@@ -4,7 +4,7 @@
     "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "9079c513d163441dc639fff5fc282c38a8bd7c94"
   ],
-  "status": "independently approved policy; pending immutable commit and actual N5a",
+  "status": "active",
   "requestedEffort": "high",
   "backendAttested": false,
   "classification": "business-addition",
@@ -199,5 +199,6 @@
     "stop": "need additional write/source/side-effect or semantic plan conflict -> root; do not widen",
     "preserve": "all original tree/artifacts retained; only named own new scratch; no broadcleanup"
   },
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "dispatchState": "actual E2 N5a84 admitted and original rev3 writer started; writer retains immutable9daee7f/card390672be anchor, this coordinator snapshot changes lifecycle only"
 }

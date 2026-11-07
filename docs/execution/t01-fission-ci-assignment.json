@@ -2,15 +2,16 @@
   "workingBaselineCommit": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
   "dependencyCommits": [
     "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
-    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+    "9079c513d163441dc639fff5fc282c38a8bd7c94",
+    "4d32213f85bfc4d92648e7f05842704530500ff2"
   ],
-  "status": "independently approved policy; pending immutable commit and actual N5a",
+  "status": "active",
   "requestedEffort": "high",
   "backendAttested": false,
   "classification": "engineering-verification",
   "requestedModel": "gpt-6.1-sol",
   "taskId": "T01",
-  "assignmentRevision": 7,
+  "assignmentRevision": 8,
   "authorAgent": "/root/fission_ci_impl",
   "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
   "branch": "codex/t05-path-policy",
@@ -43,7 +44,7 @@
     "activeCards": [
       {
         "path": "docs/execution/t02-access-assignment.json",
-        "sha256": "390672be0d13eb2328556f708bafa89a1ca82194428e67f4e733d417ba559b9f",
+        "sha256": "ab23bccfc96d8ebe3191fc3337e955741ec9fdd569be1e233708af289ef9c908",
         "assignmentRevision": 3
       }
     ],
@@ -194,5 +195,6 @@
     "stop": "preinstalledSDK/compiler/requiredreal symlink unavailable -> record notpass, no auto substitute/install/securitytweak; extra writes/sideeffects -> root",
     "preserve": "all prior scratch/43failureTRX retained; no deletion; local tests must be inert pure module only"
   },
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "dispatchState": "reserved for CI writer; rev7 actual gate denied CARD_REVISION, rev8 pending scoped review/immutable admission"
 }

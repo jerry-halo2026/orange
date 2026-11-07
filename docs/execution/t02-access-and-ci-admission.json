@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-08",
+  "approvalCommit": "9daee7f31c65836f36b470cdf2297e55d9630a00",
+  "trustedGateCommit": "a5378d524613ea2918e10cd56684aa9c4a7c77b8",
+  "trustedGateGitBlobSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+  "access": {
+    "assignmentRevision": 3,
+    "cardGitBlobSHA256": "390672be0d13eb2328556f708bafa89a1ca82194428e67f4e733d417ba559b9f",
+    "admitted": true,
+    "cases": 84,
+    "artifactSHA256": "ff4430075644ceb4f856a7548a8295288b8c0a67fb88b442509da11af50e3080",
+    "writer": "/root/access_policy_impl",
+    "status": "TDD started only2files; not completed"
+  },
+  "CI": {
+    "assignmentRevision": 7,
+    "admitted": false,
+    "exitCode": 1,
+    "reason": "CARD_REVISION",
+    "cause": "activeCards loader requires pointed snapshot status exactly active; root had used explanatory pending text in status",
+    "additionalStaticPreflight": "T05commit4d322 was an ancestor through42b but absent from declared dependencyCommits map; rev8 explicitly declares it to satisfy existing dependency-ancestry check",
+    "writerStarted": false
+  },
+  "revision8Changes": "Access canonical coordinator snapshot status active + dispatchState only, same rev3 scope/API/lease; no modification delivered to active E2 writer or its9daee7f/390672be anchor. CIrev8 adds explicit existing4d322 dependency, active lifecycle and points to activeAccess snapshot. No gate/source permission expansion.",
+  "notClaimed": [
+    "CI admission or remote execution",
+    "Auth/N1",
+    "T05 passed",
+    "dev publication/integration"
+  ]
+}

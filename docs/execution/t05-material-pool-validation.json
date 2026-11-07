@@ -1,0 +1,336 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T05.a",
+  "assignmentRevision": 3,
+  "executor": "/root",
+  "actualModelAndEffort": "backend/runtime not exposed",
+  "classification": "native-reuse/isolatedoriginalunitregression",
+  "approvalCommit": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+  "approvalCardSHA256": "564125293cbdeda026a161f38c1baffb20447bcee1c95672193f2c0376cc5d6c",
+  "sourceCandidate": "457e0eefb297341fbada9ace75dcfa2ab8c983df",
+  "policyReview": "docs/execution/t02-auth-hook-pool-policy-review.json",
+  "localN5a": {
+    "admitted": true,
+    "cases": 84,
+    "proofSHA256": "1e9aa7bee718272c431e68fcdac1012e0ae4f05e4550d96ab1c8a832546f5716"
+  },
+  "toolchain": {
+    "sdk": "10.0.300",
+    "compilerVersion": "5.6.0-2.26230.102 (caa81fa4971f74880cdab61990cb1b11420939ec)",
+    "compilerSHA256": "5d03664b92a3c91bafb63466d1796d1aa863a5cbab3d6b79a30ba1b13d192cd2",
+    "ownedSDKInventoryOnly": "10.0.300",
+    "actualCscTargets": 4,
+    "actualTestHost": "X64 diagnostic",
+    "freshOwnedArtifacts": true,
+    "originalShimInvoked": true
+  },
+  "source": [
+    {
+      "path": "workers/fission/Directory.Build.props",
+      "rawSHA256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Abstractions/IMediaProbe.cs",
+      "rawSHA256": "2e2f54451fae2eb1be2b970663968c15c9ce59c62ec1498b57ec266ccae3b52e"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Abstractions/IVideoEngine.cs",
+      "rawSHA256": "77bb57bf437f519bbbe44a2ccabf20e2706426831bffddf19a11211231416e43"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "rawSHA256": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+      "rawSHA256": "2c5e727ba0424bb4637969879484d8de657030df2f3300dbc3d49a74db8a3c80"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePaths.cs",
+      "rawSHA256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Errors/FissionException.cs",
+      "rawSHA256": "5812fc693f6644eb42496a3cef718a51fffea53e69051ee9c6e19a00d7f3d6c3"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Fission.Core.csproj",
+      "rawSHA256": "61e3f2d043e37f0db4be1d8083dd31bebbfbb8fde2cf027327db2556c16bc385"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+      "rawSHA256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/JobEventBus.cs",
+      "rawSHA256": "76e20d76be2ad2efeabe90146dd591e1824e4f79d5b66f875e1c5501286f76e7"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/JobModels.cs",
+      "rawSHA256": "852e16aa6173bee9d5c8236c9ecbf379ab474a5bd87459767ee82c6826a234ea"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+      "rawSHA256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/AlignStrategy.cs",
+      "rawSHA256": "b6bb095652de5a6b04e4f787773e92a89bcbf64874cb7064f6e080fcbc12c5a8"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/SplitPlanner.cs",
+      "rawSHA256": "d1fb228a218924e0d1c20795cdb47b328ac86ee1697270fd09865214f863994b"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+      "rawSHA256": "688e49c4908bd95bb239f4afadbaefcff6bb8a433bfca77175e15dc0bb29369c"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+      "rawSHA256": "13e7a79d029c413f96493c1841d8cdb58dfd2dcfda65fa52ca83bec67c2e58d1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Steps/StepAbstractions.cs",
+      "rawSHA256": "9fa12c7b84220e282448409e504827621d65494a55d3ea7196123a52d89ba6fb"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Util/Sanitize.cs",
+      "rawSHA256": "26e2a9308453bd2c37caf5a9c85fff674ff19bd74b8cdd35689ddd19c8fca117"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Assets/AssetRegistry.cs",
+      "rawSHA256": "d931f94ef07b664c49a5f911f54816adf988826cc62d6a748c871bdf3e490487"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Diagnostics/DoctorService.cs",
+      "rawSHA256": "9d9297ca7a5429031c378b98a7245c23ca0e1f223bcedfa3104ba2c0b5e11cd2"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Fission.Providers.csproj",
+      "rawSHA256": "9061f927e9a98ce0ce0f6cd602fcbde90d55a6c66737184bd7ec7d7061dca11a"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Hardware/HardwareDetector.cs",
+      "rawSHA256": "a1847ce58d51e8eca194745df353aaf9337ac04299b72cb7045967aee0949d6f"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs",
+      "rawSHA256": "12558c0e6aad6b8b28ed11a4b3d40b2405fdb95aba0d16ac9712756ed8a37d77"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Media/FFmpegProvider.cs",
+      "rawSHA256": "77005cfe5dc26b8e9573525452d3dd9e987f8e9b8f8c83f9c7edd50cbb841b62"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Media/FFprobeProvider.cs",
+      "rawSHA256": "336772ac5aad4eaa5cb3bdcc878da77b387d07a1573943fc9a65daf81e6069ac"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Media/SceneDetector.cs",
+      "rawSHA256": "1e56d8bc1beb713880997f59e23a25ba0cbd782841b9031606c7f34a618c3ce1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Media/TransitionCatalog.cs",
+      "rawSHA256": "03f2a388eac7898c6b9a7b0e0ee7dbaa4f37c75512f1cc9be6f0bd2c4e1d6083"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "rawSHA256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+    },
+    {
+      "path": "workers/fission/src/Fission.Steps/Fission.Steps.csproj",
+      "rawSHA256": "7b86a3cb31d83f4e8af04fc2a2e0a9d70f32e82648f460e3e9615124f8805e47"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+      "rawSHA256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "rawSHA256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+      "rawSHA256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "rawSHA256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c"
+    },
+    {
+      "path": "workers/fission/tools/csc-shim/csc.bat",
+      "rawSHA256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
+    }
+  ],
+  "sourceUnchanged": true,
+  "restore": {
+    "offlineOnly": true,
+    "existingConfigRead": false,
+    "packages": [
+      {
+        "name": "coverlet.collector.6.0.4.nupkg",
+        "sha256": "89e89497b1b9a55290e15eabc6111ed1e85ea74feed51043dc4008eb70104c8d"
+      },
+      {
+        "name": "microsoft.codecoverage.17.14.1.nupkg",
+        "sha256": "7fc432b46f06bd1a0fe3baced8a1269c32f1229c9eb1aab6e931630dd5b8d06b"
+      },
+      {
+        "name": "microsoft.net.test.sdk.17.14.1.nupkg",
+        "sha256": "9995330c5bc5a7bc759caadc9d17748616cdbb983c11062df122a74607614ff0"
+      },
+      {
+        "name": "microsoft.testplatform.objectmodel.17.14.1.nupkg",
+        "sha256": "40c7fa3bec34213fb5e8caf3a3bc27f8ddb47f72f5fe60e1b3faa3984a35ad8b"
+      },
+      {
+        "name": "microsoft.testplatform.testhost.17.14.1.nupkg",
+        "sha256": "d5cc4759cbc7443ee8ad0dc41043cfc55184913a71a26d7fce82020bd4889c9b"
+      },
+      {
+        "name": "newtonsoft.json.13.0.3.nupkg",
+        "sha256": "872fc189e638ab1056555b03aaa38f68bcb54286e221aa646eb1129babf63c77"
+      },
+      {
+        "name": "system.codedom.10.0.14.nupkg",
+        "sha256": "899689130588ae67ef4e4347f6a5778637df3fc17914c55dbd84369a44a3e3c0"
+      },
+      {
+        "name": "system.management.10.0.14.nupkg",
+        "sha256": "6261bd1cd3251401d57384971a39ac953faeea13176c819899794b3850f0d010"
+      },
+      {
+        "name": "xunit.2.9.3.nupkg",
+        "sha256": "04fae949b8e5201ecfa07fa8702baca8c0eb3198114194b3793789cc72bf23d7"
+      },
+      {
+        "name": "xunit.abstractions.2.0.3.nupkg",
+        "sha256": "d03d72fc2df8880448f7a81bddb00e1bcb5c18f323c7e7cc69b4cfa727469403"
+      },
+      {
+        "name": "xunit.analyzers.1.18.0.nupkg",
+        "sha256": "0ce81a98b9df8bd51ae480e6dc9566f4c68e15b4926e6ab997c8f634f3b7a9dd"
+      },
+      {
+        "name": "xunit.assert.2.9.3.nupkg",
+        "sha256": "bc760e75ef1b775d293a6afb89301836d3e5a87cec265e31dedd430ee61d0c20"
+      },
+      {
+        "name": "xunit.core.2.9.3.nupkg",
+        "sha256": "aa4550f09c3f2d95a6c62ae43cec22af2edbbd99f722e691ceefeca761fc6a7c"
+      },
+      {
+        "name": "xunit.extensibility.core.2.9.3.nupkg",
+        "sha256": "99ca555fe9b447b1747aff426819db6a2f60b6ee0655caa28c4b91a9ef3d0f48"
+      },
+      {
+        "name": "xunit.extensibility.execution.2.9.3.nupkg",
+        "sha256": "dabc4cb360ede1c01c98e14cc0fe587774693f40679a22fc71794acac5d8d23c"
+      },
+      {
+        "name": "xunit.runner.visualstudio.3.1.4.nupkg",
+        "sha256": "5b54674b105a5f2cbd5e6e0e67956a1b67e082d94eaa7fddbc803110e6eff2d4"
+      }
+    ]
+  },
+  "commands": [
+    {
+      "name": "SDK",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "stdoutSHA256": "3f39ed349c39eb60a2fc42d7b7c04efc5c1749270745a5c55ce482b906639e50",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compiler",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "stdoutSHA256": "ce0473e0e6db8ed9dade7177b7861717da19c0d250d20951a03e5ff117b3c77b",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "restore",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "stdoutSHA256": "28b60d6181ee685277b3ac98c5540e42511a908178f35d8310835da5647bf6da",
+      "stderrSHA256": "04dde9e46b902240a204acfb0cd5283be410828f0b3e1dc7b8e5f2d40e97272b"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "stdoutSHA256": "7eea840e97147e70ca9fda7b91ff1fb0c0846f49bd67c4a7b9f09506f149fb0d",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "MaterialPool6",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "stdoutSHA256": "4b446bdd5acd1f80f20cb43f64869201d416d165c8ad28869b8f575620fafd4a",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "result": {
+    "counters": {
+      "total": 6,
+      "executed": 6,
+      "passed": 6,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "testNames": [
+      "Fission.UnitTests.MaterialPoolTests.AudioUses_N_AllowsNConfirmations",
+      "Fission.UnitTests.MaterialPoolTests.CombinationDedup_SameAudioSameVideosRejected",
+      "Fission.UnitTests.MaterialPoolTests.Concurrent20Workers_ZeroDoubleReservation",
+      "Fission.UnitTests.MaterialPoolTests.Release_RollbackMakesAudioAvailableAgain",
+      "Fission.UnitTests.MaterialPoolTests.Reserve_SameVideoCannotDoubleReserve",
+      "Fission.UnitTests.MaterialPoolTests.Reserve_ThenConfirm_AudioConsumedOnce"
+    ],
+    "trxSHA256": "dc2e2cdbe9961f2daad73e9f9d858a202729f8425c7d95aaac46673bd892fd3d",
+    "allPassed": true
+  },
+  "evidence": {
+    "rootProofSHA256": "c51d95a693ed15a714c3906c7312abbc5800369e33636e39672722d52bd7b265",
+    "privateArtifacts": "ignored E3 .dev/material-pool/run1 logs/TRX/diag/newpackages/build retained onlylocal, notuploaded/committed",
+    "allAttempts": "one actualboundedrun, no sourcechanges/retries"
+  },
+  "scope": "originalMaterialPoolTests6 synthetic in-memory reservation/confirm/rollback/concurrency only, NOT media/host/loadcapacity orfullT05",
+  "review": {
+    "date": "2026-11-08",
+    "reviewerAgent": "/root/material_pool_actual_review",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "backendAttested": false,
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "reviewedReceiptSHA256": "fe23262496d7bf5f840b1cc9d54327fc1d50677ffbf9ed8825a381aeb89713f5",
+    "method": "readonly actualTRX/proof/allcommandloghashes/4Csc/toolinventory/shim/X64/34source/16packages, no repeatedtest/network",
+    "safeToClose": "canonicalplan originalstandaloneMaterialPool6 only, notmedia/host/fullT05"
+  },
+  "limits": [
+    "in-memory6unit not20media capacity/stress/host",
+    "localSDK10.0.300 notremote10.0.403validation",
+    "doesnotchangeold43/new34/localfilelinkprivilege receipts",
+    "notT02.c/N1/T05.b/fullT05/PG/Macacceptance"
+  ],
+  "fullTaskAccepted": false,
+  "productModelCalls": 0
+}

@@ -1,0 +1,1232 @@
+{
+  "date": "2026-11-07",
+  "status": "handoff-not-product-ready",
+  "referenceSourceCommit": "3a29a38ea35e488f4769927d816721e19e238076",
+  "businessImplementationStarted": false,
+  "newGoalCreated": false,
+  "completionPolicy": "All applicable PG gates and V01-V61 plus speech checks evidenced on actual integration candidate, non-author review and Ethan scope acceptance. Exclusions require explicit named approval. No silent scope reduction or release.",
+  "platforms": {
+    "Windows": "phase-one target; not accepted",
+    "macOS_arm64": "planned/preserve native seams; not accepted",
+    "excluded": [
+      "Intel Mac",
+      "Linux client",
+      "Mac Universal"
+    ]
+  },
+  "functionalRequirements": {
+    "FR-01": [
+      "PG01",
+      "PG07"
+    ],
+    "FR-02": [
+      "PG03",
+      "PG07"
+    ],
+    "FR-03": [
+      "PG03",
+      "PG08"
+    ],
+    "FR-04": [
+      "PG04"
+    ],
+    "FR-05": [
+      "PG02",
+      "PG05",
+      "PG03"
+    ],
+    "FR-06": [
+      "PG02",
+      "PG06"
+    ],
+    "FR-07": [
+      "PG06",
+      "PG11"
+    ],
+    "FR-08": [
+      "PG07"
+    ],
+    "FR-09": [
+      "PG08"
+    ],
+    "FR-10": [
+      "PG04",
+      "PG10"
+    ],
+    "FR-11": [
+      "PG09"
+    ]
+  },
+  "gates": [
+    {
+      "id": "PG01",
+      "title": "身份/归属",
+      "requirements": [
+        "V14",
+        "V18",
+        "V20",
+        "V31",
+        "V32",
+        "V33",
+        "V34",
+        "V38",
+        "V44",
+        "V45",
+        "V50",
+        "V52"
+      ],
+      "taskOwners": [
+        "T02",
+        "T03",
+        "T04"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG02",
+      "title": "原生协议/UI",
+      "requirements": [
+        "V01",
+        "V07",
+        "V17",
+        "V57",
+        "V58",
+        "V59",
+        "V60"
+      ],
+      "taskOwners": [
+        "T01",
+        "T03",
+        "T06",
+        "T08",
+        "T09"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG03",
+      "title": "素材/审核",
+      "requirements": [
+        "V07",
+        "V08",
+        "V09",
+        "V12",
+        "V35",
+        "V36",
+        "V39",
+        "V40",
+        "V46",
+        "V48"
+      ],
+      "taskOwners": [
+        "T04",
+        "U02",
+        "U03"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG04",
+      "title": "混剪/任务",
+      "requirements": [
+        "V02",
+        "V04",
+        "V05",
+        "V06",
+        "V13",
+        "V41",
+        "V42",
+        "V43",
+        "V44",
+        "V56"
+      ],
+      "taskOwners": [
+        "T05",
+        "T06",
+        "U05"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG05",
+      "title": "剪口播",
+      "requirements": [
+        "V12",
+        "V40"
+      ],
+      "taskOwners": [
+        "T07",
+        "T08",
+        "T09"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG06",
+      "title": "交付",
+      "requirements": [
+        "V02",
+        "V03",
+        "V07",
+        "V12",
+        "V13",
+        "V15",
+        "V17",
+        "V43",
+        "V58",
+        "V60"
+      ],
+      "taskOwners": [
+        "T06",
+        "U01"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG07",
+      "title": "本人云链",
+      "requirements": [
+        "V09",
+        "V10",
+        "V18",
+        "V19",
+        "V32",
+        "V33",
+        "V38",
+        "V44",
+        "V46",
+        "V55"
+      ],
+      "taskOwners": [
+        "T04.b",
+        "U03"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG08",
+      "title": "模型/账务",
+      "requirements": [
+        "V11",
+        "V12",
+        "V28",
+        "V39",
+        "V40",
+        "V47",
+        "V53"
+      ],
+      "taskOwners": [
+        "T07",
+        "U02",
+        "U05"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG09",
+      "title": "沉淀/保留",
+      "requirements": [
+        "V21",
+        "V22",
+        "V23",
+        "V24",
+        "V27",
+        "V28",
+        "V29",
+        "V30",
+        "V31",
+        "V37",
+        "V49",
+        "V54"
+      ],
+      "taskOwners": [
+        "U04",
+        "U06"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG10",
+      "title": "治理/迁移",
+      "requirements": [
+        "V16",
+        "V20",
+        "V25",
+        "V26",
+        "V27",
+        "V31",
+        "V32",
+        "V33",
+        "V34",
+        "V50",
+        "V51",
+        "V54",
+        "V61"
+      ],
+      "taskOwners": [
+        "T01",
+        "T02",
+        "T10",
+        "U05",
+        "U06",
+        "U08"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG11",
+      "title": "Windows安装/容量",
+      "requirements": [
+        "V13",
+        "V15",
+        "V20",
+        "V25",
+        "V26",
+        "V27",
+        "V34",
+        "V58",
+        "V60"
+      ],
+      "taskOwners": [
+        "U07"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    },
+    {
+      "id": "PG12",
+      "title": "试用接收",
+      "requirements": [
+        "V13",
+        "V15",
+        "V20",
+        "V27",
+        "V51",
+        "V61"
+      ],
+      "taskOwners": [
+        "T10",
+        "U07",
+        "U08",
+        "Ethan"
+      ],
+      "status": "pending",
+      "integrationCandidateCommit": null,
+      "actualEnvironment": null,
+      "testCommands": [],
+      "evidence": [],
+      "specReview": null,
+      "qualityReview": null,
+      "humanSignoff": null,
+      "blockingConditions": [],
+      "exclusionApproval": null
+    }
+  ],
+  "requirements": [
+    {
+      "id": "V01",
+      "scenario": "film最小业务接入、保存/关闭/重开及上游升级样例",
+      "acceptance": "橙子业务可接入，工程依赖和修订可恢复；不通过则调整整合边界",
+      "gates": [
+        "PG02"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V02",
+      "scenario": "同一Fission实际方案直出、进入film、导出剪映",
+      "acceptance": "支持集合内画面/音轨/字幕和时轴语义一致；保持数字组序；不只比文件hash",
+      "gates": [
+        "PG04",
+        "PG06"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V03",
+      "scenario": "指定Windows/剪映版本打开、修改、保存、重开；缺素材/不支持效果",
+      "acceptance": "真正可编辑；差异明确，不以扁平视频或普通ZIP冒充",
+      "gates": [
+        "PG06"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V04",
+      "scenario": "A/B同时申请同组合、跨历史批次、改名副本、仅换配音/BGM",
+      "acceptance": "同组相同组合不得同时准入；合法单项变化可进入；不泄露他人项目",
+      "gates": [
+        "PG04"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V05",
+      "scenario": "授权有效的已准入任务断网、重启、迟到回执、长期失联后重连",
+      "acceptance": "本地可完成，未同步历史不重复释放，补登记幂等；新组合不绕过准入，已知撤权不被准入记录覆盖",
+      "gates": [
+        "PG04"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V06",
+      "scenario": "目标100成功80待编辑20，主动结束；单项失败/重复重试",
+      "acceptance": "保留80/100，保存工程和待编辑不计数；在途按C64直接停止，取消/完成竞态及迟到核对见V42",
+      "gates": [
+        "PG04"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V07",
+      "scenario": "草稿共用素材、删一份、清缓存、移盘同名错版本、代理/转码替代、磁盘满、换机；选定批量修订后继续编辑",
+      "acceptance": "固定版本和时间映射可核验，错版本不能替代；在途操作仍用原选中修订，不跟编辑头漂移；缺依赖明确，新设备不冒充拥有旧机文件",
+      "gates": [
+        "PG02",
+        "PG03",
+        "PG06"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V08",
+      "scenario": "加工原片区间、候选人审、换源/改区间、字幕/配音修改",
+      "acceptance": "血缘与播放坐标正确，旧审核不覆盖新内容，模型重跑不覆盖人工决定",
+      "gates": [
+        "PG03"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V09",
+      "scenario": "真实分类/标签、创建回执、资源标签回读和本人权限",
+      "acceptance": "文档字段映射与真实数据一致，唯一真源和创建先后顺序成立；联调仍挂起",
+      "gates": [
+        "PG03",
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V10",
+      "scenario": "切片/审核通过的AI补充素材/成片分别上传；选5条后新增2条或改类型/分类、标签内容或作用域、绑定（含同一作用域更换一个标签）；混合成功、标签待核验和回执未知",
+      "acceptance": "提交前范围不明即停；变更不沿用旧批准；保留成功项，已入库不重传；无法匹配保持未知，仅有未受理/未创建证据且批准有效才重提；不串号或自动公开",
+      "gates": [
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V11",
+      "scenario": "同账号多设备积分、确定失败退分、重复失败/退款回执、未知后成功与部分成功",
+      "acceptance": "同一账号账本；确定失败按C47退对应积分或释放预占且不多退，未知先核对，具体取消/部分成功按最终计费单元测试；实际成本独立留账",
+      "gates": [
+        "PG08"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V12",
+      "scenario": "ASR专名/数字、无声/BGM镜头、字幕与实际配音对齐、口播短于视频及混音",
+      "acceptance": "不设强制创作单/单商品或口播铺满门槛；无口播段可有BGM，画面字幕音频仍匹配；不得以BGM掩盖错配或静默截断必要口播",
+      "gates": [
+        "PG03",
+        "PG05",
+        "PG06",
+        "PG08"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V13",
+      "scenario": "本机及目标档位10/50/100条、前台预览与后台并行、异常输入",
+      "acceptance": "实测资源、耗时、磁盘占用和恢复；目标配置与输出预设有明确支持范围",
+      "gates": [
+        "PG04",
+        "PG06",
+        "PG11",
+        "PG12"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V14",
+      "scenario": "两账号切换、直接访问子资源、退出/撤权/换绑、旧任务回执",
+      "acceptance": "无跨账号误归属/访问；缓存和任务不随新账号错误继承",
+      "gates": [
+        "PG01"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V15",
+      "scenario": "Windows安装签名、升级失败、协议不兼容、本地数据迁移恢复",
+      "acceptance": "不静默丢字段或损坏草稿；程序回滚与数据恢复分别证明",
+      "gates": [
+        "PG06",
+        "PG11",
+        "PG12"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V16",
+      "scenario": "在获准副本/隔离环境盘点旧数据，重复迁移核验、归属冲突、恢复及账本切换方案",
+      "acceptance": "不写旧生产环境；验证所有者/文件/引用及可回填历史范围，不能用成片数冒充完整去重；任何实际切换另行授权",
+      "gates": [
+        "PG10"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V17",
+      "scenario": "生成后关闭出口弹窗，重开/重启后从草稿箱再选或单独操作；分别含工程就绪和视频已生成，及A成片后修改成B",
+      "acceptance": "结果保留，入口可恢复，重开不重复生成/扣分、不自动上传；单选云上传可准备可核对视频不强制先另点本地导出；不拿A成片冒充B，未渲染工程不计视频成功",
+      "gates": [
+        "PG02",
+        "PG06"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V18",
+      "scenario": "无云绑定的本地任务；A/B用户同设备切换；A发起云操作后变更绑定",
+      "acceptance": "本地可工作，B不能看到A个人工程/云缓存；云操作不得转投新目标或串号，不因同组判重开放资产",
+      "gates": [
+        "PG01",
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V19",
+      "scenario": "同一人决策、操作和审核；上传后供应商审核状态未明",
+      "acceptance": "橙子允许同人且记录真实确认；上传前确认仍有效，入库状态不伪装成外部审核通过",
+      "gates": [
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V20",
+      "scenario": "新旧环境连接目标、本机应用标识/目录、发布通道及新版安装/升级/卸载",
+      "acceptance": "旧线上代码/数据/配置不受影响，未获授权不写生产或切换；保留隔离与恢复证据",
+      "gates": [
+        "PG01",
+        "PG10",
+        "PG11",
+        "PG12"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V21",
+      "scenario": "两创作入口保存模板/技能，关闭重开、换素材复用、更新版本、拒绝候选",
+      "acceptance": "不只归档文本：确认的支持项可复用；不覆盖源工程或自动执行候选，来源/确认/执行版本可追溯",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V22",
+      "scenario": "本人、其他普通用户、本公司管理员、跨公司管理员及撤销管理角色；覆盖列表/检索/缓存/直链/管理操作",
+      "acceptance": "私有沉淀对普通同事不可见，本公司管理员能查看管理且留审计；跨公司和撤权后访问被拒，不自动开放原工程/媒体",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V23",
+      "scenario": "旧新版技能、缺失/撤权素材、跨版本步骤、不可信知识文本、重复应用",
+      "acceptance": "固定版本、依赖和权限重验；不越权调用工具/批准上传，失败/未知可解释，防重复副作用，恢复/撤销有证据",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V24",
+      "scenario": "人工反馈→改进候选→确认新版，固定样例对比，含负例/回退",
+      "acceptance": "记录采纳、修正和失败；未经确认不替换正式经验，未证明提升不宣称已学会，不擅自训练或跨用户取材",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V25",
+      "scenario": "UI→IPC→worker→云调用的耗时/错误追踪，重试、崩溃、离线、换账号",
+      "acceptance": "问题ID可追到真实任务/尝试/修订/原因；单位和分母正确，无虚构链路/敏感泄露，上报队列按账号隔离",
+      "gates": [
+        "PG10",
+        "PG11"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V26",
+      "scenario": "采样/轮转、缓冲满/磁盘满、审计故障、重复补登、伪造身份及访问权限",
+      "acceptance": "观测故障不拖死编辑；关键审计不被普通采样丢弃，不由普通客户端改写；C40本地交付不被云回执锁住",
+      "gates": [
+        "PG10",
+        "PG11"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V27",
+      "scenario": "本机及目标档位观测开销对比、告警演练、公司资产备份恢复",
+      "acceptance": "资源/容量实测，告警有责任与处理闭环；版本、来源及权限可恢复，不只剩临时缓存或借备份扩大共享",
+      "gates": [
+        "PG09",
+        "PG10",
+        "PG11",
+        "PG12"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V28",
+      "scenario": "LLM纪要包含错误归因/缺证据，生成中源修订变化、失败/重试及人工修改/拒绝/确认",
+      "acceptance": "候选与事实分开、来源版本固定；未经人确认不成为正式知识，重跑不覆盖已确认版本；模型不批准共享",
+      "gates": [
+        "PG08",
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V29",
+      "scenario": "确认保存但未共享、确认版本A给团队甲、随后改B/换团队、重复确认或撤回",
+      "acceptance": "沉淀确认不等于共享；授权仅覆盖明确版本/团队，变化不静默扩大；团队成员和相关缓存/检索遵守有效范围，不等于对外公开",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V30",
+      "scenario": "员工离职/账号停用、设备清理、资产恢复与管理员接管",
+      "acceptance": "公司保留已沉淀模板/技能/经验、来源和确认审计；区分本地待同步与公司已核验留存，不随账号删除，离职用户不继续有权访问，不自动共享；恢复不复活已撤权限",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V31",
+      "scenario": "请求批准/全权限切换、撤销执行授权、Agent自动检查及尝试四类最终确认",
+      "acceptance": "执行编辑可按模式推进；素材审核/上传/正式沉淀/团队共享均要求有效人工确认，不能伪造确认人或借模式提升权限",
+      "gates": [
+        "PG01",
+        "PG09",
+        "PG10"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V32",
+      "scenario": "IP授权撤回，覆盖列表/搜索/最近使用/直链/缓存/缩略图/转写/历史工程/模板/Agent请求，以及已成功但仍由橙子管理的历史视频/剪映包",
+      "acceptance": "对应账户不能再看到或请求已撤资源；历史产物不凭个人归属或旧成功状态免检当前权限；公司业务记录保留且恢复不复权，其他合法账户不被无差别撤销",
+      "gates": [
+        "PG01",
+        "PG07",
+        "PG10"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V33",
+      "scenario": "撤权发生于断网、多设备、渲染/导出/上传在途及链接已发出",
+      "acceptance": "有撤权生效与接收时刻证据；已知撤权拦截展示和后续请求，在途结果隔离；离线时效/窗口及系统外不可追回限制如实披露并经评审，不伪称即时全覆盖",
+      "gates": [
+        "PG01",
+        "PG07",
+        "PG10"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V34",
+      "scenario": "业务操作离线待同步、断电/重试、撤权/停用、日志轮转、公司备份恢复",
+      "acceptance": "任务/编辑/确认/交付/积分等记录及来源完整保留；公司持久核验与本地待同步分开，重复补登不重复业务事实，缓存清理和账号变化不删除公司记录、不恢复旧权限",
+      "gates": [
+        "PG01",
+        "PG10",
+        "PG11"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V35",
+      "scenario": "原句定位、个人选用/备注/评级/移出工作库，目录或解析更新、缺解析及撤权",
+      "acceptance": "选材劳动按本人/版本保留；原始评级/个人评价/AI评分/云标签各有语义，不覆盖或泄露；缺解析不冒充就绪",
+      "gates": [
+        "PG03"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V36",
+      "scenario": "已有语音检索试听、授权TTS、录音/音乐导入、录制需求保存、重开工程及撤权",
+      "acceptance": "声音来源/归属/实际时长和音轨可恢复；需求不冒充音频交付，云归档不替代试听，录制成果处理见V40，录音/重录新增V48，跨人员扩展按D26，不冒充旧交付链已接通",
+      "gates": [
+        "PG03"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V37",
+      "scenario": "初稿/修订/定稿对比、人工与Agent理由、历史恢复及模板沉淀",
+      "acceptance": "比较和恢复副本可用且原版不丢，不强制旧三槽位或必填原因，不用总结代替版本历史，不恢复已撤素材权限",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V38",
+      "scenario": "真实本人云素材进入创作与交付，迁移包含服务器/桌面/网页本地库",
+      "acceptance": "端到端主体与来源一致；所有个人记录和文件位置有盘点证据，浏览器本地数据不遗漏；无生产数据证据时不宣称迁移通过",
+      "gates": [
+        "PG01",
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V39",
+      "scenario": "产品/人物/场景补充素材生成：真实输出、参考权限/一致性、待审/拒绝/确认、改版本、失败/未知/重试、入中心供两入口使用及另选上传",
+      "acceptance": "未审核/拒绝项不可供混剪或创作选用；通过且文件/权限有效后可本地使用，无需先上传；重生成不沿用旧审核；上传必须另有人确认；生成与云素材保持不同来源，未知不盲目重复提交或扣分；效果/性能/成本均需实测，不宣称已有实现",
+      "gates": [
+        "PG03",
+        "PG08"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V40",
+      "scenario": "分别覆盖纯音频及真人口播视频：待审/拒绝/确认、ASR/时码校正、片段/字幕编辑、LLM/JEV、换版本/撤权，并在film和Fission实际选用",
+      "acceptance": "两类均先人工审核再作为正式素材复用；纯音频作配音，视频作视频片段，音频时长/音轨位置和视频音画字幕对应正确；原声不因改文字而伪变，分数不代人审；新版本不套旧分析/审核，不以一种样本代全部通过；纯音频云上传仍待接口验证",
+      "gates": [
+        "PG03",
+        "PG05",
+        "PG08"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V41",
+      "scenario": "每组数量/单片重复开关、固定组序、批内/组内历史组合",
+      "acceptance": "设置进入冻结配方并实际生效；允许单片复用不允许两条完整组合重复，不因重试打乱组序；既有Fission静态结构不算目标平台已验收",
+      "gates": [
+        "PG04"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V42",
+      "scenario": "目标100已完成80、在途和未启动混合时主动结束；取消与完成同时发生",
+      "acceptance": "未启动不再派发，在途立即进入停止流程并验证退出；保留已完成及原目标，未知/迟到先核对，不将停止或临时文件算成功，不过早释放可能已交付的占用",
+      "gates": [
+        "PG04"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V43",
+      "scenario": "仅剪映交付、未完成草稿、同内容编码/分辨率再导出、独立创作中心",
+      "acceptance": "仅合格完成剪映包可交付并进成功历史；视频/剪映分别计数，同结果不双计；未完成不打包；纯参数重导出不新增组合，独立创作不被组内判重门禁拦截；原混剪批补齐不能借换入口逃避原组判重或抹历史",
+      "gates": [
+        "PG04",
+        "PG06"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V44",
+      "scenario": "员工/审核员/管理员处理本人资产、转组/多组资格变化、本人云换绑",
+      "acceptance": "本人有权资产可操作，未经扩权不读他人原媒体；公司记录保留但旧组/旧绑定权限失效，新视图只显示当前绑定有权内容；旧任务不转投新账号，已发生外部动作如实对账",
+      "gates": [
+        "PG01",
+        "PG04",
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V45",
+      "scenario": "登录失效、已登录断网、离线计时到期/重启/时钟回拨、撤权及历史产物",
+      "acceptance": "会话和素材许可分别校验，本地时间不无限延长许可；具体期限获批后测试。未登录不能使用客户端，已知撤权不能靠缓存继续取内容，不承诺追回系统外明文",
+      "gates": [
+        "PG01"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V46",
+      "scenario": "云标签继承、无标签本地模型候选、云创建失败/未知、云字典变更及换绑",
+      "acceptance": "确定来源无标签与无权/云超时未知分开，后者不能伪作无标签触发正式补标；候选/正式引用分开，适用范围/必填/数量核验；创建确认后才正式同步，不静默丢标签或以本地词冒充云标签；待提交意图保留并重核，旧绑定标签不串入新账号。模拟不等真实云验收",
+      "gates": [
+        "PG03",
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V47",
+      "scenario": "模型成功/失败/取消/部分成功/未知、普通本地导出、重复回执与预算触发",
+      "acceptance": "仅成功模型使用消费；失败或未成功取消不收，部分只计成功部分，非模型导出不计模型分；扣退幂等、成本分账。按获批单元/费率/预算验证，不用HTTP200代替有效成功",
+      "gates": [
+        "PG08"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V48",
+      "scenario": "应用内录音、重录、设备异常、磁盘满/崩溃、保存重开及人审后两入口复用",
+      "acceptance": "真实文件完整可恢复，重录不覆盖旧引用，未完成录音不冒充合格媒体；录完不自动人审或上传，模型后处理按需，纯采集不收模型积分",
+      "gates": [
+        "PG03"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V49",
+      "scenario": "本人确认知识共享、编辑新版本、再次确认、人员失效和公司保留",
+      "acceptance": "未确认新版本不自动替换已共享版本或扩大团队；公司记录保留，不伪造本人确认。代管主体未定时不默认Agent或任意管理员可代确认",
+      "gates": [
+        "PG09"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V50",
+      "scenario": "身份/授权/媒体/关键工程依赖缺失的历史数据迁移与补齐",
+      "acceptance": "隔离不可用、缺项可核对、记录不删除；不按同名认领、不从MP4伪造工程；关键要素补齐和验证后才恢复，恢复不复权",
+      "gates": [
+        "PG01",
+        "PG10"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V51",
+      "scenario": "开发协作G01–G09及实际拒绝反例",
+      "acceptance": "任务/模型/Agent/基线/提交/审查可追溯，越界改动、破坏兼容和skip必测被实际门禁挡住；工作树及共享资源隔离，最新集成基线验收；本轮仅文档不视为已配置",
+      "gates": [
+        "PG10",
+        "PG12"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V52",
+      "scenario": "在线启动/离线冷启动、登录后断网、退出后离线重开、仅智尚或模型不可达",
+      "acceptance": "启动/重启必须第一方鉴权；运行中依C40保留有权本地编辑/保存及已准入执行，新组合不绕过；不清草稿、不把第三方故障当账号自动失效",
+      "gates": [
+        "PG01"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V53",
+      "scenario": "Token 1分起扣、规则调价在途、重复回执/重试、失败/未知及非Token服务",
+      "acceptance": "已确认小于10万的成功消费起扣1分，失败零收；精确成功单元/超过10万函数获批后以样例验证，旧操作用固定规则幂等结算/冲正；不把现金换算当供应商成本",
+      "gates": [
+        "PG08"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V54",
+      "scenario": "普通员工共享工程/素材或收录案例；管理员添加无共享权或可读但未公开的素材；离职知识留存",
+      "acceptance": "员工操作及直调均拒绝；收录同时要求素材已公开、相应共享权和管理员人工确认，公共标签不能证明公开；公司内范围不自动变互联网公开，不反向开放个人原工程，知识公司留存",
+      "gates": [
+        "PG09",
+        "PG10"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V55",
+      "scenario": "已核实云协作对象同步、本人/其他账号、换绑/撤权、分页或事件重放、接口不支持",
+      "acceptance": "云工作流仍由云管家承载，橙子不伪造派单/通知/回传；按真实对象/事件版本和绑定隔离，未知能力标未验证，不自动加摄像或本地替代工作流",
+      "gates": [
+        "PG07"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V56",
+      "scenario": "停止后重做与关联补充批、原样方案/新组合/重导出；失败重试首次成功及重复回执",
+      "acceptance": "原结果/历史不覆盖，重做不绕过去重；原失败项首次合格交付计一次、重复回执不双计，重导出不增内容成功数；补充批关联/计数清楚，不因打开入口自动调用模型",
+      "gates": [
+        "PG04"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V57",
+      "scenario": "12前端基线的核心页、公共组件、加载/空/错误/权限/取消状态及Windows缩放",
+      "acceptance": "未批准的布局/颜色/入口变动被审查拦截，功能变化有迁移说明；视觉、键盘、可读性及E2E均有当前候选证据，不凭截图相似宣称行为正确",
+      "gates": [
+        "PG02"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V58",
+      "scenario": "Electron/React/TS及Node/TS实际候选构建、Fission进程、film替换、Windows安装恢复",
+      "acceptance": "唯一客户端与编辑权威，真实集成可运行；选型/目录不代替运行证据，不影响旧版",
+      "gates": [
+        "PG02",
+        "PG06",
+        "PG11"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V59",
+      "scenario": "13依赖白名单、renderer误引node、跨域写入、原生模块违规反向依赖、双React/锁文件竞争反例",
+      "acceptance": "实际检查拒绝违规依赖/副作用，契约和构建版本可追溯；不靠文件夹名称自证隔离",
+      "gates": [
+        "PG02"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V60",
+      "scenario": "film业务名称、上游固定版本/补丁、许可及发行依赖清单",
+      "acceptance": "主入口统一创作中心/film，来源/版权声明真实保留，不暗示官方背书或全自研；版本与实际发行物一致，未完成核验不发布",
+      "gates": [
+        "PG02",
+        "PG06",
+        "PG11"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    },
+    {
+      "id": "V61",
+      "scenario": "动态就绪队列、未完成M1时准入、容量/资源变化、审查积压、过期契约/任务卡及候选集成",
+      "acceptance": "不固定实现者配额；通过依赖/N5a者可并行，未冻结/冲突/越权者拒绝；审查有实际执行证据、资源不超用，整合后复验，不把并行数量或分支绿色当交付",
+      "gates": [
+        "PG10",
+        "PG12"
+      ],
+      "status": "pending",
+      "evidence": [],
+      "scopeExclusionApproval": null
+    }
+  ],
+  "speechChecks": [
+    {
+      "id": "selected_multi_all_human_voice",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "real_timestamped_asr_no_false_silence",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "text_gap_selection_preview_cancel",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "source_instance_project_time_mapping",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "linked_audio_video_captions_ripple",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "one_undo_redo_save_reopen",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "strict_revision_idempotency_cross_resource_crash",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "original_writers_readers_concurrent_conflict",
+      "gate": "PG05",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "authorization": {
+    "implementation": "bind explicit next-goal instruction; docs alone do not start implementation",
+    "modelValidationBudgetCNY": 50,
+    "modelBudgetIsCumulative": true,
+    "privateMediaExternalUpload": false,
+    "cloudBusinessWrites": false,
+    "production": false,
+    "mainTagRelease": false
+  },
+  "resumeRules": [
+    "verify actual Git/tool/environment and approvals, not remembered status",
+    "classify native-reuse/native-extension/business-addition before implementation",
+    "freeze only consumed additions; reuse native source signatures",
+    "continue unaffected ready tasks when personal binding or ASR blocked",
+    "no product progress inferred from docs or old green branch",
+    "task IDs T01-T10 are current plan; HIST-T are non-executable history"
+  ],
+  "taskRecordRequired": [
+    "taskId",
+    "assignmentRevision",
+    "classification",
+    "nativeSourcePinAndSymbols",
+    "originalBaselineCommit",
+    "workingBaselineCommit",
+    "dependencyCommits",
+    "contractOrCharacterizationEvidence",
+    "authorAgent",
+    "actualModelAndEffort",
+    "worktreePath",
+    "writeAllowlist",
+    "resourceLeases",
+    "redGreenEvidence",
+    "implementationCommits",
+    "reviewerAndConclusions",
+    "integrationCandidateCommit",
+    "actualIntegratedTestEvidence",
+    "blockerAndResumeCondition"
+  ],
+  "lastEvidence": "docs/execution/2026-11-07-phase1-archive-delivery.json (historical administrative work, not product completion)"
+}

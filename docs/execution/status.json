@@ -14,7 +14,7 @@
     "unitSubsetAccepted": false,
     "buildBoundary": "Original Core/Steps/Unit subset compiled; whole engine/media/runtime not tested. Historical buildTestedInOrange refers to full Fission."
   },
-  "phase": "foundation whole-impact review found Canvas P1; bounded native TDD repair takes priority; no source publication/dev integration",
+  "phase": "Canvas whole-impact P1 fixed, independently reviewed and root-verified locally; no dev integration; T05 real Windows symlink tests still environment-blocked",
   "branch": "dev",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -62,9 +62,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t05-path-assignment.json",
+  "currentTaskCard": "docs/execution/t01-canvas-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t05-path-validation.json",
+  "currentSliceReview": "docs/execution/t01-canvas-validation.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -72,7 +72,8 @@
   "latestLocalEvidence": [
     "docs/execution/t01-desktop-validation-20261108.json",
     "docs/execution/t02-native-validation.json",
-    "docs/execution/t05-path-validation.json"
+    "docs/execution/t05-path-validation.json",
+    "docs/execution/t01-canvas-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -83,10 +84,10 @@
     "t02Head": "5b700da8bd2f0f2c54bfbeacf54af4b52b8df6a1",
     "t05SourceState": "two reviewed frozen untracked files, not yet committed",
     "devIntegration": false,
-    "remotePushThisGoal": false
+    "remotePushThisGoal": false,
+    "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0"
   },
   "currentBlockers": [
-    "Canvas native API bypasses development project root (P1); source publication and expanded runtime/CI paused pending original-author TDD fix and non-author scoped review",
     "T05 two required genuine Windows symlink fixtures unavailable with existing local rights; no security-policy changes",
     "T02.a identity/access N0 three boundaries now approved; machine tests, non-author review and N1 still pending; T03 not released",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
@@ -101,5 +102,15 @@
     "developmentAuthEnvironmentUse": "not yet confirmed",
     "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state"
   },
-  "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json"
+  "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json",
+  "canvasIsolationP1": {
+    "status": "closed for reviewed two-file fix",
+    "sourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
+    "evidence": "docs/execution/t01-canvas-validation.json",
+    "fullIsolationAccepted": false
+  },
+  "nextReadyPreparation": [
+    "T02.a approved identity boundary pure-policy slice design only; actual new card/consumer freeze pending",
+    "bounded Windows CI path-policy validation preparation after reviewed source/checkpoint and explicit new write/network scope; no workflow change yet"
+  ]
 }

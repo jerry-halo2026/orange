@@ -1,0 +1,154 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 6,
+  "sourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
+  "approvalCommit": "e7809f6e07d81dd4ce74c0848aff4df129ae056c",
+  "cardGitBlobSHA256": "568339b62c4ce1cd56a696d5a68b492c140eb0fe3b3ac10cc1c31a5d50275841",
+  "author": {
+    "agent": "/root/t01_profile",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false
+  },
+  "independentReview": {
+    "reviewerAgent": "/root/foundation_impact_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "scope": "original Canvas P1 fix1 and new breakage in two-file diff only",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "priorFinding": "docs/execution/t01-foundation-impact-review.json binds original unfixed5b700da; this receipt records scoped closure"
+  },
+  "files": [
+    {
+      "path": "packages/openfilm/studio/server/canvas.mjs",
+      "sha256": "f88556901d55af883d6f79d14b557f1192ec1d18dd479cdf04c3805d6aefe5bb",
+      "gitBlobSHA256": "f88556901d55af883d6f79d14b557f1192ec1d18dd479cdf04c3805d6aefe5bb"
+    },
+    {
+      "path": "packages/openfilm/studio/server/canvas-isolation.test.mjs",
+      "sha256": "516bd110318b51b7cbe18d57f093c76889ee71153431df930fcf46bd25c51436",
+      "gitBlobSHA256": "70d52117602576a95da10596fec9c4d2ce0773e17532cfcee006db05206074db"
+    }
+  ],
+  "firstRED": {
+    "log": "first-red.log",
+    "result": "first-red-result.json",
+    "counts": {
+      "tests": 10,
+      "pass": 1,
+      "fail": 9,
+      "skipped": 0
+    },
+    "sourceSha256": "120776e5c41353cfad9e4d1405f2af4fbe945a22067ef60595633eaf93a3672e",
+    "sourceProvenance": "Untouched Canvas at actual RED was the pinned clean approval Git blob; initial test added before implementation. Baseline bytes reconstructed directly from that immutable blob. Current source retains LF line endings.",
+    "testSha256": "516bd110318b51b7cbe18d57f093c76889ee71153431df930fcf46bd25c51436",
+    "observed": "Real original HTTP outside Canvas read/write, directory escapes, terminal links and direct callback refusal were missing;9 failed/1 valid control passed; no import or fixture setup error."
+  },
+  "green": {
+    "log": "canvas-green.log",
+    "counts": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "originalCompatibility": {
+    "log": "canvas-original.log",
+    "counts": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "rootIndependentVerification": {
+    "head": "e7809f6e07d81dd4ce74c0848aff4df129ae056c",
+    "node": "26.13.0",
+    "source": [
+      {
+        "path": "packages/openfilm/studio/server/canvas.mjs",
+        "sha256": "f88556901d55af883d6f79d14b557f1192ec1d18dd479cdf04c3805d6aefe5bb"
+      },
+      {
+        "path": "packages/openfilm/studio/server/canvas-isolation.test.mjs",
+        "sha256": "516bd110318b51b7cbe18d57f093c76889ee71153431df930fcf46bd25c51436"
+      }
+    ],
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "affected-regressions",
+        "exitCode": 0,
+        "counters": {
+          "tests": 201,
+          "pass": 199,
+          "fail": 0,
+          "skip": 2,
+          "cancelled": 0,
+          "todo": 0
+        }
+      },
+      {
+        "name": "native-typecheck",
+        "exitCode": 0
+      },
+      {
+        "name": "canvas-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "test-syntax",
+        "exitCode": 0
+      },
+      {
+        "name": "diffcheck",
+        "exitCode": 0
+      }
+    ],
+    "reportSHA256": "9a9abe4990670c689d30b03b44af8d04920fcdc572b780e2ed1b8352c32664d3",
+    "scope": "bounded Canvas and approved affected regression only; old registry mutation test excluded/pending; not full suite/Auth/Fission/pilot"
+  },
+  "reportSHA256": "9a9abe4990670c689d30b03b44af8d04920fcdc572b780e2ed1b8352c32664d3",
+  "rootProofSHA256": "ba97d6899e35c23ec8d70322610fcd08716ae09e4c72109138676b71939bbd7a",
+  "actualN5a": {
+    "preWrite": "84/84 at immutable approvale7809f6",
+    "postWrite": "84/84 dirty two-file source write set",
+    "committedHead": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
+    "committedHeadCases": 84,
+    "artifactSHA256": "8b2121a4441d6af8c4904bbee32324e8bfc59f66bb2bcbfd25ea5b6f3082cb4b"
+  },
+  "resources": {
+    "ports": [
+      18771,
+      18772,
+      18773,
+      18774,
+      18775,
+      18776
+    ],
+    "release": "six-port-release.json; all six approved IPv4 loopback ports rebound and closed without fallback after graceful Studio close",
+    "environment": "Minimal OS allowlist only; own HOME/USERPROFILE/APPDATA/LOCALAPPDATA/cache/TEMP/TMP/TMPDIR under .dev/canvas-p1; no inherited provider/account/model config variables",
+    "fixtures": "Every external/inside target remains in .dev/canvas-p1/case-*; firstRED and all subsequent cases retained. No cleanup/delete of old .dev, real projects or archives."
+  },
+  "terminalCapabilities": {
+    "actual": "Windows directory junctions (project,.film,canvases,terminal dangling junction) and real terminal file hardlinks (main and selected secondary) exercised with0skips. Terminal guard rejects lstat links/nonfiles/nlink!=1.",
+    "trueWindowsFileSymlink": "NOT EXECUTED: card explicitly records unavailable symlink rights; no policy/privilege change attempted and no true-file-symlink PASS claimed. Directory-junction isSymbolicLink branch and genuine hardlink file boundary have actual evidence, not a substitute claim."
+  },
+  "limits": [
+    "existing registry-mutation test explicitly excluded/pending",
+    "two original POSIX skips, no new isolation skips",
+    "true Windows file-symlink not executed; junction/hardlink evidence not substitute",
+    "point-in-time checks do not prevent hostile filesystem races",
+    "not all routes/OS sandbox/Auth/media/Fission/installer/remote CI or PG acceptance"
+  ],
+  "controllerFailurePreserved": "first independent execution exited0 but controller expected TAP from default spec reporter; parser failed, source unchanged, first logs preserved; explicit TAP attempt2 passed",
+  "sourcePublication": "not performed",
+  "devIntegration": null,
+  "fullTaskAccepted": false
+}

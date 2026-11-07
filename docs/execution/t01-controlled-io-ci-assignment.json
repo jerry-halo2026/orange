@@ -1,0 +1,281 @@
+{
+  "workingBaselineCommit": "c430a6d1fc9a7ba5c92cd5bb47071479121d986a",
+  "dependencyCommits": [
+    "c430a6d1fc9a7ba5c92cd5bb47071479121d986a",
+    "6048b20fe212ceac88ecf729d465213e2b8d362b",
+    "274b80850dc08297d2b9c9f3631793c79af375d8",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "status": "active",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "engineering-verification",
+  "requestedModel": "gpt-6.1-sol",
+  "taskId": "T01",
+  "assignmentRevision": 13,
+  "authorAgent": "/root/ci_io_expansion_impl",
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "scope": "coordinator-owned CIclosure/test-gate extension for reviewed original controlledIO+Authpurecontracts only; localNode TDD, no real.NET/entry/jobs/publication byauthor",
+  "writeAllowlist": [
+    "scripts/fission-path-ci.mjs",
+    "scripts/fission-path-ci.test.mjs",
+    ".github/workflows/fission-path-policy.yml",
+    ".github/workflows/phase1.yml"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      ".github/workflows/fission-path-policy.yml",
+      ".github/workflows/phase1.yml"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-access-consumer-review.json",
+          "sha256": "bbd0eed7621946686ac90ef7d01e0cd96348215f3fe6c21498f94f0cafbc0f5c",
+          "gitBlobSha256": "bbd0eed7621946686ac90ef7d01e0cd96348215f3fe6c21498f94f0cafbc0f5c"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+        "authorAgent": "/root/fission_io_impl",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245",
+            "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+            "sha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+            "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+            "sha256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c",
+            "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+            "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+            "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t05-controlled-io-source-review.json",
+          "sha256": "3f337208216b2607104c927a13f0061bd6ccbef8b165c047b0cfee465d3bf699",
+          "gitBlobSha256": "3f337208216b2607104c927a13f0061bd6ccbef8b165c047b0cfee465d3bf699"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "274b80850dc08297d2b9c9f3631793c79af375d8",
+        "authorAgent": "/root/auth_service_impl",
+        "source": [
+          {
+            "path": "apps/desktop/src/auth-service.mjs",
+            "sha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+            "gitBlobSha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/desktop/src/auth-service.test.mjs",
+            "sha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+            "gitBlobSha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.test.mjs",
+            "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+            "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-auth-ci-consumer-review.json",
+          "sha256": "4a7f1ae3c7cf910070e9ff5c955155493c706d917cae360fca3c350899f85b09",
+          "gitBlobSha256": "4a7f1ae3c7cf910070e9ff5c955155493c706d917cae360fca3c350899f85b09"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/superpowers/plans/2026-11-08-access-and-path-ci.md#ci",
+  "runtime": {
+    "runner": "standard GitHub windows-2025 only, public jerry-halo2026/orange, exact current job commit; reject local/otherrepo/otherbranch context before any IO/spawn",
+    "branch": "refs/heads/codex/t05-path-policy",
+    "checkoutAction": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262 (verified official refs/tags/v4)",
+    "checkout": "persist-credentials false; exact github.sha; no secrets/id-token/writepermissions/artifact/cache upload",
+    "SDK": "require preinstalled exact10.0.403; no setup-dotnet/download/install; use owned scratch global.json to select, actual existing dotnet.exe host",
+    "compiler": "unchanged original csc shim enumerates DOTNET_ROOT/sdk; create own read-only tool-selection SDK directory junction to preinstalled10.0.403 only; DOTNET_ROOT points this owned inventory, PATH uses real preinstalled dotnet.exe. Record/prove actual selected compiler DLL/version/SHA and actualSDK; fail if not selected, no source shim/props/CET mutation",
+    "restore": "futureRoot-allocated standardpublicWindowsCI only: ownclearpublicNugetconfig, originalUnit+Core+Steps+Providers graph, fixed4testpackages/System.Management10.0.14+requiredSystem.CodeDom10.0.14closure, --artifacts-path ownednewroot, no otherfeed/config/SDK/workload/model/audit/securitychanges",
+    "dotnetCommands": [
+      "restore originalUnitproject --configfile ownpublicconfig --packages ownpackages --artifacts-path ownbuild",
+      "test sameoriginalUnitproject --no-restore --artifacts-path ownbuild --filter FullyQualifiedName~EnginePathPolicyTests --logger \"trx;LogFileName=path-policy.trx\" --results-directory ownpathresults",
+      "test sameoriginalUnitproject --no-restore --artifacts-path ownbuild --filter FullyQualifiedName~EngineJobFilesTests --logger \"trx;LogFileName=engine-job-files.trx\" --results-directory ownIOresults"
+    ],
+    "ownedPaths": ".dev/fission-ci/<run-id>/<attempt> for HOME/user/appdata/ProgramData/cache/temp/NuGet/packages/CLIHOME/results/globaljson/toolinventory/logs; validate ancestors before mkdir/link; no cleanup or outside write beyond normal original bin/obj under workspace",
+    "cost": "verified public standard hosted runner compute free; no larger runner/storage artifact/cache; one job12min, each subprocess bounded; no model/product budget use",
+    "fixtureRoot": {
+      "variable": "FISSION_PATH_POLICY_TEST_ROOT",
+      "value": "<validated owned .dev/fission-ci/run/attempt>/fixtures",
+      "required": "create ordinary owned fixtures directory after raw lexical/ancestor/realpath containment checks; set explicitly in clean dotnet child environment; frozen source Fixture refuses missing/empty root"
+    },
+    "remoteExecutionLease": "NOT ISSUED to author; root first job42406704504 terminalfailed, no automatic rerun. New remote validation only after fresh source review/audit and root runtime allocation."
+  },
+  "api": {
+    "exports": "verifyPathPolicyTrx(xml), validatePathCiContext(facts), runPathPolicyCi() main entry (names may stay exact minimal only)",
+    "importBehavior": "pure imports do not mkdir/spawn/connect; CLI entry alone runs aftercontextguard",
+    "contextFacts": [
+      "GITHUB_ACTIONS=true",
+      "RUNNER_OS=Windows",
+      "GITHUB_REPOSITORY=jerry-halo2026/orange",
+      "ORANGE_REPOSITORY_VISIBILITY=public from workflow trusted repository context",
+      "GITHUB_REF=refs/heads/codex/t05-path-policy",
+      "GITHUB_SHA=40 lowercase hex",
+      "GITHUB_RUN_ID=positive decimal digits",
+      "GITHUB_RUN_ATTEMPT=positive decimal digits",
+      "GITHUB_WORKSPACE=explicit local absolute Windows path, raw no traversal/device/UNC/control aliases; real filesystem checks only after lexical validation"
+    ]
+  },
+  "validation": {
+    "tdd": "genuine RED new34suite/closure/phase1expectations before sourcechanges; old218strictvalidationtestsregressionsremainpass, no fakeentry/mockCI run. PuregeneratedTRXunitfixtures explicitlynotrealWindows evidence.",
+    "unitCommand": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/fission-path-ci.test.mjs"
+    ],
+    "phase1Command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/phase1-isolation.test.mjs",
+      "scripts/phase1-admission.test.mjs",
+      "apps/desktop/src/flavor.test.mjs",
+      "packages/openfilm/studio/server/project-access.test.mjs",
+      "apps/desktop/src/auth-service.test.mjs"
+    ],
+    "syntax": "bothmjsnode --check; workflowtext/triggerpermissions regressionassertions",
+    "expected": "alllocalpuretests0fail/skip/todo/cancel. Sourcegraph/CSfilesnevermodified. Actual.NET/43+34 onlylaterRootafterfreshCIreview/runtimelease.",
+    "noRealRun": "authorcannotcallmain evenfakeCI/local.NET/hardware/process/GitHub API orjobs/Gitwrites"
+  },
+  "forbidden": [
+    "modifyanyC#/props/shim/project/DTO/media/config/SDK/workspace/lock/docs/07/gate/otherworkflows",
+    "disableorweakenstrict43/34/secret/env/path/compiler/sourcechecks",
+    "actuallocal.NET/CIentry/fakeCI/server/media/codec/hardware/privateconfig/account/model/sourceupload",
+    "Gitstage/commit/merge/push/reset/clean/subagents/sourceoutside4files",
+    "realorprivateNugetfeeds, audit/security/SDKinstall/actionspermission/defaultbranch changes"
+  ],
+  "reviewAndRecovery": {
+    "review": "freshnon-author specquality of4CI-files exactTDD/sourceclosure/suiteauthenticity+Rootindependenttests; authorstopsfrozenbeforepublication",
+    "stop": "newproject/closure ambiguity/extrasource/actualcapabilitynotready ->Root, no silentfallback",
+    "preserve": "alloldsource/evidence/artifacts/realfailed+successjobs retained; ownignoredscratchonly"
+  },
+  "fullTaskAccepted": false,
+  "dispatchState": "reserved, no writer beforeindependentpolicyreview/immutableN5a",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-ci-closure-for-controlled-io",
+  "CIExpansion": {
+    "oldProof": "old43class WindowsCI passed onlyoldpolicy, notnewhelper/originalentry/Providerscompile/filelinkcases",
+    "phase1": "keepexisting built-in governance tests, additionallyrun actual native Authservice81andprojectAccess92 built-in tests fromsamecheckout; no packageinstall/globalstubs/HTTP. Expectedexisting158+81+92=331caseexecutions, allzero skip.",
+    "FissionWorkflow": "samepublicstandardwindows2025/namedtopic/checkoutSHA/context/singlejob/concurrency/12min/noartifact/noinstall boundary; descriptivejob/stepnamesmaymentioncontrolledIO but no newpaid/otherplatform/matrix",
+    "frozenSuites": [
+      {
+        "export": "verifyPathPolicyTrx",
+        "className": "Fission.UnitTests.EnginePathPolicyTests",
+        "total": 43,
+        "mandatory": [
+          "Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True)",
+          "ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True)"
+        ]
+      },
+      {
+        "export": "verifyEngineJobFilesTrx",
+        "className": "Fission.UnitTests.EngineJobFilesTests",
+        "total": 34,
+        "mandatory": [
+          "CopyAudio_TrueFileSymlinkSourceRefuses",
+          "CopyAudio_TrueFileSymlinkDestinationRefuses"
+        ],
+        "fallback": "both newfirstconcatexceptioncases must be inexactnewfixture/requirednames policy, preserveactualnativefallback"
+      }
+    ],
+    "parser": "refactorstrictinternalgenericTRXvalidatorwithsealeddescriptorconstants ifneeded; preserveold43publicwrapper andallfailurecases. No arbitraryruntime suite/count/allowSkip overrides. New34wrapper requiresallPassed/linkeduniqueidentities/truefilelinks, no stale/cancel/inconclusive/duplicate/todo/timeout/zero. Input XML cannotchooseclass/count.",
+    "sourcePins": {
+      "oldPurePolicy": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+      "oldPureTests": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+      "newHelper": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+      "newEngine": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+      "newIOTests": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "newUnitProject": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef"
+    },
+    "closure": "beforefirstrestore/compile enumerate/pin allactualbuild-ownedtracked .cs/.csproj in originalCore/Steps/Providers/Unit dirs plus exactprops/shim against currentcandidateGit blobs, rejectuntracked/missing/link/extra build references or changedsource. Originalproject refs closedUnit->Core,Steps,Providers/Steps->Core/Providers->Core +existing4testpackages/System.Management10.0.14(System.CodeDom10.0.14transitive). Recordallclosurefilehashes and recheckaftertests. No privateDLL/CLI/Web/IntegrationTestproject.",
+    "restore": "rootexplicitapproves only thispublicpinned originalUnit+Core+Steps+Providers packageclosure including2newpublic10.0.14, cleanownclearconfig+cache, no otherfeeds/models/SDK/security/auditdisable",
+    "artifacts": "useownednew --artifacts-path consistentlyrestore/test toavoidsourcebin/obj/historyoverwrites, correctFISSION fixture root. Originalcscshim/propsunchanged, actualpreinstalled10.0.403 oneSDKinventory+realX64/host+validatedProgramFilesX86 retained.",
+    "actualExecution": "afterone restore/actualcompile, runoriginal43class thenoriginal34class as TWOexplicit dotnet testfilters and separateTRXfiles. Rejectmissing/stale/unexpectedresults, bindbothsamecodehead/sourcehashes. Do notcountthe43asnewIOcoverage. Fakecodec tests remainnotactualmedia.",
+    "output": "finalsingle sanitizedsummary exposes two distinct strictsuitecounters/names/TRXhashes/exitcodes withscope purepath+controlled-fileIO-Fakecodec-only; preservefixedsafe subprocessdiagnostics, neverrawenv/args/body/error/log/TRXupload. Keepold142/218unitlogs/firstfailedCI and43pass historicalreceiptsunchanged."
+  }
+}

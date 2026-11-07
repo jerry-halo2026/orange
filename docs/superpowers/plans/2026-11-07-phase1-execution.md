@@ -289,3 +289,14 @@ Only files registered as this helper's current attempt-owned audio copy/generate
 No real CLI/Web/config/hardware/media/private engine or worker/admission/actualPlan protocol launch. Original early hardware probes/config defaults remain unsafe. RuntimePathsIsolated staysfalse; only protected file-copy/archive/original-callsite behavior under Fake codecs may be claimed. New csproj graph and added files require coordinator's later separate CI input-closure+new test-result gate change; source author cannot touch CI. No original43/oldhead green used as new helper coverage. Source, logs, package versions, scope failures, all first attempts retained under .dev/fission-io. Mac arm64 still untested.
 
 执行细化纠正（2026-11-08）：原最小夹具曾误用VideoDir根目录video.mp4；实际MaterialPool以Group为空识别配音，故原入口测试先得到materialShort。总控核原源码后只批准改为原生01-scene子组，首轮28例20pass8fail与旧fixture留存。未修改MaterialPool/DTO/算法，根目录视频分类缺口仍列待验证，不冒充修复；这不缩小产品范围。
+
+
+## 2026-11-08 CI closure for controlled IO
+
+Coordinator single-root-CI writer taskT01rev13 consumes source-reviewed IO6048 and Auth274b. Old actual43proof remains only pathpolicy, while new34class has two localfile-symlink ENVfail. Only four CI files allowed, no C#/project/checker/docs changes by sourceauthor.
+
+- [ ] Write new strict34TRX-descriptor/required2filelinks+2fallbackcases/closedbuild-input andphase1Auth/policy cases, watchRED. Preserveold218strict cases andallfirstfailedreports.
+- [ ] Minimal internalstrictvalidator reuse, sealed43/34suite constants, source canonicalhashes ascard; enumerate currentcandidate compiledsource/project graph includingProviders/helper/newtests beforebuild and recheckafter, no untracked/link/foreignproject allowed.
+- [ ] SameactualpreinstalledSDK10.0.403/ownedoneSDKinventory/realX64host/pfx86, publicexplicit originalUnitgraph16packages only, --artifacts-path ownedoutputs. Separate real original43and34filters/TRXs, no mixedfakepass/skip/oldhead inference. Runtime remains Fakecodec fileIO not media.
+- [ ] Add nativeAuth81/policy92pure tests toexistingphase1(331expectedcaseexecutions) withoutdeps/network, sameWindowspublicscope, permissions/timeout/noartifact fixed. AllCIcodepuretests/syntaxpass, non-authorreview andRootindependentverify beforecommit. Authorno.NET/entry/job/push evenmocked.
+- [ ] Root laterfreshsource/historyprivacy/publictarget/cardN5a andseparateone-joblease; actualsamehead43+34mustfullypass0skip beforeIOconsumerfreeze. PreservefirstrootCI failure42406704504, old43success42410466762, sourcequalityfix/SDKpolicydeviation. Newjobfailure notskipped/rerun automatically. No production/devmain/tag/remoteconfig/model/media/privateupload.

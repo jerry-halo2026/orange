@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 13,
+  "reviewerAgent": "/root/slices_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCardSHA256": "9820a9191edc0aa240957ad4ea73d3ed2f5a27d42da23222a268c5f7b07212ad",
+  "finalCardSHA256": "6de287d58ad83cf82d89fffe54942ddaaf19df056aaef949e5b80a3d027b2926",
+  "sourceProofSHA256": "3f337208216b2607104c927a13f0061bd6ccbef8b165c047b0cfee465d3bf699",
+  "finalOnlyChange": "reviewer requested sync duplicate runtime.restore/dotnetCommands to authoritativeCIExpansion dualsuite/Providersgraph/artifacts; no behavior/permission increase",
+  "actorAllowed": "4CIfiles localpureNode only, no main/.NET/remote",
+  "requiredNext": [
+    "immutablecommit+actualE3N5a84",
+    "genuineTDD/sourcepeer/rootindependent",
+    "newRootactualCIlease afterfreshpublicationaudit"
+  ],
+  "notClaimed": [
+    "34realWindowspassed",
+    "realmedia/host/N1/wholePG"
+  ],
+  "frozenCardSHA256": "500600bda42b1f79a58200a1481a8d0ee843f4d2e7f7b61a9da0488eaa410495",
+  "authCIProducerProofSHA256": "4a7f1ae3c7cf910070e9ff5c955155493c706d917cae360fca3c350899f85b09",
+  "additionalDependencyApproval": "T02a274b localAuth+policytestsource/fixtures explicitlydeclared, no test/network/permission scopegrowth",
+  "fix1": {
+    "issue": "duplicate commandlogger filename instead oftrx logger",
+    "fix": "exacttrx;LogFileName syntax retained2filters/artifacts/resultsdirs",
+    "reviewedCardSHA256": "6dbea7639b88fb408ec52ba8ee343db0cf5f73c56165268afb0efc43e434b330",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  }
+}

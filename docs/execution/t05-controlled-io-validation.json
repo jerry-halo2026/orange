@@ -1,0 +1,146 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T05.a",
+  "assignmentRevision": 2,
+  "sourceCommit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+  "approvalCommit": "a4ff46056013140fb02abf5f546cc65effc687c6",
+  "cardGitBlobSHA256": "37bda3a47e3d30faa4d58edfa118de3879a9b0fe907b3cad2d5704a295df53f5",
+  "author": {
+    "agent": "/root/fission_io_impl",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false
+  },
+  "sourceReview": "docs/execution/t05-controlled-io-source-review.json",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+      "targetE3RawSHA256": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+      "targetE3RawSHA256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "targetE3RawSHA256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef",
+      "targetE3RawSHA256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c"
+    }
+  ],
+  "rootVerification": {
+    "head": "a4ff46056013140fb02abf5f546cc65effc687c6",
+    "source": {
+      "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245",
+      "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+      "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c"
+    },
+    "sourceUnchanged": true,
+    "toolchain": {
+      "sdk": "10.0.300",
+      "compilerVersion": "5.6.0-2.26230.102 (caa81fa4971f74880cdab61990cb1b11420939ec)",
+      "compilerSHA256": "5d03664b92a3c91bafb63466d1796d1aa863a5cbab3d6b79a30ba1b13d192cd2",
+      "shimSHA256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0",
+      "propsSHA256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063",
+      "ownedSDKInventoryOnly": "10.0.300",
+      "actualCscTasks": 4,
+      "forcedFreshArtifactsBuild": true,
+      "actualTestHost": "X64 diagnostic",
+      "originalShimInvoked": true
+    },
+    "restore": "freshownofflineconfig+newpackages/artifacts, no existingconfig/network/auditdisable/SDKinstall",
+    "fullClass": {
+      "total": 34,
+      "executed": 34,
+      "passed": 32,
+      "failed": 2,
+      "notExecuted": 0,
+      "inconclusive": 0,
+      "failedNames": [
+        "Fission.UnitTests.EngineJobFilesTests.CopyAudio_TrueFileSymlinkSourceRefuses",
+        "Fission.UnitTests.EngineJobFilesTests.CopyAudio_TrueFileSymlinkDestinationRefuses"
+      ],
+      "classification": "two localtruefile-symlink setupENVfail, notpass/skip",
+      "overallPassed": false,
+      "trxSHA256": "2af298f8ea09cd40744986ad56d1c90f63ca0bf5a92574ccf7450351f7aed713"
+    },
+    "logs": [
+      {
+        "name": "SDK",
+        "exitCode": 0,
+        "stdoutSHA256": "3f39ed349c39eb60a2fc42d7b7c04efc5c1749270745a5c55ce482b906639e50",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "compiler",
+        "exitCode": 0,
+        "stdoutSHA256": "ce0473e0e6db8ed9dade7177b7861717da19c0d250d20951a03e5ff117b3c77b",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "restore",
+        "exitCode": 0,
+        "stdoutSHA256": "7672a62a91efa08e65e7c429e3681f8b76798abfc26f3cbd4f5d0fccb552afe0",
+        "stderrSHA256": "04dde9e46b902240a204acfb0cd5283be410828f0b3e1dc7b8e5f2d40e97272b"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "stdoutSHA256": "e9be0696d4cc4dfab1b21930434a8ac88f3471e2a0d74ebd57cc4c089db6c998",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "full-class",
+        "exitCode": 1,
+        "stdoutSHA256": "5b5422d384d1a48c8b538bc6693b04517b60e042a4c42efe1aa189494b3c9558",
+        "stderrSHA256": "49202e4fd623c457b733e041f92c84db636c46daa367813668d4a322e5ce083c"
+      }
+    ],
+    "scope": "actualoriginalCore/Providerscompile+RunAsyncFakecodec filesystemtests; no realmedia/host/CLI/Web/runtimePathsIsolated/PG"
+  },
+  "rootProofSHA256": "8408f10f11f41acd6a32c4241b4bd9e5aef6a2c3d870292b50e19b412f48437f",
+  "sourceReportSHA256": "1f3c52cdb4214614d502d87cc58d6c7e96a76e695c2e474847145cdf65ada14f",
+  "N5a": {
+    "beforeWrite": 84,
+    "postSource": 84,
+    "exactSourceHead": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+    "exactCommittedCases": 84,
+    "committedArtifactSHA256": "c5106c0235b53820458ca94a00b185f9ac6d3bcabe5732e3c55528ee000cf60c"
+  },
+  "rootControllerFirstAttempt": {
+    "buildExit": 0,
+    "failedBeforeTest": "EnglishTaskCsc marker absent in ambientlocalizedMSBuild diagnostic, 4DLLs existed; original logs retained",
+    "resolution": "onlyfixed diagnosticlocale innewownedartifacts thenforcedfresh4Csc+actualX64host full34, no sourcechange"
+  },
+  "fix1": {
+    "P2": "controlledNewOutput reused originalconcatlist in transitionfallback",
+    "RED": "actualRunAsync2fallbackcasesfailed",
+    "GREEN": "2actualsameentrycasespass; separatefreshcontrolledfallback output/list, priorpartialandlistretained/downstreamcorrect"
+  },
+  "nativeFixtureRuling": "testvideo root→01-scene only, noMaterialPoolalgorithmfix; old root-video20pass8fail retained",
+  "authorToolPolicyDeviation": "old14onlylistSdk/globalRootandincremental18/19 NOT compliant, oldreportc430preserved; correctedownSDKhostsplit diagnostic25 andRootindependentactual4Csc newartifacts nowproven",
+  "dependencyClosure": {
+    "addedDirect": "System.Management10.0.14",
+    "addedTransitive": "System.CodeDom10.0.14",
+    "packageCount": 16,
+    "source": "explicitownpublicfeedonlywhenofflinecachemissing; finalrootrestorefreshownofflineartifactfeed, no oldconfigs/readprivatefeed"
+  },
+  "readiness": "source-approved verification candidate, NOT fullnew34passed",
+  "remainingGates": [
+    "actualWindows34allpassincludingnewsourceanddestinationtruefilelinks, old43notcoverage",
+    "CIcurrentinputclosure/testfiltermustbeexpanded byseparatelyreviewedRootCIwriter",
+    "realworkerT02c/host/CLIWeb/config/hardware/realmedia/inputauthorizationclosure",
+    "TOCTOU/macarm64/installer/wholePG"
+  ],
+  "fullTaskAccepted": false,
+  "runtimePathsIsolated": false,
+  "realCodecExecuted": false,
+  "realCloudAuthRequests": 0
+}

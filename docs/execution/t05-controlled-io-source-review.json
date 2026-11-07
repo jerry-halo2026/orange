@@ -1,0 +1,68 @@
+{
+  "taskId": "T05.a",
+  "commit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+  "authorAgent": "/root/fission_io_impl",
+  "reviewerAgent": "/root/fission_io_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "67094cd2799f89663b2e5c708b973ccd127792dc9213f01deb2e578f18708245",
+      "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "sha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+      "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "sha256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c",
+      "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    }
+  ],
+  "scope": "source and actualFake-codec fileIO safe for next bounded realWindowsCI verification only; full34notaccepted untiltruefilelinks execute",
+  "reviewModel": "requestedgpt-6-astra/high, backendunattested",
+  "round0": {
+    "quality": "needs-fix",
+    "P2": "controlledNewOutputlist rejects originaltransitionfallback reuse"
+  },
+  "fix1": {
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "RED": "actualRunAsync2fallbackcasesfailed",
+    "GREEN": "2/2passed, oldlist/partialpreserved andnewtargetconsumed",
+    "sourceScope": "onlycontrolledbranchfreshfallbacktarget legacyunchanged"
+  },
+  "rootIndependent": {
+    "proofSHA256": "8408f10f11f41acd6a32c4241b4bd9e5aef6a2c3d870292b50e19b412f48437f",
+    "freshOwnedSDK": "10.0.300",
+    "actualCscTargets": 4,
+    "actualTestHost": "X64",
+    "fullClass": {
+      "executed": 34,
+      "passed": 32,
+      "failed": 2,
+      "notExecuted": 0,
+      "inconclusive": 0,
+      "classification": "localtruefilelinkcreationENVnotpolicyassertionpassed"
+    },
+    "overallPassed": false
+  },
+  "firstRootControllerFailure": "buildexit0 butEnglishTaskCsc markerfailed underambientlocalizeddiagnostic, logs+newDLLsretained; explicitUIlanguage newownedattempt2actual4Csc/build0/full34run",
+  "authorOldPolicyDeviation": "oldglobalDOTNET_ROOT/probe-only/incrementalevidencec430reportednotcompliant, preserved; fix1/rootactualownSDK+realhost/noincrementalproven",
+  "legacyRootVideoFixture": "01-scenefixtureRootapproved existinggroupsemantics; rootflatvideobugunfixed, firstfailsretained",
+  "reportSHA256": "1f3c52cdb4214614d502d87cc58d6c7e96a76e695c2e474847145cdf65ada14f",
+  "fullTaskAccepted": false,
+  "runtimePathsIsolated": false
+}

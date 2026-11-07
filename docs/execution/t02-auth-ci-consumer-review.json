@@ -1,0 +1,44 @@
+{
+  "taskId": "T02.a",
+  "commit": "274b80850dc08297d2b9c9f3631793c79af375d8",
+  "authorAgent": "/root/auth_service_impl",
+  "reviewerAgent": "/root/slices_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac",
+      "gitBlobSha256": "007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b",
+      "gitBlobSha256": "fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "producerRoles": "Authimplementationauth_service_impl, unchangedactualpolicyaccess_policy_impl; respective sourcepeers approved/root257local pluscurrentE1compat0",
+  "consumerScope": "onlybuilt-in CI331 localinjectedAuth/policy tests, notfirstpartyproject/realAuth/N1/UI/rendererconfiguration",
+  "priorValidation": "docs/execution/t02-auth-service-validation.json",
+  "representation": "canonicalLFtargetE3/cleanCI actualpolicy345/test4d52; E2oldCRLF4e/7d remainsseparateproducerrepresentation",
+  "syntheticRejectionFixture": "freshmarkedtestline96 authorandpeerconfirm; nooldsecretfixture/realkey/data",
+  "approval": {
+    "reviewerAgent": "/root/slices_policy_review",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "scope": "existinglocalDI/policy331CItests only, notactualAuth/N1"
+  }
+}

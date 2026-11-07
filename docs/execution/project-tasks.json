@@ -126,7 +126,7 @@
     },
     {
       "id": "T02.a",
-      "status": "ready",
+      "status": "in_progress",
       "scope": "native identity/command characterization and access additions",
       "dependsOn": [
         "T01"

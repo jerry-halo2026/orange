@@ -1,6 +1,6 @@
 {
   "taskId": "T02.a",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "scope": "native-reuse characterization only; business identity/access additions and full T02.a remain pending",
   "classification": "native-reuse",
   "authorAgent": "/root/t02_native_reuse",
@@ -14,7 +14,7 @@
     "9079c513d163441dc639fff5fc282c38a8bd7c94"
   ],
   "status": "active",
-  "dispatchState": "CPU write/resource reservation; writer not dispatched until actual scoped admission",
+  "dispatchState": "existing writer paused for bounded dependency-plumbing refresh; resume only after rev2 policy review and actual gate",
   "writeAllowlist": [
     "packages/openfilm/studio/server/projects.test.mjs",
     "packages/openfilm/src/film-doc.test.mjs",
@@ -148,7 +148,22 @@
       "OPENFILM_NO_UPDATE_CHECK": "1",
       "ELECTRON_SKIP_BINARY_DOWNLOAD": "1"
     },
-    "dependencyInstall": "if needed only pinnedpnpm9.15.9 frozenlock ignore-scripts, cache/store/temp this worktree; no runtime/model download"
+    "dependencyInstall": "prefer exact same-tree workspace binding above; if truly additional deps needed only pinnedpnpm9.15.9 frozenlock ignore-scripts, own cache/temp and no Electron/model download; report scope need first",
+    "workspacePackageBinding": {
+      "kind": "ignored local directory junction only",
+      "link": "node_modules/openfilm",
+      "target": "packages/openfilm",
+      "targetScope": "same managed worktree actual package at declared dependency9079, not stub/global/other tree",
+      "requiredChecks": [
+        "all existing parents ordinary directories under this leased worktree",
+        "target realpath exactly same-tree packages/openfilm",
+        "actual package manifest name openfilm and native version0.3.0",
+        "if existing binding differs or is not this exact target STOP; no overwrite/delete"
+      ],
+      "network": false,
+      "globalInstall": false,
+      "sourceOrLockChange": false
+    }
   },
   "forbidden": [
     "production/source interface changes",

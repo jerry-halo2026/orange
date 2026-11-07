@@ -1,8 +1,8 @@
 {
   "taskId": "T02.a",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "policyPath": "docs/execution/t02-native-assignment.json",
-  "policyRawSHA256": "c237d1dcbb33274c9a500bf4eae297146d3bd7c140208255da8feac7f35c21b3",
+  "policyRawSHA256": "097605424b3e6d28ba27125790178d5191c34e9c1a7b850a68f223da6efea8dc",
   "reviewerAgent": "/root/t01_cpu_freeze_review",
   "requestedModel": "gpt-6.1-sol",
   "requestedEffort": "high",
@@ -24,5 +24,20 @@
   "sourceProducerCommit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
   "cpuProofSHA256": "4e9b2db1975a6319113ac3b197107a0beeacd62f74c024d562a49d991a1b86db",
   "scope": "test-only native reuse; no identity/access business additions, T03 Auth, production code or full T02.a accepted",
-  "actualAdmission": "pending immutable commit and real scoped gate"
+  "actualAdmission": "pending immutable commit and real scoped gate",
+  "revisionHistory": [
+    {
+      "revision": 1,
+      "actualGate": "84 passed before initial writer dispatch",
+      "verdict": "approved",
+      "sha256": "c237d1dcbb33274c9a500bf4eae297146d3bd7c140208255da8feac7f35c21b3"
+    },
+    {
+      "revision": 2,
+      "change": "same-tree actual openfilm package binding only, no network/stub/global/source changes",
+      "verdict": "approved",
+      "actualGate": "pending writer paused",
+      "sha256": "097605424b3e6d28ba27125790178d5191c34e9c1a7b850a68f223da6efea8dc"
+    }
+  ]
 }

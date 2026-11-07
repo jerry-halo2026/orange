@@ -11,7 +11,7 @@
     "buildTestedInOrange": false,
     "runtimePathsIsolated": false
   },
-  "phase": "docs-and-source-alignment-candidate",
+  "phase": "native-first-goal-handoff-prepared; no business implementation",
   "branch": "codex/docs-realignment",
   "businessFeatureImplementation": false,
   "docsMaintainedHere": true,
@@ -33,8 +33,22 @@
     "state": "future-candidate-not-created"
   },
   "worktreeCleanup": {
-    "state": "not-performed; cloud backup is not isolation or ignored-data backup"
+    "state": "private-recovery-verified; 3-unoccupied-local-refs-removed; 39-worktrees-retained-native-tool-unavailable",
+    "receipt": "2026-11-07-phase1-archive-delivery.json"
   },
   "remoteTarget": "https://github.com/jerry-halo2026/orange",
-  "publication": "verify actual remote refs and delivery receipt; no dev/main/tag integration or release"
+  "publication": "verify actual remote refs and delivery receipt; no dev/main/tag integration or release",
+  "handoff": "docs/discovery/18_Goal新会话交接包.md",
+  "pilotReadiness": "docs/execution/pilot-readiness.json",
+  "nativeInterfaceAuthority": "pinned OpenFilm source/types/tests; doc16 is index; doc07 only business additions",
+  "platformScope": {
+    "first": "Windows",
+    "planned": "macOS Apple Silicon arm64",
+    "excluded": [
+      "Intel Mac",
+      "Linux client",
+      "Mac Universal"
+    ],
+    "macValidated": false
+  }
 }

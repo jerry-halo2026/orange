@@ -1,14 +1,18 @@
-# orangeflim 已有成果查阅归集
+# orangeflim 旧成果归档（与后续开发分开）
 
-本分支仅供源码/证据查阅，不是已测试集成、dev、main或发布。不要从此分支直接开发或执行旧文档命令。
+只读归档线：codex/archive-consolidated-20261107。不是可直接运行/继续开发的根，不代表旧功能已整合进产品。
 
-- snapshots/current-openfilm：当前原版OpenFilm v0.3.0、Fission快照与重对齐docs，原始e6ed487树。
-- snapshots/legacy-dev：旧独立壳/Auth/Studio接入成果；只作定向复用输入，不激活旧壳。
-- snapshots/legacy-k01：未进入旧dev的字幕保存机器契约侧支。
-- snapshots/legacy-gate / legacy-k07：保留原门禁/K07侧支内容，patch等效不抹掉来源。
+后续原版开发基线：codex/docs-realignment @ 8b8ef162708033dd3ed06c81dc0afffc95e8b950。一期通过后按获批方案迁dev；本次不移动dev/main。
 
-原始36本地ref完整Git历史另有私有bundle，已做独立恢复及fsck核验。旧历史含私人供应商文档链接，未作为本公开分支祖先；公开仅脱敏源码快照。manifest记录原commit/tree/blob与公开tree/blob映射。公开快照不包含未提交4文件/ignored数据，不能替代工作树恢复档案。
+## 已保全
+- snapshots/current-openfilm：截至本次交接的原版v0.3.0、Fission与完整交接docs，固定8b8ef162708033dd3ed06c81dc0afffc95e8b950。
+- snapshots/legacy-dev / legacy-k01 / legacy-gate / legacy-k07：旧源码四叶脱敏快照，原历史78提交另有私有可恢复bundle。
+- snapshots/legacy-ordinary-gates-wip：以legacy-dev脱敏树为基底，叠加四个未提交门禁/测试文件；仅保存，不标实现/测试完成。原树/index未重置。
 
-一期计划见 plans/phase1-execution.md（待Ethan确认）；工作树清单见 plans/worktree-archive-inventory.md。业务开发仍在原版工作线；本人智尚绑定缺失只停该真云联调。
+旧历史含私人链接，所以不把旧原始commit连入公开祖先；manifest记录原始/脱敏映射。完整36ref历史私有备份在E盘归档目录，已做恢复演练。
 
-不另造UI，不盲合旧壳到原版，不声称原K01签收自动批准剪媒体。上游源码/许可/真实名称保留，不新增第三方媒体或引擎二进制分发授权。
+## 尚未做
+39棵物理工作树未清理。原生归档工具连接仍中断；ignored运行数据/取证须先保全，不绕过工具删目录。提交归档不等于释放空间。D:/dev/orange已初始化Git，但main没有首提交；实际开发工作树在E盘，打开D的当前main可能看不到当前分支图谱。
+
+## 当前文档入口
+[新会话交接](snapshots/current-openfilm/docs/discovery/18_Goal新会话交接包.md)。plans/目录是首次归档时的旧计划副本，仅溯源；不执行旧宿主或旧计划。

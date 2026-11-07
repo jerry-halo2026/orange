@@ -1,0 +1,3 @@
+[submodule "vendor/openfilm"]
+	path = vendor/openfilm
+	url = https://github.com/jerry-halo2026/openfilm.git

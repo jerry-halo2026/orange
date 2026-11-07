@@ -5,10 +5,10 @@
   "sourceSnapshots": [
     {
       "name": "current-openfilm",
-      "originalCommit": "e6ed48764320c537778f052b3083a1f935125771",
-      "originalTree": "9da2e5c26e7e104335e20b2a37a3777e610d08e7",
-      "publishedTree": "9da2e5c26e7e104335e20b2a37a3777e610d08e7",
-      "entries": 2848,
+      "originalCommit": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
+      "originalTree": "9756a6573afc619cdbf369597e434b172acf77d8",
+      "publishedTree": "9756a6573afc619cdbf369597e434b172acf77d8",
+      "entries": 2858,
       "redactions": []
     },
     {
@@ -140,6 +140,43 @@
           "originalBlob": "84570f22574118aaa0ebc00333478e081bc7be3f",
           "publishedBlob": "0f3dcc657a691f27cc1a4410930d900576f1449c",
           "privateURLsRemoved": 1
+        }
+      ]
+    },
+    {
+      "name": "legacy-ordinary-gates-wip",
+      "baseCommit": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+      "publishedTree": "8a546a4f73294ce51716fa5a8844c8e08b31fc01",
+      "state": "preservation-only-not-reviewed-as-functional-completion",
+      "baseSnapshot": "legacy-dev",
+      "files": [
+        {
+          "path": "tests/governance/candidate.test.mjs",
+          "bytes": 250545,
+          "sha256": "a00c44ab1619e20d4baeb991b087040ece062ae4a4922a85a61ca37b2041aee3",
+          "matchesPreviousBackup": true,
+          "publishedBlob": "7373e499d480d907303f16e19d47f2450b5e7b28"
+        },
+        {
+          "path": "tests/governance/imports.test.mjs",
+          "bytes": 27561,
+          "sha256": "367e57f350ff836c87d76119f4fb19b413a7318cd3c5124321fff7fd7082a8c5",
+          "matchesPreviousBackup": true,
+          "publishedBlob": "d5c223750f10dc2f4cb5eb95872dbc899dce6f55"
+        },
+        {
+          "path": "tools/ci/check-candidate.mjs",
+          "bytes": 261802,
+          "sha256": "b44b333aa9deb34d9cc515d1fd271d2cd201193fb5e0f368a200f71a1b1dd355",
+          "matchesPreviousBackup": true,
+          "publishedBlob": "21c0c45f2feac4b582aeedf189c73266249569d1"
+        },
+        {
+          "path": "tools/ci/check-imports.mjs",
+          "bytes": 71848,
+          "sha256": "79b8a1aa4aafe16b9017726abfe4bcd0b8c82a4e2393592cbec5437f815ebd83",
+          "matchesPreviousBackup": true,
+          "publishedBlob": "effd0069e7803cded92fb3380be79afe7cca8cb6"
         }
       ]
     }
@@ -333,8 +370,13 @@
     "refs": 36,
     "verified": "git bundle verify, independent bare fetch, git fsck --full, all source refs compared"
   },
-  "wip": "4 ordinary-gates files backed up privately; not included in public snapshots",
+  "wip": "Four ordinary-gates files are now committed as a preservation-only snapshot, not merged into active product; original source/index untouched.",
   "excluded": "private original repository index/archive/API configuration, uncommitted work, ignored runtimes, raw legacy commit ancestry",
   "licenses": "Source notices retained; OpenFilm MIT and original trademark notices remain; no original vendor media or engine binaries added",
-  "redactionPolicy": "Only private Feishu/Lark documentation URLs replaced; test identities and hash pins confirmed synthetic/nonsecret by independent review. Original raw commit OIDs are references, not archive parents."
+  "redactionPolicy": "Only private Feishu/Lark documentation URLs replaced; test identities and hash pins confirmed synthetic/nonsecret by independent review. Original raw commit OIDs are references, not archive parents.",
+  "closedAt": "2026-11-07T08:57:01.361Z",
+  "activeDevelopmentBaseline": "8b8ef162708033dd3ed06c81dc0afffc95e8b950",
+  "physicalCleanup": "NOT performed: managed archive tool Transport closed; 39 trees remain and needed ignored data not fully backed up",
+  "currentSourceRefCount": 34,
+  "originalRoot": "D:/dev/orange is initialized; its main HEAD is unborn, original staged state protected"
 }

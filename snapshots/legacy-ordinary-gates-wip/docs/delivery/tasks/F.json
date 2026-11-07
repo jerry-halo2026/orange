@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "plan": "2026-11-05-orange-t01-t02-plan",
+  "approvedScope": "Ethan approved A–F local implementation; original main/index/archive unchanged",
+  "subjectCandidate": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "evidence": "../evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "id": "F",
+  "workPackage": "isolated serial integration and delivery",
+  "state": "exact_local_candidate_accepted_partial_delivery_not_M0",
+  "head": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "worktree": "C:/Users/Administrator/.codex/worktrees/orange-g2-source/orange",
+  "dependencies": [
+    "A",
+    "B",
+    "C",
+    "D:consumed slices",
+    "E:required M0 entry"
+  ],
+  "executor": {
+    "agent": "/root",
+    "model": null,
+    "modelNote": "Primary runtime identifier not exposed; not guessed"
+  },
+  "review": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/orange-g5-whole-candidate-9a0d068-review.md",
+    "sha256": "68e37e216565e91ebc565fe1f929676a41f0df1b004e33e2f19d72e9e6e6d905",
+    "reviewer": "/root/gate_review",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "specs": "approved",
+    "quality": "approved"
+  },
+  "tests": {
+    "checks": [
+      "write-set",
+      "imports",
+      "format-types",
+      "dependency-audit",
+      "secret-scan",
+      "import-build-graph",
+      "windows",
+      "contracts",
+      "independent-review"
+    ],
+    "windows": {
+      "pass": 9,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/windows-tap.stdout",
+      "sha256": "11ef356fc5e6440e8b531913b5ec3d65b63b25ec3307f8b03ace0ecca80b09b9"
+    },
+    "typescript": {
+      "pass": 125,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/contracts-ts-tap.stdout",
+      "sha256": "bfc5b3b76965fa2bf84cfa0a4458bced842e4cba4cf6f54fc219f753821dbfa2"
+    },
+    "dotnet": {
+      "pass": 114,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/results/orange-k07.trx",
+      "sha256": "a14a7b7d093d4ca21122ddd0aecdb0dd2db42b3e6bce540a0e82277c99b3ece8"
+    },
+    "sharedFixtureIds": 114,
+    "secret": {
+      "files": 60,
+      "scans": 120,
+      "findings": 0,
+      "unscanned": 0
+    },
+    "audit": {
+      "npm": 61,
+      "nuget": 13,
+      "findings": 0,
+      "offline": true
+    },
+    "raw": {
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5fc-HKzEo1/raw.stdout",
+      "sha256": "9af62d377c1fdaa376f5f28ab7e7e0ab5814a339517f076e119672775c9af64e"
+    },
+    "verified": {
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5fc-HKzEo1/verified.json",
+      "sha256": "6a6c3e36c268cfe74905de1d44450a87c9211066d5bde187255cd3247d7517c5"
+    }
+  },
+  "open": [
+    "not issued: no two genuinely ready independent product write cards",
+    "partial evidence, no real two-card positive reservation",
+    "not observed; no product-write overlap",
+    "not accepted: Studio and applicable contract/environment evidence not complete; no blanket requirement for unrelated K or M1",
+    "real media runtime unverified; not an E20.integration/M1 acceptance and not a blanket M0 requirement",
+    "partial only",
+    "Ethan approval of reproducible controlled local OpenFilm source not received; no integration",
+    "named human technical signer and N0 producer/consumer approval pending"
+  ],
+  "resourceState": {
+    "desktop": "released",
+    "trackedReplayHandles": [],
+    "scope": "completed observed runs; not a global inventory"
+  },
+  "next": [
+    "Resume only real ready packages; E controlled local-source approval and K01 named signer remain external prerequisites",
+    "Require scoped actual two-card proof before N5a, actual overlap before E21.runtime, then verify M0/E20.base where applicable",
+    "No production, remote, publish or main action without separate approval"
+  ],
+  "allowedWriteSet": [
+    "docs/delivery/index.json",
+    "docs/delivery/tasks/A.json",
+    "docs/delivery/tasks/B.json",
+    "docs/delivery/tasks/C.json",
+    "docs/delivery/tasks/D.json",
+    "docs/delivery/tasks/E.json",
+    "docs/delivery/tasks/F.json",
+    "docs/delivery/evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md"
+  ],
+  "branch": "codex/orange-g2-source",
+  "baselineCommit": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "workingBaselineCommit": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "acceptedSubject": {
+    "head": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+    "tree": "5fb582a1b9aed9991500c1e8cbaef1698e3a9df4",
+    "base": "405b45f322e29e097dca57efef6c0be90e95f699",
+    "branch": "codex/orange-g2-source",
+    "worktree": "C:/Users/Administrator/.codex/worktrees/orange-g2-source/orange",
+    "admitted": true,
+    "scope": "local exact code candidate only; not N5a or M0 or main",
+    "exitCode": 0,
+    "code": "CANDIDATE_CHECKS_PASSED"
+  }
+}

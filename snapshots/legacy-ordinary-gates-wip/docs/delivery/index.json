@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "project": "orange",
+  "owner": "Ethan",
+  "observedAt": "2026-11-05T19:01:11.104Z",
+  "status": "local_candidate_verified_partial_delivery_not_M0",
+  "plan": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/2026-11-05-orange-t01-t02-plan.md",
+    "sha256": "3703f02a44c8a288d45e3e7174ee9f7223df238604cf0d93d39535ad128b0a07"
+  },
+  "authority": {
+    "entry": "docs/discovery/14_新会话启动与开发交付流程.md",
+    "prd": "v0.13",
+    "decisions": "v0.40 C01–C89"
+  },
+  "baseline": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "originalRepository": "D:/dev/orange",
+  "candidate": {
+    "head": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+    "tree": "5fb582a1b9aed9991500c1e8cbaef1698e3a9df4",
+    "base": "405b45f322e29e097dca57efef6c0be90e95f699",
+    "branch": "codex/orange-g2-source",
+    "worktree": "C:/Users/Administrator/.codex/worktrees/orange-g2-source/orange",
+    "admitted": true,
+    "scope": "local exact code candidate only; not N5a or M0 or main",
+    "exitCode": 0,
+    "code": "CANDIDATE_CHECKS_PASSED"
+  },
+  "tasks": [
+    {
+      "id": "A",
+      "path": "tasks/A.json"
+    },
+    {
+      "id": "B",
+      "path": "tasks/B.json"
+    },
+    {
+      "id": "C",
+      "path": "tasks/C.json"
+    },
+    {
+      "id": "D",
+      "path": "tasks/D.json"
+    },
+    {
+      "id": "E",
+      "path": "tasks/E.json"
+    },
+    {
+      "id": "F",
+      "path": "tasks/F.json"
+    }
+  ],
+  "evidence": "evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "externalEvidence": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5fc-HKzEo1/verified.json",
+    "sha256": "6a6c3e36c268cfe74905de1d44450a87c9211066d5bde187255cd3247d7517c5"
+  },
+  "scheduling": {
+    "policy": "C89 readiness-based dynamic capacity; reviews first; shared single writer; serial integration",
+    "n5a": "not issued",
+    "productParallelism": "not authorized until actual scoped N5a proof",
+    "restoreRule": "Revalidate Git, current agents/process handles, contracts and cards; never redispatch solely from this historical snapshot",
+    "currentProductWriters": 0,
+    "desktop": "released",
+    "admissionEvidence": "G5 K07 read-only verification only, no slot allocated"
+  },
+  "restrictions": [
+    "No main merge, original index/archive changes or destructive cleanup",
+    "No remote configuration/push/publication",
+    "No production, real Zhishang/cloud query/upload, or paid product model without separate approval"
+  ],
+  "invocation": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5fc-HKzEo1/invocation.json",
+    "sha256": "04ec0e27b622baf93ce5431a01cc2cfb6967a5c98e21edcfd849a0bf2789fbe8"
+  },
+  "review": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/orange-g5-whole-candidate-9a0d068-review.md",
+    "sha256": "68e37e216565e91ebc565fe1f929676a41f0df1b004e33e2f19d72e9e6e6d905",
+    "reviewer": "/root/gate_review",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "specs": "approved",
+    "quality": "approved"
+  },
+  "history": {
+    "previousIndexCommit": "d788b3ba9a8c8c78ca28cfbf7f63381672e98124",
+    "previousEvidence": "evidence/d3fef3888bec9ba56b251a49920acb124f6577e5/summary.md",
+    "previousAcceptedCode": "d1759a63e8dc9405daf9cc0caa288fefca4a453a"
+  },
+  "open": {
+    "N5a": "not issued: no two genuinely ready independent product write cards",
+    "E21Admission": "partial evidence, no real two-card positive reservation",
+    "E21Runtime": "not observed; no product-write overlap",
+    "M0": "not accepted: Studio and applicable contract/environment evidence not complete; no blanket requirement for unrelated K or M1",
+    "FissionRuntime": "real media runtime unverified; not an E20.integration/M1 acceptance and not a blanket M0 requirement",
+    "E20Base": "partial only",
+    "Studio": "Ethan approval of reproducible controlled local OpenFilm source not received; no integration",
+    "K01": "named human technical signer and N0 producer/consumer approval pending"
+  },
+  "metadataBoundary": "This record is authored after testing. Gate refers only to candidate.head. The records-only commit is not claimed to have passed the application gate."
+}

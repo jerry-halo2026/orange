@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "plan": "2026-11-05-orange-t01-t02-plan",
+  "approvedScope": "Ethan approved A–F local implementation; original main/index/archive unchanged",
+  "subjectCandidate": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+  "evidence": "../evidence/9a0d068c17cbe8d3fac7f715106a699a7b19a50c/summary.md",
+  "id": "D",
+  "workPackage": "T02.K",
+  "state": "K07.desktop-startup.v1_consumer_ready_only",
+  "head": "18e29f76ea768776acbde2e595e1964c165a35ff",
+  "dependencies": [
+    "A",
+    "B.shell@0dc626daac1907bb7dc4685e972150b9eeb57b4a"
+  ],
+  "executor": {
+    "agent": "/root/t02_k07",
+    "model": "gpt-6.1-sol",
+    "effort": "high"
+  },
+  "reviewer": {
+    "agent": "/root/k07_n0_review",
+    "model": "gpt-6.1-sol",
+    "effort": "medium"
+  },
+  "contract": {
+    "id": "K07.desktop-startup.v1",
+    "registry": "packages/contracts/freeze-registry.json",
+    "schemaSha256": "05ab9b80f10c5e4fbd59c2b09ff7975f18197108fd18e82430715f3dbd95d345",
+    "fixtureSha256": "81b0a6008518675719fb1e7261eb927bf39b843138ef3c8113be165eb9620693",
+    "n1Sha256": "bc41ba5f2eeca4aec400b42cbf8aa34f8354da674915669402d5b72912daedfd"
+  },
+  "tests": {
+    "subject": "9a0d068c17cbe8d3fac7f715106a699a7b19a50c",
+    "typescript": {
+      "pass": 125,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/contracts-ts-tap.stdout",
+      "sha256": "bfc5b3b76965fa2bf84cfa0a4458bced842e4cba4cf6f54fc219f753821dbfa2"
+    },
+    "dotnet": {
+      "pass": 114,
+      "skip": 0,
+      "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/g5f2-jsOAfI/results/orange-k07.trx",
+      "sha256": "a14a7b7d093d4ca21122ddd0aecdb0dd2db42b3e6bce540a0e82277c99b3ece8"
+    },
+    "sharedFixtureIds": 114
+  },
+  "open": [
+    "K01 named human technical approval",
+    "Other K packages remain unverified/proposed; no blanket freeze",
+    "K07 non-v1 schema-extension escaping P3 deferred"
+  ],
+  "allowedWriteSet": [
+    "docs/discovery/07_统一数据契约草案.md",
+    "packages/contracts/freeze-registry.json",
+    "packages/contracts/generated/dotnet/K07.g.cs",
+    "packages/contracts/generated/ts/K07.ts",
+    "packages/contracts/package.json",
+    "packages/contracts/schemas/K07/v1.schema.json",
+    "packages/contracts/src/validate.ts",
+    "tests/contracts/dotnet/ContractCases.cs",
+    "tests/contracts/dotnet/Orange.Contracts.Tests.csproj",
+    "tests/contracts/fixtures/K07/cases.json",
+    "tests/contracts/ts/contracts.test.ts",
+    "tools/contracts/generate.mjs"
+  ],
+  "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07-root/orange",
+  "branch": "codex/orange-t02-k07-root",
+  "baselineCommit": "405b45f322e29e097dca57efef6c0be90e95f699",
+  "workingBaselineCommit": "8bd12582144e6e734f406c45df20c9a3e336470c",
+  "checkoutNote": "Worktree later transferred to B live-adapter and now contains 01d9da6; head denotes immutable D result, not current checkout. Revalidate before reuse.",
+  "phases": [
+    {
+      "id": "D.K07-machine",
+      "base": "0dc626daac1907bb7dc4685e972150b9eeb57b4a",
+      "head": "6b0757200affe0635f853b9099984c47bc6a5421",
+      "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07/orange",
+      "branch": "codex/orange-t02-k07",
+      "executor": {
+        "agent": "/root/t02_k07",
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "dependsOn": [
+        "A",
+        "B.shell",
+        "K07 N0 design_ready"
+      ]
+    },
+    {
+      "id": "B.K07-root-entry",
+      "base": "6b0757200affe0635f853b9099984c47bc6a5421",
+      "head": "8bd12582144e6e734f406c45df20c9a3e336470c",
+      "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07-root/orange",
+      "branch": "codex/orange-t02-k07-root",
+      "executor": {
+        "agent": "/root/t01_shell",
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "dependsOn": [
+        "D.K07-machine"
+      ]
+    },
+    {
+      "id": "D.K07-registry",
+      "base": "8bd12582144e6e734f406c45df20c9a3e336470c",
+      "head": "18e29f76ea768776acbde2e595e1964c165a35ff",
+      "worktree": "C:/Users/Administrator/.codex/worktrees/orange-t02-k07-root/orange",
+      "branch": "codex/orange-t02-k07-root",
+      "executor": {
+        "agent": "/root/t02_k07",
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "dependsOn": [
+        "K07 N1 and independent producer/consumer signoff"
+      ]
+    }
+  ],
+  "review": {
+    "path": "C:/Users/Administrator/.codex/visualizations/2026/11/05/01a1aa95-b1e2-7181-85c8-d88ec79d7302/orange-k07-registration-independent-18e29f7.md",
+    "sha256": "bccd0875bb4c0e26e19377bd692ec561e216b7d0e670708cbc9cbc7e3cffc9fd",
+    "reviewer": "/root/k07_n0_review",
+    "specs": "approved",
+    "quality": "approved",
+    "scope": "K07.desktop-startup.v1 only"
+  },
+  "integratedRegistration": "67e974da976a88591ec93b14411b4d3376f74a7a",
+  "remainingOpen": "named human technical signer and N0 producer/consumer approval pending"
+}

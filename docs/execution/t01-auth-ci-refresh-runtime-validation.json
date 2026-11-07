@@ -1,0 +1,668 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 16,
+  "executor": "/root",
+  "approvalCommit": "bdc88574797000291cb0c2b3be57df783254cedc",
+  "approvalCardGitBlobSHA256": "7e0160f4314d8eae2daf3978a1be24f8c114e58249024e01332ed2f414311a68",
+  "sourceCandidate": "bdc88574797000291cb0c2b3be57df783254cedc",
+  "sourceCICommit": "b869ba207ecb6e194dd904c005ccb6f121e7b986",
+  "sourceAuthCommit": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
+  "sourceIOCommit": "6048b20fe212ceac88ecf729d465213e2b8d362b",
+  "policyReview": "docs/execution/t01-auth-ci-refresh-runtime-policy-review.json",
+  "localN5a": {
+    "admitted": true,
+    "cases": 84,
+    "proofSHA256": "bcabe90f1b53f9749ab657f8c853f2ca3e62b3b6a0743b6963d77e2958309b83"
+  },
+  "historyAudit": {
+    "commits": 10,
+    "textBlobs": 43,
+    "unresolved": 0,
+    "narrowSyntheticFixtureException": true,
+    "proofSHA256": "e5015a4f77171587e6e64c747bea93dfd1ea653cf34bc8888164e348f98b7a61",
+    "notGeneralSecretscannerGuarantee": true
+  },
+  "remotePreflightSHA256": "18a8165d40bea28be8c5ce413cf07023f99e89ec178f125c0479ca073d5fda24",
+  "remoteLease": {
+    "issued": true,
+    "issuedAtUTC": "2026-11-07T23:43:23.723Z",
+    "owner": "/root",
+    "repository": "jerry-halo2026/orange",
+    "ref": "refs/heads/codex/t05-path-policy",
+    "workflow": ".github/workflows/fission-path-policy.yml",
+    "runner": "actual standardGitHub-hosted windows-2025, image windows-2025-vs2026",
+    "maxActiveFissionRuns": 1,
+    "timeoutMinutes": 12,
+    "state": "terminal success; exact43+34 actualsummaryverified",
+    "noPaidModelOrArtifactOrCache": true,
+    "completedAtUTC": "2026-11-07T23:44:14Z"
+  },
+  "publication": {
+    "state": "verified-pushed",
+    "commit": "bdc88574797000291cb0c2b3be57df783254cedc",
+    "branch": "codex/t05-path-policy",
+    "verifiedAtUTC": "2026-11-07T23:43:28.170Z",
+    "remoteHead": "bdc88574797000291cb0c2b3be57df783254cedc",
+    "devUpdated": false,
+    "mainOrTagUpdated": false
+  },
+  "run": {
+    "id": 42426527222,
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42426527222",
+    "head_sha": "bdc88574797000291cb0c2b3be57df783254cedc",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 128565878701,
+        "name": "pure-path-policy",
+        "status": "completed",
+        "conclusion": "success",
+        "labels": [
+          "windows-2025"
+        ],
+        "started_at": "2026-11-07T23:43:27Z",
+        "completed_at": "2026-11-07T23:44:14Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Checkout this exact candidate without stored credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Require preinstalled Node without downloads",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Test only pure result and context validation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Verify original closed graph and run frozen path and controlled IO cases",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Post Checkout this exact candidate without stored credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11
+          }
+        ]
+      }
+    ],
+    "actualSummary": {
+      "status": "passed-path-and-controlled-file-io-fake-codec-only",
+      "scope": "purepath+controlled-fileIO-Fakecodec-only-not-media-host-or-pilot",
+      "commit": "bdc88574797000291cb0c2b3be57df783254cedc",
+      "node": "22.23.4",
+      "sdk": "10.0.403",
+      "compilerVersion": "5.9.0-1.26523.112 (5a2162bea6845eabc1fc721624a43568c65db3b1)",
+      "compilerSha256": "f9ea6e4b51f4ac07b9005fddf3e5a0022d9d60cf95a1c404809de63ba6d0eb3b",
+      "hostSha256": "ab1b71fd3dd71062e074c9fab8312081a81b7f2b3e0327c48c4d249c8d1a3135",
+      "runtimes": [
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "8.0.6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "8.0.22"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "8.0.33"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "9.0.6"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "9.0.22"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "10.0.8"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "10.0.11"
+        },
+        {
+          "name": "Microsoft.AspNetCore.App",
+          "version": "10.0.14"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "8.0.6"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "8.0.22"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "8.0.33"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "9.0.6"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "9.0.22"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "10.0.8"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "10.0.11"
+        },
+        {
+          "name": "Microsoft.NETCore.App",
+          "version": "10.0.14"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "8.0.6"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "8.0.22"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "8.0.33"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "9.0.6"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "9.0.22"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "10.0.8"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "10.0.11"
+        },
+        {
+          "name": "Microsoft.WindowsDesktop.App",
+          "version": "10.0.14"
+        }
+      ],
+      "sources": [
+        {
+          "path": "workers/fission/Directory.Build.props",
+          "gitBlobSha256": "f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b",
+          "rawSha256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Abstractions/IMediaProbe.cs",
+          "gitBlobSha256": "2e2f54451fae2eb1be2b970663968c15c9ce59c62ec1498b57ec266ccae3b52e",
+          "rawSha256": "2e2f54451fae2eb1be2b970663968c15c9ce59c62ec1498b57ec266ccae3b52e"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Abstractions/IVideoEngine.cs",
+          "gitBlobSha256": "77bb57bf437f519bbbe44a2ccabf20e2706426831bffddf19a11211231416e43",
+          "rawSha256": "77bb57bf437f519bbbe44a2ccabf20e2706426831bffddf19a11211231416e43"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+          "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+          "rawSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+          "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+          "rawSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Engine/EnginePaths.cs",
+          "gitBlobSha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff",
+          "rawSha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Errors/FissionException.cs",
+          "gitBlobSha256": "5812fc693f6644eb42496a3cef718a51fffea53e69051ee9c6e19a00d7f3d6c3",
+          "rawSha256": "5812fc693f6644eb42496a3cef718a51fffea53e69051ee9c6e19a00d7f3d6c3"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Fission.Core.csproj",
+          "gitBlobSha256": "11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c",
+          "rawSha256": "61e3f2d043e37f0db4be1d8083dd31bebbfbb8fde2cf027327db2556c16bc385"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+          "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+          "rawSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Jobs/JobEventBus.cs",
+          "gitBlobSha256": "76e20d76be2ad2efeabe90146dd591e1824e4f79d5b66f875e1c5501286f76e7",
+          "rawSha256": "76e20d76be2ad2efeabe90146dd591e1824e4f79d5b66f875e1c5501286f76e7"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Jobs/JobModels.cs",
+          "gitBlobSha256": "852e16aa6173bee9d5c8236c9ecbf379ab474a5bd87459767ee82c6826a234ea",
+          "rawSha256": "852e16aa6173bee9d5c8236c9ecbf379ab474a5bd87459767ee82c6826a234ea"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+          "gitBlobSha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28",
+          "rawSha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Pipeline/AlignStrategy.cs",
+          "gitBlobSha256": "b6bb095652de5a6b04e4f787773e92a89bcbf64874cb7064f6e080fcbc12c5a8",
+          "rawSha256": "b6bb095652de5a6b04e4f787773e92a89bcbf64874cb7064f6e080fcbc12c5a8"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Pipeline/SplitPlanner.cs",
+          "gitBlobSha256": "d1fb228a218924e0d1c20795cdb47b328ac86ee1697270fd09865214f863994b",
+          "rawSha256": "d1fb228a218924e0d1c20795cdb47b328ac86ee1697270fd09865214f863994b"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+          "gitBlobSha256": "688e49c4908bd95bb239f4afadbaefcff6bb8a433bfca77175e15dc0bb29369c",
+          "rawSha256": "688e49c4908bd95bb239f4afadbaefcff6bb8a433bfca77175e15dc0bb29369c"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+          "gitBlobSha256": "13e7a79d029c413f96493c1841d8cdb58dfd2dcfda65fa52ca83bec67c2e58d1",
+          "rawSha256": "13e7a79d029c413f96493c1841d8cdb58dfd2dcfda65fa52ca83bec67c2e58d1"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Steps/StepAbstractions.cs",
+          "gitBlobSha256": "9fa12c7b84220e282448409e504827621d65494a55d3ea7196123a52d89ba6fb",
+          "rawSha256": "9fa12c7b84220e282448409e504827621d65494a55d3ea7196123a52d89ba6fb"
+        },
+        {
+          "path": "workers/fission/src/Fission.Core/Util/Sanitize.cs",
+          "gitBlobSha256": "26e2a9308453bd2c37caf5a9c85fff674ff19bd74b8cdd35689ddd19c8fca117",
+          "rawSha256": "26e2a9308453bd2c37caf5a9c85fff674ff19bd74b8cdd35689ddd19c8fca117"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Assets/AssetRegistry.cs",
+          "gitBlobSha256": "d931f94ef07b664c49a5f911f54816adf988826cc62d6a748c871bdf3e490487",
+          "rawSha256": "d931f94ef07b664c49a5f911f54816adf988826cc62d6a748c871bdf3e490487"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Diagnostics/DoctorService.cs",
+          "gitBlobSha256": "9d9297ca7a5429031c378b98a7245c23ca0e1f223bcedfa3104ba2c0b5e11cd2",
+          "rawSha256": "9d9297ca7a5429031c378b98a7245c23ca0e1f223bcedfa3104ba2c0b5e11cd2"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Fission.Providers.csproj",
+          "gitBlobSha256": "d474483d18b1594f6016d6efa62c1098b2504890a7f7a55d9cd6051f305d722c",
+          "rawSha256": "9061f927e9a98ce0ce0f6cd602fcbde90d55a6c66737184bd7ec7d7061dca11a"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Hardware/HardwareDetector.cs",
+          "gitBlobSha256": "a1847ce58d51e8eca194745df353aaf9337ac04299b72cb7045967aee0949d6f",
+          "rawSha256": "a1847ce58d51e8eca194745df353aaf9337ac04299b72cb7045967aee0949d6f"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs",
+          "gitBlobSha256": "12558c0e6aad6b8b28ed11a4b3d40b2405fdb95aba0d16ac9712756ed8a37d77",
+          "rawSha256": "12558c0e6aad6b8b28ed11a4b3d40b2405fdb95aba0d16ac9712756ed8a37d77"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Media/FFmpegProvider.cs",
+          "gitBlobSha256": "77005cfe5dc26b8e9573525452d3dd9e987f8e9b8f8c83f9c7edd50cbb841b62",
+          "rawSha256": "77005cfe5dc26b8e9573525452d3dd9e987f8e9b8f8c83f9c7edd50cbb841b62"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Media/FFprobeProvider.cs",
+          "gitBlobSha256": "336772ac5aad4eaa5cb3bdcc878da77b387d07a1573943fc9a65daf81e6069ac",
+          "rawSha256": "336772ac5aad4eaa5cb3bdcc878da77b387d07a1573943fc9a65daf81e6069ac"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Media/SceneDetector.cs",
+          "gitBlobSha256": "1e56d8bc1beb713880997f59e23a25ba0cbd782841b9031606c7f34a618c3ce1",
+          "rawSha256": "1e56d8bc1beb713880997f59e23a25ba0cbd782841b9031606c7f34a618c3ce1"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Media/TransitionCatalog.cs",
+          "gitBlobSha256": "03f2a388eac7898c6b9a7b0e0ee7dbaa4f37c75512f1cc9be6f0bd2c4e1d6083",
+          "rawSha256": "03f2a388eac7898c6b9a7b0e0ee7dbaa4f37c75512f1cc9be6f0bd2c4e1d6083"
+        },
+        {
+          "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+          "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+          "rawSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+        },
+        {
+          "path": "workers/fission/src/Fission.Steps/Fission.Steps.csproj",
+          "gitBlobSha256": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81",
+          "rawSha256": "7b86a3cb31d83f4e8af04fc2a2e0a9d70f32e82648f460e3e9615124f8805e47"
+        },
+        {
+          "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+          "gitBlobSha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65",
+          "rawSha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65"
+        },
+        {
+          "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+          "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+          "rawSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+        },
+        {
+          "path": "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs",
+          "gitBlobSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+          "rawSha256": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5"
+        },
+        {
+          "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+          "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef",
+          "rawSha256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c"
+        },
+        {
+          "path": "workers/fission/tools/csc-shim/csc.bat",
+          "gitBlobSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0",
+          "rawSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
+        }
+      ],
+      "producers": [
+        {
+          "path": "scripts/fission-path-ci.mjs",
+          "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+          "rawSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+        },
+        {
+          "path": "scripts/fission-path-ci.test.mjs",
+          "gitBlobSha256": "a176bf3b6421b028fec44581756326a703b17e3e234f8b1c5fa1f0f01b9de307",
+          "rawSha256": "a176bf3b6421b028fec44581756326a703b17e3e234f8b1c5fa1f0f01b9de307"
+        },
+        {
+          "path": ".github/workflows/fission-path-policy.yml",
+          "gitBlobSha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5",
+          "rawSha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5"
+        },
+        {
+          "path": ".github/workflows/phase1.yml",
+          "gitBlobSha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb",
+          "rawSha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb"
+        }
+      ],
+      "packages": [
+        "Microsoft.CodeCoverage/17.14.1",
+        "Microsoft.NET.Test.Sdk/17.14.1",
+        "Microsoft.TestPlatform.ObjectModel/17.14.1",
+        "Microsoft.TestPlatform.TestHost/17.14.1",
+        "Newtonsoft.Json/13.0.3",
+        "System.CodeDom/10.0.14",
+        "System.Management/10.0.14",
+        "coverlet.collector/6.0.4",
+        "xunit.abstractions/2.0.3",
+        "xunit.analyzers/1.18.0",
+        "xunit.assert/2.9.3",
+        "xunit.core/2.9.3",
+        "xunit.extensibility.core/2.9.3",
+        "xunit.extensibility.execution/2.9.3",
+        "xunit.runner.visualstudio/3.1.4",
+        "xunit/2.9.3"
+      ],
+      "assetsSha256": "026eadfedc17f61e0cff42a1255144748a54689ed694d5a77cc37245a76c0003",
+      "suites": {
+        "pathPolicy": {
+          "className": "Fission.UnitTests.EnginePathPolicyTests",
+          "total": 43,
+          "executed": 43,
+          "passed": 43,
+          "failed": 0,
+          "skipped": 0,
+          "inconclusive": 0,
+          "testNames": [
+            "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_ExistingTrustedCaseAndChineseManagedNames_ArePreserved",
+            "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingCasedUnicodeWritableComponent_Rejects(component: \"Älias\")",
+            "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingCasedUnicodeWritableComponent_Rejects(component: \"älias\")",
+            "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingCasedUnicodeWritableComponent_Rejects(component: \"Kache\")",
+            "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingOnlyOutputLeafOrIntermediate_RejectsWithoutCreating",
+            "Fission.UnitTests.EnginePathPolicyTests.CaseAlias_MissingOnlyWritableRootLeaf_RejectsWithoutCreating",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_ExplicitChineseAndSpaceRoots_DerivesTaskAttemptWithoutWriting",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: False)",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_LinkedWritableOrReadOnlyRoot_Rejects(symbolic: True)",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_OmittedOrNonAbsoluteWritableRoot_Rejects",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_ReadOnlyAndWritableTreesOverlapInEitherDirection_Rejects",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnapprovedMissingReadOnlyLocations_RejectsOriginalDefaults",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \".\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"..\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"../escape\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"Task-a\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"a/b\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"a\\\\b\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"com1\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"con\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"task \")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"task.\")",
+            "Fission.UnitTests.EnginePathPolicyTests.Create_UnsafeOrCaseAliasTaskAndAttempt_Rejects(component: \"task:stream\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateJob_OutDirMustStayInsideThisTaskOutput_AndDoesNotMutateJob",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_CaseAndSeparatorAliasesAndExistingFileAncestor_Rejects",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_LinkIntroducedAfterConstruction_IsRechecked",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_OriginalDefaultsAndReadOnlyAssets_CannotGainWritePermission",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: False)",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_RealWindowsJunctionOrSymlinkAncestor_RejectsBeforeAnyCreation(symbolic: True)",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_TasksAttemptsAndRolesCannotShareWritableDirectories",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \".\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"..\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"COM1.txt\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"COM¹\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"LPT9\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"NUL\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"bad?name\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"con.txt\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"file \")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"file.\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"file:stream\")",
+            "Fission.UnitTests.EnginePathPolicyTests.ValidateWritablePath_WindowsNormalizationAliases_Rejects(component: \"name~1\")"
+          ],
+          "trxSha256": "6b376eafcbfa940b2b77ac30abfec6be4163fcd2e51d3219c1d2677087775dea",
+          "exitCode": 0
+        },
+        "engineJobFiles": {
+          "className": "Fission.UnitTests.EngineJobFilesTests",
+          "total": 34,
+          "executed": 34,
+          "passed": 34,
+          "failed": 0,
+          "skipped": 0,
+          "inconclusive": 0,
+          "testNames": [
+            "Fission.UnitTests.EngineJobFilesTests.ArchiveAudio_OriginalUnregisteredAndForeignCopiesRefuse",
+            "Fission.UnitTests.EngineJobFilesTests.ArchiveAudio_PrecreatedHardlinkTargetRefusesWithoutMutatingCopyOrSource",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_CancelBeforeOpenNeverCreatesCopyOrChangesSource",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_ForeignAttemptDestinationRefuses",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_InvalidSourceRefusesBeforeCreatingVoice(kind: \"directory\")",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_InvalidSourceRefusesBeforeCreatingVoice(kind: \"escape\")",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_InvalidSourceRefusesBeforeCreatingVoice(kind: \"overlap\")",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_InvalidSourceRefusesBeforeCreatingVoice(kind: \"relative\")",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_JunctionSourceAndDestinationRefuse",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_PrecreatedOrHardlinkedDestinationNeverOverwrites(hardlink: False)",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_PrecreatedOrHardlinkedDestinationNeverOverwrites(hardlink: True)",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_ReadFailureLeavesSourceAndNoRegisteredArchive",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_TrueFileSymlinkDestinationRefuses",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_TrueFileSymlinkSourceRefuses",
+            "Fission.UnitTests.EngineJobFilesTests.CopyAudio_UsesPrivateCreateNewCopyAndNeverMovesOriginal",
+            "Fission.UnitTests.EngineJobFilesTests.GeneratedAudio_OnlyFreshReservedAndCompletedOwnedFileCanArchive",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_CancelAtMergeNeverArchivesOrChangesSource",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_FailureBeforeConfirmNeverArchivesAndNeverChangesSource",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_FirstTransitionConcatFailureUsesFreshFallbackAndPreservesFailedEvidence(partialOutput: False)",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_FirstTransitionConcatFailureUsesFreshFallbackAndPreservesFailedEvidence(partialOutput: True)",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_GeneratedAudioIsRegisteredThenArchived",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidComputedDirectoriesRefuseBeforeAnyMkdirOrProbe(kind: \"cache-file\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidComputedDirectoriesRefuseBeforeAnyMkdirOrProbe(kind: \"output-junction\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidComputedDirectoriesRefuseBeforeAnyMkdirOrProbe(kind: \"preexisting-cache\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidComputedDirectoriesRefuseBeforeAnyMkdirOrProbe(kind: \"work-file\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidOutDirRefusesBeforeAnyDirectoryProbeOrCodec(kind: \"cache\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidOutDirRefusesBeforeAnyDirectoryProbeOrCodec(kind: \"outside\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidOutDirRefusesBeforeAnyDirectoryProbeOrCodec(kind: \"relative\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidSourceDirectoryRefusesBeforeWritesOrProbe(kind: \"junction\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidSourceDirectoryRefusesBeforeWritesOrProbe(kind: \"overlap\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_InvalidSourceDirectoryRefusesBeforeWritesOrProbe(kind: \"relative\")",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_OriginalEntryStagesConfirmsAndArchivesOnlyOwnedCopy(subtitles: False)",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_OriginalEntryStagesConfirmsAndArchivesOnlyOwnedCopy(subtitles: True)",
+            "Fission.UnitTests.EngineJobFilesTests.RunAsync_TwoAttemptsKeepWorkCacheOutputDisjointAndRejectReuse"
+          ],
+          "trxSha256": "14c1295b69ac0dea28e5bd6b09b71e0656dd7517385c7b8f2f9b7f98584f8d53",
+          "exitCode": 0
+        }
+      },
+      "exitCodes": {
+        "git-head": 0,
+        "git-root": 0,
+        "source-inventory": 0,
+        "source-blob": 0,
+        "producer-blob": 0,
+        "sdk-version": 0,
+        "compiler-version": 0,
+        "original-shim-version": 0,
+        "runtime-versions": 0,
+        "restore": 0,
+        "path-policy-tests": 0,
+        "engine-job-files-tests": 0,
+        "git-final-head": 0
+      }
+    },
+    "actualImage": "windows-2025-vs2026",
+    "actualPureNodeCounters": {
+      "tests": 300,
+      "pass": 300,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "result": {
+    "state": "actualWindowsCI300+43+34 andcompanion353fullypassed",
+    "actualDualSuitePassed": true,
+    "pathPolicy": {
+      "executed": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "trxSHA256": "6b376eafcbfa940b2b77ac30abfec6be4163fcd2e51d3219c1d2677087775dea"
+    },
+    "controlledIO": {
+      "executed": 34,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "trxSHA256": "14c1295b69ac0dea28e5bd6b09b71e0656dd7517385c7b8f2f9b7f98584f8d53",
+      "requiredTrueFileSymlinkCases": 2,
+      "transitionFallbackCases": 2
+    },
+    "scope": "purepath+controlled-fileIO-Fakecodec-only-not-media-host-or-pilot",
+    "localSymlinkPrivilegeFixed": false,
+    "runtimeHostMediaAccepted": false,
+    "N1Accepted": false,
+    "fullT05Accepted": false,
+    "pilotAccepted": false,
+    "actualNewGovernance353Passed": true,
+    "newAuthCIValidated": true,
+    "AuthScope": "nativeAuth103+policy92+original158 puretests only, not realAuth/owner/nativeconsumer/UI/N1"
+  },
+  "oldReceiptsPreserved": [
+    "docs/execution/t01-fission-ci-runtime-validation.json",
+    "docs/execution/t05-controlled-io-validation.json"
+  ],
+  "productModelCalls": 0,
+  "fullTaskAccepted": false,
+  "companionPureGovernance": {
+    "id": 42426527245,
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42426527245",
+    "head": "bdc88574797000291cb0c2b3be57df783254cedc",
+    "status": "completed",
+    "conclusion": "success",
+    "notProductAcceptance": true,
+    "jobId": 128565878646,
+    "counters": {
+      "tests": 353,
+      "pass": 353,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "sameHeadProducerProof": {
+      "status": "same-head-local-auth-policy-producers-verified",
+      "commit": "bdc88574797000291cb0c2b3be57df783254cedc",
+      "expectedCases": 353,
+      "sources": [
+        {
+          "path": "apps/desktop/src/auth-service.mjs",
+          "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+          "rawSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+        },
+        {
+          "path": "apps/desktop/src/auth-service.test.mjs",
+          "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+          "rawSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-access.mjs",
+          "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+          "rawSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-access.test.mjs",
+          "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+          "rawSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+        }
+      ]
+    },
+    "jobLogSHA256": "6f8cadd530dc47dcc5842f3d253d44b92c40edc61d53577f23ace9516152be58"
+  },
+  "evidence": {
+    "jobLogSHA256": "7ad969fe3e26854d0a01eb9cb6e92fab535ce7f032a02dbcd816e64cb91944cc",
+    "privateJobLog": "ignored E1 .dev/auth-ci-refresh/actual-job-private.log notuploaded/committed",
+    "sanitizedSummarySHA256": "45c24376d05402215191509e164b1fd147878feb383ae710cb489985731c2a2f",
+    "sourceAndRuntimePolicyReviews": "source/policy andactualevidence independentapproved0P1/P2",
+    "actualPhase1LogSHA256": "6f8cadd530dc47dcc5842f3d253d44b92c40edc61d53577f23ace9516152be58",
+    "actualPrimaryPure300": true
+  },
+  "actualEvidenceReview": {
+    "date": "2026-11-08",
+    "reviewerAgent": "/root/ci_refresh_source_review",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "backendAttested": false,
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "method": "readonly independentlyparsedrawjoblogs/safeJSON/counts/requiredmethods/tool/source/pkg/digest/producermatch, not repeatedjob/network",
+    "companionJobIdVerified": 128565878646,
+    "scope": "newAuthd008CI300/353 andoldselected43+34 only"
+  }
+}

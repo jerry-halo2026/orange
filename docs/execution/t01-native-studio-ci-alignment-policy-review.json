@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 22,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "72776eba0ab27e33fbcdfbd2cd8b95c407e91cee36c62941d4872924938816b0",
+  "inputProofSHA256": "cd418e7f41b045eb06847f3daecd3670887b3500dc88a0c21c0e2e7812c60227",
+  "nativeProofSHA256": "f1f0ba57eb341cd98feadf2f7bfa54446a34f7b15d9e8d0756dc36d8719366a5",
+  "correction": "16 fixture dependentcases include positivecase, not allnegative",
+  "fixed110": true,
+  "old181SemanticTransitionExplicit": true,
+  "remaining": [
+    "immutable anchor",
+    "actualE2FF/raw19+2proof",
+    "trusted externalN5a84",
+    "authorTDD/sourcepeer/Rootfresh/onexactreal22recordpositive",
+    "separate later realruntime card"
+  ],
+  "actualRuntimeApproved": false,
+  "fullTaskAccepted": false
+}

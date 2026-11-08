@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 21,
+  "commit": "586531605d3c06d7b29e89c488be2d4310c7572c",
+  "authorAgent": "/root/native_studio_ci_impl",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "files": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "8a7ffedbcb3f0fc0a62db59650bcccec20023f3468ca19ce9dfdaba05eec2c3b",
+      "gitBlobSha256": "8a7ffedbcb3f0fc0a62db59650bcccec20023f3468ca19ce9dfdaba05eec2c3b"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "a129ab341d1608d58f240c164eec0f13b9829611e0e3a373676b87bdfa94527d",
+      "gitBlobSha256": "a129ab341d1608d58f240c164eec0f13b9829611e0e3a373676b87bdfa94527d"
+    }
+  ],
+  "RootFresh": {
+    "executionHead": "063f53b52b9dfbc32c7997a2f411e876315fa9a5",
+    "tests": 265,
+    "passed": 265,
+    "skip": 0,
+    "rawInputs": 17,
+    "reviewProofs": 2,
+    "authorArtifactsVerified": 16,
+    "proofSHA256": "3f4f01ea439b2d892cb90109ec961c24866f2aa4dc270252a631e0bda4741257",
+    "qualification": "181pure+84 on before-latest-native assembly; later B5 currentproducer transition causes16 expectedfixture pinRED, not claimed current181GREEN"
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactSource84": true
+  },
+  "contract": "fixed trusted Git private capability only permits legitimate systemtool hardlinks; fixedpath/case/realpath/type/ancestor/initialhash+everychildprepost+final, Node/source/archive/stage nlink1 andtar unchanged",
+  "actualToolPipelineOrHostedCompatibilityTested": false,
+  "reportSHA256": "ddcfb7de680337c8e511ef1d87c379baf1ece1d2c8dba31570f8435da69e52da",
+  "fullTaskAccepted": false
+}

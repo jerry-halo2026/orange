@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 21,
+  "commit": "586531605d3c06d7b29e89c488be2d4310c7572c",
+  "executor": "/root",
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "8a7ffedbcb3f0fc0a62db59650bcccec20023f3468ca19ce9dfdaba05eec2c3b",
+      "gitBlobSha256": "8a7ffedbcb3f0fc0a62db59650bcccec20023f3468ca19ce9dfdaba05eec2c3b"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "a129ab341d1608d58f240c164eec0f13b9829611e0e3a373676b87bdfa94527d",
+      "gitBlobSha256": "a129ab341d1608d58f240c164eec0f13b9829611e0e3a373676b87bdfa94527d"
+    }
+  ],
+  "executionHead": "063f53b52b9dfbc32c7997a2f411e876315fa9a5",
+  "results": [
+    {
+      "name": "pure265",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 265,
+        "pass": 265,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "c35aef5080ae3ebacdb8778ca82ad411871db353bd7926472616eb656f7aa690",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.test.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rawInputs": 17,
+  "reviewProofs": 2,
+  "authorArtifactsVerified": 16,
+  "proofSHA256": "3f4f01ea439b2d892cb90109ec961c24866f2aa4dc270252a631e0bda4741257",
+  "N5a84ProofSHA256": "eacf4bfc086c519f405dae5ee52bf401d7ad602e0bf3a4ed76276ab1991f174c",
+  "actualEntryOrNetworkExecuted": false,
+  "currentLatestAssemblyB5Status": "joint579 actual563pass16fixture selfpin failures, actuallatest source c8 vsretiredf050, Root398 native subsetalreadyqualified; source22 fixesalignment not gateweaken",
+  "fullTaskAccepted": false
+}

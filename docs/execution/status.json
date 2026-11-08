@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "Native watcher+Auto caller7546277 approved/Root398/prepostexactN5a84; fixedGit source5865316 approved/Root265/prepostexactN5a84, serialassembly65881f9. No new actual CI since terminal20; latest110alignment and sharedworker producer still pending.",
+  "phase": "latestCI110 source22 policy approved; no author until immutable/actualraw/N5a. Joint579 563pass16oldfixture pinfail is expectedalignmentRED, not GREEN. Nativecaller754 Root398 andfixedGit586 Root265 qualified at respective snapshots, no new realCI.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t02-studio-watch-fix-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t02-studio-watch-fix-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-studio-ci-alignment-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -109,7 +109,8 @@
     "docs/execution/t01-native-studio-ci-validation.json",
     "docs/execution/t02-watch-drain-validation.json",
     "docs/execution/t01-native-studio-ci-runtime-validation.json",
-    "docs/execution/t02-studio-watch-validation.json"
+    "docs/execution/t02-studio-watch-validation.json",
+    "docs/execution/t01-native-studio-ci-git-tool-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -161,7 +162,7 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t02-studio-watch-fix-assignment.json"
+    "docs/execution/t01-native-studio-ci-alignment-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
@@ -325,8 +326,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t02-studio-watch-source-review.json",
-  "nextOperation": "caller metadata review; source21 exactgate+serialassembly; compose actuallatestsource ->110CIalignment card/proof before newrealWindowsjob; sharedmergeWorker producer designreadyseparately",
+  "currentMetadataReview": "docs/execution/t01-native-studio-ci-alignment-policy-review.json",
+  "nextOperation": "freeze22/managedE2FF/raw19+2proof/N5a -> originalCIauthorTDD110alignment; mergeWorker producer designready separately, no implementationyet",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -345,7 +346,18 @@
     "runtime20Card": "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
     "runtime20State": "terminal failure at git/PATH_TYPE, actual66notentered",
     "runtime20Receipt": "docs/execution/t01-native-studio-ci-diagnostic-runtime-validation.json",
-    "nextSource": "fixedGit5865316 exact N5a84 passed and sourceassembled65881f9; next actual native110 producer alignment before new runtime, not separate old66"
+    "nextSource": "fixedGit5865316 exact N5a84 passed and sourceassembled65881f9; next actual native110 producer alignment before new runtime, not separate old66",
+    "alignmentSourceCard": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
+    "alignmentState": "sourcepolicy approved, notdispatched; actual110notrun",
+    "latestJointResult": {
+      "tests": 579,
+      "pass": 563,
+      "fail": 16,
+      "skip": 0,
+      "cause": "oldsourcefixture self-pin f050 vsactualc8",
+      "passed": false,
+      "proof": "E3 .dev/native-studio-ci-alignment/failure-postcheck.json"
+    }
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",

@@ -388,3 +388,13 @@ for(const [label,type,code,location,counters] of [
  const {d,error}=observedFailure(observedResult({stdout,status:1}),'failed');d.capture(error);const out=cli(d.failure());
  assert.equal(out.code,'TAP_INVALID');assert.equal(out.workerEvidence.postCheck,'failed');assert.equal(out.workerEvidence.tap.firstFailingOrdinal,1);assert.equal(out.workerEvidence.tap.failureType,type);assert.equal(out.workerEvidence.tap.errorCode,code);for(const k of Object.keys(counters))assert.equal(out.workerEvidence.tap[k],counters[k]);assert.equal(out.workerEvidence.tap.location===null,location===null);assert.equal(JSON.stringify(out).includes('PRIVATE_SENTINEL'),false);
 });
+
+test('Worker file deadline matches the native package command without raising outer budgets',()=>{
+ const worker=readFileSync(new URL('./native-studio-ci.mjs',import.meta.url),'utf8');
+ const native=JSON.parse(readFileSync(new URL('../packages/openfilm/package.json',import.meta.url),'utf8'));
+ const workflow=readFileSync(new URL('../.github/workflows/native-studio.yml',import.meta.url),'utf8');
+ assert.match(native.scripts.test,/--test-timeout=600000/);
+ assert.match(worker,/child\(process\.execPath,\['--test','--test-reporter=tap','--test-concurrency=1','--test-timeout=600000',\.\.\.WORKER_TESTS\],context\.workspace,worker\.env,180_000\)/);
+ assert.match(worker,/maxBuffer:8\*1024\*1024/);
+ assert.match(workflow,/timeout-minutes:\s*12\b/);
+});

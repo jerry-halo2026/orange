@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 15,
+  "fixRound": 1,
+  "recordKind": "Root bounded engineering ruling, not user scope reduction or product acceptance",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reason": "Native audio/stills multioutput rename regression must be tested without forbidden actualmedia/browser/ffmpeg. Reuse the actual shared filesystem operation instead of fake high-level renderer or parallel lifecycle model.",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/exports.mjs",
+    "packages/openfilm/studio/server/exports-drain.test.mjs"
+  ],
+  "allow": "one minimal named export extracting actual native rename+postrename output bookkeeping and cancellation; actual audio/stills callsites consume samehelper, existingJob/AbortSignal/path and instanceFS seam only",
+  "constraints": [
+    "actual audio/stills multioutput productionbranches consume sameoperation, no test-only replica",
+    "after successful real rename replace onlymatchingpartial bydestination, retainallprioroutputs andoriginalfirstoutputsemantics; failedrename neverclaimdestination",
+    "no callbacks/newprotocol/runner/DTO; preserve default renameSafely retry behavior andcreateExports/nativeIPC API",
+    "realownedFSgate secondrename duringabort: actualrename awaited, cancellationthrows, bothfinals stillowned andpartialnotlisted; alsofirstoutput/normal/renamefailure",
+    "manualfixtureteardown is fixture cleanup only, not originalqueue cleanup proof; combineactualcallsite review and existingrealqueuecleanup tests, no audio/stills media claim",
+    "behaviorRED mustreproduceoldwrongbookkeeping withrealFS; missingexport/loaderror notdefectRED"
+  ],
+  "unchanged": "same2sourcefilewrites/sameownedFS/Childresourceconstraints; no media/browser/ffmpeg/WMI/network/newpermission, originalcardimmutableinputs unchanged",
+  "sourceApproval": false,
+  "fullTaskAccepted": false
+}

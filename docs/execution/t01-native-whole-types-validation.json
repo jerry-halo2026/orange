@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "executor": "/root",
+  "candidateCommit": "a8244523e15493a342fa2420bf19ab9b2d95b6f3",
+  "nativeTypeProducer": "c384c58434b491d63dd524c7f691638719b93e62",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211"
+    }
+  ],
+  "toolchain": "existing TypeScript5.9.3 / NodeTypes22.20.5, originalinstalleddependencies; no new installation",
+  "commands": [
+    {
+      "args": [
+        "tsc",
+        "-p",
+        "packages/openfilm/studio/server",
+        "--noEmit",
+        "--pretty",
+        "false"
+      ],
+      "config": "packages/openfilm/studio/server/tsconfig.json",
+      "configSHA256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "args": [
+        "tsc",
+        "-p",
+        "packages/openfilm/studio/ui",
+        "--noEmit",
+        "--pretty",
+        "false"
+      ],
+      "config": "packages/openfilm/studio/ui/tsconfig.json",
+      "configSHA256": "28e5ebf1bc70e76523d888b24e5865f8e7021aa835d109adfaa7e0d7e52b30a4",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "args": [
+        "tsc",
+        "-p",
+        "apps/desktop/chat",
+        "--noEmit",
+        "--pretty",
+        "false"
+      ],
+      "config": "apps/desktop/chat/tsconfig.json",
+      "configSHA256": "b0ee6438ab20d9433fff9f54301c629a817ad8c4ac7f655ffbda9d1bef6df088",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "args": [
+        "tsc",
+        "-p",
+        "apps/desktop/shell",
+        "--noEmit",
+        "--pretty",
+        "false"
+      ],
+      "config": "apps/desktop/shell/tsconfig.json",
+      "configSHA256": "57851c0d76cb17014ed704f993eb00790988d15ec924269c81c77b8e81df5410",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "resultProofSHA256": "81595bd327122d6236ebd6dacec7e9b00a30dbe293b282b2a6db893d49bd8ec9",
+  "configRelaxed": false,
+  "noEmit": true,
+  "scope": "allfouroriginalnative typecheck projects server/UI/chat/shell only; notruntime/build/E2E/Windowsmedia/install/PG",
+  "actualLatest749": false,
+  "actual161": false,
+  "fullTaskAccepted": false
+}

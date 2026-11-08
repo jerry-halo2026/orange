@@ -477,3 +477,7 @@ Source30 ONLY2CI scripts afterRoot29same51twoactuallocalruntimesprovedclosednati
 ## 2026-11-08 current-worker-observation-integration
 
 Source30 reviewed4585/Root482+Node24pure398/oldreal51TAPs accepted, actualGit27 andN5a pre/post/exact qualified. Rootnextlocal879=449+398+32 andfouroriginaltype0 onlatestassembly,37raw/Git inputs+2proof/ownedWorkers18+Node10close/ports/tools beforeafter. Independentpolicy/immutable/N5abeforeexecutionandactualresultreviewafter. No sourceedits/newjob/hostedrootcause/actual161/PGclaim.
+
+## 2026-11-08 observable-native161-Windows
+
+Card32 isONE newsource-triggeredactualstandardWindows110+Worker51run afterreviewedSource304585/latestRoot947879+fourtype0; notold28rerun. Beforeissue:policy/proofs/immutable/E3FF/raw/trustedN5a84/fullunpublishedhistoryfrom1bbc/freshPUBLICfinancialPR0/hook/oldrunsterminal checks. FrozenCIpure398/native110/Worker51/source27/package/tool/context/timeout unchanged. Observeactualsameheadjoborfinitefailureevidence toterminal, no rawartifactupload/no automaticretry/no private/model/production/main/dev/tag. Fullgoal/PG unchanged.

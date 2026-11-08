@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 32,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "36621406a59ed69655c6a8304fbcc8497318b1bb6214456f2ed5817d0ba43646",
+  "inputs": 38,
+  "reviewProofs": 2,
+  "pureCases": 398,
+  "actualCombined": 161,
+  "fix1": "oldruntime28policy/topic-a68preflightreferences replacedwithruntime32/expected1bbc; historicalfailure28preserved",
+  "conditions": "immutable/E3FF/raw/trustedN5a/fullunpublishedhistory/freshPUBLICfinancialPR0/runners/hooks/topic/dev/oldterminalchecks beforeONEexplicitSHA nonforcepush; no automaticretry/privateupload/sourceedit",
+  "newRuntimeIssued": false,
+  "fullTaskAccepted": false
+}

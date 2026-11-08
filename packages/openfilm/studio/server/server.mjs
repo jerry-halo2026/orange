@@ -135,12 +135,14 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   key ??= advertise ? studioKey() : randomBytes(24).toString('hex');
   /* every change of an open project's folder: a version once it rests, when the person asked for that */
   let stopping = false;
+  /** @type {ReturnType<typeof createAutoVersions> | undefined} */
   let autoVersions;
+  /** @type {ReturnType<typeof createWatchers> | undefined} */
   let watchers;
   try {
     if (typeof watchersFactory !== 'function') throw new Error();
     watchers = watchersFactory({ onChange: (root, e) => { if (!stopping && (e.type === 'film' || e.type === 'files')) autoVersions?.changed(root); } });
-    if (!watchers || ['subscribe', 'move', 'roots', 'emit', 'closeAll', 'drain'].some(method => typeof watchers[method] !== 'function')) throw new Error();
+    if (!watchers || /** @type {const} */ (['subscribe', 'move', 'roots', 'emit', 'closeAll', 'drain']).some(method => typeof /** @type {ReturnType<typeof createWatchers>} */ (watchers)[method] !== 'function')) throw new Error();
   } catch {
     try { await watchers?.drain?.(); } catch { /* do not expose factory errors */ }
     throw new Error('Invalid project watchers factory.');
@@ -171,7 +173,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
         roots: () => watchers.roots(),
         save: async (root, kind) => { if (await saveVersion(root, { kind })) historyChanged(root); },
       });
-      if (!auto || ['changed', 'poll', 'start', 'stop', 'drain'].some(method => typeof auto[method] !== 'function')) throw new Error();
+      if (!auto || /** @type {const} */ (['changed', 'poll', 'start', 'stop', 'drain']).some(method => typeof auto[method] !== 'function')) throw new Error();
       autoVersions = auto;
       autoVersions.start();
   } catch {
@@ -384,7 +386,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     }
 
     /* ── `openfilm canvas`: an agent's steps on a project's canvas, shown on the board at once (canvas.mjs) ── */
-    if (parts[0] === 'canvas' && parts.length === 1) return agentCanvasRoute(req, res, (root) => watchers.emit(root, { type: 'canvas' }));
+    if (parts[0] === 'canvas' && parts.length === 1) return agentCanvasRoute(req, res, (root) => /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(root, { type: 'canvas' }));
     /* the person's canvas templates, the same for every project (canvas-templates.mjs) */
     if (parts[0] === 'canvas-templates') return templatesRoute(req, res, parts.slice(1));
     /* the person's characters, the same for every project (canvas-characters.mjs) */
@@ -764,17 +766,17 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
         }
         const renamed = await renameProject(project.id, String(name ?? ''));
         if (renamed.path !== project.path || renamed.name !== project.name) {
-          watchers.move(project.path, renamed.path);
+          /** @type {ReturnType<typeof createWatchers>} */ (watchers).move(project.path, renamed.path);
           exportRoots.set(project.id, renamed.path);
           /* its address stays: the preview open on it keeps loading from the folder by its new name */
           pages.folderUrl(renamed);
           /* the pages showing it (renamed from another tab, or the projects list) take the new name */
-          watchers.emit(renamed.path, { type: 'project', project: renamed });
+          /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(renamed.path, { type: 'project', project: renamed });
           /* Reload changes waiting to settle when the old watcher closed. A blank revision also refreshes
              an unchanged film, but only for this project after an actual rename. */
-          watchers.emit(renamed.path, { type: 'film', rev: '' });
-          watchers.emit(renamed.path, { type: 'files' });
-          watchers.emit(renamed.path, { type: 'history' });
+          /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(renamed.path, { type: 'film', rev: '' });
+          /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(renamed.path, { type: 'files' });
+          /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(renamed.path, { type: 'history' });
         }
         return json(res, 200, { project: renamed });
       }
@@ -784,7 +786,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
         if (agentIn(project.path)) throw new HttpError(409, 'An agent is running in this project: stop it first, then delete the project.', { code: 'agent-running' });
         await deleteProject(project.id);
         /* every page showing it leaves it (with tabs, its tab closes) */
-        watchers.emit(project.path, { type: 'gone' });
+        /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(project.path, { type: 'gone' });
         return json(res, 200, {});
       }
     }
@@ -824,7 +826,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     if (parts[2] === 'history') {
       const history = parts.slice(3);
       /** @param {string} op */
-      const onProgress = (op) => (/** @type {{ phase: string, done: number, total: number }} */ p) => watchers.emit(project.path, { type: 'history-progress', op, ...p });
+      const onProgress = (op) => (/** @type {{ phase: string, done: number, total: number }} */ p) => /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(project.path, { type: 'history-progress', op, ...p });
       if (!history.length && req.method === 'GET') {
         const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 50, 1), 1000);
         const [state, { versions, more, deletedCount }] = await Promise.all([historyStatus(project.path, { onProgress: onProgress('load') }), log(project.path, { limit, deleted: url.searchParams.get('deleted') === '1', includeDeletedCount: true })]);
@@ -1257,26 +1259,29 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     })().catch(() => refuse('500 Internal Server Error'));
   });
   const historyPreviews = createHistoryPreviews();
+  /** @type {Awaited<ReturnType<typeof startPages>>} */
   let pages;
   /** @type {Promise<void> | undefined} */
   let closing;
   function close() {
     if (closing) return closing;
     // Publish identity before any external method can synchronously reenter close.
-    let done, fail;
+    let /** @type {() => void} */ done, /** @type {(reason: unknown) => void} */ fail;
     closing = new Promise((resolve, reject) => { done = resolve; fail = reject; });
     stopping = true;
+    /** @type {Promise<unknown>[]} */
     const tasks = [];
+    /** @param {() => unknown} job */
     const collect = (job) => {
       try { tasks.push(Promise.resolve(job())); }
       catch (error) { tasks.push(Promise.reject(error)); }
     };
-    collect(() => autoVersions.stop());
-    collect(() => watchers.drain());
+    collect(() => /** @type {ReturnType<typeof createAutoVersions>} */ (autoVersions).stop());
+    collect(() => /** @type {ReturnType<typeof createWatchers>} */ (watchers).drain());
     // Initiate both origins and upgraded sockets before waiting for any IO.
     collect(() => { editor.closeAllConnections(); });
     for (const socket of streamSockets) collect(() => { socket.destroy(); });
-    if (editor.listening) collect(() => new Promise(resolve => editor.close(() => resolve())));
+    if (editor.listening) collect(() => new Promise((/** @type {(value: void | PromiseLike<void>) => void} */ resolve) => editor.close(() => resolve())));
     if (pages) collect(() => pages.close());
     collect(() => { if (advertise && advertised()?.pid === process.pid) rmSync(runFile(), { force: true }); });
     collect(() => exports.stopAll());
@@ -1289,6 +1294,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     });
     return closing;
   }
+  /** @param {unknown} error @returns {Promise<never>} */
   async function failedStart(error) {
     try { await close(); } catch { /* preserve the original startup error object */ }
     throw error;

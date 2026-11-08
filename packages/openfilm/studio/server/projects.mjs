@@ -96,16 +96,17 @@ function exclusive(change) {
 async function native_readState() {
   let text;
   try { text = await readFile(join(studioHome(), 'studio.json'), 'utf8'); }
-  catch (e) { if (e?.code === 'ENOENT') return /** @type {StudioState} */ ({ recent: [], folders: [] }); throw controlError(); }
+  catch (e) { if (/** @type {NodeJS.ErrnoException | null | undefined} */ (e)?.code === 'ENOENT') return /** @type {StudioState} */ ({ recent: [], folders: [] }); throw controlError(); }
   let raw;
   try { raw = JSON.parse(text); } catch { throw controlError(); }
   if (!raw || typeof raw !== 'object' || Array.isArray(raw) || (raw.recent !== undefined && !Array.isArray(raw.recent))) throw controlError();
+  /** Entries are checked below before constructing StudioState. @type {Record<string, unknown>[]} */
   const recent = raw.recent ?? [];
   // Validate the whole list before resolving/admitting any item; corruption is not an empty history.
   if (recent.some(r => !r || typeof r !== 'object' || Array.isArray(r) || typeof r.id !== 'string' || typeof r.path !== 'string' || !isAbsolute(r.path) || r.path.includes('\0'))) throw controlError();
   const state = /** @type {StudioState} */ ({
     recent,
-    folders: Array.isArray(raw.folders) ? raw.folders.filter((/** @type {any} */ f) => f && typeof f.id === 'string' && typeof f.name === 'string') : [],
+    folders: Array.isArray(raw.folders) ? raw.folders.filter((/** @type {Record<string, unknown>} */ f) => f && typeof f.id === 'string' && typeof f.name === 'string') : [],
   });
   await includeProjects(state.recent.map(r => resolve(r.path)));
   return state;
@@ -557,17 +558,26 @@ async function native_moveLibrary(to, { move = false, choose }) {
   });
 }
 
+/** @typedef {ReturnType<typeof createProjectControlGuard>} ProjectGuard */
+/** @typedef {{ assertActive: () => void, include: (paths: string[]) => Promise<void> }} ProjectLease */
+/** @type {AsyncLocalStorage<ProjectGuard>} */
 const projectGuardContext = new AsyncLocalStorage();
 const defaultProjectGuard = createProjectControlGuard();
+/** @template T @param {ProjectGuard} guard @param {() => T} work @returns {T} */
 export function withProjectControlGuard(guard, work) {
-  try { assertGuardSwitch(guard); } catch (e) { throw new ProjectError(e.message, e.status, e.code); }
+  try { assertGuardSwitch(guard); } catch (e) { throw new ProjectError(/** @type {Error & { code: string, status: number }} */ (e).message, /** @type {Error & { code: string, status: number }} */ (e).status, /** @type {Error & { code: string, status: number }} */ (e).code); }
   return projectGuardContext.run(guard, work);
 }
 
+/** @type {AsyncLocalStorage<ProjectLease>} */
 const projectLeaseContext = new AsyncLocalStorage();
+/** @returns {{ homes: string[], roots: string[], targets: string[] }} */
 function homeResources() { return { homes: [...new Set([resolve(studioHome()), resolve(sharedHome())])], roots: [], targets: [] }; }
-function asProjectError(e) { if (e?.code?.startsWith('control-') && !(e instanceof ProjectError)) return new ProjectError(e.message, e.status, e.code); return e; }
+/** @param {unknown} e */
+function asProjectError(e) { if (/** @type {Error & { code: string, status: number } | null | undefined} */ (e)?.code?.startsWith('control-') && !(e instanceof ProjectError)) return new ProjectError(/** @type {Error & { code: string, status: number }} */ (e).message, /** @type {Error & { code: string, status: number }} */ (e).status, /** @type {Error & { code: string, status: number }} */ (e).code); return e; }
+/** @template T @param {ReturnType<typeof homeResources>} resources @param {() => T} work @returns {T} */
 function guardedSync(resources, work) { try { return (projectGuardContext.getStore() ?? defaultProjectGuard).withNativeAccessSync(resources, work); } catch (e) { throw asProjectError(e); } }
+/** @param {string[]} paths */
 async function includeProjects(paths) {
   const lease = projectLeaseContext.getStore();
   if (!lease) throw new ProjectError('Project control is invalid.', 403, 'control-invalid');
@@ -586,10 +596,11 @@ async function includeProjects(paths) {
   });
   await lease.include(metadata);
 }
+/** @template T @param {string[]} targets @param {() => Promise<T>} work @returns {Promise<T>} */
 async function guardedProject(targets, work) {
   const guard = projectGuardContext.getStore() ?? defaultProjectGuard;
   try {
-    return await guard.withNativeAccess(homeResources(), lease => projectLeaseContext.run(lease, async () => {
+    return await guard.withNativeAccess(homeResources(), (/** @type {ProjectLease} */ lease) => projectLeaseContext.run(lease, async () => {
       checkPrivateControlState();
       const root = libraryRoot();
       await includeProjects([resolve(root), ...targets]);
@@ -609,33 +620,84 @@ function checkPrivateControlState() {
     if (Object.hasOwn(raw, 'orangeControl')) throw controlError('control-required');
   }
 }
-export async function readState() { const args = []; return guardedProject([], () => native_readState(...args)); }
-export async function openProject(path, options) { const args = [path, options]; return guardedProject([resolve(args[0])], () => exclusive(() => native_openProject(...args))); }
-export async function createProject(name) { const args = [name]; return guardedProject([], () => exclusive(() => native_createProject(...args))); }
-export async function listProjects() { const args = []; return guardedProject([], () => native_listProjects(...args)); }
-export async function listFolders() { const args = []; return guardedProject([], () => native_listFolders(...args)); }
-export async function createFolder(name, parentId) { const args = [name, parentId]; return guardedProject([], () => native_createFolder(...args)); }
-export async function renameFolder(id, name) { const args = [id, name]; return guardedProject([], () => native_renameFolder(...args)); }
-export async function moveFolder(id, parentId) { const args = [id, parentId]; return guardedProject([], () => native_moveFolder(...args)); }
-export async function deleteFolder(id) { const args = [id]; return guardedProject([], () => native_deleteFolder(...args)); }
-export async function moveProjectToFolder(id, folderId) { const args = [id, folderId]; return guardedProject([], () => native_moveProjectToFolder(...args)); }
-export async function projectById(id) { const args = [id]; return guardedProject([], () => native_projectById(...args)); }
-export async function markOpened(id) { const args = [id]; return guardedProject([], () => native_markOpened(...args)); }
-export async function locateProject(id, path) { const args = [id, path]; return guardedProject([resolve(args[1])], () => native_locateProject(...args)); }
-export async function renameProject(id, name) { const args = [id, name]; return guardedProject([], () => native_renameProject(...args)); }
-export async function deleteProject(id) { const args = [id]; return guardedProject([], () => native_deleteProject(...args)); }
-export async function forgetProject(id) { const args = [id]; return guardedProject([], () => native_forgetProject(...args)); }
-export async function moveLibrary(to, options) { const args = [to, options]; return guardedProject([resolve(args[0] ?? libraryDefault())], () => native_moveLibrary(...args)); }
+/** @returns {ReturnType<typeof native_readState>} */
+export async function readState() {
+  /** @type {Parameters<typeof native_readState>} */
+  const args = []; return guardedProject([], () => native_readState(...args)); }
+/** @param {Parameters<typeof native_openProject>[0]} path @param {Parameters<typeof native_openProject>[1]} [options] @returns {ReturnType<typeof native_openProject>} */
+export async function openProject(path, options) {
+  /** @type {Parameters<typeof native_openProject>} */
+  const args = [path, options]; return guardedProject([resolve(args[0])], () => exclusive(() => native_openProject(...args))); }
+/** @param {Parameters<typeof native_createProject>[0]} [name] @returns {ReturnType<typeof native_createProject>} */
+export async function createProject(name) {
+  /** @type {Parameters<typeof native_createProject>} */
+  const args = [name]; return guardedProject([], () => exclusive(() => native_createProject(...args))); }
+/** @returns {ReturnType<typeof native_listProjects>} */
+export async function listProjects() {
+  /** @type {Parameters<typeof native_listProjects>} */
+  const args = []; return guardedProject([], () => native_listProjects(...args)); }
+/** @returns {ReturnType<typeof native_listFolders>} */
+export async function listFolders() {
+  /** @type {Parameters<typeof native_listFolders>} */
+  const args = []; return guardedProject([], () => native_listFolders(...args)); }
+/** @param {Parameters<typeof native_createFolder>[0]} name @param {Parameters<typeof native_createFolder>[1]} [parentId] @returns {ReturnType<typeof native_createFolder>} */
+export async function createFolder(name, parentId) {
+  /** @type {Parameters<typeof native_createFolder>} */
+  const args = [name, parentId]; return guardedProject([], () => native_createFolder(...args)); }
+/** @param {Parameters<typeof native_renameFolder>[0]} id @param {Parameters<typeof native_renameFolder>[1]} name @returns {ReturnType<typeof native_renameFolder>} */
+export async function renameFolder(id, name) {
+  /** @type {Parameters<typeof native_renameFolder>} */
+  const args = [id, name]; return guardedProject([], () => native_renameFolder(...args)); }
+/** @param {Parameters<typeof native_moveFolder>[0]} id @param {Parameters<typeof native_moveFolder>[1]} parentId @returns {ReturnType<typeof native_moveFolder>} */
+export async function moveFolder(id, parentId) {
+  /** @type {Parameters<typeof native_moveFolder>} */
+  const args = [id, parentId]; return guardedProject([], () => native_moveFolder(...args)); }
+/** @param {Parameters<typeof native_deleteFolder>[0]} id @returns {ReturnType<typeof native_deleteFolder>} */
+export async function deleteFolder(id) {
+  /** @type {Parameters<typeof native_deleteFolder>} */
+  const args = [id]; return guardedProject([], () => native_deleteFolder(...args)); }
+/** @param {Parameters<typeof native_moveProjectToFolder>[0]} id @param {Parameters<typeof native_moveProjectToFolder>[1]} folderId @returns {ReturnType<typeof native_moveProjectToFolder>} */
+export async function moveProjectToFolder(id, folderId) {
+  /** @type {Parameters<typeof native_moveProjectToFolder>} */
+  const args = [id, folderId]; return guardedProject([], () => native_moveProjectToFolder(...args)); }
+/** @param {Parameters<typeof native_projectById>[0]} id @returns {ReturnType<typeof native_projectById>} */
+export async function projectById(id) {
+  /** @type {Parameters<typeof native_projectById>} */
+  const args = [id]; return guardedProject([], () => native_projectById(...args)); }
+/** @param {Parameters<typeof native_markOpened>[0]} id @returns {ReturnType<typeof native_markOpened>} */
+export async function markOpened(id) {
+  /** @type {Parameters<typeof native_markOpened>} */
+  const args = [id]; return guardedProject([], () => native_markOpened(...args)); }
+/** @param {Parameters<typeof native_locateProject>[0]} id @param {Parameters<typeof native_locateProject>[1]} path @returns {ReturnType<typeof native_locateProject>} */
+export async function locateProject(id, path) {
+  /** @type {Parameters<typeof native_locateProject>} */
+  const args = [id, path]; return guardedProject([resolve(args[1])], () => native_locateProject(...args)); }
+/** @param {Parameters<typeof native_renameProject>[0]} id @param {Parameters<typeof native_renameProject>[1]} name @returns {ReturnType<typeof native_renameProject>} */
+export async function renameProject(id, name) {
+  /** @type {Parameters<typeof native_renameProject>} */
+  const args = [id, name]; return guardedProject([], () => native_renameProject(...args)); }
+/** @param {Parameters<typeof native_deleteProject>[0]} id @returns {ReturnType<typeof native_deleteProject>} */
+export async function deleteProject(id) {
+  /** @type {Parameters<typeof native_deleteProject>} */
+  const args = [id]; return guardedProject([], () => native_deleteProject(...args)); }
+/** @param {Parameters<typeof native_forgetProject>[0]} id @returns {ReturnType<typeof native_forgetProject>} */
+export async function forgetProject(id) {
+  /** @type {Parameters<typeof native_forgetProject>} */
+  const args = [id]; return guardedProject([], () => native_forgetProject(...args)); }
+/** @param {Parameters<typeof native_moveLibrary>[0]} to @param {Parameters<typeof native_moveLibrary>[1]} options @returns {ReturnType<typeof native_moveLibrary>} */
+export async function moveLibrary(to, options) {
+  /** @type {Parameters<typeof native_moveLibrary>} */
+  const args = [to, options]; return guardedProject([resolve(args[0] ?? libraryDefault())], () => native_moveLibrary(...args)); }
 
 const projectControlCapabilities = Object.freeze({ scope: 'projects-admission-v1', projectsApiFenced: true, registrationWritesDenyMarkersOnly: true, nativeEntryPointsFenced: false, backgroundIoDrained: false, productionControlledActivation: false, ownerAuthorization: false });
-/** Trusted Node producer only. This writes deny markers, never an owner or an activation permission. */
+/** Trusted Node producer only. This writes deny markers, never an owner or an activation permission. @param {unknown} identity */
 export async function registerProjectControl(identity) {
   const invalid = () => new ProjectError('Project control is invalid.', 403, 'control-invalid');
   // Inspect descriptors rather than executing a supplied getter.
   if (types.isProxy(identity) || !identity || typeof identity !== 'object' || Object.getPrototypeOf(identity) !== Object.prototype) throw invalid();
   const descriptors = Object.getOwnPropertyDescriptors(identity);
   if (Reflect.ownKeys(descriptors).length !== 2 || ['domainId','environmentId'].some(k => !descriptors[k] || !('value' in descriptors[k]) || typeof descriptors[k].value !== 'string' || !descriptors[k].value.trim())) throw invalid();
-  const { domainId, environmentId } = identity;
+  const { domainId, environmentId } = /** @type {{ domainId: string, environmentId: string }} */ (identity);
   const guard = projectGuardContext.getStore() ?? defaultProjectGuard;
   return exclusive(async () => {
     let reservation;
@@ -658,6 +720,7 @@ export async function registerProjectControl(identity) {
         }
         if (dirname(at) === at) break;
       }
+      /** @type {Record<string, unknown>} */
       let raw = {};
       if (existsSync(file)) {
         try { raw = JSON.parse(await readFile(file, 'utf8')); } catch { throw invalid(); }
@@ -668,7 +731,7 @@ export async function registerProjectControl(identity) {
       while (!existsSync(parent)) { tail.unshift(basename(parent)); parent = dirname(parent); }
       const canonicalRoot = resolve(realpathSync(parent), ...tail);
       const expected = { version: 1, domainId, environmentId, registration: 'committed', roots: [canonicalRoot] };
-      const control = raw.orangeControl;
+      const control = /** @type {{ orangeControl?: Record<string, unknown> | null }} */ (raw).orangeControl;
       if (control !== undefined) {
         if (!control || typeof control !== 'object' || Array.isArray(control) || Object.keys(control).sort().join() !== Object.keys(expected).sort().join() || control.version !== 1 || control.domainId !== domainId || control.environmentId !== environmentId || control.registration !== 'committed' || !Array.isArray(control.roots) || control.roots.length !== 1 || control.roots[0] !== canonicalRoot) throw invalid();
         for (const marker of markers) {
@@ -687,7 +750,7 @@ export async function registerProjectControl(identity) {
       const handle = Object.freeze({ ...reservation, capabilities: projectControlCapabilities });
       reservation = null;
       return handle;
-    } catch (e) { throw e?.code?.startsWith('control-') ? asProjectError(e) : invalid(); }
+    } catch (e) { throw /** @type {Error & { code: string, status: number } | null | undefined} */ (e)?.code?.startsWith('control-') ? asProjectError(e) : invalid(); }
     finally { if (reservation) reservation.close(); }
   });
 }

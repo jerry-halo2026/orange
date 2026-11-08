@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 8,
+  "reviewerAgent": "/root/auto_versions_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCardSHA256": "5529f67a06265503be0ff655d50f2f7c146c1b324a8dda1dfe808a8fa0d2ed18",
+  "frozenCardSHA256": "66fb9dc6e9b38bdba8a0becf88351944294bc3b38d9cd8ec931bcd429db483f5",
+  "proofSHA256": "6ac34e0a947ca782ccd8b17b32e0915b1345fc83d0549a61e464a1d16a824624",
+  "finalOnlyChanges": "producerproofapproval/digestref only, no scope/APIchange",
+  "actualCallerPending": "originalStudioawait/actualAuto+frozenGuard composition stillmandatorynext, notclaimedfixed",
+  "requiredBeforeWriter": [
+    "immutableanchor",
+    "managedE3FF",
+    "actualE3rawCPUproof not E1raw062",
+    "externaltrustedN5a84"
+  ],
+  "fullTaskAccepted": false
+}

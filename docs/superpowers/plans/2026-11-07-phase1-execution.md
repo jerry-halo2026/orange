@@ -354,3 +354,13 @@ T02.a rev7 native-extension/businesscontroladdition, same approved N0 but NOTN1/
 - [ ] Sharednativeleases/controlledexclusive shortatomicmeta protocol, trustedbrandedguard injection/ALS, guardactualprojectsIO beforeprefs/read/mkdir/describe/followLibrary/id/choose; processstatequeue no nesteddeadlock. DefaultOScoord stable, testsONLYexplicitownE2coord.
 - [ ] Strictprojectsprivatepending->deny markers->committed, no owner/historyclaim, partialfailurefailclosed, fixedfalseglobalactivation capabilities. ActualallpublicIOentrypointregressions, source4syntax/diff/alltests0skip wherecapable; ENVfilelinkfailure separatelynotpass. No actualTrash/defaultOSregistry/package/server/media.
 - [ ] IndependentSPECQUALITY+Rootfreshrealtests/sourcehash/N5a+localcommit; freezeonlyprojects-admission-v1 consumer. Thenactualserver/pages/CLI andoriginalexports/fetch/watch/autoVersions/host-stream retain/drain before productioncontrolledactivation/owner/desktopUI/N1. Do not substitutepermanentBUSY oruntilprocessExit forrealcompletion.
+
+
+## 2026-11-08 auto versions real drain
+
+T02.a rev8 native-extension minimumexistingproducer, independentNativeprojects7. Exacttwofilecard execution/t02-auto-versions-drain-assignment.json modifiesoriginalauto-versions.mjs/test only, notanotherhelper/editor. Freezeproducerbeforedependentserver canconsumeGuard7/newdrain; do notrunnewGuard-default-coord inadvertentlyduringcross-treeearlytests. Actualoriginalserver.shutdown await/composition is mandatorynextconsumer, notdeclaredfixedhere.
+
+- [ ] Original5unitbaseline thenrealpending-save/stop/drain/reentrant-newwork RED, actualcallbackPromise trackedbeforeexternalreentry; no mockimplementation.
+- [ ] Minimalgeneration/pending/stop/drain andexplicitrestartsemantics, preserveoriginalcallbacks/constants/oldassertions; no timeoutRace calledquiescence.
+- [ ] Actualnew+oldpuretests0skip/fail, syntax/diff/forbiddeninputsrawunchanged; no server/ports/realOS/files/media/model/SDK.
+- [ ] Non-authorcode+Rootfreshactualtests/N5a thenproducercommit; nextoriginalserverawaitsactualAuto.stop underactualStudio+frozenGuard DI composition. Exports/fetch/watch/hoststream/fullproductioncontrolledactivation remainmandatorylater, notdropped.

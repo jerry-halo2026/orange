@@ -1,0 +1,148 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 8,
+  "authorAgent": "/root/auto_versions_drain_impl",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension/realbackgroundquiescence",
+  "scope": "actualoriginalautoVersions stop preventsnewwork andtracksinflight savePromises torealdrain producer; originalStudio awaitconsumer remainsnextafterGuard7+thisproducer frozen",
+  "workingBaselineCommit": "faedfaf72da53ef0866be56719365bc8ec30ab75",
+  "dependencyCommits": [
+    "faedfaf72da53ef0866be56719365bc8ec30ab75",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "reserveduntilpolicyreview/immutableN5a, Nativeprojects7 activeondisjointE2files",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/auto-versions.mjs",
+    "packages/openfilm/studio/server/auto-versions.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t02-native-projects-admission-assignment.json",
+        "assignmentRevision": 7,
+        "sha256": "c984a4232b930a151b370d0caa42baddd3c0dd4b9a66c288d24169cd4a5e1c1e"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-auto-versions-consumer-review.json",
+          "sha256": "6ac34e0a947ca782ccd8b17b32e0915b1345fc83d0549a61e464a1d16a824624",
+          "gitBlobSha256": "6ac34e0a947ca782ccd8b17b32e0915b1345fc83d0549a61e464a1d16a824624"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/discovery/11_测试验收与问题定位规范.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-auto-versions-real-drain",
+  "nativeEditableBaseline": {
+    "commit": "faedfaf72da53ef0866be56719365bc8ec30ab75",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/auto-versions.mjs",
+        "gitBlobSha256": "ac8012667b8a7c775e11fdc95059ee95badf0a74b5868b5d425ba928e8a96b7b"
+      },
+      {
+        "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+        "gitBlobSha256": "f87978a7c0d1ccede0adac2f6742dde11a91bd26761275d587a398733c96a1eb"
+      }
+    ],
+    "kind": "allowednativecode/test extension, notunchangedconsumerrawdependency; exactGitdiff/originaltestprefix+peer/freshactualtestsverify"
+  },
+  "contract": {
+    "keep": "IDLE_MS/MAX_MS/POLL_MS andoriginalon/working/roots/save callbacks, changed/poll/start existingnativebehaviors beforestop; originaltest assertions unchanged",
+    "saveTracking": "registerpending task BEFORE invokingexternal save callback, preservingoriginalsynchronousinvocation/sideeffects. TrackfullreturnedPromise tillactualsettle/cleanup, sync throws andasync rejects containedaslegacy policy; no unhandled/privateerror logs. No task may escape viareentrantstop beforetracking.",
+    "stop": "stop() synchronously closesnew scheduling andclearsalltimers beforeanyawait, returnsoneidempotentPromise thatresolvesonlyaftereveryalready-started save settles. Newchanged/poll afterstop do notinvokeon/roots/working/save; stale timers/generationcallbacks cannot starttasks. Repeatstopreturns samePromise for that lifecycle.",
+    "drain": "drain():Promise<void> waitsactualpending saves, notstopalone/nottimer-clear/notcompletedflag/timeoutRace. No falsequiescence whileapromiseunresolved, noprivateerrors returned. Usedafterstop; maywaitforever ifactualtrustedIOneverfinishes, caller musttreatunknown notclaimsuccess.",
+    "restart": "initialchanged/poll beforestartremainlegacyvalid. Explicitstart aftercompletedstop reactivates freshgeneration; start whilepriorstop pending mustremainstopped (fixed busy behavior, no newtask) notrenewoldgeneration. Lateoldcallback cannot scheduleafterstop oroverwritefreshgeneration.",
+    "callbacks": "on/roots/working/save can reenterstop/start; checkgenerationafterexternalcallbacks, preserve strongerstoppedphase, always releasepending refsfinally. Do not promise arbitrarymalicioustrustedcallback IO outsideitsreturnedPromise.",
+    "scopeBoundary": "auto-version saves only; originalserver.close stilldoesnotawaitnewstop untilnextconsumer task, expresslynotfixedyet. Exports/fetch/watch/hoststreams fullretirement also mandatorylater. Notnewparallelversioneditor/helper: modifiesactualexistingproducerstop/scheduling/save lifecycle.",
+    "nextMandatoryConsumer": "afterbothGuard7andthisproducercommit/peer/freshtests, originalserver.shutdown must awaitrealauto.stop withactualStudio+actualAuto composition; testmustprovide explicitnativeprojectguardDI in integratedcandidate soNODE realOScoordneverwritten. No factory/sourceconsumer may useunreadyGuard7 today."
+  },
+  "validation": {
+    "oldCases": 5,
+    "TDD": "actualold5unitbaseline beforeappend thenRED actualpending-save stop/drain notwait/newworkafterstop/reentrantescape; save callback realdeferredPromises andcleanup ordering, no copiedmodel. OriginalStudio.close consumer test waitsnextproducerfreeze, cannotclaimtestedhere.",
+    "groups": [
+      "pending-save stop synchronouslypreventsnewtasks, stopPromise waitsrealdeferredIO; no oldsavepromiseuntracked",
+      "syncsave throw/async rejection/finallycleanup andmultipleparallelroots, chainedthen completion",
+      "reentrant save->stop andon/roots/working callbacksstop cannotescapetracking orresurrect",
+      "repeatstop/drain, stale timer afterstop, no newexternalcallbacks whileclosed",
+      "explicitrestartafterfullydrained works legacy, pendingrestart cannotcreatefreshsave"
+    ],
+    "commands": "explicitnode --test --test-reporter=tap packages/openfilm/studio/server/auto-versions.test.mjs + unchangedCPU81/flavor3; syntaxboth/diff0",
+    "resource": "pureNode callbacks/timers only, ownE3/.dev/auto-versions-drain temporarylogs, no listener/server/ports/realhome/config/model/provider/Git/media; unchanged approvedCPU fixtures mayuse existing self-owned .dev/t01-profile-* namespaces in sameE3 withTEMP/TMP/TMPDIR explicitlyredirected underown .dev; preserveolderartifacts",
+    "dependencyMissing": "reportcapabilityfailure, nostubs/no package/SDKinstall. No actualrealmedia/hardware; originalemptyownlibrary syntheticbytes only.",
+    "preserve": "originalautoVersions test prefix exact exceptnecessary imports/setup fixture extension, no assertions deleted/skip; sourceforbiddenrawhashes beforeafter, alloldlogs/artifacts intact",
+    "expected": "allnewandoldcases0fail/skip/todo/cancel, zero listeners/server everstarted; codepeer/Rootfreshproducerverification/N5a thencommit"
+  },
+  "forbidden": [
+    "Nativeprojects7/helper/its2tests/server/otherAuth/policy/locations/atomic/CI/rootworkspace/lock/docs/07/schema/packageexports edits",
+    "realOSuserfiles/config/registry/accounts/keys/media/actualmodel/provider/networkexternal/browser/ffmpeg/.NET/Fissionhost",
+    "anyserver/listener/ports/desktop/GPU/SDKpackageinstall/OSsecuritychanges",
+    "Gitstage/commit/merge/push/reset/clean/cleanup/subagents"
+  ],
+  "report": ".dev/auto-versions-drain/report.json",
+  "fullTaskAccepted": false
+}

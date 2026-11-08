@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "c384c58434b491d63dd524c7f691638719b93e62",
+  "executor": "/root",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+      "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2",
+      "gitBlobSha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211",
+      "gitBlobSha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211"
+    }
+  ],
+  "originalConfigSHA256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+  "originalCompiler": "TypeScript5.9.3, @types/node22.20.5, Core1.61.1 existing readonly, no installation",
+  "originalTypecheck": {
+    "exitCode": 0,
+    "diagnostics": 0,
+    "proofSHA256": "1abbcd4e9780f8466a6a374c72851ba48dd7cf9402d529b67d50fd4ae3aa479a"
+  },
+  "runtimeAST": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "before": "67010892eb006614daec0bc2aca9e2d16c68e7252d602eaec971918666e19db0",
+      "after": "67010892eb006614daec0bc2aca9e2d16c68e7252d602eaec971918666e19db0",
+      "equal": true
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "before": "b4eaccc5b9fde1aa2c9aeb62ae259f322f392d48187792f1ca9454f73be8a0f6",
+      "after": "b4eaccc5b9fde1aa2c9aeb62ae259f322f392d48187792f1ca9454f73be8a0f6",
+      "equal": true
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "before": "d9a370f1417613ea61791624bf7dad80becd8b50c80e1646d2102cbe89d5d788",
+      "after": "d9a370f1417613ea61791624bf7dad80becd8b50c80e1646d2102cbe89d5d788",
+      "equal": true
+    }
+  ],
+  "contracts": {
+    "rows": 17,
+    "failures": 0,
+    "redRejected": 17,
+    "proofSHA256": "1613cc261a8302a29f9109e0d109c087d7d8f5a85c080d88f1fd1642cb483294",
+    "fixtureProofSHA256": "221050d69e427e54ef565e25329630764d003eefd38fed4f688d722ead72d195"
+  },
+  "runtime": {
+    "tests": 449,
+    "pass": 449,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "workers": {
+      "created": 18,
+      "actualExits": 18,
+      "peak": 3,
+      "finalAlive": 0
+    },
+    "proofSHA256": "b45f1be00b537f09f2de7712b0659201e56dc34a1cd99324dda088a01d295685",
+    "stdoutSHA256": "cce1852b764fe4516ad15212ed57905a8a222d57ec1f7d5985a4d168f9ebdf64",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "beforePorts": {
+      "ports": [
+        18475,
+        18476
+      ],
+      "dualStack": true,
+      "actualBindClose": true
+    },
+    "afterPorts": {
+      "ports": [
+        18475,
+        18476
+      ],
+      "dualStack": true,
+      "actualBindClose": true
+    }
+  },
+  "immutableInputs": 20,
+  "reviewProofs": 2,
+  "recordedActorArtifactsVerified": 38,
+  "artifactAuditSHA256": "e5f71aad0bd6425cb63dc0c26a6dc2d95632c232c6545ffbede0b15730d7421b",
+  "N5a84": {
+    "pre": "6b1f73e47320adb011aaf8297b156db64fdeae87d3fa940c4396fff1022e2c1f",
+    "post": "6b1f73e47320adb011aaf8297b156db64fdeae87d3fa940c4396fff1022e2c1f",
+    "exactSource": "6b1f73e47320adb011aaf8297b156db64fdeae87d3fa940c4396fff1022e2c1f"
+  },
+  "history": {
+    "initialBaselineSix": "dependency resolution only, corrected baseline0 retained",
+    "authorFirstReporter": "actual449pass/exit0 but TAP wrapper misclassified; retained spec logs then explicit TAP in fresh scratch",
+    "staleConsumer300": {
+      "pass": 259,
+      "fail": 41,
+      "scope": "old3pins refused, must rebind not suppress",
+      "proofSHA256": "cdc0f3d407bc3d2132d030024f249d2b37dd16e46e6074759480d0fe1b0d318d"
+    },
+    "initialAST": "rejected nontransparent grouping; production annotation corrected, comparator not loosened"
+  },
+  "actualLatest749": false,
+  "actual161": false,
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 25,
+  "commit": "c7b7cf5e4e1198b203ad94d96e8af3d7f228b71a",
+  "authorAgent": "/root/native_kernel_ci_impl",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "files": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3",
+      "gitBlobSha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "42e9e8db3bab2ae029ffd64e30886aa645a6a2efe2d11351b3f9f975da036236",
+      "gitBlobSha256": "42e9e8db3bab2ae029ffd64e30886aa645a6a2efe2d11351b3f9f975da036236"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "cd810cd52b41e8c6b07aa2143971690516425022b3562cbe499296f8e965116e",
+      "gitBlobSha256": "cd810cd52b41e8c6b07aa2143971690516425022b3562cbe499296f8e965116e"
+    }
+  ],
+  "scope": "CIcode package only, Native110 preserved+independentWorker51 combined161 gating; 23pins+SELF4",
+  "old192": "semanticmapping retained, inversefixturetransform bytecheck; no globalcountreplace/archivebytechange",
+  "RootActual": {
+    "tests": 384,
+    "passed": 384,
+    "skip": 0,
+    "rawInputs": 24,
+    "reviewProofs": 2,
+    "proofSHA256": "db2c6f1282ae2b8ecae81fae21824bde6377dd6a88195f12eed3bf353bc8d47e",
+    "snapshotsVerified": 6,
+    "stepsVerified": 11,
+    "artifactFilesMeasured": 31,
+    "artifactAuditSHA256": "db24e9739edb198767038f5fe4354383219997bf106b97bbbd491e301d944da7",
+    "actualGit27Positive": true,
+    "gitProofSHA256": "504895cb621f8b80efd5bda06438f239278b975aba243173333d4356196d8ba3"
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactSource84": true
+  },
+  "typeGate": {
+    "status": "FAILED115 whileclean41b0",
+    "impact": "actual161 prohibited untiltypeproducer16 andindependentlyrefreshedCIproof/pins",
+    "noWaiver": true
+  },
+  "reportSHA256": "43c2e7aabc8223a7a2dd74ee102bd3da9eda063e33a253d05a83e0dad6a27044",
+  "actualRuntime161Passed": false,
+  "fullTaskAccepted": false
+}

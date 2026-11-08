@@ -51,5 +51,15 @@
   },
   "primaryDevUnchanged": true,
   "productModelValidationCalls": 0,
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "fixed": {
+    "commit": "c384c58434b491d63dd524c7f691638719b93e62",
+    "originalTypeDiagnostics": 0,
+    "RootRuntime449": true,
+    "runtimeASTEqual": true,
+    "contracts17": true,
+    "proof": "docs/execution/t02-native-type-contracts-validation.json",
+    "sourceReview": "docs/execution/t02-native-type-contracts-source-review.json",
+    "CIConsumerRebindPending": true
+  }
 }

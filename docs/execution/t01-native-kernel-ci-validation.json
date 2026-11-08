@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "c7b7cf5e4e1198b203ad94d96e8af3d7f228b71a",
+  "executor": "/root",
+  "source": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3",
+      "gitBlobSha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "42e9e8db3bab2ae029ffd64e30886aa645a6a2efe2d11351b3f9f975da036236",
+      "gitBlobSha256": "42e9e8db3bab2ae029ffd64e30886aa645a6a2efe2d11351b3f9f975da036236"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "cd810cd52b41e8c6b07aa2143971690516425022b3562cbe499296f8e965116e",
+      "gitBlobSha256": "cd810cd52b41e8c6b07aa2143971690516425022b3562cbe499296f8e965116e"
+    }
+  ],
+  "results": [
+    {
+      "name": "pure384",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 384,
+        "pass": 384,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "5bc707037293a2ff129e218bf144550ef7bcf7457fe38fe655fba83926c08a9f",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.test.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rawInputs": 24,
+  "reviewProofs": 2,
+  "artifactAudit": {
+    "snapshots": 6,
+    "steps": 11,
+    "files": 31,
+    "sha256": "db24e9739edb198767038f5fe4354383219997bf106b97bbbd491e301d944da7"
+  },
+  "pureSource27GitProofSHA256": "504895cb621f8b80efd5bda06438f239278b975aba243173333d4356196d8ba3",
+  "N5a84ProofSHA256": "7d55554da6cded1e5a700a393e0a8004d19ae3b78799cffc232ccaf3c6a1ea3a",
+  "actualMainOrToolPipelineOrWorkerExecuted": false,
+  "typeGateFailed115": true,
+  "actual161Passed": false,
+  "fullTaskAccepted": false
+}

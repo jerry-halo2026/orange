@@ -1,0 +1,69 @@
+{
+  "taskId": "T02.a",
+  "commit": "c384c58434b491d63dd524c7f691638719b93e62",
+  "authorAgent": "/root/native_type_contracts_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+      "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2",
+      "gitBlobSha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211",
+      "gitBlobSha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "sha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc",
+      "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+      "sha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c",
+      "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.test.mjs",
+      "sha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31",
+      "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+      "sha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184",
+      "gitBlobSha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge.test.mjs",
+      "sha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e",
+      "gitBlobSha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e"
+    }
+  ],
+  "typeGateDiagnostics": 0,
+  "originalRuntimeASTUnchanged": true,
+  "RootRuntime449Passed": true,
+  "consumerReady": "three-file native type repair only, existing native interfaces preserved; consumers must explicitly rebind canonical hashes",
+  "actualLatest749": false,
+  "actual161": false,
+  "fullTaskAccepted": false
+}

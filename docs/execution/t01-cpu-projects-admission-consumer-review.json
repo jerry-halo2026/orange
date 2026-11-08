@@ -1,0 +1,62 @@
+{
+  "taskId": "T01",
+  "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+  "authorAgent": "/root/t01_profile",
+  "reviewerAgent": "/root/projects_admission_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "packages/openfilm/src/locations.mjs",
+      "sha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52",
+      "gitBlobSha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52"
+    },
+    {
+      "path": "packages/openfilm/studio/server/atomic.mjs",
+      "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+      "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.test.mjs",
+      "sha256": "68faf24544dad2a9218e2460a334ac7cd16cc4dc79e03148d48354394c58f5da",
+      "gitBlobSha256": "e235b3c8c746a3d14cd57e00f7095aab15c97acca2486597b3cd61e18891dc78"
+    }
+  ],
+  "scope": "CPU isolation +unchangedoriginalnative locations/atomic/fixture inputs foractualprojectsadmissiononly, notwholeNativeProtocol/N1",
+  "provenance": "helper/locationsT01isolation extension; atomic/projects.test unchangedOpenFilm0.3 native, notauthoredbynewguardwriter",
+  "priorCPU": "docs/execution/t01-cpu-readiness.json",
+  "nativeImportPreflight": {
+    "actualOriginalProjectsImportExitCode": 0,
+    "ownHomesOnly": true,
+    "source": "E1 .dev/projects-admission/original-import.stdout",
+    "productionOperationsCalled": false
+  },
+  "representation": "actualE2retainedraw hashes andnativeproducerGit9079blobs checkedseparately, originalprojects.mjs iseditablebaseline NOTfrozendependency",
+  "fullTaskAccepted": false,
+  "approval": {
+    "date": "2026-11-08",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "exactunchangednative/CPUinputs only; noprojectsguardimplementedyet"
+  }
+}

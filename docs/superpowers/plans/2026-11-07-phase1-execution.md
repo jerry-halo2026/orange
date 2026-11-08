@@ -344,3 +344,13 @@ T01rev15, engineering-verification, Root-owned sharedCI singleton delegatedoneau
 - [x] Freezeexactdiff/non-authorSPECQUALITY/Rootfreshverify+N5a andlocalcommit beforepublication. Rootactualremotejob staysseparatelease/audit/publictargetgate, no implicit newpass.
 
 CI实际回执（2026-11-08）：代码b869/不可变运行候选bdc，Rootruntime16全部审查/新历史审计/即时public与旧终态/84门禁后只推单一codex主题。actualFission42426527222/job128565878701：Node22.23.4、SDK10.0.403、pure300和原43+34全0skip；同headcompanion42426527245/job128565878646实际353/353、4Auth/policy源码pin正确。两份日志/安全摘要/计数/工具/源/包闭包分别独审，回执fc87保留旧失败。新case只证明currenttuple/oldpin不再选，不声称旧bytes直接负例；depth1历史对象缺陷真实复现修复，Root误把phase1353套depth1的350/3实验亦保留，actualphase1是depth0。仅此CI任务局部完成，生产Auth/原nativeconsumers/owner/UI/N1/媒体安装/PG仍未完成。
+
+
+## 2026-11-08 projects admission subset
+
+T02.a rev7 native-extension/businesscontroladdition, same approved N0 but NOTN1/owner/productioncontrolledactivation. Source2+tests2 only: newproject-control-guard and actualoriginalprojects.mjs consumeit, notunusedhelper. ExactAPI/registry/marker/privatecapabilities/input-negativefixtures/resources in execution/t02-native-projects-admission-assignment.json. Nativebaseprojects iseditableGitbaseline; onlyCPU/locations/atomic/oldfixture dependencies immutable. Broadernativeentry/drain untouchedandmandatorylater, notdeletedfromscope.
+
+- [ ] Actualnewfactory andoriginalmarkedpathwritedefect/race RED, ownrealFS/childNode notsimulationmodel; preservedunmarkednativehappyIDs/film/reopen andallnewnegativecases.
+- [ ] Sharednativeleases/controlledexclusive shortatomicmeta protocol, trustedbrandedguard injection/ALS, guardactualprojectsIO beforeprefs/read/mkdir/describe/followLibrary/id/choose; processstatequeue no nesteddeadlock. DefaultOScoord stable, testsONLYexplicitownE2coord.
+- [ ] Strictprojectsprivatepending->deny markers->committed, no owner/historyclaim, partialfailurefailclosed, fixedfalseglobalactivation capabilities. ActualallpublicIOentrypointregressions, source4syntax/diff/alltests0skip wherecapable; ENVfilelinkfailure separatelynotpass. No actualTrash/defaultOSregistry/package/server/media.
+- [ ] IndependentSPECQUALITY+Rootfreshrealtests/sourcehash/N5a+localcommit; freezeonlyprojects-admission-v1 consumer. Thenactualserver/pages/CLI andoriginalexports/fetch/watch/autoVersions/host-stream retain/drain before productioncontrolledactivation/owner/desktopUI/N1. Do not substitutepermanentBUSY oruntilprocessExit forrealcompletion.

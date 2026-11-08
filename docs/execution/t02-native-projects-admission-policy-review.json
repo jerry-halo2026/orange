@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 7,
+  "reviewerAgent": "/root/projects_admission_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCardSHA256": "d7cf841c760b59730f5b410fee06222530290c79ae9f343eb79fb72ac3b87825",
+  "frozenCardSHA256": "c984a4232b930a151b370d0caa42baddd3c0dd4b9a66c288d24169cd4a5e1c1e",
+  "producerProofSHA256": "e55d986c13d42c7977d37923c508536d024ee8aa8bc3ba68a7f99034e1165b77",
+  "finalOnlyChanges": "approvedproofverdict/hashrefs only, no scope/API/resourcechange",
+  "requiredAtImplementationReview": [
+    "controlerrors cannot be swallowed bylegacybroadcatch",
+    "alllistpaths preflightbeforefirstwrite/newleafchecks despiteparentcoverage",
+    "realnested/sibling/childprocess contention andnativestatequeue tests",
+    "fixedfalseglobalactivation/owner/background capabilities, no foreverBUSYascompletion"
+  ],
+  "requiredBeforeWriter": [
+    "immutablefreeze",
+    "managedE2FFwithactualrawproofof7inputs",
+    "externaltrustedN5a84"
+  ],
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,194 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 7,
+  "authorAgent": "/root/native_projects_admission_impl",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension/minimalbusinesscontroladdition",
+  "scope": "projects-admission-v1: actualoriginalprojectsFS/stateAPI consume sharednativeadmission+deny markers, notunusedhelper; no originalserver/CLI/parent/Auth/UI activation yet",
+  "workingBaselineCommit": "ac55f4c8127ed4dd322ebf15c56f7a3c4d3bc9b1",
+  "dependencyCommits": [
+    "ac55f4c8127ed4dd322ebf15c56f7a3c4d3bc9b1",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t02-native/orange",
+  "branch": "codex/t02-native-characterization",
+  "status": "active",
+  "dispatchState": "reserved notdispatched untilindependentpolicyreview/immutableN5a",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/project-control-guard.mjs",
+    "packages/openfilm/studio/server/projects.mjs",
+    "packages/openfilm/studio/server/project-control-guard.test.mjs",
+    "packages/openfilm/studio/server/projects-control.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/projects.mjs"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "packages/openfilm/src/locations.mjs",
+            "sha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52",
+            "gitBlobSha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects.test.mjs",
+            "sha256": "68faf24544dad2a9218e2460a334ac7cd16cc4dc79e03148d48354394c58f5da",
+            "gitBlobSha256": "e235b3c8c746a3d14cd57e00f7095aab15c97acca2486597b3cd61e18891dc78"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-projects-admission-consumer-review.json",
+          "sha256": "e55d986c13d42c7977d37923c508536d024ee8aa8bc3ba68a7f99034e1165b77",
+          "gitBlobSha256": "e55d986c13d42c7977d37923c508536d024ee8aa8bc3ba68a7f99034e1165b77"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/superpowers/specs/2026-11-08-identity-access-n0.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-projects-admission-subset",
+  "nativeEditableBaseline": {
+    "commit": "ac55f4c8127ed4dd322ebf15c56f7a3c4d3bc9b1",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/projects.mjs",
+        "gitBlobSha256": "a0b52cba6c3d8795a034f77b5905bf819cab56a43c8c4d637c511cdd612b00f1"
+      }
+    ],
+    "meaning": "allowednativeextension, originalGitblobimmutable andexactdiff/oldAPIs/peer/freshrealtests separateverification, NOTassertedunchangedworkingfile byN5a"
+  },
+  "contract": {
+    "guardFactory": "createProjectControlGuard({coordinationRoot}={}) -> privatelybrandedfrozenGuard; constructor/import do notwrite; explicitroot ordinaryabsolute; lazydefaultunder os.userInfo().homedir/.openfilm-control-coordination (OSprovidednotHOME/USERPROFILE/OPENFILM_HOME/SHAREDHOME), no productionenvbypass",
+    "resources": "exactplainown-data {homes:string[],roots:string[],targets:string[]} absolute localpaths, no unknown/getter/inherited/coercion; emptyarraysallowed butoverallnonempty, everyintendedlexical+realancestorpath checked includingmissingtail beforemkdir. Existingpublicrelativeprojectinputs resolve beforeguard, preserveAPI.",
+    "guardMethods": [
+      "withNativeAccess(resources,async lease=>result):Promise<result>",
+      "withNativeAccessSync(resources,()=>result):result foractualsyncIO, callbackmustsync trustedinternal",
+      "acquireControlledReservation(resources):Promise<{instanceId,epoch,close}>"
+    ],
+    "lease": "opaque privatelyowned; include(paths:string[]):Promise<void> extendsunder sameatomicmeta protocol, muststillchecknewleafmarkers evenifalreadycovered; assertActive() sync throwsafterclosed; nested/siblingactivecalls refcount correctly, cannot releaseparentearly orreuseclosedlease",
+    "coordination": "coordinatorroot registry.json version1 {readers:[{nonce,paths}],reservations:[{nonce,paths,instanceId,epoch}]}; randomnonces private/unforgeableAPIhandle, lease records overlap oncanonical ancestor/equal paths. Native readers sharecompatible evencrossprocess; controlled reservation conflictswithoverlappingreaders/reservations. Shortwx meta.lock synchronous criticalsection, no await/usercallback/IOwork underlock; boundedattempts<=32, no infinitewait, busyfailswithoutwriterpending state. Atomicallyrewrite registry underownsameRoot only; malformed/unknown/stalerecords ormetamutex failclosed, no PID/time guesseddelete. Onlyownednonce releasesownrecord underlock.",
+    "pathSecurity": "checkraw/sanitizedabsolute equivalent existingrealpaths/ancestors inclWindowscase/junction andmissingparenttail; markers onhome/library/anyancestor .openfilm-control.json andtarget/compoundouter .film/control.json; unknownversion/badJSON/link marker failclosed. No hostileconcurrentFSswap/OSsandbox promise. Do notassume sourcehardlinkidentity fromstrings; metadatafiles/coordancestors mustordinary/notlinked.",
+    "projectsHooks": [
+      "withProjectControlGuard(brandedGuard,work) trustedNodeALS dependency injection only, no HTTP/renderer/env switch; rejectfakeguard, cannotswitchguard withinactivelease",
+      "registerProjectControl({environmentId,domainId}) -> Promise<{instanceId,epoch,close,capabilities}>; trustedNodeexclusiveprojectsstatewriter only, no owner/authorizationsetter"
+    ],
+    "registration": "takecontrolledreservation overhome/sharedhome/library beforestateI/O; strictprivateorangeControl {version:1,domainId,environmentId,registration:pending|committed,roots:[canonicalLibraryRoot]}, preserveunknownexistingstate/recent/folders. Writepending thenhome/library .openfilm-control.json {version:1,domainId}, thencommitted. Existingmatchingcommitted mayreopen onlyconsistent; pending/malformed/mismatch refuse notdowngrade. Any partialmarker/state staysdeny; no cleanup wipingit, no historicalprojectscan/idwrites/autoOwner. Returnfixedcapabilities only; registrationNOTproductionactivationproof.",
+    "capabilities": {
+      "scope": "projects-admission-v1",
+      "projectsApiFenced": true,
+      "registrationWritesDenyMarkersOnly": true,
+      "nativeEntryPointsFenced": false,
+      "backgroundIoDrained": false,
+      "productionControlledActivation": false,
+      "ownerAuthorization": false
+    },
+    "allActualIO": [
+      "studioKey synchronous realguard; keyvalue neverprinted/testdiff",
+      "readState; libraryRoot prefsread mustguardhome/sharedhome beforeinvocation (NOTpurepath)",
+      "openProject/createProject/listProjects/listFolders/createFolder/renameFolder/moveFolder/deleteFolder/moveProjectToFolder/projectById/markOpened/locateProject/renameProject/deleteProject/forgetProject/moveLibrary",
+      "private readState/writeState/describe/followLibrary/folderId helpers reuseactualscope; found/recent/compoundouter allpaths preflight BEFOREany ID/gitignore/film/statewrite, not postfilter",
+      "create name scan andmkdir insideactualoriginalprocess exclusive transaction; extractprivateinternalcall asneeded, never outerexclusive->publicopenProject->innerexclusive deadlock; preserveIDs/rev/filmformat",
+      "moveLibrary guardfrom/target/sharedhome BEFOREchoosecallback/readactualnewprefs/mkdir/copy/rename; unexpectedactualtarget include beforeIO. Do notpromiseprotectagainstmalicioustrustedcallbackarbitraryFS code.",
+      "studioHome/folderTree trulycomputational staypure, constants/ProjectError/publicsignatures unchanged"
+    ],
+    "errors": "reuseProjectError forpublicprojects fixedcodes control-required(403),control-busy(409),control-invalid(403); guarderrors fixedcode/messages withoutnonce/key/rawstate/privatepath dump; preserveoriginalnoncontrolerror behavior",
+    "sourceAuthority": "projects.mjs uniqueorangeControl/statewriter; guardonlyadmissionregistry/privatefilesystem coordination. No parallelProject/owner/film/timeline format ornewbusinessauthDTO.",
+    "futureMandatory": "server/pages/CLI originalentry +exports/fetch/watch/autoVersions/hostpipeline true retain/drain beforeproductioncontrolledactivation/owner/desktopAuth. Thiscard cannotflipfalsecapabilities, runcontrolledapp orclaimN1."
+  },
+  "validation": {
+    "TDD": "actualmissingfactoryRED thenbehavioraloriginalproject writesonmarkedpaths/lease races beforeimplementation; syntheticBCL files actualoriginalexports no independentmodel. Saveallfirstattempts.",
+    "newTestFiles": [
+      "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "packages/openfilm/studio/server/projects-control.test.mjs"
+    ],
+    "groups": [
+      "pureimport/defaultfactory no realdefaultdirectorywrite; invalid/getter/proxy/fakeguardinput refusal",
+      "actualsharednative2readers +controlledBUSY withoutwriterpending; nestedCLI-style independentreader mayjoin; afteractualrelease registrationworks",
+      "realchildprocess sharedcoord/race: writerheldblocksregistration, controlheldblocksnative; no lockunderHTTP/usercallback await; stale/malformed/metaLOCK no PID/timecleanup; ownnonceonlyrelease",
+      "ALS nested paths/refcounts/siblings/exception/finally/closedhandles/cannotchangeguard; leaveoriginalstatequeue intact",
+      "readState/studioKey/libraryprefs deniedonmarkers before read/mkdir/keygeneration; booleanassertions neverdump key",
+      "actualunmarkedopen/create/list/reopen originalnativeid/film/recent/folders remain, opaque6-40projectID notUUID",
+      "controlledhome/mismatchedenv/domain/pending/corruptpartialregistration no downgrade/unknownhistory0idchanges/stateextrasretained",
+      "differenthome/sharedhome samecontrolledlibrary/markedexternaltarget/missingcontrolledsubpath refusedbeforefirstwrite",
+      "listProjects markedcopied/compoundouter preflight beforeanyfollowLibrary/idchange (evenotherentries), no postdescribe filtering",
+      "createProject Promise.all unique originalnames/IDs; marked library no mkdir/scan, no stateTurn selfdeadlock",
+      "locate/rename/moveLibrary allsrc/dst/choose guardbeforeeffect, callbacks count0whenblocked; no remove/claim unknownhistory",
+      "nativeallpublicstate/projectwriteAPIs control-denial beforeeffect incldeleteProject beforetrash; actualregistrypaths ordinary/junction/hardlink tests; genuinefile-symlinkifavailable recordENVfailure notskip/pass"
+    ],
+    "environment": "Nodeonly ownE2/.dev/projects-admission fixture/temp/home/library/coord; allactualAPItests under withProjectControlGuard(realexplicitOwnGuard,...), no writes realOSdefaultcoord/prefs/data. SpawnonlyownNode FS-testchildren, no network/listener/Electron/media/GPU/.NET/SDK/packages/OSpolicy. Missingoriginaldeps -> report, no fake modules/install.",
+    "commands": "explicitnode --test --test-reporter=tap twoNewTests +readonlyCPU81/flavor3, helper10 ifused; Auth103/policy92 regression unaffected. Allrunnable0fail/skip/todo/cancel; genuinefilelinkEPERM separateENVfailed notsilentlyskip. Syntaxall4/diff0 andrawhashes ofallforbiddeninputssame.",
+    "legacyTesting": "preserveoriginalprojects.test.mjs asunchangedreference, do notrunactualRecycleBin/PowerShelltrash positivecases underthiscard; newtests provecontroldenialbeforetrash. Broaderoriginalsuite/bootstrapisolatedguardandrealTrash/E2E remainslaterrootreviewedtask, notclaimedpassed.",
+    "scopeCeiling": "projects-admission subset only; no completecrossprocessprojecttransactionmutex/allentry/backgroundquiescence/productioncontrolledactivation/Authowner/N1/fulltrial/Mac"
+  },
+  "forbidden": [
+    "anyserver/pages/CLI/background/host/Auth/policy/atomic/locations/CPU/oldfixtures/CI/07/docs/workspace/lock/packageexport changes",
+    "realdefaultOSregistry/userprefs/keys/config/accounts/data; autoOwner/historymigration",
+    "actualtrash/PowerShellRecycleBin/OSsecurity/SDK/packageinstall/network/media/browser/.NET/model/cloudbusinesswrites",
+    "Gitstage/commit/merge/push/reset/clean/cleanup/oldartifactsoverwrite/subagents"
+  ],
+  "report": ".dev/projects-admission/report.json",
+  "fullTaskAccepted": false
+}

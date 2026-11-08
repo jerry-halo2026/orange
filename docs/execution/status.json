@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "ActualWindows110 success scopeda68; newerWorker54ed qualifiedRoot135. Latestintegration24 policyapproved/notexecuted pendingimmutable/rawN5a; no sourcewriters, no fullretirement/N1/PG.",
+  "phase": "latestlocal641 actualpassed/postexactN5a24/f336receipt; oldactualWindows110 a68staysqualified. Newsource25 Native110+separateWorker51 CI policyapproved/notdispatched pendingimmutable/rawN5a; no sourcewriters. RemainingExports/Fetch/route/processownership stillunclosed.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-kernel-integration-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-kernel-ci-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-kernel-integration-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-kernel-ci-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -120,7 +120,7 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "t02Head": "fc3fe6fda9b946a7b7c378f1eb0209b1e0b7a1d2",
+    "t02Head": "f336b20bdc88aaaef21bdb86b344fef47d09d3a7",
     "t05SourceState": "caller754 awaits actualwatcher+Auto; Workerproducer54ed actualexit qualifiedRoot135, but serverconsumption/processownership/allenteredrouteIO stillpending",
     "devIntegration": false,
     "remotePushThisGoal": true,
@@ -129,7 +129,7 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
     "latestRuntimeReceiptCommit": "fc3fe6fda9b946a7b7c378f1eb0209b1e0b7a1d2",
-    "latestSourceAssembly": "d8939544806a6c9533138497dcf024b92ed19627",
+    "latestSourceAssembly": "f336b20bdc88aaaef21bdb86b344fef47d09d3a7",
     "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP",
     "coordinationBeforeFix13Freeze": "e5c29a35b7ca1936e19cccbac2608e342c30fed6"
   },
@@ -164,7 +164,7 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-kernel-integration-assignment.json"
+    "docs/execution/t01-native-kernel-ci-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
@@ -328,8 +328,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-kernel-integration-policy-review.json",
-  "nextOperation": "freeze24/E3managedFF/raw31+2proof/externalN5a84 -> actual641joint/ownedthreads/ports/sourcebindings; thenlatestCIKernelcoverage andwholebranchreview beforedev, othernativeIOproducers remainpending",
+  "currentMetadataReview": "docs/execution/t01-native-kernel-ci-policy-review.json",
+  "nextOperation": "freeze25/E2raw24+2proof/N5a -> freshCIauthor; Exportsproducer15 originalNodefork/FS designpreparation only, no media/proc started; futurelatest161CI andwholebranchreview beforedev",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -350,22 +350,24 @@
     "runtime20Receipt": "docs/execution/t01-native-studio-ci-diagnostic-runtime-validation.json",
     "nextSource": "fixedGit5865316 exact N5a84 passed and sourceassembled65881f9; next actual native110 producer alignment before new runtime, not separate old66",
     "alignmentSourceCard": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
-    "alignmentState": "source4d155 qualifiedready for separatelyreviewed actualWin110 only, no actual110yet",
+    "alignmentState": "source22a68 Native110 actualpassed; newerWorker54ed latestlocal641passed, independentWorker51 futureCIcombined161notrun",
     "latestJointResult": {
-      "tests": 590,
-      "pass": 590,
+      "tests": 641,
+      "pass": 641,
       "fail": 0,
       "skip": 0,
-      "sourceCommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
-      "qualifiedScope": "native398+CIpure192 only, not actual110 orfullpilot",
-      "old579FailurePreserved": true,
-      "qualifier": "old590 source4d only, newerWorker54ed latestassemblyd893 needsjoint641"
+      "sourceCandidate": "158ac8d219c596c0df26cf6ef061667a47611702",
+      "receiptCommit": "f336b20bdc88aaaef21bdb86b344fef47d09d3a7",
+      "localOnly": true,
+      "actualWindows110Scope": "a68oldperson2ae only"
     },
     "latestRuntimeCard": "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
     "latestRuntimeState": "terminalactual110SUCCESS atsourcea68(originalperson2ae), no autoattribution tonewerWorker54ed",
     "actual110Passed": true,
     "actual110Run": 42448639096,
-    "actual110Receipt": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json"
+    "actual110Receipt": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
+    "kernelCoverageCard": "docs/execution/t01-native-kernel-ci-assignment.json",
+    "kernelCoverageState": "policyapproved sourceonly, new161notrun"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",

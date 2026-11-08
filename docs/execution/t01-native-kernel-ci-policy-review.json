@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 25,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "fb900648f173efd84d84c168a2b43b4427069fc1a3bbabb0cbcae8749701ec35",
+  "proofs": [
+    {
+      "path": "docs/execution/t01-native-kernel-ci-input-review.json",
+      "sha256": "6d56e3adef7feadce2333e75931b1ef6e8897291b3304dedaf81e9e4198fcf02",
+      "gitBlobSha256": "6d56e3adef7feadce2333e75931b1ef6e8897291b3304dedaf81e9e4198fcf02"
+    },
+    {
+      "path": "docs/execution/t02-native-kernel-ci-consumer-review.json",
+      "sha256": "9233c5c87f2ed397e73fb6bd638342da19b24e3a1338162a2d5d2ccd4c0fc8b4",
+      "gitBlobSha256": "9233c5c87f2ed397e73fb6bd638342da19b24e3a1338162a2d5d2ccd4c0fc8b4"
+    }
+  ],
+  "rawInputs": 24,
+  "literalPins": 23,
+  "SELF": 4,
+  "actualWorker51FlatEvidenceConfirmed": true,
+  "onlySourceTaskApproved": true,
+  "remaining": [
+    "immutable approval",
+    "managedE2FF/raw24+2proof",
+    "trustedexternalN5a84",
+    "freshauthorTDD/non-author source/Rootfresh/actual27Gitpositive",
+    "separate actualruntime"
+  ],
+  "actual161Approved": false,
+  "fullTaskAccepted": false
+}

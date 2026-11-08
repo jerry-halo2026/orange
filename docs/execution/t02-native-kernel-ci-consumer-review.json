@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "f336b20bdc88aaaef21bdb86b344fef47d09d3a7",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "cf9725b233177cef6089f39fef1261f9b0a7e74a5ff81764f6aa6d003fdfe499",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "bccc9b74b03f0bbaac4b3261eeb800b56ccbc416076bc8db4a66fbd6c07c4545",
+      "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.mjs",
+      "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194",
+      "gitBlobSha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+      "gitBlobSha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits.mjs",
+      "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+      "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge.mjs",
+      "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+      "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge-worker.mjs",
+      "sha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e",
+      "gitBlobSha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "aac9d66548fba071a09580a0efbf7c89099b9710cbbde7a081fd20cf962d5070",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "d5ddc358a85c0d6b07333e14567a22969500eaf3c952488c92daa43e58f98c96",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+      "sha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa",
+      "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "sha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc",
+      "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.test.mjs",
+      "sha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31",
+      "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+      "sha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c",
+      "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+      "sha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184",
+      "gitBlobSha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge.test.mjs",
+      "sha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e",
+      "gitBlobSha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e"
+    }
+  ],
+  "sourceAttribution": "Root consumes frozen original/source54ed/source754/source22 producers, not claiming authorship",
+  "scope": "exactE2currentraw+canonical input proof for native110plusKernel51 CI source, not realruntime",
+  "priorProofs": [
+    "docs/execution/t02-merge-worker-readiness.json",
+    "docs/execution/t01-native-kernel-integration-validation.json"
+  ],
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

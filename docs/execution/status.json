@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "reviewedoriginalprojectsadmissionc8a4 andauto-versionproducer8857 serialassembly436b, Root347pass; qualifiedlocalonly/filelinkENV andactualStudio/fullentryretirement pending",
+  "phase": "actualoriginalStudio Auto.close+bothlistenfails source2b5e44b peer/Root149/latest354/N5a84 accepted Auto-only; nextpermanentNativefilelink+freshCI andotherbackgrounddrain",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t02-native-projects-admission-assignment.json",
+  "currentTaskCard": "docs/execution/t02-studio-auto-close-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t02-native-projects-admission-readiness.json",
+  "currentSliceReview": "docs/execution/t02-studio-auto-close-readiness.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -104,7 +104,8 @@
     "docs/execution/t01-auth-ci-refresh-validation.json",
     "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
     "docs/execution/t02-native-projects-admission-validation.json",
-    "docs/execution/t02-auto-versions-drain-validation.json"
+    "docs/execution/t02-auto-versions-drain-validation.json",
+    "docs/execution/t02-studio-auto-close-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -113,7 +114,7 @@
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
     "t02Head": "c8a4d34e4d80b9a94712ce888791cd5a0e8a3a0e",
-    "t05SourceState": "Auto8857 newproducer commit onreusedE3, Fission6048 unchanged; selectedFissionhost/media notreleased",
+    "t05SourceState": "sourceStudio2b5e44b onreusedE3, Auto8857/Nativec8a4/Fission6048 preserved; no fullhost/wholebackgroundrelease",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
@@ -121,7 +122,7 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "bdc88574797000291cb0c2b3be57df783254cedc",
     "latestRuntimeReceiptCommit": "fc87f71308997f526f22d8e1e2bddd93d987adf7",
-    "latestSourceAssembly": "436b40c661291820c47b0f59fe46e71bc709ab1b"
+    "latestSourceAssembly": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9"
   },
   "currentBlockers": [
     "T02.a Authd008syncinvalidation/policyacc27 sourcepeer+Root279 readyonlylocalDI; actualtrustedAuth/ownerstore/nativeHTTPWS/pages/CLI/UI/N1stillpending",
@@ -148,10 +149,10 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "actualoriginalStudio.close awaitsAuto8857 stop withactualstartStudio/privateDI+NativeGuardc8a4 context, boundedownports undernewreviewedcard",
-    "persistgenuinefilelinkNodeassertions/hostedWindowsCI; oldbdcCI scopehistoricalnew6sourcefilesnotyetCIvalidated",
-    "originalexports/fetch/watch/autoVersion/hoststream truecompletion thenserver/pages/CLI/owner/parent/UI; no permanentBUSYsubstitute",
-    "realAuth D12scope/existingtestidentity notanswered, onlyrealcloud blocked; no modelcalls/budgetreset"
+    "permanentgenuinefile-symlinkmarkerassertion andnewNative/Studio testsCI, current354localpassnotoldbdcCIproof",
+    "watch.mjs producer close/drain actualinitialread/flush/settle/FSWatcher-close, thenoriginalserverawait; designread-onlydone2filesno writer yet",
+    "exports/fetch/hoststream/sharedmergeworker actualcompletion/lease retirement thenAuth/owner/fullnativeentry/desktopUI, fullscope unchanged",
+    "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
@@ -316,6 +317,6 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t02-native-background-ledger-review.json",
-  "nextOperation": "newRootCI provegenuinefile-symlinkmarkerassertion andactualnative-sourcechecks; nextoriginalStudio stop await+actualAuto/frozenGuard DI, thengenuinebackgroundretain/drain before controlledAuth/owner activation"
+  "currentMetadataReview": "docs/execution/t02-studio-auto-close-ledger-review.json",
+  "nextOperation": "freezeNativeStudioCI testclosure allfrozeninputs+permanentrealfile-symlinkcase, restoreoriginalpublicplaywright-core1.61.1 SHA512 undernewCIcard; thenactualwatcher/export/fetch/hoststreamdrain beforefullentry/owner/parent/UI"
 }

@@ -368,16 +368,22 @@ T02.a rev8 native-extension minimumexistingproducer, independentNativeprojects7.
 局部执行回执（2026-11-08）：projects源码c8a4经历独审1P1/2P2、真实38/27+11RED与fix1后40测试、Root40+289、前后/精确提交N5a84，保留SYS-C临时合成fixture边界偏差及原初中间sourcehash证据不足。真正file-symlink仍EPERM、assertions0，不计通过。Auto源码8857原5prefix不变/18真实producer测试、Root102/独审/N5a84；原server仍没await。串行组合436b重新347/347、0skip。两子包仅本地资格完成，旧bdcCI不代新6源CI，生产activation/owner/全部entry与background/N1未完成。
 
 - [ ] 将真实file-symlink marker拒绝断言保留在可执行受控测试并在hostedWindows实际跑，不以junction/ENV或旧FissionCI代替。
-- [ ] 实际原Studio.shutdown await已冻结Auto.stop、actualAuto+actualstartStudio+NativeGuard DI组合；随后exports/fetch/watch/hostpipeline retain/drain和完整entry/owner/parent/UI继续，未删减。
+- [x] 实际原Studio.shutdown await已冻结Auto.stop、actualAuto+actualstartStudio+NativeGuard DI组合，见source2b5e44b/Root354真实证据。
+- [ ] exports/fetch/watch/hostpipeline retain/drain和完整entry/owner/parent/UI继续，未删减。
 
 
 ## 2026-11-08 original Studio auto version close
 
 T02.a rev9 native-extension actualconsumer ofc8a4/8857 snapshot436b. Exactlyoriginalserver.mjs+newserver-auto-versions.test; no newUI/daemon/helpermodel. FactoryisinternaltrustedNode additiveoption only, testsreturnactualAuto withactualdeferredsave andrunactualstartStudio underactualNativeGuardDI/approvedisolationprofile. Scope/card execution/t02-studio-auto-close-assignment.json; consumerproof t02-studio-close-consumer-review.json.
 
-- [ ] Actualoriginalclose/first-and-second-port-startfailure pending-save earlysettle RED, sourcebaseline/logs retained. Checkallproducerinputsready first, no fallbackfakestop.
-- [ ] Originalshutdown capturesstop synchronously, closesexistingadmission/resources thenawaitsactualsave/cleanup; startupfailure alsostops/waits/cleans. PreserveoriginalAPI/errors/othercleanup, safeinvalidfactorybeforelisten.
-- [ ] Ownports18475/18476 andprofileE3 paths only, no remote/bootstrap/browser/media/privateconfig, zero leftovers; allnew+oldaffectedNode tests0skip/fail/syntax/diff/inputhash stable.
-- [ ] Non-authorSPECQUALITY+RootfreshactualHTTP/Auto/Guardcomposition andN5a beforeproducercommit/serialintegration. Notfullbackgroundquiescence; exports/fetch/watch/hoststreamandactualAuth/owner/nativeentry/UI/N1 remainmandatory.
+- [x] Actualoriginalclose/first-and-second-port-startfailure pending-save earlysettle RED, sourcebaseline/logs retained. Checkallproducerinputsready first, no fallbackfakestop.
+- [x] Originalshutdown capturesstop synchronously, closesexistingadmission/resources thenawaitsactualsave/cleanup; startupfailure alsostops/waits/cleans. PreserveoriginalAPI/errors/othercleanup, safeinvalidfactorybeforelisten.
+- [x] Ownports18475/18476 andprofileE3 paths only, no remote/bootstrap/browser/media/privateconfig, zero leftovers; allnew+oldaffectedNode tests0skip/fail/syntax/diff/inputhash stable.
+- [x] Non-authorSPECQUALITY+RootfreshactualHTTP/Auto/Guardcomposition andN5a beforeproducercommit/serialintegration. Notfullbackgroundquiescence; exports/fetch/watch/hoststreamandactualAuth/owner/nativeentry/UI/N1 remainmandatory.
 
 StudioClose工具交接（rev10，2026-11-08）：实际E3无playwright-core，Root此前“本地已有”判断错误，首次ERR_MODULE_NOT_FOUND是能力失败不是业务RED；作者未安装/stub。E1原pin1.61.1现存，无scripts/传递deps，Root拟离线复制完整公开包+许可到E3新ownedstage并全文件SHA核验后原子物化到absent本地node_modules；不网络/安装脚本/browser/SDK/全局配置、不改源/锁。新handoff须独审/不可变/raw+N5a，作者保持冻结前Source/test，不可据缺包失败声称lifecycle已复现。完整权限/执行测试/API/端口原样。
+
+Studio Auto consumer执行回执：source2b5e44b、真实DIonly7/2pass5fail RED（不是缺包失败），Root149与精确最新source354均全0skip，真实两端口/已有TCP连接在save pending时已关闭、actualIO/cleanup最后settle，首/次EADDRINUSE保存原错且不关闭自有blocker。源码/Root/tooling/N5a和独审见t02-studio-auto-close-validation。当前只自动版本保存caller链闭合，旧producer readiness里尚未await是其冻结时状态；当前新证据补充不改旧样例。
+
+- [ ] Native file-symlink永久断言/真正hostedWindows +新8源CI，补原依赖playwright-core1.61.1固定tar SHA512/许可/禁scripts/browser再测试；不再假定builtin-only或E3原本已有依赖。
+- [ ] watch/export/fetch/host流及sharedmergeWorker真实completion/leasedrain，原server消费；再完整入口/owner/parent/UI/realAuth/N1及17签收，未缩范围。

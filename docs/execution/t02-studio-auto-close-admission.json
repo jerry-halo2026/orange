@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-08",
+  "recordKind": "dispatch/toolinghandoff historical evidence, not sourceacceptance",
+  "originalRevision9": {
+    "approvalCommit": "dc28a1da5180c1ad154df7f77650023623a0e2ff",
+    "N5a84": true,
+    "capabilityFailure": "ERR_MODULE_NOT_FOUNDplaywright-core beforeactualserverimport, NOTbehaviorRED",
+    "authorDidNotInstall": true,
+    "RootIncorrectAssumptionOfLocalDepsCorrected": true
+  },
+  "handoffRevision10": {
+    "agent": "/root/studio_auto_close_impl",
+    "taskId": "T02.a",
+    "assignmentRevision": 10,
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "approvalCommit": "753d5a82ee10c0a72415687ca86849b4f7432ab1",
+    "cardSHA256": "040818d750c1a30b16ad97aea20b6f72a4ee0d4b8a3dfa221093f49d373693f5",
+    "N5aCases": 84,
+    "admissionSHA256": "ff47dcc8dedfe58ac5a78947b44aa4b8dae2f3e5f559ebdc9e3fff17420cc084",
+    "scope": "server.mjs/newactualStudioAuto test, own18475/6+explicitprofile/GuardDI only"
+  },
+  "tooling": {
+    "manifestSHA256": "09a112106b062c724bbdaeceaeb9a03d937d82eaffd47bc27b932cabb2abed48",
+    "actualProofSHA256": "2b0a2c254b358e2967df65804891b4d2351a45723a7e339b6e63023d8e826580",
+    "package": "playwright-core@1.61.1",
+    "fileCount": 106,
+    "fullContentMatch": true,
+    "sourceFilesUnchanged": true,
+    "offlineExistingPublicPackageOnly": true,
+    "serverImport0": true,
+    "serverStartedByRoot": false,
+    "tarballIntegrityRemeasured": false
+  },
+  "sourceReviewPendingAtDispatch": true,
+  "productModelCalls": 0,
+  "fullTaskAccepted": false,
+  "currentSourceReviewPending": false,
+  "currentSourceReview": "studio_close_source_review approved0P1/P2",
+  "lifecycleTestPassedAtDispatch": false,
+  "currentActualLifecycleTestPassed": true,
+  "currentOutcome": "source2b5e44b/Root149/latest354/realports ownclosed acceptedAuto-only; completebackground/AuthUI/N1stillpending"
+}

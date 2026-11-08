@@ -1,0 +1,36 @@
+{
+  "taskId": "T02.a",
+  "subset": "actualoriginalStudio waitsAuto save+cleanup onnormalclose/first+secondlistenfail only",
+  "commit": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+  "authorAgent": "/root/studio_auto_close_impl",
+  "reviewerAgent": "/root/studio_close_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e",
+      "gitBlobSha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "sha256": "f78e12d6922a780dc1c54e47c30319dc9c852f53aef4770dd678cf0227a4ae77",
+      "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+    }
+  ],
+  "contract": "trustedNodeautoVersionsFactory optionaldefaultsactualnative, surfacevalidatedsafeerror; syncstop thenclosenetwork/resources thenawaitrealAuto.save/cleanup beforepublicclose/reject, nativeerrorpreserved andsameclosingPromise",
+  "actualEvidence": {
+    "newStudio7": true,
+    "Root149": true,
+    "latest354": true,
+    "ownTwoPortsFinalBindClose": true,
+    "actualAutoAndGuard": true,
+    "sourceInputHashesMatch": true
+  },
+  "readiness": "ordinaryownedisolationprofile consumer-ready for thisAuto lifecycle only, notallbackgroundorproductionactivation",
+  "validation": "docs/execution/t02-studio-auto-close-validation.json",
+  "representation": "retainedE3rawsha separatefromcanonicalGitBlob, consumerfutureFFmustverifyactualraw, no falseEOL equality",
+  "fullTaskAccepted": false
+}

@@ -59,7 +59,8 @@
       "docs/execution/t05-material-pool-validation.json",
       "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
       "docs/execution/t02-native-projects-admission-validation.json",
-      "docs/execution/t02-auto-versions-drain-validation.json"
+      "docs/execution/t02-auto-versions-drain-validation.json",
+      "docs/execution/t02-studio-auto-close-validation.json"
     ],
     "t02": {
       "cases": 6,
@@ -266,15 +267,24 @@
     "root102": true,
     "old5PrefixVerified": true,
     "review": "approved0P1/P2",
-    "actualStudioAwait": false
+    "actualStudioAwait": true,
+    "actualStudioAwaitEvidence": "docs/execution/t02-studio-auto-close-validation.json"
   },
   "latestLocalNativeAssembly": {
-    "commit": "436b40c661291820c47b0f59fe46e71bc709ab1b",
-    "tests": 347,
-    "pass": 347,
+    "commit": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+    "tests": 354,
+    "pass": 354,
     "fail": 0,
     "skip": 0,
     "sourceUnchanged": true,
     "newCIValidated": false
+  },
+  "currentNativeStudioAutoClose": {
+    "sourceCommit": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+    "actualRoot149": true,
+    "new7": true,
+    "ownPortsFinal0": true,
+    "sourceReview": "approved0P1/P2",
+    "scope": "Auto only normalclose+bothlistenfail; othersnotdrained"
   }
 }

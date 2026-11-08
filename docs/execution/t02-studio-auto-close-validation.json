@@ -1,0 +1,574 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "revision": 10,
+  "sourceCommit": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+  "authorAgent": "/root/studio_auto_close_impl",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "backendAttested": false,
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e",
+      "gitBlobSha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "sha256": "f78e12d6922a780dc1c54e47c30319dc9c852f53aef4770dd678cf0227a4ae77",
+      "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+    }
+  ],
+  "sourceSnapshots": [
+    {
+      "path": ".dev/studio-auto-close/server-baseline.mjs.snapshot",
+      "sha256": "3bff1da0644594d8e1bacc5c75dd0cc66c6568c3935d2d255dad917e627bfbb5",
+      "purpose": "original source before author edits or tooling handoff"
+    },
+    {
+      "path": ".dev/studio-auto-close/server-di-only-red.mjs.snapshot",
+      "sha256": "e06c2f9fb7e0280264dc5b095f7f1cad6ea413bb6f6a873ce8639ff3275d224e",
+      "purpose": "DI validation seam only; original shutdown and both listen error paths unchanged; real lifecycle 5-failure RED"
+    }
+  ],
+  "authorReportSHA256": "cfbeadd73790e0d1c86d1f31ef820317209cce3e70eaa33d9c6374be37e4a160",
+  "behaviorAssertions": {
+    "defaultNativeShape": true,
+    "actualSaveBeforeFailure": true,
+    "realSyntheticIO": true,
+    "realDeferredCleanup": true,
+    "tcpSocketClosedBeforeSaveSettlement": true,
+    "bothPortsClosedBeforeSaveSettlement": true,
+    "repeatCloseSamePromise": true,
+    "lateChangedAndPollNoCallbacks": true,
+    "parallelRootsWaitLastCleanup": true,
+    "originalEADDRINUSEPreserved": true,
+    "ownBlockerSurvives": true,
+    "invalidFactoryRejectedBeforeStartAndListen": true,
+    "producerExplicitRestartCompatibility": "original immutable18 regressions green"
+  },
+  "authorAttempts": [
+    {
+      "command": "initial un-escalated Set-Location and required read",
+      "exit": 0,
+      "effectiveFailure": "Access denied to E parent; no target access, escalated normally"
+    },
+    {
+      "command": "python alias based snapshot/test runner",
+      "exit": 1,
+      "effectiveFailure": "WindowsApps python alias unavailable; test file creation succeeded but no Python script ran; switched to installed Node"
+    },
+    {
+      "command": "node --test --test-reporter=tap packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "exit": 1,
+      "log": ".dev/studio-auto-close/red-missing-factory.tap",
+      "meaning": "missing playwright-core, before module import; not behavioral RED; no server source edits"
+    },
+    {
+      "command": "immutable producer/Guard/projects tests before fixture parent",
+      "exit": 1,
+      "log": ".dev/studio-auto-close/producer-regression.tap",
+      "meaning": "18 passed, two test files failed setup ENOENT; preserved, not behavioral failures"
+    },
+    {
+      "command": "immutable producer/Guard/projects tests after own fixture parent mkdir",
+      "exit": 0,
+      "log": ".dev/studio-auto-close/producer-regression-parents-ready.tap",
+      "tests": 58
+    },
+    {
+      "command": "CPU profile/flavor tests",
+      "exit": 0,
+      "log": ".dev/studio-auto-close/cpu-regression.tap",
+      "tests": 84
+    },
+    {
+      "command": "node --test --test-reporter=tap --test-name-pattern=default actual|actual save|actual startup|multiple actual packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "exit": 1,
+      "log": ".dev/studio-auto-close/red-factory-capability.tap",
+      "meaning": "after Root materialization, original source lacks DI; 1 pass/5 fail; not sole RED proof"
+    },
+    {
+      "command": "node --test --test-reporter=tap packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "exit": 1,
+      "log": ".dev/studio-auto-close/red-actual-lifecycle.tap",
+      "tests": 7,
+      "pass": 2,
+      "fail": 5,
+      "meaning": "actual native Studio+actual Auto+actual Guard; actual in-flight saves; both close cases and first/second port failures settle too soon; multiple roots also early"
+    },
+    {
+      "command": "node --test --test-reporter=tap packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "exit": 0,
+      "log": ".dev/studio-auto-close/green-actual-lifecycle-1.tap",
+      "tests": 7
+    },
+    {
+      "name": "green-final",
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+        "packages/openfilm/studio/server/auto-versions.test.mjs",
+        "packages/openfilm/studio/server/project-control-guard.test.mjs",
+        "packages/openfilm/studio/server/projects-control.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exit": 0,
+      "error": null,
+      "log": ".dev/studio-auto-close/green-final.log"
+    },
+    {
+      "name": "syntax-server",
+      "command": [
+        "node",
+        "--check",
+        "packages/openfilm/studio/server/server.mjs"
+      ],
+      "exit": 0,
+      "error": null,
+      "log": ".dev/studio-auto-close/syntax-server.log"
+    },
+    {
+      "name": "syntax-test",
+      "command": [
+        "node",
+        "--check",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs"
+      ],
+      "exit": 0,
+      "error": null,
+      "log": ".dev/studio-auto-close/syntax-test.log"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "error": null,
+      "log": ".dev/studio-auto-close/diff-check.log"
+    },
+    {
+      "name": "diff-source",
+      "command": [
+        "git",
+        "diff",
+        "--",
+        "packages/openfilm/studio/server/server.mjs"
+      ],
+      "exit": 0,
+      "error": null,
+      "log": ".dev/studio-auto-close/diff-source.log"
+    },
+    {
+      "name": "status",
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit": 0,
+      "error": null,
+      "log": ".dev/studio-auto-close/status.log"
+    }
+  ],
+  "authorLogs": [
+    {
+      "path": ".dev/studio-auto-close/cpu-regression.tap",
+      "sha256": "ad08ecd9b16e297958b3dd129bfa114cf6401b46bfe5f11dac0c489c74ab63cd",
+      "counters": {
+        "tests": 84,
+        "pass": 84,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {},
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/diff-source.log",
+      "sha256": "f64e1c1d649beb71746004fac6193711f90af8caa6e05b0e8dc1b6b891ce4a36",
+      "counters": {},
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/green-actual-lifecycle-1.tap",
+      "sha256": "0265e93d689c9e8421384151ea953aba585ab5fc72c3996b03bb3ff87d4a7d34",
+      "counters": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/green-final.log",
+      "sha256": "ff94bf83af36983e99e4d497729a0d4302c562e0019c945e352e1be2909c4fcd",
+      "counters": {
+        "tests": 149,
+        "pass": 149,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/producer-regression-parents-ready.tap",
+      "sha256": "f3ed490caf4a779cc0ffbcf0c0e5fa54e98f3909e199d1da619875a598660879",
+      "counters": {
+        "tests": 58,
+        "pass": 58,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/producer-regression.tap",
+      "sha256": "726f2e8e5e0166d890b97c97226ac59ee27ed4c06028ed8cbbf28d4af0892d58",
+      "counters": {
+        "tests": 20,
+        "pass": 18,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/red-actual-lifecycle.tap",
+      "sha256": "35729f07a6a96b015ad0572851bac262b54b67d08482cccc447168d24cc7e348",
+      "counters": {
+        "tests": 7,
+        "pass": 2,
+        "fail": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/red-factory-capability.tap",
+      "sha256": "7271c13d1b9e6c4fa8785332107a3222b10f35747f689a424a74a92684875074",
+      "counters": {
+        "tests": 6,
+        "pass": 1,
+        "fail": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/red-missing-factory.tap",
+      "sha256": "19e8d23a311f06f22643ede3c5af6ceeadd2377e7e1f81915b273a321faf1f3b",
+      "counters": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/status.log",
+      "sha256": "dc898413e055edec611f120ac2705a3c8d54f93efb9bcb52101d3fc5fcc079de",
+      "counters": {},
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/syntax-server.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {},
+      "containsSyntheticPrivateSentinel": false
+    },
+    {
+      "path": ".dev/studio-auto-close/syntax-test.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counters": {},
+      "containsSyntheticPrivateSentinel": false
+    }
+  ],
+  "sourceReview": {
+    "reviewerAgent": "/root/studio_close_source_review",
+    "requestedModel": "gpt-6-astra/high",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "scope": "Auto only actualnativecaller, notwholebackgroundquiescence"
+  },
+  "actualBehaviorRED": {
+    "tests": 7,
+    "pass": 2,
+    "fail": 5,
+    "sourceSnapshot": "DIonly e06c2f9fb7e0280264dc5b095f7f1cad6ea413bb6f6a873ce8639ff3275d224e",
+    "missingPackageFailureNotCountedAsRED": true
+  },
+  "root149": {
+    "date": "2026-11-08T01:23:58.916Z",
+    "head": "753d5a82ee10c0a72415687ca86849b4f7432ab1",
+    "source": {
+      "packages/openfilm/studio/server/server.mjs": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e",
+      "packages/openfilm/studio/server/server-auto-versions.test.mjs": "f78e12d6922a780dc1c54e47c30319dc9c852f53aef4770dd678cf0227a4ae77"
+    },
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "actual149",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+          "packages/openfilm/studio/server/auto-versions.test.mjs",
+          "packages/openfilm/studio/server/project-control-guard.test.mjs",
+          "packages/openfilm/studio/server/projects-control.test.mjs",
+          "scripts/phase1-isolation.test.mjs",
+          "apps/desktop/src/flavor.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 149,
+          "pass": 149,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "70f2c7481a47a56db2a85af78dab9b5a9d3b264b2e097b0d33c67bcad825c28f",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-server.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/server.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-server-auto-versions.test.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/server-auto-versions.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "ports-final",
+        "args": [
+          "--input-type=module",
+          "-e",
+          "import {createServer} from 'node:net';for(const port of [18475,18476]){const s=createServer();await new Promise((a,b)=>{s.once('error',b);s.listen(port,'127.0.0.1',a)});await new Promise(a=>s.close(a));}console.log('OWN_TWO_PORTS_BIND_AND_CLOSE_OK')"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "353ed614a0e8c24f2a0b97b292135abe33f72fa83aae8d897d47a9a8561624c1",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "actualStudioAndAutoAndNativeGuard": true,
+    "ownAllocatedPortsFinalBindClose": true,
+    "producerInputsUnchanged": true,
+    "reportSHA256": "cfbeadd73790e0d1c86d1f31ef820317209cce3e70eaa33d9c6374be37e4a160",
+    "scope": "actualAuto saves normalclose+bothstartupfail only, no fullbackgroundquiescence/Authowner/UI/N1/file-symlinkassertion",
+    "fullTaskAccepted": false,
+    "frozenInputsIndependentlyCheckedAfterActualTests": [
+      {
+        "path": "packages/openfilm/src/development-isolation.mjs",
+        "expected": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+        "actual": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+      },
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "expected": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "actual": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+      },
+      {
+        "path": "packages/openfilm/src/development-isolation.test.mjs",
+        "expected": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+        "actual": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+        "expected": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+        "actual": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+      },
+      {
+        "path": "packages/openfilm/studio/server/projects.mjs",
+        "expected": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d",
+        "actual": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+      },
+      {
+        "path": "packages/openfilm/studio/server/auto-versions.mjs",
+        "expected": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+        "actual": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+        "expected": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+        "actual": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+      },
+      {
+        "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+        "expected": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+        "actual": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+      },
+      {
+        "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+        "expected": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35",
+        "actual": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35"
+      }
+    ]
+  },
+  "latest354": {
+    "head": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+    "results": [
+      {
+        "name": "latest354",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+          "packages/openfilm/studio/server/auto-versions.test.mjs",
+          "packages/openfilm/studio/server/project-control-guard.test.mjs",
+          "packages/openfilm/studio/server/projects-control.test.mjs",
+          "scripts/phase1-isolation.test.mjs",
+          "apps/desktop/src/flavor.test.mjs",
+          "packages/openfilm/src/development-isolation.test.mjs",
+          "apps/desktop/src/auth-service.test.mjs",
+          "packages/openfilm/studio/server/project-access.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 354,
+          "pass": 354,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "370c661e5a7e4bb91fe8fdcfd6709add358f6a2a17886671c1dc668febe8bffd",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-server.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/server.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-server-auto-versions.test.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/server-auto-versions.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "ports-final",
+        "args": [
+          "--input-type=module",
+          "-e",
+          "import {createServer} from 'node:net';for(const port of [18475,18476]){const s=createServer();await new Promise((a,b)=>{s.once('error',b);s.listen(port,'127.0.0.1',a)});await new Promise(a=>s.close(a));}console.log('OWN_TWO_PORTS_BIND_AND_CLOSE_OK')"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "353ed614a0e8c24f2a0b97b292135abe33f72fa83aae8d897d47a9a8561624c1",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "sourceUnchanged": true,
+    "proofSHA256": "3de8b3b6ae0f0ada3475379ea6544d53a5ba643a664487897bccfd75009132d8"
+  },
+  "ports": [
+    {
+      "port": 18475,
+      "listeners": 0,
+      "ownBindAndClose": true
+    },
+    {
+      "port": 18476,
+      "listeners": 0,
+      "ownBindAndClose": true
+    }
+  ],
+  "gate": {
+    "original9Pre84": true,
+    "tooling10ApprovalCommit": "753d5a82ee10c0a72415687ca86849b4f7432ab1",
+    "cardSHA256": "040818d750c1a30b16ad97aea20b6f72a4ee0d4b8a3dfa221093f49d373693f5",
+    "actualHandoffPostOnCommit84": true,
+    "proofSHA256": "ff47dcc8dedfe58ac5a78947b44aa4b8dae2f3e5f559ebdc9e3fff17420cc084"
+  },
+  "toolingHandoff": {
+    "firstMissingDependency": "E3absentplaywright-core, Rootpriorassumptionwrong, stoppedactor noinstall; setupfailure notbusinessRED",
+    "package": "playwright-core@1.61.1",
+    "licensesPreserved": true,
+    "offlineExactExistingPackageOnly": true,
+    "manifestSHA256": "09a112106b062c724bbdaeceaeb9a03d937d82eaffd47bc27b932cabb2abed48",
+    "RootProofSHA256": "2b0a2c254b358e2967df65804891b4d2351a45723a7e339b6e63023d8e826580",
+    "noNetworkScriptsBrowserSDKGlobalConfig": true,
+    "tarballIntegrityRemeasured": false
+  },
+  "currentUnverified": [
+    "new8localsourcefiles nothostedCIvalidated, previousbdcCI oldscopeonly",
+    "genuineNativefile-symlinkmarker assertion stillEPERM/0 locally",
+    "exports/fetch/watch/hoststream fullquiescence andsharedmergeworkerexit",
+    "owner/actualAuth/parent/UI/N1/productioncontrolledactivation/PG/Mac/hardwaremedia/install"
+  ],
+  "fullTaskAccepted": false,
+  "productModelCalls": 0
+}

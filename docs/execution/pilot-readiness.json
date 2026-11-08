@@ -1266,7 +1266,8 @@
     "docs/execution/t05-controlled-io-readiness.json",
     "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
     "docs/execution/t02-native-projects-admission-validation.json",
-    "docs/execution/t02-auto-versions-drain-validation.json"
+    "docs/execution/t02-auto-versions-drain-validation.json",
+    "docs/execution/t02-studio-auto-close-validation.json"
   ],
   "preparationBoundary": "Actual hostedWindows43purepathpassed and localinternalaccesspolicyready are partialprep, no PG/V acceptance or trialscopeEthan signoff, no fullruntime/media/install/hardware.",
   "implementationStartEvidence": "Authd008/nativeprojects-admissionc8a4/auto-versions8857 localsource receipts; starting implementation does notpass anyPG/V orN1"

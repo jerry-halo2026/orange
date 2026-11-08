@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 18,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "719d906186b2130a8f401f322e5fb9f8679407b9f48377453a0b2e17b3a47b78",
+  "inputProofSHA256": "c7e4dce60ab19e0ba5751faa643ed4cfc6578d4ef0342d3f8dffc59e493237a5",
+  "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
+  "reviewScope": "runtime18 bounded standard public Windows66 policy; combined T01 7source+4fixtures; new CI/watch evidence docs, not actual runtime",
+  "ledgerNonblockingStaleText": "phase/nextReadyPreparation/currentSliceReview corrected to current actual source state",
+  "remaining": [
+    "immutable anchor",
+    "managed E2 FF/raw pins",
+    "external trusted N5a84",
+    "complete unpublished history privacy audit",
+    "immediate own public origin/dev/topic/jobs and official free standard billing checks",
+    "Root single job lease"
+  ],
+  "actualHosted66Passed": false,
+  "fullTaskAccepted": false
+}

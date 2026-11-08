@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
+  "authorAgent": "/root/watch_drain_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedAuthorModel": "gpt-6-astra/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "files": [
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+      "gitBlobSha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.test.mjs",
+      "sha256": "41652200f79ada9a4a584f3619b979c1dd762c0637f199678e32ed92a6c557cb",
+      "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+    }
+  ],
+  "fix1": {
+    "productionUnchanged": true,
+    "findings": [
+      "P2-real-close-event-proof",
+      "P2-swallowed-assertions"
+    ],
+    "bothResolved": true,
+    "actualNativeFallbackCloseDeliveryGated": true,
+    "callbackRecordsAssertedInTestBody": true,
+    "mutationRED": "each of two separate mutations 3 failed; not production defects"
+  },
+  "RootEvidence": {
+    "tests": 109,
+    "passed": 109,
+    "skipped": 0,
+    "inputs": 8,
+    "proofSHA256": "f6160479ee987831c64a182a4baf07b47701767098b79401da0ac4feca5dae8b"
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactCommit84": true
+  },
+  "reportSHA256": "82dbfcfc883754a4310a11531b34025d92d5c4b27237f358425a6a7cb4d71127",
+  "scope": "actual watcher producer only; server not awaiting drain/shared worker exit not proven",
+  "fullTaskAccepted": false
+}

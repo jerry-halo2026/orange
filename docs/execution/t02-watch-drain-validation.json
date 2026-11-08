@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
+  "executor": "/root",
+  "results": [
+    {
+      "name": "actual109",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 109,
+        "pass": 109,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "5fc2e16bf2fd55a7ba1eb3a5a0ddc74964d42253d8a990c6fbb3ddbf5dd7e4db",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-watch.mjs",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-watch.test.mjs",
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+      "gitBlobSha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.test.mjs",
+      "sha256": "41652200f79ada9a4a584f3619b979c1dd762c0637f199678e32ed92a6c557cb",
+      "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+    }
+  ],
+  "immutableInputs": 8,
+  "actualFSAndNativeFunctions": true,
+  "proofSHA256": "f6160479ee987831c64a182a4baf07b47701767098b79401da0ac4feca5dae8b",
+  "N5a84ProofSHA256": "3c02e489f56ac91c789fe45d408895651c4eaedb2a006fc93df36a01c0dcbd62",
+  "fullTaskAccepted": false
+}

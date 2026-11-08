@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "42df1d556246e1686563ba2e41a189bccb944fa7",
+  "executor": "/root",
+  "results": [
+    {
+      "name": "pure121",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 121,
+        "pass": 121,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "953c27498e7e4b8040cb5027ec4b8e77a642a7c306ddf4ff40e1c5f6dbbf0735",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "realfile-env",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "packages/openfilm/studio/server/project-file-symlink.test.mjs"
+      ],
+      "exitCode": 1,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "4460030fd39d2b5f13b60277a90576c439ad11732f361340908ef290e2130be0",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.test.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-project-file-symlink.test.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/project-file-symlink.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "fileLink": {
+    "status": "ENV_FAILED",
+    "actualProcessExit1": true,
+    "securityAssertionsExecuted": 0,
+    "notPassOrSkip": true
+  },
+  "syntax": 3,
+  "immutableInputs": 15,
+  "authorRecordedLogsVerified": 20,
+  "proofSHA256": "f0e8dd2c4e8953e0d956dd2a86353193129dd21cef7d39b9a2c664ae770146e4",
+  "source": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "ea272b2bd312830dc8f3acbb87837bd655d6e35927dd876dfdca923fad850ac4",
+      "gitBlobSha256": "ea272b2bd312830dc8f3acbb87837bd655d6e35927dd876dfdca923fad850ac4"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "c39879455af4ae7264a6dc598938083fe4c88ad9468b5e4c7a0d8a9b95ab3579",
+      "gitBlobSha256": "c39879455af4ae7264a6dc598938083fe4c88ad9468b5e4c7a0d8a9b95ab3579"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "be56a50dc128ffd328c2a114926bd35f03e859be7c8e1be5ba623d7f821fcc25",
+      "gitBlobSha256": "be56a50dc128ffd328c2a114926bd35f03e859be7c8e1be5ba623d7f821fcc25"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-file-symlink.test.mjs",
+      "sha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1",
+      "gitBlobSha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1"
+    }
+  ],
+  "actualCI66": false,
+  "fullTaskAccepted": false
+}

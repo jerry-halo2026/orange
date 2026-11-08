@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "42df1d556246e1686563ba2e41a189bccb944fa7",
+  "authorAgent": "/root/native_studio_ci_impl",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "files": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "ea272b2bd312830dc8f3acbb87837bd655d6e35927dd876dfdca923fad850ac4",
+      "gitBlobSha256": "ea272b2bd312830dc8f3acbb87837bd655d6e35927dd876dfdca923fad850ac4"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "c39879455af4ae7264a6dc598938083fe4c88ad9468b5e4c7a0d8a9b95ab3579",
+      "gitBlobSha256": "c39879455af4ae7264a6dc598938083fe4c88ad9468b5e4c7a0d8a9b95ab3579"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "be56a50dc128ffd328c2a114926bd35f03e859be7c8e1be5ba623d7f821fcc25",
+      "gitBlobSha256": "be56a50dc128ffd328c2a114926bd35f03e859be7c8e1be5ba623d7f821fcc25"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-file-symlink.test.mjs",
+      "sha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1",
+      "gitBlobSha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1"
+    }
+  ],
+  "fix1": {
+    "finding": "P2-system-tar-hardlink",
+    "resolved": true,
+    "workspaceLinkRejectionUnchanged": true,
+    "actualRootToolMetadata": {
+      "isFile": true,
+      "isSymbolicLink": false,
+      "nlink": 2
+    },
+    "actualToolNotExecuted": true
+  },
+  "RootEvidence": {
+    "pure121": {
+      "tests": 121,
+      "pass": 121,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "permanentFileLink": "ENV EPERM exit1; 0 security assertions, not pass/skip",
+    "syntax": 3,
+    "inputs": 15,
+    "proofSHA256": "f0e8dd2c4e8953e0d956dd2a86353193129dd21cef7d39b9a2c664ae770146e4"
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactCommit84": true
+  },
+  "reportSHA256": "a58b455bf0dbc7acac75e085eab0ea3a7327a6453283d94de0078cb2abbbf721",
+  "scope": "reviewed source only; actual hosted 66/package fetch/real archive/tar not yet executed",
+  "newActualCI": false,
+  "fullTaskAccepted": false
+}

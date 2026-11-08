@@ -1,0 +1,27 @@
+{
+  "taskId": "T02.a",
+  "commit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
+  "authorAgent": "/root/watch_drain_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+      "gitBlobSha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/watch.test.mjs",
+      "sha256": "41652200f79ada9a4a584f3619b979c1dd762c0637f199678e32ed92a6c557cb",
+      "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+    }
+  ],
+  "contract": "callable close and terminal manager drain await actual initial read/settle chains and actual native/fallback watcher close events; closeAll remains nonterminal; retired roots retained; synchronous no-new-work before reentry",
+  "consumerReady": "watch producer only, server await/lease and shared worker termination require separate actual composition work",
+  "actualServerAwaitWatchDrain": false,
+  "sharedWorkerExitProven": false,
+  "fullTaskAccepted": false
+}

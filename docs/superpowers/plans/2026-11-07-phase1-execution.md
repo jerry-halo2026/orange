@@ -397,3 +397,13 @@ T01 rev17 engineering-verification consumesactualfreeze2b Native/Auto/Studio8sou
 - [ ] SourceGitsamehead/rawEOL/strict66/ownedpaths/cleanenv, futureCIonlyfixedoriginalpublicplaywright-core1.61.1 tar SHA512+safeextraction/Apachelicense, no scripts/browser/SDK. Sharedworkflow singlewriter, oldCI/producers no edits.
 - [ ] Localpureunit/syntax/diff plusallimmutableproducerrawunchanged, non-authorSPECQUALITY/Rootfreshverify/N5a+sourcecommit. No localmain/fakeCI/.NET/network/actualserverbycodeauthor.
 - [ ] Root laterseparateone-jobpublicstandardWinlease/privatehistoryaudit/freshpublictarget/officialcostcheck/immutableN5a beforepush; actual66zero skip inclgenuinefilemarkerassertion andactualStudio7/ports0 beforeclosingcurrentENVgap. Sourcecandidateslocal354/oldbdcCI are notsubstitute.
+
+
+## 2026-11-08 watch real drain producer
+
+T02.a rev11 native-extension originalwatch.mjs/test only, disjointCI17E2fourfiles. Existinginitialread/fullflush/settle/400msgrace/actualFSWatcherclose andretiredmanagerinstances aretruework, nottimer/mapclear. Exacttwofile API+trustedNode testwrapper/positive-negativegroups andlimits execution/t02-watch-drain-assignment.json. Sharedperson-editworkerexit isNOTprovenbyreturnedPromise; fullclosure remainslater.
+
+- [ ] Oldeventtests preserved, actualenteredread/settle/closingFS handles andretiredmove/unsub RED beforeproductionfix; realfiles/functions notmodel.
+- [ ] Callablefolderclose stablePromise andterminalmanagerdrain, registrationbeforecallbacks, reference-safe retiredtracking, nocallback/add/flushafterclose. closeAll remainsnonterminalresubscribe asnative.
+- [ ] Old/newtests underexplicitownE3TEMP, actualcleanupawaitbeforefreshfixture removal, syntax/diff/hash0, no sourceCI/server/otherproducer/SDK/network changes.
+- [ ] Non-authorSPECQUALITY/RootactualFS+N5a thenproducercommit; actualservermustlaterawaitdrain/retain leases, andsharedworkerexit/fullrouteclose remainmandatorybeforecontrolledactivation/N1.

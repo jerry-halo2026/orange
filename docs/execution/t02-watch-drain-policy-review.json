@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "revision": 11,
+  "reviewerAgent": "/root/watch_drain_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedCardSHA256": "2d00a2ebb13479a31098aa7dc9ee139c656dfb60147bbbdf62b991a56be76316",
+  "frozenCardSHA256": "1354e33b74af33f1f4a9f91b8a3509a3f72d9ec0dcd9555888a733b5a9c4d329",
+  "producerProofs": [
+    {
+      "path": "docs/execution/t01-cpu-watch-drain-consumer-review.json",
+      "sha256": "978da0e59a54ee19af005fbbbf269fec37dbf9cc31989c82801dcc2e9c9d611f"
+    },
+    {
+      "path": "docs/execution/t02-watch-drain-native-consumer-review.json",
+      "sha256": "600b21e7173e75ad4f27c55602ff54333be7147d99fe31822cbfee34a19911b6"
+    }
+  ],
+  "finalOnlyChanges": "approvalverdict/hashrefs only no scope/API/resourcechange",
+  "targetE3RawVerified": true,
+  "E1Raw062NotClaimedEqualToC6": true,
+  "serverAndWorkerExitStillPending": true,
+  "requiredBeforeWriter": [
+    "immutableanchor",
+    "managedE3FF",
+    "exact8rawinputs andtrustedN5a84"
+  ],
+  "fullTaskAccepted": false
+}

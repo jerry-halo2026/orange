@@ -1,0 +1,49 @@
+{
+  "taskId": "T02.a",
+  "commit": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+  "authorAgent": "/root",
+  "sourceAuthors": "originalOpenFilm0.3 nativefilm/person-edits/presence at reviewedassembledsnapshot, no falseRootauthorship",
+  "reviewerAgent": "/root/watch_drain_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/film.mjs",
+      "sha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+      "gitBlobSha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits.mjs",
+      "sha256": "2ae53ee37a0a2f1a5d84220b7c0eb5946b5e227bab7409a09205dd860166e894",
+      "gitBlobSha256": "2ae53ee37a0a2f1a5d84220b7c0eb5946b5e227bab7409a09205dd860166e894"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-presence.mjs",
+      "sha256": "44ae2ef8b545d013a1bdf38f397481206da82a66d8c7a27b46dac3a0a5ca843a",
+      "gitBlobSha256": "44ae2ef8b545d013a1bdf38f397481206da82a66d8c7a27b46dac3a0a5ca843a"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/film.test.mjs",
+      "sha256": "ab98d1b214571f79b6b9aeb80efeb50442ce6bca285b9d49de3ca88c238fb56a",
+      "gitBlobSha256": "ab98d1b214571f79b6b9aeb80efeb50442ce6bca285b9d49de3ca88c238fb56a"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits.test.mjs",
+      "sha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5",
+      "gitBlobSha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5"
+    }
+  ],
+  "scope": "actualoriginalread/settle functions calledbywatch producer, ownsyntheticfiles only; sharedmerge-workerexit notproved by returnedPromise",
+  "fullTaskAccepted": false,
+  "approval": {
+    "date": "2026-11-08",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "exactwatchproducerinputs only, nottestimplementationpass"
+  }
+}

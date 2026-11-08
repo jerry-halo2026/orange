@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 22,
+  "commit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+  "authorAgent": "/root/native_studio_ci_impl",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "files": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "cce3fb1bfc780640b04b40a1a3e7623f1d4e401eb791493e09cdfd8166175134",
+      "gitBlobSha256": "cce3fb1bfc780640b04b40a1a3e7623f1d4e401eb791493e09cdfd8166175134"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "1d54c63828365c40511a275365b7649f2fd785e2c278d24dd14eaad2b5fda679",
+      "gitBlobSha256": "1d54c63828365c40511a275365b7649f2fd785e2c278d24dd14eaad2b5fda679"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "8fdee96e7ed96f0b70b4ad0d6e5cd2440f2dbbf3c09e798b2ea8703c2f7da35a",
+      "gitBlobSha256": "8fdee96e7ed96f0b70b4ad0d6e5cd2440f2dbbf3c09e798b2ea8703c2f7da35a"
+    }
+  ],
+  "closedRuntimeCount": 110,
+  "testFiles": 7,
+  "literalInputs": 18,
+  "sameHeadSELF": 4,
+  "old181": "testcase meanings/negativeguards preserved with approvedcurrentpin/countfixture mapping, not byteprefix unchanged",
+  "hygiene": "five unrelated archive corruptionbytes restored original65; driver/workflow unchanged during cleanup",
+  "RootFresh": {
+    "tests": 276,
+    "passed": 276,
+    "skipped": 0,
+    "rawInputs": 19,
+    "proofs": 2,
+    "authorArtifactsVerified": 26,
+    "proofSHA256": "9bdfa4914a5171cceec65ca513bfc62b5834dc3b009c3f7770e7bcf08dd8e585"
+  },
+  "actualGit22": {
+    "count": 22,
+    "actualRawGitModesLinksAndAncestors": true,
+    "CLIEntryOrNetworkExecuted": false,
+    "proofSHA256": "8f20bf004ea89e030fbd8b42b6603c60cbe5d63c730e39bf83b5710f344406da"
+  },
+  "joint590": {
+    "count": 590,
+    "passed": 590,
+    "failed": 0,
+    "skipped": 0,
+    "executionHead": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+    "sourceAlignmentCommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+    "upstreamToolProducer": "586531605d3c06d7b29e89c488be2d4310c7572c",
+    "scope": "398native+192pureCI only; proofscope text references toolancestor586, actualhead4d and current192 explicit",
+    "proofSHA256": "f072b42c7bda5695e735334154de95bfd811f80add38771d458ee8f91c3b1d7e",
+    "portsFinalBindClose": true
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactSource84": true
+  },
+  "reportSHA256": "c1c4ed3da2929234cc7c95061c512724ff3dd330ad0647c6acbe047e5d29f573",
+  "old579FailureAndPreparationFailurePreserved": true,
+  "actualWindows110Passed": false,
+  "fullTaskAccepted": false
+}

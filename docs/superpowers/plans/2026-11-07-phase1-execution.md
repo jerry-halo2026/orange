@@ -430,3 +430,5 @@ Review focus: oldexit must not fail newgeneration; idleunref is notexit; constru
 - [ ] Minimal stopMergeWorker stablePromise/startMergeWorker boolean andpergeneration ownership, preserve defaultactive/originalwire/results, max4owned actualthreads. No serverconsumer.
 - [ ] New+oldtests actual defaultnative1000+/tworoot/cache, separate reply/exit/retired/configure/failure/reentry gates allpass0skip; retain originals/perfassertions and verify realexit/peak/finalcleanup.
 - [ ] Non-authorSPEC/QUALITY andRootfreshactualWorker+N5a before sourcecommit/serialintegration. FilmIO/processlease/owner/N1/PG staypending.
+
+Worker14事实更正（不改原冻结卡/hash/API/资源）：原同步constructor throw发生在inWorker返回Promise/.catch之前，原outercatch保留整个人的film；postMessage executor拒绝、errorreply/异步error/异常exit才走普通fallback，timeoutlate保留整片。按独审Ruling保留该真实行为；相反constructor测试期望是计划假设错误，不计生产缺陷RED。首次RED取消/timeout只算验证失败，后续真实Worker事件观察包装需保存原监听器再门控交付，必须证明实际exit而非测试进程结束。详见execution/t02-merge-worker-ruling-ctor.json。

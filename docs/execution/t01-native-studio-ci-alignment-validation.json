@@ -1,0 +1,176 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+  "executor": "/root",
+  "source": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "cce3fb1bfc780640b04b40a1a3e7623f1d4e401eb791493e09cdfd8166175134",
+      "gitBlobSha256": "cce3fb1bfc780640b04b40a1a3e7623f1d4e401eb791493e09cdfd8166175134"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "1d54c63828365c40511a275365b7649f2fd785e2c278d24dd14eaad2b5fda679",
+      "gitBlobSha256": "1d54c63828365c40511a275365b7649f2fd785e2c278d24dd14eaad2b5fda679"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "8fdee96e7ed96f0b70b4ad0d6e5cd2440f2dbbf3c09e798b2ea8703c2f7da35a",
+      "gitBlobSha256": "8fdee96e7ed96f0b70b4ad0d6e5cd2440f2dbbf3c09e798b2ea8703c2f7da35a"
+    }
+  ],
+  "pureResults": [
+    {
+      "name": "pure276",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 276,
+        "pass": 276,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "8edc8b4ac98a67cbe9a2819f25bfc103ffd4b62d98d1003b106086442ff51172",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.test.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "jointResults": [
+    {
+      "name": "joint590",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=60000",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+        "packages/openfilm/studio/server/watch.test.mjs",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+        "packages/openfilm/studio/server/auto-versions.test.mjs",
+        "packages/openfilm/studio/server/project-control-guard.test.mjs",
+        "packages/openfilm/studio/server/projects-control.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs",
+        "packages/openfilm/src/development-isolation.test.mjs",
+        "apps/desktop/src/auth-service.test.mjs",
+        "packages/openfilm/studio/server/project-access.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 590,
+        "pass": 590,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "e193cc388e0e5ae069b9353b19acc21f386a6883997e30b5478be8df2a956474",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-server-watch-drain.test.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/server-watch-drain.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-server.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/server.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-server-auto-versions.test.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "ports-final",
+      "args": [
+        "--input-type=module",
+        "-e",
+        "import {createServer} from 'node:net';for(const port of [18475,18476]){const s=createServer();await new Promise((a,b)=>{s.once('error',b);s.listen(port,'127.0.0.1',a)});await new Promise(a=>s.close(a));}console.log('OWN_TWO_PORTS_BIND_AND_CLOSE_OK')"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "353ed614a0e8c24f2a0b97b292135abe33f72fa83aae8d897d47a9a8561624c1",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "sourceSHAProof": "9bdfa4914a5171cceec65ca513bfc62b5834dc3b009c3f7770e7bcf08dd8e585",
+  "actualGit22PositiveProof": "8f20bf004ea89e030fbd8b42b6603c60cbe5d63c730e39bf83b5710f344406da",
+  "joint590Proof": "f072b42c7bda5695e735334154de95bfd811f80add38771d458ee8f91c3b1d7e",
+  "N5a84Proof": "c223b0561235f1facb1527c0555644f22693ef11b34484c008b4dfcc0b54935c",
+  "oldJoint579": {
+    "passed": 563,
+    "failed": 16,
+    "notPassed": true,
+    "rawFailurePreserved": true
+  },
+  "actualWindows110Passed": false,
+  "productModelValidationCalls": 0,
+  "fullTaskAccepted": false
+}

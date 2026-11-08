@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-08",
+  "entry": {
+    "agent": "/root/merge_worker_lifecycle_impl",
+    "taskId": "T02.a",
+    "assignmentRevision": 14,
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "approvalCommit": "a7deadb88c0af0712b4b06e04651bf11131508c4",
+    "cardSHA256": "f7bf51e920fec6e876e0cd094a1e11734d982472da4d5dc660eb27cf97d76ed4",
+    "N5aCases": 84,
+    "admissionSHA256": "c1c55fc2165895575c355cdadb0b33c793a540d3c4e1d6ce608c573d147877f0",
+    "scope": "only person-edits.mjs/newlifecycle.test; max4realownedWorker; no server/ports/mainstatewipe",
+    "state": "freshauthor active; authorreports originalpurebaseline33/33 incl5k, buildingactualWorker behaviorRED; notRootclaim"
+  },
+  "actualRawInputs": 10,
+  "reviewProofs": 2,
+  "managedE3FF": true,
+  "sourceOrWorkerExitAccepted": false,
+  "fullTaskAccepted": false,
+  "recordKind": "dispatch-time historical evidence, not current source acceptance"
+}

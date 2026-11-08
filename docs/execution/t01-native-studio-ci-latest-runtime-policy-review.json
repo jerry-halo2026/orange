@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 23,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "aaceed71446a3c02a7aa5887de76506352f7d8d96eb6d6d0476b49c5f93f2307",
+  "proofs": [
+    {
+      "path": "docs/execution/t01-native-studio-ci-latest-runtime-input-review.json",
+      "sha256": "217280004cff20004dd37b0886e73143617bd3336da6d54ee7f1ac1e31a68037",
+      "gitBlobSha256": "217280004cff20004dd37b0886e73143617bd3336da6d54ee7f1ac1e31a68037"
+    },
+    {
+      "path": "docs/execution/t02-native-studio-ci-latest-runtime-consumer-review.json",
+      "sha256": "2e455d34fa4efd8e8ff1cbbb75eb51b00654e47add14977d06e0fb0a1913369d",
+      "gitBlobSha256": "2e455d34fa4efd8e8ff1cbbb75eb51b00654e47add14977d06e0fb0a1913369d"
+    }
+  ],
+  "scope": "one source-triggered publicstandardWindows110, old18/20failures preserved, pendingWorker14source excluded",
+  "remaining": [
+    "immutable approval",
+    "managedE2exactcandidate/raw22+2proof",
+    "trusted externalN5a84",
+    "unpublishedhistory privacy audit sinceaa4c",
+    "immediateownPUBLICorigin/topic/dev/oldterminaljobs/standardfreefinancialchecks",
+    "Root single joblease"
+  ],
+  "actualIssued": false,
+  "actualWindows110Passed": false,
+  "fullTaskAccepted": false
+}

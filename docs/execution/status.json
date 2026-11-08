@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CI22 source4d155 reviewed/Root276/actualGit22positive/N5a prepostexact; joint590 actualpass recovered prior16fixturepinRED. NewactualWindows110 pending separate runtime. Worker14 producer designpolicy approved, notyetdispatched/workersnotrun.",
+  "phase": "latestCI source4d local276+Git22positive+joint590pass, runtime23 metadataapproved/unissued. Worker14fix1peerapproved, Root135 running, producer notyetRootaccepted/serverconsumed.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-studio-ci-alignment-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -162,8 +162,8 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t02-merge-worker-assignment.json",
-    "docs/execution/t01-native-studio-ci-alignment-assignment.json"
+    "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
+    "docs/execution/t02-merge-worker-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
@@ -326,18 +326,9 @@
     }
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
-  "reviewQueue": [
-    {
-      "agent": "/root/watch_drain_source_review",
-      "scope": "finalWorker14 written design/plan/status equivalence before immutable"
-    },
-    {
-      "agent": "/root/native_studio_ci_source_review",
-      "scope": "source22 readiness/actualGit22/joint590 evidence then future runtime23 policy"
-    }
-  ],
-  "currentMetadataReview": "docs/execution/t01-native-studio-ci-alignment-policy-review.json",
-  "nextOperation": "Worker14 finaldesign/immutable/E3rawN5a -> freshE3 author; separateCI23 actual110runtimecard/proofs/audit/publicfinancialpreflight, no oldjobrerun",
+  "reviewQueue": [],
+  "currentMetadataReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
+  "nextOperation": "freeze runtime23 exact E2snapshot retainsoriginalperson-edit2ae ->N5a/fullprivacy/freshpublicfinancial ->one actual110; Worker14 sourcefreeze->reviewpriority, holdunmerged fromruntime",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -358,7 +349,7 @@
     "runtime20Receipt": "docs/execution/t01-native-studio-ci-diagnostic-runtime-validation.json",
     "nextSource": "fixedGit5865316 exact N5a84 passed and sourceassembled65881f9; next actual native110 producer alignment before new runtime, not separate old66",
     "alignmentSourceCard": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
-    "alignmentState": "source4d155 frozenpeerapproved/Root276/26artifacthashes/N5a84prepostexact andactualGit22positive; joint590pass, noactual110",
+    "alignmentState": "source4d155 qualifiedready for separatelyreviewed actualWin110 only, no actual110yet",
     "latestJointResult": {
       "tests": 590,
       "pass": 590,
@@ -367,7 +358,9 @@
       "sourceCommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
       "qualifiedScope": "native398+CIpure192 only, not actual110 orfullpilot",
       "old579FailurePreserved": true
-    }
+    },
+    "latestRuntimeCard": "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
+    "latestRuntimeState": "policyapproved but notissued, immutable/N5a/privacy/freshpublicfinancial preconditions pending"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -389,9 +382,10 @@
   },
   "mergeWorker": {
     "card": "docs/execution/t02-merge-worker-assignment.json",
-    "state": "policy approved; written design finalcheck/immutable/raw/N5a pending, no implementation",
+    "state": "fix1source27c6/test19e4 peerapproved0P1P2, Rootfresh135 livehandle12520, no sourcecommit andholdunmerged fromruntime23",
     "consumerReady": false,
     "serverConsumption": false,
-    "fullRetirement": false
+    "fullRetirement": false,
+    "ctorRuling": "docs/execution/t02-merge-worker-ruling-ctor.json"
   }
 }

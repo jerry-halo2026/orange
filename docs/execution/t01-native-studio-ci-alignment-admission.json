@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-08",
+  "entry": {
+    "agent": "/root/native_studio_ci_impl",
+    "taskId": "T01",
+    "assignmentRevision": 22,
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+    "approvalCommit": "ac5d2c59123b016692933a52e26877dc2e7ef9f0",
+    "cardSHA256": "72776eba0ab27e33fbcdfbd2cd8b95c407e91cee36c62941d4872924938816b0",
+    "N5aCases": 84,
+    "admissionSHA256": "c223b0561235f1facb1527c0555644f22693ef11b34484c008b4dfcc0b54935c",
+    "scope": "threeCI files fixed110/sourcepins andexplicit181semanticfixture transition, no actualruntime",
+    "state": "admitted and dispatched original author; source22 TDD in progress"
+  },
+  "managedE2FF": true,
+  "actualRawInputs": 19,
+  "reviewProofs": 2,
+  "RootJoint579": {
+    "pass": 563,
+    "fail": 16,
+    "notPassed": true,
+    "sourceFixturePinRED": true,
+    "afterFailureTwoPortsBindCloseAndGitClean": true
+  },
+  "actualNative110Passed": false,
+  "productModelValidationCalls": 0,
+  "fullTaskAccepted": false,
+  "recordKind": "dispatch-time historical evidence, not current source acceptance"
+}

@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 14,
+  "authorRuling": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "unchangedImmutableCardSHA256": "f7bf51e920fec6e876e0cd094a1e11734d982472da4d5dc660eb27cf97d76ed4",
+  "basis": "originalperson-edits2ae inWorker constructor throws before Promise.catch; actual facts override imprecise ordinaryfailure wording",
+  "preservedSemantics": {
+    "synchronousConstructorFailure": "wholepersonfilm outercatch",
+    "postMessageExecutorRejection": "ordinarylocalfallback",
+    "errorReplyAsyncErrorAbnormalExit": "ordinarylocalfallback",
+    "timeoutLateTrue": "wholepersonfilm"
+  },
+  "noBehaviorAPIResourceScopeExpansion": true,
+  "testCorrection": "contrary ctor expectation is plan assumption error, not productiondefectRED; ctor becomes characterization",
+  "failedRun": "firstRED99166 terminalexit1/cancel1 is validationfailure notexit/quiescenceproof; later validRED reported with nocancel, separatelogs preserved",
+  "status": "sameauthor informed andcontinuing originalsemanticTDD, notsourceacceptance",
+  "fullTaskAccepted": false
+}

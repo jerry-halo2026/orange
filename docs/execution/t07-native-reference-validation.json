@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T07.native",
+  "assignmentRevision": 1,
+  "classification": "native-reuse referencepreparation, notbusinessfeature",
+  "codeBaseline": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+  "approvalCommit": "e8771e351034a585bce1a5320348e0db650b10dc",
+  "branch": "codex/t07-native-speech-reference",
+  "sourceCommit": null,
+  "authorAgent": "/root",
+  "backendAttested": false,
+  "newTestPath": "packages/openfilm/studio/server/speech-native-reference.test.mjs",
+  "newTestSHA256": "505a6d31c966fe5276d0eca95967d9e2ee42de92dafb1462bb37bded0671d673",
+  "newReferenceCases": 6,
+  "originalPureRegression": {
+    "filmDoc": 34,
+    "developmentIsolation": 10,
+    "totalIncludingNewReference": 50,
+    "allPass": true,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "firstGREENCharacterizationNotFeatureRED": true,
+  "syntax": {
+    "exitCode": 0
+  },
+  "originalServerTypes": {
+    "exitCode": 0,
+    "diagnostics": 0,
+    "noConfigOrInstallChange": true
+  },
+  "actualResources": {
+    "testNodeChildren": 3,
+    "separateSyntaxAndTypeNodeChildren": 2,
+    "totalCapturedNodeExitClose": 5,
+    "peakConcurrentChildren": 1,
+    "finalActiveChildren": 0,
+    "profileBootstrapFilesCreated": 0,
+    "profileDirsOnlyUnderFreshOwnedBase": true,
+    "oldIgnoredRecordsPreserved": 25952,
+    "followedLinks": false
+  },
+  "sourceIntegrity": {
+    "protected38RawAndGitUnchanged": true,
+    "Core106Unchanged": true,
+    "productionAndOldTestsUnchanged": true
+  },
+  "freshN5a": {
+    "preSHA256": "94c699c16963060ae535c996776469a763f5ac908802c4cc719ec334c9c9ca1d",
+    "postSHA256": "94c699c16963060ae535c996776469a763f5ac908802c4cc719ec334c9c9ca1d",
+    "admittedBoth": true
+  },
+  "rawProofs": {
+    "runtimeReportSHA256": "a93324ddaea51ee4381d7351bd10f8364ef9382909fbb27b1574ccd379893cb5",
+    "newTAP": "e96fa8495f1a583bbf4226bc3f74264b0c19996e6ca090d7fb86678e9793c37a",
+    "oldFilmDocTAP": "666679f414500194ec4fe5494a9e9afefc1ea20c6aa37f38a0f100f8b7365eed",
+    "oldIsolationTAP": "a2a0b288a81a8f10cc54f1c1c1c531dd16d90c3a2a761778b1d8257afb05bb5c"
+  },
+  "observations": [
+    "originalclipSpan/sourceAt/clipCues retainnative seconds/source-ms/film-ms andoriginalinstanceIDs",
+    "syntheticinnerwordend0.2/0.8/absent canproduceidenticalSpokenLine/VTT/display understatedfixedotherfacts; notuniversalendSecirrelevance, notmeasuredacousticdata",
+    "nativeuntimedestimateanddisplay-filteredshortcue do notproveASRaccuracy/silence/deletionauthority",
+    "nativeVTTpreservesitsownstartmarks/lineend, notoriginalwordend"
+  ],
+  "staticFixtureCorrection": "firstString.rawgenerateddoubleescapes detectedbeforemoduleexecution, originalsaved; no featureREDclaim",
+  "notExecuted": [
+    "realASR/model",
+    "provider/network",
+    "Server/Worker/browser/media/.NET/ffprobe",
+    "project/transcript write orstrictmedia edit",
+    "selection/BGM/compound/framebusinessanalysis/UI/ownerN1/PG"
+  ],
+  "parentT07StillDependsT02d": true,
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved"
+  },
+  "fullTaskAccepted": false,
+  "parentT07FeatureAccepted": false,
+  "modelCostCNY": 0,
+  "remoteWrite": false
+}

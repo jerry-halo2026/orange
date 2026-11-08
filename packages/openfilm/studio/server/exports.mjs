@@ -237,15 +237,31 @@ const partialOf = (out, id) => { const ext = extname(out); return join(dirname(o
  * @param {string} from @param {string} to
  */
 export async function renameSafely(from, to) {
+  return renameUsing(from, to, rename);
+}
+
+/** @param {string} from @param {string} to @param {typeof rename} move */
+async function renameUsing(from, to, move) {
   for (let i = 1; ; i++) {
     try {
-      await rename(from, to);
+      await move(from, to);
       return;
     } catch (e) {
       if (i >= 12 || !['EPERM', 'EACCES', 'EBUSY'].includes(/** @type {NodeJS.ErrnoException} */ (e).code ?? '')) throw e;
       await new Promise((r) => setTimeout(r, i * 100));
     }
   }
+}
+
+/**
+ * Keep the actual destination owned once a rename has completed, even when cancellation arrived during that IO.
+ * @param {ExportJob} job @param {string} part @param {string} out @param {AbortSignal} signal @param {typeof rename} [move]
+ */
+export async function renameOutput(job, part, out, signal, move = rename) {
+  await renameUsing(part, out, move);
+  job.outputs = job.outputs.map(file => file === part ? out : file);
+  job.out = job.outputs[0];
+  if (signal.aborted) throw new Error('cancelled');
 }
 
 /** Scratch removed if it can be: what something still holds is left behind, never failing an export that is made. @param {string} path */
@@ -789,8 +805,8 @@ export async function writableFolder(dir) {
   }
 }
 
-/** How long Studio's close waits for a stopped export to clean up after itself (the app waits ten seconds for Studio). */
-const STOP_WAIT_MS = 8000;
+
+const nativeCopyFile = copyFile, nativeRm = rm, nativeEncoders = encoders, nativeRenameSafely = renameUsing, nativeRender = render, nativeDrawer = drawer;
 
 /**
  * The export queue. `onChange(job)` is told every change of a job (its progress included), for the pages watching.
@@ -798,20 +814,62 @@ const STOP_WAIT_MS = 8000;
  * (captions.mjs by default).
  * `drafts(app)`: 剪映's or CapCut's drafts folder, where its draft goes (null: the exports folder); this computer's by default.
  * @param {{ onChange?: (job: ExportJob) => void, captions?: (root: string) => Promise<{ cues: Cue[], style: SubtitleStyle, tracks?: boolean }>,
- *   drafts?: (app: 'jianying' | 'capcut') => string | null }} [options]
+ *   drafts?: (app: 'jianying' | 'capcut') => string | null,
+ *   trustedNode?: { forkRenderer?: typeof fork, encoders?: typeof encoders, fs?: { copyFile?: typeof copyFile, rename?: typeof rename, rm?: typeof rm } } }} [options]
  */
-export function createExports({ onChange = () => {}, captions = subtitlesForExport, drafts = defaultDrafts } = {}) {
+export function createExports({ onChange = () => {}, captions = subtitlesForExport, drafts = defaultDrafts, trustedNode = {} } = {}) {
+  const invalid = () => new ExportError('invalid trusted Node functions');
+  if (!trustedNode || typeof trustedNode !== 'object' || Array.isArray(trustedNode) || Object.getPrototypeOf(trustedNode) !== Object.prototype) throw invalid();
+  for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(trustedNode))) {
+    if (!('value' in descriptor)) throw invalid();
+    const value = descriptor.value;
+    if (key === 'fs') {
+      if (!value || typeof value !== 'object' || Array.isArray(value) || Object.getPrototypeOf(value) !== Object.prototype) throw invalid();
+      for (const [name, fn] of Object.entries(Object.getOwnPropertyDescriptors(value))) {
+        if (!['copyFile', 'rename', 'rm'].includes(name) || !('value' in fn) || typeof fn.value !== 'function') throw invalid();
+      }
+    } else if (!['forkRenderer', 'encoders'].includes(key) || typeof value !== 'function') throw invalid();
+  }
+  const copyFile = trustedNode.fs?.copyFile ?? nativeCopyFile;
+  const rm = trustedNode.fs?.rm ?? nativeRm;
+  const encoders = trustedNode.encoders ?? nativeEncoders;
+  const forkChild = trustedNode.forkRenderer ?? fork;
+  /** @type {Set<Promise<void>>} */
+  const children = new Set();
+  /** @type {typeof fork} */
+  const forkRenderer = (...args) => {
+    const child = forkChild(...args);
+    const closed = new Promise(resolve => child.once('close', () => resolve(undefined)));
+    children.add(closed);
+    void closed.then(() => children.delete(closed));
+    return child;
+  };
+  const drawer = () => nativeDrawer(forkRenderer);
+  const move = trustedNode.fs?.rename ?? rename;
+  const renameSafely = (/** @type {string} */ from, /** @type {string} */ to) => nativeRenameSafely(from, to, move);
+  const tidy = async (/** @type {string} */ path) => {
+    try { await rm(path, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); }
+    catch (error) { failures.push(error); }
+  };
+  const render = (/** @type {string[]} */ args, /** @type {Parameters<typeof nativeRender>[1]} */ opts) => nativeRender(args, opts, forkRenderer);
   /** @type {ExportJob[]} */
   const jobs = [];
-  /** @type {Map<string, { root: string, folder: string, abort: AbortController, twin?: string }>} */
+  /** @type {Map<string, { root: string, folder: string, abort: AbortController, finish: () => void, twin?: string }>} */
   const work = new Map();
   let running = false;
+  /** @type {string | undefined} */
+  let active;
   /* Studio is closing: nothing new starts (stopAll) */
   let closing = false;
-  /** settles when no export is running */
-  let idle = Promise.resolve();
+  /** @type {Set<Promise<void>>} */
+  const tasks = new Set();
+  /** @type {unknown[]} */
+  const failures = [];
+  /** @type {Promise<void> | undefined} */
+  let terminal;
+  const admit = () => { if (closing) throw new ExportError('exports are closing'); };
 
-  const update = (/** @type {ExportJob} */ job, /** @type {Partial<ExportJob>} */ change) => { Object.assign(job, change); onChange({ ...job, outputs: [...job.outputs] }); };
+  const update = (/** @type {ExportJob} */ job, /** @type {Partial<ExportJob>} */ change) => { Object.assign(job, change); try { onChange({ ...job, outputs: [...job.outputs] }); } catch (error) { failures.push(error); throw error; } };
 
   /** The cues as the person's style shows them (the language picked, or both), and the style. @param {string} root */
   const subtitlesOf = async (root) => {
@@ -921,7 +979,8 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
           const rendered = await renderTo(job, target, part, opts, signal);
           selectedRanges = rendered.ranges ?? null;
         }
-        await renameSafely(part, out);
+        if (signal.aborted) throw new Error('cancelled');
+        await renameOutput(job, part, out, signal, move);
         update(job, { out, outputs: [out] });
         if (alpha) update(job, { alpha: await alphaOf(out, codec === 'vp9') });
         /* the subtitles as a file beside it, timed to the part exported */
@@ -950,7 +1009,8 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       const names = (await readdir(join(scratchDir, 'png'))).sort();
       update(job, { phase: 'finishing', progress: 0.9 });
       await zipFiles(part, names.map((n) => ({ name: `${stem}_${n}`, file: join(scratchDir, 'png', n) })), signal);
-      await renameSafely(part, out);
+      if (signal.aborted) throw new Error('cancelled');
+      await renameOutput(job, part, out, signal, move);
       update(job, { out, outputs: [out] });
     } finally {
       await clip?.remove();
@@ -980,7 +1040,8 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       const part = partialOf(out, job.id);
       update(job, { phase: 'encoding', progress: 0.85, out: part, outputs: [part] });
       await run(['-i', movie, '-filter_complex', '[0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle', '-loop', '0', part], signal);
-      await renameSafely(part, out);
+      if (signal.aborted) throw new Error('cancelled');
+      await renameOutput(job, part, out, signal, move);
       update(job, { out, outputs: [out] });
     } finally {
       await burn?.remove();
@@ -1026,7 +1087,8 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
         outputs.push(part);
         update(job, { out: outputs[0], outputs: [...outputs], progress: Math.floor((i / plan.length) * 100) / 100 });
         await mix(step.clips, to - from, part, codec);
-        await renameSafely(part, out);
+        if (signal.aborted) throw new Error('cancelled');
+        await renameOutput(job, part, out, signal, move);
         outputs[i] = out;
         update(job, { out: outputs[0], outputs: [...outputs] });
       }
@@ -1121,7 +1183,8 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
         const part = partialOf(out, job.id);
         update(job, { out: part, outputs: [part] });
         await zipFiles(part, files, signal);
-        await renameSafely(part, out);
+        if (signal.aborted) throw new Error('cancelled');
+        await renameOutput(job, part, out, signal, move);
         update(job, { out, outputs: [out] });
       } else {
         /** @type {string[]} */
@@ -1133,7 +1196,8 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
           outputs.push(part);
           update(job, { out: outputs[0], outputs: [...outputs] });
           await copyFile(file.file, part, fsConstants.COPYFILE_FICLONE);
-          await renameSafely(part, out);
+          if (signal.aborted) throw new Error('cancelled');
+          await renameOutput(job, part, out, signal, move);
           outputs[outputs.length - 1] = out;
           update(job, { out: outputs[0], outputs: [...outputs] });
         }
@@ -1159,24 +1223,28 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       update(job, { out: part, outputs: [part] });
       if (pdf) await writeFile(part, await slidesPdf(pages));
       else await writePptx(part, pages, job.name, signal);
-      await renameSafely(part, out);
+      if (signal.aborted) throw new Error('cancelled');
+      await renameOutput(job, part, out, signal, move);
       update(job, { out, outputs: [out] });
     } finally {
       await tidy(scratch);
     }
   }
 
-  /** The film's subtitles as a file. @param {ExportJob} job @param {string} root @param {string} dir */
-  async function exportSubtitles(job, root, dir) {
+  /** The film's subtitles as a file. @param {ExportJob} job @param {string} root @param {string} dir @param {AbortSignal} signal */
+  async function exportSubtitles(job, root, dir, signal) {
     const ask = /** @type {SubtitlesAsk & { range?: [number, number], ranges?: [number, number][] }} */ (job.ask);
     const { cues: all } = await subtitlesOf(root);
+    if (signal.aborted) throw new Error('cancelled');
     const cues = ask.ranges ? filmSubtitleCuesInRanges(all, ask.ranges.map(([from, to]) => [from * 1000, to * 1000])) : ask.range ? filmSubtitleCuesInRange(all, ask.range[0] * 1000, ask.range[1] * 1000) : all;
     const format = ask.format ?? 'srt';
     const text = format === 'vtt' ? filmSubtitleVtt(cues) : format === 'txt' ? filmSubtitleTranscript(cues) : filmSubtitleSrt(cues);
     if (!text) throw new ExportError('this film has no subtitles');
     update(job, { encoder: format });
+    if (signal.aborted) throw new Error('cancelled');
     const out = freeFile(dir, baseName(job.name, ask), `.${format}`);
     update(job, { out, outputs: [out] });
+    if (signal.aborted) throw new Error('cancelled');
     await writeFile(out, text, 'utf8');
   }
 
@@ -1486,7 +1554,9 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       }
       if (signal.aborted) throw new Error('cancelled');
       if (!(await readdir(join(staging, 'media'))).length) await rmdir(join(staging, 'media'));
+      if (signal.aborted) throw new Error('cancelled');
       await renameSafely(staging, final);
+      if (signal.aborted) { job.out = final; job.outputs = [final]; throw new Error('cancelled'); }
       const media = existsSync(join(final, 'media')) ? (await readdir(join(final, 'media'))).sort().map((n) => join(final, 'media', n)) : [];
       const first = app ? 'draft_info.json' : fcp ? '.fcpxml' : '.xml';
       const top = (await readdir(final)).filter((n) => n !== 'media').sort((a, b) => Number(!a.endsWith(first)) - Number(!b.endsWith(first)) || a.localeCompare(b));
@@ -1508,6 +1578,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     const ask = /** @type {ProjectAsk} */ (job.ask);
     const title = baseName(job.name, ask);
     const files = await projectFiles(root, ask.parts ?? [], resolve(dir));
+    if (signal.aborted) throw new Error('cancelled');
     const total = Math.max(1, files.reduce((n, f) => n + f.size, 0));
     let told = 0;
     const copied = (/** @type {number} */ bytes) => {
@@ -1520,7 +1591,9 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       const part = partialOf(out, job.id);
       update(job, { out: part, outputs: [part] });
       await zipFiles(part, files.map((f) => ({ name: `${title}/${f.name}`, file: f.file })), signal, copied);
-      await renameSafely(part, out);
+      if (signal.aborted) throw new Error('cancelled');
+      if (signal.aborted) throw new Error('cancelled');
+      await renameOutput(job, part, out, signal, move);
       update(job, { out, outputs: [out] });
       return;
     }
@@ -1532,11 +1605,15 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
         if (signal.aborted) throw new Error('cancelled');
         const to = join(staging, ...f.name.split('/'));
         await mkdir(dirname(to), { recursive: true });
+        if (signal.aborted) throw new Error('cancelled');
         await copyFile(f.file, to, fsConstants.COPYFILE_FICLONE);
         copied(bytes += f.size);
       }
       await mkdir(staging, { recursive: true });
+      if (signal.aborted) throw new Error('cancelled');
+      if (signal.aborted) throw new Error('cancelled');
       await renameSafely(staging, final);
+      if (signal.aborted) { job.out = final; job.outputs = [final]; throw new Error('cancelled'); }
       update(job, { out: final, outputs: [final] });
     } finally {
       await tidy(staging);
@@ -1546,9 +1623,9 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
   /**
    * An export the same as `made` but for its name: `made`'s files, cloned under this one's name beside them (on APFS at
    * once, taking no more room), a sidecar with its file.
-   * @param {ExportJob} job @param {ExportJob} made @param {string} dir
+   * @param {ExportJob} job @param {ExportJob} made @param {string} dir @param {AbortSignal} signal
    */
-  async function cloneOf(job, made, dir) {
+  async function cloneOf(job, made, dir, signal) {
     const main = made.outputs[0];
     const ext = extname(main);
     const out = freeFile(dir, baseName(job.name, job.ask), ext);
@@ -1556,10 +1633,13 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     /** @type {string[]} */
     const outputs = [];
     for (const file of made.outputs) {
+      if (signal.aborted) throw new Error('cancelled');
       const to = file === main ? out : `${out.slice(0, out.length - ext.length)}${file.slice(stem.length)}`;
       outputs.push(to);
       update(job, { out, outputs: [...outputs] });
+      if (signal.aborted) throw new Error('cancelled');
       await copyFile(file, to, fsConstants.COPYFILE_FICLONE);
+      if (signal.aborted) throw new Error('cancelled');
     }
     update(job, { encoder: made.encoder, alpha: made.alpha });
   }
@@ -1570,24 +1650,24 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     const job = jobs.findLast((j) => j.status === 'waiting');
     if (!job) return;
     running = true;
-    /** @type {() => void} */
-    let finished = () => {};
-    idle = new Promise((r) => { finished = () => r(undefined); });
-    const { root, folder, abort, twin } = /** @type {{ root: string, folder: string, abort: AbortController, twin?: string }} */ (work.get(job.id));
+    active = job.id;
+    const { root, folder, abort, twin, finish } = /** @type {NonNullable<ReturnType<typeof work.get>>} */ (work.get(job.id));
     try {
       await mkdir(folder, { recursive: true });
       /* what an export Studio could not finish left behind, gone before this one starts */
       await Promise.all([sweep(folder, LEFT.output), sweep(join(root, '.film', 'cache', 'export'), LEFT.scratch),
         sweep(join(root, '.film', 'cache', 'render'), LEFT.parts), sweep(join(root, '.film', 'cache', 'seek'), LEFT.copy)]);
+      if (abort.signal.aborted) throw new Error('cancelled');
       update(job, { status: 'running', phase: 'preparing', startedAt: Date.now() });
+      if (abort.signal.aborted) throw new Error('cancelled');
       const kind = job.ask.kind;
       /* the same export as one made just before it (asked together), but for its name: that one's files, cloned */
       const made = twin ? jobs.find((j) => j.id === twin && j.status === 'done' && j.outputs.length) : undefined;
-      if (made) await cloneOf(job, made, folder);
+      if (made) await cloneOf(job, made, folder, abort.signal);
       else if (kind === 'video') await exportVideo(job, root, folder, abort.signal);
       else if (kind === 'gif') await exportGif(job, root, folder, abort.signal);
       else if (kind === 'audio') await exportSound(job, root, folder, abort.signal);
-      else if (kind === 'subtitles') await exportSubtitles(job, root, folder);
+      else if (kind === 'subtitles') await exportSubtitles(job, root, folder, abort.signal);
       else if (kind === 'slides') await exportSlides(job, root, folder, abort.signal);
       else if (kind === 'nle') await exportNle(job, root, folder, abort.signal);
       else if (kind === 'project') await exportProject(job, root, folder, abort.signal);
@@ -1597,18 +1677,23 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       update(job, { status: 'done', progress: 1, phase: null, etaMs: null, bytes, finishedAt: Date.now() });
     } catch (e) {
       /* what a cancelled or failed export left half written is not an export */
-      for (const f of job.outputs) await rm(f, { force: true }).catch(() => {});
-      const ended = { phase: null, etaMs: null, outputs: [], out: undefined, finishedAt: Date.now() };
+      const remaining = [];
+      for (const f of job.outputs) {
+        try { await rm(f, { recursive: true, force: true }); }
+        catch (error) { failures.push(error); remaining.push(f); }
+      }
+      const ended = { phase: null, etaMs: null, outputs: remaining, out: remaining[0], finishedAt: Date.now() };
       const said = e instanceof Error ? e.message : String(e);
       /* a full disk is the person's to fix, said plainly (in ffmpeg's words it is lines of its own) */
       const full = diskFull(e);
       const error = full ? 'the disk is full: free up some space, then export again' : said;
-      update(job, abort.signal.aborted ? { ...ended, status: 'cancelled' } : { ...ended, status: 'failed', error, ...(full ? { diskFull: true } : {}) });
+      try { update(job, abort.signal.aborted ? { ...ended, status: 'cancelled' } : { ...ended, status: 'failed', error, ...(full ? { diskFull: true } : {}) }); } catch { /* update retained the observer error; every task must still drain */ }
       if (!abort.signal.aborted) recordProblem({ area: 'export', step: job.ask.kind, what: said, project: root });
     } finally {
       work.delete(job.id);
+      finish();
       running = false;
-      finished();
+      active = undefined;
       next();
     }
   }
@@ -1616,6 +1701,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
   /** @param {{ id: string, name: string, path: string }} project @param {ExportAsk} ask @param {string} folder */
   /** @param {{ id: string, name: string, path: string }} project @param {ExportAsk} ask @param {string} folder @param {string} [twin] */
   function queue(project, ask, folder, twin) {
+    admit();
     /** @type {ExportJob} */
     const job = {
       id: randomBytes(6).toString('hex'), project: project.id, name: project.name, label: ask.label ?? '', kind: ask.kind, ask,
@@ -1623,14 +1709,29 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       outputs: [], bytes: null, alpha: null, at: Date.now(), startedAt: null, finishedAt: null,
     };
     jobs.unshift(job);
-    work.set(job.id, { root: project.path, folder, abort: new AbortController(), ...(twin ? { twin } : {}) });
-    onChange({ ...job, outputs: [] });
+    /** @type {() => void} */
+    let finish = () => {};
+    const task = new Promise((resolve) => { finish = () => resolve(undefined); });
+    tasks.add(task);
+    void task.then(() => tasks.delete(task));
+    work.set(job.id, { root: project.path, folder, abort: new AbortController(), finish, ...(twin ? { twin } : {}) });
+    try { onChange({ ...job, outputs: [] }); }
+    catch (error) {
+      failures.push(error);
+      job.status = 'cancelled';
+      // A reentrant start may already have entered this task before its waiting notification throws.
+      // That operation owns its controller/completion until next's real finally, not this callback.
+      if (active === job.id) work.get(job.id)?.abort.abort();
+      else { work.delete(job.id); finish(); }
+      throw error;
+    }
     return job;
   }
 
   return {
     /** Queue an export of the project at `root`. @param {{ id: string, name: string, path: string }} project @param {ExportAsk} ask @param {{ folder?: string }} [where] */
     start(project, ask, where = {}) {
+      admit();
       const job = queue(project, checked(ask), folderOf(where.folder));
       next();
       return { ...job };
@@ -1640,6 +1741,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
      * @param {{ id: string, name: string, path: string }} project @param {{ jobs?: unknown, folder?: unknown }} body
      */
     startAll(project, body) {
+      admit();
       /* Up to 100 selected stretches for each of the destinations a single export could already queue. */
       if (!Array.isArray(body?.jobs) || !body.jobs.length || body.jobs.length > 2400) throw new ExportError('jobs: a list of 1 to 2400 exports');
       const asks = body.jobs.map((ask) => checked(/** @type {ExportAsk} */ (ask)));
@@ -1648,14 +1750,14 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
          drawn once, and the others get that one's files */
       /** @type {Map<string, string>} */
       const first = new Map();
-      const queued = asks.map((ask) => {
+      let queued;
+      try { queued = asks.map((ask) => {
         const { preset, label, ...rest } = /** @type {ExportAsk & { preset?: string }} */ (ask);
         const same = ask.kind === 'video' || ask.kind === 'gif' ? JSON.stringify(rest, Object.keys(rest).sort()) : null;
         const job = queue(project, ask, folder, same ? first.get(same) : undefined);
         if (same && !first.has(same)) first.set(same, job.id);
         return job;
-      });
-      next();
+      }); } finally { next(); }
       return queued.map((job) => ({ ...job }));
     },
     /** The exports of a project, newest first (those of this launch). */
@@ -1664,12 +1766,11 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     cancel(/** @type {string} */ id) {
       const job = jobs.find((j) => j.id === id);
       if (!job) throw new ExportError('no such export', 404);
-      if (job.status === 'waiting') { work.delete(id); update(job, { status: 'cancelled', finishedAt: Date.now() }); return; }
+      if (job.status === 'waiting' && job.id !== active) { work.get(id)?.finish(); work.delete(id); update(job, { status: 'cancelled', finishedAt: Date.now() }); return; }
       const running = work.get(id);
       if (!running || running.abort.signal.aborted) return;
       /* said at once: stopping a render takes a moment (its browsers and encoders closing) */
-      update(job, { cancelling: true, etaMs: null });
-      running.abort.abort();
+      try { update(job, { cancelling: true, etaMs: null }); } finally { running.abort.abort(); }
     },
     /** How many subtitle cues the film at `root` has (0 when they can't be read): the dialog's subtitle choices need some. */
     async subtitles(/** @type {string} */ root) {
@@ -1681,15 +1782,25 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     },
     /** Whether an export is waiting or running. */
     busy: () => work.size > 0 || jobs.some((j) => j.status === 'waiting'),
-    /**
-     * Stop everything (Studio is closing): what waits is cancelled, what runs stops. Resolves once the running export has
-     * cleaned up after itself (its half-made files gone), or after STOP_WAIT_MS.
-     */
+    /** Terminal admission fence: wait every admitted operation, including its cleanup. */
     stopAll() {
+      if (terminal) return terminal;
+      /** @type {() => void} */
+      let done = () => {};
+      /** @type {(error: unknown) => void} */
+      let fail = () => {};
+      terminal = new Promise((resolve, reject) => { done = () => resolve(); fail = reject; });
       closing = true;
-      for (const job of jobs) if (job.status === 'waiting') { work.delete(job.id); update(job, { status: 'cancelled', finishedAt: Date.now() }); }
+      for (const job of jobs) if (job.status === 'waiting' && job.id !== active) {
+        work.get(job.id)?.finish(); work.delete(job.id);
+        try { update(job, { status: 'cancelled', finishedAt: Date.now() }); } catch { /* retained; continue cancelling the remaining owned work */ }
+      }
       for (const { abort } of work.values()) abort.abort();
-      return Promise.race([idle, new Promise((r) => { setTimeout(r, STOP_WAIT_MS).unref(); })]);
+      void Promise.all([...tasks]).then(() => Promise.all([...children])).then(() => {
+        if (failures.length) fail(new AggregateError(failures, 'exports did not cleanly stop'));
+        else done();
+      }, fail);
+      return terminal;
     },
   };
 }
@@ -1698,37 +1809,49 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
  * render (src/render.mjs) in a process of its own (render-worker.mjs), as an editor's export runs apart from the editor:
  * what breaks in its browsers or encoders ends that export, said in its error, and never Studio. Same arguments and
  * result as render; `signal` asks it to stop, and it is ended if it has not after a few seconds.
- * @param {string[]} args @param {Record<string, any>} opts @returns {Promise<{ out: string, encoder: string, lines: string[], ranges?: [number, number][] }>}
+ * @param {string[]} args @param {Record<string, any>} opts @param {typeof fork} [forkRenderer] @returns {Promise<{ out: string, encoder: string, lines: string[], ranges?: [number, number][] }>}
  */
-function render(args, opts) {
+function render(args, opts, forkRenderer = fork) {
   const { signal, onProgress, ...rest } = opts;
   return new Promise((done, fail) => {
     if (signal?.aborted) return fail(new Error('cancelled'));
-    const child = fork(fileURLToPath(new URL('./render-worker.mjs', import.meta.url)), [], { stdio: ['ignore', 'inherit', 'pipe', 'ipc'] });
-    /* before it is told what to render, so every browser and encoder it starts starts below too */
-    below(child);
+    const child = forkRenderer(fileURLToPath(new URL('./render-worker.mjs', import.meta.url)), [], { stdio: ['ignore', 'inherit', 'pipe', 'ipc'] });
     let said = '';
-    child.stderr?.on('data', (d) => { said = (said + d).slice(-4000); process.stderr.write(d); });
-    let settled = false;
-    /** @param {() => void} end */
-    const settle = (end) => { if (settled) return; settled = true; signal?.removeEventListener('abort', cancel); end(); };
-    function cancel() {
-      if (child.connected) child.send({ type: 'cancel' });
-      /* its browsers and encoders with it: on Windows ending a process leaves its children running */
-      setTimeout(() => killProcess(child), 5000).unref();
-    }
-    signal?.addEventListener('abort', cancel, { once: true });
-    child.on('message', (/** @type {any} */ m) => {
-      if (m?.type === 'progress') onProgress?.(m.done, m.total);
-      else if (m?.type === 'done') settle(() => done(m.result));
-      else if (m?.type === 'failed') settle(() => fail(new Error(m.error)));
+    /** @type {Parameters<typeof done>[0] | undefined} */
+    let result;
+    /** @type {Error | undefined} */
+    let error;
+    /** @type {ReturnType<typeof setTimeout> | undefined} */
+    let timer;
+    let closed = false;
+    const cancel = () => {
+      if (closed) return;
+      try { if (child.connected) child.send({ type: 'cancel' }, (e) => { if (e) error ??= e; }); }
+      catch (e) { error ??= e instanceof Error ? e : new Error(String(e)); }
+      timer ??= setTimeout(() => { if (!closed) killProcess(child); }, 5000);
+      timer.unref();
+    };
+    // Own close and all error paths before priority changes, IPC, or external callbacks.
+    child.once('close', (code, sig) => {
+      closed = true; clearTimeout(timer); signal?.removeEventListener('abort', cancel);
+      const last = said.trim().split('\n').filter(l => l.trim() && !/^\s+at /.test(l)).pop();
+      if (signal?.aborted) fail(new Error('cancelled'));
+      else if (error) fail(error);
+      else if (code !== 0 || !result) fail(new Error(`the renderer stopped (${sig ?? `exit ${code}`})${last ? `: ${last.slice(0, 300)}` : ''}`));
+      else done(result);
     });
-    child.on('error', (e) => settle(() => fail(e)));
-    child.on('exit', (code, sig) => settle(() => {
-      const last = said.trim().split('\n').filter((l) => l.trim() && !/^\s+at /.test(l)).pop();
-      fail(new Error(signal?.aborted ? 'cancelled' : `the renderer stopped (${sig ?? `exit ${code}`})${last ? `: ${last.slice(0, 300)}` : ''}`));
-    }));
-    child.send({ args, opts: rest });
+    child.on('error', e => { error ??= e; cancel(); });
+    child.stderr?.on('data', d => { said = (said + d).slice(-4000); process.stderr.write(d); });
+    child.on('message', (/** @type {any} */ m) => {
+      if (m?.type === 'progress') { try { onProgress?.(m.done, m.total); } catch (e) { error ??= e instanceof Error ? e : new Error(String(e)); cancel(); } }
+      else if (m?.type === 'done') result = m.result;
+      else if (m?.type === 'failed') error ??= new Error(m.error);
+    });
+    signal?.addEventListener('abort', cancel, { once: true });
+    below(child);
+    if (signal?.aborted) { cancel(); return; }
+    try { child.send({ args, opts: rest }, e => { if (e) { error ??= e; cancel(); } }); }
+    catch (e) { error ??= e instanceof Error ? e : new Error(String(e)); cancel(); }
   });
 }
 
@@ -1738,9 +1861,15 @@ function render(args, opts) {
  * browser crashed or stopped answering is drawn again in new ones. `render` takes render's arguments and gives its
  * result, as the one-shot render does; `close` ends the process and every browser (after the last page, or on cancel).
  * A process that dies fails every render still in it.
+ * @param {typeof fork} [forkRenderer]
  */
-function drawer() {
-  const child = fork(fileURLToPath(new URL('./render-worker.mjs', import.meta.url)), ['--pool'], { stdio: ['ignore', 'inherit', 'pipe', 'ipc'] });
+function drawer(forkRenderer = fork) {
+  const child = forkRenderer(fileURLToPath(new URL('./render-worker.mjs', import.meta.url)), ['--pool'], { stdio: ['ignore', 'inherit', 'pipe', 'ipc'] });
+  const closed = new Promise(resolve => child.once('close', () => resolve(undefined)));
+  let isClosed = false;
+  void closed.then(() => { isClosed = true; });
+  /** @type {Promise<void> | undefined} */
+  let closing;
   below(child);
   let said = '';
   child.stderr?.on('data', (d) => { said = (said + d).slice(-4000); process.stderr.write(d); });
@@ -1784,14 +1913,18 @@ function drawer() {
       });
     },
     /** Ends the process: what still draws stops, the browsers close; ended outright if it has not after a few seconds. */
-    async close() {
-      if (child.exitCode != null || child.signalCode != null) return;
-      const exited = new Promise((r) => child.once('exit', r));
-      if (child.connected) child.send({ type: 'close' });
-      /* its browsers and encoders with it: on Windows ending a process leaves its children running */
-      const kill = setTimeout(() => killProcess(child), 6000);
-      await exited;
-      clearTimeout(kill);
+    close() {
+      if (closing) return closing;
+      closing = (async () => {
+        if (isClosed) return;
+        const kill = setTimeout(() => { if (!isClosed) killProcess(child); }, 6000);
+        try {
+          try { if (child.connected) child.send({ type: 'close' }, e => { if (e) end(e); }); }
+          catch (e) { end(e instanceof Error ? e : new Error(String(e))); }
+          await closed;
+        } finally { clearTimeout(kill); }
+      })();
+      return closing;
     },
   };
 }

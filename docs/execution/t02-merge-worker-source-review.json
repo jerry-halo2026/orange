@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 14,
+  "commit": "54edc703ffb01108c438d009a083b1983a99ad15",
+  "authorAgent": "/root/merge_worker_lifecycle_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedAuthorModel": "gpt-6-astra/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/person-edits.mjs",
+      "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+      "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+      "sha256": "19e4de935eb6563e95ef60d84e2178676bbb077c5bb05080aade13a6e7464a34",
+      "gitBlobSha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184"
+    }
+  ],
+  "fix1": {
+    "finding": "swallowed-timeout-fallback-assertion",
+    "resolved": true,
+    "productionUnchanged": true,
+    "mutation": "same deliberate latebranch mutation old18falseGREEN/new17pass1fail atbodycounter; source restored, no productionbugclaim"
+  },
+  "RootActual": {
+    "tests": 135,
+    "passed": 135,
+    "skipped": 0,
+    "workers": {
+      "created": 18,
+      "actualExits": 18,
+      "peak": 3,
+      "finalAlive": 0,
+      "evidence": "RootactualTAP and actualownedWorker observation/assertions, notoriginalpureprocessend"
+    },
+    "proofSHA256": "f21add0b8b7913e16ce7a5d3401e4d4854fd7b02c7b45374f2a198f24ed5a5d0",
+    "authorArtifactsVerified": 52,
+    "rawInputs": 10,
+    "reviewProofs": 2
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactSource84": true
+  },
+  "reportSHA256": "ed815cfce6f5b113c6da1ee94864e2cd275ee0065c4273898250d4bf1884b9ee",
+  "constructorSemanticsRuling": "docs/execution/t02-merge-worker-ruling-ctor.json",
+  "deviations": [
+    "Rootfirst135 attempt118/117/1failedFileLoading because HOME!=TEMP; no new18entered, correctedownenv usedfreshrun135, oldlogs retained",
+    "initial badctor expectation wasplanassumptionerror notproductionRED; firstcancel andobserverremoveAllListeners/Pythonalias failures retained, notexitproof"
+  ],
+  "scope": "original module producer stop/start/fullcall/pergeneration current+retired realexit only, editinghistory/wire preserved; not serverconsumer/filmIO/multiconsumerlease/allroutes/N1/PG",
+  "fullTaskAccepted": false
+}

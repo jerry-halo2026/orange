@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "54edc703ffb01108c438d009a083b1983a99ad15",
+  "executor": "/root",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/person-edits.mjs",
+      "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+      "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+      "sha256": "19e4de935eb6563e95ef60d84e2178676bbb077c5bb05080aade13a6e7464a34",
+      "gitBlobSha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184"
+    }
+  ],
+  "results": [
+    {
+      "name": "real135",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=60000",
+        "--test-reporter=tap",
+        "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+        "packages/openfilm/studio/server/person-merge.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 135,
+        "pass": 135,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "d7b10f977c758ccdfde3f28793cd8df6ee94a642bcd8a7d72c7988c5fa4ebe48",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-person-edits.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/person-edits.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-person-edits-worker-lifecycle.test.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "workers": {
+    "created": 18,
+    "actualExits": 18,
+    "peak": 3,
+    "finalAlive": 0,
+    "evidence": "RootactualTAP and actualownedWorker observation/assertions, notoriginalpureprocessend"
+  },
+  "sourceUnchanged": true,
+  "rawInputs": 10,
+  "reviewProofs": 2,
+  "authorArtifactsVerified": 52,
+  "proofSHA256": "f21add0b8b7913e16ce7a5d3401e4d4854fd7b02c7b45374f2a198f24ed5a5d0",
+  "N5a84SHA256": "c1c55fc2165895575c355cdadb0b33c793a540d3c4e1d6ce608c573d147877f0",
+  "oldRootEnvironmentFailurePreserved": true,
+  "originalPure33NotUsedAsExitProof": true,
+  "actualServerConsumerTested": false,
+  "fullTaskAccepted": false
+}

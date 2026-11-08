@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "latestCI source4d local276+Git22positive+joint590pass, runtime23 metadataapproved/unissued. Worker14fix1peerapproved, Root135 running, producer notyetRootaccepted/serverconsumed.",
+  "phase": "ActualWindows110 sourcea68passed withmandatorysymbolic/22pins/package106/ports0; companion353passed. SeparateWorkerproducer54ed peer0P1P2/Root135/owned18exit18/peak3final0/N5a84prepostexact, nowassembledd893; latestcombined641 notyetrun, serverconsumer/fullretirement/N1 pending.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -83,7 +83,7 @@
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
   "currentSliceReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
-  "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
+  "runtimeVerification": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
   "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
   "latestLocalEvidence": [
@@ -110,7 +110,9 @@
     "docs/execution/t02-watch-drain-validation.json",
     "docs/execution/t01-native-studio-ci-runtime-validation.json",
     "docs/execution/t02-studio-watch-validation.json",
-    "docs/execution/t01-native-studio-ci-git-tool-validation.json"
+    "docs/execution/t01-native-studio-ci-git-tool-validation.json",
+    "docs/execution/t02-merge-worker-validation.json",
+    "docs/execution/t01-native-studio-ci-latest-runtime-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -118,16 +120,16 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "t02Head": "ac5d2c59123b016692933a52e26877dc2e7ef9f0",
-    "t05SourceState": "source7546277 original server awaits actual watcher+Auto caller completion; reviewed/Root398/N5a84 prepostexact. Shared worker exit/all entered route retirement still pending.",
+    "t02Head": "fc3fe6fda9b946a7b7c378f1eb0209b1e0b7a1d2",
+    "t05SourceState": "caller754 awaits actualwatcher+Auto; Workerproducer54ed actualexit qualifiedRoot135, but serverconsumption/processownership/allenteredrouteIO stillpending",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
-    "remoteTopicHead": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
-    "latestRuntimeReceiptCommit": "809cce5913ba59de45baddd266277a439f94ac4f",
-    "latestSourceAssembly": "65881f95ed232cca72de30cd88dffa49c8b15112",
+    "remoteTopicHead": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+    "latestRuntimeReceiptCommit": "fc3fe6fda9b946a7b7c378f1eb0209b1e0b7a1d2",
+    "latestSourceAssembly": "d8939544806a6c9533138497dcf024b92ed19627",
     "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP",
     "coordinationBeforeFix13Freeze": "e5c29a35b7ca1936e19cccbac2608e342c30fed6"
   },
@@ -328,7 +330,7 @@
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
   "currentMetadataReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
-  "nextOperation": "freeze runtime23 exact E2snapshot retainsoriginalperson-edit2ae ->N5a/fullprivacy/freshpublicfinancial ->one actual110; Worker14 sourcefreeze->reviewpriority, holdunmerged fromruntime",
+  "nextOperation": "Worker14ledgerreview; latestintegration641 ownresources/consumerproof gate; extendCI latestKernel coverage andwholebranchreview beforedev. Furthernativeexport/fetch/routeIO/ownership consumers remainreadywork, no trialscopechange.",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -357,10 +359,14 @@
       "skip": 0,
       "sourceCommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
       "qualifiedScope": "native398+CIpure192 only, not actual110 orfullpilot",
-      "old579FailurePreserved": true
+      "old579FailurePreserved": true,
+      "qualifier": "old590 source4d only, newerWorker54ed latestassemblyd893 needsjoint641"
     },
     "latestRuntimeCard": "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
-    "latestRuntimeState": "policyapproved but notissued, immutable/N5a/privacy/freshpublicfinancial preconditions pending"
+    "latestRuntimeState": "terminalactual110SUCCESS atsourcea68(originalperson2ae), no autoattribution tonewerWorker54ed",
+    "actual110Passed": true,
+    "actual110Run": 42448639096,
+    "actual110Receipt": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -382,10 +388,12 @@
   },
   "mergeWorker": {
     "card": "docs/execution/t02-merge-worker-assignment.json",
-    "state": "fix1source27c6/test19e4 peerapproved0P1P2, Rootfresh135 livehandle12520, no sourcecommit andholdunmerged fromruntime23",
-    "consumerReady": false,
+    "state": "producer54ed qualifiedready only, Root135 andreal18exit proof, sourceassembledd893 but no serverconsumer",
+    "consumerReady": true,
     "serverConsumption": false,
     "fullRetirement": false,
-    "ctorRuling": "docs/execution/t02-merge-worker-ruling-ctor.json"
+    "ctorRuling": "docs/execution/t02-merge-worker-ruling-ctor.json",
+    "sourceCommit": "54edc703ffb01108c438d009a083b1983a99ad15",
+    "readiness": "docs/execution/t02-merge-worker-readiness.json"
   }
 }

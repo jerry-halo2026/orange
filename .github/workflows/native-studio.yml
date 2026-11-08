@@ -22,6 +22,9 @@ on:
       - packages/openfilm/studio/server/auto-versions.test.mjs
       - packages/openfilm/studio/server/server.mjs
       - packages/openfilm/studio/server/server-auto-versions.test.mjs
+      - packages/openfilm/studio/server/watch.mjs
+      - packages/openfilm/studio/server/watch.test.mjs
+      - packages/openfilm/studio/server/server-watch-drain.test.mjs
   workflow_dispatch:
 permissions:
   contents: read

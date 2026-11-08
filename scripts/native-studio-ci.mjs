@@ -22,14 +22,17 @@ const PINS = Object.freeze({
  'packages/openfilm/studio/server/project-control-guard.mjs':'ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c',
  'packages/openfilm/studio/server/projects.mjs':'b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d',
  'packages/openfilm/studio/server/auto-versions.mjs':'3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad',
- 'packages/openfilm/studio/server/server.mjs':'f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e',
+ 'packages/openfilm/studio/server/server.mjs':'c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194',
  'packages/openfilm/studio/server/project-control-guard.test.mjs':'cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62',
  'packages/openfilm/studio/server/projects-control.test.mjs':'f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388',
  'packages/openfilm/studio/server/auto-versions.test.mjs':'c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa',
  'packages/openfilm/studio/server/server-auto-versions.test.mjs':'93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc',
+ 'packages/openfilm/studio/server/watch.mjs':'112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde',
+ 'packages/openfilm/studio/server/watch.test.mjs':'64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31',
+ 'packages/openfilm/studio/server/server-watch-drain.test.mjs':'64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c',
 });
 const SELF = Object.freeze(['.github/workflows/native-studio.yml','scripts/native-studio-ci.mjs','scripts/native-studio-ci.test.mjs','packages/openfilm/studio/server/project-file-symlink.test.mjs']);
-const TESTS = Object.freeze(['packages/openfilm/studio/server/project-control-guard.test.mjs','packages/openfilm/studio/server/projects-control.test.mjs','packages/openfilm/studio/server/auto-versions.test.mjs','packages/openfilm/studio/server/server-auto-versions.test.mjs',SELF[3]]);
+const TESTS = Object.freeze(['packages/openfilm/studio/server/project-control-guard.test.mjs','packages/openfilm/studio/server/projects-control.test.mjs','packages/openfilm/studio/server/auto-versions.test.mjs','packages/openfilm/studio/server/server-auto-versions.test.mjs','packages/openfilm/studio/server/watch.test.mjs','packages/openfilm/studio/server/server-watch-drain.test.mjs',SELF[3]]);
 const MANDATORY = 'real Windows file-symbolic marker refuses before native callback';
 const PACKAGE_URL = 'https://registry.npmjs.org/playwright-core/-/playwright-core-1.61.1.tgz';
 const PACKAGE_SHA512 = 'h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==';
@@ -91,9 +94,9 @@ export function verifyNativeStudioTap(tap,exitCode) {
  need(arguments.length === 2 && typeof tap === 'string' && tap.length <= 8 * 1024 * 1024,'TAP_INVALID');
  tap = tap.replaceAll('\r\n','\n');
  let names;try {names=verifyTap(tap,exitCode,[MANDATORY]);}catch {throw ownedFailure('TAP_INVALID');}
- need(names.length === 66 && new Set(names).size === 66,'TAP_COUNT');
+ need(names.length === 110 && new Set(names).size === 110,'TAP_COUNT');
  need(names.every(n => /^[\x20-\x7e]{1,400}$/.test(n)),'TAP_NAME');
- for (const [key,value] of Object.entries({tests:66,suites:0,pass:66,fail:0,cancelled:0,skipped:0,todo:0})) {
+ for (const [key,value] of Object.entries({tests:110,suites:0,pass:110,fail:0,cancelled:0,skipped:0,todo:0})) {
   const lines = tap.split('\n').filter(line => line.startsWith('# '+key+' '));
   need(lines.length === 1 && lines[0] === '# '+key+' '+value,'TAP_SUMMARY');
  }
@@ -101,7 +104,7 @@ export function verifyNativeStudioTap(tap,exitCode) {
   need(!/^\s*Bail out!/i.test(line),'TAP_STRUCTURE');
   if (/^\s*(?:not )?ok(?:\s|$)/.test(line)) need(/^ok [1-9][0-9]* - [^\r\n]+$/.test(line),'TAP_STRUCTURE');
  }
- return Object.freeze({total:66,passed:66,failed:0,skipped:0,cancelled:0,todo:0,testNames:Object.freeze(names)});
+ return Object.freeze({total:110,passed:110,failed:0,skipped:0,cancelled:0,todo:0,testNames:Object.freeze(names)});
 }
 export function validateNativeStudioSources(records) {
  need(arguments.length === 1 && Array.isArray(records) && records.length === Object.keys(PINS).length + SELF.length,'SOURCE_SET');
@@ -402,6 +405,7 @@ export async function runNativeStudioCI() {
  diagnostics.enter('fixture-directory');
  directory(path.win32.join(context.workspace,'.dev','projects-admission'));
  directory(path.win32.join(context.workspace,'.dev','studio-auto-close','profiles'));
+ directory(path.win32.join(context.workspace,'.dev','studio-watch-close','profiles'));
  ordinary(path.win32.join(context.workspace,'packages','openfilm','node_modules'),'directory',true);
  const packageTarget=path.win32.join(context.workspace,'packages','openfilm','node_modules','playwright-core');
  ordinary(packageTarget,'directory',true);need(!existsSync(packageTarget),'PACKAGE_EXISTS');

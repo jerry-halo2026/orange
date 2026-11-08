@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "entry": {
+    "agent": "/root/studio_watch_close_impl",
+    "taskId": "T02.a",
+    "assignmentRevision": 13,
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "approvalCommit": "16f904a65afbcd474f1175f21d28a7f96307b47e",
+    "cardSHA256": "50d7b20ca3972bf6478d5f48c56986237804e5b0d28c00e20edcc4462bf812b5",
+    "N5aCases": 84,
+    "admissionSHA256": "df34a71cc8d898d8b6699ad533010380aea6066e1a8126df4fe39b9d2211e2c3",
+    "scope": "sameauthor twoP2 fix1 only, exactly2 ownprofile metadatafault advertise exceptions, no external discovery or newDI",
+    "state": "actual source13 TDD active; author reports2metadatabehaviorRED andalready-correctlateupgradeinitialGREEN"
+  },
+  "managedMetadataFF": true,
+  "carriedWIPRawBeforeAfterSame": [
+    "0652997f461a5adbd2e33a1bcda4fc63db7bc77e974212b32220fd7ca4582baa",
+    "728c8150100d6edd952aec7aa5206b62d563723be34bb3705a73aff7111ac074"
+  ],
+  "source12StillUnaccepted": true,
+  "RootFresh395ProofSHA256": "6bb2f5a52c677054b356b5774ff826696cab5296cddc0cdd5c058286f56f5830",
+  "source13Passed": false,
+  "productModelCalls": 0,
+  "fullTaskAccepted": false
+}

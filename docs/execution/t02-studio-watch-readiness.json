@@ -1,0 +1,36 @@
+{
+  "taskId": "T02.a",
+  "commit": "754627721f5bd326968966c77bd686d0533d38a2",
+  "authorAgent": "/root/studio_watch_close_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194",
+      "gitBlobSha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+      "sha256": "83309d0e06a2de33bac4a72cac04f9d621076a71929d49bf6e91b66e78869240",
+      "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+    }
+  ],
+  "upstreamCommits": [
+    "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
+    "8857b413c4e8ab73499dbef75f720596c56c7b15",
+    "c8a4d34e4d80b9a94712ce888791cd5a0e8a3a0e"
+  ],
+  "consumerReady": "original startStudio normal/startup failure waits watcher returnedIO/actualFSWatcher completion and existingAuto; qualified only this lifecycle subset",
+  "actualServerAwaitWatcherAndAuto": true,
+  "backgroundIoDrained": false,
+  "nativeEntryPointsFullyFenced": false,
+  "sharedWorkerExit": false,
+  "ownerAuthorization": false,
+  "validation": "docs/execution/t02-studio-watch-validation.json",
+  "representation": "sourceE3 retainedraw differsfromGit onlyifspecified; everyfutureconsumer mustbind actualraw and canonicalGit separately",
+  "fullTaskAccepted": false
+}

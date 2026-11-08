@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 13,
+  "commit": "754627721f5bd326968966c77bd686d0533d38a2",
+  "authorAgent": "/root/studio_watch_close_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194",
+      "gitBlobSha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+      "sha256": "83309d0e06a2de33bac4a72cac04f9d621076a71929d49bf6e91b66e78869240",
+      "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+    }
+  ],
+  "findings": [
+    {
+      "id": "post-listen-native-init-cleanup",
+      "resolved": true,
+      "productionFix": true
+    },
+    {
+      "id": "late-upgrade-race-proof",
+      "resolved": true,
+      "productionFix": false,
+      "initialTestGREEN": true
+    }
+  ],
+  "RootActual": {
+    "tests": 398,
+    "passed": 398,
+    "fail": 0,
+    "skipped": 0,
+    "ownTwoPortsFinalBindClose": true,
+    "proofSHA256": "27ad9389641061ab4abcd5bf5ef817036aac71adcfabc2ea5a0ad3d326aa35e0",
+    "authorArtifactsVerified": 37,
+    "artifactAuditSHA256": "714ccae5af121bd13b7455ae786a0c590278790e66c96f11ef6a4f18b8a14719",
+    "rawInputs": 17,
+    "reviewProofs": 2
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactSource84": true
+  },
+  "reportSHA256": "b767fb9d062acfab82962f3f94762d528cb3fac651c7754261beb20245912e07",
+  "scope": "original Studio watcher+Auto caller completion only; stable synchronous stop and network-first close, all acquired cleanup waited, both listen/native metadata failure preserve original error, no late upgrade revival",
+  "limitations": [
+    "author baseline32 restoration was after implementation; genuine Root379 baseline preceded author dispatch",
+    "one repeated original RED rawlog overwritten and unavailable; earliest genuineRED/snapshots retained and37 recorded artifact hashes verified, no recovery fabricated",
+    "shared worker exit/all entered route IO/complete retirement/owner/Auth/N1/PG not accepted"
+  ],
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 13,
+  "commit": "754627721f5bd326968966c77bd686d0533d38a2",
+  "executor": "/root",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194",
+      "gitBlobSha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+      "sha256": "83309d0e06a2de33bac4a72cac04f9d621076a71929d49bf6e91b66e78869240",
+      "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+    }
+  ],
+  "results": [
+    {
+      "name": "fresh398",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "--test-timeout=60000",
+        "--test-reporter=tap",
+        "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+        "packages/openfilm/studio/server/watch.test.mjs",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+        "packages/openfilm/studio/server/auto-versions.test.mjs",
+        "packages/openfilm/studio/server/project-control-guard.test.mjs",
+        "packages/openfilm/studio/server/projects-control.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs",
+        "packages/openfilm/src/development-isolation.test.mjs",
+        "apps/desktop/src/auth-service.test.mjs",
+        "packages/openfilm/studio/server/project-access.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 398,
+        "pass": 398,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "246f57e31fc423523ce0a8da8251ee915183382826632ad335552748940e8397",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-server-watch-drain.test.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/server-watch-drain.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-server.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/server.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-server-auto-versions.test.mjs",
+      "args": [
+        "--check",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "ports-final",
+      "args": [
+        "--input-type=module",
+        "-e",
+        "import {createServer} from 'node:net';for(const port of [18475,18476]){const s=createServer();await new Promise((a,b)=>{s.once('error',b);s.listen(port,'127.0.0.1',a)});await new Promise(a=>s.close(a));}console.log('OWN_TWO_PORTS_BIND_AND_CLOSE_OK')"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "353ed614a0e8c24f2a0b97b292135abe33f72fa83aae8d897d47a9a8561624c1",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "sourceUnchanged": true,
+  "rawInputs": 17,
+  "reviewProofs": 2,
+  "authorRecordedArtifactsVerified": 37,
+  "proofSHA256": "27ad9389641061ab4abcd5bf5ef817036aac71adcfabc2ea5a0ad3d326aa35e0",
+  "artifactAuditSHA256": "714ccae5af121bd13b7455ae786a0c590278790e66c96f11ef6a4f18b8a14719",
+  "N5a84ProofSHA256": "df34a71cc8d898d8b6699ad533010380aea6066e1a8126df4fe39b9d2211e2c3",
+  "ownedMetadataFaultCases": 2,
+  "actualLateUpgradeRaceProof": true,
+  "realCloudAuthOrMedia": false,
+  "fullTaskAccepted": false
+}

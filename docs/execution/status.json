@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CI20 actual git/PATH_TYPE failure before fetch/66,158+353 passed; no retries. Studio watcher caller12 source needs-fix0P1/2P2 despite Root395pass, sameauthor held until card13 gate; no active source writer now.",
+  "phase": "Native watcher+Auto caller7546277 approved/Root398/prepostexactN5a84; fixedGit source5865316 approved/Root265/prepostexactN5a84, serialassembly65881f9. No new actual CI since terminal20; latest110alignment and sharedworker producer still pending.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -108,7 +108,8 @@
     "docs/execution/t02-studio-auto-close-validation.json",
     "docs/execution/t01-native-studio-ci-validation.json",
     "docs/execution/t02-watch-drain-validation.json",
-    "docs/execution/t01-native-studio-ci-runtime-validation.json"
+    "docs/execution/t01-native-studio-ci-runtime-validation.json",
+    "docs/execution/t02-studio-watch-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -116,8 +117,8 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "t02Head": "809cce5913ba59de45baddd266277a439f94ac4f",
-    "t05SourceState": "watch f1fff source reviewed/Root109/exactN5a84, held separate from CI66 snapshot; server watcher await/shared worker pending",
+    "t02Head": "586531605d3c06d7b29e89c488be2d4310c7572c",
+    "t05SourceState": "source7546277 original server awaits actual watcher+Auto caller completion; reviewed/Root398/N5a84 prepostexact. Shared worker exit/all entered route retirement still pending.",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
@@ -125,7 +126,7 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
     "latestRuntimeReceiptCommit": "809cce5913ba59de45baddd266277a439f94ac4f",
-    "latestSourceAssembly": "e5c29a35b7ca1936e19cccbac2608e342c30fed6",
+    "latestSourceAssembly": "65881f95ed232cca72de30cd88dffa49c8b15112",
     "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP",
     "coordinationBeforeFix13Freeze": "e5c29a35b7ca1936e19cccbac2608e342c30fed6"
   },
@@ -154,8 +155,8 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "Add safe closed stage/error diagnostics under card19, actual hosted native66 remains failed/unproven. Future new runtime requires separate approval/card/preflight, not old-job rerun.",
-    "Consume frozen watcher f1fff actual drain in original server with native composition/lease tests after CI snapshot remains isolated; shared worker exit separate",
+    "align actual latest native server/watch producers and fixedGit source21 into fixedCI110; do not separately rerun retired66; actual source/runtime cards and gates still required",
+    "original Studio watcher+Auto caller source7546277 qualified ready only; next actual shared mergeWorker producer design ready, not implemented or caller consumed",
     "exports/fetch/hoststream/sharedmergeworker actualcompletion/lease retirement thenAuth/owner/fullnativeentry/desktopUI, fullscope unchanged",
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
@@ -324,8 +325,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t02-studio-watch-fix-policy-review.json",
-  "nextOperation": "freeze13/managedE3metadataFF preserveWIP065728/raw17+2proof/N5a -> sameauthor minimalstartupcleanup andlateupgrade test; CI21 newfixedGittool sourcepolicy next; no remote retry ordev/main/tag",
+  "currentMetadataReview": "docs/execution/t02-studio-watch-source-review.json",
+  "nextOperation": "caller metadata review; source21 exactgate+serialassembly; compose actuallatestsource ->110CIalignment card/proof before newrealWindowsjob; sharedmergeWorker producer designreadyseparately",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -344,7 +345,7 @@
     "runtime20Card": "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
     "runtime20State": "terminal failure at git/PATH_TYPE, actual66notentered",
     "runtime20Receipt": "docs/execution/t01-native-studio-ci-diagnostic-runtime-validation.json",
-    "nextSource": "bounded dedicated fixed Git tool validation card21 proposed, no author or new runtime yet"
+    "nextSource": "fixedGit5865316 exact N5a84 passed and sourceassembled65881f9; next actual native110 producer alignment before new runtime, not separate old66"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -352,14 +353,16 @@
     "readiness": "docs/execution/t02-watch-drain-readiness.json",
     "Root109": true,
     "N5a84PrePostExact": true,
-    "actualServerAwait": false,
+    "actualServerAwait": true,
     "sharedWorkerExit": false,
     "notMergedIntoCISnapshot": true,
     "sourceIsolatedAssembly": "b089626e13a3820b23d70be9a92d875795172ff8",
     "consumerCard": "docs/execution/t02-studio-watch-assignment.json",
-    "consumerState": "source12 peer needs-fix0P1/2P2, Root actual395passed but unaccepted, source065/test728 preserved",
+    "consumerState": "source13 approved0P1P2/Root398/prepostexactN5a84; sharedworker/allroute retirement remains pending",
     "consumerFixCard": "docs/execution/t02-studio-watch-fix-assignment.json",
-    "consumerFixState": "policy approved, final exact TDD wording/static ledger check then immutable/raw/N5a; author held",
-    "advertiseFaultException": "two isolated metadata faults only, not real discovery; source13notstarted"
+    "consumerFixState": "source13 completed and frozen7546277, sourcepeer approved0P1P2/Root398, no active source writer",
+    "advertiseFaultException": "exactly two isolated ownprofile metadata-fault tests completed; no external discovery/defaultHOME permission; exception is not a general runtime grant",
+    "consumerSourceCommit": "754627721f5bd326968966c77bd686d0533d38a2",
+    "consumerReadiness": "docs/execution/t02-studio-watch-readiness.json"
   }
 }

@@ -13,8 +13,8 @@
       "externalGates": [],
       "readinessEvidence": "docs/execution/t01-cpu-readiness.json (CPU verification subset only; status remains in_progress)",
       "nativeStudioEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
-      "currentEngineeringSlice": "latestlocal879/fourtype0 accepted; observable32actualNode22filetimeout with45records44pass1cancelled, pure398/companion353pass. Source33nativefiledeadlinealignment proposedwithsameglobalbudget; no actual161/dev/PG.",
-      "latestIntegratedEvidence": "docs/execution/t01-native-worker-latest-integration-validation.json",
+      "currentEngineeringSlice": "Source33c87 onefileflag aligned withinunchangedCI180s, Root34local178b880/fourtype0 actualpass+nonauthorapproved0P1P2; no newNode22hosted51/161, deeperfilelatencyunknown/no dev/PG.",
+      "latestIntegratedEvidence": "docs/execution/t01-native-worker-budget-integration-validation.json",
       "latestHostedEvidence": "docs/execution/t01-native-worker-observable-runtime-validation.json"
     },
     {
@@ -140,7 +140,7 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "Authd008/policyacc27/guardc8a4/Auto8857/Watchf1fff/caller754/mergeWorker54ed/Type16c384 plusExports42db reviewedcontrolledproducers; latestlocal62794 781+fourtype0 nonauthoractualresultapproved0P1P2. Fetch/Git/HTTPcompletion, enteredserver requests/pages/streams, Workerprocessownership/identity/owner/UI/N1pending",
+      "deliverySlice": "QualifiedAuth/nativeGuard/Auto/Watch/caller/mergeWorker/Types/Exports producers; Fetch17onlyPhaseAseams first12greenbutpeerP2Proxy/inheritedcaps->sameauthorfix1 pending, noB/fullfetch/owner/UI/N1.",
       "consumerDependency": "T01 cpu-isolation exact subset only",
       "readinessEvidence": "docs/execution/t02-auth-invalidation-readiness.json",
       "ciEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
@@ -153,7 +153,7 @@
       "mergeWorkerReadiness": "docs/execution/t02-merge-worker-readiness.json",
       "nativeTypeContractsReadiness": "docs/execution/t02-native-type-contracts-readiness.json",
       "exportsDrainReadiness": "docs/execution/t02-exports-drain-readiness.json",
-      "latestIntegratedEvidence": "docs/execution/t01-native-worker-latest-integration-validation.json"
+      "latestIntegratedEvidence": "docs/execution/t01-native-worker-budget-integration-validation.json"
     },
     {
       "id": "T02.b",

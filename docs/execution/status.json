@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "ObservableWindows32 terminalFAIL: actualNode22.23.4/exit1/processErrorfalse/signalfalse/45records44pass0fail1cancelled, person-merge.test.mjs:1:1 filetesttimeout/postchecks passed. Source33proposedalignonlyfileflag native600000 whilekeepingouter180s/8MiB/job12min/perfassertions; deeperlatencyunknown. Local879/fourtype0 qualified, PGunchanged.",
+  "phase": "Latestlocal178b2f actual880allpass0skip/fouroriginaltype0, Worker18actualexit18/ExportsNode10actualexitclose10/final0; Source33onlynativefileflagaligned within180sCIbudget, nonauthoractualresultapproved0P1P2. Fetch17E4PhaseAfirstreviewP2proxy/own-only boundary ->sameauthorfix1active, no B. Actual32filetimeout/deeperlatencyunknown/no newhostedjob/PG.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,7 +79,7 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-worker-observable-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-worker-budget-integration-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
   "currentSliceReview": "docs/execution/t01-native-worker-observable-runtime-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
@@ -120,21 +120,22 @@
     "docs/execution/t02-exports-drain-validation.json",
     "docs/execution/t01-native-type-exports-integration-validation.json",
     "docs/execution/t01-native-worker-local-diagnosis-validation.json",
-    "docs/execution/t01-native-worker-latest-integration-validation.json"
+    "docs/execution/t01-native-worker-latest-integration-validation.json",
+    "docs/execution/t01-native-worker-budget-integration-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
     "primaryBranch": "dev",
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
-    "coordinationPreReceiptHead": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
+    "coordinationPreReceiptHead": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
     "t02Head": "0cf5897404fed87f0c4f171f0dc3ac88734be765",
     "t05SourceState": "source42dbExports qualifiedlocal32/781; actualruntime28 on1bbc terminalfailureWorkerTAPunknown; no actualnew161acceptance",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
-    "latestIsolatedAssembly": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
+    "latestIsolatedAssembly": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
     "remoteTopicHead": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
     "latestRuntimeReceiptCommit": "e2f62a54c39d64858918928c9dba465f7a86f192",
     "latestSourceAssembly": "8f3695c60485097b0a63e3f31d3c02b17d9fcd62",
@@ -167,27 +168,28 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "Source33boundedWorkerfileflag native600000 matchingpackage, overall180000/8MiB/12min+all51/perfguard unchanged; TDD/privateAPI/sourcefreeze/N5a andnewruntimeonlyaftergates",
-    "fetch17fourfiledesign: privatecommittedfactWeakMap, directGit/FS/bodycompletion only; legacyold17resource-adaptedcopy+cancelcasefetch/spawndenyguards+actualclose/fixedports; mustfreezecard/resources/seams beforeauthor",
-    "enteredserver requests/pages/streams/sharedWorker/Githelperdescendant/desktopouterdeadline ownership, trustedAuth/owner/UI/media/install/targethardware/PG stillpending",
-    "Source29twoNode51 diagnosisandSource30closedUnicode/safeobservation source alreadycompletedqualified; do NOTredispatch them orclaimhosted28causeknown",
-    "realAuthD12purpose/identitynotconfirmed affectsrealcloudonly, productmodelcalls0/CNY50 unchanged"
+    "freshSource33actualWindows161lease afterRoot880resultfreeze andfreshPUBLIC/financialPR0/historygates; no oldjobrerun",
+    "Fetch17PhaseAproxy/own-onlyfix1 sameauthor, thenfrozenbridgepeer+Roottests/N5a beforeexplicitBresume; do nottreatA12asproducercomplete",
+    "sameallPGscope: enteredrequests/pages/streams/sharedWorker/Githelpers/parentdeadline/Auth/owner/media/install/targethardware/Mac stillpending",
+    "productmodelcalls0/CNY50 unchanged; actualbindingD12unconfirmed onlyrealcloudblocked"
   ],
-  "parallelTaskCards": [],
+  "parallelTaskCards": [
+    "docs/execution/t02-fetch-completion-assignment.json"
+  ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [
     {
-      "agent": "/root/native_worker_file_budget_impl",
-      "taskId": "T01",
-      "assignmentRevision": 33,
-      "requestedModel": "gpt-6-luna",
-      "requestedEffort": "medium",
+      "agent": "/root/native_fetch_completion_impl",
+      "taskId": "T02.a",
+      "assignmentRevision": 17,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
       "backendAttested": false,
-      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
-      "approvalCommit": "fb134e4e38953c23043253cb1ce6e5cd6d2abd10",
-      "cardSHA256": "c3bd8c1ed8f083e5a3af7f727f50ef661deff8a744c569565a1925b7f2de6f06",
-      "admissionSHA256": "faf7f46c83addac7d5a3e153d9b3da327d3171c29e615836d0d250e1dac6b08f",
-      "state": "admittedmechanicalTDDoneWorkerfileflag only pluscontracttest, overallbudgetunchanged"
+      "worktree": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+      "approvalCommit": "289b1f6f5e84cc70c58c273e4e26ef99eb0addb5",
+      "cardSHA256": "af711dbf849782491dfc19f8c296e740cd6fd4899f4af1fafe9359c20c48df30",
+      "admissionSHA256": "870af63d0a8f9d55e29611503f3d023700949bbdbf9ea9f4b1efb253edc93ef3",
+      "state": "PhaseAfix1only afterP2Proxytrap/inheritedcapsfinding; no B/legacy/live-manager untilRootresume"
     }
   ],
   "ciReadiness": {
@@ -350,8 +352,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "runtime32actualfailure/currentledger independentlyapproved0P1P2",
-  "nextOperation": "priorityreviewactual32failure; Source33limitedfileflagalignment/nativecontracttest viaowncard+TDD/non-author/N5a, no automaticrerun. Independentlypreparefetch17card/sourceTDD onmanagedE4 preparedfromdev; no wholeGoalpause.",
+  "currentMetadataReview": "Root34actual880/currentledger approved0P1P2",
+  "nextOperation": "freshseparatelyapprovedSource33Windows161runtimelease afterfinancial/public/PR0/history/sourcegates; inparallelFetch17Afix1freeze→samepeer→Rootfreshchecks/N5a→explicitBresume only. No oldjobrerun/PGcompletion.",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -392,15 +394,14 @@
     "kernelCoverageState": "CI25c7 sourcecodepeer/Root384/Git27positive/exactN5a readyonlyhistorical; actual161 blockeduntiltype0+reviewedconsumerpinrefresh",
     "currentRuntimeStatus": "runtime32 actualNative42466547581/job128687294532 terminalfiletimeoutFAIL; pure398/companion353passed. ActualNode22.23.4 andpostcheckpassed directsafeEvidence. No actual51completeor161acceptance.",
     "latestLocalKernelAndExports": {
-      "candidateCommit": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
-      "tests": 879,
-      "pass": 879,
+      "candidateCommit": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
+      "tests": 880,
+      "pass": 880,
       "fail": 0,
       "skip": 0,
       "fourOriginalTypeProjects0": true,
-      "receipt": "docs/execution/t01-native-worker-latest-integration-validation.json",
-      "notActual161": true,
-      "review": "approved0P1P2"
+      "receipt": "docs/execution/t01-native-worker-budget-integration-validation.json",
+      "notActual161": true
     },
     "runtime28": {
       "head": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
@@ -518,12 +519,12 @@
     },
     "CIRebindSource": "0cf5897404fed87f0c4f171f0dc3ac88734be765",
     "latestComposition": {
-      "candidateCommit": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
+      "candidateCommit": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
       "serverDiagnostics": 0,
       "uiDiagnostics": 0,
       "chatDiagnostics": 0,
       "shellDiagnostics": 0,
-      "receipt": "docs/execution/t01-native-worker-latest-integration-validation.json"
+      "receipt": "docs/execution/t01-native-worker-budget-integration-validation.json"
     }
   },
   "exportsDrain": {

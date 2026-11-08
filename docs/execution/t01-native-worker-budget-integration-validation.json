@@ -1,0 +1,214 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 34,
+  "candidateCommit": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
+  "executor": "/root",
+  "sources": {
+    "CI33": "c87d0bdb4fa9f6d3ba9bc2fb01753b3241d2742d",
+    "CI30": "4585c5e9a7b9d2269b5487e1480ffb73126f752a",
+    "Types16": "c384c58434b491d63dd524c7f691638719b93e62",
+    "Exports15": "42dbd4c83a85b9dd8da66d38d11da8ee3f319cd0"
+  },
+  "testCommand": [
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=600000",
+    "--test-reporter=tap",
+    "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+    "packages/openfilm/studio/server/person-merge.test.mjs",
+    "scripts/native-studio-ci.test.mjs",
+    "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+    "packages/openfilm/studio/server/watch.test.mjs",
+    "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+    "packages/openfilm/studio/server/auto-versions.test.mjs",
+    "packages/openfilm/studio/server/project-control-guard.test.mjs",
+    "packages/openfilm/studio/server/projects-control.test.mjs",
+    "scripts/phase1-isolation.test.mjs",
+    "apps/desktop/src/flavor.test.mjs",
+    "packages/openfilm/src/development-isolation.test.mjs",
+    "apps/desktop/src/auth-service.test.mjs",
+    "packages/openfilm/studio/server/project-access.test.mjs",
+    "packages/openfilm/studio/server/exports-drain.test.mjs"
+  ],
+  "counters": {
+    "tests": 880,
+    "pass": 880,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "breakdown": "native449+CI399+Exports32=880, CPU84alreadyinside449",
+  "WorkerActual": {
+    "created": 18,
+    "actualExits": 18,
+    "peak": 3,
+    "finalAlive": 0,
+    "allThreadsActuallyExited": true,
+    "receiptSHA256": "389c5735932bbcfe310da0ec34cb68af06e67b58eef6d48e1ab5868c57e0811c"
+  },
+  "exportsActual": {
+    "created": 10,
+    "actualExits": 10,
+    "actualCloses": 10,
+    "peak": 2,
+    "finalAlive": 0,
+    "allOwnerExitClose": true,
+    "receiptSHA256": "c9bcb50985150cdbb4468a0b10718b4377e05392916fba5dbdb027b751874562"
+  },
+  "failedSpawn": {
+    "attempts": 1,
+    "startedNode": 0,
+    "exits": 0,
+    "closes": 1,
+    "events": [
+      "error",
+      "close",
+      "stopped"
+    ],
+    "errorCodes": [
+      "ENOENT"
+    ],
+    "receiptSHA256": "c8a96a52d18dd1db5144d16cb323108e02a97ec92d4202b349e835ddd08f9890"
+  },
+  "ports": {
+    "before": [
+      {
+        "host": "127.0.0.1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "127.0.0.1",
+        "port": 18476,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18476,
+        "bindClose": true
+      }
+    ],
+    "after": [
+      {
+        "host": "127.0.0.1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "127.0.0.1",
+        "port": 18476,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18476,
+        "bindClose": true
+      }
+    ]
+  },
+  "originalTypeProjects": [
+    {
+      "project": "packages/openfilm/studio/server",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "packages/openfilm/studio/ui",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "28e5ebf1bc70e76523d888b24e5865f8e7021aa835d109adfaa7e0d7e52b30a4",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "apps/desktop/chat",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "b0ee6438ab20d9433fff9f54301c629a817ad8c4ac7f655ffbda9d1bef6df088",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "apps/desktop/shell",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "57851c0d76cb17014ed704f993eb00790988d15ec924269c81c77b8e81df5410",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "sourceBinding": {
+    "inputs": 37,
+    "reviewProofs": 2,
+    "allRawGitUnchanged": true,
+    "headAfter": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
+    "trackedDirtyAfter": ""
+  },
+  "tooling": {
+    "before": {
+      "coreVersion": "1.61.1",
+      "coreFiles": 106,
+      "coreManifestSHA256": "8947c2fcb3f60c7356becffdd5aa39f4228d1a0bedf5b2d6fa672998678f804f",
+      "typescriptPackage": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6",
+      "nodeTypesPackage": "234e64edc31580d6052f8abc89b96f156de29d3b4c7121214b960dec09bd2a25"
+    },
+    "after": {
+      "coreVersion": "1.61.1",
+      "coreFiles": 106,
+      "coreManifestSHA256": "8947c2fcb3f60c7356becffdd5aa39f4228d1a0bedf5b2d6fa672998678f804f",
+      "typescriptPackage": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6",
+      "nodeTypesPackage": "234e64edc31580d6052f8abc89b96f156de29d3b4c7121214b960dec09bd2a25"
+    },
+    "unchanged": true,
+    "noInstallRestoreOrNetwork": true
+  },
+  "budgets": {
+    "nativeFile": 600000,
+    "localAggregate": 240000,
+    "CIWorkerAggregate": 180000,
+    "CIJobMinutes": 12,
+    "performanceAssertionsUnchanged": true
+  },
+  "proofSHA256": "a64a7a0e9fe19cad2067a7d05fcdd7efddd2871d5e16a1863a8c0b59e7db63f0",
+  "stdoutSHA256": "6d7f160381568313001999f9f33dfa440b4394160f642947001a6f1ba02fbff1",
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "N5a84": {
+    "preProofSHA256": "c7f2537dbae76c3ad1aff9cdefbea6885ef604dc129e90daf23a2ec34e0e3412",
+    "postProofSHA256": "c7f2537dbae76c3ad1aff9cdefbea6885ef604dc129e90daf23a2ec34e0e3412"
+  },
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "scope": "latestlocal880/fouroriginaltypes only; no newhostedNode22actual51/161, runtime32filetimeoutknown/deeperlatencyunknown; activeFetch17E4PhaseA independentnotincluded",
+  "newHostedRuntimeIssued": false,
+  "actual161": false,
+  "deeperFileLatencyUnknown": true,
+  "fullBackgroundRetirement": false,
+  "devIntegrated": false,
+  "N1": false,
+  "fullTaskAccepted": false,
+  "countingNotice": "814 top-level TAP records,880 including66nested tests; not880flatuniquecases"
+}

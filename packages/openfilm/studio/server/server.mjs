@@ -117,9 +117,10 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * is working in right now (an app with a chat), which cannot be renamed or deleted meanwhile. `askAgent`: in an app with
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean }} [options]
+ * `autoVersionsFactory`: trusted Node-only dependency injection; defaults to the native automatic versions producer.
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false } = {}) {
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions } = {}) {
   const isolation = readIsolationProfile();
   if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
   if (isolation) {
@@ -152,12 +153,19 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   /** The project at `root`'s history changed: its pages hear of it. `moved`: the folder's files changed with it. */
   const historyChanged = (/** @type {string} */ root, { moved = false } = {}) => watchers.emit(root, { type: 'history', ...(moved ? { moved: true } : {}) });
   /* versions saved on their own (auto-versions.mjs), while the person has Auto versions on */
-  const autoVersions = createAutoVersions({
-    on: () => readPrefs().autoVersions,
-    working: agentIn,
-    roots: () => watchers.roots(),
-    save: async (root, kind) => { if (await saveVersion(root, { kind })) historyChanged(root); },
-  });
+  const autoVersions = (() => {
+    try {
+      if (typeof autoVersionsFactory !== 'function') throw new Error();
+      const auto = autoVersionsFactory({
+        on: () => readPrefs().autoVersions,
+        working: agentIn,
+        roots: () => watchers.roots(),
+        save: async (root, kind) => { if (await saveVersion(root, { kind })) historyChanged(root); },
+      });
+      if (!auto || ['changed', 'poll', 'start', 'stop', 'drain'].some(method => typeof auto[method] !== 'function')) throw new Error();
+      return auto;
+    } catch { throw new Error('Invalid automatic versions factory.'); }
+  })();
   autoVersions.start();
   /** how many editor pages have connected since Studio started: whether one opened an address `/open` gave out */
   let pagesConnected = 0;
@@ -1229,7 +1237,23 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       refuse('404 Not Found');
     })().catch(() => refuse('500 Internal Server Error'));
   });
-  await listenLocal(editor, port);
+  const historyPreviews = createHistoryPreviews();
+  /* Both listens happen after Auto starts. Close admission and our network before waiting for its saves;
+     an unbound server is not ours to close, and cleanup must never replace the original listen error. */
+  async function failedStart(error) {
+    const saving = autoVersions.stop();
+    const exporting = exports.stopAll();
+    fetches.stopAll();
+    watchers.closeAll();
+    editor.closeAllConnections();
+    for (const socket of streamSockets) socket.destroy();
+    const editorClosed = editor.listening
+      ? new Promise((done) => editor.close(() => done(undefined)))
+      : Promise.resolve();
+    await Promise.allSettled([editorClosed, closePageFrames(), exporting, historyPreviews.close(), saving]);
+    throw error;
+  }
+  await listenLocal(editor, port).catch(failedStart);
   /* the examples index is asked for as Studio starts, so the Examples tab has GitHub's newest when it opens */
   void bootstrapStudioResources(isolation,{examples:listExamples,providers:freshProviders,discover:readDiscover},advertise);
   /* and what each service offers (OpenFilm's models are its service's to say), so Settings → Services opens with them */
@@ -1239,12 +1263,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   COOKIE = cookieName(address.port);
   FRAMED = framedCookieName(address.port);
   /* the film's port is the next one: when it is not free, the editor's is let go again, so a caller can try others */
-  const historyPreviews = createHistoryPreviews();
-  const pages = await startPages({ port: port ? address.port + 1 : 0, editorOrigin: () => origin, secret: key, projects: listProjects }).catch(async (e) => {
-    watchers.closeAll();
-    await new Promise((done) => editor.close(() => done(undefined)));
-    throw e;
-  });
+  const pages = await startPages({ port: port ? address.port + 1 : 0, editorOrigin: () => origin, secret: key, projects: listProjects }).catch(failedStart);
   filmOrigin = pages.origin;
   if (advertise) {
     /* Discover read as Studio starts, so its skills are there when it first opens (and on an empty conversation) */
@@ -1265,20 +1284,22 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     close() { return closing ??= shutDown(); },
   };
   async function shutDown() {
-    /* the file is ours unless a later Studio has written its own (with the same key: it is the machine's) */
-    if (advertise && advertised()?.pid === process.pid) rmSync(runFile(), { force: true });
-    /* a running export stops, and cleans up after itself while the rest closes: its half-made files go before Studio */
-    const exporting = exports.stopAll();
-    fetches.stopAll();
-    autoVersions.stop();
-    await closePageFrames();
-    watchers.closeAll();
-    await pages.close();
-    editor.closeAllConnections();
-    for (const socket of streamSockets) socket.destroy();
-    await new Promise((done) => editor.close(() => done(undefined)));
-    await exporting;
-    await historyPreviews.close();
+    const saving = autoVersions.stop(); // Synchronously close automatic scheduling before any asynchronous cleanup.
+    try {
+      /* the file is ours unless a later Studio has written its own (with the same key: it is the machine's) */
+      if (advertise && advertised()?.pid === process.pid) rmSync(runFile(), { force: true });
+      /* a running export stops, and cleans up after itself while the rest closes: its half-made files go before Studio */
+      const exporting = exports.stopAll();
+      fetches.stopAll();
+      await closePageFrames();
+      watchers.closeAll();
+      await pages.close();
+      editor.closeAllConnections();
+      for (const socket of streamSockets) socket.destroy();
+      await new Promise((done) => editor.close(() => done(undefined)));
+      await exporting;
+      await historyPreviews.close();
+    } finally { await saving; }
   }
   return studio;
 }

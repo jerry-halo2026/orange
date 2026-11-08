@@ -13,8 +13,8 @@
       "externalGates": [],
       "readinessEvidence": "docs/execution/t01-cpu-readiness.json (CPU verification subset only; status remains in_progress)",
       "nativeStudioEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
-      "currentEngineeringSlice": "Source30 reviewed4585 Root482/Node24pure398/previousreal51data compatibility closed; latestlocal879/fourtype0 integrationcard31 proposed. Actual28TAP_INVALIDstillunknown/noactual161/dev/PG.",
-      "latestIntegratedEvidence": "docs/execution/t01-native-type-exports-integration-validation.json",
+      "currentEngineeringSlice": "Source30reviewed4585; latest9478034local879+fouroriginaltypes0 actualpass+non-authorresultapproved0P1P2. Actual28TAP_INVALIDunknown/no newhosted161/dev/PG. Nativefetch17card/resources nextindependentprep.",
+      "latestIntegratedEvidence": "docs/execution/t01-native-worker-latest-integration-validation.json",
       "latestHostedEvidence": "docs/execution/t01-native-kernel-runtime-validation.json"
     },
     {
@@ -153,7 +153,7 @@
       "mergeWorkerReadiness": "docs/execution/t02-merge-worker-readiness.json",
       "nativeTypeContractsReadiness": "docs/execution/t02-native-type-contracts-readiness.json",
       "exportsDrainReadiness": "docs/execution/t02-exports-drain-readiness.json",
-      "latestIntegratedEvidence": "docs/execution/t01-native-type-exports-integration-validation.json"
+      "latestIntegratedEvidence": "docs/execution/t01-native-worker-latest-integration-validation.json"
     },
     {
       "id": "T02.b",

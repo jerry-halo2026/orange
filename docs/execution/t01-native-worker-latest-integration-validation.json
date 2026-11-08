@@ -1,0 +1,222 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 31,
+  "candidateCommit": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
+  "executor": "/root",
+  "classification": "engineering-verification/latest-native-Worker-CI-localintegration",
+  "sources": {
+    "CI30": "4585c5e9a7b9d2269b5487e1480ffb73126f752a",
+    "Type16": "c384c58434b491d63dd524c7f691638719b93e62",
+    "Exports15": "42dbd4c83a85b9dd8da66d38d11da8ee3f319cd0",
+    "sourceAssembly": "8f3695c60485097b0a63e3f31d3c02b17d9fcd62"
+  },
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "release": "10.0.26200",
+    "node": "v26.13.0",
+    "typescript": "5.9.3",
+    "nodeTypes": "22.20.5",
+    "Core": "1.61.1",
+    "targetHardwareQualified": false
+  },
+  "testCommand": [
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=60000",
+    "--test-reporter=tap",
+    "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+    "packages/openfilm/studio/server/person-merge.test.mjs",
+    "scripts/native-studio-ci.test.mjs",
+    "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+    "packages/openfilm/studio/server/watch.test.mjs",
+    "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+    "packages/openfilm/studio/server/auto-versions.test.mjs",
+    "packages/openfilm/studio/server/project-control-guard.test.mjs",
+    "packages/openfilm/studio/server/projects-control.test.mjs",
+    "scripts/phase1-isolation.test.mjs",
+    "apps/desktop/src/flavor.test.mjs",
+    "packages/openfilm/src/development-isolation.test.mjs",
+    "apps/desktop/src/auth-service.test.mjs",
+    "packages/openfilm/studio/server/project-access.test.mjs",
+    "packages/openfilm/studio/server/exports-drain.test.mjs"
+  ],
+  "counters": {
+    "tests": 879,
+    "pass": 879,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "breakdown": "native449(includesCPU84/merge33/actualWorker18)+CIpure398+Exports32=879",
+  "WorkerActual": {
+    "created": 18,
+    "actualExits": 18,
+    "peak": 3,
+    "finalAlive": 0,
+    "allThreadsActuallyExited": true,
+    "receiptSHA256": "389c5735932bbcfe310da0ec34cb68af06e67b58eef6d48e1ab5868c57e0811c"
+  },
+  "exportsActual": {
+    "created": 10,
+    "actualExits": 10,
+    "actualCloses": 10,
+    "peak": 2,
+    "finalAlive": 0,
+    "allOwnerExitClose": true,
+    "receiptSHA256": "1ed265064d07e7bc06f6ec480e5f99532dbd2bcf790d4fe75fb62cdd4ab8da07"
+  },
+  "failedSpawn": {
+    "attempts": 1,
+    "startedNode": 0,
+    "exits": 0,
+    "closes": 1,
+    "events": [
+      "error",
+      "close",
+      "stopped"
+    ],
+    "errorCodes": [
+      "ENOENT"
+    ],
+    "receiptSHA256": "dcfa7b396e5515bd151ee6690e09adbc922c6788be3c9a5c710d464cb56c79b3"
+  },
+  "ports": {
+    "before": [
+      {
+        "host": "127.0.0.1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "127.0.0.1",
+        "port": 18476,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18476,
+        "bindClose": true
+      }
+    ],
+    "after": [
+      {
+        "host": "127.0.0.1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "127.0.0.1",
+        "port": 18476,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18475,
+        "bindClose": true
+      },
+      {
+        "host": "::1",
+        "port": 18476,
+        "bindClose": true
+      }
+    ]
+  },
+  "originalTypeProjects": [
+    {
+      "project": "packages/openfilm/studio/server",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "packages/openfilm/studio/ui",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "28e5ebf1bc70e76523d888b24e5865f8e7021aa835d109adfaa7e0d7e52b30a4",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "apps/desktop/chat",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "b0ee6438ab20d9433fff9f54301c629a817ad8c4ac7f655ffbda9d1bef6df088",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "apps/desktop/shell",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "configSHA256": "57851c0d76cb17014ed704f993eb00790988d15ec924269c81c77b8e81df5410",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "sourceBinding": {
+    "inputs": 37,
+    "reviewProofs": 2,
+    "allRawGitUnchanged": true,
+    "headAfter": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
+    "trackedDirtyAfter": ""
+  },
+  "tooling": {
+    "before": {
+      "coreVersion": "1.61.1",
+      "coreFiles": 106,
+      "coreManifestSHA256": "8947c2fcb3f60c7356becffdd5aa39f4228d1a0bedf5b2d6fa672998678f804f",
+      "typescriptPackage": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6",
+      "nodeTypesPackage": "234e64edc31580d6052f8abc89b96f156de29d3b4c7121214b960dec09bd2a25"
+    },
+    "after": {
+      "coreVersion": "1.61.1",
+      "coreFiles": 106,
+      "coreManifestSHA256": "8947c2fcb3f60c7356becffdd5aa39f4228d1a0bedf5b2d6fa672998678f804f",
+      "typescriptPackage": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6",
+      "nodeTypesPackage": "234e64edc31580d6052f8abc89b96f156de29d3b4c7121214b960dec09bd2a25"
+    },
+    "unchanged": true,
+    "originalCore106ExistingReadonly": true,
+    "noInstallRestoreOrNetwork": true
+  },
+  "proofSHA256": "076e0ebe587c27a5ba2e0d33ace08c5ed151ec9dea82848ee4b76196d1041035",
+  "stdoutSHA256": "b199f3b2534f1fc8eabeef773882a3f590f40fb0ce854c42ab410578ce9263c9",
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "N5a84": {
+    "cardSHA256": "39a88b9cb577de8d4ac77335d4ab5e8a9d4a79e40a18f9440f126f5ef08f3574",
+    "preProofSHA256": "95f35a47ec700d1ba3a87e93366daf737bbba07299433147e4307deae0e6bd67",
+    "postProofSHA256": "95f35a47ec700d1ba3a87e93366daf737bbba07299433147e4307deae0e6bd67",
+    "externalCheckerSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+  },
+  "review": {
+    "reviewerAgent": "/root/watch_drain_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "scope": "non-authoractualTAP/ownedWorkerexit/Childclose/scripts/tooling/37rawGit2proof/fourtypes/ports/N5a/privacy verification"
+  },
+  "scope": "latest local15-file subset/fouroriginaltypes only; no localgenuinefile-symlink securitycase executed; actualC28firstTAP_INVALIDunresolved, safeCLIobservation sourceunitqualified notyetactualhosted",
+  "hosted28RootCauseKnown": false,
+  "newHostedRuntimeIssued": false,
+  "actual161": false,
+  "fullBackgroundRetirement": false,
+  "actualMedia": false,
+  "devIntegrated": false,
+  "N1": false,
+  "fullTaskAccepted": false
+}

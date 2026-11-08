@@ -35,9 +35,9 @@
     "sharedWriteGrants": [],
     "activeCards": [
       {
-        "path": "docs/execution/t01-native-kernel-ci-assignment.json",
-        "assignmentRevision": 25,
-        "sha256": "fb900648f173efd84d84c168a2b43b4427069fc1a3bbabb0cbcae8749701ec35"
+        "path": "docs/execution/t02-native-type-contracts-assignment.json",
+        "assignmentRevision": 16,
+        "sha256": "08918e87e8c12f708bcec160dd52c017d771e205287a2b3635b67dfd9b6cabbe"
       }
     ],
     "dependencies": [

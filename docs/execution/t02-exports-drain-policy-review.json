@@ -9,7 +9,7 @@
   "quality": "approved-after-exact-resource-correction",
   "P1": 0,
   "P2": 0,
-  "cardSHA256": "f138cd8b948f0ada5b60bedbb5505826bf476edc6abaec28efe65b41fb731c24",
+  "cardSHA256": "bb35b3a98ac2e230c41cfde66a17d732e5d7e50ff22dcc34c242d8c950ba0595",
   "proofs": [
     {
       "path": "docs/execution/t01-cpu-exports-drain-consumer-review.json",
@@ -30,5 +30,6 @@
     "freshauthorTDD/peer/RootactualChild+FS"
   ],
   "actualChildKillExecuted": false,
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "actualConcurrentCard": "Type16 E4 projects/server/watch/ports18475-76, disjoint E3 exports twofiles/noports. CI25 E2 completed, no longer activewriter."
 }

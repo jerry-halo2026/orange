@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 33,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "c3bd8c1ed8f083e5a3af7f727f50ef661deff8a744c569565a1925b7f2de6f06",
+  "inputs": 36,
+  "reviewProofs": 2,
+  "scope": "ONEWorkerfileflag native600000+appendedsourcecontracttests only, actualaggregate180000/8MiB/job12/all51/perf/native/source/securityunchanged",
+  "conditions": "immutable/E2FF/raw/trustedN5a beforeauthor; contractRED old398pass/newfails thenminimaloneflagfix; non-author/Rootverification beforecommit; no newruntimeauthority",
+  "deeperFileLatencyUnknown": true,
+  "fullTaskAccepted": false
+}

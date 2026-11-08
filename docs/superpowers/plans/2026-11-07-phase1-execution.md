@@ -481,3 +481,7 @@ Source30 reviewed4585/Root482+Node24pure398/oldreal51TAPs accepted, actualGit27 
 ## 2026-11-08 observable-native161-Windows
 
 Card32 isONE newsource-triggeredactualstandardWindows110+Worker51run afterreviewedSource304585/latestRoot947879+fourtype0; notold28rerun. Beforeissue:policy/proofs/immutable/E3FF/raw/trustedN5a84/fullunpublishedhistoryfrom1bbc/freshPUBLICfinancialPR0/hook/oldrunsterminal checks. FrozenCIpure398/native110/Worker51/source27/package/tool/context/timeout unchanged. Observeactualsameheadjoborfinitefailureevidence toterminal, no rawartifactupload/no automaticretry/no private/model/production/main/dev/tag. Fullgoal/PG unchanged.
+
+## 2026-11-08 native-worker-file-budget
+
+Actual32Node22.23.4filetest timeout cancelledoriginalperson-merge file; originalpackagescript600000 vsCIadded60000. Source33onlyWorkerargvvalue aligns600000 whileouter180000/8MiB/job12/all51/perfassertions remainfixed. SourcecontractRED thenONEliteralfix+appendedunit(s), preserveold398prefix, independentpolicy/N5a/sourcepeer/Rootproof beforecommit. Doesnotprovewhyfile>60orhistorical28cause, no newruntimeauthority/automaticrelaxation.

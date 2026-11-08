@@ -1,6 +1,6 @@
 {
   "taskId": "T02.a",
-  "assignmentRevision": 9,
+  "assignmentRevision": 10,
   "authorAgent": "/root/studio_auto_close_impl",
   "requestedModel": "gpt-6.1-sol",
   "requestedEffort": "high",
@@ -16,7 +16,7 @@
   "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
   "branch": "codex/t05-path-policy",
   "status": "active",
-  "dispatchState": "reserved notdispatched untilpolicyreview/immutableactualN5a",
+  "dispatchState": "sameauthorcurrentlyfrozen, Roottoolinghandoff notauthorizeduntilpolicyreview/immutable/FF/newN5a",
   "writeAllowlist": [
     "packages/openfilm/studio/server/server.mjs",
     "packages/openfilm/studio/server/server-auto-versions.test.mjs"
@@ -184,10 +184,30 @@
   },
   "forbidden": [
     "anyproducerGuard/projects/Auto/currenttests/CPU/locations/atomic/CI/07/docs/workspace/lock/DTO edits",
-    "realOSregistry/data/config/account/token/realmedia/browser/SDK/package/install/FFmpeg/Fission/.NET/OSsecurity changes",
+    "realOSregistry/data/config/account/token/realmedia/browser/SDK/packageinstall(exceptRootexplicitofflinepackagecopy)/FFmpeg/Fission/.NET/OSsecurity changes",
     "externalnetwork/provider/model/production/cloudbusinesswrite/GitHubAPI/jobs/otherports/desktop",
     "Gitstage/commit/merge/push/reset/clean/cleanup/subagents"
   ],
   "report": ".dev/studio-auto-close/report.json",
-  "fullTaskAccepted": false
+  "fullTaskAccepted": false,
+  "handoff": {
+    "previousRevision": 9,
+    "previousApprovalCommit": "dc28a1da5180c1ad154df7f77650023623a0e2ff",
+    "previousCardSHA256": "ef2dce842c50ab53883fee11983e594cea70fd6a6c764622fc47f4bb1e8f17d1",
+    "reason": "RootincorrectlyassumedE3localserverdepsavailable; actualserverimportERR_MODULE_NOT_FOUNDplaywright-core, notvalidbehavioralRED; authorstoppedwithoutinstall",
+    "sourceFrozen": true,
+    "noAPIContractChange": true
+  },
+  "toolingMaterialization": {
+    "owner": "/root only, neverauthor",
+    "package": "playwright-core@1.61.1",
+    "source": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/playwright-core@1.61.1/node_modules/playwright-core",
+    "sourceManifestSHA256": "09a112106b062c724bbdaeceaeb9a03d937d82eaffd47bc27b932cabb2abed48",
+    "destination": "E:/CodexData/worktrees/orange-t05-paths/orange/packages/openfilm/node_modules/playwright-core",
+    "staging": "E3/.dev/studio-auto-close/dependency-stage/<freshattempt>/playwright-core",
+    "action": "copyonlyexistingexactpublicpackagefiles+LICENSE/NOTICE toordinarynewownedstage, verifyfullsource/destmanifest hash, atomicrename intoabsentdest; createonlynewordinarynode_modulesparents underE3, nooverwrite/cleanup oldtarget",
+    "forbidden": "no network/npm/pnpminstall/scripts/CLI/bin invocation/.bin links/browser/executable download/SDK/model/OS/globalconfig/lock/workspace edits; donotread npmrc/token/privateconfig",
+    "evidence": "actualE1packageversion1.61.1/Apache2/no scripts/no deps+repo packagejson/lockpin andallunpackedfileSHA manifest; notclaimtarballintegrityremeasured",
+    "sequence": "non-authorpolicyreview ->immutablehandoff/E3FFpreservingexacttest/server -> Rootpackagecopyandmanifestproof -> actualservermoduleIMPORTonlyowncleanenv -> externalN5a84 -> sameauthorresumeactualTDD"
+  }
 }

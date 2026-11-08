@@ -379,3 +379,5 @@ T02.a rev9 native-extension actualconsumer ofc8a4/8857 snapshot436b. Exactlyorig
 - [ ] Originalshutdown capturesstop synchronously, closesexistingadmission/resources thenawaitsactualsave/cleanup; startupfailure alsostops/waits/cleans. PreserveoriginalAPI/errors/othercleanup, safeinvalidfactorybeforelisten.
 - [ ] Ownports18475/18476 andprofileE3 paths only, no remote/bootstrap/browser/media/privateconfig, zero leftovers; allnew+oldaffectedNode tests0skip/fail/syntax/diff/inputhash stable.
 - [ ] Non-authorSPECQUALITY+RootfreshactualHTTP/Auto/Guardcomposition andN5a beforeproducercommit/serialintegration. Notfullbackgroundquiescence; exports/fetch/watch/hoststreamandactualAuth/owner/nativeentry/UI/N1 remainmandatory.
+
+StudioClose工具交接（rev10，2026-11-08）：实际E3无playwright-core，Root此前“本地已有”判断错误，首次ERR_MODULE_NOT_FOUND是能力失败不是业务RED；作者未安装/stub。E1原pin1.61.1现存，无scripts/传递deps，Root拟离线复制完整公开包+许可到E3新ownedstage并全文件SHA核验后原子物化到absent本地node_modules；不网络/安装脚本/browser/SDK/全局配置、不改源/锁。新handoff须独审/不可变/raw+N5a，作者保持冻结前Source/test，不可据缺包失败声称lifecycle已复现。完整权限/执行测试/API/端口原样。

@@ -1,0 +1,221 @@
+{
+  "date": "2026-11-08T17:13:42.141Z",
+  "taskId": "T01",
+  "assignmentRevision": 35,
+  "sourceCodeBaseline": "41eda83112e87d455b181ddd94bb89d01719082e",
+  "source33": "c87d0bdb4fa9f6d3ba9bc2fb01753b3241d2742d",
+  "approvalAndPublicationCommit": "da86527d97bdd7a5dbbee96ef64f7931ce0b5471",
+  "cardSHA256": "c929379d7eaa549c9e3ed124aac3d46a42421569320d342b6d4ba476ec0969b9",
+  "policyReview": "docs/execution/t01-native-worker-budget-runtime-policy-review.json",
+  "inputs": {
+    "nativeGitPins": 27,
+    "totalProtected": 36,
+    "actualE3RawGitMatched": true,
+    "companionExtra9": true
+  },
+  "preservation": {
+    "oldIgnoredRecords": 25948,
+    "allPreserved": true,
+    "followedLinks": false
+  },
+  "freshLocalAdmission": {
+    "admitted": true,
+    "proofSHA256": "3d0b5ebf28b55e893c5e76018739a5aa4ddec78fd61cab24d179f17e068ba906"
+  },
+  "remoteLease": {
+    "leaseId": "attempt-1794157094873-ci35-once",
+    "issuedAtUTC": "2026-11-08T17:11:12.141Z",
+    "onePushAttempt": true,
+    "noRetryRerunOrConfigChange": true,
+    "state": "terminalsuccess rawsummaryverified pendingnon-authorresultreview"
+  },
+  "publication": {
+    "commit": "da86527d97bdd7a5dbbee96ef64f7931ce0b5471",
+    "verified": true,
+    "mainDevTagChangesRequested": false
+  },
+  "runs": [
+    {
+      "id": 42503685263,
+      "path": ".github/workflows/native-studio.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/jerry-halo2026/orange/actions/runs/42503685263",
+      "jobs": [
+        {
+          "id": 128801623615,
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 42503685284,
+      "path": ".github/workflows/phase1.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/jerry-halo2026/orange/actions/runs/42503685284",
+      "jobs": [
+        {
+          "id": 128801623586,
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "lastObservation": {
+    "path": ".dev/native-worker-budget-runtime/attempt-1794157094873/observations/1794158022140.json",
+    "sha256": "31642333d25360d27fd518540bfad3eaf651e98c4ffbc29ce4136d65eb441bba",
+    "at": "2026-11-08T17:13:42.139Z"
+  },
+  "actualNative110Passed": true,
+  "actualWorker51Passed": true,
+  "actualCombined161": true,
+  "actualCompanion353Passed": true,
+  "scope": "actualstandardWindowsSource33pure399+Native110+Worker51=161 andsame-headcompanion353 only; no newhostedExports32/types/FetchB/fullretirement/realAuth/media/installer/Windowsclient target/Mac/ownerN1PG",
+  "fullTaskAccepted": false,
+  "actualPure399": {
+    "tests": 399,
+    "pass": 399,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "actualNative110": {
+    "total": 110,
+    "passed": 110,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "mandatoryTrueWindowsFileLinkPassed": true
+  },
+  "actualWorker51": {
+    "total": 51,
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "evidence": {
+      "created": 18,
+      "actualExits": 18,
+      "peak": 3,
+      "finalAlive": 0
+    }
+  },
+  "actualCompanion353": {
+    "tests": 353,
+    "pass": 353,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "actualNode": "v22.23.4",
+  "actualPlatform": {
+    "native": {
+      "os": "Microsoft Windows Server 2025",
+      "build": "10.0.26100",
+      "edition": "Datacenter",
+      "image": "windows-2025-vs2026"
+    },
+    "companion": {
+      "os": "Microsoft Windows Server 2025",
+      "build": "10.0.26100",
+      "edition": "Datacenter",
+      "image": "windows-2025-vs2026"
+    }
+  },
+  "hostedSourceBinding": {
+    "canonical27Matched": true,
+    "companion4Matched": true
+  },
+  "resourceEvidence": {
+    "ownedWorkers": {
+      "created": 18,
+      "actualExits": 18,
+      "peak": 3,
+      "finalAlive": 0
+    },
+    "ports": [
+      {
+        "port": 18475,
+        "listening": false
+      },
+      {
+        "port": 18476,
+        "listening": false
+      }
+    ],
+    "oldIgnored25948Preserved": true,
+    "allLocalInput36RawGitUnchanged": true
+  },
+  "package": {
+    "name": "playwright-core",
+    "version": "1.61.1",
+    "license": "Apache-2.0",
+    "licenseSha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+    "noticeSha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+    "archiveSha512": "h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==",
+    "packageJsonSha256": "759e376f995bf39edd4810d699b99469bab1d7428b6fbc78d41912f367df7ba9",
+    "fileCount": 106,
+    "filesSha256": "63b65fc39b3658c72e101b382a3dc126f5b9b5dd6ed789f1461036886de7ca0d"
+  },
+  "tarSha256": "a8c4b61db4c2908930be3984d80b4a921f75290c958adc62565da8a455b1230c",
+  "hostedGitExeSHA256": "notemitted/unknown, notlocalGitfingerprint",
+  "runtimeReportedTapHashes": {
+    "native": "c5d36963fd272517ea01502da78ee4206e4a2495a43040506fb5a28a627d62e0",
+    "worker": "38e287215f83a3f9e26f18aea8c7275f861352db17de00bd77dd675292ebc3a7",
+    "nativeStderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workerStderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "jobLogSHA256": {
+    "nativeSHA256": "209f97bd205639919e8019da2aa31fa295c87b326c44c863861082eb701251e0",
+    "companionSHA256": "b400b9a220d795d45301ed8351ab0f82f13979dd5279324b0a5aecaa8faaec8c",
+    "actualSummarySHA256": "442bf27c0a956adb16a44237dbc656b46887dc4725d3436936c14db921dbc8ac"
+  },
+  "freshPostAdmission": {
+    "admitted": true,
+    "proofSHA256": "3d0b5ebf28b55e893c5e76018739a5aa4ddec78fd61cab24d179f17e068ba906",
+    "admissionTests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "exitCode": 0,
+        "actualNames": 81
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "exitCode": 0,
+        "actualNames": 3
+      }
+    ]
+  },
+  "remoteAfter": {
+    "topic": "da86527d97bdd7a5dbbee96ef64f7931ce0b5471",
+    "dev": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+    "mainAbsent": true,
+    "tagsUnchanged": true
+  },
+  "rootCause": {
+    "runtime32FileDeadlineAlignmentValidated": true,
+    "workerCLIFileMs": 600000,
+    "workerAggregateMs": 180000,
+    "jobMinutes": 12,
+    "performanceAndAllCasesUnchanged": true,
+    "deeperFileLatencyUnknown": true,
+    "historical28CauseNotRetrospectivelyProved": true
+  },
+  "analysisProofSHA256": "6be29cf6c2d4f5ee44f8ffbf94ceaa5a2399f90e31539ac4e8d63343ed815986",
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved"
+  },
+  "N1": false,
+  "pilotAccepted": false
+}

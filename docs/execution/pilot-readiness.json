@@ -2,7 +2,7 @@
   "date": "2026-11-08",
   "status": "handoff-not-product-ready",
   "referenceSourceCommit": "3a29a38ea35e488f4769927d816721e19e238076",
-  "businessImplementationStarted": false,
+  "businessImplementationStarted": true,
   "newGoalCreated": true,
   "completionPolicy": "All applicable PG gates and V01-V61 plus speech checks evidenced on actual integration candidate, non-author review and Ethan scope acceptance. Exclusions require explicit named approval. No silent scope reduction or release.",
   "platforms": {
@@ -1264,7 +1264,10 @@
     "docs/execution/t01-fission-ci-runtime-validation.json",
     "docs/execution/t01-controlled-io-ci-runtime-validation.json",
     "docs/execution/t05-controlled-io-readiness.json",
-    "docs/execution/t01-auth-ci-refresh-runtime-validation.json"
+    "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
+    "docs/execution/t02-native-projects-admission-validation.json",
+    "docs/execution/t02-auto-versions-drain-validation.json"
   ],
-  "preparationBoundary": "Actual hostedWindows43purepathpassed and localinternalaccesspolicyready are partialprep, no PG/V acceptance or trialscopeEthan signoff, no fullruntime/media/install/hardware."
+  "preparationBoundary": "Actual hostedWindows43purepathpassed and localinternalaccesspolicyready are partialprep, no PG/V acceptance or trialscopeEthan signoff, no fullruntime/media/install/hardware.",
+  "implementationStartEvidence": "Authd008/nativeprojects-admissionc8a4/auto-versions8857 localsource receipts; starting implementation does notpass anyPG/V orN1"
 }

@@ -1,0 +1,236 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "revision": 8,
+  "sourceCommit": "8857b413c4e8ab73499dbef75f720596c56c7b15",
+  "authorAgent": "/root/auto_versions_drain_impl",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.mjs",
+      "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+      "sha256": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35",
+      "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+    }
+  ],
+  "review": {
+    "reviewerAgent": "/root/auto_versions_source_review",
+    "requestedModel": "gpt-6-astra/high",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "scope": "actualproduceronly originalStudio awaitnotdone"
+  },
+  "originalTests": {
+    "cases": 5,
+    "rawPrefixBytes": 2433,
+    "rawPrefixSha256": "f87978a7c0d1ccede0adac2f6742dde11a91bd26761275d587a398733c96a1eb",
+    "exactRawPrefixPreserved": true,
+    "assertionsDeleted": false
+  },
+  "firstRED": {
+    "command": "node --test --test-reporter=tap packages/openfilm/studio/server/auto-versions.test.mjs",
+    "exitCode": 1,
+    "purpose": "first RED against unchanged original producer",
+    "log": {
+      "path": ".dev/auto-versions-drain/red-attempt-1.tap",
+      "rawSha256": "5269bb455333e37bdf14d92f3ca94433b0fd12df2faa87456a3d929cdb42a02c",
+      "canonicalLfSha256": "747d2c8a4cf3338f04f59e7af2dcf02faf91d2724ef2ced9a45cf9ff6111a9cd",
+      "bytes": 16701
+    },
+    "counters": {
+      "tests": 18,
+      "suites": 0,
+      "pass": 6,
+      "fail": 12,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "allAuthorAttempts": [
+    {
+      "exitCode": 0,
+      "counters": {
+        "tests": 5,
+        "suites": 0,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": {
+        "path": ".dev/auto-versions-drain/baseline-old5.tap",
+        "rawSha256": "97e320093ff949bd2198a508324019428d311e54c1809b4f5149e39fbdeabee7",
+        "canonicalLfSha256": "23f15e0560a8039bd003866038e370b20c06cfd29008e600b8f33af22cdb4ba3",
+        "bytes": 1273
+      }
+    },
+    {
+      "exitCode": 1,
+      "counters": {
+        "tests": 18,
+        "suites": 0,
+        "pass": 6,
+        "fail": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": {
+        "path": ".dev/auto-versions-drain/red-attempt-1.tap",
+        "rawSha256": "5269bb455333e37bdf14d92f3ca94433b0fd12df2faa87456a3d929cdb42a02c",
+        "canonicalLfSha256": "747d2c8a4cf3338f04f59e7af2dcf02faf91d2724ef2ced9a45cf9ff6111a9cd",
+        "bytes": 16701
+      }
+    },
+    {
+      "exitCode": 0,
+      "counters": {
+        "tests": 18,
+        "suites": 0,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": {
+        "path": ".dev/auto-versions-drain/green-attempt-1.tap",
+        "rawSha256": "20037929332287f59f7992dae670e1e010ae5b16787166d7a258be4e6f19f269",
+        "canonicalLfSha256": "32e8003fdae100f7f569c26baf969e24b183418ebafdf9d9ca7e72b07d0c11fc",
+        "bytes": 4440
+      }
+    },
+    {
+      "exitCode": 0,
+      "counters": {
+        "tests": 84,
+        "suites": 0,
+        "pass": 84,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": {
+        "path": ".dev/auto-versions-drain/cpu-flavor-attempt-1.tap",
+        "rawSha256": "a33f25a844f54f1d12a50f871a44982859eaf502e3a359dac5ae59110e228380",
+        "canonicalLfSha256": "3ae4bce01e63143d4221f8d766bd5652f0a503ad7e5c69f5ef2f047542dc73ad",
+        "bytes": 15910
+      }
+    },
+    {
+      "exitCode": 0,
+      "counters": {
+        "tests": 102,
+        "suites": 0,
+        "pass": 102,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": {
+        "path": ".dev/auto-versions-drain/final-combined-attempt-1.tap",
+        "rawSha256": "6318aeaec55142eeddc8e08957e043e079265d7fb54e98aaa016a6d0c38396a6",
+        "canonicalLfSha256": "579647a3eee617a93f3cfa1468c6fc2abcaffc6618ad9a38ed5233b0de276e52",
+        "bytes": 20241
+      }
+    }
+  ],
+  "rootIndependent": {
+    "date": "2026-11-08T00:35:07.723Z",
+    "head": "0b853553241527b6bf5a1055344a5cd86178fbb9",
+    "source": {
+      "packages/openfilm/studio/server/auto-versions.mjs": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "packages/openfilm/studio/server/auto-versions.test.mjs": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35"
+    },
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "actual102",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "packages/openfilm/studio/server/auto-versions.test.mjs",
+          "scripts/phase1-isolation.test.mjs",
+          "apps/desktop/src/flavor.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 102,
+          "pass": 102,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "3202f222d91619c9101c28aeb11db9dfccc7346c604a391720882581d55f143a",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-auto-versions.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/auto-versions.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-auto-versions.test.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/auto-versions.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "old5RawPrefixVerified": true,
+    "old5CanonicalGitPrefixVerified": true,
+    "allAuthorTestLogHashesVerified": true,
+    "actualStudioConsumerAwaitVerified": false,
+    "zeroListenersOrServersStarted": true,
+    "reportSHA256": "57e3fefaa1d83db3d1eb374ff142d327937de0c533aecc655798d4be3fc728a5",
+    "scope": "actualproducer18+CPU84 only, noStudio/Guardintegration/N1/fullpilot"
+  },
+  "latestCombined": {
+    "commit": "436b40c661291820c47b0f59fe46e71bc709ab1b",
+    "pass": 347,
+    "fail": 0,
+    "skip": 0,
+    "proofSHA256": "58437a974dd23f8fbac0716c3c9ffc4d72ada2c27282a3982d7781eb4e76d3a8"
+  },
+  "authorReportSHA256": "57e3fefaa1d83db3d1eb374ff142d327937de0c533aecc655798d4be3fc728a5",
+  "gate": {
+    "approvalCommit": "0b853553241527b6bf5a1055344a5cd86178fbb9",
+    "cardSHA256": "66fb9dc6e9b38bdba8a0becf88351944294bc3b38d9cd8ec931bcd429db483f5",
+    "actualBeforePostOnCommit84": true,
+    "postCommitSHA256": "cf86acb3c6e95ab5440f9244c807314d676fabb308b9db361ce2424a1afdc312"
+  },
+  "currentUnverified": [
+    "actualoriginalserver1273 stilldoesnotawaitstopPromise, mustfixnextwithactualAuto+frozenGuard DI composition",
+    "exports/fetch/watch/host pipeline retirement andwholeNativequiescence/activation/N1",
+    "newsourceCI/fullclientmedia/install/pilot/Mac"
+  ],
+  "fullTaskAccepted": false,
+  "productModelCalls": 0
+}

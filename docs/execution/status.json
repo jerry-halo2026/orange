@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "Authd008CI/refreshedb869 acceptedactualsamebdcWindows300/43/34+353 withsource/runtimeindependentreview; nextprojects-admission actualconsumer, fullN1/pilotnotready",
+  "phase": "reviewedoriginalprojectsadmissionc8a4 andauto-versionproducer8857 serialassembly436b, Root347pass; qualifiedlocalonly/filelinkENV andactualStudio/fullentryretirement pending",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-auth-ci-refresh-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t02-native-projects-admission-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-auth-ci-refresh-source-review.json",
+  "currentSliceReview": "docs/execution/t02-native-projects-admission-readiness.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -102,7 +102,9 @@
     "docs/execution/t02-auth-invalidation-validation.json",
     "docs/execution/t02-auth-invalidation-readiness.json",
     "docs/execution/t01-auth-ci-refresh-validation.json",
-    "docs/execution/t01-auth-ci-refresh-runtime-validation.json"
+    "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
+    "docs/execution/t02-native-projects-admission-validation.json",
+    "docs/execution/t02-auto-versions-drain-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -110,8 +112,8 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "8ad729d0232382ef97387719216c4648e10e0fde",
-    "t02Head": "d008e9685931ab4e7229f8678fdb2b11768f8daa",
-    "t05SourceState": "source6048 independentlyreviewed, actualhostedWindows34/34 including2truefilelinks+2fallback; controlled-fileIO-ready only, host/media/T05.b notaccepted",
+    "t02Head": "c8a4d34e4d80b9a94712ce888791cd5a0e8a3a0e",
+    "t05SourceState": "Auto8857 newproducer commit onreusedE3, Fission6048 unchanged; selectedFissionhost/media notreleased",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
@@ -119,14 +121,15 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "bdc88574797000291cb0c2b3be57df783254cedc",
     "latestRuntimeReceiptCommit": "fc87f71308997f526f22d8e1e2bddd93d987adf7",
-    "latestSourceAssembly": "b869ba207ecb6e194dd904c005ccb6f121e7b986"
+    "latestSourceAssembly": "436b40c661291820c47b0f59fe46e71bc709ab1b"
   },
   "currentBlockers": [
     "T02.a Authd008syncinvalidation/policyacc27 sourcepeer+Root279 readyonlylocalDI; actualtrustedAuth/ownerstore/nativeHTTPWS/pages/CLI/UI/N1stillpending",
     "actual development Auth environment use/test identity scope not confirmed; only real auth integration blocked",
     "model cost/call boundaries unreconciled; product model calls remain zero",
     "T05host/media/immutablefullinputclosure/T02.c protocol/realadmission remainpending; controlledcopy/archive source6048 readyonlyunderoriginalRunAsync Fakecodec; no T05.b release",
-    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted"
+    "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted",
+    "nativefile-symlinkactualsecurityassertion pendingEPERM locally, currentqualifiedsubsetnotcompleteentry/activation proof"
   ],
   "identityBoundary": {
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
@@ -135,7 +138,7 @@
     "implementationStarted": true,
     "developmentAuthEnvironmentUse": "not yet confirmed",
     "knownRevocation": "D09 content must be hidden and no new requests; preserve trusted recovery state",
-    "implementationBoundary": "Authd008103/policyacc27 localDI ready inclsynchronousinvalidationbeforecancel; realAuth/originalutility/ownerstore/UI/accessenforcement/N1pending"
+    "implementationBoundary": "Authd008/policyacc27 plusqualifiednativeprojectsadmissionc8a4 andauto producer8857; actualserver/CLI/pages/parent/owner/realAuth/UI/N1pending"
   },
   "foundationImpactReview": "docs/execution/t01-foundation-impact-review.json",
   "canvasIsolationP1": {
@@ -145,9 +148,10 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "projects-admission guard withbrandedtrustedNode injection/OSstabledefaultcoord, actualprojectsIOincludingreadState/studioKey/libraryprefs beforewrite; no neweditor/protocol/owner",
-    "thenactualserver/pages/CLI plusoriginalexports/fetch/watch/autoVersions/hostpipeline retain/drain beforeproductioncontrolledactivation/owner/desktopAuthview; no foreverBUSYfakecompletion",
-    "realAuth D12purpose/identity unansweredonlycloudblocked; no budget reset orpaidmodelcalls"
+    "actualoriginalStudio.close awaitsAuto8857 stop withactualstartStudio/privateDI+NativeGuardc8a4 context, boundedownports undernewreviewedcard",
+    "persistgenuinefilelinkNodeassertions/hostedWindowsCI; oldbdcCI scopehistoricalnew6sourcefilesnotyetCIvalidated",
+    "originalexports/fetch/watch/autoVersion/hoststream truecompletion thenserver/pages/CLI/owner/parent/UI; no permanentBUSYsubstitute",
+    "realAuth D12scope/existingtestidentity notanswered, onlyrealcloud blocked; no modelcalls/budgetreset"
   ],
   "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
@@ -312,6 +316,6 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-auth-ci-refresh-ledger-review.json",
-  "nextOperation": "freezeprojects-admission-v1 2source+2tests taskcard/policy/immutableN5a onmanagedE2; actualoriginalprojects APIsconsume sharedlease/deny markers, no productioncontrolledactivation beforeallrealconsumers"
+  "currentMetadataReview": "docs/execution/t02-native-background-ledger-review.json",
+  "nextOperation": "newRootCI provegenuinefile-symlinkmarkerassertion andactualnative-sourcechecks; nextoriginalStudio stop await+actualAuto/frozenGuard DI, thengenuinebackgroundretain/drain before controlledAuth/owner activation"
 }

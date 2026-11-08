@@ -1,0 +1,62 @@
+{
+  "taskId": "T02.a",
+  "subset": "projects-admission-v1 ordinary/junction/hardlink localtested API only",
+  "commit": "c8a4d34e4d80b9a94712ce888791cd5a0e8a3a0e",
+  "authorAgent": "/root/native_projects_admission_impl",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "cf9725b233177cef6089f39fef1261f9b0a7e74a5ff81764f6aa6d003fdfe499",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "bccc9b74b03f0bbaac4b3261eeb800b56ccbc416076bc8db4a66fbd6c07c4545",
+      "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "aac9d66548fba071a09580a0efbf7c89099b9710cbbde7a081fd20cf962d5070",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "d5ddc358a85c0d6b07333e14567a22969500eaf3c952488c92daa43e58f98c96",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    }
+  ],
+  "scope": "actualoriginalprojectsIOsharedadmissionanddeny markers; notcompleteNativeProtocol/activation",
+  "fixedCapabilities": {
+    "scope": "projects-admission-v1",
+    "projectsApiFenced": true,
+    "registrationWritesDenyMarkersOnly": true,
+    "nativeEntryPointsFenced": false,
+    "backgroundIoDrained": false,
+    "productionControlledActivation": false,
+    "ownerAuthorization": false
+  },
+  "tested": {
+    "newFS": 40,
+    "regressions": 289,
+    "RootLatestCombined347": true,
+    "sourceHashUnchanged": true
+  },
+  "fileSymlink": {
+    "status": "ENV failed",
+    "code": "EPERM",
+    "assertionsExecuted": 0,
+    "notPassOrSkip": true,
+    "actualChildExitCode": 1,
+    "stdoutSHA256": "1dd007f1135fd4c52cb76a897556f9a96af238b533917cf4357bfcf40829c2e2",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "readiness": "qualifiedlocalprojects-admission input only; filelinkassertion/actualoriginalentry/background/productionactivation notready, laterconsumers maydevelop onlywithinthis explicitceiling",
+  "representation": "sha256 retainedE2CRLF/raw; gitBlobSha256 canonicalLF; newmergedE1rawmatchescanonical ratherthanE2raw. No raw equality asserted.",
+  "validation": "docs/execution/t02-native-projects-admission-validation.json",
+  "fullTaskAccepted": false
+}

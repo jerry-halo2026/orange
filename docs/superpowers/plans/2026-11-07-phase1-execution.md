@@ -350,17 +350,22 @@ CI实际回执（2026-11-08）：代码b869/不可变运行候选bdc，Rootrunti
 
 T02.a rev7 native-extension/businesscontroladdition, same approved N0 but NOTN1/owner/productioncontrolledactivation. Source2+tests2 only: newproject-control-guard and actualoriginalprojects.mjs consumeit, notunusedhelper. ExactAPI/registry/marker/privatecapabilities/input-negativefixtures/resources in execution/t02-native-projects-admission-assignment.json. Nativebaseprojects iseditableGitbaseline; onlyCPU/locations/atomic/oldfixture dependencies immutable. Broadernativeentry/drain untouchedandmandatorylater, notdeletedfromscope.
 
-- [ ] Actualnewfactory andoriginalmarkedpathwritedefect/race RED, ownrealFS/childNode notsimulationmodel; preservedunmarkednativehappyIDs/film/reopen andallnewnegativecases.
-- [ ] Sharednativeleases/controlledexclusive shortatomicmeta protocol, trustedbrandedguard injection/ALS, guardactualprojectsIO beforeprefs/read/mkdir/describe/followLibrary/id/choose; processstatequeue no nesteddeadlock. DefaultOScoord stable, testsONLYexplicitownE2coord.
-- [ ] Strictprojectsprivatepending->deny markers->committed, no owner/historyclaim, partialfailurefailclosed, fixedfalseglobalactivation capabilities. ActualallpublicIOentrypointregressions, source4syntax/diff/alltests0skip wherecapable; ENVfilelinkfailure separatelynotpass. No actualTrash/defaultOSregistry/package/server/media.
-- [ ] IndependentSPECQUALITY+Rootfreshrealtests/sourcehash/N5a+localcommit; freezeonlyprojects-admission-v1 consumer. Thenactualserver/pages/CLI andoriginalexports/fetch/watch/autoVersions/host-stream retain/drain before productioncontrolledactivation/owner/desktopUI/N1. Do not substitutepermanentBUSY oruntilprocessExit forrealcompletion.
+- [x] Actualnewfactory andoriginalmarkedpathwritedefect/race RED, ownrealFS/childNode notsimulationmodel; preservedunmarkednativehappyIDs/film/reopen andallnewnegativecases.
+- [x] Sharednativeleases/controlledexclusive shortatomicmeta protocol, trustedbrandedguard injection/ALS, guardactualprojectsIO beforeprefs/read/mkdir/describe/followLibrary/id/choose; processstatequeue no nesteddeadlock. DefaultOScoord stable, testsONLYexplicitownE2coord.
+- [x] Strictprojectsprivatepending->deny markers->committed, no owner/historyclaim, partialfailurefailclosed, fixedfalseglobalactivation capabilities. ActualallpublicIOentrypointregressions, source4syntax/diff/alltests0skip wherecapable; ENVfilelinkfailure separatelynotpass. No actualTrash/defaultOSregistry/package/server/media.
+- [x] IndependentSPECQUALITY+Rootfreshrealtests/sourcehash/N5a+localcommit; freezeonlyqualifiedprojects-admission-v1 localinput; filelinkassertion andallactualentry/drain/activation areseparateuncheckedfollow-ups below.
 
 
 ## 2026-11-08 auto versions real drain
 
 T02.a rev8 native-extension minimumexistingproducer, independentNativeprojects7. Exacttwofilecard execution/t02-auto-versions-drain-assignment.json modifiesoriginalauto-versions.mjs/test only, notanotherhelper/editor. Freezeproducerbeforedependentserver canconsumeGuard7/newdrain; do notrunnewGuard-default-coord inadvertentlyduringcross-treeearlytests. Actualoriginalserver.shutdown await/composition is mandatorynextconsumer, notdeclaredfixedhere.
 
-- [ ] Original5unitbaseline thenrealpending-save/stop/drain/reentrant-newwork RED, actualcallbackPromise trackedbeforeexternalreentry; no mockimplementation.
-- [ ] Minimalgeneration/pending/stop/drain andexplicitrestartsemantics, preserveoriginalcallbacks/constants/oldassertions; no timeoutRace calledquiescence.
-- [ ] Actualnew+oldpuretests0skip/fail, syntax/diff/forbiddeninputsrawunchanged; no server/ports/realOS/files/media/model/SDK.
-- [ ] Non-authorcode+Rootfreshactualtests/N5a thenproducercommit; nextoriginalserverawaitsactualAuto.stop underactualStudio+frozenGuard DI composition. Exports/fetch/watch/hoststream/fullproductioncontrolledactivation remainmandatorylater, notdropped.
+- [x] Original5unitbaseline thenrealpending-save/stop/drain/reentrant-newwork RED, actualcallbackPromise trackedbeforeexternalreentry; no mockimplementation.
+- [x] Minimalgeneration/pending/stop/drain andexplicitrestartsemantics, preserveoriginalcallbacks/constants/oldassertions; no timeoutRace calledquiescence.
+- [x] Actualnew+oldpuretests0skip/fail, syntax/diff/forbiddeninputsrawunchanged; no server/ports/realOS/files/media/model/SDK.
+- [x] Non-authorcode+Rootfreshactualtests/N5a thenproducercommit only; actualoriginalserverawait andremainingproducers areseparateuncheckedfollow-ups below.
+
+局部执行回执（2026-11-08）：projects源码c8a4经历独审1P1/2P2、真实38/27+11RED与fix1后40测试、Root40+289、前后/精确提交N5a84，保留SYS-C临时合成fixture边界偏差及原初中间sourcehash证据不足。真正file-symlink仍EPERM、assertions0，不计通过。Auto源码8857原5prefix不变/18真实producer测试、Root102/独审/N5a84；原server仍没await。串行组合436b重新347/347、0skip。两子包仅本地资格完成，旧bdcCI不代新6源CI，生产activation/owner/全部entry与background/N1未完成。
+
+- [ ] 将真实file-symlink marker拒绝断言保留在可执行受控测试并在hostedWindows实际跑，不以junction/ENV或旧FissionCI代替。
+- [ ] 实际原Studio.shutdown await已冻结Auto.stop、actualAuto+actualstartStudio+NativeGuard DI组合；随后exports/fetch/watch/hostpipeline retain/drain和完整entry/owner/parent/UI继续，未删减。

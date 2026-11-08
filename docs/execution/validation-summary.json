@@ -57,7 +57,9 @@
       "docs/execution/t05-controlled-io-readiness.json",
       "docs/execution/t02-auth-invalidation-validation.json",
       "docs/execution/t05-material-pool-validation.json",
-      "docs/execution/t01-auth-ci-refresh-runtime-validation.json"
+      "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
+      "docs/execution/t02-native-projects-admission-validation.json",
+      "docs/execution/t02-auto-versions-drain-validation.json"
     ],
     "t02": {
       "cases": 6,
@@ -241,5 +243,38 @@
       "jobLogSHA256": "6f8cadd530dc47dcc5842f3d253d44b92c40edc61d53577f23ace9516152be58"
     },
     "scope": "pureAuth/governance andselectedFakecodecFission only, notrealAuth/nativeUI/N1/fullpilot"
+  },
+  "currentNativeProjectAdmission": {
+    "commit": "c8a4d34e4d80b9a94712ce888791cd5a0e8a3a0e",
+    "rootNew40": true,
+    "RootRegression289": true,
+    "fileSymlink": {
+      "status": "ENV failed",
+      "code": "EPERM",
+      "assertionsExecuted": 0,
+      "notPassOrSkip": true,
+      "actualChildExitCode": 1,
+      "stdoutSHA256": "1dd007f1135fd4c52cb76a897556f9a96af238b533917cf4357bfcf40829c2e2",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "review": "fix1approved0P1/P2",
+    "readiness": "qualified-local-only",
+    "wholeNativeEntryClosed": false
+  },
+  "currentAutoVersionDrainProducer": {
+    "commit": "8857b413c4e8ab73499dbef75f720596c56c7b15",
+    "root102": true,
+    "old5PrefixVerified": true,
+    "review": "approved0P1/P2",
+    "actualStudioAwait": false
+  },
+  "latestLocalNativeAssembly": {
+    "commit": "436b40c661291820c47b0f59fe46e71bc709ab1b",
+    "tests": 347,
+    "pass": 347,
+    "fail": 0,
+    "skip": 0,
+    "sourceUnchanged": true,
+    "newCIValidated": false
   }
 }

@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "recordKind": "dispatch-time historical evidence, currentoutcome below/status/validations authoritative",
+  "entry": {
+    "agent": "/root/auto_versions_drain_impl",
+    "taskId": "T02.a",
+    "assignmentRevision": 8,
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "approvalCommit": "0b853553241527b6bf5a1055344a5cd86178fbb9",
+    "cardSHA256": "66fb9dc6e9b38bdba8a0becf88351944294bc3b38d9cd8ec931bcd429db483f5",
+    "N5aCases": 84,
+    "admissionSHA256": "cf86acb3c6e95ab5440f9244c807314d676fabb308b9db361ce2424a1afdc312",
+    "scope": "actualoriginalauto-versions.mjs/testonly; zero listener/ports/Studio/Guardconsumption",
+    "state": "old5baseline/deferred18REDthen18GREEN authorreported, Rootverify/sourcepeerpending"
+  },
+  "managedE3FFVerified": true,
+  "N5aCases": 84,
+  "actualServerAwaitConsumerDone": false,
+  "productModelCalls": 0,
+  "fullTaskAccepted": false,
+  "currentOutcome": "source8857 peer+Root102/combined347produceraccepted; actualStudioawaitpending",
+  "specQualitySourcePendingAtDispatch": true,
+  "currentSourceReviewPending": false,
+  "currentSourceReview": "approvedforqualifiedlocalproducer scope only; current unverifiedboundariesremainfalse/pending"
+}

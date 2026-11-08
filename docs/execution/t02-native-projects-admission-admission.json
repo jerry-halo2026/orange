@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-08",
+  "recordKind": "dispatch-time historical evidence, currentoutcome below/status/validations authoritative",
+  "managedTreeReused": true,
+  "entry": {
+    "agent": "/root/native_projects_admission_impl",
+    "taskId": "T02.a",
+    "assignmentRevision": 7,
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+    "approvalCommit": "faedfaf72da53ef0866be56719365bc8ec30ab75",
+    "cardSHA256": "c984a4232b930a151b370d0caa42baddd3c0dd4b9a66c288d24169cd4a5e1c1e",
+    "N5aCases": 84,
+    "admissionSHA256": "d6d9dc00f25c97cd1a39f87eba9499e0ab1d86528026664873be43e8101f626d",
+    "scope": "4files actualprojectsadmission only, no server/owner/productioncontrolledactivation"
+  },
+  "actualAdmitted": true,
+  "cases": 84,
+  "fileSymlinkAssertionsAccepted": false,
+  "producerGlobalN1": false,
+  "productModelCalls": 0,
+  "fullTaskAccepted": false,
+  "currentOutcome": "sourcec8a4 fix1peer+Root40/289/combined347qualifiedsubset accepted; filelinkENV andwholeentryclosurepending",
+  "sourceReviewPendingAtDispatch": true,
+  "currentSourceReviewPending": false,
+  "currentSourceReview": "approvedforqualifiedlocalproducer scope only; current unverifiedboundariesremainfalse/pending"
+}

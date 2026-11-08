@@ -1,0 +1,35 @@
+{
+  "taskId": "T02.a",
+  "subset": "originalauto-version-save producer quiescence only",
+  "commit": "8857b413c4e8ab73499dbef75f720596c56c7b15",
+  "authorAgent": "/root/auto_versions_drain_impl",
+  "reviewerAgent": "/root/auto_versions_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.mjs",
+      "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+      "sha256": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35",
+      "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+    }
+  ],
+  "contract": "actualsave tasks registeredbeforecallback, stop gatesnewwork synchronouslyandreturnsstablependingPromise, drain awaitstruesettle/returnedcleanup, explicitfreshgenerationonlyafterstopcomplete; on/roots/working exceptions preserveoriginalpropagation",
+  "tested": {
+    "old5ExactPrefixPreserved": true,
+    "producer18": true,
+    "Root102": true,
+    "latestCombined347": true
+  },
+  "readiness": "producer-ready fornextactualStudio awaitconsumer only, notwholeStudio.close/backgroundquiescence",
+  "actualStudioAwaitConsumerDone": false,
+  "validation": "docs/execution/t02-auto-versions-drain-validation.json",
+  "representation": "E3module raw=canonical3c; testretainedraw390/canonicalc9f distinct, mergedE1testcanonicalLF",
+  "fullTaskAccepted": false
+}

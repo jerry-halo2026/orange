@@ -1,0 +1,239 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "revision": 7,
+  "sourceCommit": "c8a4d34e4d80b9a94712ce888791cd5a0e8a3a0e",
+  "authorAgent": "/root/native_projects_admission_impl",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "cf9725b233177cef6089f39fef1261f9b0a7e74a5ff81764f6aa6d003fdfe499",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "bccc9b74b03f0bbaac4b3261eeb800b56ccbc416076bc8db4a66fbd6c07c4545",
+      "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "aac9d66548fba071a09580a0efbf7c89099b9710cbbde7a081fd20cf962d5070",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "d5ddc358a85c0d6b07333e14567a22969500eaf3c952488c92daa43e58f98c96",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    }
+  ],
+  "requestedAuthorModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "originalSourceReview": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "requestedModel": "gpt-6-astra/high",
+    "spec": "needs-fix",
+    "quality": "needs-fix",
+    "P1": 1,
+    "P2": 2
+  },
+  "fixRound1": {
+    "spec": "approved",
+    "quality": "approved",
+    "remainingP1": 0,
+    "remainingP2": 0,
+    "findings": [
+      "actualmetadatajunction/hardlinkuncheckedwrites",
+      "invalidrecentbroadcatchhistoryloss",
+      "metareleasecontentionorphansownreader"
+    ],
+    "actualRED": {
+      "tests": 38,
+      "pass": 27,
+      "fail": 11
+    },
+    "actualAuthorFinal": {
+      "tests": 40,
+      "pass": 40,
+      "repeated": 3
+    },
+    "noPublicAPIExpansion": true,
+    "rootSnapshotsAndFindingsSHA256": "262f799cdb54d5ec988c62418f6ba403f4f2a256ddffe7804f6bb9d10662e079"
+  },
+  "rootIndependent": {
+    "date": "2026-11-08T00:36:03.714Z",
+    "head": "faedfaf72da53ef0866be56719365bc8ec30ab75",
+    "source": {
+      "project-control-guard.mjs": "cf9725b233177cef6089f39fef1261f9b0a7e74a5ff81764f6aa6d003fdfe499",
+      "projects.mjs": "bccc9b74b03f0bbaac4b3261eeb800b56ccbc416076bc8db4a66fbd6c07c4545",
+      "project-control-guard.test.mjs": "aac9d66548fba071a09580a0efbf7c89099b9710cbbde7a081fd20cf962d5070",
+      "projects-control.test.mjs": "d5ddc358a85c0d6b07333e14567a22969500eaf3c952488c92daa43e58f98c96"
+    },
+    "sourceUnchanged": true,
+    "results": [
+      {
+        "name": "new40",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "packages/openfilm/studio/server/project-control-guard.test.mjs",
+          "packages/openfilm/studio/server/projects-control.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 40,
+          "pass": 40,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "9f7a0a7a22e635d4b204ca3eb2b954818ec0dc020282d7266aae4f79049115a0",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "regressions289",
+        "args": [
+          "--test",
+          "--test-reporter=tap",
+          "scripts/phase1-isolation.test.mjs",
+          "apps/desktop/src/flavor.test.mjs",
+          "packages/openfilm/src/development-isolation.test.mjs",
+          "apps/desktop/src/auth-service.test.mjs",
+          "packages/openfilm/studio/server/project-access.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {
+          "tests": 289,
+          "pass": 289,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "stdoutSHA256": "1982f31b262ef6e0f5eb2c2a365ccc685b9ebd2e8e98b46d9f3716edb8820787",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-project-control-guard.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/project-control-guard.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-projects.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/projects.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-project-control-guard.test.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/project-control-guard.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "syntax-projects-control.test.mjs",
+        "args": [
+          "--check",
+          "packages/openfilm/studio/server/projects-control.test.mjs"
+        ],
+        "exitCode": 0,
+        "signal": null,
+        "errorCode": null,
+        "counters": {},
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "fileSymlink": {
+      "status": "ENV failed",
+      "code": "EPERM",
+      "assertionsExecuted": 0,
+      "notPassOrSkip": true,
+      "actualChildExitCode": 1,
+      "stdoutSHA256": "1dd007f1135fd4c52cb76a897556f9a96af238b533917cf4357bfcf40829c2e2",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scope": "projectsadmission ordinary/junction/hardlink andactualchildcontention only; notallfilelinks/nativeentry/background/owner/productionactivation",
+    "reportSHA256": "bc2ebe4fea21c34a28fee36ecc35e68d83ccfd3d456f1cf88e8a00b0bdb97758",
+    "authorResourceDeviation": [
+      {
+        "kind": "actual resource boundary deviation corrected",
+        "detail": "First helper regression command inherited system C: temporary directory, created and cleaned only its synthetic native-profile-* fixture there. Five of ten helper cases failed non-C policy; first combined result 284/289 retained. Subsequent commands explicitly set TEMP/TMP/TMPDIR to E2/.dev/projects-admission/regression-temp. No real user files, recovery archives, registry/security permissions, account configuration or default coordination were touched."
+      },
+      {
+        "kind": "evidence gap",
+        "detail": "Intermediate RED/GREEN source snapshots were not captured at execution time; log hashes and first-failure counters retained, original editable Git baseline pinned, and all four final source raw/canonical hashes recorded. Do not claim exact intermediate source-hash proof."
+      }
+    ],
+    "fullTaskAccepted": false,
+    "harnessPrecisionCorrection": "initialinprocessENVcaptureparentexit0 whilefieldnamedexitCode1; priorjsonpreserved, separateactualNodechildnowexit1 withEPERM. No securityassertion claimedexecuted."
+  },
+  "latestCombined": {
+    "commit": "436b40c661291820c47b0f59fe46e71bc709ab1b",
+    "pass": 347,
+    "fail": 0,
+    "skip": 0,
+    "proofSHA256": "58437a974dd23f8fbac0716c3c9ffc4d72ada2c27282a3982d7781eb4e76d3a8"
+  },
+  "authorReportSHA256": "bc2ebe4fea21c34a28fee36ecc35e68d83ccfd3d456f1cf88e8a00b0bdb97758",
+  "evidenceLimitations": [
+    {
+      "kind": "actual resource boundary deviation corrected",
+      "detail": "First helper regression command inherited system C: temporary directory, created and cleaned only its synthetic native-profile-* fixture there. Five of ten helper cases failed non-C policy; first combined result 284/289 retained. Subsequent commands explicitly set TEMP/TMP/TMPDIR to E2/.dev/projects-admission/regression-temp. No real user files, recovery archives, registry/security permissions, account configuration or default coordination were touched."
+    },
+    {
+      "kind": "evidence gap",
+      "detail": "Intermediate RED/GREEN source snapshots were not captured at execution time; log hashes and first-failure counters retained, original editable Git baseline pinned, and all four final source raw/canonical hashes recorded. Do not claim exact intermediate source-hash proof."
+    }
+  ],
+  "fileSymlink": {
+    "status": "ENV failed",
+    "code": "EPERM",
+    "assertionsExecuted": 0,
+    "notPassOrSkip": true,
+    "actualChildExitCode": 1,
+    "stdoutSHA256": "1dd007f1135fd4c52cb76a897556f9a96af238b533917cf4357bfcf40829c2e2",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gate": {
+    "approvalCommit": "faedfaf72da53ef0866be56719365bc8ec30ab75",
+    "cardSHA256": "c984a4232b930a151b370d0caa42baddd3c0dd4b9a66c288d24169cd4a5e1c1e",
+    "actualBeforePostOnCommit84": true,
+    "postCommitSHA256": "d6d9dc00f25c97cd1a39f87eba9499e0ab1d86528026664873be43e8101f626d",
+    "newNativeEditableSourceVerifiedBy": "exactdiff/sourcepeer+RootFS tests/hash, notN5anativeEditableBaselinefield"
+  },
+  "currentUnverified": [
+    "genuinefile-symlinkmarkerassertion0localEPERM (no policy/permissionfix)",
+    "originalfullprojects/realTrashpositive suite notrun",
+    "allnativeHTTPWS/pages/CLI/backgroundretirement/owner/Auth/productioncontrolledactivation/N1/PG",
+    "newsourceCI/realclientWindowsmedia/install/Mac"
+  ],
+  "fullTaskAccepted": false,
+  "productModelCalls": 0
+}

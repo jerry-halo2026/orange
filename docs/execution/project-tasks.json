@@ -13,8 +13,9 @@
       "externalGates": [],
       "readinessEvidence": "docs/execution/t01-cpu-readiness.json (CPU verification subset only; status remains in_progress)",
       "nativeStudioEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
-      "currentEngineeringSlice": "Latest62794local781+fouroriginaltypeprojects0, Root32export/Root384CI/Git27/externalN5a qualified; actual781resultnonauthorapproved0P1P2, actualWindows161/dev notaccepted",
-      "latestIntegratedEvidence": "docs/execution/t01-native-type-exports-integration-validation.json"
+      "currentEngineeringSlice": "Latestlocal62794 781+fouroriginaltypes0 accepted; runtime28 current1bbc actualNativeFAILWorkerTAPunknown,pure300/companion353pass. Rootlocaldiagnosis/card andclosedCIconsumerfidelity next, no actual161/dev.",
+      "latestIntegratedEvidence": "docs/execution/t01-native-type-exports-integration-validation.json",
+      "latestHostedEvidence": "docs/execution/t01-native-kernel-runtime-validation.json"
     },
     {
       "id": "T03",

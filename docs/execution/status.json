@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "Latestlocalintegratedcandidate62794:781passed0skip andfouroriginaltypeprojects0diag, actualWorker18exit18/ExportsNode10exitclose10/final0 andfailedspawnseparate; nonauthoractualresultreviewapproved0P1P2. SourceTypec384/CI0cf/Exports42db qualified. ActualnewWindows161/fullretirement/identity/media/install/PG stillpending.",
+  "phase": "Local62794 781/fouroriginaltype0 accepted; newactualWindowsruntime28 Native42460066893 failure worker-tests/TAP_INVALID, pure300+sameheadcompanion353 passed. Workeractualoutcome/exit/counters unknown becauseprivateTAPnotemitted. No current161/dev/PG. Nextboundedlocaldiagnosis, unaffectedfetchdesignstillready.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,11 +79,11 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-type-exports-integration-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-kernel-runtime-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-type-exports-integration-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-kernel-runtime-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
-  "runtimeVerification": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
+  "runtimeVerification": "docs/execution/t01-native-kernel-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
   "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
   "latestLocalEvidence": [
@@ -127,14 +127,14 @@
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "62794bb81a08f21bf21b87a48a1e4f5cba7ad907",
     "t02Head": "0cf5897404fed87f0c4f171f0dc3ac88734be765",
-    "t05SourceState": "42dbExportsproducer actual32+latest781 qualifiedpendingresultreview; source54ed mergeWorker alsoincluded, fullprocessownership/serverallroute IO pending",
+    "t05SourceState": "source42dbExports qualifiedlocal32/781; actualruntime28 on1bbc terminalfailureWorkerTAPunknown; no actualnew161acceptance",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "62794bb81a08f21bf21b87a48a1e4f5cba7ad907",
-    "remoteTopicHead": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
-    "latestRuntimeReceiptCommit": "fc3fe6fda9b946a7b7c378f1eb0209b1e0b7a1d2",
+    "remoteTopicHead": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+    "latestRuntimeReceiptCommit": "e2f62a54c39d64858918928c9dba465f7a86f192",
     "latestSourceAssembly": "ac630a2c6c96b77e8bbaa5caae7e91e7c53e644f",
     "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP",
     "coordinationBeforeFix13Freeze": "e5c29a35b7ca1936e19cccbac2608e342c30fed6"
@@ -145,7 +145,8 @@
     "model cost/call boundaries unreconciled; product model calls remain zero",
     "T05host/media/immutablefullinputclosure/T02.c protocol/realadmission remainpending; controlledcopy/archive source6048 readyonlyunderoriginalRunAsync Fakecodec; no T05.b release",
     "completePG/V latestproductcandidate/Windowsmedia/install/scale/hardware notaccepted",
-    "truefile-symlink locallyEPERM; actualhostedNative110 mandatorycase passed at a68, but latest161/newtypecandidate/fullentryactivation notyet accepted"
+    "truefile-symlink locallyEPERM; actualhostedNative110 mandatorycase passed at a68, but latest161/newtypecandidate/fullentryactivation notyet accepted",
+    "ActualWindows161 runtime28 failedWorkerTAP validation; test/process/formatcauseunresolved, no blindrerun. Onlythatgateblocked, local/fetchreadyworkcontinues."
   ],
   "identityBoundary": {
     "N0": "Ethan approved all three boundaries in chat 2026-11-08",
@@ -164,10 +165,11 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "freshreviewedactual161runtimecard forcurrentCI26/Type16/Exports assembly, ownpublicrepo/privacy/financialaudit; no automaticpush",
+    "RootlocalWorker51 exactCIenv/args boundeddiagnosticcard, recordactualversions/exit/stdout/stderr/Workerexit evidence; infernohostedrootcausefromlocalonly",
     "Nativefetchproducer recommendedoriginalfetch-repo/fetch-github plus2drain tests, actualGitclose/body/FS/open continuations; needboundeddesign/card/seams/resources beforeauthor",
     "serveralreadyawaitsExports/Fetchstop APIs, but enteredrequest/pages/streams/processwideWorkerownership anddesktopouterdeadline remainpending; do not redispatch completedproducer",
-    "realAuthD12purpose/identityunconfirmed onlyrealcloudblocked; productmodelcalls0/CNY50 unchanged"
+    "realAuthD12purpose/identityunconfirmed onlyrealcloudblocked; productmodelcalls0/CNY50 unchanged",
+    "KnownseparateCIWorker namefidelity gap: immutableoriginalcaseU+2192 rejectedASCII/TAP_NAME; preserveoriginalcase, closedsource-consumerfix andrealTAPfixtures plus safeobservability afterboundedcard, notrename/drop"
   ],
   "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
@@ -332,8 +334,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-type-exports-integration-validation.json (actualresult+currentledger approved0P1P2)",
-  "nextOperation": "nextseparateactualWindows161runtimecard/freshrepo-financialprivacygates; nativefetch/Git/HTTPcompletion producer boundeddesign/card/resources usingpersistedinvestigation. Currentlocal781/fourtype0 readyonlyengineering, no dev/main/PG.",
+  "currentMetadataReview": "runtime28actualfailure/currentledger independentlyapproved0P1P2",
+  "nextOperation": "reviewfailedruntime28 receipt first; boundedRootlocalWorker51 exactCIargs/cleanenv diagnosis usingexistingNode26/24, then newCI/sourcefix onlyafterevidence. SourceUnicodearrowname contract defect independentlyverifiedbutnotTAP_INVALIDcause. No remotere-run/skip/sourceweakening. Fetch/Git/HTTPproducer continueswhenowncard/resourcesready, notgoalpaused.",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -372,7 +374,7 @@
     "actual110Receipt": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
     "kernelCoverageCard": "docs/execution/t01-native-kernel-ci-assignment.json",
     "kernelCoverageState": "CI25c7 sourcecodepeer/Root384/Git27positive/exactN5a readyonlyhistorical; actual161 blockeduntiltype0+reviewedconsumerpinrefresh",
-    "currentRuntimeStatus": "actualWindows110 a68historicalsuccess; CI25+CI26 reviewedsource andRoot384/Git27 only, actualnew161 notissued",
+    "currentRuntimeStatus": "runtime28 actualNative42460066893/job128667248633 terminalFAIL phaseworker-tests/TAP_INVALID, pure300pass; companion42460066892/job128667248478353pass. Native110gatepassedcontrolflowinferenceonly, raw110/Worker summaryunavailable.",
     "latestLocalKernelAndExports": {
       "candidateCommit": "62794bb81a08f21bf21b87a48a1e4f5cba7ad907",
       "tests": 781,
@@ -383,6 +385,22 @@
       "receipt": "docs/execution/t01-native-type-exports-integration-validation.json",
       "notActual161": true,
       "review": "approved0P1P2"
+    },
+    "runtime28": {
+      "head": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+      "run": 42460066893,
+      "job": 128667248633,
+      "conclusion": "failure",
+      "diagnostic": {
+        "phase": "worker-tests",
+        "code": "TAP_INVALID"
+      },
+      "pure300Passed": true,
+      "companion353Passed": true,
+      "actual161Passed": false,
+      "noRerun": true,
+      "rootCauseKnown": false,
+      "receipt": "docs/execution/t01-native-kernel-runtime-validation.json"
     }
   },
   "watchDrain": {

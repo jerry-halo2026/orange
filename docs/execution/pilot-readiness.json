@@ -1280,5 +1280,19 @@
     "scope": "engineering subset only; no PG gate passed by this evidence",
     "allPGStatusesUnchanged": true,
     "review": "non-author approved0P1P2, engineering subset only"
+  },
+  "lastHostedEngineeringAttempt": {
+    "candidateCommit": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+    "receipt": "docs/execution/t01-native-kernel-runtime-validation.json",
+    "nativeRun": 42460066893,
+    "nativeConclusion": "failure",
+    "diagnostic": {
+      "phase": "worker-tests",
+      "code": "TAP_INVALID"
+    },
+    "pure300Passed": true,
+    "companion353Passed": true,
+    "actual161Passed": false,
+    "allPGStatusesUnchanged": true
   }
 }

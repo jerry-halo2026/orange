@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 17,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "af711dbf849782491dfc19f8c296e740cd6fd4899f4af1fafe9359c20c48df30",
+  "immutableInputs": 17,
+  "reviewProofs": 2,
+  "managedReuseOldRecordsPreserved": 664,
+  "initialAuthorizedPhase": "Aonly afterimmutable/raw/tooling/ports/trustedN5a",
+  "phaseB": "NOTauthorizeduntilnon-authorseamreview+Rootrecheck/N5a+explicitrecordedresume ofexactphaseA source; no selfcontinue",
+  "legacy": "old17resourceadaptedcopy/safetyguards/exactinverse+separatecounts/actualclose/portfree, no globalpatch/no false unchangedfileexecution",
+  "scope": "native4filedirectresources produceronly, no Gitdescendant/fullserver/owner/N1/PG",
+  "fullTaskAccepted": false
+}

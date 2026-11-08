@@ -485,3 +485,7 @@ Card32 isONE newsource-triggeredactualstandardWindows110+Worker51run afterreview
 ## 2026-11-08 native-worker-file-budget
 
 Actual32Node22.23.4filetest timeout cancelledoriginalperson-merge file; originalpackagescript600000 vsCIadded60000. Source33onlyWorkerargvvalue aligns600000 whileouter180000/8MiB/job12/all51/perfassertions remainfixed. SourcecontractRED thenONEliteralfix+appendedunit(s), preserveold398prefix, independentpolicy/N5a/sourcepeer/Rootproof beforecommit. Doesnotprovewhyfile>60orhistorical28cause, no newruntimeauthority/automaticrelaxation.
+
+## 2026-11-08 native-fetch-completion
+
+TaskT02.a17 native-extension ONLYoriginalfetch-repo/fetch-github+2drain tests. Spec `../specs/2026-11-08-native-fetch-completion-design.md` ownsAPIs/error-privatecommit truth/body/Gitdirectclose/FS/manager drain. Afterindependentpolicy/input17+2proof/managedE4fromdevpreservation/N5a, PhaseA authorONLYminimaltrustedNodewiring+safe lowerloopback/fileURL/preabortcallback RED/GREEN thenFREEZE. Non-authorseamforwardingreview+Rootrecordedresume beforePhaseB livemanager/realGitfixtures/bodyfullcompletion/legacy17exactsource resourceadapter+dualdenyguards. Recordallactualresources/declaredpendingGitdescendant/server/N1. Source33E2CI2 disjoint, CPUshared; no broadcontractfreeze/M1wait/newapplication/realcloud/model/privateuploads. Rootserialcommit/integrate onlyafterTDD/non-author/fullactualproof.

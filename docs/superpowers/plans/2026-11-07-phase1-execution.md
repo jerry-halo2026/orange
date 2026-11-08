@@ -387,3 +387,13 @@ Studio Auto consumer执行回执：source2b5e44b、真实DIonly7/2pass5fail RED�
 
 - [ ] Native file-symlink永久断言/真正hostedWindows +新8源CI，补原依赖playwright-core1.61.1固定tar SHA512/许可/禁scripts/browser再测试；不再假定builtin-only或E3原本已有依赖。
 - [ ] watch/export/fetch/host流及sharedmergeWorker真实completion/leasedrain，原server消费；再完整入口/owner/parent/UI/realAuth/N1及17签收，未缩范围。
+
+
+## 2026-11-08 native Studio Windows CI
+
+T01 rev17 engineering-verification consumesactualfreeze2b Native/Auto/Studio8source/test files andoriginalCPU/context/TAP/package-lock source. Newfourfilesonly: native-studio workflow/CI module/unit/permanentfile-symbolic testcase. Allcontracts, fixed8pins+lock/tar SHA512/count66/source+secret/path/permissions in execution/t01-native-studio-ci-assignment.json. No wholepilotclaim.
+
+- [ ] Purecontext/TAP/source/packagearchive safety RED thenminimalimplementation, importzeroIO; permanentrealfile-symlink testlocalENVfailure recordnotpass, no conditional skip.
+- [ ] SourceGitsamehead/rawEOL/strict66/ownedpaths/cleanenv, futureCIonlyfixedoriginalpublicplaywright-core1.61.1 tar SHA512+safeextraction/Apachelicense, no scripts/browser/SDK. Sharedworkflow singlewriter, oldCI/producers no edits.
+- [ ] Localpureunit/syntax/diff plusallimmutableproducerrawunchanged, non-authorSPECQUALITY/Rootfreshverify/N5a+sourcecommit. No localmain/fakeCI/.NET/network/actualserverbycodeauthor.
+- [ ] Root laterseparateone-jobpublicstandardWinlease/privatehistoryaudit/freshpublictarget/officialcostcheck/immutableN5a beforepush; actual66zero skip inclgenuinefilemarkerassertion andactualStudio7/ports0 beforeclosingcurrentENVgap. Sourcecandidateslocal354/oldbdcCI are notsubstitute.

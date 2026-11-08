@@ -1,0 +1,73 @@
+{
+  "taskId": "T02.a",
+  "commit": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+  "authorAgent": "/root",
+  "sourceAuthors": {
+    "Native": "/root/native_projects_admission_impl",
+    "Auto": "/root/auto_versions_drain_impl",
+    "Studio": "/root/studio_auto_close_impl"
+  },
+  "producerRole": "Rootassembled independentlyreviewedcommits, notfalseRootcodeauthorship",
+  "reviewerAgent": "/root/native_studio_ci_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "cf9725b233177cef6089f39fef1261f9b0a7e74a5ff81764f6aa6d003fdfe499",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "bccc9b74b03f0bbaac4b3261eeb800b56ccbc416076bc8db4a66fbd6c07c4545",
+      "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.mjs",
+      "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e",
+      "gitBlobSha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "aac9d66548fba071a09580a0efbf7c89099b9710cbbde7a081fd20cf962d5070",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "d5ddc358a85c0d6b07333e14567a22969500eaf3c952488c92daa43e58f98c96",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+      "sha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa",
+      "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "sha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc",
+      "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+    }
+  ],
+  "scope": "onlyfreshstandardWindowsCI66selectedNative40+Auto18+Studio7+newmandatoryfilelink1, notproductionAuth/owner/fullbackground/N1",
+  "priorEvidence": "docs/execution/t02-studio-auto-close-readiness.json",
+  "localLatest354Passed": true,
+  "fileLinkGap": "stillEPERM assertions0local, thisverificationmustexecute actualassertion hostedbeforeclosinggap",
+  "representation": "expectedactualfutureE2raw afterFF: retainNativec8a4CRLF whilefreshAuto/StudiofilescanonicalLF, verifyactualN5a afterFF notassume",
+  "fullTaskAccepted": false,
+  "approval": {
+    "date": "2026-11-08",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "exactCIinput only no hostedtestpass"
+  }
+}

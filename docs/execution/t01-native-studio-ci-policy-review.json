@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "revision": 17,
+  "reviewerAgent": "/root/native_studio_ci_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "actualCoordinationHEAD": "596acea15715193ede7c52d5cf3930cb99169393",
+  "sourceSnapshot": "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+  "reviewedCardSHA256": "5f9f470658f14e9bd95c9c110a4657683ac7d23b722618398ad766202871c3ce",
+  "frozenCardSHA256": "416a6c3a47e302a1e3667c14814ad7134fc23643e8c48fa77f24a5810dd7c08f",
+  "producerProofs": [
+    {
+      "path": "docs/execution/t01-native-studio-ci-input-review.json",
+      "sha256": "2d5e831a89b24e976e15160a4fb9c1a310885ddd808cba5e0395bb13281ea7f0"
+    },
+    {
+      "path": "docs/execution/t02-native-studio-ci-consumer-review.json",
+      "sha256": "453d16901422b8fa25888771e74a733673eaa12a182456eea554dc180d97766f"
+    }
+  ],
+  "onlyFinalChanges": "approvalverdict/digestrefs only, no executionAPI/scoperesourceschange",
+  "requiredBeforeWriter": [
+    "immutableanchor",
+    "managedE2FFfromclean c8a4",
+    "actual15raw inputs andtrustedN5a84"
+  ],
+  "newHosted66Passed": false,
+  "fullTaskAccepted": false
+}

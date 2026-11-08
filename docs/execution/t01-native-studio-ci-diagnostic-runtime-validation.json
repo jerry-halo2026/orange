@@ -1,0 +1,274 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 20,
+  "executor": "/root",
+  "approvalCommit": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+  "approvalCardGitBlobSHA256": "37f1462da4619a43ecfb2939d35fd771db1d1c7893835603868546d1178cdd44",
+  "sourceCandidate": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+  "sourceCICommit": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
+  "policyReview": "docs/execution/t01-native-studio-ci-diagnostic-runtime-policy-review.json",
+  "localN5a": {
+    "admitted": true,
+    "cases": 84,
+    "proofSHA256": "ec3282510df8a7e3a9a73abe1bdfbd5f98124ce54875d8c1adca709340b7f4a0"
+  },
+  "historyAudit": {
+    "commits": 4,
+    "textBlobs": 14,
+    "unresolved": 0,
+    "proofSHA256": "2816c3d2e945c9f773df5d843f807f8c4b7580e938c216707d65964f2b947133",
+    "notUniversalSecretScannerGuarantee": true
+  },
+  "remotePreflightSHA256": "121a4b7f62927cf4e85ef07989807e6e14a95f4600b74041239a8067d8c29452",
+  "financial": {
+    "officialSource": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+    "checkedAtUTC": "2026-11-08T03:00:47.969Z",
+    "standardPublicComputeFree": true,
+    "artifactCacheLargerModels": false
+  },
+  "remoteLease": {
+    "issued": true,
+    "issuedAtUTC": "2026-11-08T03:03:32.412Z",
+    "owner": "/root",
+    "repository": "jerry-halo2026/orange",
+    "ref": "refs/heads/codex/t05-path-policy",
+    "workflow": ".github/workflows/native-studio.yml",
+    "runner": "requested standard windows-2025; actual image in run.actualImage",
+    "maxActiveNativeStudioRuns": 1,
+    "timeoutMinutes": 12,
+    "state": "terminal failure, no automatic retry/rerun",
+    "completedAtUTC": "2026-11-08T03:03:49Z"
+  },
+  "publication": {
+    "state": "verified-pushed",
+    "commit": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+    "branch": "codex/t05-path-policy",
+    "verifiedAtUTC": "2026-11-08T03:03:36.066Z",
+    "remoteHead": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+    "devUpdated": false,
+    "mainOrTagUpdated": false
+  },
+  "run": {
+    "id": 42441082225,
+    "head": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+    "path": ".github/workflows/native-studio.yml",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42441082225",
+    "jobs": [
+      {
+        "id": 128610256718,
+        "name": "native-studio",
+        "status": "completed",
+        "conclusion": "failure",
+        "labels": [
+          "windows-2025"
+        ],
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T03:03:34Z",
+            "completed_at": "2026-11-08T03:03:35Z"
+          },
+          {
+            "name": "Checkout only this candidate without stored credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T03:03:35Z",
+            "completed_at": "2026-11-08T03:03:43Z"
+          },
+          {
+            "name": "Require the preinstalled Node without downloads",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T03:03:43Z",
+            "completed_at": "2026-11-08T03:03:45Z"
+          },
+          {
+            "name": "Test only pure source context result and archive validation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T03:03:45Z",
+            "completed_at": "2026-11-08T03:03:47Z"
+          },
+          {
+            "name": "Verify fixed sources and run actual Native Auto Studio and file-link cases",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 5,
+            "started_at": "2026-11-08T03:03:47Z",
+            "completed_at": "2026-11-08T03:03:48Z"
+          },
+          {
+            "name": "Post Checkout only this candidate without stored credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-08T03:03:48Z",
+            "completed_at": "2026-11-08T03:03:49Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-08T03:03:49Z",
+            "completed_at": "2026-11-08T03:03:49Z"
+          }
+        ]
+      }
+    ],
+    "pure158": {
+      "tests": 158,
+      "pass": 158,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "actualImage": "windows-2025-vs2026",
+    "logSHA256": "1432859133c9ce2587bc536b445fd2dfb3f820772cbb477fccf92258f2e5bb98",
+    "safeFailure": {
+      "status": "failed",
+      "phase": "git",
+      "code": "PATH_TYPE"
+    }
+  },
+  "result": {
+    "state": "actual closed safe diagnostic locates git tool ordinary-path type validation, before fetch or actual66 in fixed source flow",
+    "actualNative66Passed": false,
+    "actualNative66Entered": false,
+    "realHostedFileLinkAssertionsExecuted": 0,
+    "pure158Passed": true,
+    "actualCompanion353Passed": true,
+    "watcherSourceExcluded": true,
+    "fullTaskAccepted": false,
+    "pilotAccepted": false
+  },
+  "productModelCalls": 0,
+  "fullTaskAccepted": false,
+  "companion": {
+    "id": 42441082230,
+    "head": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+    "path": ".github/workflows/phase1.yml",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42441082230",
+    "jobs": [
+      {
+        "id": 128610256568,
+        "name": "pure-tests",
+        "status": "completed",
+        "conclusion": "success",
+        "labels": [
+          "windows-latest"
+        ],
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T03:03:35Z",
+            "completed_at": "2026-11-08T03:03:36Z"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T03:03:36Z",
+            "completed_at": "2026-11-08T03:03:45Z"
+          },
+          {
+            "name": "Require preinstalled Node 22.18 or newer (no downloads)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T03:03:45Z",
+            "completed_at": "2026-11-08T03:03:47Z"
+          },
+          {
+            "name": "Run built-in pure tests without dependencies or runtime downloads",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T03:03:47Z",
+            "completed_at": "2026-11-08T03:04:03Z"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-08T03:04:03Z",
+            "completed_at": "2026-11-08T03:04:05Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-08T03:04:05Z",
+            "completed_at": "2026-11-08T03:04:05Z"
+          }
+        ]
+      }
+    ],
+    "counters": {
+      "tests": 353,
+      "pass": 353,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "sameHeadProducerProof": {
+      "status": "same-head-local-auth-policy-producers-verified",
+      "commit": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+      "expectedCases": 353,
+      "sources": [
+        {
+          "path": "apps/desktop/src/auth-service.mjs",
+          "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+          "rawSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+        },
+        {
+          "path": "apps/desktop/src/auth-service.test.mjs",
+          "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+          "rawSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-access.mjs",
+          "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+          "rawSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-access.test.mjs",
+          "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+          "rawSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+        }
+      ]
+    },
+    "logSHA256": "89bc95bf518c464d26bcb8179c9cd6202f11e70f5e1ebec26c633f4e22634423"
+  },
+  "rootCauseEvidence": {
+    "observedHosted": "git PATH_TYPE; exact failing path component or nlink not emitted",
+    "localReadonlyFixedGit": {
+      "isFile": true,
+      "isSymbolicLink": false,
+      "nlink": 2,
+      "toolExecuted": false,
+      "notActualHostedMetadata": true
+    },
+    "source": "ordinary() nlink1 workspace-file policy is reused for fixed trusted Git executable. Local valid Git file nlink2 is a confirmed rejected fact; exact hosted nlink still not observed. Future bounded dedicated tool policy/TDD required, no path/reparse/workspace weakening.",
+    "oldRuntime18CauseStillUnconfirmed": true
+  }
+}

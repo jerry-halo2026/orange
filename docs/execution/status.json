@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CI19 source review needs test-process-receipt P2 fix1 by original author (Root236 passed but not accepted); Native CI18 actual driver failure persists. Watch consumer12 policy approved, Root baseline/gate and dispatch pending.",
+  "phase": "CI19 source ebcd477 approved/Root242/N5a84, runtime20 policy approved but not issued pending immutable/preflight. Separate E3 original Studio watcher consumer12 TDD active after379baseline, not integrated/accepted.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t02-studio-watch-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t02-studio-watch-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-studio-ci-diagnostic-runtime-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -125,7 +125,8 @@
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
     "remoteTopicHead": "4f30fb4c8b4fd89cf82916da0aaba8a0ece139d1",
     "latestRuntimeReceiptCommit": "c9619e6b0182b99d3dbd43e5703ce92769921b35",
-    "latestSourceAssembly": "a77ef363429cb159970d049058b8def86fc5e3cf"
+    "latestSourceAssembly": "a77ef363429cb159970d049058b8def86fc5e3cf",
+    "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP"
   },
   "currentBlockers": [
     "T02.a Authd008syncinvalidation/policyacc27 sourcepeer+Root279 readyonlylocalDI; actualtrustedAuth/ownerstore/nativeHTTPWS/pages/CLI/UI/N1stillpending",
@@ -158,25 +159,25 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
+    "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
     "docs/execution/t02-studio-watch-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [
     {
-      "agent": "/root/native_studio_ci_impl",
-      "taskId": "T01",
-      "assignmentRevision": 19,
+      "agent": "/root/studio_watch_close_impl",
+      "taskId": "T02.a",
+      "assignmentRevision": 12,
       "requestedModel": "gpt-6.1-sol",
       "requestedEffort": "high",
       "backendAttested": false,
-      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
-      "approvalCommit": "443e88e1dbeb5d137abde60b949a6caccbdf295b",
-      "cardSHA256": "615d4c69f22295901d6c8e7461f5e9e02613df7ae9408ef5beacfdfce5e42009",
+      "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "approvalCommit": "d1e63f6457430a27828f764e6c431e2fa9f0cf14",
+      "cardSHA256": "6c7952fed9baeb34dd57620ab600d2098fae006a8df60c8f6b95827995540678",
       "N5aCases": 84,
-      "admissionSHA256": "a6768060e89d81375424e8c60d6b7ba540d6e395ef04949683f3c430ad7261ce",
-      "scope": "two CI driver/test files safe diagnostics only; no new remote run",
-      "state": "diagnostic19 fix1 needs preserve process receipt on test failure; original author running"
+      "admissionSHA256": "a129f48b0cfbe2ad95d471ff1b8e8498b5af3a248adf44caa5c9df91d9019cd5",
+      "scope": "only original server.mjs/newserver-watch-drain.test.mjs; actual watcher+Auto caller completion, no full retirement",
+      "state": "Root379 baseline and17inputs/core106 passed, soleE3 author dispatched TDD"
     }
   ],
   "ciReadiness": {
@@ -339,8 +340,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-studio-ci-diagnostic-policy-review.json",
-  "nextOperation": "freeze/watch12 raw/N5a/actual379baseline -> separateE3 author; CI19 sameauthor fix1 -> waitingreviewpriority; no remote rerun until separate future runtime policy",
+  "currentMetadataReview": "docs/execution/t01-native-studio-ci-diagnostic-runtime-policy-review.json",
+  "nextOperation": "freeze E2 runtime20 without watcher source -> trusted N5a/history audit/fresh public financial target -> one new source-triggered diagnostic/native66 attempt, never rerun old18; independent E3 consumer12 continues",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -354,7 +355,10 @@
     "driverRootCause": "unknown; generic marker only",
     "companion353Passed": true,
     "diagnosticCard": "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
-    "diagnosticState": "admitted84 and dispatched same original CI author, TDD source only"
+    "diagnosticState": "source ebcd477 approved after process-receipt fix1; Root242 and N5a84 pre/post/exact, actual runtime18 cause still unknown",
+    "diagnosticSource": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
+    "runtime20Card": "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
+    "runtime20State": "proposed not issued; immutable/N5a/full history/fresh public financial preflight remaining"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -367,6 +371,6 @@
     "notMergedIntoCISnapshot": true,
     "sourceIsolatedAssembly": "b089626e13a3820b23d70be9a92d875795172ff8",
     "consumerCard": "docs/execution/t02-studio-watch-assignment.json",
-    "consumerState": "policy approved, unimplemented/no writer yet; pending immutable/N5a/Root379"
+    "consumerState": "Root379 baseline passed0skip, N5a84 and core106closure verified, E3 sole author dispatched"
   }
 }

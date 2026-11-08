@@ -118,9 +118,9 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
  * `autoVersionsFactory`: trusted Node-only dependency injection; defaults to the native automatic versions producer.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions }} [options]
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions } = {}) {
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers } = {}) {
   const isolation = readIsolationProfile();
   if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
   if (isolation) {
@@ -134,7 +134,17 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   const cookieKey = (/** @type {Req} */ req) => (sameKey(cookie(req, COOKIE)) ? cookie(req, COOKIE) : cookie(req, FRAMED));
   key ??= advertise ? studioKey() : randomBytes(24).toString('hex');
   /* every change of an open project's folder: a version once it rests, when the person asked for that */
-  const watchers = createWatchers({ onChange: (root, e) => { if (e.type === 'film' || e.type === 'files') autoVersions.changed(root); } });
+  let stopping = false;
+  let autoVersions;
+  let watchers;
+  try {
+    if (typeof watchersFactory !== 'function') throw new Error();
+    watchers = watchersFactory({ onChange: (root, e) => { if (!stopping && (e.type === 'film' || e.type === 'files')) autoVersions?.changed(root); } });
+    if (!watchers || ['subscribe', 'move', 'roots', 'emit', 'closeAll', 'drain'].some(method => typeof watchers[method] !== 'function')) throw new Error();
+  } catch {
+    try { await watchers?.drain?.(); } catch { /* do not expose factory errors */ }
+    throw new Error('Invalid project watchers factory.');
+  }
   /** questions about spending for the person, in the pages showing a project (see get.mjs) */
   const asks = createAsks({ emit: (root, event) => watchers.emit(root, event), roots: watchers.roots });
   /** the editor pages open right now, and whether each is in sight: `/open` switches them to a project */
@@ -153,8 +163,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   /** The project at `root`'s history changed: its pages hear of it. `moved`: the folder's files changed with it. */
   const historyChanged = (/** @type {string} */ root, { moved = false } = {}) => watchers.emit(root, { type: 'history', ...(moved ? { moved: true } : {}) });
   /* versions saved on their own (auto-versions.mjs), while the person has Auto versions on */
-  const autoVersions = (() => {
-    try {
+  try {
       if (typeof autoVersionsFactory !== 'function') throw new Error();
       const auto = autoVersionsFactory({
         on: () => readPrefs().autoVersions,
@@ -163,10 +172,16 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
         save: async (root, kind) => { if (await saveVersion(root, { kind })) historyChanged(root); },
       });
       if (!auto || ['changed', 'poll', 'start', 'stop', 'drain'].some(method => typeof auto[method] !== 'function')) throw new Error();
-      return auto;
-    } catch { throw new Error('Invalid automatic versions factory.'); }
-  })();
-  autoVersions.start();
+      autoVersions = auto;
+      autoVersions.start();
+  } catch {
+    stopping = true;
+    const cleanup = [];
+    try { cleanup.push(Promise.resolve(autoVersions?.stop())); } catch { /* collect obtained resources */ }
+    try { cleanup.push(Promise.resolve(watchers.drain())); } catch { /* sanitized error below */ }
+    await Promise.allSettled(cleanup);
+    throw new Error('Invalid automatic versions factory.');
+  }
   /** how many editor pages have connected since Studio started: whether one opened an address `/open` gave out */
   let pagesConnected = 0;
   /** @type {(event: unknown) => void} */
@@ -204,6 +219,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   };
   /** @param {Awaited<ReturnType<typeof projectById>>} project @param {(event: any) => void} send */
   const projectStream = (project, send) => {
+    if (stopping) return () => {};
     const stop = watchers.subscribe(project.path, send);
     /* A page reconnecting after a rename takes the current path even if it missed the live event. */
     send({ type: 'project', project });
@@ -1187,6 +1203,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   }
 
   const editor = createServer((req, res) => {
+    if (stopping) { res.writeHead(503).end(); return; }
     if (!ownHost(req, /** @type {import('node:net').AddressInfo} */ (editor.address()).port)) { json(res, 403, { error: 'not this address' }); return; }
     route(req, res).catch((/** @type {unknown} */ e) => {
       const status = e instanceof HttpError || e instanceof ProjectError || e instanceof FileError || e instanceof HistoryError || e instanceof MediaError || e instanceof ExportError
@@ -1204,6 +1221,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   /** @type {Set<import('node:stream').Duplex>} */
   const streamSockets = new Set();
   editor.on('upgrade', (req, socket) => {
+    if (stopping) { socket.destroy(); return; }
     streamSockets.add(socket);
     socket.once('close', () => streamSockets.delete(socket));
     /* an upgraded socket is no longer the server's to watch: a page gone mid-request (a reset, a write after it left)
@@ -1229,6 +1247,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       }
       if (parts.length === 4 && parts[0] === 'api' && parts[1] === 'projects' && parts[3] === 'events') {
         const project = await projectById(parts[2]).catch(() => null);
+        if (stopping || socket.destroyed) { socket.destroy(); return; }
         if (!project || (project.missing && project.missingReason !== 'film')) return refuse('404 Not Found');
         const send = acceptWebSocket(req, socket, () => stop());
         if (send) stop = projectStream(project, send);
@@ -1238,19 +1257,40 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     })().catch(() => refuse('500 Internal Server Error'));
   });
   const historyPreviews = createHistoryPreviews();
-  /* Both listens happen after Auto starts. Close admission and our network before waiting for its saves;
-     an unbound server is not ours to close, and cleanup must never replace the original listen error. */
+  let pages;
+  /** @type {Promise<void> | undefined} */
+  let closing;
+  function close() {
+    if (closing) return closing;
+    // Publish identity before any external method can synchronously reenter close.
+    let done, fail;
+    closing = new Promise((resolve, reject) => { done = resolve; fail = reject; });
+    stopping = true;
+    const tasks = [];
+    const collect = (job) => {
+      try { tasks.push(Promise.resolve(job())); }
+      catch (error) { tasks.push(Promise.reject(error)); }
+    };
+    collect(() => autoVersions.stop());
+    collect(() => watchers.drain());
+    // Initiate both origins and upgraded sockets before waiting for any IO.
+    collect(() => { editor.closeAllConnections(); });
+    for (const socket of streamSockets) collect(() => { socket.destroy(); });
+    if (editor.listening) collect(() => new Promise(resolve => editor.close(() => resolve())));
+    if (pages) collect(() => pages.close());
+    collect(() => { if (advertise && advertised()?.pid === process.pid) rmSync(runFile(), { force: true }); });
+    collect(() => exports.stopAll());
+    collect(() => fetches.stopAll());
+    collect(() => closePageFrames());
+    collect(() => historyPreviews.close());
+    void Promise.allSettled(tasks).then(results => {
+      const rejected = results.find(result => result.status === 'rejected');
+      if (rejected) fail(rejected.reason); else done();
+    });
+    return closing;
+  }
   async function failedStart(error) {
-    const saving = autoVersions.stop();
-    const exporting = exports.stopAll();
-    fetches.stopAll();
-    watchers.closeAll();
-    editor.closeAllConnections();
-    for (const socket of streamSockets) socket.destroy();
-    const editorClosed = editor.listening
-      ? new Promise((done) => editor.close(() => done(undefined)))
-      : Promise.resolve();
-    await Promise.allSettled([editorClosed, closePageFrames(), exporting, historyPreviews.close(), saving]);
+    try { await close(); } catch { /* preserve the original startup error object */ }
     throw error;
   }
   await listenLocal(editor, port).catch(failedStart);
@@ -1263,44 +1303,28 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   COOKIE = cookieName(address.port);
   FRAMED = framedCookieName(address.port);
   /* the film's port is the next one: when it is not free, the editor's is let go again, so a caller can try others */
-  const pages = await startPages({ port: port ? address.port + 1 : 0, editorOrigin: () => origin, secret: key, projects: listProjects }).catch(failedStart);
+  pages = await startPages({ port: port ? address.port + 1 : 0, editorOrigin: () => origin, secret: key, projects: listProjects }).catch(failedStart);
   filmOrigin = pages.origin;
-  if (advertise) {
-    /* Discover read as Studio starts, so its skills are there when it first opens (and on an empty conversation) */
-    // Discover is refreshed by the same admitted bootstrap, not separately.
-    mkdirSync(studioHome(), { recursive: true });
-    /* `supervisor`: the process that starts this one again if it ends unexpectedly (main.mjs), stopped with it */
-    const supervisor = Number(process.env.OPENFILM_STUDIO_SUPERVISOR) || undefined;
-    writeFileSync(runFile(), `${JSON.stringify({ pid: process.pid, ...(supervisor ? { supervisor } : {}), origin, filmOrigin: pages.origin, key })}\n`, { mode: 0o600 });
+  try {
+    if (advertise) {
+      /* Discover read as Studio starts, so its skills are there when it first opens (and on an empty conversation) */
+      // Discover is refreshed by the same admitted bootstrap, not separately.
+      mkdirSync(studioHome(), { recursive: true });
+      /* `supervisor`: the process that starts this one again if it ends unexpectedly (main.mjs), stopped with it */
+      const supervisor = Number(process.env.OPENFILM_STUDIO_SUPERVISOR) || undefined;
+      writeFileSync(runFile(), `${JSON.stringify({ pid: process.pid, ...(supervisor ? { supervisor } : {}), origin, filmOrigin: pages.origin, key })}\n`, { mode: 0o600 });
+    }
+  } catch (error) {
+    await failedStart(error);
   }
 
-  /** @type {Promise<void> | null} */
-  let closing = null;
   const studio = {
     origin,
     filmOrigin: pages.origin,
     port: address.port,
     key,
-    close() { return closing ??= shutDown(); },
+    close,
   };
-  async function shutDown() {
-    const saving = autoVersions.stop(); // Synchronously close automatic scheduling before any asynchronous cleanup.
-    try {
-      /* the file is ours unless a later Studio has written its own (with the same key: it is the machine's) */
-      if (advertise && advertised()?.pid === process.pid) rmSync(runFile(), { force: true });
-      /* a running export stops, and cleans up after itself while the rest closes: its half-made files go before Studio */
-      const exporting = exports.stopAll();
-      fetches.stopAll();
-      await closePageFrames();
-      watchers.closeAll();
-      await pages.close();
-      editor.closeAllConnections();
-      for (const socket of streamSockets) socket.destroy();
-      await new Promise((done) => editor.close(() => done(undefined)));
-      await exporting;
-      await historyPreviews.close();
-    } finally { await saving; }
-  }
   return studio;
 }
 

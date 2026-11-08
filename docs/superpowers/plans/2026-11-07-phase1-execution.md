@@ -489,3 +489,7 @@ Actual32Node22.23.4filetest timeout cancelledoriginalperson-merge file; original
 ## 2026-11-08 native-fetch-completion
 
 TaskT02.a17 native-extension ONLYoriginalfetch-repo/fetch-github+2drain tests. Spec `../specs/2026-11-08-native-fetch-completion-design.md` ownsAPIs/error-privatecommit truth/body/Gitdirectclose/FS/manager drain. Afterindependentpolicy/input17+2proof/managedE4fromdevpreservation/N5a, PhaseA authorONLYminimaltrustedNodewiring+safe lowerloopback/fileURL/preabortcallback RED/GREEN thenFREEZE. Non-authorseamforwardingreview+Rootrecordedresume beforePhaseB livemanager/realGitfixtures/bodyfullcompletion/legacy17exactsource resourceadapter+dualdenyguards. Recordallactualresources/declaredpendingGitdescendant/server/N1. Source33E2CI2 disjoint, CPUshared; no broadcontractfreeze/M1wait/newapplication/realcloud/model/privateuploads. Rootserialcommit/integrate onlyafterTDD/non-author/fullactualproof.
+
+## 2026-11-08 current-native-file-budget-integration
+
+ReviewedSource33c87 onlyWorkerfileflag600000 alignedoriginalnative, aggregate180s/job12/perfunchanged. Rootfresh880=449+399+32/fourtypes0; localfileflag600000/aggregate240s preserved, unknownownedworkstopsfurtherexecution. RootE1ports18475/76 disjointFetch17E4ports18481/82. Independent37rawcanon2proof/policy/immutable/N5abeforeexecute, actualresultreviewafter; no newjob/51/161/PGclaims.

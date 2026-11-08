@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 34,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "02ea7616ceb6013455966faec2584ad565f77beb5942878bee06a710e35ec18b",
+  "inputs": 37,
+  "reviewProofs": 2,
+  "expectedCases": 880,
+  "fileTimeout": 600000,
+  "overallLocalTimeout": 240000,
+  "activeFetch17Disjoint": true,
+  "conditions": "immutable/clean/raw/tooling/externalN5a beforeactual880/fourtypes; stopunknownresources, actualresultnonauthorreviewafter; no newjob/dev/PG",
+  "fullTaskAccepted": false
+}

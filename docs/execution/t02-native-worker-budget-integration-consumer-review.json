@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "df7337f401f70c4ea30626e6c24221fd2f2fe23c",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+      "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.mjs",
+      "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2",
+      "gitBlobSha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "sha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211",
+      "gitBlobSha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits.mjs",
+      "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+      "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge.mjs",
+      "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+      "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge-worker.mjs",
+      "sha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e",
+      "gitBlobSha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    },
+    {
+      "path": "packages/openfilm/studio/server/exports.mjs",
+      "sha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696",
+      "gitBlobSha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696"
+    },
+    {
+      "path": "packages/openfilm/studio/server/tsconfig.json",
+      "sha256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+      "gitBlobSha256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65"
+    },
+    {
+      "path": "packages/openfilm/studio/ui/tsconfig.json",
+      "sha256": "28e5ebf1bc70e76523d888b24e5865f8e7021aa835d109adfaa7e0d7e52b30a4",
+      "gitBlobSha256": "28e5ebf1bc70e76523d888b24e5865f8e7021aa835d109adfaa7e0d7e52b30a4"
+    },
+    {
+      "path": "apps/desktop/chat/tsconfig.json",
+      "sha256": "b0ee6438ab20d9433fff9f54301c629a817ad8c4ac7f655ffbda9d1bef6df088",
+      "gitBlobSha256": "b0ee6438ab20d9433fff9f54301c629a817ad8c4ac7f655ffbda9d1bef6df088"
+    },
+    {
+      "path": "apps/desktop/shell/tsconfig.json",
+      "sha256": "57851c0d76cb17014ed704f993eb00790988d15ec924269c81c77b8e81df5410",
+      "gitBlobSha256": "57851c0d76cb17014ed704f993eb00790988d15ec924269c81c77b8e81df5410"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+      "sha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa",
+      "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "sha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc",
+      "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.test.mjs",
+      "sha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31",
+      "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+      "sha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c",
+      "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+      "sha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184",
+      "gitBlobSha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge.test.mjs",
+      "sha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e",
+      "gitBlobSha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    },
+    {
+      "path": "packages/openfilm/studio/server/exports-drain.test.mjs",
+      "sha256": "c10726e7ab0af2ebde0f71102dd742d535720adbbc157939653339ce6ba573b1",
+      "gitBlobSha256": "c10726e7ab0af2ebde0f71102dd742d535720adbbc157939653339ce6ba573b1"
+    }
+  ],
+  "scope": "Root37raw/Git inputs forlocal880/fourtypes only; activeFetchE4independentmutable2notfrozendependencies",
+  "attribution": "Rootconsumesreviewednative/CI33/Types/Exports, notsourceauthorship",
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

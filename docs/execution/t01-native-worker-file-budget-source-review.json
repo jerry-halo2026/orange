@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 33,
+  "commit": "c87d0bdb4fa9f6d3ba9bc2fb01753b3241d2742d",
+  "authorAgent": "/root/native_worker_file_budget_impl",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "requestedAuthorModel": "gpt-6-luna/medium",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "bb144d19eccef0bfe71a037a0d02a1e7d88d4060aef86f2c9bf85008b333d690",
+      "gitBlobSha256": "bb144d19eccef0bfe71a037a0d02a1e7d88d4060aef86f2c9bf85008b333d690"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "9a0608583d0c35625675e092e9e15d873f2f1aa25758c855338c54824ebf98d0",
+      "gitBlobSha256": "9a0608583d0c35625675e092e9e15d873f2f1aa25758c855338c54824ebf98d0"
+    }
+  ],
+  "exactDriverDiff": "ONEWorkerargv60000→native600000; reversebytehashmatchesapprovedGitbefore",
+  "old398BytePrefixUnchanged": true,
+  "TDD": {
+    "baseline398Pass": true,
+    "new399ContractRED": true,
+    "final399Pass": true
+  },
+  "Root483": {
+    "tests": 483,
+    "pass": 483,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "RootNode24pure399": {
+    "tests": 399,
+    "pass": 399,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "recordedArtifactsVerified": 5,
+  "immutableInputs": 36,
+  "reviewProofs": 2,
+  "N5a84": {
+    "pre": true,
+    "post": true,
+    "exactSource": true,
+    "proofSHA256": "faf7f46c83addac7d5a3e153d9b3da327d3171c29e615836d0d250e1dac6b08f"
+  },
+  "sourceGit27ProofSHA256": "1b24b11d655a81719e44edb6e8b5777da854d7992f9bf6cb538079c26e7ccae6",
+  "RootProofSHA256": "be28e27a581e5d9da821c65acd913de33c2e036818e54d5853511a42d4e45c94",
+  "processDeviation": {
+    "standaloneBeforeCopiesSaved": false,
+    "approvedGitBefore": "fb134e4e38953c23043253cb1ce6e5cd6d2abd10",
+    "RootExactGitRecoveryVerified": true,
+    "notContemporaneousCopies": true,
+    "ruling": "acceptimmutableGitbeforeforthisboundedchange, no backdating; explicitcopiesrequiredfuture"
+  },
+  "keep": "Workeraggregate180000/8MiB/job12min/all51/perf60ms150ms/native110/context/tool/package/env/ports/safeevidenceunchanged",
+  "fileLatencyDeeperCauseUnknown": true,
+  "newRuntimeAuthorized": false,
+  "actual161": false,
+  "fullTaskAccepted": false
+}

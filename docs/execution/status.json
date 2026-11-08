@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "latestlocal641 actualpassed/postexactN5a24/f336receipt; oldactualWindows110 a68staysqualified. Newsource25 Native110+separateWorker51 CI policyapproved/notdispatched pendingimmutable/rawN5a; no sourcewriters. RemainingExports/Fetch/route/processownership stillunclosed.",
+  "phase": "Originalnative41b type0 vsnewsource115 regression verified. Type-only16 3filepolicyapproved/notdispatched pendingfinalfreeze/N5a; actor449+type0/AST thenRootCIrebind/latest749. CI25sourcec7b reviewed/Root384 butactual161 prohibited untiltypegate restored. Exports15draft heldpendingfinalresourceclarification.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-kernel-ci-assignment.json",
+  "currentTaskCard": "docs/execution/t02-native-type-contracts-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-kernel-ci-policy-review.json",
+  "currentSliceReview": "docs/execution/t02-native-type-contracts-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -164,7 +164,7 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-kernel-ci-assignment.json"
+    "docs/execution/t02-native-type-contracts-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
@@ -328,8 +328,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-kernel-ci-policy-review.json",
-  "nextOperation": "freeze25/E2raw24+2proof/N5a -> freshCIauthor; Exportsproducer15 originalNodefork/FS designpreparation only, no media/proc started; futurelatest161CI andwholebranchreview beforedev",
+  "currentMetadataReview": "docs/execution/t02-native-type-contracts-policy-review.json",
+  "nextOperation": "freeze16/managedE4FF/raw20+2proof/tooling/N5a -> freshtypeauthor; Exports15E3 independentreadyafterownpolicy, no sharedDir; CI25frozenhistorical requiresRootconsumerpinrebind aftertype0",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -367,7 +367,7 @@
     "actual110Run": 42448639096,
     "actual110Receipt": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
     "kernelCoverageCard": "docs/execution/t01-native-kernel-ci-assignment.json",
-    "kernelCoverageState": "policyapproved sourceonly, new161notrun"
+    "kernelCoverageState": "CI25frozenpeerpass/Root384 but base115typegatefailed, noactual161; refreshpinsafter16 mandatory"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -396,5 +396,14 @@
     "ctorRuling": "docs/execution/t02-merge-worker-ruling-ctor.json",
     "sourceCommit": "54edc703ffb01108c438d009a083b1983a99ad15",
     "readiness": "docs/execution/t02-merge-worker-readiness.json"
+  },
+  "nativeTypeContracts": {
+    "state": "policyapproved 3filetype-only, finalfreeze/raw/tooling/N5a pending, no code yet",
+    "impact": "docs/execution/t02-native-types-foundation-impact.json",
+    "managedWorktree": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+    "branch": "codex/native-type-contracts",
+    "actualHead": "c7b7cf5e4e1198b203ad94d96e8af3d7f228b71a",
+    "actorRuntime": 449,
+    "rootLatestCompositeAfterRebind": 749
   }
 }

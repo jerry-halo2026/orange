@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-08",
+  "recordKind": "verified foundation defect and consumer impact, not waiver",
+  "baseline": {
+    "commit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+    "actualDiagnostics": 0,
+    "exitCode": 0,
+    "sourceWasClean": true,
+    "proofSHA256": "ac5ea9b9bd0c72f8e78e2459833e554da8ba6186c12419852c01e0127571ffe4",
+    "originalConfigSHA256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65"
+  },
+  "current": {
+    "sourceBeforeFix": "76abde06a53574945ebd045ac84ebe7a0383caa5",
+    "actualDiagnostics": 115,
+    "exitCode": 2,
+    "perFile": {
+      "projects": 62,
+      "server": 50,
+      "watch": 1,
+      "canvasHistoryDownstream": 2
+    },
+    "proofSHA256": "7397f2993857f5161ccd1caf9163396a1a192c48333e9833f642c66de850145b"
+  },
+  "toolchain": {
+    "typescript": "5.9.3",
+    "nodeTypes": "22.20.5",
+    "core": "1.61.1",
+    "originalNoEmitStrict": true,
+    "noNewInstallOrScripts": true
+  },
+  "initialComparison6": "missingCore types/pathresolution, notpreexistingnativeerror; baseline publicdepjunction resolvedthen0",
+  "rootCause": "newGuard/ALS/forwardwrapper generic/tuple/returns and lifecycle callback Promise types were notkept, originalruntime641pass doesnotwaivetypegate",
+  "minimalProposedFix": [
+    "projects.mjs",
+    "server.mjs",
+    "watch.mjs"
+  ],
+  "runtimeASTMustRemainIdentical": true,
+  "configurationOrSuppressionWeakening": false,
+  "consumers": {
+    "CI25": "frozen historicalsourcec7b/Root384/peerpassed forCIcode only; actual161PROHIBITED untiltype0 andnewcanonicalpin/proofrebinding reviewed",
+    "originalNative110": "actuala68historicalscope preserved, notlatesttypegate",
+    "local641": "historicalactual641 passed at candidate158ac8d219c596c0df26cf6ef061667a47611702 andreceiptf336b20, preserved; typefixedcandidate author449+originaltsc0+AST, thenRootindependentconsumerpinrebind andcurrentcombined749(actualCI25pure300+native449), notold641"
+  },
+  "worktree": {
+    "baselineEvidenceHistorical": true,
+    "reusedManagedRoot": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+    "newBranch": "codex/native-type-contracts",
+    "branchedFromVerifiedDev": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+    "fastForwardedToApprovedSource": "c7b7cf5e4e1198b203ad94d96e8af3d7f228b71a"
+  },
+  "primaryDevUnchanged": true,
+  "productModelValidationCalls": 0,
+  "fullTaskAccepted": false
+}

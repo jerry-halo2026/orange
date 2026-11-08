@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 16,
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "08918e87e8c12f708bcec160dd52c017d771e205287a2b3635b67dfd9b6cabbe",
+  "proofs": [
+    {
+      "path": "docs/execution/t01-cpu-native-types-consumer-review.json",
+      "sha256": "d46e63d6257c0c52b71a7823a52d71b998b25c0f4d2f8b4590ca9fcc955599b2",
+      "gitBlobSha256": "d46e63d6257c0c52b71a7823a52d71b998b25c0f4d2f8b4590ca9fcc955599b2"
+    },
+    {
+      "path": "docs/execution/t02-native-types-consumer-review.json",
+      "sha256": "cd87a3572154481e959c596a207086033d6807fbac72588424d68267e2dae736",
+      "gitBlobSha256": "cd87a3572154481e959c596a207086033d6807fbac72588424d68267e2dae736"
+    }
+  ],
+  "resolvedPlanP2": "actor449+type0/AST/contracts vsRootlatestcompositeafterpinrebind, old641impossibilityremoved",
+  "sourceOnly3Files": true,
+  "runtimeBehaviorChangesApproved": false,
+  "remaining": [
+    "finalplan/status/toolingmetadata equivalence",
+    "immutable approval",
+    "managedE4FF/raw20+2proof/tooling",
+    "externaltrustedN5a84",
+    "freshtypeauthor115RED->0GREEN+AST+449",
+    "Rootconsumerpinrebind/sourcereview/latestcompositebeforeactual161"
+  ],
+  "fullTaskAccepted": false
+}

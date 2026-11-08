@@ -440,3 +440,12 @@ T01 rev24 Root-only validation receipt, no source edits. Latestassembled native+
 ## 2026-11-08 Native110 plus Worker51 CI
 
 T01 source25 onlynative-studio workflow/driver/unit, freshE2 author. Preserve Native110/7files/TAP validator andoriginalenv. Add independent strictflatWorker51(unchangedpure33+new18) serialsecondchild; realexisting51top-level evidence confirmed. Workernewordinarynamespace .dev/merge-worker-lifecycle/run/attempt/scratch, sevenenvsamescratch, Nativeenv unchanged. UniquecompleteWorker line18created18exits/peak1..4/final0 andmandatorynames; failures/missing/duplicates/skip/wrongcounts fail. Add5producerpins ->23+SELF4=27 and5workflowpaths. Preserve192 testcase semantics; exactsourcefixture count/index mapping only, no globalnumberreplacement/tarbytechanges. Keepfirstfailure/perstageprocessreceipts/rawprivateTAP hashes/sourceandresourcepostchecks, combine161onlybothpass. NewTDD/peer/Rootfresh/27actualGitpositive thenseparateactualruntime; olda68Native110/local641notfuture161proof.
+
+## 2026-11-08 Native type contract repair
+
+T02.a16 fixes verifiednew115type regressions versus original41b0 using onlyprojects/server/watch JSDoc/type annotations. Reuse managedE4baseline tree as codex/native-type-contracts createdfromverifiedlatestdev41b thenFFtoc7; historicalbaseline proof persists, sameTS5.9.3/NodeTypes22.20.5/Core1.61.1 readonlydependencies, noinstall. Freeze20inputs+2proof withtsconfig/Guard/canvas-history/API immutable; no @tsignore/nocheck/any/unknownweakening orruntime changes. Restoreactualnative_* genericparameters/tuple/optional/default/results, lifecyclePromise<void>/never; downstreamerrorsfixupstream.
+- [ ] Independentpolicy/proofs/immutable/managedE4FF/raw/tooling/N5a beforefreshauthor.
+- [ ] Reproduce115RED withoriginalnoEmitconfig; applyminimal3file types, originalserver0diag andtargetedtempcontracts/anyleak/optional/default/minargs/returnchecksGREEN.
+- [ ] RuntimeASTbeforeafter ignorescomments/JSDoc butpreservesoptionalchain/grouping, onlyexplicittransparentcastparen sites, equalstructurehash required; otherwiseRootamendment first.
+- [ ] Actor449native+Worker runtimeallpass underownE4ports18475/6/strictWorkerScratch/max4threads; doNOTeditCI toachievefakeold641GREEN. OldCI newhash refusal retained asexpectedstale pin.
+- [ ] Non-authorpeer/Rootfresh thenRootreviewedconsumerproof/pin refresh, latestcombined countcurrentCI25pure300+native449=749 andtype0 beforeactual161/branchintegration. No source/data/businessscope shrink.

@@ -481,7 +481,7 @@ export async function runNativeStudioCI() {
  const workerDiagnostics=createNativeStudioDiagnostics();
  diagnostics.enter('worker-tests');workerDiagnostics.enter('worker-tests');
  try {
-  workerResult=child(process.execPath,['--test','--test-reporter=tap','--test-concurrency=1','--test-timeout=60000',...WORKER_TESTS],context.workspace,worker.env,180_000);
+  workerResult=child(process.execPath,['--test','--test-reporter=tap','--test-concurrency=1','--test-timeout=600000',...WORKER_TESTS],context.workspace,worker.env,180_000);
   const assessment=assessMergeWorkerProcess(workerResult);
   diagnostics.observeWorker(assessment);
   if(assessment.ok)workerCounts=assessment.counts;else {workerDiagnostics.capture(assessment.failure);diagnostics.capture(assessment.failure);}

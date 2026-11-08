@@ -1,0 +1,156 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 29,
+  "candidateCommit": "bc25f148307ba4dbcf8712b72bbac9c37524e419",
+  "executor": "/root",
+  "scope": "localdiagnosisonly, no sourcechanges/newtools/network/fakeCI/remotejobs",
+  "records": [
+    {
+      "node": {
+        "version": "v26.13.0",
+        "sha256": "14319838b3f355e0398c13569a90270bce4fc68f25189f58c59b03dadae0e6d5"
+      },
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "--test-concurrency=1",
+        "--test-timeout=60000",
+        "packages/openfilm/studio/server/person-merge.test.mjs",
+        "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs"
+      ],
+      "elapsedMs": 34121,
+      "exitCode": 0,
+      "signal": false,
+      "processError": false,
+      "summaries": {
+        "tests": [
+          51
+        ],
+        "suites": [
+          0
+        ],
+        "pass": [
+          51
+        ],
+        "fail": [
+          0
+        ],
+        "cancelled": [
+          0
+        ],
+        "skipped": [
+          0
+        ],
+        "todo": [
+          0
+        ]
+      },
+      "baseVerifier": {
+        "accepted": true,
+        "cases": 51
+      },
+      "strictVerifier": {
+        "accepted": false,
+        "status": "failed",
+        "phase": "worker-tests",
+        "code": "TAP_NAME"
+      },
+      "worker": {
+        "created": 18,
+        "actualExits": 18,
+        "peak": 3,
+        "finalAlive": 0,
+        "allActualExit": true,
+        "receiptSHA256": "389c5735932bbcfe310da0ec34cb68af06e67b58eef6d48e1ab5868c57e0811c"
+      },
+      "resourceRetirementProven": true,
+      "stdoutSHA256": "7552adea27d80bbed8de0438176aa731ecb378d32c6dc5d88503b9947b5af48e",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "failedCaseCount": 0
+    },
+    {
+      "node": {
+        "version": "v24.22.1",
+        "sha256": "86f361a88f4cc3ecaf1ea93236b0d8edf07bf00fe87ad9f60305513f58fc2c17"
+      },
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "--test-concurrency=1",
+        "--test-timeout=60000",
+        "packages/openfilm/studio/server/person-merge.test.mjs",
+        "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs"
+      ],
+      "elapsedMs": 45470,
+      "exitCode": 0,
+      "signal": false,
+      "processError": false,
+      "summaries": {
+        "tests": [
+          51
+        ],
+        "suites": [
+          0
+        ],
+        "pass": [
+          51
+        ],
+        "fail": [
+          0
+        ],
+        "cancelled": [
+          0
+        ],
+        "skipped": [
+          0
+        ],
+        "todo": [
+          0
+        ]
+      },
+      "baseVerifier": {
+        "accepted": true,
+        "cases": 51
+      },
+      "strictVerifier": {
+        "accepted": false,
+        "status": "failed",
+        "phase": "worker-tests",
+        "code": "TAP_NAME"
+      },
+      "worker": {
+        "created": 18,
+        "actualExits": 18,
+        "peak": 3,
+        "finalAlive": 0,
+        "allActualExit": true,
+        "receiptSHA256": "389c5735932bbcfe310da0ec34cb68af06e67b58eef6d48e1ab5868c57e0811c"
+      },
+      "resourceRetirementProven": true,
+      "stdoutSHA256": "1da4ac4a61886ae47a67e7ec95d1cbbe6c633b1d7c64b8f28f254a092527e243",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "failedCaseCount": 0
+    }
+  ],
+  "counting": "same51nativecases executedseparatelytwoexistingNodeversions, not102distincttests ornewhostedproof",
+  "observedMismatch": "bothactual51 TAP passbaseparser thenstrictWorker51 TAP_NAME; frozenNativeundo casename containsU+2192, ASCIIonlyconsumerrejectsvalidsourcecase. Preserveoriginalname/tests/thresholds.",
+  "hostedTAPInvalidRootCauseKnown": false,
+  "hostedBoundary": "C28TAP_INVALID occursbeforeASCIIcheck, privateWorkerdata unavailable, cannotinferhostedNode/test/performancefailurecause fromlocal24/26 successes",
+  "next": "boundedclosednative-nameconsumerfix andsafelyobservableactualworkerprocessfailurefacts; no arbitraryUnicode/broadercounts or rawlog/error/envexposure. NewsourceTDDreview/card beforeanynewactualruntimeallocation.",
+  "inputAndProofCount": 14,
+  "all12Inputs2ProofsUnchanged": true,
+  "proofSHA256": "b40f960c285a33f1be0b39628377959046cb8f9c7c4eaf20555f6c461d21a54a",
+  "N5a84": {
+    "preProofSHA256": "2136fb7cff1383cbbba4c942a98d230676b325618399f6f23edebbb856ccda72",
+    "postProofSHA256": "2136fb7cff1383cbbba4c942a98d230676b325618399f6f23edebbb856ccda72"
+  },
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "fullTaskAccepted": false
+}

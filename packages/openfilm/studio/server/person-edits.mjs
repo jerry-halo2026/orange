@@ -103,7 +103,7 @@ export function configure({ keep: aside, versions, merge, worker: module, mergeM
   if (aside) keep = async (root, files, message) => { await aside(root, files, message); };
   if (versions) VERSIONS_KEPT = versions;
   if (merge) merging = merge;
-  if (module) { workerModule = module; void worker?.terminate(); }
+  if (module) { workerModule = module; if (worker) retireWorker(worker); }
   if (mergeMs) MERGE_MS = mergeMs;
 }
 
@@ -236,7 +236,19 @@ export const filmToMerge = (/** @type {string} */ root, /** @type {string} */ re
  * the write is taken as seen only once merged, so it is never taken as it is for want of a merge.
  * @param {string} root @param {{ rev: string, value: FilmValue }} current
  */
-export async function mergeFilmWrite(root, { rev, value }) {
+export function mergeFilmWrite(root, current) {
+  if (!mergeActive) return Promise.reject(new Error('the merge worker lifecycle is stopped'));
+  // Register the whole call before even reading rev/value: getters can stop us reentrantly.
+  let finished = () => {};
+  /** @type {Promise<void>} */
+  const pending = new Promise((resolve) => { finished = resolve; });
+  admitted.add(pending);
+  // Do not defer the native work: small merges and version recording still start in this turn.
+  return mergeAdmittedFilmWrite(root, current).finally(() => { admitted.delete(pending); finished(); });
+}
+
+/** @param {string} root @param {{ rev: string, value: FilmValue }} current */
+async function mergeAdmittedFilmWrite(root, { rev, value }) {
   const s = state(root);
   const kept = s.film;
   if (rev === kept.seen) return null;
@@ -320,47 +332,112 @@ function trusted(s, acks) {
   return acks.filter((a) => [...s.asked].every(([agent, at]) => agent === a.agent || at < a.since));
 }
 
-/** @type {Worker | null} */
-let worker = null;
-let calls = 0;
-/** @type {Map<number, { done: (v: any) => void, fail: (e: Error & { late?: boolean }) => void }>} */
-const waiting = new Map();
 /**
- * The tracks of each project's versions the worker has (it keeps them, so a merge sends only what is new), by an id
- * each track is given here once.
- * @type {Map<string, Set<number>>}
+ * One real thread owns its pending replies and its cache. Retired threads stay owned until actual exit, so a
+ * configure/error/timeout from A can neither forget A nor fail requests sent to its replacement B.
+ * @typedef {{ worker: Worker | null, waiting: Map<number, { done: (v: any) => void, fail: (e: Error & { late?: boolean }) => void }>,
+ *   sent: Map<string, Set<number>>, exit: Promise<void>, exited: () => void, retired: boolean, terminating: boolean }} MergeWorker
  */
-const sent = new Map();
+/** @type {MergeWorker | null} */
+let worker = null;
+/** @type {Set<MergeWorker>} */
+const workers = new Set();
+/** @type {Set<Promise<void>>} complete mergeFilmWrite calls, not just their worker requests */
+const admitted = new Set();
+let mergeActive = true;
+/** @type {Promise<void> | null} */
+let stopping = null;
+let stopped = false;
+let calls = 0;
 /** @type {WeakMap<import('./person-merge.mjs').KeptTrack, number>} */
 const trackIds = new WeakMap();
 let tracks = 0;
 
 /**
- * mergeWrite in a worker of its own (one for all projects, started when first needed, let go when idle). The worker
- * keeps each project's tracks: a merge sends the versions as lists of track ids, and only the tracks it lacks. Fails
- * when the worker throws, dies, or takes past MERGE_MS (`late`: then it is stopped).
+ * Close admission synchronously, then finish admitted merges (including fallback and bookkeeping) and every owned
+ * real thread. This is a producer boundary, not Studio/film-file IO shutdown. A rejected terminate is not exit:
+ * keep the thread owned and wait for its actual exit, remaining closed if that proof never arrives.
+ * @returns {Promise<void>}
+ */
+export function stopMergeWorker() {
+  if (stopping) return stopping;
+  let done = () => {};
+  stopping = new Promise((resolve) => { done = resolve; });
+  mergeActive = false;
+  void (async () => {
+    await Promise.all(admitted);
+    for (const generation of workers) retireWorker(generation);
+    await Promise.all([...workers].map((generation) => generation.exit));
+    stopped = true;
+    done();
+  })();
+  return stopping;
+}
+
+/** Explicitly reopen only after proven completion; the next large merge lazily creates a fresh, cold worker. */
+export function startMergeWorker() {
+  if (mergeActive) return true;
+  if (!stopped) return false;
+  stopping = null;
+  stopped = false;
+  mergeActive = true;
+  return true;
+}
+
+/** Detach before external termination/reentry, without dropping ownership or the generation's exit proof. */
+function retireWorker(/** @type {MergeWorker} */ generation) {
+  generation.retired = true;
+  if (worker === generation) worker = null;
+  if (!generation.worker || generation.terminating || !workers.has(generation)) return;
+  generation.terminating = true;
+  try { void generation.worker.terminate().catch(() => {}); }
+  catch { /* Not an exit. Ownership and the exit waiter remain, fail-closed. */ }
+}
+
+function createMergeWorker() {
+  let exited = () => {};
+  /** @type {MergeWorker} */
+  const generation = { worker: null, waiting: new Map(), sent: new Map(), exit: new Promise((resolve) => { exited = resolve; }), exited: () => exited(), retired: false, terminating: false };
+  workers.add(generation);
+  worker = generation;
+  let w;
+  try { w = new Worker(workerModule); }
+  catch (e) {
+    if (worker === generation) worker = null;
+    workers.delete(generation); generation.exited();
+    throw e;
+  }
+  generation.worker = w;
+  const failAll = (/** @type {Error} */ e) => { for (const call of [...generation.waiting.values()]) call.fail(e); };
+  w.on('message', ({ id, out, error }) => {
+    const call = generation.waiting.get(id);
+    if (error) call?.fail(new Error(error));
+    else call?.done(out);
+  });
+  w.on('error', (e) => { retireWorker(generation); failAll(e); });
+  w.on('exit', (code) => {
+    if (worker === generation) worker = null;
+    failAll(new Error(`the merge's worker stopped (${code})`));
+    generation.sent.clear();
+    workers.delete(generation);
+    generation.exited();
+  });
+  // configure may have retired this generation while the real constructor was returning.
+  if (generation.retired) retireWorker(generation);
+  return generation;
+}
+
+/**
+ * The original wire protocol: versions as track ids and only tracks this generation lacks. Keep constructor throws
+ * synchronous (native whole-film fallback); errors of a returned request use the original ordinary merge fallback.
  * @param {string} root @param {Parameters<typeof mergeWrite>[0]} input @returns {Promise<ReturnType<typeof mergeWrite>>}
  */
 function inWorker(root, input) {
-  if (!worker) {
-    const w = new Worker(workerModule);
-    const failAll = (/** @type {Error} */ e) => { for (const call of waiting.values()) call.fail(e); waiting.clear(); };
-    w.on('message', ({ id, out, error }) => {
-      const call = waiting.get(id);
-      waiting.delete(id);
-      if (!waiting.size) w.unref();
-      if (error) call?.fail(new Error(error));
-      else call?.done(out);
-    });
-    w.on('error', (e) => { if (worker === w) { worker = null; sent.clear(); } failAll(e); });
-    w.on('exit', (code) => { if (worker === w) { worker = null; sent.clear(); } failAll(new Error(`the merge's worker stopped (${code})`)); });
-    worker = w;
-  }
-  const w = worker;
+  const generation = worker?.worker ? worker : createMergeWorker();
+  const w = /** @type {Worker} */ (generation.worker);
+  if (generation.retired) return Promise.reject(new Error('the merge worker was replaced'));
   const id = ++calls;
-  w.ref();
-  /* the versions as track ids; the tracks the worker lacks */
-  const had = sent.get(root) ?? new Set();
+  const had = generation.sent.get(root) ?? new Set();
   /** @type {Map<number, import('./person-merge.mjs').KeptTrack>} */
   const fresh = new Map();
   const versions = input.versions.map((v) => ({ stage: v.stage, tracks: v.tracks.map((t) => {
@@ -369,18 +446,27 @@ function inWorker(root, input) {
     if (!had.has(n)) fresh.set(n, t);
     return n;
   }) }));
-  sent.set(root, new Set(versions.flatMap((v) => v.tracks)));
+  generation.sent.set(root, new Set(versions.flatMap((v) => v.tracks)));
   return new Promise((done, fail) => {
+    const settle = (/** @type {Error & { late?: boolean } | null} */ error, /** @type {any} */ value) => {
+      if (!generation.waiting.delete(id)) return;
+      clearTimeout(timer);
+      if (!generation.waiting.size) w.unref();
+      if (error) { generation.sent.delete(root); fail(error); }
+      else done(value);
+    };
     const timer = setTimeout(() => {
-      waiting.delete(id);
-      fail(Object.assign(new Error(`the merge took longer than ${MERGE_MS} ms`), { late: true }));
-      void w.terminate();
+      settle(Object.assign(new Error(`the merge took longer than ${MERGE_MS} ms`), { late: true }), undefined);
+      retireWorker(generation);
     }, MERGE_MS);
-    waiting.set(id, {
-      done: (v) => { clearTimeout(timer); done(v); },
-      fail: (e) => { clearTimeout(timer); sent.delete(root); fail(e); },
-    });
-    w.postMessage({ id, root, input: { ...input, versions: [] }, versions, tracks: [...fresh] });
+    generation.waiting.set(id, { done: (value) => settle(null, value), fail: (error) => settle(error, undefined) });
+    try {
+      w.ref();
+      w.postMessage({ id, root, input: { ...input, versions: [] }, versions, tracks: [...fresh] });
+    } catch (e) {
+      settle(/** @type {Error} */ (e), undefined);
+      retireWorker(generation);
+    }
   });
 }
 
@@ -660,4 +746,4 @@ export const keptVersions = (/** @type {string} */ root) => {
 export const versionHash = (/** @type {FilmValue} */ film) => keptHash(keepFilm(film));
 
 /** Forget a project (tests). */
-export function forget(/** @type {string} */ root) { projects.delete(root); sent.delete(root); }
+export function forget(/** @type {string} */ root) { projects.delete(root); for (const generation of workers) generation.sent.delete(root); }

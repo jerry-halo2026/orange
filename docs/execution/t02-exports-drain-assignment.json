@@ -1,0 +1,211 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 15,
+  "authorAgent": "/root/exports_drain_impl",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension/originalexports-queue-directChild-parentFS-completion-producer",
+  "scope": "originalcreateExports terminaladmission/realreturnedwork+owned directrenderer ChildProcess close/parentFS tails, no render-worker/browserdescendant/fullretirement",
+  "workingBaselineCommit": "76abde06a53574945ebd045ac84ebe7a0383caa5",
+  "dependencyCommits": [
+    "76abde06a53574945ebd045ac84ebe7a0383caa5",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "proposed no authoruntilindependentpolicy/immutable/managedE3FF/raw/externalN5a84",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/exports.mjs",
+    "packages/openfilm/studio/server/exports-drain.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t01-native-kernel-ci-assignment.json",
+        "assignmentRevision": 25,
+        "sha256": "fb900648f173efd84d84c168a2b43b4427069fc1a3bbabb0cbcae8749701ec35"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-exports-drain-consumer-review.json",
+          "sha256": "1ae9a7102b3087e45df7654c8eb8b419d18ae4d6bda6cb5c5fccc16e3dbd28a2",
+          "gitBlobSha256": "1ae9a7102b3087e45df7654c8eb8b419d18ae4d6bda6cb5c5fccc16e3dbd28a2"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "76abde06a53574945ebd045ac84ebe7a0383caa5",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/render-worker.mjs",
+            "sha256": "9bab203cab14e821403149871ed564463792f87ff9ca47749307f65e95a71faa",
+            "gitBlobSha256": "9bab203cab14e821403149871ed564463792f87ff9ca47749307f65e95a71faa"
+          },
+          {
+            "path": "packages/openfilm/src/shared.mjs",
+            "sha256": "4b2c3db5fca02a9bad0a9b4b1121c25ecab00f1971c20ad17127f8fc57e1af3d",
+            "gitBlobSha256": "4b2c3db5fca02a9bad0a9b4b1121c25ecab00f1971c20ad17127f8fc57e1af3d"
+          },
+          {
+            "path": "packages/openfilm/src/encoders.mjs",
+            "sha256": "a5e44682cd1e85627d0fc92601159bb34732b5af7351227b620811e01c98d001",
+            "gitBlobSha256": "a5e44682cd1e85627d0fc92601159bb34732b5af7351227b620811e01c98d001"
+          },
+          {
+            "path": "packages/openfilm/src/burn.mjs",
+            "sha256": "9cfb1e1382ce3ff35a27f9fa70c662527b65898550366fd89cd094906a6a3162",
+            "gitBlobSha256": "9cfb1e1382ce3ff35a27f9fa70c662527b65898550366fd89cd094906a6a3162"
+          },
+          {
+            "path": "packages/openfilm/src/film-doc.mjs",
+            "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+            "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/captions.mjs",
+            "sha256": "f89d1d90c5442ba159dbbd053f74ad09db78b5f2849cdaebd73735e17fdf9998",
+            "gitBlobSha256": "f89d1d90c5442ba159dbbd053f74ad09db78b5f2849cdaebd73735e17fdf9998"
+          },
+          {
+            "path": "packages/openfilm/src/render.mjs",
+            "sha256": "41b1f3f0b281c1dca9f0466ce0e60444382bce17f87c85caecdbd36ff3b07fe8",
+            "gitBlobSha256": "41b1f3f0b281c1dca9f0466ce0e60444382bce17f87c85caecdbd36ff3b07fe8"
+          },
+          {
+            "path": "packages/openfilm/bin/openfilm.mjs",
+            "sha256": "0e21c31a8a3be49e0bfef12aea2bc850d7a38fcd4fd1401a9f21b8e6577bb532",
+            "gitBlobSha256": "0e21c31a8a3be49e0bfef12aea2bc850d7a38fcd4fd1401a9f21b8e6577bb532"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/exports.test.mjs",
+            "sha256": "56c4bf001ae86057f9083e67c153a66d85d4eda3a3f0fcad15395e1864bc0b45",
+            "gitBlobSha256": "56c4bf001ae86057f9083e67c153a66d85d4eda3a3f0fcad15395e1864bc0b45"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-exports-drain-native-consumer-review.json",
+          "sha256": "bb26b8e38ba4bba3b584f4645d6d6a0368225ee1c3c5ab15bf2219c5f1a68bee",
+          "gitBlobSha256": "bb26b8e38ba4bba3b584f4645d6d6a0368225ee1c3c5ab15bf2219c5f1a68bee"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/discovery/11_测试验收与问题定位规范.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-exports-real-completion-producer",
+  "nativeEditableBaseline": {
+    "commit": "76abde06a53574945ebd045ac84ebe7a0383caa5",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/exports.mjs",
+        "sha256": "52e2063e4dcda0de20264a57996e22e5477ad85ea9e2026f4b20273f0607ce88",
+        "gitBlobSha256": "52e2063e4dcda0de20264a57996e22e5477ad85ea9e2026f4b20273f0607ce88"
+      }
+    ],
+    "kind": "editable originalexports source, excluded fromunchangedinput; nativeAPI/DTO/wirekeep"
+  },
+  "contract": {
+    "API": "preserve createExports onChange/captions/drafts and allExportJob/Ask/IDs/unit/CLI/IPC. stopAll():Promise<void> nowstableterminal: publishesidenticalPromise+closing synchronously, blocksstart/startAll beforecreatingjobs/IO/callbacks usingexistingExportError no newDTO. Newinstance only way reopen. This deliberately removes old8000ms successrace, notclaimoriginaldeadlinealreadyquiescent.",
+    "registration": "register actualqueued/running operation completion beforeonChange/captions/fork/FS/externalreentry; neverloss oncallbackthrows. start/startAllclosing reject/no waitingorphans; stop cancellingqueued/running iteratesallownedtasks evenifnotifythrows. Preserve callbackfailure propagation whereapplicable, record failures not silentlyswallow; waitall actualwork beforefail.",
+    "completion": "stop resolves only after full actualnext/cloneOf/copy/rename/scratch+staging tidy and owned directChild close(plusstdio/IPC completion), notdone/failedIPC/abort/kill/exit/mapclear/8sec timer. Current/retired childreferences heldbyidentity throughactualclose. Everyobtainedchild gets ownership+close listeners beforemessages/callbacks; handle missingresult/abnormalexit/spawn/send errors andcancelreentry withoutlostcompletion. No source independent lifecyclemodel.",
+    "cancellation": "checkabort aftereach awaitedoperation/externalprogress andbefore finalrename/publication; alreadyentered actualcopy/cleanup mustawait, no pretendabort. cloneOf gets actualsignal internally. Subtitlecaps heldgate cannotpublishafterknownabort. Existingknownowned5s/6s cancelescalation mayremain buttimers clearedafteractualclose; timeout neverresolvesuccess.",
+    "cleanup": "actualquiescence differs fromsuccessfuldeletion. Cleanupfailure observable stopfailure afterotherworkdrained; do notclaim partialfilesgone whenrmfailed. No mainproject/deletehistory oroldartifacts; onlyownednewtemp/output lifecycle.",
+    "trustedNode": "minimal optionaltrustedNode functionseams: forkRenderer same nativeforksignature returns REALownedChildProcess, encoders:()=>Promise<Set<string>>, fs.copyFile/fs.rename/fs.rm wrappers samebuiltinsignatures. Defaults originalfunctions. Validate ownfunctionsurface withfixedsafeerror beforeanysideeffects, no HTTP/env/renderer forwarding. ScopepercreateExportsinstance, notglobalmonkeypatch. FS wrappers gate preciseownedpath thenultimatelycall actualbuiltin; zip staysactual. No highlevelfake render/queue/zip successes.",
+    "nativeRenderer": "preserve originalrender-worker defaultentry/args/stdIO and {args,opts}/{type:progress,done,total}/{type:done,result}/{type:failed,error}; pool originalid/type unchanged andfilewire notedit. Testforkfactory uses actualNodefork ownfixture honours exactprotocol andwrites requestedpartas ordinarytext beforeIPCdone then staysalive/gatesclose. Synthetictext with.mp4 filename ISNOTmedia/encoding proof. Testqueues nativeh264 hardware:false burnSubtitles:false noalpha/noPNG/noclip/sidecarOMITTED, validnativefilm.html readFilmFile.doc checked upfront toavoidbrowserfallback, encodersfixture libx264; doNOTcall exportCapabilities whichstillprobesdefault.",
+    "parentScope": "trackparentdirectforkcalls inclcurrent/retired sofactoryinstance cannotretireearly, but full drawer/NLE media/runtime path/render-worker4sclosing/realbrowserdescendants anddesktop10sparentdeadline separatelypending. Do notclaim fulltree/codec/media/capacity/serverrequestretirement/N1/PG.",
+    "typeGate": "do not introduce anynewexports.mjs diagnostic. CaptureoriginalservernoEmittsc baseline andafter usingexistingfixedE1TS5.9.3/NodeTypes22.20.5 andE3existingCore1.61.1 (noinstall), Rootknown115projects/server/watch regressionshandledindependentE4 notwaived/notactorwrite. NewDI/Promise/cleanup types useactualnative types, no @tsignore/nocheck/config relaxation."
+  },
+  "validation": {
+    "TDD": "readonlysourceanalysis oldstop8s/onChange/admission/IPCexitgaps. NewNodeonlytests genuine enteredcaptions/FS/copy/NodeChild RED beforeminimalpatch, oldexports.test notexecute. Keep oldassertionsemantics APIs; new testsCallbacksrecord thenbodyassert(no swallowedasserts). Savebefore/red/green/frozen/loghashes; source/metaProducerqualifiedonlyafterpeerRoot.",
+    "groups": [
+      "captions actualenteredgate/fulloutputcleanup, stopstable/reentrant/start/startAll rejectnonewjob",
+      "ordinarynativeproject folder/zip ownplaintextfiles; actualcopy/rename/rm gates andcancelbeforepublish; no fakezip",
+      "sameNativeIPC oneShotNodechild sendsdone/failed whilealive; stop remains untilactualclose+stdio tails, exitnotclose proof",
+      "cancelignored thennativeknownownedkill escalation; captureonlyfreshownedPID/script, noforeignprocess; success/abnormalexit/spawn/send/callbackfailures noorphan child/timer",
+      "current+retired directchildren/lateevents andA/Bfactory independence, stopcannotcancelB",
+      "cleanupfailureobservable, actualIOtail retained; no8sectimeout asquiescence (one real>8sec pendingcase orvalidtimeradvancewithactualIOgateremaining)"
+    ],
+    "commands": "only newexports-drain.test.mjs + syntax2/diff,13inputs+2proof unchanged; actor mustNOTrunCPU84 oroldexports.test/importffmpegWMI. Rootindependenttrustedcontroller CPU84 remainsmandatorypre/post/exact andits own resource namespaces, no totalgatecoverage dropped.",
+    "resources": "ownE3/.dev/exports-drain all TEMP/HOME/APPDATA/etc+validisolationprofile explicitownexports/home/logs; explicitwhere.folder toownexports andonlyfreshsweep fixture dirs. Existingoriginalcore1.61.1 mayimport butnobrowser/packageinstall. Max2actualownedNodeChild alive, noactualWorker/listener/ports/media/ffmpeg/WMI/.NET/model/externalnet. Permission includes lowering onlyownchildpriority via originalbelow/setPriority andoriginalkillProcess forcurrentlyownedfreshfixtureCP (Windows taskkill /pid CURRENT_OWNED_PID /T /F only, no descendants infixture), waitactualclose; neverenumerate/killbyname/userprocess orsecurityconfig.",
+    "report": ".dev/exports-drain/report.json",
+    "limit": "read/validate nativefilmDoc first prevents openbrowser fallback. RecordProblem ownOPENFILM_HOME/logs only, no productdefaultdirs. keep previousartifacts, no rawprivateconfig/data/modelcalls."
+  },
+  "forbidden": [
+    "anyfile beyond exports/newdrain.test inclrender-worker/shared/encoders/burn/oldtests/server/pages/CLI/Guard/CI/Rootdocs/lock",
+    "actualmedia/browser/ffmpeg/WMI/Fission/.NET/packageSDK/realAuth/model/externalnetwork/listen/defaultOS/userdata",
+    "fakewholeChildProcess/EventEmitter/notrealFS/zip orparallelrenderprotocol/runner/pool",
+    "foreignprocesskill/PIDscan/taskkillbyname/securitychanges/historycleanup/Gitstagecommitmergepushresetclean/subagents",
+    "claimingpoolNLE/browserdescendants/renderworker4s/desktop10s/allroute/serverconsumer/N1/PG accepted"
+  ],
+  "report": ".dev/exports-drain/report.json",
+  "fullTaskAccepted": false,
+  "design": "docs/superpowers/specs/2026-11-08-exports-completion-producer-design.md"
+}

@@ -167,7 +167,21 @@
     "docs/execution/t02-native-type-contracts-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
-  "activeWriters": [],
+  "activeWriters": [
+    {
+      "agent": "/root/native_type_contracts_impl",
+      "taskId": "T02.a",
+      "assignmentRevision": 16,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+      "approvalCommit": "f7cb6e1b07b440a9487e5f239cc4237906ebaa45",
+      "cardSHA256": "08918e87e8c12f708bcec160dd52c017d771e205287a2b3635b67dfd9b6cabbe",
+      "admissionSHA256": "6b1f73e47320adb011aaf8297b156db64fdeae87d3fa940c4396fff1022e2c1f",
+      "state": "actual115typeREDreproduced, threefileannotation-onlyfixactive"
+    }
+  ],
   "ciReadiness": {
     "firstActualRun": {
       "id": 42406704504,
@@ -398,12 +412,17 @@
     "readiness": "docs/execution/t02-merge-worker-readiness.json"
   },
   "nativeTypeContracts": {
-    "state": "policyapproved 3filetype-only, finalfreeze/raw/tooling/N5a pending, no code yet",
+    "state": "actualE4immutable/raw/tooling/N5a84 passed andfreshauthoractive after115RED; 0GREEN/AST/449 notyetaccepted",
     "impact": "docs/execution/t02-native-types-foundation-impact.json",
     "managedWorktree": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
     "branch": "codex/native-type-contracts",
     "actualHead": "c7b7cf5e4e1198b203ad94d96e8af3d7f228b71a",
     "actorRuntime": 449,
     "rootLatestCompositeAfterRebind": 749
+  },
+  "exportsDrain": {
+    "card": "docs/execution/t02-exports-drain-assignment.json",
+    "state": "finalpolicy7docsapproved, stillnotdispatched pendingimmutable/E3FF/raw13+2proof/N5a",
+    "producerReady": false
   }
 }

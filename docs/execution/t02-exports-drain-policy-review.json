@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 15,
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "requestedModel": "inherited reviewer runtime notattested",
+  "backendAttested": false,
+  "spec": "approved-after-exact-resource-correction",
+  "quality": "approved-after-exact-resource-correction",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "f138cd8b948f0ada5b60bedbb5505826bf476edc6abaec28efe65b41fb731c24",
+  "proofs": [
+    {
+      "path": "docs/execution/t01-cpu-exports-drain-consumer-review.json",
+      "sha256": "1ae9a7102b3087e45df7654c8eb8b419d18ae4d6bda6cb5c5fccc16e3dbd28a2",
+      "gitBlobSha256": "1ae9a7102b3087e45df7654c8eb8b419d18ae4d6bda6cb5c5fccc16e3dbd28a2"
+    },
+    {
+      "path": "docs/execution/t02-exports-drain-native-consumer-review.json",
+      "sha256": "bb26b8e38ba4bba3b584f4645d6d6a0368225ee1c3c5ab15bf2219c5f1a68bee",
+      "gitBlobSha256": "bb26b8e38ba4bba3b584f4645d6d6a0368225ee1c3c5ab15bf2219c5f1a68bee"
+    }
+  ],
+  "resolvedP2": "actorCPU84removed, RootindependentCPU84retained, no resourcesoutsideactorprefix",
+  "remaining": [
+    "finalwritten design/plan/typegate/resourcecorrection peercheck",
+    "immutableapproval",
+    "managedE3FF/raw13+2proof/externalN5a84",
+    "freshauthorTDD/peer/RootactualChild+FS"
+  ],
+  "actualChildKillExecuted": false,
+  "fullTaskAccepted": false
+}

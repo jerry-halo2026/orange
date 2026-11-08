@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "76abde06a53574945ebd045ac84ebe7a0383caa5",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/render-worker.mjs",
+      "sha256": "9bab203cab14e821403149871ed564463792f87ff9ca47749307f65e95a71faa",
+      "gitBlobSha256": "9bab203cab14e821403149871ed564463792f87ff9ca47749307f65e95a71faa"
+    },
+    {
+      "path": "packages/openfilm/src/shared.mjs",
+      "sha256": "4b2c3db5fca02a9bad0a9b4b1121c25ecab00f1971c20ad17127f8fc57e1af3d",
+      "gitBlobSha256": "4b2c3db5fca02a9bad0a9b4b1121c25ecab00f1971c20ad17127f8fc57e1af3d"
+    },
+    {
+      "path": "packages/openfilm/src/encoders.mjs",
+      "sha256": "a5e44682cd1e85627d0fc92601159bb34732b5af7351227b620811e01c98d001",
+      "gitBlobSha256": "a5e44682cd1e85627d0fc92601159bb34732b5af7351227b620811e01c98d001"
+    },
+    {
+      "path": "packages/openfilm/src/burn.mjs",
+      "sha256": "9cfb1e1382ce3ff35a27f9fa70c662527b65898550366fd89cd094906a6a3162",
+      "gitBlobSha256": "9cfb1e1382ce3ff35a27f9fa70c662527b65898550366fd89cd094906a6a3162"
+    },
+    {
+      "path": "packages/openfilm/src/film-doc.mjs",
+      "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+      "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+    },
+    {
+      "path": "packages/openfilm/studio/server/atomic.mjs",
+      "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+      "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/captions.mjs",
+      "sha256": "f89d1d90c5442ba159dbbd053f74ad09db78b5f2849cdaebd73735e17fdf9998",
+      "gitBlobSha256": "f89d1d90c5442ba159dbbd053f74ad09db78b5f2849cdaebd73735e17fdf9998"
+    },
+    {
+      "path": "packages/openfilm/src/render.mjs",
+      "sha256": "41b1f3f0b281c1dca9f0466ce0e60444382bce17f87c85caecdbd36ff3b07fe8",
+      "gitBlobSha256": "41b1f3f0b281c1dca9f0466ce0e60444382bce17f87c85caecdbd36ff3b07fe8"
+    },
+    {
+      "path": "packages/openfilm/bin/openfilm.mjs",
+      "sha256": "0e21c31a8a3be49e0bfef12aea2bc850d7a38fcd4fd1401a9f21b8e6577bb532",
+      "gitBlobSha256": "0e21c31a8a3be49e0bfef12aea2bc850d7a38fcd4fd1401a9f21b8e6577bb532"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/exports.test.mjs",
+      "sha256": "56c4bf001ae86057f9083e67c153a66d85d4eda3a3f0fcad15395e1864bc0b45",
+      "gitBlobSha256": "56c4bf001ae86057f9083e67c153a66d85d4eda3a3f0fcad15395e1864bc0b45"
+    }
+  ],
+  "sourceAttribution": "Root consumes unchanged originalrender IPC/CLI/types/FS andreadonly tests, not claiming authorship",
+  "scope": "exports editable excluded; originalexports.test READONLY importprobes ffmpeg/WMI so NEVER execute evenwithtestnamefilter",
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

@@ -30,17 +30,24 @@ const PINS = Object.freeze({
  'packages/openfilm/studio/server/watch.mjs':'112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde',
  'packages/openfilm/studio/server/watch.test.mjs':'64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31',
  'packages/openfilm/studio/server/server-watch-drain.test.mjs':'64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c',
+ 'packages/openfilm/studio/server/person-edits.mjs':'27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863',
+ 'packages/openfilm/studio/server/person-merge.mjs':'6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f',
+ 'packages/openfilm/studio/server/person-merge-worker.mjs':'83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e',
+ 'packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs':'cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184',
+ 'packages/openfilm/studio/server/person-merge.test.mjs':'53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e',
 });
 const SELF = Object.freeze(['.github/workflows/native-studio.yml','scripts/native-studio-ci.mjs','scripts/native-studio-ci.test.mjs','packages/openfilm/studio/server/project-file-symlink.test.mjs']);
 const TESTS = Object.freeze(['packages/openfilm/studio/server/project-control-guard.test.mjs','packages/openfilm/studio/server/projects-control.test.mjs','packages/openfilm/studio/server/auto-versions.test.mjs','packages/openfilm/studio/server/server-auto-versions.test.mjs','packages/openfilm/studio/server/watch.test.mjs','packages/openfilm/studio/server/server-watch-drain.test.mjs',SELF[3]]);
+const WORKER_TESTS = Object.freeze(['packages/openfilm/studio/server/person-merge.test.mjs','packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs']);
+const WORKER_MANDATORY = Object.freeze(['default native worker merges two roots incrementally; stop waits for idle actual exit and restart is cold','stop waits for current and two retired actual threads, one exit at a time']);
 const MANDATORY = 'real Windows file-symbolic marker refuses before native callback';
 const PACKAGE_URL = 'https://registry.npmjs.org/playwright-core/-/playwright-core-1.61.1.tgz';
 const PACKAGE_SHA512 = 'h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==';
 const MAX_ARCHIVE = 20 * 1024 * 1024, MAX_UNPACKED = 32 * 1024 * 1024;
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 // Diagnostics use identity only: never inspect thrown objects, even to redact.
-const FAILURE_CODES = new Set(["ARCHIVE_ANCESTOR","ARCHIVE_CHECKSUM","ARCHIVE_COMPRESSION","ARCHIVE_COUNT","ARCHIVE_DUPLICATE","ARCHIVE_EXTRACT","ARCHIVE_FIELD","ARCHIVE_FORMAT","ARCHIVE_LINK","ARCHIVE_LIST","ARCHIVE_NUMBER","ARCHIVE_PATH","ARCHIVE_SIZE","ARCHIVE_TERMINATOR","ARCHIVE_TRAILING","ARCHIVE_TYPE","CONTEXT_INVALID","GIT_DIRTY","GIT_HIDDEN","GIT_INVALID","HEAD_CHANGED","NODE_VERSION","PACKAGE_DEPENDENCIES","PACKAGE_DIGEST","PACKAGE_EXISTS","PACKAGE_FETCH","PACKAGE_LICENSE","PACKAGE_METADATA","PACKAGE_NOTICE","PACKAGE_PIN","PACKAGE_SIZE","PACKAGE_TREE","PATH_ALIAS","PATH_CASE","PATH_EXISTS","PATH_INVALID","PATH_MISSING","PATH_TYPE","PLATFORM_INVALID","PORT_NOT_FREE","SOURCE_CHANGED","SOURCE_ENCODING","SOURCE_PIN","SOURCE_SET","SOURCE_TREE","SOURCE_TYPE","STAGE_NOT_EMPTY","TAP_COUNT","TAP_INVALID","TAP_NAME","TAP_STRUCTURE","TAP_SUMMARY","TEST_PROCESS","TOOL_CAPABILITY","TOOL_CHANGED","TOOL_HASH","TOOL_PATH","TOOL_TYPE","UNEXPECTED"]);
-const FAILURE_PHASES = new Set(["context","platform-node","workspace","node-path","systemroot","system32","tar","git","owned-directory","source-snapshot","package-pins","fixture-directory","fetch","archive","tests","post-check","result","unknown"]);
+const FAILURE_CODES = new Set(["ARCHIVE_ANCESTOR","ARCHIVE_CHECKSUM","ARCHIVE_COMPRESSION","ARCHIVE_COUNT","ARCHIVE_DUPLICATE","ARCHIVE_EXTRACT","ARCHIVE_FIELD","ARCHIVE_FORMAT","ARCHIVE_LINK","ARCHIVE_LIST","ARCHIVE_NUMBER","ARCHIVE_PATH","ARCHIVE_SIZE","ARCHIVE_TERMINATOR","ARCHIVE_TRAILING","ARCHIVE_TYPE","CONTEXT_INVALID","GIT_DIRTY","GIT_HIDDEN","GIT_INVALID","HEAD_CHANGED","NODE_VERSION","PACKAGE_DEPENDENCIES","PACKAGE_DIGEST","PACKAGE_EXISTS","PACKAGE_FETCH","PACKAGE_LICENSE","PACKAGE_METADATA","PACKAGE_NOTICE","PACKAGE_PIN","PACKAGE_SIZE","PACKAGE_TREE","PATH_ALIAS","PATH_CASE","PATH_EXISTS","PATH_INVALID","PATH_MISSING","PATH_TYPE","PLATFORM_INVALID","PORT_NOT_FREE","SOURCE_CHANGED","SOURCE_ENCODING","SOURCE_PIN","SOURCE_SET","SOURCE_TREE","SOURCE_TYPE","STAGE_NOT_EMPTY","TAP_COUNT","TAP_INVALID","TAP_NAME","TAP_STRUCTURE","TAP_SUMMARY","TEST_PROCESS","TOOL_CAPABILITY","TOOL_CHANGED","TOOL_HASH","TOOL_PATH","TOOL_TYPE","UNEXPECTED","WORKER_EVIDENCE","WORKER_PROCESS"]);
+const FAILURE_PHASES = new Set(["context","platform-node","workspace","node-path","systemroot","system32","tar","git","owned-directory","source-snapshot","package-pins","fixture-directory","fetch","archive","tests","post-check","result","worker-directory","worker-tests","worker-post-check","worker-result","unknown"]);
 const ownedFailureCodes = new WeakMap();
 const diagnosticFailures = new WeakMap();
 function ownedFailure(code) {
@@ -429,11 +436,39 @@ export async function runNativeStudioCI() {
  }
  diagnostics.enter('result');
  // A returned process result remains auditable even for failed TAP/exit.
- if(result)privateFile(owned('results/process.json'),JSON.stringify({commit:context.commit,node:process.version,exitCode:Number.isInteger(result.status)?result.status:null,processError:Boolean(result.error),signal:Boolean(result.signal),ports,tapSha256:hash(result.stdout??Buffer.alloc(0)),stderrSha256:hash(result.stderr??Buffer.alloc(0)),source:before,package:packageInfo},null,2)+'\n');
+ if(result)privateFile(owned('results/process.json'),JSON.stringify({commit:context.commit,node:process.version,exitCode:Number.isInteger(result.status)?result.status:null,processError:Boolean(result.error),signal:Boolean(result.signal),counts,firstFailure:diagnostics.summary(),ports,tapSha256:hash(result.stdout??Buffer.alloc(0)),stderrSha256:hash(result.stderr??Buffer.alloc(0)),source:before,package:packageInfo},null,2)+'\n');
  if(diagnostics.summary()!==null)throw diagnosticFailure(diagnostics.summary());
  recheckSystemGit(gitExe);
  recheckSystemTar(tarExe);
- const summary={commit:context.commit,node:process.version,testFiles:TESTS,...counts,exitCode:result.status,ports,source:before,package:packageInfo,tapSha256:hash(result.stdout),stderrSha256:hash(result.stderr),tarSha256:tarExe.sha256};
+ // Native110 has passed its own original checks and process receipt above.
+ // A different process gets only its fresh lifecycle scratch, never Native HOME.
+ diagnostics.enter('worker-directory');
+ const worker=deriveMergeWorkerEnvironment(process.env,systemRoot);
+ directory(path.win32.dirname(path.win32.dirname(worker.ownedRoot)));
+ directory(path.win32.dirname(worker.ownedRoot));directory(worker.ownedRoot,true);directory(worker.scratch,true);
+ assertSame(before,snapshot(context,gitExe,env));await assertPortsFree();
+ let workerResult,workerCounts;
+ const workerDiagnostics=createNativeStudioDiagnostics();
+ diagnostics.enter('worker-tests');workerDiagnostics.enter('worker-tests');
+ try {
+  workerResult=child(process.execPath,['--test','--test-reporter=tap','--test-concurrency=1','--test-timeout=60000',...WORKER_TESTS],context.workspace,worker.env,180_000);
+  privateFile(owned('logs/worker.tap'),workerResult.stdout??Buffer.alloc(0));privateFile(owned('logs/worker.stderr'),workerResult.stderr??Buffer.alloc(0));
+  const assessment=assessMergeWorkerProcess(workerResult);
+  if(assessment.ok)workerCounts=assessment.counts;else {workerDiagnostics.capture(assessment.failure);diagnostics.capture(assessment.failure);}
+ } catch(error) {
+  workerDiagnostics.capture(error);diagnostics.capture(error);
+ } finally {
+  diagnostics.enter('worker-post-check');workerDiagnostics.enter('worker-post-check');
+  try {ports=await assertPortsFree();assertSame(before,snapshot(context,gitExe,env));recheckSystemGit(gitExe);recheckSystemTar(tarExe);}
+  catch(error){workerDiagnostics.capture(error);diagnostics.capture(error);throw error;}
+ }
+ diagnostics.enter('worker-result');
+ if(workerResult)privateFile(owned('results/worker-process.json'),JSON.stringify({commit:context.commit,node:process.version,testFiles:WORKER_TESTS,counts:workerCounts,firstFailure:workerDiagnostics.summary(),exitCode:Number.isInteger(workerResult.status)?workerResult.status:null,processError:Boolean(workerResult.error),signal:Boolean(workerResult.signal),ports,tapSha256:hash(workerResult.stdout??Buffer.alloc(0)),stderrSha256:hash(workerResult.stderr??Buffer.alloc(0)),source:before,package:packageInfo},null,2)+'\n');
+ if(diagnostics.summary()!==null)throw diagnosticFailure(diagnostics.summary());
+ diagnostics.enter('result');
+ const nativeSummary={testFiles:TESTS,...counts,exitCode:result.status,tapSha256:hash(result.stdout),stderrSha256:hash(result.stderr)};
+ const workerSummary={testFiles:WORKER_TESTS,...workerCounts,exitCode:workerResult.status,tapSha256:hash(workerResult.stdout),stderrSha256:hash(workerResult.stderr)};
+ const summary={commit:context.commit,node:process.version,testFiles:TESTS.concat(WORKER_TESTS),total:161,passed:161,failed:0,skipped:0,cancelled:0,todo:0,native:nativeSummary,worker:workerSummary,exitCode:0,ports,source:before,package:packageInfo,tarSha256:tarExe.sha256};
  privateFile(owned('results/summary.json'),JSON.stringify(summary,null,2)+'\n');
  return summary;
  } catch(error) {
@@ -442,4 +477,48 @@ export async function runNativeStudioCI() {
 }
 if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
  runNativeStudioCI().then(summary=>process.stdout.write(JSON.stringify(summary)+'\n')).catch(error=>{process.stderr.write(JSON.stringify(formatNativeStudioFailure('unknown',error))+'\n');process.exitCode=1;});
+}
+
+// Fixed separate suite: never parameterize the expected count or evidence.
+export function verifyMergeWorkerTap(tap,exitCode) {
+ need(arguments.length===2 && typeof tap==='string' && tap.length<=8*1024*1024,'TAP_INVALID');
+ tap=tap.replaceAll('\r\n','\n');
+ let names;try {names=verifyTap(tap,exitCode,WORKER_MANDATORY);}catch {throw ownedFailure('TAP_INVALID');}
+ need(names.length===51 && new Set(names).size===51,'TAP_COUNT');
+ need(names.every(n=>/^[\x20-\x7e]{1,400}$/.test(n)),'TAP_NAME');
+ const lines=tap.split('\n');
+ for(const [key,value] of Object.entries({tests:51,suites:0,pass:51,fail:0,cancelled:0,skipped:0,todo:0})) {
+  const summaries=lines.filter(line=>line.startsWith('# '+key+' '));
+  need(summaries.length===1 && summaries[0]==='# '+key+' '+value,'TAP_SUMMARY');
+ }
+ for(const line of lines) {
+  need(!/^\s*Bail out!/i.test(line),'TAP_STRUCTURE');
+  if(/^\s*(?:not )?ok(?:\s|$)/.test(line))need(/^ok [1-9][0-9]* - [^\r\n]+$/.test(line),'TAP_STRUCTURE');
+ }
+ const evidence=lines.filter(line=>/owned.*worker.*evidence/i.test(line));
+ need(evidence.length===1,'WORKER_EVIDENCE');
+ const match=/^# owned Worker evidence: created=18, actual exits=18, peak=([1-4]), final alive=0$/.exec(evidence[0]);
+ need(match,'WORKER_EVIDENCE');
+ return Object.freeze({total:51,passed:51,failed:0,skipped:0,cancelled:0,todo:0,testNames:Object.freeze(names),workerEvidence:Object.freeze({created:18,actualExits:18,peak:Number(match[1]),finalAlive:0})});
+}
+// Pure derivation, not an execution capability. Runtime still validates every
+// ancestor and atomically claims the new attempt before using this environment.
+export function deriveMergeWorkerEnvironment(facts,systemRoot) {
+ need(arguments.length===2,'CONTEXT_INVALID');
+ const context=validateNativeStudioContext(facts);
+ windows(systemRoot);
+ const ownedRoot=path.win32.join(context.workspace,'.dev','merge-worker-lifecycle',facts.GITHUB_RUN_ID,facts.GITHUB_RUN_ATTEMPT);
+ const scratch=path.win32.join(ownedRoot,'scratch');windows(ownedRoot);windows(scratch);
+ const system32=path.win32.join(systemRoot,'System32');
+ const gitDir=path.win32.join(path.win32.parse(systemRoot).root,'Program Files','Git','cmd');
+ const env={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:path.win32.join(system32,'cmd.exe'),PATH:system32+';'+gitDir,TEMP:scratch,TMP:scratch,TMPDIR:scratch,HOME:scratch,USERPROFILE:scratch,APPDATA:scratch,LOCALAPPDATA:scratch,XDG_CACHE_HOME:scratch,npm_config_cache:scratch,GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:path.win32.join(context.ownedRoot,'empty.gitconfig'),GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0',PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:'1'};
+ return Object.freeze({ownedRoot,scratch,env:Object.freeze(env)});
+}
+export function assessMergeWorkerProcess(result) {
+ try {
+  need(!result.error && !result.signal,'WORKER_PROCESS');
+  return Object.freeze({ok:true,counts:verifyMergeWorkerTap(utf8(result.stdout),result.status)});
+ } catch(failure) {
+  return Object.freeze({ok:false,failure});
+ }
 }

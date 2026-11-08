@@ -25,6 +25,11 @@ on:
       - packages/openfilm/studio/server/watch.mjs
       - packages/openfilm/studio/server/watch.test.mjs
       - packages/openfilm/studio/server/server-watch-drain.test.mjs
+      - packages/openfilm/studio/server/person-edits.mjs
+      - packages/openfilm/studio/server/person-merge.mjs
+      - packages/openfilm/studio/server/person-merge-worker.mjs
+      - packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs
+      - packages/openfilm/studio/server/person-merge.test.mjs
   workflow_dispatch:
 permissions:
   contents: read

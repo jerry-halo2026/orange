@@ -14,6 +14,9 @@
  *
  * Each part is a folder of its own, so the project's export (exports.mjs, kind 'project') takes or leaves it.
  */
+import { types } from 'node:util';
+import { AsyncLocalStorage } from 'node:async_hooks';
+import { createProjectControlGuard, assertGuardSwitch, controlError, ordinaryControlPath } from './project-control-guard.mjs';
 import { readIsolationProfile, assertIsolationPath } from '../../src/development-isolation.mjs';
 import { studioHomeDir } from '../../src/locations.mjs';
 import { moveToTrash } from './trash.mjs';
@@ -21,12 +24,12 @@ import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import { cp, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { basename, dirname, join, resolve, sep } from 'node:path';
+import { basename, dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { EMPTY_FILM } from './film.mjs';
 import { FILM_FILE, filmHtml } from '../../src/film-doc.mjs';
 import { writeAtomic } from './atomic.mjs';
 import { coverAt } from './cover.mjs';
-import { libraryProjects, libraryRoot } from '../../src/locations.mjs';
+import { libraryProjects, libraryRoot as nativeLibraryRoot, libraryDefault, sharedHome } from '../../src/locations.mjs';
 import { projectMissing } from './project-presence.mjs';
 import { compoundOuter } from './parts.mjs';
 
@@ -51,8 +54,8 @@ export const studioHome = studioHomeDir;
  * The key this machine's Studio opens with (~/.openfilm/key, readable by this user only), the same at every launch: an
  * address Studio printed, and a page open on it, still work after it restarts (an update, a reboot).
  */
-export function studioKey() {
-  const file = join(studioHome(), 'key');
+function nativeStudioKey() {
+  const file = ordinaryControlPath(join(studioHome(), 'key'));
   try {
     const key = readFileSync(file, 'utf8').trim();
     if (/^[0-9a-f]{48}$/.test(key)) return key;
@@ -64,7 +67,13 @@ export function studioKey() {
 }
 
 /** Where new projects go: the folder chosen in Settings, else ~/Movies/OpenFilm/Projects on macOS, ~/Videos/OpenFilm/Projects elsewhere (src/locations.mjs). */
-export { libraryRoot };
+export function libraryRoot() {
+  return guardedSync(homeResources(), () => {
+    checkPrivateControlState();
+    const root = nativeLibraryRoot();
+    return guardedSync({ homes: [], roots: [resolve(root)], targets: [] }, () => root);
+  });
+}
 
 /**
  * @typedef {{ id: string, path: string, openedAt: number, folderId?: string }} Recent
@@ -84,14 +93,22 @@ function exclusive(change) {
 }
 
 /** The list of projects and the person's preferences, read fresh each time (another Studio command may have written). */
-export async function readState() {
-  try {
-    const raw = JSON.parse(await readFile(join(studioHome(), 'studio.json'), 'utf8'));
-    return /** @type {StudioState} */ ({
-      recent: Array.isArray(raw.recent) ? raw.recent : [],
-      folders: Array.isArray(raw.folders) ? raw.folders.filter((/** @type {any} */ f) => f && typeof f.id === 'string' && typeof f.name === 'string') : [],
-    });
-  } catch { return /** @type {StudioState} */ ({ recent: [], folders: [] }); }
+async function native_readState() {
+  let text;
+  try { text = await readFile(join(studioHome(), 'studio.json'), 'utf8'); }
+  catch (e) { if (e?.code === 'ENOENT') return /** @type {StudioState} */ ({ recent: [], folders: [] }); throw controlError(); }
+  let raw;
+  try { raw = JSON.parse(text); } catch { throw controlError(); }
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || (raw.recent !== undefined && !Array.isArray(raw.recent))) throw controlError();
+  const recent = raw.recent ?? [];
+  // Validate the whole list before resolving/admitting any item; corruption is not an empty history.
+  if (recent.some(r => !r || typeof r !== 'object' || Array.isArray(r) || typeof r.id !== 'string' || typeof r.path !== 'string' || !isAbsolute(r.path) || r.path.includes('\0'))) throw controlError();
+  const state = /** @type {StudioState} */ ({
+    recent,
+    folders: Array.isArray(raw.folders) ? raw.folders.filter((/** @type {any} */ f) => f && typeof f.id === 'string' && typeof f.name === 'string') : [],
+  });
+  await includeProjects(state.recent.map(r => resolve(r.path)));
+  return state;
 }
 
 /* the file is shared with every OpenFilm on this computer (`npx openfilm`, the app), older or newer: what this one does
@@ -151,7 +168,8 @@ async function folderId(/** @type {string} */ folder, /** @type {StudioState} */
  * written), so the editor can ask before it starts a film in a folder.
  * @param {string} path @param {{ create?: boolean }} [options]
  */
-export async function openProject(path, { create = true } = {}) {
+async function native_openProject(path, { create = true } = {}) {
+  const state = await native_readState();
   const profile = readIsolationProfile();
   if (profile) {
     try { assertIsolationPath(profile,path,'projects'); }
@@ -168,8 +186,7 @@ export async function openProject(path, { create = true } = {}) {
   refuse(folder);
   await writeFile(join(folder, TOOL_DIR, '.gitignore'), '*\n');
   if (!existsSync(join(folder, FILM_FILE))) await writeFile(join(folder, FILM_FILE), filmHtml(EMPTY_FILM), { flag: 'wx' }).catch(() => {});
-  return exclusive(async () => {
-    const state = await readState();
+  {
     const id = await folderId(folder, state);
     /* reopened: it stays in its folder of the list */
     const listed = state.recent.find((r) => r.id === id)?.folderId;
@@ -177,17 +194,19 @@ export async function openProject(path, { create = true } = {}) {
     state.recent = [entry, ...state.recent.filter((r) => r.id !== id && r.path !== folder)];
     await writeState(state);
     return describe(entry);
-  });
+  }
 }
 
 /** A new project in the library: "Untitled", "Untitled 2", … never an existing folder. */
-export async function createProject(name = 'Untitled') {
+async function native_createProject(name = 'Untitled') {
+  await native_readState();
   const clean = folderName(name);
   const root = libraryRoot();
   await mkdir(root, { recursive: true });
   let candidate = join(root, clean);
   for (let n = 2; existsSync(candidate); n++) candidate = join(root, `${clean} ${n}`);
-  return openProject(candidate);
+  await includeProjects([candidate]);
+  return native_openProject(candidate);
 }
 
 /**
@@ -249,7 +268,9 @@ async function followLibrary(state) {
   const before = state.recent.length;
   state.recent = state.recent.filter((r) => !((dirname(r.path) === real || dirname(r.path) === root) && !existsSync(r.path)));
   let changed = state.recent.length !== before;
-  for (const found of libraryProjects(real)) {
+  const foundProjects = libraryProjects(real);
+  await includeProjects([...state.recent.map(r => resolve(r.path)), ...foundProjects]);
+  for (const found of foundProjects) {
     if (state.recent.some((r) => r.path === found)) continue;
     await mkdir(join(found, TOOL_DIR), { recursive: true });
     await writeFile(join(found, TOOL_DIR, '.gitignore'), '*\n');
@@ -266,9 +287,9 @@ async function followLibrary(state) {
 }
 
 /** Every project of the library and the ones opened from elsewhere, most recent first; one whose folder is gone says so (`missing`). */
-export async function listProjects() {
+async function native_listProjects() {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     if (await followLibrary(state)) await writeState(state);
     const folders = new Set(state.folders.map((f) => f.id));
     /* a project in a folder that was deleted is back at the top level; a compound clip's film is reached through
@@ -287,14 +308,14 @@ function listFolderName(/** @type {unknown} */ name) {
 }
 
 /** The list's folders, oldest first. */
-export async function listFolders() {
-  return (await readState()).folders;
+async function native_listFolders() {
+  return (await native_readState()).folders;
 }
 
 /** A new folder in the list: at the top level, or in the folder `parentId`. */
-export async function createFolder(/** @type {unknown} */ name, /** @type {unknown} */ parentId = null) {
+async function native_createFolder(/** @type {unknown} */ name, /** @type {unknown} */ parentId = null) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const parent = typeof parentId === 'string' && parentId ? parentId : null;
     if (parent && !state.folders.some((f) => f.id === parent)) throw new ProjectError('no such folder', 404);
     const folder = { id: newId(), name: listFolderName(name), createdAt: Date.now(), ...(parent ? { parentId: parent } : {}) };
@@ -305,9 +326,9 @@ export async function createFolder(/** @type {unknown} */ name, /** @type {unkno
 }
 
 /** Rename a folder of the list. */
-export async function renameFolder(/** @type {string} */ id, /** @type {unknown} */ name) {
+async function native_renameFolder(/** @type {string} */ id, /** @type {unknown} */ name) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const folder = state.folders.find((f) => f.id === id);
     if (!folder) throw new ProjectError('no such folder', 404);
     folder.name = listFolderName(name);
@@ -321,9 +342,9 @@ export async function renameFolder(/** @type {string} */ id, /** @type {unknown}
  * inside it.
  * @param {string} id @param {string | null} parentId
  */
-export async function moveFolder(id, parentId) {
+async function native_moveFolder(id, parentId) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const folder = state.folders.find((f) => f.id === id);
     if (!folder) throw new ProjectError('no such folder', 404);
     if (parentId != null && !state.folders.some((f) => f.id === parentId)) throw new ProjectError('no such folder', 404);
@@ -349,9 +370,9 @@ export function folderTree(folders, id) {
  * Take a folder off the list, with the folders inside it; their projects go back to the top level. Returns the ids of
  * the projects that were in them (deleting a folder deletes them too: the caller deletes each, see deleteProject).
  */
-export async function deleteFolder(/** @type {string} */ id) {
+async function native_deleteFolder(/** @type {string} */ id) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     if (!state.folders.some((f) => f.id === id)) throw new ProjectError('no such folder', 404);
     const gone = folderTree(state.folders, id);
     state.folders = state.folders.filter((f) => !gone.has(f.id));
@@ -363,9 +384,9 @@ export async function deleteFolder(/** @type {string} */ id) {
 }
 
 /** Put a project in a folder of the list, or (null) back at the top level. */
-export async function moveProjectToFolder(/** @type {string} */ id, /** @type {string | null} */ folderId) {
+async function native_moveProjectToFolder(/** @type {string} */ id, /** @type {string | null} */ folderId) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const entry = state.recent.find((r) => r.id === id);
     if (!entry) throw new ProjectError('no such project', 404);
     if (folderId != null && !state.folders.some((f) => f.id === folderId)) throw new ProjectError('no such folder', 404);
@@ -377,8 +398,8 @@ export async function moveProjectToFolder(/** @type {string} */ id, /** @type {s
 }
 
 /** The project with this id, or a 404. */
-export async function projectById(/** @type {string} */ id) {
-  const found = (await readState()).recent.find((r) => r.id === id);
+async function native_projectById(/** @type {string} */ id) {
+  const found = (await native_readState()).recent.find((r) => r.id === id);
   if (!found) throw new ProjectError('no such project', 404);
   return describe(found);
 }
@@ -387,9 +408,9 @@ export async function projectById(/** @type {string} */ id) {
  * The person opened the project in Studio (from the Projects window, or by its address): it is the one opened last, as
  * `openProject` makes a project the CLI opens, so `openfilm open` alone comes back to it.
  */
-export async function markOpened(/** @type {string} */ id) {
+async function native_markOpened(/** @type {string} */ id) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const entry = state.recent.find((r) => r.id === id);
     if (!entry) throw new ProjectError('no such project', 404);
     entry.openedAt = Date.now();
@@ -405,9 +426,9 @@ export async function markOpened(/** @type {string} */ id) {
  * folder must hold a film, and not be another project of the list.
  * @param {string} id @param {string} path
  */
-export async function locateProject(id, path) {
+async function native_locateProject(id, path) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const entry = state.recent.find((r) => r.id === id);
     if (!entry) throw new ProjectError('no such project', 404);
     const profile = readIsolationProfile();
@@ -436,12 +457,13 @@ export async function locateProject(id, path) {
 }
 
 /** Rename a project: its folder is renamed beside itself (the project's name is its folder's name). */
-export async function renameProject(/** @type {string} */ id, /** @type {string} */ name) {
+async function native_renameProject(/** @type {string} */ id, /** @type {string} */ name) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const entry = state.recent.find((r) => r.id === id);
     if (!entry) throw new ProjectError('no such project', 404);
     const to = join(dirname(entry.path), folderName(name));
+    await includeProjects([to]);
     if (to === entry.path) return describe(entry);
     /* taken: retrying can't help, so it says so; the same folder in another case (on a disk that ignores it) is not */
     if (existsSync(to) && !sameFolder(to, entry.path)) throw new ProjectError(`the name "${basename(to)}" is taken: there is already a folder by that name beside this project`, 409);
@@ -456,17 +478,17 @@ export async function renameProject(/** @type {string} */ id, /** @type {string}
  * Delete a project: its folder goes to the system's Trash (where the person can still take it back), and it leaves the
  * list. An unavailable project just leaves the list; any remaining files are kept.
  */
-export async function deleteProject(/** @type {string} */ id) {
-  const found = (await readState()).recent.find((r) => r.id === id);
+async function native_deleteProject(/** @type {string} */ id) {
+  const found = (await native_readState()).recent.find((r) => r.id === id);
   if (!found) throw new ProjectError('no such project', 404);
   if (!projectMissing(found.path)) await moveToTrash(found.path);
   await forgetProject(id);
 }
 
 /** Take a project off the list. Its folder stays as it is. */
-export async function forgetProject(/** @type {string} */ id) {
+async function native_forgetProject(/** @type {string} */ id) {
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     state.recent = state.recent.filter((r) => r.id !== id);
     await writeState(state);
   });
@@ -481,10 +503,14 @@ export async function forgetProject(/** @type {string} */ id) {
  * trash on another disk) stays on the old disk and is named in `left`: the project has moved, the copy being whole.
  * @param {string | null} to @param {{ move?: boolean, choose: (folder: string | null) => void }} options
  */
-export async function moveLibrary(to, { move = false, choose }) {
+async function native_moveLibrary(to, { move = false, choose }) {
   const from = libraryRoot();
+  await native_readState();
+  await includeProjects(libraryProjects(from));
+  await includeProjects([resolve(from), resolve(to ?? libraryDefault())]);
   choose(to);
   const into = libraryRoot();
+  await includeProjects([resolve(into)]);
   /** @type {{ name: string, error: string }[]} */
   const failed = [];
   /** @type {{ name: string, path: string, error: string }[]} */
@@ -493,11 +519,14 @@ export async function moveLibrary(to, { move = false, choose }) {
   if (!move || resolve(from) === resolve(into) || !existsSync(from)) return { moved, failed, left };
   await mkdir(into, { recursive: true });
   return exclusive(async () => {
-    const state = await readState();
+    const state = await native_readState();
     const realFrom = realpathSync(from);
-    for (const folder of libraryProjects(from)) {
+    const moving = libraryProjects(from);
+    await includeProjects(moving);
+    for (const folder of moving) {
       let target = join(into, basename(folder));
       for (let n = 2; existsSync(target); n++) target = join(into, `${basename(folder)} ${n}`);
+      await includeProjects([target]);
       try {
         try {
           await rename(folder, target);
@@ -525,5 +554,140 @@ export async function moveLibrary(to, { move = false, choose }) {
     }
     await writeState(state);
     return { moved, failed, left };
+  });
+}
+
+const projectGuardContext = new AsyncLocalStorage();
+const defaultProjectGuard = createProjectControlGuard();
+export function withProjectControlGuard(guard, work) {
+  try { assertGuardSwitch(guard); } catch (e) { throw new ProjectError(e.message, e.status, e.code); }
+  return projectGuardContext.run(guard, work);
+}
+
+const projectLeaseContext = new AsyncLocalStorage();
+function homeResources() { return { homes: [...new Set([resolve(studioHome()), resolve(sharedHome())])], roots: [], targets: [] }; }
+function asProjectError(e) { if (e?.code?.startsWith('control-') && !(e instanceof ProjectError)) return new ProjectError(e.message, e.status, e.code); return e; }
+function guardedSync(resources, work) { try { return (projectGuardContext.getStore() ?? defaultProjectGuard).withNativeAccessSync(resources, work); } catch (e) { throw asProjectError(e); } }
+async function includeProjects(paths) {
+  const lease = projectLeaseContext.getStore();
+  if (!lease) throw new ProjectError('Project control is invalid.', 403, 'control-invalid');
+  if (!paths.length) return;
+  await lease.include(paths);
+  // compoundOuter itself reads native path evidence, only after the candidate paths were admitted.
+  const outers = paths.map(p => compoundOuter(p));
+  await lease.include(outers);
+  // Preserve native project-root aliases, but never traverse a linked metadata directory/file.
+  // Batch every intended metadata path before the first caller can initialize any project.
+  const metadata = [...new Set([...paths, ...outers])].flatMap(project => {
+    let parent = resolve(project), tail = [];
+    while (!existsSync(parent)) { tail.unshift(basename(parent)); const up = dirname(parent); if (up === parent) throw controlError(); parent = up; }
+    const real = resolve(realpathSync(parent), ...tail);
+    return ['', 'id', '.gitignore', 'cache/film-duration.json', 'cover.jpg', 'cover.png', 'cover.webp', 'cover.gif'].map(leaf => ordinaryControlPath(join(real, TOOL_DIR, leaf)));
+  });
+  await lease.include(metadata);
+}
+async function guardedProject(targets, work) {
+  const guard = projectGuardContext.getStore() ?? defaultProjectGuard;
+  try {
+    return await guard.withNativeAccess(homeResources(), lease => projectLeaseContext.run(lease, async () => {
+      checkPrivateControlState();
+      const root = libraryRoot();
+      await includeProjects([resolve(root), ...targets]);
+      return work();
+    }));
+  } catch (e) { throw asProjectError(e); }
+}
+export function studioKey() { return guardedSync(homeResources(), () => { checkPrivateControlState(); return nativeStudioKey(); }); }
+function checkPrivateControlState() {
+  for (const home of homeResources().homes) {
+    ordinaryControlPath(join(home, 'prefs.json'));
+    const file = ordinaryControlPath(join(home, 'studio.json'));
+    if (!existsSync(file)) continue;
+    let raw;
+    try { raw = JSON.parse(readFileSync(file, 'utf8')); } catch { throw controlError(); }
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw controlError();
+    if (Object.hasOwn(raw, 'orangeControl')) throw controlError('control-required');
+  }
+}
+export async function readState() { const args = []; return guardedProject([], () => native_readState(...args)); }
+export async function openProject(path, options) { const args = [path, options]; return guardedProject([resolve(args[0])], () => exclusive(() => native_openProject(...args))); }
+export async function createProject(name) { const args = [name]; return guardedProject([], () => exclusive(() => native_createProject(...args))); }
+export async function listProjects() { const args = []; return guardedProject([], () => native_listProjects(...args)); }
+export async function listFolders() { const args = []; return guardedProject([], () => native_listFolders(...args)); }
+export async function createFolder(name, parentId) { const args = [name, parentId]; return guardedProject([], () => native_createFolder(...args)); }
+export async function renameFolder(id, name) { const args = [id, name]; return guardedProject([], () => native_renameFolder(...args)); }
+export async function moveFolder(id, parentId) { const args = [id, parentId]; return guardedProject([], () => native_moveFolder(...args)); }
+export async function deleteFolder(id) { const args = [id]; return guardedProject([], () => native_deleteFolder(...args)); }
+export async function moveProjectToFolder(id, folderId) { const args = [id, folderId]; return guardedProject([], () => native_moveProjectToFolder(...args)); }
+export async function projectById(id) { const args = [id]; return guardedProject([], () => native_projectById(...args)); }
+export async function markOpened(id) { const args = [id]; return guardedProject([], () => native_markOpened(...args)); }
+export async function locateProject(id, path) { const args = [id, path]; return guardedProject([resolve(args[1])], () => native_locateProject(...args)); }
+export async function renameProject(id, name) { const args = [id, name]; return guardedProject([], () => native_renameProject(...args)); }
+export async function deleteProject(id) { const args = [id]; return guardedProject([], () => native_deleteProject(...args)); }
+export async function forgetProject(id) { const args = [id]; return guardedProject([], () => native_forgetProject(...args)); }
+export async function moveLibrary(to, options) { const args = [to, options]; return guardedProject([resolve(args[0] ?? libraryDefault())], () => native_moveLibrary(...args)); }
+
+const projectControlCapabilities = Object.freeze({ scope: 'projects-admission-v1', projectsApiFenced: true, registrationWritesDenyMarkersOnly: true, nativeEntryPointsFenced: false, backgroundIoDrained: false, productionControlledActivation: false, ownerAuthorization: false });
+/** Trusted Node producer only. This writes deny markers, never an owner or an activation permission. */
+export async function registerProjectControl(identity) {
+  const invalid = () => new ProjectError('Project control is invalid.', 403, 'control-invalid');
+  // Inspect descriptors rather than executing a supplied getter.
+  if (types.isProxy(identity) || !identity || typeof identity !== 'object' || Object.getPrototypeOf(identity) !== Object.prototype) throw invalid();
+  const descriptors = Object.getOwnPropertyDescriptors(identity);
+  if (Reflect.ownKeys(descriptors).length !== 2 || ['domainId','environmentId'].some(k => !descriptors[k] || !('value' in descriptors[k]) || typeof descriptors[k].value !== 'string' || !descriptors[k].value.trim())) throw invalid();
+  const { domainId, environmentId } = identity;
+  const guard = projectGuardContext.getStore() ?? defaultProjectGuard;
+  return exclusive(async () => {
+    let reservation;
+    try {
+      // Reserve the prefs homes before discovering the library, then atomically reserve the whole set.
+      const homes = homeResources();
+      reservation = await guard.acquireControlledReservation(homes);
+      for (const home of homes.homes) ordinaryControlPath(join(home, 'prefs.json'));
+      const root = resolve(nativeLibraryRoot());
+      reservation.close(); reservation = null;
+      reservation = await guard.acquireControlledReservation({ ...homes, roots: [root] });
+      if (resolve(nativeLibraryRoot()) !== root) throw invalid();
+      const home = resolve(studioHome()), file = ordinaryControlPath(join(home, 'studio.json'));
+      const markers = [...new Set([home, root])].map(at => ordinaryControlPath(join(at, '.openfilm-control.json')));
+      // A registration may reopen its own two committed markers, never an ancestor's domain.
+      for (const start of [...homes.homes, root]) for (let at = start;; at = dirname(at)) {
+        for (const candidate of [join(at, '.openfilm-control.json'), join(at, '.film', 'control.json')]) {
+          ordinaryControlPath(candidate);
+          if (existsSync(candidate) && !markers.includes(candidate)) throw controlError('control-required');
+        }
+        if (dirname(at) === at) break;
+      }
+      let raw = {};
+      if (existsSync(file)) {
+        try { raw = JSON.parse(await readFile(file, 'utf8')); } catch { throw invalid(); }
+        if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw invalid();
+      }
+      // Resolve the library without creating it, including a missing final tail.
+      let parent = root, tail = [];
+      while (!existsSync(parent)) { tail.unshift(basename(parent)); parent = dirname(parent); }
+      const canonicalRoot = resolve(realpathSync(parent), ...tail);
+      const expected = { version: 1, domainId, environmentId, registration: 'committed', roots: [canonicalRoot] };
+      const control = raw.orangeControl;
+      if (control !== undefined) {
+        if (!control || typeof control !== 'object' || Array.isArray(control) || Object.keys(control).sort().join() !== Object.keys(expected).sort().join() || control.version !== 1 || control.domainId !== domainId || control.environmentId !== environmentId || control.registration !== 'committed' || !Array.isArray(control.roots) || control.roots.length !== 1 || control.roots[0] !== canonicalRoot) throw invalid();
+        for (const marker of markers) {
+          let value; try { value = JSON.parse(await readFile(marker, 'utf8')); } catch { throw invalid(); }
+          if (!value || Object.keys(value).sort().join() !== 'domainId,version' || value.version !== 1 || value.domainId !== domainId) throw invalid();
+        }
+      } else {
+        if (markers.some(p => existsSync(p))) throw invalid();
+        await mkdir(home, { recursive: true });
+        // No rollback removes pending state: an interrupted registration remains denied.
+        await writeAtomic(file, JSON.stringify({ ...raw, orangeControl: { ...expected, registration: 'pending' } }));
+        await mkdir(root, { recursive: true });
+        for (const marker of markers) await writeFile(marker, JSON.stringify({ version: 1, domainId }), { flag: 'wx', mode: 0o600 });
+        await writeAtomic(file, JSON.stringify({ ...raw, orangeControl: expected }));
+      }
+      const handle = Object.freeze({ ...reservation, capabilities: projectControlCapabilities });
+      reservation = null;
+      return handle;
+    } catch (e) { throw e?.code?.startsWith('control-') ? asProjectError(e) : invalid(); }
+    finally { if (reservation) reservation.close(); }
   });
 }

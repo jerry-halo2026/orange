@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 27,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "5e0e3d17ba6b2369642a62ca2f198a3f70555032627b9e4a3f04fc2ff60b0b01",
+  "inputs": 37,
+  "reviewProofs": 2,
+  "testFiles": 15,
+  "expected": 781,
+  "typeProjects": 4,
+  "rootOnlyReceipt": true,
+  "unchangedSource": true,
+  "conditions": "externaltrustedN5a84/actualsource/tooling/ports beforeRoot781, nonauthoractualresultreview after; no actual161/dev/PG"
+}

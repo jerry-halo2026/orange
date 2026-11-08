@@ -1,0 +1,93 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "0cf5897404fed87f0c4f171f0dc3ac88734be765",
+  "executor": "/root",
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf",
+      "gitBlobSha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "1f6c8dcbe31ce022e5ffa91c7515f4dbddf2d8e84657d8b914091828c41aa007",
+      "gitBlobSha256": "1f6c8dcbe31ce022e5ffa91c7515f4dbddf2d8e84657d8b914091828c41aa007"
+    }
+  ],
+  "results": [
+    {
+      "name": "pure384",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "counters": {
+        "tests": 384,
+        "pass": 384,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "45bd34552bce46cca4376c60c032a3b4ba7373728a201ebfe344bf0c833efab1",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-driver",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.mjs"
+      ],
+      "exitCode": 0,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-test",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "inputs": 26,
+  "reviewProofs": 2,
+  "exactInverseThreeMappingMatchesBefore": true,
+  "actorArtifacts": [
+    {
+      "path": ".dev/native-type-ci-rebind/impl-20261108-01/baseline.tap",
+      "sha256": "f9399259e97a3fa045059bf54136a4687da8c640a74ca934c31dc3917c93e80c"
+    },
+    {
+      "path": ".dev/native-type-ci-rebind/impl-20261108-01/after.tap",
+      "sha256": "b0d59941b3a5d1bcc9e3e7637b0cb921965a1119abad07a8e9d04d7a11e2f493"
+    },
+    {
+      "path": ".dev/native-type-ci-rebind/impl-20261108-01/native-studio-ci.before.mjs",
+      "sha256": "42e9e8db3bab2ae029ffd64e30886aa645a6a2efe2d11351b3f9f975da036236"
+    },
+    {
+      "path": ".dev/native-type-ci-rebind/impl-20261108-01/native-studio-ci.test.before.mjs",
+      "sha256": "cd810cd52b41e8c6b07aa2143971690516425022b3562cbe499296f8e965116e"
+    }
+  ],
+  "RootProofSHA256": "3805f46ef031716c11d4217779282b0d0f55de53b2ee3980afd22c0546e85bfd",
+  "Git27ProofSHA256": "fcfa37a5bcfe0bc2789b840928210f50645ba8f84d673c92c5f6cfce36588557",
+  "N5a84": {
+    "pre": "7e0b3da6cce982ba91aa88b63fd5c1df543e70610200e47737d9031a2b385471",
+    "post": "7e0b3da6cce982ba91aa88b63fd5c1df543e70610200e47737d9031a2b385471",
+    "exactSource": "7e0b3da6cce982ba91aa88b63fd5c1df543e70610200e47737d9031a2b385471"
+  },
+  "scope": "sourceonly puretests/actualGit binding, no realCLI/toolpipeline/network/Worker/nativeCIruntime",
+  "fullTaskAccepted": false
+}

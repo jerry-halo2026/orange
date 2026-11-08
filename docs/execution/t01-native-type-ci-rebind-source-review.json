@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 26,
+  "commit": "0cf5897404fed87f0c4f171f0dc3ac88734be765",
+  "authorAgent": "/root/native_type_ci_rebind_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedAuthorModel": "gpt-6-luna/medium",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf",
+      "gitBlobSha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "1f6c8dcbe31ce022e5ffa91c7515f4dbddf2d8e84657d8b914091828c41aa007",
+      "gitBlobSha256": "1f6c8dcbe31ce022e5ffa91c7515f4dbddf2d8e84657d8b914091828c41aa007"
+    }
+  ],
+  "scope": "only3reviewedcanonicalSHA mappings inbothdriver/fixture, exactinversebyte-equal toCI25; all300cases/security/Native110/Worker51/workflow unchanged",
+  "Root384": {
+    "tests": 384,
+    "pass": 384,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "RootProofSHA256": "3805f46ef031716c11d4217779282b0d0f55de53b2ee3980afd22c0546e85bfd",
+  "actorReportSHA256": "d3a4670ba9ac10a76e7e69e085654add1143f4dbeb0c49d6c7e4c335d34923d0",
+  "actualGit27": true,
+  "GitProofSHA256": "fcfa37a5bcfe0bc2789b840928210f50645ba8f84d673c92c5f6cfce36588557",
+  "immutableRawAndCanonicalInputs": 26,
+  "reviewProofs": 2,
+  "actorArtifactHashesVerified": 4,
+  "N5a84": {
+    "pre": true,
+    "post": true,
+    "exactSource": true,
+    "proofSHA256": "7e0b3da6cce982ba91aa88b63fd5c1df543e70610200e47737d9031a2b385471"
+  },
+  "typeFoundation": "Type16c384 reviewed source/Root0type/AST/17contracts/449; Rootwhole4nativeprojects at a824 each0. Latestexports/type/CIassemblystillrequiresallgates.",
+  "actual161": false,
+  "latest749or781": false,
+  "fullTaskAccepted": false
+}

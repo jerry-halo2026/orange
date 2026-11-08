@@ -457,3 +457,7 @@ T02.a15 native-extension, spec docs/superpowers/specs/2026-11-08-exports-complet
 ## 2026-11-08 type-consumer-pin-rebind
 
 Type16 c384 originaltype0/ASTequal/17contract/Root449 repairs3canonicalnativefilehashes, so CI25 literalpins correctlyrefuse old300 sourcefixtures (259pass/41fail). Source26 onlyrebinds projects/server/watch approvedliteralSHAs in existingdriver/test, unchanged300semanticcases/allsecuritychecks/Native110+Worker51 counts andworkflow. BeforefreshRED, afterpure300, immutable26inputs+2proofs, nonauthorSPEC+QUALITY/Rootproof required; thenRootlatest749+type0 beforeseparateactual161 runtimecard. NoCI runtime ordevintegration approvedbythis source task. Exports15 independent2fileproducer underreview/fix; no sharedwrites.
+
+## 2026-11-08 current-type-exports-native-integration
+
+After individuallyreviewed sourcec384/0cf/42db serialassembly ac630, Rootlocal781 =existingnative449+unchangedCI300+Exports32 (CPU84alreadyinside449), plusoriginalfourtypeprojects noEmit0. ExactE1raw/canonical37inputs+2proofs, fixedexistingtool fingerprints, ownedWorker18/Node10exitclose andfailedspawnseparate, dualstack18475/6 pre/post, no sourceedits. Independentpolicy/proof/immutable/N5a beforeexecution, nonauthoractualresultreview. DoesnotreplaceactualWindows161/media/install/owner/fullretirement/PG; no dev/main/remote action inthis task.

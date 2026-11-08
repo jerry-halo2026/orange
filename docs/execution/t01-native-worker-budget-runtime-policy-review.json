@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T01",
+  "assignmentRevision": 35,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "c929379d7eaa549c9e3ed124aac3d46a42421569320d342b6d4ba476ec0969b9",
+  "sourceBaselineCommit": "41eda83112e87d455b181ddd94bb89d01719082e",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-native-worker-budget-runtime-input-review.json",
+      "sha256": "7c73e31ebb9330516924814fd7925359af7ca0f23a048c61dac8205686ee49a5"
+    },
+    {
+      "path": "docs/execution/t02-native-worker-budget-runtime-consumer-review.json",
+      "sha256": "6ea035f1685b9ead12d4c576fbdda02a221fef2fd1e1f10b96bb8f7408ea4556"
+    }
+  ],
+  "inputCoverage": {
+    "T01EngineeringNative": 10,
+    "T01CompanionOnly": 9,
+    "T01Total": 19,
+    "T02Native": 17,
+    "totalProtected": 36,
+    "nativeRuntimePins": 27
+  },
+  "reviewedFacts": {
+    "all36GitBindingsMatched": true,
+    "E3ExistingRawCanonicalMatched": 34,
+    "twoCIScriptRawAfterFF": "pendingactualmaterialization, neverclaimedmatchedyet",
+    "EOLDifferencesBound": 7,
+    "manualNormalizationForbidden": true,
+    "admissionNativeTestNamesMatched": true,
+    "companionStaticModulesSameAsOld353Base": 12,
+    "initialHistory": {
+      "commits": 9,
+      "allParentOccurrences": 48,
+      "newReachableBlobs": 29,
+      "allCovered": true,
+      "sevenWorkflowBytesSameAsPublishedBase": true,
+      "notFinalPublishSHAaudit": true
+    },
+    "reviewerRanTestsNetworkOrGitWrites": false
+  },
+  "proofActivation": {
+    "explicitlyAllowedByActualReviewer": true,
+    "allowedFields": [
+      "status",
+      "spec",
+      "quality",
+      "P1",
+      "P2"
+    ],
+    "appliedOnlyTheseFields": true,
+    "actualHashesMatchReviewerComputed": true,
+    "cardUnchanged": true,
+    "proofActivationText": "unchanged text describes prior draft/forward activation rule; current status/spec/quality/P1/P2 are actual approved facts, not pending review"
+  },
+  "conditions": [
+    "onlythisfourfilemetadataapprovaldelta maycommit, no Auth/Fetch/globalstatusWIP",
+    "immutableapprovalanchors beforemanagedE3FF, preserveoldignoredresources",
+    "actualpostFF36raw/Git/tools/resources mustmatch orstop, no normalize",
+    "freshtrustedN5a required, notold32or34",
+    "fullfinalpublishSHA unpublishedhistory/metadata delta+sevenworkflowaudit required",
+    "push-timefreshPUBLIC/PR0/ref/runterminal/Actions/runner/officialfinancialconditions required",
+    "issueONEnewWXlease beforeONEexplicitnonforceSHApush existingtopic, no automaticretry/oldrerun/followtags/remoteconfig",
+    "main staysabsent/no main PR tag creation",
+    "Fetchfrozen54/governance getsno waiver; ownerN1/fullPG remainpending"
+  ],
+  "historyStartingProofSHA256": "8e64d05b2de3ada1dec733a605d7be00117b71c4e213bd93cbb4ef9e015093a1",
+  "targetInputBindingSHA256": "75dabc877121caf647e5dd9d7da52cc4075deae55002989ed279cf826b9e002a",
+  "currentAuthority": "approvedcard/inputstrategy andspecifiedproofmetadataactivation only; NOT runtimeorpushauthorization",
+  "runtimeLeaseIssued": false,
+  "newHostedExecutionIssued": false,
+  "fullTaskAccepted": false
+}

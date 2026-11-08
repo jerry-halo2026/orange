@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T01",
+  "assignmentRevision": 35,
+  "commit": "41eda83112e87d455b181ddd94bb89d01719082e",
+  "authorAgent": "/root",
+  "authorRole": "reviewed-source assembler only; notoriginalimplementationauthor",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "scope": "Nativeengineering10 plus9additionalcompanion-only module/workflowinputs; no broader880 claim",
+  "nativeRuntimeInputCount": 10,
+  "companionOnlyInputCount": 9,
+  "source": [
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+    },
+    {
+      "path": "scripts/phase1-admission.mjs",
+      "sha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+      "gitBlobSha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+    },
+    {
+      "path": "packages/openfilm/package.json",
+      "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399",
+      "gitBlobSha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55",
+      "gitBlobSha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55"
+    },
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3",
+      "gitBlobSha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "bb144d19eccef0bfe71a037a0d02a1e7d88d4060aef86f2c9bf85008b333d690",
+      "gitBlobSha256": "bb144d19eccef0bfe71a037a0d02a1e7d88d4060aef86f2c9bf85008b333d690"
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "sha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb",
+      "gitBlobSha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb"
+    },
+    {
+      "path": "scripts/phase1-isolation.mjs",
+      "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+      "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+    },
+    {
+      "path": "apps/desktop/src/flavor.mjs",
+      "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+      "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "9a0608583d0c35625675e092e9e15d873f2f1aa25758c855338c54824ebf98d0",
+      "gitBlobSha256": "9a0608583d0c35625675e092e9e15d873f2f1aa25758c855338c54824ebf98d0"
+    },
+    {
+      "path": "scripts/phase1-admission.test.mjs",
+      "sha256": "345222a3baa2dbb4e8e49c4cf62fd69f7cccdde8525bd650288d400f4e9e97dc",
+      "gitBlobSha256": "345222a3baa2dbb4e8e49c4cf62fd69f7cccdde8525bd650288d400f4e9e97dc"
+    },
+    {
+      "path": "apps/desktop/src/flavor.test.mjs",
+      "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+      "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "lineage": {
+    "codeSource33": "c87d0bdb4fa9f6d3ba9bc2fb01753b3241d2742d",
+    "reviewedLocal880": "178b2f1045a90127c44910c5a65ac4cc6bfecc5e",
+    "noAuthFetchWipInSnapshot": true,
+    "originalProducerAttributionRetained": true
+  },
+  "targetRawBinding": {
+    "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "existingUnchangedFiles": "preserveactualE3bytes; sevenEOLdifferencesfromE1, no normalizationwrite",
+    "twoNewCIScripts": "reviewedGitFF willmaterializeLF underexistingeol=lf; actualpostFFmustmatchapprovedraw orstop",
+    "proofSHA256": "75dabc877121caf647e5dd9d7da52cc4075deae55002989ed279cf826b9e002a"
+  },
+  "companionBinding": {
+    "workflow": ".github/workflows/phase1.yml",
+    "workflowSHA256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb",
+    "staticLiteralModules": [
+      {
+        "path": "scripts/fission-path-ci.mjs",
+        "canonicalSHA256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": []
+      },
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "canonicalSHA256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": [
+          "scripts/phase1-isolation.mjs"
+        ]
+      },
+      {
+        "path": "scripts/phase1-admission.test.mjs",
+        "canonicalSHA256": "345222a3baa2dbb4e8e49c4cf62fd69f7cccdde8525bd650288d400f4e9e97dc",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": [
+          "scripts/phase1-admission.mjs"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "canonicalSHA256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": [
+          "apps/desktop/src/flavor.mjs"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "canonicalSHA256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": [
+          "apps/desktop/src/auth-service.mjs",
+          "packages/openfilm/studio/server/project-access.mjs"
+        ]
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-access.test.mjs",
+        "canonicalSHA256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": [
+          "packages/openfilm/studio/server/project-access.mjs"
+        ]
+      },
+      {
+        "path": "scripts/phase1-isolation.mjs",
+        "canonicalSHA256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": [
+          "packages/openfilm/src/development-isolation.mjs"
+        ]
+      },
+      {
+        "path": "scripts/phase1-admission.mjs",
+        "canonicalSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": []
+      },
+      {
+        "path": "apps/desktop/src/flavor.mjs",
+        "canonicalSHA256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": []
+      },
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "canonicalSHA256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": []
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-access.mjs",
+        "canonicalSHA256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": []
+      },
+      {
+        "path": "packages/openfilm/src/development-isolation.mjs",
+        "canonicalSHA256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+        "sameAsRuntime32PublicBase": true,
+        "directLiteralLocalImports": []
+      }
+    ],
+    "canonicalUnchangedFromOldBase": true,
+    "oldBase": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
+    "oldActual353Run": 42466547578,
+    "existingReceipt": "docs/execution/t01-native-worker-observable-runtime-validation.json",
+    "existingReceiptSHA256": "eaccaf42bb6c095f0fe3a012c1bfa9e07ee32633e4d3a216bd98babd9bdb4b1f",
+    "notice": "Native27notwholecompanion; union9extra pins areprotectedhere. Staticmoduleclosure notuniversalfile-readproof; actualnew353 remainsunrun."
+  },
+  "activation": "Onlyafteractualnon-authorapproval maystatus/spec/quality/P1/P2 beactivated exactly; currentdraftdoesnotclaimreviewpassed",
+  "fullTaskAccepted": false
+}

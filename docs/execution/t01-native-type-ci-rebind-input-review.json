@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "1d0e0fb8987e59c0c277786de3b2bd8b42a08f98",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+    },
+    {
+      "path": "scripts/phase1-admission.mjs",
+      "sha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+      "gitBlobSha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+    },
+    {
+      "path": "packages/openfilm/package.json",
+      "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399",
+      "gitBlobSha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55",
+      "gitBlobSha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55"
+    },
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3",
+      "gitBlobSha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-file-symlink.test.mjs",
+      "sha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1",
+      "gitBlobSha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1"
+    }
+  ],
+  "attribution": "Root consumes reviewed originalnative+Worker54ed+Type16c384 andCI25c7; no sourceauthorship claim",
+  "scope": "same-current-candidate exactraw+Git inputs for 3literalpin typeconsumer rebind only",
+  "priorProofs": [
+    "docs/execution/t02-native-type-contracts-readiness.json",
+    "docs/execution/t01-native-kernel-ci-source-review.json"
+  ],
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

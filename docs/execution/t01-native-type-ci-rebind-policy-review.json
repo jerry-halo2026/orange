@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 26,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "01ea3f4d6c279f22a9354daa16ec7b5587c39e73d8a2db4bc765f57aebdfe0ab",
+  "immutableInputs": 26,
+  "proofs": 2,
+  "changesOnly": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "old": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d",
+      "new": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "old": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194",
+      "new": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/watch.mjs",
+      "old": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+      "new": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211"
+    }
+  ],
+  "writeAllowlist": [
+    "scripts/native-studio-ci.mjs",
+    "scripts/native-studio-ci.test.mjs"
+  ],
+  "activeCards": [
+    {
+      "path": "docs/execution/t02-exports-drain-assignment.json",
+      "sha256": "bb35b3a98ac2e230c41cfde66a17d732e5d7e50ff22dcc34c242d8c950ba0595",
+      "assignmentRevision": 15
+    }
+  ],
+  "fix1": "activeCards revision replaced with assignmentRevision15; exact26E2raw/canonical and2proofs verified; no scope changes",
+  "conditions": "managedE2 FF, raw/proofs and trustedexternalN5a84 beforeauthor; aftersame300green/non-author/Root384proof thenlatest749/type0 beforeactual161runtime",
+  "actualRuntimeAuthorized": false,
+  "fullTaskAccepted": false
+}

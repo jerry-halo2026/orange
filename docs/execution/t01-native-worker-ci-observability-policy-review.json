@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 30,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "8ea8a7c75fc076b2b3dbc7b26a41b193136996130a57801f1ca7ed0ffd123fd6",
+  "immutableInputs": 37,
+  "reviewProofs": 2,
+  "observedReadOnlyTaps": [
+    {
+      "node": "v26.13.0",
+      "sha256": "7552adea27d80bbed8de0438176aa731ecb378d32c6dc5d88503b9947b5af48e"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "1da4ac4a61886ae47a67e7ec95d1cbbe6c633b1d7c64b8f28f254a092527e243"
+    }
+  ],
+  "scope": "2CIfiles only exactnativeUTF8namefidelity+safebrandedfiniteWorkerfailureevidence, all300oldassertions/110/51 gates preserved",
+  "conditions": "immutable/managedE2FF/raw/TAPhashes/trustedN5a beforeauthor; sourcepeer musttestfullcapture/postcheck/wrap/CLIbridgeandmaliciousinputs; Rootactual2TAPconsumption/independentverification beforecommit",
+  "hostedRootCauseStillUnknown": true,
+  "newRuntimeAuthorized": false,
+  "fullTaskAccepted": false
+}

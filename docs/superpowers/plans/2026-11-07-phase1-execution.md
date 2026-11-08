@@ -469,3 +469,7 @@ ReviewedCI26+Type16+Exports snapshot9d12762 acceptedlocal781/fourtype0 now requi
 ## 2026-11-08 worker-local-diagnosis
 
 Actualruntime28 firstfailureWorkerTAP_INVALID withprivate51data unavailable; no remote retry. Rootsequentiallocal51 underverifiedexistingNode26/24 exactCIargs/cleansevenenv/8MiB/180s, freshownscratchmax4actualthreads, no sourceedits/newdownloads/fakeCI/network. Captureactualexit/TAP/privatefailednames/events andseparatebase/strictvalidatorcodes to distinguishrealtestfailurefromclosednameconsumer mismatch. KnownnativeU+2192additionalTAP_NAMEgap isnotobservedTAP_INVALIDcause. Independentpolicy/inputproof/N5a beforeexecution; actualevidencereviewafter; no hosted/PG inference.
+
+## 2026-11-08 native-worker-ci-observability
+
+Source30 ONLY2CI scripts afterRoot29same51twoactuallocalruntimesprovedclosednativeU+2192name rejection. Spec `../specs/2026-11-08-native-worker-ci-observability-design.md` ownsclosednameallowance/source-grounded51fixtures andsafeidentity-boundCLIWorkerfailureevidence preservingall300oldguards. Baseline/newbehaviorRED thenminimalimplementation/all300+N puretests, bothpreviousactual51TAPs read-onlyacceptedafterfix, no newWorker/main/CLI/network. Independentpolicy/proofs/immutable/N5a andnon-authorSPECQUALITY/Rootfreshfullcoverage beforecommit. DoesnotresolveunknownhostedTAP_INVALID orauthorizeactualruntime31.

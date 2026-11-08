@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 29,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "1a0f4c3856db3fda6b8381ac8a49b477d5895bd199124da2c947feb14664cb96",
+  "immutableInputs": 12,
+  "proofs": 2,
+  "existingNodeFingerprintsVerified": true,
+  "conditions": "immutable/clean/raw/tooling/N5a beforeRootlocal51; firstfailure retained, do notexecute secondifresourcesnotprovenretired; no sourcefix/remote/hostedcausalclaim",
+  "fullTaskAccepted": false
+}

@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "scripts/phase1-admission.mjs",
+      "sha256": "b6579802efb1d770dec3bf744b31730254c3a83cf180e14972904eacb53f8188",
+      "gitBlobSha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf",
+      "gitBlobSha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    },
+    {
+      "path": "apps/desktop/src/flavor.test.mjs",
+      "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+      "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+    }
+  ],
+  "sourceAttribution": "Root readonlyconsumer ofactualreviewedCI26/nativeWorker54ed andunchanged33+18 fixtures, notsourceauthorship",
+  "scope": "twopreinstalledNode localWorker51 diagnosis only, nohostedrootcause assumption",
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

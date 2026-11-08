@@ -1,0 +1,201 @@
+{
+  "taskId": "T01",
+  "assignmentRevision": 29,
+  "authorAgent": "/root",
+  "actualModelAndEffort": "rootbackend/runtime notexposed orattested",
+  "classification": "engineering-verification/bounded-local-Worker-CI-diagnosis",
+  "scope": "RoottwopreinstalledNode actualWorker51 withexactCIargs/cleanenv thenpurebase/WorkerTAP assessment, no sourceedit/download/fakeCI/remotejob",
+  "workingBaselineCommit": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+  "dependencyCommits": [
+    "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+    "54edc703ffb01108c438d009a083b1983a99ad15",
+    "0cf5897404fed87f0c4f171f0dc3ac88734be765"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+  "branch": "codex/t01-isolation",
+  "status": "active",
+  "dispatchState": "proposed beforepolicy/proofs/immutable/cleanRoot/raw/tooling/externalN5a84",
+  "writeAllowlist": [
+    "docs/execution/t01-native-worker-local-diagnosis-validation.json"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t01-isolation/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t01-native-kernel-runtime-assignment.json",
+        "assignmentRevision": 28,
+        "sha256": "b0fe9dfde5e123cbc68c8d48bccc86b0f944bc6d3ad5d4a9afb76f45c57481a7"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "scripts/phase1-admission.mjs",
+            "sha256": "b6579802efb1d770dec3bf744b31730254c3a83cf180e14972904eacb53f8188",
+            "gitBlobSha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+          },
+          {
+            "path": "scripts/native-studio-ci.mjs",
+            "sha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf",
+            "gitBlobSha256": "ca38c0dc6b576b121929921e13a741a8456d4adb0268e88b7ff8e5acb6e61fdf"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-native-worker-local-diagnosis-input-review.json",
+          "sha256": "c2445e90c08a30f515efae814bd0bc7d6b859401e7cf09c88d0b41c577e73576",
+          "gitBlobSha256": "c2445e90c08a30f515efae814bd0bc7d6b859401e7cf09c88d0b41c577e73576"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/person-edits.mjs",
+            "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+            "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-merge.mjs",
+            "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+            "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-merge-worker.mjs",
+            "sha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e",
+            "gitBlobSha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e"
+          },
+          {
+            "path": "packages/openfilm/src/film-doc.mjs",
+            "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+            "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/person-merge.test.mjs",
+            "sha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e",
+            "gitBlobSha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+            "sha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184",
+            "gitBlobSha256": "cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-native-worker-local-diagnosis-consumer-review.json",
+          "sha256": "07b5f340ac909da0dbf2c07e9c3c855839c84fdafe6adcfd25258261d32c8223",
+          "gitBlobSha256": "07b5f340ac909da0dbf2c07e9c3c855839c84fdafe6adcfd25258261d32c8223"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "contract": {
+    "nodes": [
+      {
+        "path": "C:/Program Files/nodejs/node.exe",
+        "version": "v26.13.0",
+        "sha256": "14319838b3f355e0398c13569a90270bce4fc68f25189f58c59b03dadae0e6d5"
+      },
+      {
+        "path": "C:/Program Files/WindowsApps/OpenAI.CodexPrimaryRuntime.v26-1104-2876-0_26.1104.2876.0_x64__3k8sg7r9htsxt/dependencies/node/bin/node.exe",
+        "version": "v24.22.1",
+        "sha256": "86f361a88f4cc3ecaf1ea93236b0d8edf07bf00fe87ad9f60305513f58fc2c17"
+      }
+    ],
+    "tests": [
+      "packages/openfilm/studio/server/person-merge.test.mjs",
+      "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs"
+    ],
+    "argv": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "--test-timeout=60000"
+    ],
+    "processTimeoutMs": 180000,
+    "maxBufferBytes": 8388608,
+    "expectedTestCases": 51,
+    "expectedNativeWorkerCases": 18,
+    "execution": "SEQUENTIAL oneactualchildtestprocess perverifiedpreinstalledNode version, eachfreshE1/.dev/merge-worker-lifecycle/worker-local-diagnosis/<attempt>/scratch; max4actualnativeWorkers/noChildmedia/noports. Ownedtestprocessdeadline mayendthat exactchild only, neverforeignPID/byname/scan. Actualthreadexit counters oncompletedrun, timeout/failedexit neverpassed.",
+    "environment": "exactreviewedWorkerCIcleanliteral shape: SystemRoot/WINDIR/ComSpec; PATH WindowsSystem32+fixedGitcmd only; sevenTEMP/TMP/TMPDIR/HOME/USERPROFILE/APPDATA/LOCALAPPDATA SAMEfreshscratch, XDG/npmcache scratch, GIT_CONFIG_NOSYSTEM1+ownemptyGitglobal, noGitHubCIenv/fakecontext orproductionCLI/main; no inheritedprivateenv.",
+    "observation": "recordactualNodeversion/exefingerprintbeforeafter, processstatus/error/signal/times/TAPstderrhash/plan/counters/nonoknames privately, actualWorkerreceipt/events. SeparatelycallbaseverifyTap andcurrentverifyMergeWorkerTap onreal51TAP; safeownmodulecodeonly, no rawerrorproperties/publicrawTAP/env.",
+    "scope": "diagnosticprocess mayfail andwillberecordednotconvertedgreen. KnownU+2192case wouldTAP_NAME; no renaming/skipping/timeout/count/thresholdchanges. Node24/26 localoutcomes cannotprovehostedNode22default/currentTAP_INVALIDcause. Keepbothunknownandadditionalverifiedcontractgap separate.",
+    "output": "rawignored .dev/native-worker-local-diagnosis; sanitizedRootreceipt onlyonewrite, non-authoractualresultreview required",
+    "noNewTools": "onlyexistingNode26.13.0 and24.22.1 fingerprinted, no Node22download/softwareinstall/model/SDK/browser/network"
+  },
+  "validation": {
+    "report": "docs/execution/t01-native-worker-local-diagnosis-validation.json",
+    "N5a": "externalpre/postCPU84 independent, 12raw+2proof/coreNode fingerprints unchanged; codeGitHEAD/dirtybeforeafter no sourceedits"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-worker-local-diagnosis",
+  "forbidden": [
+    "source/fixtures/CI/workflow/oldtests/config/parser/count/timeout/performancethresholdedits",
+    "remoteGHA/rerun/push/job/privateupload/Auth/model/browser/media/ffmpeg/WMI/.NET/toolinstall/network/ports/fakeCI/main",
+    "globalnode/Git/securityconfig/foreignkill/byname/PIDscan/oldartifactcleanup",
+    "claimingUnicodegapasthehostedTAP_INVALIDcause orlocaloutcomesasactualhostedrootcause/success/PG/dev"
+  ],
+  "fullTaskAccepted": false
+}

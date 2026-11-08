@@ -465,3 +465,7 @@ After individuallyreviewed sourcec384/0cf/42db serialassembly ac630, Rootlocal78
 ## 2026-11-08 native161-actual-Windows
 
 ReviewedCI26+Type16+Exports snapshot9d12762 acceptedlocal781/fourtype0 now requires ONE separatelybounded actualstandardWindows110+Worker51 run. Card28 freezes38raw/Git inputs+2proofs and27literal/SELF source records. Afterpolicy/immutable/N5a/fullunpublishedhistoryaudit/freshownPUBLICrepo+financial/source-contextchecks, RootnonforcepushesexplicitSHA onlycodex/t05-path-policy; observeNative161 andexistingphase1353 toterminal, no rerun. NoCI/source edits, no model/privateupload/cache/artifact/paidlarger/build/release, noPG/N1/fullretirement claim.
+
+## 2026-11-08 worker-local-diagnosis
+
+Actualruntime28 firstfailureWorkerTAP_INVALID withprivate51data unavailable; no remote retry. Rootsequentiallocal51 underverifiedexistingNode26/24 exactCIargs/cleansevenenv/8MiB/180s, freshownscratchmax4actualthreads, no sourceedits/newdownloads/fakeCI/network. Captureactualexit/TAP/privatefailednames/events andseparatebase/strictvalidatorcodes to distinguishrealtestfailurefromclosednameconsumer mismatch. KnownnativeU+2192additionalTAP_NAMEgap isnotobservedTAP_INVALIDcause. Independentpolicy/inputproof/N5a beforeexecution; actualevidencereviewafter; no hosted/PG inference.

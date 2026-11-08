@@ -1,0 +1,200 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 14,
+  "authorAgent": "/root/merge_worker_lifecycle_impl",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension/shared-mergeWorker-actual-lifecycle-producer",
+  "scope": "original person-edits merge admission/fullcall/current+retiredWorker exits producer only, no server consumption/fullretirement",
+  "workingBaselineCommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+  "dependencyCommits": [
+    "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "proposed no author until independentpolicy/immutable/managedE3FF/raw/externalN5a84",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/person-edits.mjs",
+    "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
+        "assignmentRevision": 22,
+        "sha256": "72776eba0ab27e33fbcdfbd2cd8b95c407e91cee36c62941d4872924938816b0"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-merge-worker-consumer-review.json",
+          "sha256": "e3e93c9c1d24c1e0d0ff5ab5da77d043d488fc038a0f9f6b2fe1f553b0de25fa",
+          "gitBlobSha256": "e3e93c9c1d24c1e0d0ff5ab5da77d043d488fc038a0f9f6b2fe1f553b0de25fa"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/person-merge.mjs",
+            "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+            "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-merge-worker.mjs",
+            "sha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e",
+            "gitBlobSha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/ops.mjs",
+            "sha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0",
+            "gitBlobSha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0"
+          },
+          {
+            "path": "packages/openfilm/src/film-doc.mjs",
+            "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+            "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/person-merge.test.mjs",
+            "sha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e",
+            "gitBlobSha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-edits.test.mjs",
+            "sha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5",
+            "gitBlobSha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-merge-worker-native-consumer-review.json",
+          "sha256": "c67fff668ac658823800c22a3bc791c8c5d362effad82185fcc720e8a56d0610",
+          "gitBlobSha256": "c67fff668ac658823800c22a3bc791c8c5d362effad82185fcc720e8a56d0610"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/discovery/11_测试验收与问题定位规范.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-merge-worker-lifecycle-producer",
+  "nativeEditableBaseline": {
+    "commit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/person-edits.mjs",
+        "sha256": "2ae53ee37a0a2f1a5d84220b7c0eb5946b5e227bab7409a09205dd860166e894",
+        "gitBlobSha256": "2ae53ee37a0a2f1a5d84220b7c0eb5946b5e227bab7409a09205dd860166e894"
+      }
+    ],
+    "kind": "editable original2ae source, not immutable dependency; original other source/types/wire unchanged"
+  },
+  "contract": {
+    "exports": [
+      "stopMergeWorker(): Promise<void>, stable identical Promise for repeated/reentrant stop",
+      "startMergeWorker(): boolean, synchronous explicit reopen"
+    ],
+    "admission": "initiallyactive preserves legacy. Stop first installs stablePromise then synchronously closes mergeFilmWrite admission; newcalls rejectPromise before rev/value getters/destructuring/state/version mutation/work. Register admitted fullcall before getters/callbacks/Worker construction/postMessage. Invoke existing work in same turn, not deferredmicrotask. Stop rejection sits outside fallback and cannot start a new calculation.",
+    "stop": "admittedcalls retain original merge/fallback/personfilm-timeout strategy. Wait full mergeFilmWrite continuation/bookkeeping plus all current/retired realWorker exits. Idle unref worker must reallyterminate/exit. No clearSet/unref/timeoutRace/process exit asdrain. Termination failure is failclosed, keep handles and disallow start while actualexit/calls unproven; rejectedstop notquiescence.",
+    "start": "active idempotenttrue; stoppending/unproven->false noWorker; after provencomplete explicit start opens next lifecycle, lazyfreshworker. configure remains synchronous andnever implicitlyrestarts stoppedlifecycle.",
+    "generation": "each realWorker owns waiting/sent/exitPromise; establish listeners/ownership/request before postMessage/external reentry. configure synchronouslydetachcurrent toretired beforeterminate, futurecalls freshgeneration. Oldmessage/error/exit/timeout affectonly own waiting/sent, notnewgen. Retiredheld untilrealexit. Clearalltimers/settleonce/retainactualownedthread on constructor/postMessage/error/exit/timeout outcomes.",
+    "cache": "newgeneration cold sends allneededtracks even same root/WeakMaptrackID; trackIds maystay WeakMap. Do not wipe projects/notes/last/edit history. ActualWorkerexit releases worker-sideprojects cache only, notclaim allmainmemory erased. forget(root) notnewwire operation.",
+    "wire": "preserve original {id,root,input,versions,tracks}->{id,out}|{id,error}, defaultnativeworker, mergeWrite,1000clipthreshold and originalAPIresults. No pool/newprotocol/algorithm/shell.",
+    "realTests": "positiveuses actual Worker/defaultnativeworker1000+clips, two roots/incrementalvalues. Observational builtinWorker wrappers delegate realconstructor/message/exit with actualowned eventgates; ownfaultmodules maythrow/exit/hang asoldpatterns. No fakeWorker/lifecyclemodel asproof. configured mergewrapper onlyreentry/negative andnormaldelegates realmergeWrite.",
+    "boundary": "mergeFilmWrite continuation only, not later film.mjs keepAside/replaceIO. No serverentry/owner/lease consumer: multipleStudios sharemodule; laterconsumer requires process exclusivity/refcount, neverstopothers onanyclose. Fullbackground/allroute/Auth/N1/PG/Mac pending"
+  },
+  "validation": {
+    "TDD": "originalperson-merge.test baseline first, owncleanenv. NewAPI mayget minimalstubs first butmissingimport/export notbehaviorRED; tests realpendingcall/exit/configurerace failbeforeminimalfix. Keep originalpurefixture bytes. Save allbefore/red/green/frozen source+logs. No authorGitwrites.",
+    "groups": [
+      "actualdefaultnativeWorker1000+clips/tworoot/secondincrementalcache results",
+      "idle/unref stopmustwaitrealexit",
+      "enteredmerge and Workerreply/exit delivery separategates stopwaits all",
+      "configure A pending->B newcall->lateAerror/exit neverfailsB orlosescoldtracks",
+      "current+multiple retired actualexitgates, lastpending blocksstop",
+      "timeout/errorreply/abnormalexit/postMessage/constructor failures preserve ordinaryfallback versus timeoutwholepersonfilm; alltimers/unhandled/leaks checked",
+      "stop synchronousbefore getters/state/compute, stablereentryPromise/startfalsewhilepending thenfreshworkersuccess",
+      "fullfallback/bookkeeping admittedcall tracked; main editingstate/history preserved"
+    ],
+    "commands": "node --test --test-concurrency=1 --test-timeout=60000 --test-reporter=tap newperson-edits-worker-lifecycle.test.mjs + unchangedperson-merge.test.mjs; CPU84optional; NEVER execute person-edits.test (Web). syntax2/diff/10rawinputs+2proof unchanged, allrunnable0fail/skip/cancel/todo.",
+    "resources": "CPU+E3 own .dev/merge-worker-lifecycle cleanliteral TEMP/TMP/TMPDIR/HOME/USERPROFILE/APPDATA/LOCALAPPDATA, all newfaultmodules/syntheticfiles/logs insideownprefix. Max4actualownedWorkerthreads alive, observecreate/actualexit/peak andfinallyawaitall. Originalpure5k usesoneWorker and /tmp roots are onlymemorykeys, notFS permission. No ports/listen/server/browser/media/Fission/.NET/model/package/network/defaultOS/privateuserdata. Controlled terminate only actualowned NodeWorker, no externalOSprocesskill.",
+    "limits": "keep original5k perfassertions unchanged, not media/capacity acceptance; failuresrootcause notweakening. No install/oldartifactdeletion.",
+    "report": ".dev/merge-worker-lifecycle/report.json"
+  },
+  "forbidden": [
+    "files beyondperson-edits/newlifecycle.test includingwire/merge/oldtests/server/film/Guard/CI/07/Rootdocs/workspace/lock",
+    "Web/doctor/Bench/media/Fission/.NET/Electron/browser/ports/privateconfig/userdata/cloudwrites/model/externalnetwork/install/OSsettings",
+    "automaticserverclose consumer/mainstatewipe/newwire/pool/timeout-as-exit/fakewholelifecycleproof",
+    "Gitstage/commit/merge/push/reset/clean/worktreecleanup/subagents/externalprocesskill"
+  ],
+  "report": ".dev/merge-worker-lifecycle/report.json",
+  "fullTaskAccepted": false,
+  "design": "docs/superpowers/specs/2026-11-08-merge-worker-lifecycle-design.md"
+}

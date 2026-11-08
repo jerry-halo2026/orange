@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 14,
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "f7bf51e920fec6e876e0cd094a1e11734d982472da4d5dc660eb27cf97d76ed4",
+  "proofs": [
+    {
+      "path": "docs/execution/t01-cpu-merge-worker-consumer-review.json",
+      "sha256": "e3e93c9c1d24c1e0d0ff5ab5da77d043d488fc038a0f9f6b2fe1f553b0de25fa"
+    },
+    {
+      "path": "docs/execution/t02-merge-worker-native-consumer-review.json",
+      "sha256": "c67fff668ac658823800c22a3bc791c8c5d362effad82185fcc720e8a56d0610"
+    }
+  ],
+  "scope": "native sharedWorker producer only, 10immutableinputs and2editablefiles, no server/fullretirement",
+  "remaining": [
+    "final written design/plan/status equivalence check",
+    "immutable approval",
+    "managedE3FF/raw10+2proof",
+    "trusted external N5a84",
+    "fresh author TDD and nonauthor source/RootactualWorker tests"
+  ],
+  "ownedWorkerLimit": 4,
+  "unrefOrProcessEndNotExitEvidence": true,
+  "terminationRejectNotQuiescence": true,
+  "fullTaskAccepted": false
+}

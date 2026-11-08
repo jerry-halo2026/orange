@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "latestCI110 source22 policy approved; no author until immutable/actualraw/N5a. Joint579 563pass16oldfixture pinfail is expectedalignmentRED, not GREEN. Nativecaller754 Root398 andfixedGit586 Root265 qualified at respective snapshots, no new realCI.",
+  "phase": "CI22 source4d155 reviewed/Root276/actualGit22positive/N5a prepostexact; joint590 actualpass recovered prior16fixturepinRED. NewactualWindows110 pending separate runtime. Worker14 producer designpolicy approved, notyetdispatched/workersnotrun.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -118,7 +118,7 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "t02Head": "586531605d3c06d7b29e89c488be2d4310c7572c",
+    "t02Head": "ac5d2c59123b016692933a52e26877dc2e7ef9f0",
     "t05SourceState": "source7546277 original server awaits actual watcher+Auto caller completion; reviewed/Root398/N5a84 prepostexact. Shared worker exit/all entered route retirement still pending.",
     "devIntegration": false,
     "remotePushThisGoal": true,
@@ -162,6 +162,7 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
+    "docs/execution/t02-merge-worker-assignment.json",
     "docs/execution/t01-native-studio-ci-alignment-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
@@ -325,9 +326,18 @@
     }
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
-  "reviewQueue": [],
+  "reviewQueue": [
+    {
+      "agent": "/root/watch_drain_source_review",
+      "scope": "finalWorker14 written design/plan/status equivalence before immutable"
+    },
+    {
+      "agent": "/root/native_studio_ci_source_review",
+      "scope": "source22 readiness/actualGit22/joint590 evidence then future runtime23 policy"
+    }
+  ],
   "currentMetadataReview": "docs/execution/t01-native-studio-ci-alignment-policy-review.json",
-  "nextOperation": "freeze22/managedE2FF/raw19+2proof/N5a -> originalCIauthorTDD110alignment; mergeWorker producer designready separately, no implementationyet",
+  "nextOperation": "Worker14 finaldesign/immutable/E3rawN5a -> freshE3 author; separateCI23 actual110runtimecard/proofs/audit/publicfinancialpreflight, no oldjobrerun",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -348,15 +358,15 @@
     "runtime20Receipt": "docs/execution/t01-native-studio-ci-diagnostic-runtime-validation.json",
     "nextSource": "fixedGit5865316 exact N5a84 passed and sourceassembled65881f9; next actual native110 producer alignment before new runtime, not separate old66",
     "alignmentSourceCard": "docs/execution/t01-native-studio-ci-alignment-assignment.json",
-    "alignmentState": "sourcepolicy approved, notdispatched; actual110notrun",
+    "alignmentState": "source4d155 frozenpeerapproved/Root276/26artifacthashes/N5a84prepostexact andactualGit22positive; joint590pass, noactual110",
     "latestJointResult": {
-      "tests": 579,
-      "pass": 563,
-      "fail": 16,
+      "tests": 590,
+      "pass": 590,
+      "fail": 0,
       "skip": 0,
-      "cause": "oldsourcefixture self-pin f050 vsactualc8",
-      "passed": false,
-      "proof": "E3 .dev/native-studio-ci-alignment/failure-postcheck.json"
+      "sourceCommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+      "qualifiedScope": "native398+CIpure192 only, not actual110 orfullpilot",
+      "old579FailurePreserved": true
     }
   },
   "watchDrain": {
@@ -376,5 +386,12 @@
     "advertiseFaultException": "exactly two isolated ownprofile metadata-fault tests completed; no external discovery/defaultHOME permission; exception is not a general runtime grant",
     "consumerSourceCommit": "754627721f5bd326968966c77bd686d0533d38a2",
     "consumerReadiness": "docs/execution/t02-studio-watch-readiness.json"
+  },
+  "mergeWorker": {
+    "card": "docs/execution/t02-merge-worker-assignment.json",
+    "state": "policy approved; written design finalcheck/immutable/raw/N5a pending, no implementation",
+    "consumerReady": false,
+    "serverConsumption": false,
+    "fullRetirement": false
   }
 }

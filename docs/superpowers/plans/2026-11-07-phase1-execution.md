@@ -419,3 +419,14 @@ Source12 remains unaccepted despite Root395 passing: native final advertise meta
 ## 2026-11-08 Native Studio CI110 alignment
 
 T01 source22 uses exact assembledB5 (fixedGit5865316/watchf1fff/caller7546277), only native-studio workflow/driver/unit. Fixed old66+watch25+serverwatch19=110, sevenfiles serial and true file-symbolic mandatory unchanged. Literal input pins18+SELF4=22; frozen externalinputs19 exclude threeeditableCI files. Update only threeworkflow triggerpaths and own studio-watch-close/profiles namespace. Rootjoint579 actually563pass16sourcefixture pinfailures at retiredf050 vsactualc8, preserved as genuine alignmentRED; separate missingoutputparent ENOENT spawned0tests andisnotRED. Preserve181 testcase meanings/allnegativeguards with explicit closed66-to110/currentpinfixture trace, no byteprefix claim or dualcount/skip. Pure tests/actualonexact22recordsourcepositive must pass; exact new runtime still separately reviewed/gated/audited. Sharedworker/allroute/owner/N1/PG remainpending.
+
+## 2026-11-08 Merge worker lifecycle producer
+
+T02.a rev14 native-extension, spec docs/superpowers/specs/2026-11-08-merge-worker-lifecycle-design.md. Write only person-edits.mjs/new person-edits-worker-lifecycle.test.mjs. Consume frozen original merge/wire/atomic/ops/film-doc and pureperson-merge.test; editableperson-edits baseline2ae excluded.
+
+Review focus: oldexit must not fail newgeneration; idleunref is notexit; constructor/postMessage error cannot orphan timer/thread; stop reentry/getters cannot admit newwork; fallback/bookkeeping and editinghistory remain correct.
+- [ ] Policy/proofs/immutable/managedE3FF/raw10+2proof/externalN5a before author; CI22 E2 writer has no overlap.
+- [ ] Run originalpurebaseline ownenv (includes5k Workercase, no filesystem at virtualtmpkeys); create newbehavioralRED with genuine Worker/gates, not missingexports.
+- [ ] Minimal stopMergeWorker stablePromise/startMergeWorker boolean andpergeneration ownership, preserve defaultactive/originalwire/results, max4owned actualthreads. No serverconsumer.
+- [ ] New+oldtests actual defaultnative1000+/tworoot/cache, separate reply/exit/retired/configure/failure/reentry gates allpass0skip; retain originals/perfassertions and verify realexit/peak/finalcleanup.
+- [ ] Non-authorSPEC/QUALITY andRootfreshactualWorker+N5a before sourcecommit/serialintegration. FilmIO/processlease/owner/N1/PG staypending.

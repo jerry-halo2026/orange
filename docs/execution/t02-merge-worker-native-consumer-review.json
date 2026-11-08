@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "commit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/person-merge.mjs",
+      "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+      "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-merge-worker.mjs",
+      "sha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e",
+      "gitBlobSha256": "83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e"
+    },
+    {
+      "path": "packages/openfilm/studio/server/atomic.mjs",
+      "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+      "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/ops.mjs",
+      "sha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0",
+      "gitBlobSha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0"
+    },
+    {
+      "path": "packages/openfilm/src/film-doc.mjs",
+      "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+      "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/person-merge.test.mjs",
+      "sha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e",
+      "gitBlobSha256": "53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e"
+    },
+    {
+      "path": "packages/openfilm/studio/server/person-edits.test.mjs",
+      "sha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5",
+      "gitBlobSha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5"
+    }
+  ],
+  "sourceAttribution": "Root consumes original native algorithm/wire/types/atomic code, not claiming authorship",
+  "scope": "person-edits editable excluded; person-merge.test pure/memoryvirtualroots+actualWorker; person-edits.test readonly semantics reference ONLY because it startsStudio",
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

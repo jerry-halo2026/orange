@@ -35,11 +35,36 @@ const PACKAGE_URL = 'https://registry.npmjs.org/playwright-core/-/playwright-cor
 const PACKAGE_SHA512 = 'h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==';
 const MAX_ARCHIVE = 20 * 1024 * 1024, MAX_UNPACKED = 32 * 1024 * 1024;
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-function need(condition, code) { if (!condition) throw new Error(code); }
+// Diagnostics use identity only: never inspect thrown objects, even to redact.
+const FAILURE_CODES = new Set(["ARCHIVE_ANCESTOR","ARCHIVE_CHECKSUM","ARCHIVE_COMPRESSION","ARCHIVE_COUNT","ARCHIVE_DUPLICATE","ARCHIVE_EXTRACT","ARCHIVE_FIELD","ARCHIVE_FORMAT","ARCHIVE_LINK","ARCHIVE_LIST","ARCHIVE_NUMBER","ARCHIVE_PATH","ARCHIVE_SIZE","ARCHIVE_TERMINATOR","ARCHIVE_TRAILING","ARCHIVE_TYPE","CONTEXT_INVALID","GIT_DIRTY","GIT_HIDDEN","GIT_INVALID","HEAD_CHANGED","NODE_VERSION","PACKAGE_DEPENDENCIES","PACKAGE_DIGEST","PACKAGE_EXISTS","PACKAGE_FETCH","PACKAGE_LICENSE","PACKAGE_METADATA","PACKAGE_NOTICE","PACKAGE_PIN","PACKAGE_SIZE","PACKAGE_TREE","PATH_ALIAS","PATH_CASE","PATH_EXISTS","PATH_INVALID","PATH_MISSING","PATH_TYPE","PLATFORM_INVALID","PORT_NOT_FREE","SOURCE_CHANGED","SOURCE_ENCODING","SOURCE_PIN","SOURCE_SET","SOURCE_TREE","SOURCE_TYPE","STAGE_NOT_EMPTY","TAP_COUNT","TAP_INVALID","TAP_NAME","TAP_STRUCTURE","TAP_SUMMARY","TEST_PROCESS","TOOL_CAPABILITY","TOOL_CHANGED","TOOL_HASH","TOOL_PATH","TOOL_TYPE","UNEXPECTED"]);
+const FAILURE_PHASES = new Set(["context","platform-node","workspace","node-path","systemroot","system32","tar","git","owned-directory","source-snapshot","package-pins","fixture-directory","fetch","archive","tests","post-check","result","unknown"]);
+const ownedFailureCodes = new WeakMap();
+const diagnosticFailures = new WeakMap();
+function ownedFailure(code) {
+ const safe=FAILURE_CODES.has(code)?code:'UNEXPECTED';
+ const error=new Error(safe);ownedFailureCodes.set(error,safe);return error;
+}
+export function formatNativeStudioFailure(phase,error) {
+ const registered=diagnosticFailures.get(error);
+ if(registered)return registered;
+ return Object.freeze({status:'failed',phase:FAILURE_PHASES.has(phase)?phase:'unknown',code:ownedFailureCodes.get(error)??'UNEXPECTED'});
+}
+export function createNativeStudioDiagnostics() {
+ let phase='unknown',first=null;
+ return Object.freeze({
+  enter(next){phase=FAILURE_PHASES.has(next)?next:'unknown';},
+  capture(error){if(first===null)first=formatNativeStudioFailure(phase,error);return first;},
+  summary(){return first;},
+ });
+}
+function diagnosticFailure(summary) {
+ const error=new Error('NATIVE_STUDIO_CI_FAILED');diagnosticFailures.set(error,summary);return error;
+}
+function need(condition, code) { if (!condition) throw ownedFailure(code); }
 function utf8(bytes) {
  need(bytes instanceof Uint8Array && bytes.length <= 8 * 1024 * 1024,'SOURCE_ENCODING');
  need(!(bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf),'SOURCE_ENCODING');
- let text; try { text = new TextDecoder('utf-8',{fatal:true}).decode(bytes); } catch { throw new Error('SOURCE_ENCODING'); }
+ let text; try { text = new TextDecoder('utf-8',{fatal:true}).decode(bytes); } catch { throw ownedFailure('SOURCE_ENCODING'); }
  need(!text.includes('\uFEFF') && !/\r(?!\n)/.test(text),'SOURCE_ENCODING');
  return text;
 }
@@ -60,12 +85,12 @@ export function validateNativeStudioContext(facts) {
   const ownedRoot = path.win32.join(base.workspace,'.dev','native-studio-ci',facts.GITHUB_RUN_ID,facts.GITHUB_RUN_ATTEMPT);
   windows(ownedRoot); windows(path.win32.join(ownedRoot,'stage','package'));
   return Object.freeze({workspace:base.workspace,commit:base.commit,ownedRoot});
- } catch { throw new Error('CONTEXT_INVALID'); }
+ } catch { throw ownedFailure('CONTEXT_INVALID'); }
 }
 export function verifyNativeStudioTap(tap,exitCode) {
  need(arguments.length === 2 && typeof tap === 'string' && tap.length <= 8 * 1024 * 1024,'TAP_INVALID');
  tap = tap.replaceAll('\r\n','\n');
- const names = verifyTap(tap,exitCode,[MANDATORY]);
+ let names;try {names=verifyTap(tap,exitCode,[MANDATORY]);}catch {throw ownedFailure('TAP_INVALID');}
  need(names.length === 66 && new Set(names).size === 66,'TAP_COUNT');
  need(names.every(n => /^[\x20-\x7e]{1,400}$/.test(n)),'TAP_NAME');
  for (const [key,value] of Object.entries({tests:66,suites:0,pass:66,fail:0,cancelled:0,skipped:0,todo:0})) {
@@ -115,7 +140,7 @@ export function validatePlaywrightArchiveEntries(entries) {
 }
 export function parsePlaywrightArchive(compressed) {
  need(compressed instanceof Uint8Array && compressed.length > 0 && compressed.length <= MAX_ARCHIVE,'ARCHIVE_SIZE');
- let tar; try { tar = gunzipSync(compressed,{maxOutputLength:MAX_UNPACKED}); } catch { throw new Error('ARCHIVE_COMPRESSION'); }
+ let tar; try { tar = gunzipSync(compressed,{maxOutputLength:MAX_UNPACKED}); } catch { throw ownedFailure('ARCHIVE_COMPRESSION'); }
  need(tar.length >= 1024 && tar.length % 512 === 0,'ARCHIVE_FORMAT');
  const entries = []; let offset = 0, ended = false;
  function field(header,start,length) {
@@ -253,7 +278,7 @@ async function fetchPackage() {
  const declared=response.headers.get('content-length');
  need(declared===null || (/^[0-9]+$/.test(declared)&&Number.isSafeInteger(Number(declared))&&Number(declared)<=MAX_ARCHIVE),'PACKAGE_SIZE');
  const chunks=[];let length=0;
- try {for await(const chunk of response.body){length+=chunk.length;need(length<=MAX_ARCHIVE,'PACKAGE_SIZE');chunks.push(Buffer.from(chunk));}} catch {throw new Error('PACKAGE_FETCH');}
+ try {for await(const chunk of response.body){length+=chunk.length;need(length<=MAX_ARCHIVE,'PACKAGE_SIZE');chunks.push(Buffer.from(chunk));}} catch {throw ownedFailure('PACKAGE_FETCH');}
  const bytes=Buffer.concat(chunks);need(bytes.length>0 && createHash('sha512').update(bytes).digest('base64')===PACKAGE_SHA512,'PACKAGE_DIGEST');return bytes;
 }
 function extractedTree(stage,entries) {
@@ -306,46 +331,82 @@ async function assertPortsFree() {
  }
  return [{port:18475,listening:false},{port:18476,listening:false}];
 }
+// Assessment is pure and does not propagate before the original process
+// receipt can be persisted. The driver still treats every failed assessment
+// as failure after post-check; no caller can replace any real CI step.
+export function assessNativeStudioProcess(result) {
+ try {
+  need(!result.error && !result.signal,'TEST_PROCESS');
+  return Object.freeze({ok:true,counts:verifyNativeStudioTap(utf8(result.stdout),result.status)});
+ } catch(failure) {
+  return Object.freeze({ok:false,failure});
+ }
+}
 export async function runNativeStudioCI() {
+ const diagnostics=createNativeStudioDiagnostics();
+ try {
+ diagnostics.enter('context');
  const context=validateNativeStudioContext(process.env); // MUST precede all IO/process/network.
+ diagnostics.enter('platform-node');
  need(process.platform==='win32','PLATFORM_INVALID');
  const [major,minor]=process.versions.node.split('.').map(Number);need(major>22||(major===22&&minor>=18),'NODE_VERSION');
- ordinary(context.workspace,'directory');ordinary(process.execPath,'file');
+ diagnostics.enter('workspace');ordinary(context.workspace,'directory');
+ diagnostics.enter('node-path');ordinary(process.execPath,'file');
+ diagnostics.enter('systemroot');
  const systemRoot=windows(process.env.SystemRoot);ordinary(systemRoot,'directory');
+ diagnostics.enter('system32');
  const system32=ordinary(path.win32.join(systemRoot,'System32'),'directory');
+ diagnostics.enter('tar');
  const tarExe=systemTar(systemRoot);
+ diagnostics.enter('git');
  const gitExe=ordinary(path.win32.join(path.win32.parse(systemRoot).root,'Program Files','Git','cmd','git.exe'),'file');
+ diagnostics.enter('owned-directory');
  directory(path.win32.dirname(path.win32.dirname(context.ownedRoot)));
  directory(path.win32.dirname(context.ownedRoot));directory(context.ownedRoot,true);
  for(const name of ['home','appdata','localappdata','temp','cache','archive','stage','logs','results'])directory(path.win32.join(context.ownedRoot,name),true);
  const owned=name=>path.win32.join(context.ownedRoot,name);
  const emptyConfig=owned('empty.gitconfig');privateFile(emptyConfig,Buffer.alloc(0));
  const env={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:path.win32.join(system32,'cmd.exe'),PATH:system32+';'+path.win32.dirname(gitExe),HOME:owned('home'),USERPROFILE:owned('home'),APPDATA:owned('appdata'),LOCALAPPDATA:owned('localappdata'),TEMP:owned('temp'),TMP:owned('temp'),TMPDIR:owned('temp'),XDG_CACHE_HOME:owned('cache'),npm_config_cache:owned('cache'),ORANGE_NATIVE_STUDIO_CI_TEMP:owned('temp'),GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyConfig,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0',PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:'1'};
- const before=snapshot(context,gitExe,env);packagePins(context.workspace);
+ diagnostics.enter('source-snapshot');const before=snapshot(context,gitExe,env);
+ diagnostics.enter('package-pins');packagePins(context.workspace);
  // Frozen tests own unique children in these existing namespaces. Never remove,
  // overwrite or claim an earlier fixture case from them.
+ diagnostics.enter('fixture-directory');
  directory(path.win32.join(context.workspace,'.dev','projects-admission'));
  directory(path.win32.join(context.workspace,'.dev','studio-auto-close','profiles'));
  ordinary(path.win32.join(context.workspace,'packages','openfilm','node_modules'),'directory',true);
  const packageTarget=path.win32.join(context.workspace,'packages','openfilm','node_modules','playwright-core');
  ordinary(packageTarget,'directory',true);need(!existsSync(packageTarget),'PACKAGE_EXISTS');
- const packageInfo=restorePackage(context,await fetchPackage(),tarExe,env);
+ diagnostics.enter('fetch');const archive=await fetchPackage();
+ diagnostics.enter('archive');const packageInfo=restorePackage(context,archive,tarExe,env);
+ diagnostics.enter('post-check');
  assertSame(before,snapshot(context,gitExe,env));await assertPortsFree();
- let result,ports;
+ let result,ports,counts;
+ diagnostics.enter('tests');
  try {
   result=child(process.execPath,['--test','--test-reporter=tap','--test-concurrency=1',...TESTS],context.workspace,env,300_000);
   privateFile(owned('logs/native.tap'),result.stdout??Buffer.alloc(0));privateFile(owned('logs/native.stderr'),result.stderr??Buffer.alloc(0));
+  const assessment=assessNativeStudioProcess(result);
+  if(assessment.ok)counts=assessment.counts;else diagnostics.capture(assessment.failure);
+ } catch(error) {
+  diagnostics.capture(error);
  } finally {
-  ports=await assertPortsFree();assertSame(before,snapshot(context,gitExe,env));
+  diagnostics.enter('post-check');
+  try {ports=await assertPortsFree();assertSame(before,snapshot(context,gitExe,env));}
+  catch(error){diagnostics.capture(error);throw error;}
  }
- privateFile(owned('results/process.json'),JSON.stringify({commit:context.commit,node:process.version,exitCode:Number.isInteger(result.status)?result.status:null,processError:Boolean(result.error),signal:Boolean(result.signal),ports,tapSha256:hash(result.stdout??Buffer.alloc(0)),stderrSha256:hash(result.stderr??Buffer.alloc(0)),source:before,package:packageInfo},null,2)+'\n');
- need(!result.error && !result.signal,'TEST_PROCESS');
- const counts=verifyNativeStudioTap(utf8(result.stdout),result.status);
+ diagnostics.enter('result');
+ // A returned process result remains auditable even for failed TAP/exit.
+ if(result)privateFile(owned('results/process.json'),JSON.stringify({commit:context.commit,node:process.version,exitCode:Number.isInteger(result.status)?result.status:null,processError:Boolean(result.error),signal:Boolean(result.signal),ports,tapSha256:hash(result.stdout??Buffer.alloc(0)),stderrSha256:hash(result.stderr??Buffer.alloc(0)),source:before,package:packageInfo},null,2)+'\n');
+ if(diagnostics.summary()!==null)throw diagnosticFailure(diagnostics.summary());
  recheckSystemTar(tarExe);
  const summary={commit:context.commit,node:process.version,testFiles:TESTS,...counts,exitCode:result.status,ports,source:before,package:packageInfo,tapSha256:hash(result.stdout),stderrSha256:hash(result.stderr),tarSha256:tarExe.sha256};
  privateFile(owned('results/summary.json'),JSON.stringify(summary,null,2)+'\n');
  return summary;
+ } catch(error) {
+  throw diagnosticFailure(diagnostics.capture(error));
+ }
 }
 if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
- runNativeStudioCI().then(summary=>process.stdout.write(JSON.stringify(summary)+'\n')).catch(()=>{process.stderr.write('NATIVE_STUDIO_CI_FAILED\n');process.exitCode=1;});
+ runNativeStudioCI().then(summary=>process.stdout.write(JSON.stringify(summary)+'\n')).catch(error=>{process.stderr.write(JSON.stringify(formatNativeStudioFailure('unknown',error))+'\n');process.exitCode=1;});
 }

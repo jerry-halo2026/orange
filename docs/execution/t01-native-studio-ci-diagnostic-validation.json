@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
+  "executor": "/root",
+  "results": [
+    {
+      "name": "pure242",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {
+        "tests": 242,
+        "pass": 242,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "07282a01f07020346729e183001f3729c35f30d12acd431ebfc2884d00038263",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "syntax-native-studio-ci.test.mjs",
+      "args": [
+        "--check",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "errorCode": null,
+      "counters": {},
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "24bc795f9637069a89834e8c0e7a08ebc9ba0bd692b47be52f720ff06a16eebb",
+      "gitBlobSha256": "24bc795f9637069a89834e8c0e7a08ebc9ba0bd692b47be52f720ff06a16eebb"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "1d917b66ec9d3b08b2cd0ad08c6ffe26821727a20127d0373ce822a235149927",
+      "gitBlobSha256": "1d917b66ec9d3b08b2cd0ad08c6ffe26821727a20127d0373ce822a235149927"
+    }
+  ],
+  "sourceUnchanged": true,
+  "immutableInputs": 17,
+  "reviewProofs": 2,
+  "authorArtifactsVerified": 28,
+  "proofSHA256": "3bd2cf5503a6ea65bef4b09ee841cabfc733c10261b0591eecca863dfeba6ffb",
+  "actualEntryOrNetworkExecuted": false,
+  "runtime18RootCauseUnknown": true,
+  "fullTaskAccepted": false
+}

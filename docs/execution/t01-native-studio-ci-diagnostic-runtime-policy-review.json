@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 20,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "37f1462da4619a43ecfb2939d35fd771db1d1c7893835603868546d1178cdd44",
+  "inputProofSHA256": "05af07a12a6279d633d37ca8c755c14307e9ebca5e26dba5f7c64db9a6fa9ed2",
+  "sourceCommit": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
+  "reviewScope": "one source-triggered standard public Windows diagnostic/native66 attempt; source19 safety unchanged, exact E2 excludes watcher f1fff",
+  "remaining": [
+    "immutable approval",
+    "trusted external N5a84",
+    "all unpublished history privacy audit after4f",
+    "immediate official free public compute / own public origin Actions remote4f dev41b / old two terminal runs",
+    "Root single source-triggered lease"
+  ],
+  "actualIssued": false,
+  "actualNative66Passed": false,
+  "fullTaskAccepted": false,
+  "concurrentCard": "T02.a rev12 on separate E3/local ports, not executable in E2; published exact coordination snapshot solely for N5a overlap check"
+}

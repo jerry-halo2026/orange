@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 24,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "46cebc88d13e6ef015f0a98346077dc764d36ac3807f4affb47f7ce2e1f6657a",
+  "proofs": [
+    {
+      "path": "docs/execution/t01-native-kernel-integration-input-review.json",
+      "sha256": "8c9bd32ed06b74dd40c371a74f742fda6004d51a20f4112a2d618bb0e0f9c290",
+      "gitBlobSha256": "8c9bd32ed06b74dd40c371a74f742fda6004d51a20f4112a2d618bb0e0f9c290"
+    },
+    {
+      "path": "docs/execution/t02-native-kernel-integration-consumer-review.json",
+      "sha256": "cbca843b621fc852709279589491045b0cae3b3d95773f12dd51ba1e221f56e0",
+      "gitBlobSha256": "cbca843b621fc852709279589491045b0cae3b3d95773f12dd51ba1e221f56e0"
+    }
+  ],
+  "expectedCases": 641,
+  "rawInputs": 31,
+  "onlyLocalValidationAuthorized": true,
+  "remaining": [
+    "immutable approval",
+    "managedE3FF/raw31+2proof",
+    "externaltrustedN5a84",
+    "actual641/threads/ports/sourcehashes"
+  ],
+  "devMainNewCIApproved": false,
+  "fullTaskAccepted": false
+}

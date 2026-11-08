@@ -77,3 +77,12 @@ desktop通过[openfilm-command.mjs](../../apps/desktop/src/openfilm-command.mjs)
 4. 原操作写入/并发/崩溃与闭包读取/Undo回归；仅VTT改变也使旧剪口播确认失效。
 5. HOME/sharedHome/projects/Saved/Skills/下载/输出/temp全部隔离；原dev默认共享路径不能当隔离证据。
 6. Windows/arm64 Mac分别登记构建、运行、媒体和安装证据；上游配置存在不是通过。新依赖/原生升级必须重核本表与相关消费者，不自动跟latest。
+
+## 已验证的原生内部生命周期增量（2026-11-08）
+
+`native-extension`，不另造工程格式、worker消息协议或编辑状态权威。源码/测试及下列提交仍是接口事实；这些是Node内部生命周期钩子，不是新HTTP或renderer协议。
+
+- `person-edits.mjs` 的 `stopMergeWorker(): Promise<void>`／`startMergeWorker(): boolean`，生产者提交 `54edc703ffb01108c438d009a083b1983a99ad15`：初始active兼容原调用；stop同步关merge准入，等待已准入的完整`mergeFilmWrite`返回链及所有current/retired真实线程exit；未退出时start拒绝，完成后显式重开。原`mergeFilmWrite`参数/结果、1000clip阈值、wire及编辑历史不变。
+- 原同步constructor异常保留整个人的film；postMessage executor拒绝/异步worker异常普通fallback；timeout late保留整片。具体事实更正见 `../execution/t02-merge-worker-ruling-ctor.json`，不把计划错误期望当生产缺陷。
+- 原 `startStudio` 已在 `754627721f5bd326968966c77bd686d0533d38a2` 消费watcher及Auto completion；**尚未消费上述共享Worker stop**。多Studio进程所有权、film后续keepAside/replace、已进入route IO、exports/fetch等仍须独立就绪及消费者验证；不能据生产者通过提升完整退场、owner、N1或PG。
+- 可消费字节及平台证据分别见 `../execution/t02-studio-watch-readiness.json`、`../execution/t02-merge-worker-readiness.json`；raw/Git哈希分列，Mac arm64未实测不宣称支持。

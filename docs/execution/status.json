@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "ActualWindows110 sourcea68passed withmandatorysymbolic/22pins/package106/ports0; companion353passed. SeparateWorkerproducer54ed peer0P1P2/Root135/owned18exit18/peak3final0/N5a84prepostexact, nowassembledd893; latestcombined641 notyetrun, serverconsumer/fullretirement/N1 pending.",
+  "phase": "ActualWindows110 success scopeda68; newerWorker54ed qualifiedRoot135. Latestintegration24 policyapproved/notexecuted pendingimmutable/rawN5a; no sourcewriters, no fullretirement/N1/PG.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-kernel-integration-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-kernel-integration-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -164,8 +164,7 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-studio-ci-latest-runtime-assignment.json",
-    "docs/execution/t02-merge-worker-assignment.json"
+    "docs/execution/t01-native-kernel-integration-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
@@ -329,8 +328,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
-  "nextOperation": "Worker14ledgerreview; latestintegration641 ownresources/consumerproof gate; extendCI latestKernel coverage andwholebranchreview beforedev. Furthernativeexport/fetch/routeIO/ownership consumers remainreadywork, no trialscopechange.",
+  "currentMetadataReview": "docs/execution/t01-native-kernel-integration-policy-review.json",
+  "nextOperation": "freeze24/E3managedFF/raw31+2proof/externalN5a84 -> actual641joint/ownedthreads/ports/sourcebindings; thenlatestCIKernelcoverage andwholebranchreview beforedev, othernativeIOproducers remainpending",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",

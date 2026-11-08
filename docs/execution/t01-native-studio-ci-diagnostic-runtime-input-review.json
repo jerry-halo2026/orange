@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
+  "authorAgent": "/root/native_studio_ci_impl",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "sha256": "ea272b2bd312830dc8f3acbb87837bd655d6e35927dd876dfdca923fad850ac4",
+      "gitBlobSha256": "ea272b2bd312830dc8f3acbb87837bd655d6e35927dd876dfdca923fad850ac4"
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "24bc795f9637069a89834e8c0e7a08ebc9ba0bd692b47be52f720ff06a16eebb",
+      "gitBlobSha256": "24bc795f9637069a89834e8c0e7a08ebc9ba0bd692b47be52f720ff06a16eebb"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+    },
+    {
+      "path": "scripts/phase1-admission.mjs",
+      "sha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+      "gitBlobSha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+    },
+    {
+      "path": "packages/openfilm/package.json",
+      "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399",
+      "gitBlobSha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55",
+      "gitBlobSha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "1d917b66ec9d3b08b2cd0ad08c6ffe26821727a20127d0373ce822a235149927",
+      "gitBlobSha256": "1d917b66ec9d3b08b2cd0ad08c6ffe26821727a20127d0373ce822a235149927"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-file-symlink.test.mjs",
+      "sha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1",
+      "gitBlobSha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1"
+    },
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    }
+  ],
+  "sourceAttribution": "new driver/test source19; other CI42df/original infrastructure immutable unchanged, not claimed authored by diagnostic implementer",
+  "priorProofs": [
+    "docs/execution/t01-native-studio-ci-diagnostic-source-review.json",
+    "docs/execution/t01-native-studio-ci-runtime-input-review.json"
+  ],
+  "scope": "exact frozen T01 combined producer for bounded actual diagnostic/native66 runtime20 only",
+  "fullTaskAccepted": false,
+  "P1": 0,
+  "P2": 0
+}

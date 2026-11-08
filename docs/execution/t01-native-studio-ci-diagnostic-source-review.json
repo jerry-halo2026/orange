@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "commit": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
+  "authorAgent": "/root/native_studio_ci_impl",
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "requestedReviewerModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "files": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "24bc795f9637069a89834e8c0e7a08ebc9ba0bd692b47be52f720ff06a16eebb",
+      "gitBlobSha256": "24bc795f9637069a89834e8c0e7a08ebc9ba0bd692b47be52f720ff06a16eebb"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "1d917b66ec9d3b08b2cd0ad08c6ffe26821727a20127d0373ce822a235149927",
+      "gitBlobSha256": "1d917b66ec9d3b08b2cd0ad08c6ffe26821727a20127d0373ce822a235149927"
+    }
+  ],
+  "fix1": {
+    "id": "P2-preserve-process-receipt-on-test-failure",
+    "resolved": true,
+    "productionAssessmentHelperTested": true,
+    "realProcessReceiptWriteOrder": "source-reviewed only, not executed"
+  },
+  "old121And152BytePrefixRetained": true,
+  "RootFresh": {
+    "tests": 242,
+    "passed": 242,
+    "skipped": 0,
+    "proofSHA256": "3bd2cf5503a6ea65bef4b09ee841cabfc733c10261b0591eecca863dfeba6ffb",
+    "immutableInputs": 17,
+    "reviewProofs": 2,
+    "authorArtifactHashes": 28
+  },
+  "N5a": {
+    "pre84": true,
+    "post84": true,
+    "onExactSource84": true
+  },
+  "reportSHA256": "3f066572228748b2824bea2a69c47de57f6074e65b980d0c725befc7ed8de9cf",
+  "contract": "closed phase/status/code, private error identity allowlist; foreign properties not read; preserve first failure and original process receipt; no runtime safety gates changed",
+  "runtime18RootCauseUnknown": true,
+  "actualNative66Passed": false,
+  "fullTaskAccepted": false
+}

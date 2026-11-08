@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-08T05:27:25.943Z",
+  "taskId": "T01",
+  "assignmentRevision": 24,
+  "executor": "/root",
+  "approvalCommit": "158ac8d219c596c0df26cf6ef061667a47611702",
+  "cardSHA256": "46cebc88d13e6ef015f0a98346077dc764d36ac3807f4affb47f7ce2e1f6657a",
+  "candidateHead": "158ac8d219c596c0df26cf6ef061667a47611702",
+  "sourceNative": "54edc703ffb01108c438d009a083b1983a99ad15",
+  "sourceCI": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+  "args": [
+    "--test",
+    "--test-concurrency=1",
+    "--test-timeout=60000",
+    "--test-reporter=tap",
+    "packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs",
+    "packages/openfilm/studio/server/person-merge.test.mjs",
+    "scripts/native-studio-ci.test.mjs",
+    "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+    "packages/openfilm/studio/server/watch.test.mjs",
+    "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+    "packages/openfilm/studio/server/auto-versions.test.mjs",
+    "packages/openfilm/studio/server/project-control-guard.test.mjs",
+    "packages/openfilm/studio/server/projects-control.test.mjs",
+    "scripts/phase1-isolation.test.mjs",
+    "apps/desktop/src/flavor.test.mjs",
+    "packages/openfilm/src/development-isolation.test.mjs",
+    "apps/desktop/src/auth-service.test.mjs",
+    "packages/openfilm/studio/server/project-access.test.mjs"
+  ],
+  "exitCode": 0,
+  "signal": null,
+  "errorCode": null,
+  "counters": {
+    "tests": 641,
+    "pass": 641,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "workers": {
+    "created": 18,
+    "actualExits": 18,
+    "peak": 3,
+    "finalAlive": 0
+  },
+  "beforePorts": {
+    "ports": [
+      18475,
+      18476
+    ],
+    "hosts": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "actualBindClose": true
+  },
+  "afterPorts": {
+    "ports": [
+      18475,
+      18476
+    ],
+    "hosts": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "actualBindClose": true
+  },
+  "sourceUnchanged": true,
+  "rawInputs": 31,
+  "reviewProofs": 2,
+  "allFrozenInputsMatched": true,
+  "stdoutSHA256": "55ca38b23748d739d0d1b41891b4c62ef9a6257370469be34674ddb5b50ed62e",
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "localRawLogDirectory": ".dev/merge-worker-lifecycle/root-integration641/a-1794115580246",
+  "joint641Passed": true,
+  "scope": "latestlocal641 native398+merge33+Worker18+CI192 only; olda68 actualWindows110doesnotincludeWorker; no serverWorkerconsumer/fullroute/media/installer/N1/PG acceptance",
+  "productModelValidationCalls": 0,
+  "fullTaskAccepted": false
+}

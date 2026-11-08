@@ -1,0 +1,297 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 13,
+  "authorAgent": "/root/studio_watch_close_impl",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension/actualoriginalconsumer",
+  "scope": "native original startStudio waits actual watcher producer completion + existing Auto on close/startup failure; no full retirement",
+  "workingBaselineCommit": "d1e63f6457430a27828f764e6c431e2fa9f0cf14",
+  "dependencyCommits": [
+    "b089626e13a3820b23d70be9a92d875795172ff8",
+    "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
+    "8857b413c4e8ab73499dbef75f720596c56c7b15",
+    "2b5e44b2cbc131620bb49a00c08de564f79bc0e9",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "proposed sameauthor fix1 only after final policy/immutable/managed metadata FF preserving carriedWIP hashes/externalN5a",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/server/server-watch-drain.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18475,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18476,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/server.mjs"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-studio-close-consumer-review.json",
+          "sha256": "b98802bca62db688258dc2da412e5072a20971841422c80bf8bca488f46502da",
+          "gitBlobSha256": "b98802bca62db688258dc2da412e5072a20971841422c80bf8bca488f46502da"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "b089626e13a3820b23d70be9a92d875795172ff8",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/watch.mjs",
+            "sha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+            "gitBlobSha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde"
+          },
+          {
+            "path": "packages/openfilm/studio/server/auto-versions.mjs",
+            "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+            "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+            "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d",
+            "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+          },
+          {
+            "path": "packages/openfilm/studio/server/film.mjs",
+            "sha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+            "gitBlobSha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-edits.mjs",
+            "sha256": "2ae53ee37a0a2f1a5d84220b7c0eb5946b5e227bab7409a09205dd860166e894",
+            "gitBlobSha256": "2ae53ee37a0a2f1a5d84220b7c0eb5946b5e227bab7409a09205dd860166e894"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-presence.mjs",
+            "sha256": "44ae2ef8b545d013a1bdf38f397481206da82a66d8c7a27b46dac3a0a5ca843a",
+            "gitBlobSha256": "44ae2ef8b545d013a1bdf38f397481206da82a66d8c7a27b46dac3a0a5ca843a"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/watch.test.mjs",
+            "sha256": "41652200f79ada9a4a584f3619b979c1dd762c0637f199678e32ed92a6c557cb",
+            "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+          },
+          {
+            "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+            "sha256": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35",
+            "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+          },
+          {
+            "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+            "sha256": "f78e12d6922a780dc1c54e47c30319dc9c852f53aef4770dd678cf0227a4ae77",
+            "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+            "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+            "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+            "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+            "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+          },
+          {
+            "path": "packages/openfilm/studio/server/film.test.mjs",
+            "sha256": "ab98d1b214571f79b6b9aeb80efeb50442ce6bca285b9d49de3ca88c238fb56a",
+            "gitBlobSha256": "ab98d1b214571f79b6b9aeb80efeb50442ce6bca285b9d49de3ca88c238fb56a"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-edits.test.mjs",
+            "sha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5",
+            "gitBlobSha256": "76ea38d71efc27805130224247e7ccb6fa4bddc8e526c2c0f627a1ea76cae0f5"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-studio-watch-consumer-review.json",
+          "sha256": "46d1067c721e42020b6901a6d9496670f7e338ffb421c2f53b1c0f51015864d7",
+          "gitBlobSha256": "46d1067c721e42020b6901a6d9496670f7e338ffb421c2f53b1c0f51015864d7"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/superpowers/specs/2026-11-08-identity-access-n0.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-studio-watch-consumer",
+  "nativeEditableBaseline": {
+    "commit": "b089626e13a3820b23d70be9a92d875795172ff8",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/server.mjs",
+        "sha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e",
+        "gitBlobSha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e"
+      }
+    ],
+    "kind": "server.mjs editable raw/Git baseline, deliberately excluded from unchanged dependencies; new test absent"
+  },
+  "contract": {
+    "factory": "optional trusted Node-only watchersFactory default original createWatchers; preserve original onChange -> Auto.changed. Validate subscribe/move/roots/emit/closeAll/drain functions and factory type with fixed sanitized error before start/listen, no HTTP/env/renderer injection. Factory creates real manager for tests. If a factory throws before returning, factory owns unreturned resources; do not pretend server can recover unknown handles.",
+    "stop": [
+      "first close installs stable completion Promise BEFORE invoking externally reentrant methods; synchronous stopping flag and Auto.stop/watchers.drain before first await; repeated/reentrant close identity stable",
+      "synchronously initiate both own listener/page origins/connections/upgrade sockets shutdown BEFORE first await including pageframe waits; do not await watcher/Auto before network closes",
+      "original HTTP and upgrade/projectStream stop new subscription admission; recheck after projectById await before installing stream, no late watcher revival after captured socket close snapshot",
+      "collect all cleanup promises and await all actual completion even when another rejects; normal close only reject after all cleanups settle; startup failure always preserves original error object including EADDRINUSE",
+      "first and second actual listen failures own cleanup+watcher terminal drain+Auto awaited, external blocker never closed, no binding unstarted listener mask error",
+      "consume terminal drain, not nonterminal closeAll; returned read/settle/cleanup/native+fallback FSWatcher handles exactly producer contract, current+retired roots retained. No global serialization across unrelated roots",
+      "once a real manager has been successfully returned, later invalid Auto factory/init/start failure cannot leak manager work; no private errors printed"
+    ],
+    "nativeReuse": "keep original Studio return shape/UI/API/routes/formats/timeunits; only stopping admission lifecycle changes, no alternate server/editor/controller or new protocol",
+    "trustedTests": "factory returns actual createWatchers; read/settle wrappers gate but ultimately await actual original readProjectFilm/settleProjectFilm/settleFiles and cleanup. No stubbed manager/drain as success proof. Actual own synthetic films/profile and explicit withProjectControlGuard.",
+    "boundary": "only watcher and existing Auto caller completion. Shared person-edits worker actual process exit, all entered HTTP route IO, exports/fetch/hosts/pages completeness, owner/AuthUI/full retirement/N1/PG/Mac remain false",
+    "fix1": {
+      "findings": [
+        "P2-post-listen-native-init-cleanup",
+        "P2-late-upgrade-race-proof"
+      ],
+      "minimalSource": "include native final advertisement metadata mkdir/write in same obtained-resource startup failure cleanup; original error identity and all watcher/Auto completion retained; no new DI/public protocol",
+      "twoDirectedFaultCases": "Only exactly two cases may use actual options isolation:true, advertise:true, explicit fresh nonempty synthetic key; one precise mkdirSync ownstudioHome failure, one precise writeFileSync ownrunFile failure; run.json must be absent before start and no takeover. Hooks throw before writing and restore in finally. Other cases advertise:false. Do not call studioKey or print key/config/filecontents.",
+      "isolationProof": "runFile=join(studioHome(),run.json) asserted inside this unique profile; required isolation true guard preserved, bootstrapStudioResources(profile,...) must return before examples/providers/discover. This is ownlocal metadata fault, NOT enabling external discovery/network/defaultHOME.",
+      "realFaultEvidence": "observe two real listener listening events/states and entered real watcher IO before injected fault; existing closed resources cannot substitute as evidence they were opened. Promise stays pending until actual read/settle chain and watcher handles complete, owned ports close while IO pending. Preserve exact injected error object, no raw private output.",
+      "lateUpgrade": "gate actual own projectById/project-state file read while real upgrade request pending, call close before query release, then resume actual read. Body assert no handshake/new subscription/read/FSWatcher handle after close; callbacks record not swallowedassert. No substitute whole projectById fake model."
+    }
+  },
+  "validation": {
+    "TDD": "Keep original379+all16 new assertions. Obtain real post-listen metadata-fault behavioral RED before minimal fix1. Late-upgrade production recheck already exists: if new real race test passes, record genuine initial GREEN; optional explicitly temporary mutation can prove assertion strength, never invent an original defect/RED. Save all previous snapshots/logs. Restoration-baseline32 remains after-implementation; overwritten repeated green-first raw log limitation is retained.",
+    "groups": [
+      "real pending initial read with entered gate; both ports/existing connections close while public close pending until actual read",
+      "real film and files settle/keepAside + cleanup gate; check actual synthetic merge/evidence/temporary cleanup, not counters only",
+      "actual fs.watch close-event delivery gate independent of IO; completion remains pending before true event delivery",
+      "current+retired root parallel work (unsubscribe/closeAll/move), last completion retained; no new reads/handles/subscription after stopping",
+      "both busy first18475/second18476 actual listen failure with pending real watcher work; original EADDRINUSE object preserved, blocker remains",
+      "actual Auto + watcher work simultaneous, release in either order; stable repeated/reentrant close; no internal restart",
+      "safe invalid factories/surfaces/getter throws; manager already returned then later initialization failure must drain obtained manager",
+      "two actual isolated native advertisement metadata-fault cases + actual late-upgrade pending-read race gate, no new resource outside profile/local18475/76"
+    ],
+    "commands": "new server-watch-drain.test.mjs + unchanged original Auto7 + watcher25 run serial --test-concurrency=1, actual CPU84/Native40/helper10/Auth103/policy92 regression; report actual new counts, 0fail/skip/todo/cancel; syntax2/diff/17 baseline pins unchanged",
+    "resources": "E3 exclusive + CPU + only18475/18476; own .dev/studio-watch-close/profiles instance studio-watch taskT02_STUDIO_WATCH unique attempts, import after isolationEnvironment and requiredIsolation true/advertise false except the two exact isolated metadata-fault cases defined in fix1/Guard explicit own coordination. Existing unchanged Auto7 .dev/studio-auto-close/profiles, Native40 .dev/projects-admission and CPU helper fixture namespaces own unique descendants allowed. TEMP/TMP/TMPDIR/HOME/USERPROFILE/APPDATA/LOCALAPPDATA and all synthetic outputs under own E3 .dev. No defaultOScoord/config/userdata/media/provider/browser/.NET/network except own localhost.",
+    "offlineDependency": "existing ignored original playwright-core1.61.1 already materialized in E3 from approved offline copy. Root reverify106-file/12,701,224-byte manifest09a112106b062c724bbdaeceaeb9a03d937d82eaffd47bc27b932cabb2abed48, licenses and no extra files; no network/install/browser/package scripts. If missing/drift stop and report, do not fabricate readiness.",
+    "cleanup": "release gates in finally, await actual cleanup and owned blockers before deleting any own newly synthetic fixture; keep historical outputs. Do not kill processes. Own listener bind/close final evidence required.",
+    "report": ".dev/studio-watch-close/report.json"
+  },
+  "forbidden": [
+    "any file beyond server.mjs/newserver-watch-drain.test.mjs incl originalAuto7/watch25/film/personedits/projects/Guard/CPU/docs/07/CI/checker/workspace/lock",
+    "actualdefaultOSconfig/coord/accounts/privatefiles/userdata/cloudbusiness/model calls, external network/dependency install/tar/SDK/browser/Electron/media/.NET",
+    "production controlled activation/owner changes/allroute or worker exit/N1/PG/Mac support claims",
+    "Gitstage/commit/merge/push/reset/clean/worktree cleanup/subagents",
+    "fake whole manager/drain or independent lifecycle model as passed integration evidence; swallowed callback assertion/time sleeps without actual entered gate"
+  ],
+  "report": ".dev/studio-watch-close/report.json",
+  "fullTaskAccepted": false,
+  "handoff": {
+    "previousRevision": 9,
+    "previousApprovalCommit": "dc28a1da5180c1ad154df7f77650023623a0e2ff",
+    "previousCardSHA256": "ef2dce842c50ab53883fee11983e594cea70fd6a6c764622fc47f4bb1e8f17d1",
+    "reason": "RootincorrectlyassumedE3localserverdepsavailable; actualserverimportERR_MODULE_NOT_FOUNDplaywright-core, notvalidbehavioralRED; authorstoppedwithoutinstall",
+    "sourceFrozen": true,
+    "noAPIContractChange": true
+  },
+  "toolingMaterialization": {
+    "owner": "/root only, neverauthor",
+    "package": "playwright-core@1.61.1",
+    "source": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/playwright-core@1.61.1/node_modules/playwright-core",
+    "sourceManifestSHA256": "09a112106b062c724bbdaeceaeb9a03d937d82eaffd47bc27b932cabb2abed48",
+    "destination": "E:/CodexData/worktrees/orange-t05-paths/orange/packages/openfilm/node_modules/playwright-core",
+    "staging": "E3/.dev/studio-auto-close/dependency-stage/<freshattempt>/playwright-core",
+    "action": "copyonlyexistingexactpublicpackagefiles+LICENSE/NOTICE toordinarynewownedstage, verifyfullsource/destmanifest hash, atomicrename intoabsentdest; createonlynewordinarynode_modulesparents underE3, nooverwrite/cleanup oldtarget",
+    "forbidden": "no network/npm/pnpminstall/scripts/CLI/bin invocation/.bin links/browser/executable download/SDK/model/OS/globalconfig/lock/workspace edits; donotread npmrc/token/privateconfig",
+    "evidence": "actualE1packageversion1.61.1/Apache2/no scripts/no deps+repo packagejson/lockpin andallunpackedfileSHA manifest; notclaimtarballintegrityremeasured",
+    "sequence": "non-authorpolicyreview ->immutablehandoff/E3FFpreservingexacttest/server -> Rootpackagecopyandmanifestproof -> actualservermoduleIMPORTonlyowncleanenv -> externalN5a84 -> sameauthorresumeactualTDD"
+  },
+  "carriedUnacceptedWIP": {
+    "previousRevision": 12,
+    "serverSHA256": "0652997f461a5adbd2e33a1bcda4fc63db7bc77e974212b32220fd7ca4582baa",
+    "newTestSHA256": "728c8150100d6edd952aec7aa5206b62d563723be34bb3705a73aff7111ac074",
+    "reportSHA256": "440655fe0b31ed8020494ae865afeaf8c5a24e98b9810dff6272ffced41dd6c5",
+    "RootFresh395Passed": true,
+    "sourceReview": "needs-fix 0P1/2P2, not accepted",
+    "rootBeforeFixSnapshots": ".dev/studio-watch-close/fix1-before",
+    "originalGitBaselineStill": {
+      "commit": "b089626e13a3820b23d70be9a92d875795172ff8",
+      "files": [
+        {
+          "path": "packages/openfilm/studio/server/server.mjs",
+          "sha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e",
+          "gitBlobSha256": "f05013ddaeb0c7ff08f49999e99f179ec4de126b39544bddd8298417d9e26d8e"
+        }
+      ],
+      "kind": "server.mjs editable raw/Git baseline, deliberately excluded from unchanged dependencies; new test absent"
+    }
+  }
+}

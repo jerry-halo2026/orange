@@ -176,6 +176,7 @@ export function watchTree(root, onChange, native = process.platform === 'darwin'
   /** @param {import('node:fs').FSWatcher} watcher */
   const own = (watcher) => {
     handles.add(watcher);
+    /** @type {Promise<void>} */
     const done = new Promise(resolve => watcher.once('close', () => resolve()));
     completions.add(done);
     void done.then(() => { handles.delete(watcher); completions.delete(done); });

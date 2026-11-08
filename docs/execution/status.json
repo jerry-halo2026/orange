@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CI17 source42df approved/Root121/N5a84; watcher11 source f1fff approved/Root109/N5a84 held separately. CI18 runtime policy approved; immutable/admission/audit/fresh financial target checks still pending, no job issued",
+  "phase": "CI18 actual native run42438925420 failed generic driver after121pass; samehead companion42438925352 actual353pass. Source diagnostic19 policy approved, pending immutable/N5a then bounded TDD. Watch f1fff reviewed/Root109 kept separate.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,11 +79,11 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-studio-ci-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-studio-ci-runtime-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-studio-ci-diagnostic-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
-  "runtimeVerification": "docs/execution/t01-auth-ci-refresh-runtime-validation.json",
+  "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
   "cpuConsumerProof": "docs/execution/t01-cpu-consumer-review.json",
   "latestLocalEvidence": [
@@ -107,7 +107,8 @@
     "docs/execution/t02-auto-versions-drain-validation.json",
     "docs/execution/t02-studio-auto-close-validation.json",
     "docs/execution/t01-native-studio-ci-validation.json",
-    "docs/execution/t02-watch-drain-validation.json"
+    "docs/execution/t02-watch-drain-validation.json",
+    "docs/execution/t01-native-studio-ci-runtime-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -115,15 +116,15 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "t02Head": "42df1d556246e1686563ba2e41a189bccb944fa7",
+    "t02Head": "c9619e6b0182b99d3dbd43e5703ce92769921b35",
     "t05SourceState": "watch f1fff source reviewed/Root109/exactN5a84, held separate from CI66 snapshot; server watcher await/shared worker pending",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
-    "remoteTopicHead": "bdc88574797000291cb0c2b3be57df783254cedc",
-    "latestRuntimeReceiptCommit": "fc87f71308997f526f22d8e1e2bddd93d987adf7",
+    "remoteTopicHead": "4f30fb4c8b4fd89cf82916da0aaba8a0ece139d1",
+    "latestRuntimeReceiptCommit": "c9619e6b0182b99d3dbd43e5703ce92769921b35",
     "latestSourceAssembly": "a77ef363429cb159970d049058b8def86fc5e3cf"
   },
   "currentBlockers": [
@@ -151,13 +152,13 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "Run newly reviewed Native/Studio CI66 with permanent genuine file-symbolic marker case under CI18 after actual preflight; old bdc checks and local ENV EPERM are not its pass",
+    "Add safe closed stage/error diagnostics under card19, actual hosted native66 remains failed/unproven. Future new runtime requires separate approval/card/preflight, not old-job rerun.",
     "Consume frozen watcher f1fff actual drain in original server with native composition/lease tests after CI snapshot remains isolated; shared worker exit separate",
     "exports/fetch/hoststream/sharedmergeworker actualcompletion/lease retirement thenAuth/owner/fullnativeentry/desktopUI, fullscope unchanged",
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-studio-ci-runtime-assignment.json"
+    "docs/execution/t01-native-studio-ci-diagnostic-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
   "activeWriters": [],
@@ -321,8 +322,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-studio-ci-runtime-policy-review.json",
-  "nextOperation": "independent CI18 policy/ledger review -> immutable anchor/managed E2 FF/raw/external N5a/history privacy/public financial preflight -> one actual hosted Native66; watcher f1fff remains separate pending native server retirement consumption",
+  "currentMetadataReview": "docs/execution/t01-native-studio-ci-diagnostic-policy-review.json",
+  "nextOperation": "immutable card19/managed E2 FF/17 raw pins/external trusted N5a84 -> same CI author safe diagnostics TDD -> non-author review/Root fresh tests; no new remote run yet. Watch server consumption remains ready separately.",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -330,7 +331,13 @@
     "actualHosted66": false,
     "realLocalFileLink": "EPERM exit1, 0 security assertions; not pass",
     "runtimeCard": "docs/execution/t01-native-studio-ci-runtime-assignment.json",
-    "runtimeIssued": false
+    "runtimeIssued": true,
+    "runtimeState": "terminal failure, no automatic retry",
+    "runId": 42438925420,
+    "driverRootCause": "unknown; generic marker only",
+    "companion353Passed": true,
+    "diagnosticCard": "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
+    "diagnosticState": "policy approved, no writer until immutable/N5a"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",

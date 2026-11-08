@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 19,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "615d4c69f22295901d6c8e7461f5e9e02613df7ae9408ef5beacfdfce5e42009",
+  "inputProofSHA256": "fa90b96efa9a47360607a4d3517e1f760c08e6ab149ba8c75ec4969a94940457",
+  "runtimeFailureReceipt": "docs/execution/t01-native-studio-ci-runtime-validation.json",
+  "approvedScope": "only safe closed stage/error diagnostic source and pure tests; no production root cause confirmed or new hosted run authorized",
+  "remaining": [
+    "immutable anchor",
+    "managed E2 FF and17 raw inputs",
+    "external trusted N5a84",
+    "author TDD / non-author source review / Root fresh tests"
+  ],
+  "fullTaskAccepted": false
+}

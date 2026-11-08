@@ -13,7 +13,8 @@
       "externalGates": [],
       "readinessEvidence": "docs/execution/t01-cpu-readiness.json (CPU verification subset only; status remains in_progress)",
       "nativeStudioEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
-      "currentEngineeringSlice": "CI25 c7 sourceonly reviewed/Root384; nativeType16c384 Root449+type0 locallyqualified, source26consumer3pinrebind pending; actual161/latest749/dev notaccepted"
+      "currentEngineeringSlice": "Latest62794local781+fouroriginaltypeprojects0, Root32export/Root384CI/Git27/externalN5a qualified; actual781resultnonauthorapproved0P1P2, actualWindows161/dev notaccepted",
+      "latestIntegratedEvidence": "docs/execution/t01-native-type-exports-integration-validation.json"
     },
     {
       "id": "T03",
@@ -138,7 +139,7 @@
         "T01"
       ],
       "externalGates": [],
-      "deliverySlice": "Authd008/policyacc27 andqualifiedNativeguardc8a4/Auto8857/Watchf1fff/caller754/mergeWorker54ed frozenlocalproducers; Type16c384 originaltype0+ASTequal+Root449. Exports15 fix1 1P1/2P2 underreview, notaccepted; actualowner/fullnativeentry/allbackgroundIO/UI/N1pending",
+      "deliverySlice": "Authd008/policyacc27/guardc8a4/Auto8857/Watchf1fff/caller754/mergeWorker54ed/Type16c384 plusExports42db reviewedcontrolledproducers; latestlocal62794 781+fourtype0 nonauthoractualresultapproved0P1P2. Fetch/Git/HTTPcompletion, enteredserver requests/pages/streams, Workerprocessownership/identity/owner/UI/N1pending",
       "consumerDependency": "T01 cpu-isolation exact subset only",
       "readinessEvidence": "docs/execution/t02-auth-invalidation-readiness.json",
       "ciEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
@@ -149,7 +150,9 @@
       "watchProducerReadiness": "docs/execution/t02-watch-drain-readiness.json",
       "studioWatchCloseReadiness": "docs/execution/t02-studio-watch-readiness.json",
       "mergeWorkerReadiness": "docs/execution/t02-merge-worker-readiness.json",
-      "nativeTypeContractsReadiness": "docs/execution/t02-native-type-contracts-readiness.json"
+      "nativeTypeContractsReadiness": "docs/execution/t02-native-type-contracts-readiness.json",
+      "exportsDrainReadiness": "docs/execution/t02-exports-drain-readiness.json",
+      "latestIntegratedEvidence": "docs/execution/t01-native-type-exports-integration-validation.json"
     },
     {
       "id": "T02.b",

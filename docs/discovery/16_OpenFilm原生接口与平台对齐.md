@@ -86,3 +86,9 @@ desktop通过[openfilm-command.mjs](../../apps/desktop/src/openfilm-command.mjs)
 - 原同步constructor异常保留整个人的film；postMessage executor拒绝/异步worker异常普通fallback；timeout late保留整片。具体事实更正见 `../execution/t02-merge-worker-ruling-ctor.json`，不把计划错误期望当生产缺陷。
 - 原 `startStudio` 已在 `754627721f5bd326968966c77bd686d0533d38a2` 消费watcher及Auto completion；**尚未消费上述共享Worker stop**。多Studio进程所有权、film后续keepAside/replace、已进入route IO、exports/fetch等仍须独立就绪及消费者验证；不能据生产者通过提升完整退场、owner、N1或PG。
 - 可消费字节及平台证据分别见 `../execution/t02-studio-watch-readiness.json`、`../execution/t02-merge-worker-readiness.json`；raw/Git哈希分列，Mac arm64未实测不宣称支持。
+## 2026-11-08 原生退出与类型增量回执
+
+- 原 `createExports` 的 `stopAll(): Promise<void>` 现为稳定终态 Promise，同步拒绝新增，等已取得的父级FS工作和直属ChildProcess实际close；source42db、readiness见 `../execution/t02-exports-drain-readiness.json`。server现有close已收集此Promise，不另造调用协议；有任务时的完整server/渲染池/浏览器后代/桌面父进程退场仍未验收。
+- 同模块新增最小 `renameOutput(job, part, out, signal, move = rename)`，仅复用原ExportJob/AbortSignal/FSrename，原音频/stills分支实际消费；保留原首输出和全部输出所有权。直接真实FS单测不是媒体或队列cleanup验收。
+- Type16c384恢复原JSDoc/generic/tuple/return类型，不改三源运行AST；CI26source0cf仅重绑三处canonical SHA，未改Native110/Worker51/300纯用例或安全检查。
+- 最新本地组合62794实际781项与原server/UI/chat/shell四配置noEmit均通过；见 `../execution/t01-native-type-exports-integration-validation.json`。这不是实际新Windows161、完整IO静默、身份/N1、媒体、安装或PG通过；类型检查不能替代运行验收。

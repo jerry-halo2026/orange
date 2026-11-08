@@ -1270,5 +1270,15 @@
     "docs/execution/t02-studio-auto-close-validation.json"
   ],
   "preparationBoundary": "Actual hostedWindows43purepathpassed and localinternalaccesspolicyready are partialprep, no PG/V acceptance or trialscopeEthan signoff, no fullruntime/media/install/hardware.",
-  "implementationStartEvidence": "Authd008/nativeprojects-admissionc8a4/auto-versions8857 localsource receipts; starting implementation does notpass anyPG/V orN1"
+  "implementationStartEvidence": "Authd008/nativeprojects-admissionc8a4/auto-versions8857 localsource receipts; starting implementation does notpass anyPG/V orN1",
+  "lastEngineeringEvidence": {
+    "candidateCommit": "62794bb81a08f21bf21b87a48a1e4f5cba7ad907",
+    "receipt": "docs/execution/t01-native-type-exports-integration-validation.json",
+    "localTests": 781,
+    "originalTypeProjects": 4,
+    "actualNewWindows161": false,
+    "scope": "engineering subset only; no PG gate passed by this evidence",
+    "allPGStatusesUnchanged": true,
+    "review": "non-author approved0P1P2, engineering subset only"
+  }
 }

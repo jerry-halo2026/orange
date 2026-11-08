@@ -461,3 +461,7 @@ Type16 c384 originaltype0/ASTequal/17contract/Root449 repairs3canonicalnativefil
 ## 2026-11-08 current-type-exports-native-integration
 
 After individuallyreviewed sourcec384/0cf/42db serialassembly ac630, Rootlocal781 =existingnative449+unchangedCI300+Exports32 (CPU84alreadyinside449), plusoriginalfourtypeprojects noEmit0. ExactE1raw/canonical37inputs+2proofs, fixedexistingtool fingerprints, ownedWorker18/Node10exitclose andfailedspawnseparate, dualstack18475/6 pre/post, no sourceedits. Independentpolicy/proof/immutable/N5a beforeexecution, nonauthoractualresultreview. DoesnotreplaceactualWindows161/media/install/owner/fullretirement/PG; no dev/main/remote action inthis task.
+
+## 2026-11-08 native161-actual-Windows
+
+ReviewedCI26+Type16+Exports snapshot9d12762 acceptedlocal781/fourtype0 now requires ONE separatelybounded actualstandardWindows110+Worker51 run. Card28 freezes38raw/Git inputs+2proofs and27literal/SELF source records. Afterpolicy/immutable/N5a/fullunpublishedhistoryaudit/freshownPUBLICrepo+financial/source-contextchecks, RootnonforcepushesexplicitSHA onlycodex/t05-path-policy; observeNative161 andexistingphase1353 toterminal, no rerun. NoCI/source edits, no model/privateupload/cache/artifact/paidlarger/build/release, noPG/N1/fullretirement claim.

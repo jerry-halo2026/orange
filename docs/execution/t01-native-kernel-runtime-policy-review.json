@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 28,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "b0fe9dfde5e123cbc68c8d48bccc86b0f944bc6d3ad5d4a9afb76f45c57481a7",
+  "inputs": 38,
+  "reviewProofs": 2,
+  "expectedNative": 110,
+  "expectedWorker": 51,
+  "expectedCombined": 161,
+  "expectedPure": 300,
+  "remoteRuntimeIssued": false,
+  "associatedPRSync": "reviewcondition applied: zeroopenPRs for exactheadrequired beforepush; failclosednoconfig/PRmutation",
+  "conditions": "immutable/E3FF/raw/N5a andfullnewhistory/freshfinancialPUBLIC/pushrights/actions/selfhostlabels/oldterminal/topic/dev/hooks checks beforeoneexplicitnonforcepush; source/workflowfreeze, noretry/privateuploads",
+  "fullTaskAccepted": false
+}

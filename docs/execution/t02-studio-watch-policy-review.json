@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 12,
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "6c7952fed9baeb34dd57620ab600d2098fae006a8df60c8f6b95827995540678",
+  "consumerProofSHA256": "46d1067c721e42020b6901a6d9496670f7e338ffb421c2f53b1c0f51015864d7",
+  "CI19Concurrent": true,
+  "writeResourceOverlap": false,
+  "remaining": [
+    "immutable anchor",
+    "managed E3 FF/raw17",
+    "actual trusted N5a84",
+    "Root actual379 baseline before author; existing core106 closure already rechecked"
+  ],
+  "acceptance": "only future original server watcher+Auto completion consumer; actual implementation/Root baseline still unexecuted",
+  "fullTaskAccepted": false
+}

@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CI18 actual native run42438925420 failed generic driver after121pass; samehead companion42438925352 actual353pass. Source diagnostic19 policy approved, pending immutable/N5a then bounded TDD. Watch f1fff reviewed/Root109 kept separate.",
+  "phase": "CI19 source review needs test-process-receipt P2 fix1 by original author (Root236 passed but not accepted); Native CI18 actual driver failure persists. Watch consumer12 policy approved, Root baseline/gate and dispatch pending.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
+  "currentTaskCard": "docs/execution/t02-studio-watch-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-studio-ci-diagnostic-policy-review.json",
+  "currentSliceReview": "docs/execution/t02-studio-watch-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -158,10 +158,27 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-studio-ci-diagnostic-assignment.json"
+    "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
+    "docs/execution/t02-studio-watch-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
-  "activeWriters": [],
+  "activeWriters": [
+    {
+      "agent": "/root/native_studio_ci_impl",
+      "taskId": "T01",
+      "assignmentRevision": 19,
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "backendAttested": false,
+      "worktree": "E:/CodexData/worktrees/orange-t02-native/orange",
+      "approvalCommit": "443e88e1dbeb5d137abde60b949a6caccbdf295b",
+      "cardSHA256": "615d4c69f22295901d6c8e7461f5e9e02613df7ae9408ef5beacfdfce5e42009",
+      "N5aCases": 84,
+      "admissionSHA256": "a6768060e89d81375424e8c60d6b7ba540d6e395ef04949683f3c430ad7261ce",
+      "scope": "two CI driver/test files safe diagnostics only; no new remote run",
+      "state": "diagnostic19 fix1 needs preserve process receipt on test failure; original author running"
+    }
+  ],
   "ciReadiness": {
     "firstActualRun": {
       "id": 42406704504,
@@ -323,7 +340,7 @@
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
   "currentMetadataReview": "docs/execution/t01-native-studio-ci-diagnostic-policy-review.json",
-  "nextOperation": "immutable card19/managed E2 FF/17 raw pins/external trusted N5a84 -> same CI author safe diagnostics TDD -> non-author review/Root fresh tests; no new remote run yet. Watch server consumption remains ready separately.",
+  "nextOperation": "freeze/watch12 raw/N5a/actual379baseline -> separateE3 author; CI19 sameauthor fix1 -> waitingreviewpriority; no remote rerun until separate future runtime policy",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -337,7 +354,7 @@
     "driverRootCause": "unknown; generic marker only",
     "companion353Passed": true,
     "diagnosticCard": "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
-    "diagnosticState": "policy approved, no writer until immutable/N5a"
+    "diagnosticState": "admitted84 and dispatched same original CI author, TDD source only"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -347,6 +364,9 @@
     "N5a84PrePostExact": true,
     "actualServerAwait": false,
     "sharedWorkerExit": false,
-    "notMergedIntoCISnapshot": true
+    "notMergedIntoCISnapshot": true,
+    "sourceIsolatedAssembly": "b089626e13a3820b23d70be9a92d875795172ff8",
+    "consumerCard": "docs/execution/t02-studio-watch-assignment.json",
+    "consumerState": "policy approved, unimplemented/no writer yet; pending immutable/N5a/Root379"
   }
 }

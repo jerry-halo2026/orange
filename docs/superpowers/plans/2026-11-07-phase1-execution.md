@@ -493,3 +493,10 @@ TaskT02.a17 native-extension ONLYoriginalfetch-repo/fetch-github+2drain tests. S
 ## 2026-11-08 current-native-file-budget-integration
 
 ReviewedSource33c87 onlyWorkerfileflag600000 alignedoriginalnative, aggregate180s/job12/perfunchanged. Rootfresh880=449+399+32/fourtypes0; localfileflag600000/aggregate240s preserved, unknownownedworkstopsfurtherexecution. RootE1ports18475/76 disjointFetch17E4ports18481/82. Independent37rawcanon2proof/policy/immutable/N5abeforeexecute, actualresultreviewafter; no newjob/51/161/PGclaims.
+
+## 2026-11-09 T07.native 原生只读参考特征准备
+
+此子包对应T07允许先行的纯合成/原生复用准备，不改parent T07/T02.d依赖，不交新业务DTO/删除计划。设计见[原生语音参考](../specs/2026-11-09-native-speech-reference-design.md)。Root先以唯一作者新卡+输入/registry最小追加snapshot独审、immutable与新N5a，受管E3从freshdev派新codex分支再FF已审基线；之后仅编写1个native特征测试，原production/oldtests/格式/CLI/API只读。
+- [ ] 精确静态31模块+host读取资源+Core/原类型/fixture与安全导入冻结；不启动服务/默认协调/浏览器/媒体/模型。
+- [ ] 全部6项有限合成特征、完整原film-doc与isolation测试分进程执行，源/证据/真实close可恢复；首次GREEN如实标为characterization，不伪造RED。
+- [ ] 非作者规格/质量、实际结果/边界复核后本地提交；不push或签收T07功能/真实ASR/ownerN1/PG。

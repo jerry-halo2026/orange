@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T01",
+  "commit": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+  "authorAgent": "/root",
+  "authorRole": "source assembler only, originalOpenFilm/localproducer authors unchanged",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "scope": "explicitisolation/location2source +native/profile admission3fixtures only",
+  "source": [
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "packages/openfilm/src/locations.mjs",
+      "sha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52",
+      "gitBlobSha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "apps/desktop/src/flavor.test.mjs",
+      "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+      "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    }
+  ],
+  "nativeReuseOnly": true,
+  "newBusinessSchemaOrT02dFieldConsumed": false,
+  "pendingFetchBConsumed": false,
+  "targetRawCondition": "verifiedcurrentE3raw andactualbuilt-inGitLFcheckoutprediction acrossfreshdev->approvalFF; actualafterbranchmustmatchorstop, no normalizationwrite",
+  "sourceSnapshot": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+  "fullTaskAccepted": false
+}

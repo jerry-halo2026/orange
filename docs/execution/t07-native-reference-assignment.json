@@ -1,0 +1,409 @@
+{
+  "taskId": "T07.native",
+  "assignmentRevision": 1,
+  "authorAgent": "/root",
+  "actualModelAndEffort": "existingprimaryruntime notexposedorattested",
+  "backendAttested": false,
+  "classification": "native-reuse/reference-characterization-preparation-only",
+  "scope": "one NEWnative test file, sixfinite syntheticreferencecases; no production/oldtest/schema/API/CLI/UI/media/ASR/projectwrite",
+  "workingBaselineCommit": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+  "dependencyCommits": [
+    "05cfd5c7e311ac80827c672c16629c6dac1b31e6"
+  ],
+  "devBranchCreationBaseline": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t07-native-speech-reference",
+  "status": "active",
+  "dispatchState": "PROPOSED authorbinding BEFORE anytestimplementation; no branch/test/importexecution beforeexactpolicy/input/registry/immutable/controlledbranch/newN5a",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/speech-native-reference.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "cpu",
+      "exclusive": false
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "packages/openfilm/src/locations.mjs",
+            "sha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52",
+            "gitBlobSha256": "4d419bcc456cc65d0fef3cc05ba9febe3c128aa9e1d178df786d891ead2e9d52"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-speech-reference-input-review.json",
+          "sha256": "6bcc07d6fe06bf3811f8bb8a9b328579dcf083d5a98b7e72d1752482118e484f",
+          "gitBlobSha256": "6bcc07d6fe06bf3811f8bb8a9b328579dcf083d5a98b7e72d1752482118e484f"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/src/film-doc.mjs",
+            "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+            "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+          },
+          {
+            "path": "packages/openfilm/studio/server/transcripts.mjs",
+            "sha256": "6969708858b1f39f2d012680047060a3c27fb2efb42c16fd2c027d51732c2e21",
+            "gitBlobSha256": "6969708858b1f39f2d012680047060a3c27fb2efb42c16fd2c027d51732c2e21"
+          },
+          {
+            "path": "packages/openfilm/studio/server/captions.mjs",
+            "sha256": "f89d1d90c5442ba159dbbd053f74ad09db78b5f2849cdaebd73735e17fdf9998",
+            "gitBlobSha256": "f89d1d90c5442ba159dbbd053f74ad09db78b5f2849cdaebd73735e17fdf9998"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.mjs",
+            "sha256": "0c2573e02ed942608edbeaff41cb896f5f7cc015b94993a45b3a9caca21c5636",
+            "gitBlobSha256": "0c2573e02ed942608edbeaff41cb896f5f7cc015b94993a45b3a9caca21c5636"
+          },
+          {
+            "path": "packages/openfilm/studio/server/subtitle-segments.mjs",
+            "sha256": "3b1d489e8fb3d22b2e46265db50c57cb1542c80df25138945d3b316cc09ded6b",
+            "gitBlobSha256": "3b1d489e8fb3d22b2e46265db50c57cb1542c80df25138945d3b316cc09ded6b"
+          },
+          {
+            "path": "packages/openfilm/studio/server/derived.mjs",
+            "sha256": "9d0dfb38ba3f7ebfe5da2545bd963bd9cb89a25258baf6d213bc62bef51dfd3f",
+            "gitBlobSha256": "9d0dfb38ba3f7ebfe5da2545bd963bd9cb89a25258baf6d213bc62bef51dfd3f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/film.mjs",
+            "sha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+            "gitBlobSha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29"
+          },
+          {
+            "path": "packages/openfilm/studio/server/http.mjs",
+            "sha256": "357da4dad30c36ca14d7bde8fd02587b58653e915bddb36c220ba02d10c70524",
+            "gitBlobSha256": "357da4dad30c36ca14d7bde8fd02587b58653e915bddb36c220ba02d10c70524"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+            "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+          },
+          {
+            "path": "packages/openfilm/studio/server/film-subtitle.mjs",
+            "sha256": "3b7f459fd485a78e6cfc0ddab084bbbe67128f8d21ac3e45f6eed3037e7d570b",
+            "gitBlobSha256": "3b7f459fd485a78e6cfc0ddab084bbbe67128f8d21ac3e45f6eed3037e7d570b"
+          },
+          {
+            "path": "packages/openfilm/src/captions.mjs",
+            "sha256": "45a732fbbe386d6113e2ec149d368d6a9c9af4dd23d4b55d8bda50dc45973595",
+            "gitBlobSha256": "45a732fbbe386d6113e2ec149d368d6a9c9af4dd23d4b55d8bda50dc45973595"
+          },
+          {
+            "path": "packages/openfilm/src/media-links.mjs",
+            "sha256": "ff65c045f37edfdc1e3f39454dd6d93f2fb5a112991dd595a46a5e049ab9438f",
+            "gitBlobSha256": "ff65c045f37edfdc1e3f39454dd6d93f2fb5a112991dd595a46a5e049ab9438f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-edits.mjs",
+            "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+            "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+          },
+          {
+            "path": "packages/openfilm/studio/server/trash.mjs",
+            "sha256": "4c96e1302ebcf813fcf8f317852a0ca4ef6878857236e3e26a9034a7eb8d8915",
+            "gitBlobSha256": "4c96e1302ebcf813fcf8f317852a0ca4ef6878857236e3e26a9034a7eb8d8915"
+          },
+          {
+            "path": "packages/openfilm/studio/server/page-links.mjs",
+            "sha256": "5489ce9616f2eea8309e7776dcf20f358fd97886e7cd250d6ab813b80fbf8c8e",
+            "gitBlobSha256": "5489ce9616f2eea8309e7776dcf20f358fd97886e7cd250d6ab813b80fbf8c8e"
+          },
+          {
+            "path": "packages/openfilm/src/shared.mjs",
+            "sha256": "4b2c3db5fca02a9bad0a9b4b1121c25ecab00f1971c20ad17127f8fc57e1af3d",
+            "gitBlobSha256": "4b2c3db5fca02a9bad0a9b4b1121c25ecab00f1971c20ad17127f8fc57e1af3d"
+          },
+          {
+            "path": "packages/openfilm/studio/server/parts.mjs",
+            "sha256": "158aff94939280960b406528916d83fc1dd1b58562c7d9bc6a1753c2da3d57cc",
+            "gitBlobSha256": "158aff94939280960b406528916d83fc1dd1b58562c7d9bc6a1753c2da3d57cc"
+          },
+          {
+            "path": "packages/openfilm/src/seekable.mjs",
+            "sha256": "4f5c6f80a55db48a9466b32e817bf4aaf1d2e3ac94b75b44988588c10d2651ec",
+            "gitBlobSha256": "4f5c6f80a55db48a9466b32e817bf4aaf1d2e3ac94b75b44988588c10d2651ec"
+          },
+          {
+            "path": "packages/openfilm/studio/server/ops.mjs",
+            "sha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0",
+            "gitBlobSha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+            "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+          },
+          {
+            "path": "packages/openfilm/studio/server/cover.mjs",
+            "sha256": "c2a0455ff7603e942e3099d53ac32bb80f4439d7a85eb4470a0cfe535f237047",
+            "gitBlobSha256": "c2a0455ff7603e942e3099d53ac32bb80f4439d7a85eb4470a0cfe535f237047"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-presence.mjs",
+            "sha256": "44ae2ef8b545d013a1bdf38f397481206da82a66d8c7a27b46dac3a0a5ca843a",
+            "gitBlobSha256": "44ae2ef8b545d013a1bdf38f397481206da82a66d8c7a27b46dac3a0a5ca843a"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-merge.mjs",
+            "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+            "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+          },
+          {
+            "path": "packages/openfilm/src/host.mjs",
+            "sha256": "bdeae4141305ff55c45f635f232bbdeb974a69b0f3892752664b8c531340c643",
+            "gitBlobSha256": "bdeae4141305ff55c45f635f232bbdeb974a69b0f3892752664b8c531340c643"
+          },
+          {
+            "path": "packages/openfilm/studio/server/compound.mjs",
+            "sha256": "6842c87cb52a53e63d1813c59ef16638ad0ce6ceb0295aca6a61e41ec7bbea63",
+            "gitBlobSha256": "6842c87cb52a53e63d1813c59ef16638ad0ce6ceb0295aca6a61e41ec7bbea63"
+          },
+          {
+            "path": "packages/openfilm/src/encoders.mjs",
+            "sha256": "a5e44682cd1e85627d0fc92601159bb34732b5af7351227b620811e01c98d001",
+            "gitBlobSha256": "a5e44682cd1e85627d0fc92601159bb34732b5af7351227b620811e01c98d001"
+          },
+          {
+            "path": "packages/openfilm/src/clip-motion.mjs",
+            "sha256": "02d8b7d8bb621c0cc9d64362a29f15dd4f43d24e76de43aa966e94002f3c4936",
+            "gitBlobSha256": "02d8b7d8bb621c0cc9d64362a29f15dd4f43d24e76de43aa966e94002f3c4936"
+          },
+          {
+            "path": "packages/openfilm/src/browser-memory.mjs",
+            "sha256": "92ef728a96bde716d0dce77d996403a7359fb00d18f63e53c1ce79c4f785b9ef",
+            "gitBlobSha256": "92ef728a96bde716d0dce77d996403a7359fb00d18f63e53c1ce79c4f785b9ef"
+          },
+          {
+            "path": "packages/openfilm/src/timeline.mjs",
+            "sha256": "0957f4a75663dd2fb22f8322c9bd75d39d1a9c8582e968539142ddf27f6b4390",
+            "gitBlobSha256": "0957f4a75663dd2fb22f8322c9bd75d39d1a9c8582e968539142ddf27f6b4390"
+          },
+          {
+            "path": "packages/openfilm/src/overrides.mjs",
+            "sha256": "8fab39a5f4f9696e9070a206f45d9241f54167ea2d9f47c0bcc9975333664832",
+            "gitBlobSha256": "8fab39a5f4f9696e9070a206f45d9241f54167ea2d9f47c0bcc9975333664832"
+          },
+          {
+            "path": "packages/openfilm/src/film-doc.d.mts",
+            "sha256": "631ae0642c07f9b54cb439ed7ad877543c722f4d5d71270070757099bd713b38",
+            "gitBlobSha256": "631ae0642c07f9b54cb439ed7ad877543c722f4d5d71270070757099bd713b38"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/src/film-doc.test.mjs",
+            "sha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94",
+            "gitBlobSha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-native-speech-reference-input-review.json",
+          "sha256": "a77bb32bf413c4a911d51f94a95753156c0eba5d01446a44452836695acd3ef8",
+          "gitBlobSha256": "a77bb32bf413c4a911d51f94a95753156c0eba5d01446a44452836695acd3ef8"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "registry": {
+    "canonicalPath": "docs/execution/project-tasks.json",
+    "reviewSnapshot": ".dev/t07-native-characterization-prep/registry-approval-candidate.json",
+    "approvedBytesExpectedSHA256": "05d17b576e3bc6a8125723c1248c531112426f95e034eddedb75439e09780c18",
+    "change": "appendT07.native childonly, parentT07andT02.ddependencyandoldrecords unchanged",
+    "sourceBaseline": "05cfd5c7e311ac80827c672c16629c6dac1b31e6",
+    "notParallelRegistry": true,
+    "partialStaging": "only exactapprovedHEAD-derivedsnapshot tocanonicalGitindex fromemptyindex, preserveallworkingWIP/oldindexarchives; no reset/overwrite. Aftercommit appendapprovedchild toexistingworkingregistryifabsent withoutdroppingotherWIP.",
+    "mandatoryBeforeN5a": true
+  },
+  "spec": "docs/superpowers/specs/2026-11-09-native-speech-reference-design.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-09-t07native-原生只读参考特征准备",
+  "contract": {
+    "parentT07StillProposedAndT02dBlocked": true,
+    "nativeRuntimeStaticModules": 31,
+    "extraHostReadResources": 2,
+    "typeFile": 1,
+    "immutableSource34Fixture4Total38": true,
+    "nativeFunctions": [
+      "clipSpan",
+      "sourceAt",
+      "spokenLines",
+      "vttOf",
+      "parseVtt",
+      "clipCues"
+    ],
+    "existingTypes": "FilmClip/FilmClipSpan:sourceandfilmseconds; Word.startSec/endSecoptional; SpokenLine.startMs/endMs/marks; originalnativeclipIDstrings",
+    "newCharacterizationCount": 6,
+    "caseBoundaries": [
+      "trim/speed2 andsourceAtlocalSec nativefilm-ms projection literalnumbers",
+      "samesource2instancesnonUUID/ChineseIDs offsets/speeds/deep-freeze input, nobusinessselectorclaim",
+      "innerwordend.2/.8/missing withsameotherfacts maylosesevidence throughspokenLines/VTT/display; notallendSecchanges invariant",
+      "no wordtimings nativeestimatewithoutmarks notASR",
+      "shorttrimfiltereddisplaycue notsilenceproof",
+      "nativeVTTstringroundtrip preservesitsownstartmarks/lineend, neverrecoversoriginalwordend"
+    ],
+    "noFakeNewFeatureRED": true,
+    "actualBaselineOrEnvFailures": "keepandclassify, nevercallmissingmodule/harness errorfeatureRED; originalproductiondifferencesrecordonly/no repairunderthiscard",
+    "inputProofActivation": "draftspec/quality/P1P2 remainpending; refSHA onlyprospectiveexactapprovedbytes; activatefivefields solelyafteractualpeerpermission"
+  },
+  "profile": {
+    "registryTaskId": "T07.native",
+    "nativeProfileTaskId": "T07_NATIVE",
+    "instanceId": "root",
+    "attemptId": "freshownedperrun",
+    "baseRoot": "newE3 .dev/t07-native-characterization/<attempt>/profiles",
+    "sevenHomeTempCache": "cleanchildenvfromNodeprocessstart, exactfreshowned scratch; no NODE_OPTIONS/PWdebug/credential/envinheritance",
+    "setup": "deriveoriginalresolveIsolationProfile; applyonly OPENFILM_* entriesfromoriginalisolationEnvironment preservingsevenprivateHOME/temp; mkdironlyscratch/baseRoot/profile.root andexactprofile.paths values beforedynamicimport",
+    "bootstrapDirectories": "closedset above, no genericPlaywrightarbitrarydirs",
+    "ports": {
+      "studio": 18483,
+      "film": 18484,
+      "listenAllowed": false
+    },
+    "defaultGuard": "factorylazy only; neveracquiredefaultGuard/userInfohomedir namespace",
+    "allowedImportIO": "actualhostreads4source-textfiles +originalin-processCore/lazyGuard init; no browser-entryexecution",
+    "forbiddenCalls": [
+      "writeTranscript",
+      "readProjectFilm",
+      "filmCaptions projectIO",
+      "provider",
+      "ffprobe",
+      "Server listen",
+      "Worker",
+      "child_process excepttestcontroller directNode",
+      "chromium.launch",
+      "actualmodel/ASR",
+      "media/engine"
+    ]
+  },
+  "tooling": {
+    "node": "actualpreinstalledv26.13.0 thenrecordactualversion",
+    "core": {
+      "version": "1.61.1",
+      "license": "Apache-2.0",
+      "fileCount": 106,
+      "manifestSHA256": "87128b95eebdc3c7bd8bc9811e80c54e4c2ab88689bf267e57f4f80658d818f8",
+      "privateManifest": ".dev/t07-native-characterization-prep/input-binding.json",
+      "noInstallDownloadOrBrowser": true
+    },
+    "readonlyTypescript": {
+      "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/packages/openfilm/node_modules/typescript",
+      "packageJsonSHA256": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6"
+    },
+    "readonlyNodeTypes": {
+      "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/packages/openfilm/node_modules/@types",
+      "nodePackageJsonSHA256": "234e64edc31580d6052f8abc89b96f156de29d3b4c7121214b960dec09bd2a25"
+    }
+  },
+  "validation": {
+    "mode": "three separate sequentialownedNode processes, each --test --test-isolation=none --test-concurrency=1 --test-reporter=tap",
+    "files": [
+      "packages/openfilm/src/film-doc.test.mjs",
+      "packages/openfilm/src/development-isolation.test.mjs",
+      "packages/openfilm/studio/server/speech-native-reference.test.mjs"
+    ],
+    "existingFileCounts": "recordactualwholefile count, neverguess/skip/filter/hookbypass",
+    "newFileRequiredNames": "sixexplicitcases inapproveddesign, no skip/todo",
+    "perProcessMaxMs": 120000,
+    "writeLimit": "onlytrackednewtest; runtimeartifacts/profilebootstrap freshE3ignorednamespace, rawproofs localignored",
+    "actualProcessEvidence": "threecapturedtestNodechildren sequential actualclose/exit; syntax+tsc are separatelycapturedtoolchildren, notmiscountedasnewtests. Maxonechildactive+controller; unexpectedresourcesstop/no restart",
+    "sourceBeforeAfter": "38raw/Git protectedinputs +Core106 +inputfixtures +newtest snapshots/hash before/after, oldignoredpreservation aroundbranchswitch",
+    "testSourceSyntax": "node --check ONLY newtest, mustexit0",
+    "publicResult": "docs/execution/t07-native-reference-validation.json futureRootorchestrationonly afterwriterfreeze/resultreview, notauthorwritegrant",
+    "originalServerTypecheck": "mandatorysameoriginalservertsc noEmit exit0/0diagnostics withfixedreadonlyE1TS/NodeTypes, no newinstallation/configrelaxation"
+  },
+  "preflight": [
+    "exactnewRootauthorcard/policy+inputproofs+registry-snapshot/spec/plan approved/immutable BEFORE sourcewriter",
+    "nativeworktreetoolavailable/E3clean/oldignoredinventory preserve/no-followlinks; freshDdev41b verifyorstop",
+    "createfreshcodex/t07-native-speech-reference branchfromDdev41b thenFF approvedsource05cfd+newmetadata only; oldT05branch/result05cfdretained; no reset/force/manualnewworktree",
+    "actual38raw/Git +Core106 +newregistrychild canonical +sourceprofile/tool/env verify thenexternaltrustednewtaskrev1N5a",
+    "newtestabsent beforeauthor, firstGREENcharacterization honestlyreported; no productionchangeallowed",
+    "eachownedtestprocessclose/exit+sourceafterproof actual; unexpectedIO/handle/extraresource stopsno autowiden",
+    "non-authorspec/quality/source/resultreview thenonlylocalapprovedtestcommit; nopush/CI/dev/main/tag/production/cleanup"
+  ],
+  "forbidden": [
+    "production/oldtests/07/rootpackage/lock/CI/sharedUI/bridge/serverentry changes",
+    "newparallelapplication/timeline/contracts/protocol orT02dconsumerreadiness claim",
+    "defaultHomes/projectlibrary/Guardacquire/network/providers/browser/media/ffmpeg/.NET/model/ASR",
+    "globalmonkeypatch/fakehighlevelsuccess/sourcefunctioncopy/evalfixtureorweakenoldtests",
+    "extraports/processes orunknownbackgroundwork",
+    "Gitstage/commit/push bytestauthor beforeRootreviewgate; force/reset/clean/archive deletion",
+    "claimthispreparationcompletesT07/ASR/strictdeletion/ownerN1/Windowsclient/Mac/PG/fullgoal"
+  ],
+  "budget": {
+    "productModelCNY0": true,
+    "totalProductModelCap50Unchanged": true,
+    "noPaidHardwareOrService": true
+  },
+  "fullTaskAccepted": false
+}

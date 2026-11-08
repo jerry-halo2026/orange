@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T07.native",
+  "assignmentRevision": 1,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "1a01b004379e4761eec6f49937582d1f1e24d397c7771ebaff9debc14e308fb1",
+  "designSHA256": "daad4167b2ddf6afdffc1fbefa74aa9ab0d2c2affef108205c6e44e0ac64929d",
+  "planSHA256": "1e6e718f773f5ee882237c1a4b82f10599c57807d3b47cc588067e6123f5a2b5",
+  "registrySnapshotSHA256": "05d17b576e3bc6a8125723c1248c531112426f95e034eddedb75439e09780c18",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-speech-reference-input-review.json",
+      "sha256": "6bcc07d6fe06bf3811f8bb8a9b328579dcf083d5a98b7e72d1752482118e484f"
+    },
+    {
+      "path": "docs/execution/t02-native-speech-reference-input-review.json",
+      "sha256": "a77bb32bf413c4a911d51f94a95753156c0eba5d01446a44452836695acd3ef8"
+    }
+  ],
+  "reviewedFacts": {
+    "all38CurrentRawAndGitMatched": true,
+    "Core106HashAndLengthMatched": true,
+    "coreVersion": "1.61.1",
+    "coreLicense": "Apache-2.0",
+    "typescriptNodeTypesMatched": true,
+    "oldFilmDocTestPure": true,
+    "oldIsolationTestTempJunctionOnlyOwnFreshScope": true,
+    "registryDelta": "oldbytesunchanged, insert776bytesonlynewchild",
+    "parentT07StillProposedAndDependsT02d": true,
+    "planOldBytePrefixUnchanged": true,
+    "planAppendedBytes": 963,
+    "newTestAbsent": true,
+    "newBranchOrNativeModuleExecution": false
+  },
+  "typeClarification": "frozennativeWord.startSec REQUIRED, onlyendSecoptional; anyambiguousabbreviationincardinterpretedagainstoriginalsource/type, notpermissiontodefaultmissingstart",
+  "proofActivation": {
+    "onlyFields": [
+      "status",
+      "spec",
+      "quality",
+      "P1",
+      "P2"
+    ],
+    "actuallyAppliedOnlyThese": true,
+    "hashesMatchActualReviewerComputed": true,
+    "cardDesignPlanRegistryUnchanged": true
+  },
+  "conditions": [
+    "metadatareceiptaccuracy/exacthashreview beforeonlyapprovedmetadata commit",
+    "canonicalregistry onlyapprovedHEAD-derivedchildsnapshot viaemptystandardGitindex; preserveallworkingWIP andoldarchives, thenappendidenticalapprovedchildtoworkingfile withoutdroppingothers",
+    "managedE3fromfreshverifieddev41b newcodexbranchthenFFapprovedmetadata, oldbranch05cfdandoldignoredprotected/no normalize",
+    "actual38/tool/Core/registry/profile/namespacechecks andnewexternaltrustedN5a BEFOREnewtestauthor",
+    "cleanprocessenv beforedynamicimports/explicitoriginalprofile taskT07_NATIVE, limitedbootstrapdirs/no defaultGuardacquire/network/browser/provider/worker/media/model",
+    "sixfinitefirstGREENnativecharacterization only, no ASR/silence/deletionevidence ornewbusinessfields",
+    "sourceandactualresultnon-authorreviewbeforelocaltestcommit, no push/dev/main/tag/cleanup",
+    "Fetchgovernance remainsheld, no legacyrebindwaiver"
+  ],
+  "registryPartialIndexApprovedInPrinciple": true,
+  "actualMetadataCommitCreated": false,
+  "N5aAdmitted": false,
+  "sourceWritten": false,
+  "testsExecuted": false,
+  "fullTaskAccepted": false
+}

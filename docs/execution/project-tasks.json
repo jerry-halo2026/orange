@@ -278,6 +278,22 @@
       "externalGates": [
         "对应最小契约/原生特征就绪；真实服务/高风险/资源按00/09签核"
       ]
+    },
+    {
+      "id": "T07.native",
+      "parentTask": "T07",
+      "status": "ready",
+      "scope": "native-reuse speech/time reference characterization ONLY, preparatory slice explicitlyallowedbyT07plan",
+      "dependsOn": [
+        "T01",
+        "T02.a"
+      ],
+      "externalGates": [],
+      "dependencyScope": "onlyqualifiedisolation andpinnedoriginalnative-read-onlyfunctions; NOT pendingFetchB/ownerN1/T02.d businessfields",
+      "deliveryBoundary": "notT07feature/ASR/candidate-deleteplan/strictmediawrite/UI/parentcompletion; parentT07anditsT02.ddependency remainunchanged",
+      "classification": "native-reuse",
+      "plannedWrite": "one new native characterization test file; production/oldtests/07/CLI/API unchanged",
+      "modelASRCallsAllowed": 0
     }
   ],
   "umbrella": [

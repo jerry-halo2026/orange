@@ -1,0 +1,193 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 9,
+  "authorAgent": "/root/studio_auto_close_impl",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "classification": "native-extension/actualoriginalconsumer",
+  "scope": "originalStudio.close andstartupfailure awaitactualAuto8857stopPromise; actualStudio+actualAuto+frozenNativeGuardDI tests, notfakehelperdrain model",
+  "workingBaselineCommit": "e35ccf3738cd8b3bd6acc83fb8e0184aea42aa50",
+  "dependencyCommits": [
+    "e35ccf3738cd8b3bd6acc83fb8e0184aea42aa50",
+    "436b40c661291820c47b0f59fe46e71bc709ab1b",
+    "9079c513d163441dc639fff5fc282c38a8bd7c94"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/t05-path-policy",
+  "status": "active",
+  "dispatchState": "reserved notdispatched untilpolicyreview/immutableactualN5a",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/server/server-auto-versions.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18475,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18476,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/server.mjs"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "authorAgent": "/root/t01_profile",
+        "source": [
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-cpu-studio-close-consumer-review.json",
+          "sha256": "b98802bca62db688258dc2da412e5072a20971841422c80bf8bca488f46502da",
+          "gitBlobSha256": "b98802bca62db688258dc2da412e5072a20971841422c80bf8bca488f46502da"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "436b40c661291820c47b0f59fe46e71bc709ab1b",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+            "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d",
+            "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+          },
+          {
+            "path": "packages/openfilm/studio/server/auto-versions.mjs",
+            "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+            "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+            "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+            "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+            "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+            "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+          },
+          {
+            "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+            "sha256": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35",
+            "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-studio-close-consumer-review.json",
+          "sha256": "b6b175a2d9d473010b805d2a9d8d74371f07482725692055a500d780434bd06e",
+          "gitBlobSha256": "b6b175a2d9d473010b805d2a9d8d74371f07482725692055a500d780434bd06e"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "spec": "docs/superpowers/specs/2026-11-08-identity-access-n0.md",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md#2026-11-08-original-studio-auto-version-close",
+  "nativeEditableBaseline": {
+    "commit": "e35ccf3738cd8b3bd6acc83fb8e0184aea42aa50",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/server.mjs",
+        "gitBlobSha256": "3bff1da0644594d8e1bacc5c75dd0cc66c6568c3935d2d255dad917e627bfbb5"
+      }
+    ],
+    "kind": "editablecaller, notunchangedconsumerinput; onlyGatefrozenproducers fixed. Source/diff/actualtests+peer verifynewcaller."
+  },
+  "contract": {
+    "option": "startStudio(options) addoptionaltrustedNode autoVersionsFactory default actualcreateAutoVersions. No HTTP/renderer/env flag/install endpoint. Typefunctiononly andreturnedactual5methodsurface changed/poll/start/stop/drain mustbevalidated beforestart/listen. Invalidfactory/type/surface/throw fixedsafe error no rawsecret/URL/key.",
+    "factoryTest": "function options=>{auto=createAutoVersions({...options,on:()=>true,roots:()=>[ownSyntheticRoot],working:controlledSyntheticCallback,save:actualDeferredPromiseIncludingCleanup,idleMs:1,pollMs:small});return auto;} capturesactualauto only, no fake.stop object forquiescencepositiveproof. Originaldefaultfactory behavior andotheroptions preserved.",
+    "shutdown": "captureactualautoVersions.stop() synchronously withnoawaitsoautomaticnewschedulingclosedbeforeasync cleanup. Continueexistingpage/socket/listener/export/historycleanup, thenawaitactualautoPromise beforepublicclose resolves. Never awaitsavefirstwhileleavingnewnetworkadmissionopen. Repeatstudio.close sameclosingPromise. SavePromisepending remainsunknownnotfakecomplete/no timeoutRace.",
+    "failure": "anyfirsteditor18475 orsecondfilm18476 listenfailure AFTERAuto started: synchronouslystopAuto; closeallalready-createdownnetwork/resources beforeawaitingAuto.save/cleanup, thenreject preservingoriginalerror/code (EADDRINUSE etc). Failedunboundserverclose mustnotthrowERR_SERVER_NOT_RUNNING ormaskoriginal. Nevercloseexternalblocker listener. Invalidfactory/type/surface beforestart/listen fixedsafeerror. No leftoverpoll/admittedtask.",
+    "limits": "onlyautomaticversion-save drain. exports.stopAll timeout/fetch/watch/hoststream truequiescence stillnotdone; no owner/productioncontrolledactivation/AuthUI/N1. Cannotclaimothercleanupdrained merelybecauseStudio.close waitedthisproducer."
+  },
+  "validation": {
+    "TDD": "actualunmodifiedstartStudiocloseearlysettle RED usingactualAuto in-flightdeferredsave+cleanup, thenminimalcallerchange. MissingfactorycapabilityRED notsoleproof; include realstartupfailureAutoearlyreject RED. Persistallfirstattempts andsourcebaseline.",
+    "cases": [
+      "defaultfactory compatibility ownemptyStudio normalclose, origin/filmOrigin/keymethodshape preserved; no keyvalue output",
+      "actualfactory/Auto save invoked, close sockets/ports whilepending butreturnedclose notsettled untilrealIO+cleanup fulfilled",
+      "save reject containedbyactualproducer, close waitssettle+cleanup anddoesnotleakSENTINEL",
+      "repeatclose identicalPromise; thisclosedStudio lifecycle neverinternallyrestartsAuto, latechanged/poll afterstop no callbacks. Preservefrozenproducer explicitstart-after-fully-drained sameinstance freshgeneration semantics.",
+      "actualfirsteditorbusy18475 AND secondfilmportbusy18476 as separateown-listener negativecases, Auto actualsaveentered beforeforcedfailure; startuprejectwaitsrealAuto cleanup butalready-createdownlisteningportsclose first. PreserveEADDRINUSE, closeallblockerfixturesfinally.",
+      "invalidfactorynonfunction/returnshape/throw fixedsafeerror beforelisten, no rawerror/SENTINEL",
+      "multipleactualsave roots parallel, closewaitslastcleanup, no timeoutmaskedpass"
+    ],
+    "sourceTests": "node --test --test-reporter=tap packages/openfilm/studio/server/server-auto-versions.test.mjs plusproducer18/guard+projects40/CPU84 unaffectedregressions underexplicitownenv, allrunnable0fail/skip/cancel/todo; syntax2/diff0",
+    "isolation": "everyrealstartStudio invocation inside withProjectControlGuard(actualexplicitOwnGuard,...), deriveactualresolveIsolationProfile+isolationEnvironment with baseRoot E3/.dev/studio-auto-close/profiles, instanceId studio-close/taskId T02_STUDIO_CLOSE/uniqueattempt, approvedBaseRootsame, ports18475+18476; mkdironlyvalidatedprofile.paths+owncoord; isolation:true port18475/advertise:false. Guardcoordprofile.root/coord actualprivatefactory notOSdefault. This is ordinaryfixture, no controlledregistration orproductionactivation.",
+    "environment": "literalcleanchildenv root/TEMP/TMP/TMPDIR ownE3 beforeNode; originalexistingCPUfixtureownednamespaces allowed. existingisolationbootstrap disablesremoteproviders/examples/discover/browser/download. No actualmedia/cloudAuth/model/processcodec/GPU/.NET/privateconfig/recyclebin/OSdefaultregistry.",
+    "ports": "checkbothfree beforestart, serial1Studioat a time, busyfilmport testonlyallocated18476, alwaysresolvesdeferred+closesallownedlistenersfinally; postalltests0listeners/children. Neverkillunrelatedprocess onportbusy.",
+    "boundary": "Nativefile-symlinkENVpending notclaimedpassed; no broaderoldnative/Trash/Electron suite implied. Allproducerrawhashes unchangedbeforeafter, do not edit Guard/Auto toforceconsumerpass."
+  },
+  "forbidden": [
+    "anyproducerGuard/projects/Auto/currenttests/CPU/locations/atomic/CI/07/docs/workspace/lock/DTO edits",
+    "realOSregistry/data/config/account/token/realmedia/browser/SDK/package/install/FFmpeg/Fission/.NET/OSsecurity changes",
+    "externalnetwork/provider/model/production/cloudbusinesswrite/GitHubAPI/jobs/otherports/desktop",
+    "Gitstage/commit/merge/push/reset/clean/cleanup/subagents"
+  ],
+  "report": ".dev/studio-auto-close/report.json",
+  "fullTaskAccepted": false
+}

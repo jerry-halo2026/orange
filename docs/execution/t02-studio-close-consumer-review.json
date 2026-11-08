@@ -1,0 +1,66 @@
+{
+  "taskId": "T02.a",
+  "commit": "436b40c661291820c47b0f59fe46e71bc709ab1b",
+  "authorAgent": "/root",
+  "sourceAuthors": {
+    "Native": "/root/native_projects_admission_impl",
+    "Auto": "/root/auto_versions_drain_impl"
+  },
+  "producerRole": "Rootserialassembly of independentlyreviewedc8a4/8857, no falseRootcodeauthorship",
+  "reviewerAgent": "/root/studio_close_policy_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d",
+      "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.mjs",
+      "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+      "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+      "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    },
+    {
+      "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+      "sha256": "3908759a27ece6d0398d149688e36e51a29fd4b986609e34ace8ada2cf3a1e35",
+      "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+    }
+  ],
+  "scope": "actualisolatednativeStudio awaitAuto.stop composition only onordinaryfixture usingexplicitGuardDI, no realcontrolledactivation/owner/allbackgroundquiescence",
+  "priorReadiness": [
+    "docs/execution/t02-native-projects-admission-readiness.json",
+    "docs/execution/t02-auto-versions-drain-readiness.json"
+  ],
+  "priorValidation": "docs/execution/t02-native-background-ledger-review.json",
+  "actual347LocalPassed": true,
+  "fileSymlinkCeiling": "truefilelinksecurityassertions pendingEPERM, no needfilelinks inthisordinaryownedtest; neverglobalactivation proof",
+  "representation": "futureE3raw preservesexistingAuto-test390 whilefreshNativefilescheckoutcanonicalLF. RootmustFFthenactualverify allhash/N5a beforeconsumerwriter.",
+  "fullTaskAccepted": false,
+  "approval": {
+    "date": "2026-11-08",
+    "requestedModel": "gpt-6-astra",
+    "requestedEffort": "high",
+    "backendAttested": false,
+    "P1": 0,
+    "P2": 0,
+    "scope": "exactordinaryownfixture2portStudio consumerinputs only, no actualtestpass/N1"
+  }
+}

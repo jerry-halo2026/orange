@@ -369,3 +369,13 @@ T02.a rev8 native-extension minimumexistingproducer, independentNativeprojects7.
 
 - [ ] 将真实file-symlink marker拒绝断言保留在可执行受控测试并在hostedWindows实际跑，不以junction/ENV或旧FissionCI代替。
 - [ ] 实际原Studio.shutdown await已冻结Auto.stop、actualAuto+actualstartStudio+NativeGuard DI组合；随后exports/fetch/watch/hostpipeline retain/drain和完整entry/owner/parent/UI继续，未删减。
+
+
+## 2026-11-08 original Studio auto version close
+
+T02.a rev9 native-extension actualconsumer ofc8a4/8857 snapshot436b. Exactlyoriginalserver.mjs+newserver-auto-versions.test; no newUI/daemon/helpermodel. FactoryisinternaltrustedNode additiveoption only, testsreturnactualAuto withactualdeferredsave andrunactualstartStudio underactualNativeGuardDI/approvedisolationprofile. Scope/card execution/t02-studio-auto-close-assignment.json; consumerproof t02-studio-close-consumer-review.json.
+
+- [ ] Actualoriginalclose/first-and-second-port-startfailure pending-save earlysettle RED, sourcebaseline/logs retained. Checkallproducerinputsready first, no fallbackfakestop.
+- [ ] Originalshutdown capturesstop synchronously, closesexistingadmission/resources thenawaitsactualsave/cleanup; startupfailure alsostops/waits/cleans. PreserveoriginalAPI/errors/othercleanup, safeinvalidfactorybeforelisten.
+- [ ] Ownports18475/18476 andprofileE3 paths only, no remote/bootstrap/browser/media/privateconfig, zero leftovers; allnew+oldaffectedNode tests0skip/fail/syntax/diff/inputhash stable.
+- [ ] Non-authorSPECQUALITY+RootfreshactualHTTP/Auto/Guardcomposition andN5a beforeproducercommit/serialintegration. Notfullbackgroundquiescence; exports/fetch/watch/hoststreamandactualAuth/owner/nativeentry/UI/N1 remainmandatory.

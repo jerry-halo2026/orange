@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "revision": 9,
+  "reviewerAgent": "/root/studio_close_policy_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "reviewedFinalCardSHA256": "1d5928a3f22995baccd7311dc9333201e6147af22e283955b2001c3fcfdd7eab",
+  "frozenCardSHA256": "ef2dce842c50ab53883fee11983e594cea70fd6a6c764622fc47f4bb1e8f17d1",
+  "producerProofSHA256": "b6b175a2d9d473010b805d2a9d8d74371f07482725692055a500d780434bd06e",
+  "CPUConsumerProofSHA256": "b98802bca62db688258dc2da412e5072a20971841422c80bf8bca488f46502da",
+  "fixesBeforeExecution": [
+    "closedStudio no internalrestart, frozenAutoexplicitrestartsemanticskept",
+    "first+secondlisten failure syncstop/networkcleanup beforeawait preservingoriginalerror",
+    "freshCPU exact2portconsumersignoff no inappropriatezeroListenerproofreuse"
+  ],
+  "finalOnlyChanges": "approvedproofverdicts andonewaydigestrefs, no scope/API/resourceschange",
+  "requiredBeforeWriter": [
+    "immutableanchor",
+    "managedE3FFactual6rawsource/fixtures",
+    "actualtrustedN5a84",
+    "own2ports free"
+  ],
+  "fullTaskAccepted": false
+}

@@ -180,3 +180,211 @@ test('different Worker attempts cannot share scratch',()=>{const a=deriveMergeWo
 const kernelNames=['person-edits.mjs','person-merge.mjs','person-merge-worker.mjs','person-edits-worker-lifecycle.test.mjs','person-merge.test.mjs'];
 for(const name of kernelNames)for(const kind of ['missing','changed raw','changed raw and blob','hardlink'])test('Worker source pin refuses '+kind+' '+name,()=>{const r=sourceRecords(),p='packages/openfilm/studio/server/'+name,i=r.findIndex(x=>x.path===p);assert.notEqual(i,-1);if(kind==='missing')r.splice(i,1);if(kind==='changed raw')r[i].raw=Buffer.from('changed\n');if(kind==='changed raw and blob')r[i].raw=r[i].blob=Buffer.from('changed\n');if(kind==='hardlink')r[i].nlink=2;assert.throws(()=>validateNativeStudioSources(r));});
 test('Worker source policy rejects the retired22-record source set',()=>{const r=sourceRecords().filter(x=>!kernelNames.some(n=>x.path==='packages/openfilm/studio/server/'+n));assert.equal(r.length,22);assert.throws(()=>validateNativeStudioSources(r));});
+
+// Reviewed literal names, independently compared with the pinned source below.
+// These fixtures do not import or execute either native test module.
+const nativeWorkerNames=Object.freeze([
+ "a write from an older copy: the person's edits since stay, the writer's own changes are taken",
+ "a unit only the writer changed is the writer's, a return to an older value too; both changed: the person's",
+ "a field's default and its absence are alike: Studio writing at 0 as nothing is no change of the person's, and named none",
+ "V2: an overrides entry is merged property by property, its style key by key",
+ "clips: the writer's removal stands; one the person changed stays; one added since the base stays (V6); the person's removal stands",
+ "tracks: the person's move and the writer's new clips both stay; the person's order and flag over the writer's new tracks",
+ "a clip whose merge would not read: only the writer's fields that make it so go back to the person's; its others stay",
+ "the version a write is nearest to: the fewest units apart, the oldest of those as near; a clip one lacks counts once",
+ "ties go to the person: an undo back to an older value stands over a write as near to the versions before and after",
+ "notes the write agrees with: one naming a clip's unit, and one naming no clip (the stage), by the whole film",
+ "ties go to the person in all a unit holds: an entry some of the versions as near lack, every property of it (seed 3649)",
+ "the quick comparison of kept versions counts as distance does, and names what differing does",
+ "renames: a clip the writer gave a new id is the person's clip, its edits kept under the new id; a new clip is not",
+ "lines: each side's change is taken, next to each other too; where both changed the same lines, the side preferred",
+ "the store, V1: a copy older than any edit of the person's, after a note too, keeps the person's value",
+ "the store, V3: an older copy whose value was rounded keeps the person's value, before a note and after",
+ "the store: told of an edit, an agent writing back exactly the older values from the latest copy is taken as meant",
+ "the store: an undo is a write like any other: 1 → 4 → 6, undone to 4, an older copy with 1 gets 4",
+ "the store: a note counts only once said passed on; each agent is given it once",
+ "the store: versions share what is alike: hundreds of edits of a long film keep memory and time per edit small",
+ "the store: edits of one thing in a row are one version; anchors (writes of others, the version before the person's edits) are never let go",
+ "the store: an agent writing again and again keeps the versions to the caps, and its merges as quick",
+ "the store: past the caps, the first version stays, and a copy older than all kept but it keeps the person's edits",
+ "the store: an agent's own value is no edit of the person's: its next write changes it, and it is not named (E)",
+ "the store: the agent moves what it was told of, then an old copy comes again: its move stays, and the person is not named for it (r5)",
+ "the store: a note passed on lets its agent change what it named, only while no other agent has asked since the person's edit",
+ "the store: a 5,000-clip film: an edit is recorded in a few ms, and a merge runs in a worker while Studio answers",
+ "the store: text files as bytes, Studio's own write no news, a page in any encoding kept as it is; a person's page comes back",
+ "the store, V7: a pasted layer stays over an older copy of the page with a change of its own, after a note too",
+ "the store: a layer pasted, and a block the agent adds from its copy before: both, each with its own closing tag (pagecount)",
+ "the store, t7d: undoing a second paste keeps the page's bytes as bytes",
+ "random interleavings of the person's edits and two agents' writes, from copies of every age, merge as from the base each really had",
+ "random interleavings on a page: the person's lines and each agent's own stay, as from the base each really had",
+ "default native worker merges two roots incrementally; stop waits for idle actual exit and restart is cold",
+ "stopped admission rejects before getters, state and configured computation",
+ "getter stop reentry retains the admitted full call and same-turn native merge",
+ "stop waits for a real reply, full continuation and separately gated actual exit delivery",
+ "configure detaches A before B is created; A late error and exit cannot fail B",
+ "stop waits for current and two retired actual threads, one exit at a time",
+ "reply-error uses the original ordinary merge fallback and drains its real thread",
+ "abnormal-exit uses the original ordinary merge fallback and drains its real thread",
+ "error-event uses the original ordinary merge fallback and drains its real thread",
+ "timeout keeps the whole person film, skips ordinary fallback, and still waits for actual exit",
+ "synchronous post failure falls back without leaving a timer or an unowned thread",
+ "native constructor failure preserves whole-person-film fallback and finishes bookkeeping",
+ "stop reentered from real Worker construction cannot lose the newly owned thread",
+ "a rejected termination is not quiescence and cannot permit restart before real exit",
+ "a large merge admitted before a stopping getter still waits for its real native reply",
+ "configure during real construction retains the retired thread and starts a cold replacement",
+ "a throwing admitted getter rejects its call without poisoning stop or reopening admission",
+ "stop and restart preserve the pending note, person edits, versions and last merge history"
+]);
+
+function sourceWorkerNames(source) {
+ const literals=[...source.matchAll(/^test\('((?:[^'\\\r\n]|\\')*)',/gm)];
+ const dynamic="]) test(\x60\x24{name} uses the original ordinary merge fallback and drains its real thread\x60,";
+ const calls=[...source.matchAll(/\btest\(/g)].map(m=>m.index);
+ const accepted=new Set(literals.map(m=>m.index));
+ const dynamicIndex=source.indexOf(dynamic);
+ if(dynamicIndex>=0){assert.equal(source.indexOf(dynamic,dynamicIndex+1),-1);accepted.add(dynamicIndex+3);assert.match(source,/\['reply-error', "parentPort\.postMessage/);assert.match(source,/\['abnormal-exit', 'process\.exit\(3\);'\]/);assert.match(source,/\['error-event', "throw new Error\('owned worker failure'\);"\]/);}
+ assert.deepEqual(calls,[...accepted].sort((a,b)=>a-b),'every test call must use a reviewed supported literal form');
+ const names=literals.map(m=>({at:m.index,name:m[1].replaceAll("\\'","'")}));
+ if(dynamicIndex>=0)names.push(...['reply-error','abnormal-exit','error-event'].map(n=>({at:dynamicIndex,name:n+' uses the original ordinary merge fallback and drains its real thread'})));
+ return names.sort((a,b)=>a.at-b.at).map(x=>x.name);
+}
+function sourceGroundedWorkerTap() {
+ const paths=['packages/openfilm/studio/server/person-merge.test.mjs','packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs'];
+ // sourceRecords asserts the original producer hashes before reading literals.
+ sourceRecords();
+ assert.deepEqual(paths.flatMap(p=>sourceWorkerNames(readFileSync(new URL('../'+p,import.meta.url),'utf8'))),nativeWorkerNames);
+ return 'TAP version 13\n'+nativeWorkerNames.map((n,i)=>'# Subtest: '+n+'\nok '+(i+1)+' - '+n+'\n').join('')+workerEvidence+'\n1..51\n# tests 51\n# suites 0\n# pass 51\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n';
+}
+test('all51 frozen native names including exact native undo arrows remain faithful',()=>{
+ const got=verifyMergeWorkerTap(sourceGroundedWorkerTap(),0);assert.deepEqual(got.testNames,nativeWorkerNames);assert.equal(got.workerEvidence.actualExits,18);
+});
+import * as observabilityModule from './native-studio-ci.mjs';
+test('owned Worker failure observation survives assessment capture and CLI bridge',()=>{
+ const a=assessMergeWorkerProcess({status:7,error:null,signal:null,stdout:Buffer.from('PRIVATE_SENTINEL\n1..51\n# tests 51\n# fail 1\n'),stderr:Buffer.from('PRIVATE_SENTINEL')});
+ const d=createNativeStudioDiagnostics();d.enter('worker-tests');d.observeWorker(a);d.capture(a.failure);
+ const wrapped=d.failure();
+ const out=observabilityModule.formatNativeStudioCliFailure(wrapped);
+ assert.equal(out.workerEvidence?.exitCode,7,'CLI bridge must retain only bounded actual process observation');
+ assert.equal(out.workerEvidence?.tap.fail,1);assert.equal(JSON.stringify(out).includes('PRIVATE_SENTINEL'),false);
+});
+
+const nativeUndoName='the store: an undo is a write like any other: 1 → 4 → 6, undone to 4, an older copy with 1 gets 4';
+for(const [label,name] of [
+ ['other Unicode','worker-雪'],['lookalike arrow',nativeUndoName.replace('→','➜')],['variation selector',nativeUndoName+'\uFE0F'],['zero width',nativeUndoName+'\u200B'],['normalization lookalike',nativeUndoName.replace('1','１')],['control',nativeUndoName+'\u001b'],['newline',nativeUndoName+'\ninjected'],['trailing space',nativeUndoName+' '],['prefix', 'x'+nativeUndoName],['nonliteral arrow name','another undo 1 → 4']
+])test('native name exception remains closed for '+label,()=>assert.throws(()=>verifyMergeWorkerTap(workerTap().replaceAll('worker-case-2',name),0)));
+test('Native110 does not inherit the Worker-only native Unicode exception',()=>assert.throws(()=>verifyNativeStudioTap(tap().replaceAll('case-0',nativeUndoName),0)));
+for(const source of ["test(name,()=>{});","test(`unknown`,()=>{});","test('escaped\\nname',()=>{});","test('supported',()=>{});\ntest(dynamic,()=>{});"])
+ test('native source extraction fails closed for unsupported form '+JSON.stringify(source),()=>assert.throws(()=>sourceWorkerNames(source)));
+
+const failureTap=()=>"TAP version 13\n# Subtest: PRIVATE_SENTINEL\nnot ok 3 - PRIVATE_SENTINEL\n  ---\n  location: 'file:///PRIVATE_SENTINEL/person-merge.test.mjs:517:9'\n  failureType: 'testCodeFailure'\n  error: 'PRIVATE_SENTINEL'\n  code: 'ERR_TEST_FAILURE'\n  stack: |\n    PRIVATE_SENTINEL\n  ...\n1..51\n# tests 51\n# suites 0\n# pass 50\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n";
+const observedResult=(patch={})=>({status:1,error:null,signal:null,stdout:Buffer.from(failureTap()),stderr:Buffer.from('PRIVATE_SENTINEL stderr'),...patch});
+function observedFailure(result=observedResult(),postCheck='unknown') {
+ const assessment=assessMergeWorkerProcess(result),d=createNativeStudioDiagnostics();
+ d.enter('worker-tests');d.observeWorker(assessment);if(!assessment.ok)d.capture(assessment.failure);
+ if(postCheck!=='unknown') {d.enter('worker-post-check');if(postCheck==='passed')d.workerPostCheck();else {const e=thrownBy(()=>validateNativeStudioSources([]));d.workerPostCheck(e);d.capture(e);}}
+ return {assessment,d,error:d.failure()};
+}
+const cli=error=>observabilityModule.formatNativeStudioCliFailure(error);
+test('CLI bounded evidence has only reviewed finite fields and whole-output hashes',()=>{
+ const result=observedResult(),{error}=observedFailure(result),out=cli(error),e=out.workerEvidence;
+ assert.deepEqual(Object.keys(formatNativeStudioFailure('unknown',error)),['status','phase','code']);
+ assert.deepEqual(Object.keys(out),['status','phase','code','workerEvidence']);
+ assert.deepEqual(Object.keys(e),['kind','node','exitCode','processError','signal','stdoutSha256','stderrSha256','tap','postCheck']);
+ assert.deepEqual(Object.keys(e.tap),['plan','tests','suites','pass','fail','cancelled','skipped','todo','firstFailingOrdinal','errorCode','failureType','location']);
+ assert.equal(e.kind,'native-worker-failure-evidence');assert.equal(e.node,process.version);assert.equal(e.exitCode,1);assert.equal(e.processError,false);assert.equal(e.signal,false);assert.equal(e.postCheck,'unknown');
+ const sha=b=>createHash('sha256').update(b).digest('hex');assert.equal(e.stdoutSha256,sha(result.stdout));assert.equal(e.stderrSha256,sha(result.stderr));
+ assert.deepEqual(e.tap,{plan:51,tests:51,suites:0,pass:50,fail:1,cancelled:0,skipped:0,todo:0,firstFailingOrdinal:3,errorCode:'ERR_TEST_FAILURE',failureType:'testCodeFailure',location:{file:'person-merge.test.mjs',line:517,column:9}});
+ assert.equal(JSON.stringify(out).includes('PRIVATE_SENTINEL'),false);for(const x of [out,e,e.tap,e.tap.location])assert.equal(Object.isFrozen(x),true);
+});
+for(const post of ['unknown','passed','failed'])test('Worker first diagnostic survives '+post+' post-check and repeated outer wrapping',()=>{
+ const {d,error}=observedFailure(observedResult(),post);const first=failed('worker-tests','TAP_INVALID');
+ assert.deepEqual(d.summary(),first);assert.deepEqual(formatNativeStudioFailure('unknown',error),first);assert.equal(cli(error).workerEvidence.postCheck,post);
+ d.capture(error);const outer=d.failure();assert.notEqual(outer,error);assert.deepEqual(cli(outer),cli(error));
+});
+test('successful Worker assessment still provides evidence on a genuine later post-check failure',()=>{
+ const {assessment,error}=observedFailure(observedResult({status:0,stdout:Buffer.from(workerTap())}),'failed');
+ assert.equal(assessment.ok,true);assert.deepEqual(formatNativeStudioFailure('unknown',error),failed('worker-post-check','SOURCE_SET'));assert.equal(cli(error).workerEvidence.tap.pass,51);assert.equal(cli(error).workerEvidence.postCheck,'failed');
+ assert.equal(Object.hasOwn(cli(error).workerEvidence,'native'),false,'no unverified caller Native110 claim is emitted');
+});
+test('completed post-check cannot be retroactively changed and stale wrapper snapshots stay immutable',()=>{
+ const {d,error}=observedFailure();d.enter('worker-post-check');d.workerPostCheck(new Error('PRIVATE_SENTINEL'));d.workerPostCheck();
+ assert.equal(cli(error).workerEvidence.postCheck,'unknown');assert.equal(cli(d.failure()).workerEvidence.postCheck,'failed');
+});
+test('observations cannot attach before Worker phase or after an unrelated first failure',()=>{
+ const a=assessMergeWorkerProcess(observedResult()),d=createNativeStudioDiagnostics();d.observeWorker(a);d.enter('context');d.capture(thrownBy(()=>validateNativeStudioSources([])));d.enter('worker-tests');d.observeWorker(a);assert.equal(Object.hasOwn(cli(d.failure()),'workerEvidence'),false);
+ const next=createNativeStudioDiagnostics();next.enter('worker-tests');next.observeWorker(a);next.capture(a.failure);assert.equal(cli(next.failure()).workerEvidence.exitCode,1);
+});
+test('forged assessments, copied summaries and cross-run assessment reuse cannot acquire observations',()=>{
+ const {assessment,d,error}=observedFailure();
+ for(const value of [{...assessment},{ok:false,failure:assessment.failure},d.summary(),cli(error),null,undefined,Symbol('PRIVATE_SENTINEL')]){
+  const other=createNativeStudioDiagnostics();other.enter('worker-tests');other.observeWorker(value);other.capture(assessment.failure);assert.equal(Object.hasOwn(cli(other.failure()),'workerEvidence'),false);
+ }
+ const other=createNativeStudioDiagnostics();other.enter('worker-tests');other.observeWorker(assessment);other.capture(assessment.failure);assert.equal(Object.hasOwn(cli(other.failure()),'workerEvidence'),false);
+ assert.equal(Object.hasOwn(cli(assessment.failure),'workerEvidence'),false);
+});
+test('distinct runs and cross-error wrappers never borrow any last observation',()=>{
+ const one=observedFailure(observedResult({status:7})),two=observedFailure(observedResult({status:9}));assert.equal(cli(one.error).workerEvidence.exitCode,7);assert.equal(cli(two.error).workerEvidence.exitCode,9);
+ const bare=createNativeStudioDiagnostics();bare.enter('worker-tests');bare.capture(one.error);assert.equal(Object.hasOwn(cli(bare.failure()),'workerEvidence'),false);assert.equal(Object.hasOwn(cli(new Error('NATIVE_STUDIO_CI_FAILED')),'workerEvidence'),false);
+ one.d.observeWorker(two.assessment);assert.equal(cli(one.d.failure()).workerEvidence.exitCode,7);
+});
+test('foreign error properties and even branded error properties are never inspected by the entire bridge',()=>{
+ let touches=0;const bad=()=>{touches++;throw Error('PRIVATE_SENTINEL');};const hostile=new Proxy({}, {get:bad,getPrototypeOf:bad,ownKeys:bad,getOwnPropertyDescriptor:bad,has:bad});
+ const revoked=Proxy.revocable({},{});revoked.revoke();
+ for(const foreign of [hostile,revoked.proxy,{get message(){return bad();},get code(){return bad();},get stack(){return bad();},toJSON:bad},'PRIVATE_SENTINEL',null,undefined]) {
+  const {assessment,d,error}=observedFailure(observedResult({error:foreign,signal:foreign}),'failed');
+  for(const e of [assessment.failure,error])if(e)for(const key of ['message','code','stack','toJSON'])Object.defineProperty(e,key,{get:bad,configurable:true});
+  assert.equal(JSON.stringify(cli(d.failure())).includes('PRIVATE_SENTINEL'),false);assert.equal(JSON.stringify(cli(error)).includes('PRIVATE_SENTINEL'),false);
+  assert.equal(Object.hasOwn(cli(foreign),'workerEvidence'),false);
+ }
+ assert.equal(touches,0);
+});
+test('result getters proxies and revoked proxies cannot execute or fabricate evidence',()=>{
+ let touches=0;const bad=()=>{touches++;throw Error('PRIVATE_SENTINEL');};
+ const proxy=new Proxy({}, {get:bad,getPrototypeOf:bad,ownKeys:bad,getOwnPropertyDescriptor:bad});const revoked=Proxy.revocable({},{});revoked.revoke();
+ for(const result of [proxy,revoked.proxy,{get stdout(){return bad();}},...['status','error','signal','stderr'].map(key=>Object.defineProperty(observedResult(),key,{get:bad}))]){const {assessment,error}=observedFailure(result);assert.equal(assessment.ok,false);assert.equal(Object.hasOwn(cli(error),'workerEvidence'),false);}
+ assert.equal(touches,0);
+});
+test('Buffer own length iterator toJSON and coercion hooks cannot leak through observation or assessment',()=>{
+ let touches=0;const bad=()=>{touches++;throw Error('PRIVATE_SENTINEL');};const bytes=Buffer.from(failureTap());
+ for(const key of ['length','toJSON','toString','valueOf',Symbol.iterator,Symbol.toPrimitive])Object.defineProperty(bytes,key,{get:bad});
+ const {error}=observedFailure(observedResult({stdout:bytes}));assert.equal(cli(error).workerEvidence.tap.fail,1);assert.equal(touches,0);
+});
+for(const [label,status] of [['missing',undefined],['null',null],['string','PRIVATE_SENTINEL'],['fraction',1.5],['NaN',NaN],['infinite',Infinity],['huge',2147483648],['negative huge',-2147483649],['hostile',new Proxy({}, {get(){throw Error('PRIVATE_SENTINEL');}})]])
+ test('unknown exit status stays null for '+label,()=>{const {error}=observedFailure(observedResult({status}));assert.equal(cli(error).workerEvidence.exitCode,null);assert.equal(JSON.stringify(cli(error)).includes('PRIVATE_SENTINEL'),false);});
+for(const [label,bytes] of [
+ ['invalid UTF8',Buffer.from([0xc0,0xaf])],['BOM',Buffer.concat([Buffer.from([239,187,191]),Buffer.from(failureTap())])],['internal BOM',Buffer.from(failureTap()+'\uFEFF')],['bare CR',Buffer.from(failureTap()+'x\ry')],['overlong',Buffer.alloc(8*1024*1024+1)],['absent',undefined]
+])test('invalid observation text stays entirely unknown for '+label,()=>{const {error}=observedFailure(observedResult({stdout:bytes}));const t=cli(error).workerEvidence.tap;assert.equal(Object.values(t).every(v=>v===null),true);assert.equal(JSON.stringify(cli(error)).includes('PRIVATE_SENTINEL'),false);});
+test('observed CRLF counters are accepted without modifying provenance digest',()=>{const stdout=Buffer.from(failureTap().replaceAll('\n','\r\n')),{error}=observedFailure(observedResult({stdout}));assert.equal(cli(error).workerEvidence.tap.fail,1);assert.equal(cli(error).workerEvidence.stdoutSha256,createHash('sha256').update(stdout).digest('hex'));});
+for(const key of ['tests','suites','pass','fail','cancelled','skipped','todo'])for(const [label,change] of [
+ ['duplicate',s=>s+'# KEY 0\n'],['malformed',s=>s.replace(/^# KEY [0-9]+$/m,'# KEY PRIVATE_SENTINEL')],['unbounded',s=>s.replace(/^# KEY [0-9]+$/m,'# KEY 1000000')],['leading zero',s=>s.replace(/^# KEY [0-9]+$/m,'# KEY 01')]
+])test('observed '+key+' is null for '+label,()=>{const changed=change(failureTap().replaceAll('# '+key+' ','# KEY ')).replaceAll('# KEY ','# '+key+' ');assert.equal(cli(observedFailure(observedResult({stdout:Buffer.from(changed)})).error).workerEvidence.tap[key],null);});
+for(const [label,change] of [
+ ['duplicate plan',s=>s+'1..51\n'],['bad plan',s=>s.replace('1..51','1..051')],['huge plan',s=>s.replace('1..51','1..1000000')],['nested plan',s=>s.replace('1..51','  1..51')]
+])test('observed plan is null for '+label,()=>assert.equal(cli(observedFailure(observedResult({stdout:Buffer.from(change(failureTap()))})).error).workerEvidence.tap.plan,null));
+for(const [label,change] of [
+ ['duplicate fail result',s=>s+'not ok 3 - PRIVATE_SENTINEL\n'],['bad ordinal',s=>s.replace('not ok 3 -','not ok 03 -')],['huge ordinal',s=>s.replace('not ok 3 -','not ok 1000000 -')],['nested result',s=>s.replace('not ok 3 -','    not ok 3 -')],['malformed result',s=>s.replace('not ok 3 -','not ok PRIVATE_SENTINEL -')]
+])test('malformed failed record yields no ordinal location or enum for '+label,()=>{const t=cli(observedFailure(observedResult({stdout:Buffer.from(change(failureTap()))})).error).workerEvidence.tap;for(const key of ['firstFailingOrdinal','location','errorCode','failureType'])assert.equal(t[key],null);});
+for(const [label,field,change] of [
+ ['unknown error','errorCode',s=>s.replace('ERR_TEST_FAILURE','PRIVATE_SENTINEL')],['duplicate error','errorCode',s=>s.replace("  code: 'ERR_TEST_FAILURE'","  code: 'ERR_TEST_FAILURE'\n  code: 'PRIVATE_SENTINEL'")],['unknown type','failureType',s=>s.replace('testCodeFailure','PRIVATE_SENTINEL')],['duplicate type','failureType',s=>s.replace("  failureType: 'testCodeFailure'","  failureType: 'testCodeFailure'\n  failureType: 'PRIVATE_SENTINEL'")],['unknown file','location',s=>s.replace('person-merge.test.mjs','PRIVATE_SENTINEL.mjs')],['bad line','location',s=>s.replace(':517:9',':0:9')],['huge column','location',s=>s.replace(':517:9',':517:1000000')],['duplicate location','location',s=>s.replace('  ---','  ---\n  location: PRIVATE_SENTINEL')]
+])test('only closed known diagnostic values survive '+label,()=>{const out=cli(observedFailure(observedResult({stdout:Buffer.from(change(failureTap()))})).error);assert.equal(out.workerEvidence.tap[field],null);assert.equal(JSON.stringify(out).includes('PRIVATE_SENTINEL'),false);});
+test('both and only known fixture basenames can survive private source paths',()=>{const stdout=Buffer.from(failureTap().replace('person-merge.test.mjs','person-edits-worker-lifecycle.test.mjs'));const t=cli(observedFailure(observedResult({stdout})).error).workerEvidence.tap;assert.deepEqual(t.location,{file:'person-edits-worker-lifecycle.test.mjs',line:517,column:9});});
+
+test('failed observation cannot be attached to a different first error identity',()=>{
+ const a=assessMergeWorkerProcess(observedResult()),d=createNativeStudioDiagnostics();d.enter('worker-tests');d.observeWorker(a);d.capture(new Error('PRIVATE_SENTINEL'));assert.equal(Object.hasOwn(cli(d.failure()),'workerEvidence'),false);
+});
+test('caller mutation after assessment cannot change captured hashes scalars counters or node',()=>{
+ const result=observedResult(),a=assessMergeWorkerProcess(result),d=createNativeStudioDiagnostics();result.status=0;result.stdout.fill(65);result.stderr.fill(65);d.enter('worker-tests');d.observeWorker(a);d.capture(a.failure);
+ const out=cli(d.failure());assert.equal(out.workerEvidence.exitCode,1);assert.equal(out.workerEvidence.tap.fail,1);assert.equal(out.workerEvidence.node,process.version);assert.equal(out.workerEvidence.stdoutSha256,createHash('sha256').update(Buffer.from(failureTap())).digest('hex'));
+});
+for(const [label,type,code,location,counters] of [
+ ['file-level timeout','testCodeFailure','ERR_TEST_FAILURE',null,{pass:0,fail:1,cancelled:0}],
+ ['test timeout','testTimeoutFailure','ERR_TEST_FAILURE',"  location: 'PRIVATE_SENTINEL/person-merge.test.mjs:517:9'\n",{pass:0,fail:1,cancelled:0}],
+ ['parent cancellation','cancelledByParent','ERR_TEST_FAILURE',"  location: 'PRIVATE_SENTINEL/person-edits-worker-lifecycle.test.mjs:211:1'\n",{pass:0,fail:0,cancelled:1}],
+ ['test error enum','testCodeFailure','ERR_TEST_TIMEOUT',null,{pass:0,fail:1,cancelled:0}],
+ ['cancel error enum','cancelledByParent','ERR_TEST_CANCELLED',null,{pass:0,fail:0,cancelled:1}]
+])test('safe Worker bridge observes '+label+' without asserting success or leaking the name',()=>{
+ const stdout=Buffer.from("TAP version 13\n# Subtest: PRIVATE_SENTINEL/path/person-merge.test.mjs\nnot ok 1 - PRIVATE_SENTINEL/path/person-merge.test.mjs\n  ---\n"+(location??'')+"  failureType: '"+type+"'\n  code: '"+code+"'\n  error: 'PRIVATE_SENTINEL'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass "+counters.pass+"\n# fail "+counters.fail+"\n# cancelled "+counters.cancelled+"\n# skipped 0\n# todo 0\n");
+ const {d,error}=observedFailure(observedResult({stdout,status:1}),'failed');d.capture(error);const out=cli(d.failure());
+ assert.equal(out.code,'TAP_INVALID');assert.equal(out.workerEvidence.postCheck,'failed');assert.equal(out.workerEvidence.tap.firstFailingOrdinal,1);assert.equal(out.workerEvidence.tap.failureType,type);assert.equal(out.workerEvidence.tap.errorCode,code);for(const k of Object.keys(counters))assert.equal(out.workerEvidence.tap[k],counters[k]);assert.equal(out.workerEvidence.tap.location===null,location===null);assert.equal(JSON.stringify(out).includes('PRIVATE_SENTINEL'),false);
+});

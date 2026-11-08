@@ -1283,15 +1283,17 @@
     "review": "non-author approved0P1P2, engineering subset only"
   },
   "lastHostedEngineeringAttempt": {
-    "candidateCommit": "1bbc047ccdac63c7d34f86cae6826f4fee524a4e",
-    "receipt": "docs/execution/t01-native-kernel-runtime-validation.json",
-    "nativeRun": 42460066893,
+    "candidateCommit": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
+    "receipt": "docs/execution/t01-native-worker-observable-runtime-validation.json",
+    "nativeRun": 42466547581,
     "nativeConclusion": "failure",
+    "actualNode": "22.23.4",
     "diagnostic": {
       "phase": "worker-tests",
-      "code": "TAP_INVALID"
+      "code": "TAP_INVALID",
+      "failureType": "testTimeoutFailure"
     },
-    "pure300Passed": true,
+    "pure398Passed": true,
     "companion353Passed": true,
     "actual161Passed": false,
     "allPGStatusesUnchanged": true

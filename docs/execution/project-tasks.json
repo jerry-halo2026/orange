@@ -13,9 +13,9 @@
       "externalGates": [],
       "readinessEvidence": "docs/execution/t01-cpu-readiness.json (CPU verification subset only; status remains in_progress)",
       "nativeStudioEvidence": "docs/execution/t01-native-studio-ci-latest-runtime-validation.json",
-      "currentEngineeringSlice": "Source30reviewed4585; latest9478034local879+fouroriginaltypes0 actualpass+non-authorresultapproved0P1P2. Actual28TAP_INVALIDunknown/no newhosted161/dev/PG. Nativefetch17card/resources nextindependentprep.",
+      "currentEngineeringSlice": "latestlocal879/fourtype0 accepted; observable32actualNode22filetimeout with45records44pass1cancelled, pure398/companion353pass. Source33nativefiledeadlinealignment proposedwithsameglobalbudget; no actual161/dev/PG.",
       "latestIntegratedEvidence": "docs/execution/t01-native-worker-latest-integration-validation.json",
-      "latestHostedEvidence": "docs/execution/t01-native-kernel-runtime-validation.json"
+      "latestHostedEvidence": "docs/execution/t01-native-worker-observable-runtime-validation.json"
     },
     {
       "id": "T03",

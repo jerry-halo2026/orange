@@ -1,0 +1,539 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 23,
+  "executor": "/root",
+  "approvalCommit": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+  "approvalCardGitBlobSHA256": "aaceed71446a3c02a7aa5887de76506352f7d8d96eb6d6d0476b49c5f93f2307",
+  "sourceCandidate": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+  "sourceCICommit": "4d1550b98c7fb8a38505ad0ad8dadafc8b513bba",
+  "sourceNativeCaller": "754627721f5bd326968966c77bd686d0533d38a2",
+  "policyReview": "docs/execution/t01-native-studio-ci-latest-runtime-policy-review.json",
+  "localN5a": {
+    "admitted": true,
+    "cases": 84,
+    "proofSHA256": "a2a09e38bd791661639a6709b1a9829f0c02ea371197534d77f45f3db369909a"
+  },
+  "historyAudit": {
+    "commits": 16,
+    "textBlobs": 80,
+    "unresolved": 0,
+    "proofSHA256": "06dbefcc6376f1c7bc96d20018403eb51a989c52f651fd7cf26f34cc5a8ec4b6",
+    "notUniversalSecretScannerGuarantee": true
+  },
+  "remotePreflightSHA256": "7ae5f0c0e7844b4826e338c888c2d8a1d67f33f1dcf864b247a3ff8662f254b7",
+  "financial": {
+    "source": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+    "checkedAtUTC": "2026-11-08T04:35:18.391Z",
+    "standardPublicComputeFree": true,
+    "noLargerArtifactCacheOrModel": true
+  },
+  "remoteLease": {
+    "issued": true,
+    "issuedAtUTC": "2026-11-08T04:54:09.440Z",
+    "owner": "/root",
+    "repository": "jerry-halo2026/orange",
+    "ref": "refs/heads/codex/t05-path-policy",
+    "workflow": ".github/workflows/native-studio.yml",
+    "runner": "actual standard hostedwindows-2025, image windows-2025-vs2026",
+    "maxActiveNativeRuns": 1,
+    "timeoutMinutes": 12,
+    "state": "terminal success actual110 allpassed0skip",
+    "completedAtUTC": "2026-11-08T04:54:58Z"
+  },
+  "publication": {
+    "state": "verified-pushed",
+    "commit": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+    "branch": "codex/t05-path-policy",
+    "verifiedAtUTC": "2026-11-08T04:54:13.244Z",
+    "remoteHead": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+    "devUpdated": false,
+    "mainOrTagUpdated": false
+  },
+  "run": {
+    "id": 42448639096,
+    "head": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+    "path": ".github/workflows/native-studio.yml",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42448639096",
+    "jobs": [
+      {
+        "id": 128632878681,
+        "name": "native-studio",
+        "status": "completed",
+        "conclusion": "success",
+        "labels": [
+          "windows-2025"
+        ],
+        "runnerName": "GitHub Actions 1000000013",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T04:54:13Z",
+            "completed_at": "2026-11-08T04:54:13Z"
+          },
+          {
+            "name": "Checkout only this candidate without stored credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T04:54:13Z",
+            "completed_at": "2026-11-08T04:54:20Z"
+          },
+          {
+            "name": "Require the preinstalled Node without downloads",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T04:54:20Z",
+            "completed_at": "2026-11-08T04:54:22Z"
+          },
+          {
+            "name": "Test only pure source context result and archive validation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T04:54:22Z",
+            "completed_at": "2026-11-08T04:54:24Z"
+          },
+          {
+            "name": "Verify fixed sources and run actual Native Auto Studio and file-link cases",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-08T04:54:24Z",
+            "completed_at": "2026-11-08T04:54:56Z"
+          },
+          {
+            "name": "Post Checkout only this candidate without stored credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-08T04:54:56Z",
+            "completed_at": "2026-11-08T04:54:58Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-08T04:54:58Z",
+            "completed_at": "2026-11-08T04:54:58Z"
+          }
+        ]
+      }
+    ],
+    "pure192": {
+      "tests": 192,
+      "pass": 192,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "actualImage": "windows-2025-vs2026",
+    "actualImageVersion": "20261103.298.1",
+    "node": "v22.23.4",
+    "summary": {
+      "commit": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+      "node": "v22.23.4",
+      "testFiles": [
+        "packages/openfilm/studio/server/project-control-guard.test.mjs",
+        "packages/openfilm/studio/server/projects-control.test.mjs",
+        "packages/openfilm/studio/server/auto-versions.test.mjs",
+        "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+        "packages/openfilm/studio/server/watch.test.mjs",
+        "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+        "packages/openfilm/studio/server/project-file-symlink.test.mjs"
+      ],
+      "total": 110,
+      "passed": 110,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "todo": 0,
+      "testNames": [
+        "off by default for the person: nothing is saved on its own while it is off",
+        "on: a version once the folder rests, one for a burst of changes",
+        "a stretch of work that never rests is saved at most MAX_MS after it began",
+        "an app's agent: what was there before its turn, and what it did once the turn ends; its writes wait for that",
+        "a project closed with changes still awaiting a rest is saved then",
+        "stop and drain wait for actual save settlement and returned cleanup, with synchronous save effects preserved",
+        "closed changed and poll do not call any external callback, even when start is attempted during drain",
+        "save reentering stop is registered before the callback and cannot start another save",
+        "parallel project saves all settle before stop, including rejection and finally cleanup",
+        "sync save throw is contained and cannot strand a reentrant stop",
+        "a rejected save is sunk without exposing its error or stranding future lifecycle saves",
+        "on reentering stop/start cannot resurrect scheduling or invoke a later callback",
+        "roots reentering stop/start cannot resurrect scheduling or invoke a later callback",
+        "working reentering stop/start cannot resurrect scheduling or invoke a later callback",
+        "poll stops traversing projects if a transition save reenters stop",
+        "closing-project save reentering stop cannot reach the following on or open-project callbacks",
+        "explicit start only after completed stop creates a fresh usable lifecycle",
+        "queued old timer callbacks cannot save after stop or interfere with a fresh generation",
+        "actual admission factory exists",
+        "factory is lazy; descriptors, proxies, inherited and relative inputs fail closed",
+        "shared readers, nested/sibling reference lifetimes, exceptions and closed leases",
+        "include checks a newly marked leaf even below an admitted parent",
+        "unknown registry and persistent metadata lock are preserved and denied",
+        "coordination hardlinks and directory junctions are refused",
+        "real child process shares readers; reservation excludes both processes",
+        "real controlled reservation blocks native access in another Node process",
+        "sibling reader stays registered when another sibling throws",
+        "markers through junction and missing tail are denied; raw dot traversal cannot erase a marker",
+        "coordination IO errors are fixed codes, never raw filesystem diagnostics",
+        "fix1 real child short metadata mutex at callback exit does not orphan native reader",
+        "fix1 exhausted release retains own cleanup; next acquisition recovers without deleting foreign reservation",
+        "fix1 sync native finally also retries a real child short metadata mutex",
+        "real Windows file-symbolic marker refuses before native callback",
+        "actual open refuses a marked target before film/id writes",
+        "actual concurrent create chooses distinct original names and IDs",
+        "registration exposes only intermediate deny-marker capabilities and denies reopening native API",
+        "all actual public IO APIs deny a controlled home before effects or choose/trash",
+        "list preflights every found project before first ID/gitignore/state write",
+        "recent compound outer marker is denied before list writes",
+        "unmarked happy native APIs preserve IDs, film and folder behavior",
+        "pending, mismatched and malformed registration stay denied without cleanup",
+        "registration preserves unknown state and does not assign historical project IDs",
+        "moveLibrary destination denial precedes choose; locate and rename deny marked destination",
+        "fake guard and guard switching inside active scope fail closed",
+        "open preflights controlled recent paths before initializing a different project",
+        "actual registration is busy during native work, with no pending registration left",
+        "different home sharing a marked library and missing marked subpath cannot initialize anything",
+        "moveLibrary preflights marked source projects before invoking choose",
+        "original unmarked project junction preserves real path and ID; controlled target alias is denied",
+        "fix1 actual open refuses .film junction before any project or destination write",
+        "fix1 actual list refuses .film junction before any project or destination write",
+        "fix1 actual locate refuses .film junction before any project or destination write",
+        "fix1 metadata .gitignore hardlink cannot alter external bytes",
+        "fix1 metadata id hardlink cannot alter external bytes",
+        "fix1 corrupt recent before controlled entry open preserves all state",
+        "fix1 corrupt recent before controlled entry createFolder preserves all state",
+        "fix1 corrupt recent after controlled entry open preserves all state",
+        "fix1 corrupt recent after controlled entry createFolder preserves all state",
+        "fix1 pending owned reader release recovers through actual registerProjectControl after child unlock",
+        "default actual factory preserves native Studio return shape and closes both origins",
+        "actual save IO and cleanup keep public close pending after ports close",
+        "actual save rejection and cleanup keep public close pending after ports close",
+        "actual startup failure on 18475 stops admission, closes owned network, waits save cleanup, preserves EADDRINUSE",
+        "actual startup failure on 18476 stops admission, closes owned network, waits save cleanup, preserves EADDRINUSE",
+        "multiple actual parallel saves wait for the last cleanup",
+        "invalid factory types, surfaces and throws fail safely before start or listen",
+        "original websocket consumer waits actual FSWatcher close delivery after both origins and existing socket close",
+        "pending actual initial read and cleanup remain owned after network close; terminal admission cannot restart",
+        "Studio owns native film merge keepAside and actual replacement cleanup",
+        "Studio owns native files merge keepAside and actual replacement cleanup",
+        "Studio drains parallel current and retired roots from unsubscribe closeAll and move until the last real read",
+        "actual listen 18475 failure waits native read cleanup and preserves blocker/error object",
+        "actual listen 18476 failure waits native read cleanup and preserves blocker/error object",
+        "real Auto and watcher cleanup retain stable reentrant close; watch released first",
+        "real Auto and watcher cleanup retain stable reentrant close; auto released first",
+        "sanitized invalid watcher factories and surfaces never start Auto or bind",
+        "obtained native manager drains if subsequent Auto type initialization fails",
+        "obtained native manager drains if subsequent Auto surface initialization fails",
+        "obtained native manager drains if subsequent Auto getter initialization fails",
+        "obtained native manager drains if subsequent Auto throw initialization fails",
+        "obtained native manager drains if subsequent Auto start initialization fails",
+        "cleanup rejection waits other actual native completion before rejecting close",
+        "post-listen isolated metadata mkdirSync fault drains native watch and Auto before preserving error",
+        "post-listen isolated metadata writeFileSync fault drains native watch and Auto before preserving error",
+        "late upgrade real projectById read released after close cannot handshake or acquire subscriptions and handles",
+        "a deleted film is said missing once, never gone, while its folder remains; no empty film is published",
+        "a film deleted and written again seconds later (an agent replacing it whole) comes back as a film, the same text too",
+        "a film briefly removed during a save is refreshed, without closing its editor",
+        "presence is checked even when no native watcher could start, and stops on unsubscribe",
+        "film.html changes come with their revision, other files as one files event; .film/ is not watched",
+        "watching folder by folder (Linux): a file replaced by a rename is seen every time, and new folders are taken in",
+        "renamed folders keep their listeners and original unsubscribe functions through repeated moves",
+        "moving into an already watched path preserves both subscriptions",
+        "a watched project's folder that goes is said gone; one renamed in Studio (moved) is not",
+        "drain waits for an entered real initial read and close is stable",
+        "drain owns entered actual film settle from native FS events",
+        "drain owns entered actual files settle from native FS events",
+        "terminal drain owns retired roots, parallel reads, and stale unsubscribe cannot close a fresh membership",
+        "actual native close event gates completion and reentrant close forbids handle growth",
+        "actual fallback close event gates completion and reentrant close forbids handle growth",
+        "manager drain waits for real native watcher close notification separately from initial IO",
+        "actual film merge keepAside and replacement finish before drain",
+        "actual files merge keepAside and replacement finish before drain",
+        "presence-only missing root owns its entered real 400ms grace and emits nothing after close",
+        "film send reentrant drain stops files settle and remaining subscribers",
+        "queued debounce is cancelled synchronously by close",
+        "sync failure is sunk while another entered root remains owned",
+        "async failure is sunk while another entered root remains owned",
+        "move target merge and last unsubscribe retain every entered original read until terminal drain",
+        "external initial read reentry cannot escape task registration"
+      ],
+      "exitCode": 0,
+      "ports": [
+        {
+          "port": 18475,
+          "listening": false
+        },
+        {
+          "port": 18476,
+          "listening": false
+        }
+      ],
+      "source": [
+        {
+          "path": ".github/workflows/native-studio.yml",
+          "sha256": "cce3fb1bfc780640b04b40a1a3e7623f1d4e401eb791493e09cdfd8166175134",
+          "gitBlobSha256": "cce3fb1bfc780640b04b40a1a3e7623f1d4e401eb791493e09cdfd8166175134"
+        },
+        {
+          "path": "packages/openfilm/package.json",
+          "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399",
+          "gitBlobSha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+        },
+        {
+          "path": "packages/openfilm/src/development-isolation.mjs",
+          "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+          "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+        },
+        {
+          "path": "packages/openfilm/src/development-isolation.test.mjs",
+          "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+          "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+        },
+        {
+          "path": "packages/openfilm/studio/server/auto-versions.mjs",
+          "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+          "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+        },
+        {
+          "path": "packages/openfilm/studio/server/auto-versions.test.mjs",
+          "sha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa",
+          "gitBlobSha256": "c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+          "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+          "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+          "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+          "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-file-symlink.test.mjs",
+          "sha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1",
+          "gitBlobSha256": "cc32f0acc0f482b74756c76f8d6fc4abf9ebed2b644820159a225f9c7068b0c1"
+        },
+        {
+          "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+          "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+          "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+        },
+        {
+          "path": "packages/openfilm/studio/server/projects.mjs",
+          "sha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d",
+          "gitBlobSha256": "b6167184e681fd959212eb8f927e8557feb5ef7b3730961c8bd8939d7ba3700d"
+        },
+        {
+          "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+          "sha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc",
+          "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+        },
+        {
+          "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+          "sha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c",
+          "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+        },
+        {
+          "path": "packages/openfilm/studio/server/server.mjs",
+          "sha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194",
+          "gitBlobSha256": "c8e416ad948dd471fbf3fcf22bce4d355419f93d96b8e538bc0234d78d0d3194"
+        },
+        {
+          "path": "packages/openfilm/studio/server/watch.mjs",
+          "sha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde",
+          "gitBlobSha256": "112c1bcdc44fe6f2346004e33d87acbb875d5acc1a0185c99fc9ba7ce0813fde"
+        },
+        {
+          "path": "packages/openfilm/studio/server/watch.test.mjs",
+          "sha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31",
+          "gitBlobSha256": "64c3371ef56896f98016ab36f3eee08eb6eb59bdf3d755325c2cdf0285c01a31"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "sha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55",
+          "gitBlobSha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55"
+        },
+        {
+          "path": "scripts/fission-path-ci.mjs",
+          "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+          "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+        },
+        {
+          "path": "scripts/native-studio-ci.mjs",
+          "sha256": "1d54c63828365c40511a275365b7649f2fd785e2c278d24dd14eaad2b5fda679",
+          "gitBlobSha256": "1d54c63828365c40511a275365b7649f2fd785e2c278d24dd14eaad2b5fda679"
+        },
+        {
+          "path": "scripts/native-studio-ci.test.mjs",
+          "sha256": "8fdee96e7ed96f0b70b4ad0d6e5cd2440f2dbbf3c09e798b2ea8703c2f7da35a",
+          "gitBlobSha256": "8fdee96e7ed96f0b70b4ad0d6e5cd2440f2dbbf3c09e798b2ea8703c2f7da35a"
+        },
+        {
+          "path": "scripts/phase1-admission.mjs",
+          "sha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd",
+          "gitBlobSha256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+        },
+        {
+          "path": "scripts/phase1-isolation.test.mjs",
+          "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+          "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+        }
+      ],
+      "package": {
+        "name": "playwright-core",
+        "version": "1.61.1",
+        "license": "Apache-2.0",
+        "licenseSha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+        "noticeSha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+        "archiveSha512": "h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==",
+        "packageJsonSha256": "759e376f995bf39edd4810d699b99469bab1d7428b6fbc78d41912f367df7ba9",
+        "fileCount": 106,
+        "filesSha256": "63b65fc39b3658c72e101b382a3dc126f5b9b5dd6ed789f1461036886de7ca0d"
+      },
+      "tapSha256": "61053bbff8853cb596d074938523ed49a3b4eeea1e8b71939e768cba68b10f38",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tarSha256": "a8c4b61db4c2908930be3984d80b4a921f75290c958adc62565da8a455b1230c"
+    },
+    "summarySHA256": "e8839b4c32b5c14ee7584427befaa5bd85335f01ec04a460148f01c895be4a9f",
+    "logSHA256": "5f1315fe88befe614f2437cc76ca1bff57eb4f079ca60519d835d5a36af97fdd"
+  },
+  "result": {
+    "state": "actual fixed110 samehead allpassed including mandatorygenuinefilemarker; originalfixeddependency restore andGitvalidation executed",
+    "actualWindows110Passed": true,
+    "actualGenuineFileSymlinkCasePassed": true,
+    "actualSources22CanonicalMatch": true,
+    "actualPackageArchiveAndExtractionVerified": true,
+    "actualTwoPortsFree": true,
+    "companion353Passed": true,
+    "pendingWorker14SourceExcluded": true,
+    "fullTaskAccepted": false,
+    "pilotAccepted": false
+  },
+  "productModelValidationCalls": 0,
+  "fullTaskAccepted": false,
+  "companion": {
+    "id": 42448639066,
+    "head": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+    "path": ".github/workflows/phase1.yml",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/jerry-halo2026/orange/actions/runs/42448639066",
+    "jobs": [
+      {
+        "id": 128632878424,
+        "name": "pure-tests",
+        "status": "completed",
+        "conclusion": "success",
+        "labels": [
+          "windows-latest"
+        ],
+        "runnerName": "GitHub Actions 1000000012",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T04:54:13Z",
+            "completed_at": "2026-11-08T04:54:13Z"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T04:54:13Z",
+            "completed_at": "2026-11-08T04:54:24Z"
+          },
+          {
+            "name": "Require preinstalled Node 22.18 or newer (no downloads)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T04:54:24Z",
+            "completed_at": "2026-11-08T04:54:27Z"
+          },
+          {
+            "name": "Run built-in pure tests without dependencies or runtime downloads",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T04:54:27Z",
+            "completed_at": "2026-11-08T04:54:47Z"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-08T04:54:47Z",
+            "completed_at": "2026-11-08T04:54:49Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-08T04:54:49Z",
+            "completed_at": "2026-11-08T04:54:49Z"
+          }
+        ]
+      }
+    ],
+    "counters": {
+      "tests": 353,
+      "pass": 353,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "sameHeadProducerProof": {
+      "status": "same-head-local-auth-policy-producers-verified",
+      "commit": "a68fbec79a62c64cfdb6fd370ec3abd1ff5433e2",
+      "expectedCases": 353,
+      "sources": [
+        {
+          "path": "apps/desktop/src/auth-service.mjs",
+          "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+          "rawSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+        },
+        {
+          "path": "apps/desktop/src/auth-service.test.mjs",
+          "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+          "rawSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-access.mjs",
+          "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+          "rawSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+        },
+        {
+          "path": "packages/openfilm/studio/server/project-access.test.mjs",
+          "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+          "rawSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+        }
+      ]
+    },
+    "logSHA256": "a892679ab83516fcde2d62917b67bf7569158c55cd998f045ba803b5e68d41cf"
+  },
+  "evidenceBoundaries": {
+    "actualNativeRawTAP": "hashed andvalidated onrunner, notuploaded; safe summary obtained from actualjoblog",
+    "gitExecutableFingerprint": "private initial/perchild/final validation executed byreviewedsource; actualfingerprint notemitted, do notinvent",
+    "oldRuntime20ExactNlink": "stillnotobserved; newactualcompat success doesnotretroactively proveoldnlink",
+    "workerProducer14": "notpresent inthis exactruntime tree, originalperson2ae preserved",
+    "noMediaInstallerDesktopOrPGAcceptance": true
+  }
+}

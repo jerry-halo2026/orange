@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 21,
+  "reviewerAgent": "/root/native_studio_ci_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "5b9d0f826caf9edce5ff342f4a4530456b57463f0fe362dbb6b56115bf158b7e",
+  "inputProofSHA256": "185e7eadd9f681e14abb8869ee2ff0d7ef906811236683bf420fd5f261e91a0e",
+  "mutableBaseline": "809cce5913ba59de45baddd266277a439f94ac4f / twoCI scripts24bc+1d917",
+  "scope": "fixed Git dedicated validation only; Node/workspace/archive/stage nlink1 and tar unchanged; no new remote runtime",
+  "concurrentCard13": "50d7b20ca3972bf6478d5f48c56986237804e5b0d28c00e20edcc4462bf812b5",
+  "remaining": [
+    "immutable card",
+    "actual raw17+2proof",
+    "trusted external N5a84",
+    "author TDD and nonauthor source review/Root fresh validation"
+  ],
+  "fullTaskAccepted": false
+}

@@ -211,6 +211,34 @@ function recheckSystemTar(capability) {
  need(current.executable===capability.executable && current.sha256===capability.sha256,'TOOL_CHANGED');
 }
 
+// Only the fixed preinstalled Git tool has this dedicated link policy.
+// Metadata validation grants no execution authority; the capability is private.
+export function validateSystemGitMetadata(record) {
+ need(arguments.length===1 && record && record.ancestorsOrdinary===true,'TOOL_PATH');
+ windows(record.systemRoot);
+ const fixed=path.win32.join(path.win32.parse(record.systemRoot).root,'Program Files','Git','cmd','git.exe');
+ need(record.executable===fixed && record.realPath===fixed,'TOOL_PATH');
+ need(record.isFile===true && record.isSymbolicLink===false && Number.isSafeInteger(record.nlink) && record.nlink>=1,'TOOL_TYPE');
+ need(typeof record.sha256==='string' && /^[a-f0-9]{64}$/.test(record.sha256),'TOOL_HASH');
+ return Object.freeze({executable:fixed,sha256:record.sha256});
+}
+const systemGitCapabilities = new WeakSet();
+function systemGit(systemRoot) {
+ ordinary(systemRoot,'directory');
+ const parent=ordinary(path.win32.join(path.win32.parse(systemRoot).root,'Program Files','Git','cmd'),'directory');
+ need(readdirSync(parent).filter(name=>name.toLowerCase()==='git.exe').join('')==='git.exe','TOOL_PATH');
+ const executable=path.win32.join(parent,'git.exe'), stat=lstatSync(executable);
+ need(stat.isFile() && !stat.isSymbolicLink() && Number.isSafeInteger(stat.nlink) && stat.nlink>=1,'TOOL_TYPE');
+ const realPath=realpathSync.native(executable);need(realPath===executable,'TOOL_PATH');
+ const tool=validateSystemGitMetadata({systemRoot,executable,realPath,ancestorsOrdinary:true,isFile:stat.isFile(),isSymbolicLink:stat.isSymbolicLink(),nlink:stat.nlink,sha256:hash(readFileSync(executable))});
+ const capability=Object.freeze({...tool,systemRoot});systemGitCapabilities.add(capability);return capability;
+}
+function recheckSystemGit(capability) {
+ need(systemGitCapabilities.has(capability),'TOOL_CAPABILITY');
+ const current=systemGit(capability.systemRoot);
+ need(current.executable===capability.executable && current.sha256===capability.sha256,'TOOL_CHANGED');
+}
+
 function ordinary(absolute,kind,missing=false) {
  windows(absolute);
  const drive=path.win32.parse(absolute).root, segments=absolute.slice(drive.length).split('\\');
@@ -239,10 +267,10 @@ function directory(absolute,fresh=false) {
 }
 function privateFile(file,bytes) {ordinary(file,'file',true);need(!existsSync(file),'PATH_EXISTS');writeFileSync(file,bytes,{flag:'wx',mode:0o600});ordinary(file,'file');}
 function child(executable,args,cwd,env,timeout=60_000) {
- const trustedTar=systemTarCapabilities.has(executable);
- if(trustedTar)recheckSystemTar(executable);else ordinary(executable,'file');
- const result=spawnSync(trustedTar?executable.executable:executable,args,{cwd,env,encoding:null,windowsHide:true,shell:false,timeout,maxBuffer:8*1024*1024});
- if(trustedTar)recheckSystemTar(executable);
+ const trustedTar=systemTarCapabilities.has(executable), trustedGit=systemGitCapabilities.has(executable);
+ if(trustedTar)recheckSystemTar(executable);else if(trustedGit)recheckSystemGit(executable);else ordinary(executable,'file');
+ const result=spawnSync(trustedTar||trustedGit?executable.executable:executable,args,{cwd,env,encoding:null,windowsHide:true,shell:false,timeout,maxBuffer:8*1024*1024});
+ if(trustedTar)recheckSystemTar(executable);else if(trustedGit)recheckSystemGit(executable);
  return result;
 }
 function successful(result,code) {need(!result.error && !result.signal && result.status===0,code);return result.stdout;}
@@ -359,14 +387,14 @@ export async function runNativeStudioCI() {
  diagnostics.enter('tar');
  const tarExe=systemTar(systemRoot);
  diagnostics.enter('git');
- const gitExe=ordinary(path.win32.join(path.win32.parse(systemRoot).root,'Program Files','Git','cmd','git.exe'),'file');
+ const gitExe=systemGit(systemRoot);
  diagnostics.enter('owned-directory');
  directory(path.win32.dirname(path.win32.dirname(context.ownedRoot)));
  directory(path.win32.dirname(context.ownedRoot));directory(context.ownedRoot,true);
  for(const name of ['home','appdata','localappdata','temp','cache','archive','stage','logs','results'])directory(path.win32.join(context.ownedRoot,name),true);
  const owned=name=>path.win32.join(context.ownedRoot,name);
  const emptyConfig=owned('empty.gitconfig');privateFile(emptyConfig,Buffer.alloc(0));
- const env={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:path.win32.join(system32,'cmd.exe'),PATH:system32+';'+path.win32.dirname(gitExe),HOME:owned('home'),USERPROFILE:owned('home'),APPDATA:owned('appdata'),LOCALAPPDATA:owned('localappdata'),TEMP:owned('temp'),TMP:owned('temp'),TMPDIR:owned('temp'),XDG_CACHE_HOME:owned('cache'),npm_config_cache:owned('cache'),ORANGE_NATIVE_STUDIO_CI_TEMP:owned('temp'),GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyConfig,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0',PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:'1'};
+ const env={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:path.win32.join(system32,'cmd.exe'),PATH:system32+';'+path.win32.dirname(gitExe.executable),HOME:owned('home'),USERPROFILE:owned('home'),APPDATA:owned('appdata'),LOCALAPPDATA:owned('localappdata'),TEMP:owned('temp'),TMP:owned('temp'),TMPDIR:owned('temp'),XDG_CACHE_HOME:owned('cache'),npm_config_cache:owned('cache'),ORANGE_NATIVE_STUDIO_CI_TEMP:owned('temp'),GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyConfig,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0',PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:'1'};
  diagnostics.enter('source-snapshot');const before=snapshot(context,gitExe,env);
  diagnostics.enter('package-pins');packagePins(context.workspace);
  // Frozen tests own unique children in these existing namespaces. Never remove,
@@ -399,6 +427,7 @@ export async function runNativeStudioCI() {
  // A returned process result remains auditable even for failed TAP/exit.
  if(result)privateFile(owned('results/process.json'),JSON.stringify({commit:context.commit,node:process.version,exitCode:Number.isInteger(result.status)?result.status:null,processError:Boolean(result.error),signal:Boolean(result.signal),ports,tapSha256:hash(result.stdout??Buffer.alloc(0)),stderrSha256:hash(result.stderr??Buffer.alloc(0)),source:before,package:packageInfo},null,2)+'\n');
  if(diagnostics.summary()!==null)throw diagnosticFailure(diagnostics.summary());
+ recheckSystemGit(gitExe);
  recheckSystemTar(tarExe);
  const summary={commit:context.commit,node:process.version,testFiles:TESTS,...counts,exitCode:result.status,ports,source:before,package:packageInfo,tapSha256:hash(result.stdout),stderrSha256:hash(result.stderr),tarSha256:tarExe.sha256};
  privateFile(owned('results/summary.json'),JSON.stringify(summary,null,2)+'\n');

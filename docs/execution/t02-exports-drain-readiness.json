@@ -1,0 +1,28 @@
+{
+  "taskId": "T02.a",
+  "commit": "42dbd4c83a85b9dd8da66d38d11da8ee3f319cd0",
+  "authorAgent": "/root/exports_drain_impl",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/exports.mjs",
+      "sha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696",
+      "gitBlobSha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/exports-drain.test.mjs",
+      "sha256": "0a0b8a964c84ecac50047be0635633e9f64dd4dfbc02e4649433ccf7018ecd1d",
+      "gitBlobSha256": "c10726e7ab0af2ebde0f71102dd742d535720adbbc157939653339ce6ba573b1"
+    }
+  ],
+  "Root32Passed": true,
+  "consumerReady": "controlledexport queue/directChild/parentFS completion producer only; latest typefixed composition mustrevalidate, no wholeStudio retirement",
+  "typeCompositionPending": true,
+  "serverConsumerAccepted": false,
+  "renderWorkerPoolOrBrowserTreeDrained": false,
+  "fullTaskAccepted": false
+}

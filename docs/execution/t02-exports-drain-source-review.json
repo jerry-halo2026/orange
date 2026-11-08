@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 15,
+  "commit": "42dbd4c83a85b9dd8da66d38d11da8ee3f319cd0",
+  "authorAgent": "/root/exports_drain_impl",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "requestedAuthorModel": "gpt-6-astra/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/exports.mjs",
+      "sha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696",
+      "gitBlobSha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/exports-drain.test.mjs",
+      "sha256": "0a0b8a964c84ecac50047be0635633e9f64dd4dfbc02e4649433ccf7018ecd1d",
+      "gitBlobSha256": "c10726e7ab0af2ebde0f71102dd742d535720adbbc157939653339ce6ba573b1"
+    }
+  ],
+  "contract": "createExports stableterminal stopAll synchronously fences admissions and retainsactualqueued/active operations through parentIO/cleanup and owned directChild actualclose; existingJob/Ask/nativeIPC/defaultfunctions unchanged",
+  "history": {
+    "initialFindings": {
+      "P1": 1,
+      "P2": 2
+    },
+    "fixRound": 1,
+    "allAddressed": true,
+    "findings": [
+      "waiting callback start->throw retainsactiveownership to realfinally",
+      "synchronous andasynchronous cleanup failure collected afterallwork",
+      "actualshared renameOutput retainsallmultioutput ownership, defaultretry andfirstout preserved"
+    ],
+    "ruling": "docs/execution/t02-exports-rename-helper-ruling.json",
+    "directHelperProof": "realFS bookkeeping only, notmedia/fullqueuecleanup; originalaudio/stills callers reviewed"
+  },
+  "RootActual": {
+    "tests": 32,
+    "pass": 32,
+    "fail": 0,
+    "skip": 0,
+    "cancelled": 0,
+    "children": {
+      "created": 10,
+      "actualExits": 10,
+      "actualCloses": 10,
+      "peak": 2,
+      "final": 0
+    },
+    "failedSpawn": {
+      "attempts": 1,
+      "startedNode": 0,
+      "exits": 0,
+      "closes": 1,
+      "events": [
+        "error",
+        "close",
+        "stopped"
+      ],
+      "errorCodes": [
+        "ENOENT"
+      ]
+    },
+    "sourceAndInputsUnchanged": 18,
+    "privateArtifactHashes": 51
+  },
+  "typeGateSnapshot": {
+    "exitCode": 2,
+    "diagnostics": 115,
+    "exportsDiagnostics": 0,
+    "scope": "E3oldprojects/server/watch qualified115 unchanged, not whole typepass; independent Type16 alreadytype0 elsewhere, latestassemblytype0 stillrequired",
+    "stdoutSHA256": "6598484019b6109a7d03131bcfb4995d2cbe621f84794cd4a25e27bdb5bd355b",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "N5a84": {
+    "pre": true,
+    "post": true,
+    "onExactSource": true,
+    "approvalCommit": "d3e66744c55d009751a04b57d91db8e6d63be360",
+    "cardSHA256": "bb35b3a98ac2e230c41cfde66a17d732e5d7e50ff22dcc34c242d8c950ba0595",
+    "proofSHA256": "e9a83ce546092e297bc842f1230190f26b357a4c6c7dfe24ab3cfc89f9802c37"
+  },
+  "reportSHA256": "3d97a56e6c796311f8a0544c8c45e6d8ace1e691311412408b1514c15f45f7ac",
+  "RootAuditSHA256": "cc98fd79092182214fae100d55679448e43e3d1698f238b8acdfe6604685214b",
+  "consumerReady": "controlledexport queue/directChild/parentFS completion producer only; latest typefixed composition mustrevalidate, no wholeStudio retirement",
+  "actualMedia": false,
+  "serverConsumerAccepted": false,
+  "renderWorkerPoolOrBrowserTreeDrained": false,
+  "desktopOuterDeadlineFixed": false,
+  "N1": false,
+  "fullTaskAccepted": false
+}

@@ -473,3 +473,7 @@ Actualruntime28 firstfailureWorkerTAP_INVALID withprivate51data unavailable; no 
 ## 2026-11-08 native-worker-ci-observability
 
 Source30 ONLY2CI scripts afterRoot29same51twoactuallocalruntimesprovedclosednativeU+2192name rejection. Spec `../specs/2026-11-08-native-worker-ci-observability-design.md` ownsclosednameallowance/source-grounded51fixtures andsafeidentity-boundCLIWorkerfailureevidence preservingall300oldguards. Baseline/newbehaviorRED thenminimalimplementation/all300+N puretests, bothpreviousactual51TAPs read-onlyacceptedafterfix, no newWorker/main/CLI/network. Independentpolicy/proofs/immutable/N5a andnon-authorSPECQUALITY/Rootfreshfullcoverage beforecommit. DoesnotresolveunknownhostedTAP_INVALID orauthorizeactualruntime31.
+
+## 2026-11-08 current-worker-observation-integration
+
+Source30 reviewed4585/Root482+Node24pure398/oldreal51TAPs accepted, actualGit27 andN5a pre/post/exact qualified. Rootnextlocal879=449+398+32 andfouroriginaltype0 onlatestassembly,37raw/Git inputs+2proof/ownedWorkers18+Node10close/ports/tools beforeafter. Independentpolicy/immutable/N5abeforeexecutionandactualresultreviewafter. No sourceedits/newjob/hostedrootcause/actual161/PGclaim.

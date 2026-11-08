@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "Local62794 781/fouroriginaltype0 accepted; newactualWindowsruntime28 Native42460066893 failure worker-tests/TAP_INVALID, pure300+sameheadcompanion353 passed. Workeractualoutcome/exit/counters unknown becauseprivateTAPnotemitted. No current161/dev/PG. Nextboundedlocaldiagnosis, unaffectedfetchdesignstillready.",
+  "phase": "Source30 reviewed4585 locallyassembled; Root482/Node24pure398/twoactualold51TAPs/Git27/N5a qualified. Newlocal879/fourtype0 card31 proposed, notexecuted. Actual28TAP_INVALIDrootcauseunknown/no newjob. Fetch4filebuilderproposal separatelyreadyengineeringrulingspending.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-kernel-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t01-native-worker-latest-integration-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-kernel-runtime-policy-review.json",
+  "currentSliceReview": "docs/execution/t01-native-worker-latest-integration-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-kernel-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -118,7 +118,8 @@
     "docs/execution/t01-native-whole-types-validation.json",
     "docs/execution/t01-native-type-ci-rebind-validation.json",
     "docs/execution/t02-exports-drain-validation.json",
-    "docs/execution/t01-native-type-exports-integration-validation.json"
+    "docs/execution/t01-native-type-exports-integration-validation.json",
+    "docs/execution/t01-native-worker-local-diagnosis-validation.json"
   ],
   "localGit": {
     "primaryHead": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
@@ -165,11 +166,11 @@
     "fullIsolationAccepted": false
   },
   "nextReadyPreparation": [
-    "RootlocalWorker51 exactCIenv/args boundeddiagnosticcard, recordactualversions/exit/stdout/stderr/Workerexit evidence; infernohostedrootcausefromlocalonly",
+    "latestSource30local879/fourtype0 integrationcard31 proposed; thenfreshobservableactual161runtimelease. Do notrepeatSource29twoNodeexecutionoroldunmodifiedremotejob.",
     "Nativefetchproducer recommendedoriginalfetch-repo/fetch-github plus2drain tests, actualGitclose/body/FS/open continuations; needboundeddesign/card/seams/resources beforeauthor",
     "serveralreadyawaitsExports/Fetchstop APIs, but enteredrequest/pages/streams/processwideWorkerownership anddesktopouterdeadline remainpending; do not redispatch completedproducer",
     "realAuthD12purpose/identityunconfirmed onlyrealcloudblocked; productmodelcalls0/CNY50 unchanged",
-    "KnownseparateCIWorker namefidelity gap: immutableoriginalcaseU+2192 rejectedASCII/TAP_NAME; preserveoriginalcase, closedsource-consumerfix andrealTAPfixtures plus safeobservability afterboundedcard, notrename/drop"
+    "Source30 4585 nativeUTF8namecompatibility andboundedidentityevidence alreadyqualified; do NOTredispatchthatfix. PendingRoot31local879/fourtype0 thenseparatelyapprovedobservablehostedrun. Actual28TAP_INVALIDrootcausestillunknown."
   ],
   "parallelTaskCards": [],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
@@ -334,8 +335,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "runtime28actualfailure/currentledger independentlyapproved0P1P2",
-  "nextOperation": "reviewfailedruntime28 receipt first; boundedRootlocalWorker51 exactCIargs/cleanenv diagnosis usingexistingNode26/24, then newCI/sourcefix onlyafterevidence. SourceUnicodearrowname contract defect independentlyverifiedbutnotTAP_INVALIDcause. No remotere-run/skip/sourceweakening. Fetch/Git/HTTPproducer continueswhenowncard/resourcesready, notgoalpaused.",
+  "currentMetadataReview": "Source30two receipts/31policy/currentledger approved0P1P2",
+  "nextOperation": "Root31local879/fourtype0 afterpolicy/N5a; independentlyfreezeactualresult thenfreshseparatenewobservableWindows161runtimecard. Nativefetch17design/resourceadapterrulings continue independently, no globallypausedgoal.",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -401,6 +402,34 @@
       "noRerun": true,
       "rootCauseKnown": false,
       "receipt": "docs/execution/t01-native-kernel-runtime-validation.json"
+    },
+    "localWorkerDiagnosis29": {
+      "receipt": "docs/execution/t01-native-worker-local-diagnosis-validation.json",
+      "versions": [
+        "26.13.0",
+        "24.22.1"
+      ],
+      "casesEach": 51,
+      "baseAcceptedEach": true,
+      "strictRefusalEach": "TAP_NAME",
+      "actualWorkersEach": {
+        "created": 18,
+        "exits": 18,
+        "peak": 3,
+        "final": 0
+      },
+      "review": "approved0P1P2",
+      "notHostedRootCause": true
+    },
+    "workerObservationSource30": {
+      "commit": "4585c5e9a7b9d2269b5487e1480ffb73126f752a",
+      "sourceReview": "docs/execution/t01-native-worker-ci-observability-source-review.json",
+      "Root482": true,
+      "Node24pure398": true,
+      "previousActual51TAPsAccepted": 2,
+      "old300BytePrefixUnchanged": true,
+      "actualHostedRootCauseResolved": false,
+      "newRuntimeIssued": false
     }
   },
   "watchDrain": {

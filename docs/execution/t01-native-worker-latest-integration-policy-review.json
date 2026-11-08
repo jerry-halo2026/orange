@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 31,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "39a88b9cb577de8d4ac77335d4ab5e8a9d4a79e40a18f9440f126f5ef08f3574",
+  "inputs": 37,
+  "reviewProofs": 2,
+  "expectedCases": 879,
+  "typeProjects": 4,
+  "fix1": "staleSource30dispatchpointer correctedonly; knownnamefix notredispatched, unknownhostedcause stillqualified",
+  "conditions": "immutable/clean/raw/tooling/externalN5a84 beforeRootlocal879, nonauthoractualresultreviewafter. No newhostedjob/dev/PG",
+  "fullTaskAccepted": false
+}

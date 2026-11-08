@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 30,
+  "commit": "4585c5e9a7b9d2269b5487e1480ffb73126f752a",
+  "executor": "/root",
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "a8bbeabc6a3e5b18c66d1b187a54c30586881a0fec15bbea285cfe81ec69fba9",
+      "gitBlobSha256": "a8bbeabc6a3e5b18c66d1b187a54c30586881a0fec15bbea285cfe81ec69fba9"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "09679a6d406fb69a59c3b9a54c6e6bb6d89b2770795897fa5b1ff9801d8e6e78",
+      "gitBlobSha256": "09679a6d406fb69a59c3b9a54c6e6bb6d89b2770795897fa5b1ff9801d8e6e78"
+    }
+  ],
+  "results": [
+    {
+      "name": "Root482",
+      "node": {
+        "version": "v26.13.0",
+        "sha256": "14319838b3f355e0398c13569a90270bce4fc68f25189f58c59b03dadae0e6d5"
+      },
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs",
+        "scripts/phase1-isolation.test.mjs",
+        "apps/desktop/src/flavor.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": false,
+      "processError": false,
+      "counters": {
+        "tests": 482,
+        "pass": 482,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "63dd3ff59393bc83f45b8314422424b741b3fba465a37c94feab04d13f8d2f2c",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "Node24pure398",
+      "node": {
+        "version": "v24.22.1",
+        "sha256": "86f361a88f4cc3ecaf1ea93236b0d8edf07bf00fe87ad9f60305513f58fc2c17"
+      },
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "scripts/native-studio-ci.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": false,
+      "processError": false,
+      "counters": {
+        "tests": 398,
+        "pass": 398,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "stdoutSHA256": "1f8301ab5c6c36350759ce58145beaa8562e3a2500ff6ff345b6f78cdc5589ac",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifactHashesVerified": 27,
+  "immutableInputs": 37,
+  "reviewProofs": 2,
+  "sourceAndInputsUnchanged": true,
+  "old300BytePrefixUnchanged": true,
+  "previousActualTAPsAccepted": [
+    {
+      "node": "v26.13.0",
+      "sha256": "7552adea27d80bbed8de0438176aa731ecb378d32c6dc5d88503b9947b5af48e",
+      "counts": {
+        "total": 51,
+        "passed": 51,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      },
+      "worker": {
+        "created": 18,
+        "actualExits": 18,
+        "peak": 3,
+        "finalAlive": 0
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "1da4ac4a61886ae47a67e7ec95d1cbbe6c633b1d7c64b8f28f254a092527e243",
+      "counts": {
+        "total": 51,
+        "passed": 51,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      },
+      "worker": {
+        "created": 18,
+        "actualExits": 18,
+        "peak": 3,
+        "finalAlive": 0
+      }
+    }
+  ],
+  "actualGit27Positive": true,
+  "sourceGit27ProofSHA256": "5e0a1bb570aca96576c701c25cbe6510137b84dba96c20b80fd63357cca287fd",
+  "N5a84": {
+    "pre": "799e870cb536bb7b2553bb0ff55b7a0bcd8e2c492b5c4c7adb8f9d0d1956a88c",
+    "post": "799e870cb536bb7b2553bb0ff55b7a0bcd8e2c492b5c4c7adb8f9d0d1956a88c",
+    "exactSource": "799e870cb536bb7b2553bb0ff55b7a0bcd8e2c492b5c4c7adb8f9d0d1956a88c"
+  },
+  "RootProofSHA256": "131ff72caf22b0625a90aa49720766ae8008d45450039bdb30b046998827ef5b",
+  "scope": "pure398+CPU84 andNode24pure398 plusalreadycapturedactual51data consumption, no freshWorker/Native/CLI/main/toolpipeline/network",
+  "hosted28RootCauseStillUnknown": true,
+  "fullTaskAccepted": false
+}

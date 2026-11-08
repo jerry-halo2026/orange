@@ -1,0 +1,129 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 30,
+  "commit": "4585c5e9a7b9d2269b5487e1480ffb73126f752a",
+  "authorAgent": "/root/native_worker_ci_observability_impl",
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedAuthorModel": "gpt-6.1-sol/high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "source": [
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "sha256": "a8bbeabc6a3e5b18c66d1b187a54c30586881a0fec15bbea285cfe81ec69fba9",
+      "gitBlobSha256": "a8bbeabc6a3e5b18c66d1b187a54c30586881a0fec15bbea285cfe81ec69fba9"
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "sha256": "09679a6d406fb69a59c3b9a54c6e6bb6d89b2770795897fa5b1ff9801d8e6e78",
+      "gitBlobSha256": "09679a6d406fb69a59c3b9a54c6e6bb6d89b2770795897fa5b1ff9801d8e6e78"
+    }
+  ],
+  "scope": "exactnativeUTF8undo-name allowance+identity-boundfiniteWorkerfailureobservation, 2CIscriptsonly; no actualnewjob",
+  "old300BytePrefixUnchanged": true,
+  "originalGates": "Native110/Worker51/source27/privateGit/tar/package/env/ports/timeout/perf/context/workflowunchanged",
+  "TDD": {
+    "baseline": {
+      "tests": 300,
+      "pass": 300,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "red": {
+      "tests": 302,
+      "pass": 300,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "green": {
+      "tests": 398,
+      "pass": 398,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "addedTests": 98,
+    "original300TestFilePrefixByteIdentical": true,
+    "sourceGroundedNames": 51,
+    "unsupportedSourceFormsFailClosed": true
+  },
+  "Root482": {
+    "tests": 482,
+    "pass": 482,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "RootNode24pure398": {
+    "tests": 398,
+    "pass": 398,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "actorArtifactHashes": 27,
+  "actualPreviousTAPsAccepted": [
+    {
+      "node": "v26.13.0",
+      "sha256": "7552adea27d80bbed8de0438176aa731ecb378d32c6dc5d88503b9947b5af48e",
+      "counts": {
+        "total": 51,
+        "passed": 51,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      },
+      "worker": {
+        "created": 18,
+        "actualExits": 18,
+        "peak": 3,
+        "finalAlive": 0
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "1da4ac4a61886ae47a67e7ec95d1cbbe6c633b1d7c64b8f28f254a092527e243",
+      "counts": {
+        "total": 51,
+        "passed": 51,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      },
+      "worker": {
+        "created": 18,
+        "actualExits": 18,
+        "peak": 3,
+        "finalAlive": 0
+      }
+    }
+  ],
+  "sourceGit27ProofSHA256": "5e0a1bb570aca96576c701c25cbe6510137b84dba96c20b80fd63357cca287fd",
+  "N5a84": {
+    "pre": true,
+    "post": true,
+    "exactSource": true,
+    "proofSHA256": "799e870cb536bb7b2553bb0ff55b7a0bcd8e2c492b5c4c7adb8f9d0d1956a88c"
+  },
+  "reportSHA256": "2e771dfd352a2dfd662fe05bd380de7831be3bf5a6acad5f5a85f4388eb7d8e3",
+  "RootProofSHA256": "131ff72caf22b0625a90aa49720766ae8008d45450039bdb30b046998827ef5b",
+  "native51NameCompatibilityFixed": true,
+  "safeFailureEvidenceUnitQualified": true,
+  "actualCLIPathExecuted": false,
+  "hosted28RootCauseKnown": false,
+  "actual161": false,
+  "fullTaskAccepted": false
+}

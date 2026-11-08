@@ -1,0 +1,214 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T01",
+  "assignmentRevision": 32,
+  "executor": "/root",
+  "sourceCandidate": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
+  "approvalCardSHA256": "36621406a59ed69655c6a8304fbcc8497318b1bb6214456f2ed5817d0ba43646",
+  "sources": {
+    "CI30": "4585c5e9a7b9d2269b5487e1480ffb73126f752a",
+    "Type16": "c384c58434b491d63dd524c7f691638719b93e62",
+    "Exports15": "42dbd4c83a85b9dd8da66d38d11da8ee3f319cd0"
+  },
+  "policyReview": "docs/execution/t01-native-worker-observable-runtime-policy-review.json",
+  "localN5a": {
+    "admitted": true,
+    "cases": 84,
+    "proofSHA256": "a437a89e4a55e173ba1ae1076cc6cf608f12553c65b94682885c0aec04cc4b62",
+    "postProofSHA256": "a437a89e4a55e173ba1ae1076cc6cf608f12553c65b94682885c0aec04cc4b62"
+  },
+  "localIntegration": {
+    "candidate": "9478034ca5cfd69a8fbb0dee95f02d80c02d38e9",
+    "tests": 879,
+    "originalFourTypes0": true,
+    "review": "approved0P1P2"
+  },
+  "historyAudit": {
+    "commits": 11,
+    "textBlobs": 36,
+    "unresolved": 0,
+    "proofSHA256": "4baf1889672e8e40360b73dc1e27add224103202f130c31907c95a4c424ba2b9",
+    "notUniversalSecretScannerGuarantee": true
+  },
+  "remotePreflightSHA256": "817a3621c39d24111ec51fb7941c449902ce2f59ef92a709ce4e8673db94a6f6",
+  "sourceGit27ProofSHA256": "eab89cbdcc6db02514a17c7848d6caf71891c500845fffbad18e482eab9b7c3f",
+  "financial": {
+    "source": "https://docs.github.com/en/actions/concepts/billing-and-usage",
+    "checkedAtUTC": "2026-11-08T09:13:15.551Z",
+    "standardPublicComputeFree": true,
+    "noLargerArtifactCacheOrModel": true
+  },
+  "remoteLease": {
+    "issued": true,
+    "issuedAtUTC": "2026-11-08T09:17:27.966Z",
+    "owner": "/root",
+    "repository": "jerry-halo2026/orange",
+    "ref": "refs/heads/codex/t05-path-policy",
+    "workflow": ".github/workflows/native-studio.yml",
+    "runner": "requestedstandardwindows2025 actualimagepending",
+    "maxActiveNativeRuns": 1,
+    "timeoutMinutes": 12,
+    "associatedOpenPRs": 0,
+    "state": "terminalfailure observedfiletimeout noautomaticretry"
+  },
+  "publication": {
+    "state": "verified-pushed",
+    "commit": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
+    "branch": "codex/t05-path-policy",
+    "verifiedAtUTC": "2026-11-08T09:17:32.475Z",
+    "remoteHead": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
+    "devUpdated": false,
+    "mainOrTagUpdated": false
+  },
+  "runs": [
+    {
+      "id": 42466547578,
+      "path": ".github/workflows/phase1.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/jerry-halo2026/orange/actions/runs/42466547578",
+      "jobs": [
+        {
+          "id": 128687294413,
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 42466547581,
+      "path": ".github/workflows/native-studio.yml",
+      "status": "completed",
+      "conclusion": "failure",
+      "attempt": 1,
+      "url": "https://github.com/jerry-halo2026/orange/actions/runs/42466547581",
+      "jobs": [
+        {
+          "id": 128687294532,
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    }
+  ],
+  "result": {
+    "state": "actualNative161notpassed, fileleveltesttimeout observed",
+    "actualWindows161Passed": false,
+    "actualPure398": {
+      "tests": 398,
+      "pass": 398,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "companion353Passed": true,
+    "companion353": {
+      "tests": 353,
+      "pass": 353,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "nativeFailure": {
+      "status": "failed",
+      "phase": "worker-tests",
+      "code": "TAP_INVALID",
+      "workerEvidence": {
+        "kind": "native-worker-failure-evidence",
+        "node": "v22.23.4",
+        "exitCode": 1,
+        "processError": false,
+        "signal": false,
+        "stdoutSha256": "0d798e499d2e1e94d759cc7e28d485c6a26418a9ce062fb6b7824593cc1db220",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tap": {
+          "plan": 45,
+          "tests": 45,
+          "suites": 0,
+          "pass": 44,
+          "fail": 0,
+          "cancelled": 1,
+          "skipped": 0,
+          "todo": 0,
+          "firstFailingOrdinal": 2,
+          "errorCode": "ERR_TEST_FAILURE",
+          "failureType": "testTimeoutFailure",
+          "location": {
+            "file": "person-merge.test.mjs",
+            "line": 1,
+            "column": 1
+          }
+        },
+        "postCheck": "passed"
+      }
+    },
+    "Native110PassedControlFlowInference": true,
+    "Native110DirectSummaryAvailable": false,
+    "Worker51Accepted": false,
+    "workerPostChecksPassed": true,
+    "actualWorkerExitEvidenceAvailable": false,
+    "fullTaskAccepted": false,
+    "pilotAccepted": false
+  },
+  "productModelValidationCalls": 0,
+  "fullTaskAccepted": false,
+  "lastObservation": {
+    "path": ".dev/native-worker-observable-runtime/observations/1794129675330.json",
+    "sha256": "e39390216dd5e328d18851c4524fd839fbebb08aabc86ccb76c815190b67577f",
+    "at": "2026-11-08T09:21:15.329Z"
+  },
+  "actualProcessNode": "v22.23.4",
+  "companionSourceProof": {
+    "status": "same-head-local-auth-policy-producers-verified",
+    "commit": "5bc1e8caa457cfe18a6d352a21a1361f09d67fbe",
+    "expectedCases": 353,
+    "sources": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+        "rawSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+        "rawSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-access.mjs",
+        "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+        "rawSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+      },
+      {
+        "path": "packages/openfilm/studio/server/project-access.test.mjs",
+        "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+        "rawSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+      }
+    ]
+  },
+  "analysisProofSHA256": "ce115ed1cc457cbe1fbb337c5330a444cdb3e1460319376667d0d478dddfe026",
+  "jobLogSHA256": {
+    "nativeSHA256": "b6a0988a5ba2bedb8338d7121d444726c3ae6f342ecf5221d3a13bbc20709b3f",
+    "companionSHA256": "5cad0b6e891757089b0ec09c1093dae7438ebf675e3f2a8cf799bca75a1b9bd9"
+  },
+  "rootCause": {
+    "current32Confirmed": "Workerchildoriginalperson-merge.test filecancelledby60secondtestfiledeadline; Nativepackageuses600000, CIchildadded60000; original51didnotcomplete",
+    "productionAssertionFailureNotObserved": true,
+    "noPerformanceThresholdChangeAuthorized": true,
+    "overallWorkerBudgetMs": 180000,
+    "jobBudgetMinutes": 12,
+    "old28Cause": "notdirectlyobserved, sameconfigconsistentbutnotretroactivelyproven",
+    "proposal": "alignonlyfileflagwithnative600000 whilekeeping180000aggregate/8MiB/12min/33+18/perfassertions, requiresseparateSource33TDDpolicy",
+    "deeperReasonFileExceeded60SecondsKnown": false,
+    "originalPerformanceAssertionsRemainUnprovenByIncomplete51": true
+  },
+  "review": {
+    "reviewerAgent": "/root/watch_drain_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  }
+}

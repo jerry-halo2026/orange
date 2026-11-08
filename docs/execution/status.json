@@ -30,7 +30,7 @@
       "review": "approved0P1/P2"
     }
   },
-  "phase": "CI19 source ebcd477 approved/Root242/N5a84, runtime20 policy approved but not issued pending immutable/preflight. Separate E3 original Studio watcher consumer12 TDD active after379baseline, not integrated/accepted.",
+  "phase": "CI20 actual git/PATH_TYPE failure before fetch/66,158+353 passed; no retries. Studio watcher caller12 source needs-fix0P1/2P2 despite Root395pass, sameauthor held until card13 gate; no active source writer now.",
   "branch": "dev",
   "businessFeatureImplementation": true,
   "docsMaintainedHere": true,
@@ -79,9 +79,9 @@
   "documentationReview": "docs/execution/documentation-unification.json",
   "taskRegistry": "docs/execution/project-tasks.json",
   "currentGoalAuthorization": "Ethan explicit /goal 2026-11-07; local implementation/testing, reviewed source/sanitized docs to own orange; full PG scope unchanged",
-  "currentTaskCard": "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
+  "currentTaskCard": "docs/execution/t02-studio-watch-fix-assignment.json",
   "startupVerification": "docs/execution/2026-11-07-goal-startup.json",
-  "currentSliceReview": "docs/execution/t01-native-studio-ci-diagnostic-runtime-policy-review.json",
+  "currentSliceReview": "docs/execution/t02-studio-watch-fix-policy-review.json",
   "nativeSeamAudit": "docs/execution/t01-native-seam-audit.json",
   "runtimeVerification": "docs/execution/t01-native-studio-ci-runtime-validation.json",
   "cpuReadiness": "docs/execution/t01-cpu-readiness.json",
@@ -116,17 +116,18 @@
     "primaryClean": true,
     "coordinationBranch": "codex/t01-isolation",
     "coordinationPreReceiptHead": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "t02Head": "c9619e6b0182b99d3dbd43e5703ce92769921b35",
+    "t02Head": "809cce5913ba59de45baddd266277a439f94ac4f",
     "t05SourceState": "watch f1fff source reviewed/Root109/exactN5a84, held separate from CI66 snapshot; server watcher await/shared worker pending",
     "devIntegration": false,
     "remotePushThisGoal": true,
     "coordinationLatestSourceCommit": "5352c0af3c4db786011bfe9a7d112ac2e9c3f8d0",
     "isolatedDependencyAssembly": "42b5230e4cf0dbdf40172636ef2c09d8f1cc10ac",
     "latestIsolatedAssembly": "63cab893f6898d5ef57bfbfacb6e4c0798d5ebd0",
-    "remoteTopicHead": "4f30fb4c8b4fd89cf82916da0aaba8a0ece139d1",
-    "latestRuntimeReceiptCommit": "c9619e6b0182b99d3dbd43e5703ce92769921b35",
-    "latestSourceAssembly": "a77ef363429cb159970d049058b8def86fc5e3cf",
-    "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP"
+    "remoteTopicHead": "aa4c9335f86588f9428d6ee55618d925ae9e21c6",
+    "latestRuntimeReceiptCommit": "809cce5913ba59de45baddd266277a439f94ac4f",
+    "latestSourceAssembly": "e5c29a35b7ca1936e19cccbac2608e342c30fed6",
+    "diagnosticRuntimeSnapshot": "E2 ebcd477 then runtime20 docs only, original watch79594; explicitly not current mixed E1 or E3 server WIP",
+    "coordinationBeforeFix13Freeze": "e5c29a35b7ca1936e19cccbac2608e342c30fed6"
   },
   "currentBlockers": [
     "T02.a Authd008syncinvalidation/policyacc27 sourcepeer+Root279 readyonlylocalDI; actualtrustedAuth/ownerstore/nativeHTTPWS/pages/CLI/UI/N1stillpending",
@@ -159,27 +160,10 @@
     "realAuth D12purpose/identity unconfirmed onlyrealcloud blocked, productmodelcalls0/50unchanged"
   ],
   "parallelTaskCards": [
-    "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
-    "docs/execution/t02-studio-watch-assignment.json"
+    "docs/execution/t02-studio-watch-fix-assignment.json"
   ],
   "dependencyAssembly": "docs/execution/t02-auth-hook-pool-admission.json",
-  "activeWriters": [
-    {
-      "agent": "/root/studio_watch_close_impl",
-      "taskId": "T02.a",
-      "assignmentRevision": 12,
-      "requestedModel": "gpt-6.1-sol",
-      "requestedEffort": "high",
-      "backendAttested": false,
-      "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
-      "approvalCommit": "d1e63f6457430a27828f764e6c431e2fa9f0cf14",
-      "cardSHA256": "6c7952fed9baeb34dd57620ab600d2098fae006a8df60c8f6b95827995540678",
-      "N5aCases": 84,
-      "admissionSHA256": "a129f48b0cfbe2ad95d471ff1b8e8498b5af3a248adf44caa5c9df91d9019cd5",
-      "scope": "only original server.mjs/newserver-watch-drain.test.mjs; actual watcher+Auto caller completion, no full retirement",
-      "state": "Root379 baseline and17inputs/core106 passed, soleE3 author dispatched TDD"
-    }
-  ],
+  "activeWriters": [],
   "ciReadiness": {
     "firstActualRun": {
       "id": 42406704504,
@@ -340,8 +324,8 @@
   },
   "localWindowsSymlinkCreation": "stillEPERM locally; oldpure43/newcontrolledIO34 truefilelinkcases actuallypassed onhostedWindowsServer2025. No OSsecuritypolicy change orLinux/junction substitution.",
   "reviewQueue": [],
-  "currentMetadataReview": "docs/execution/t01-native-studio-ci-diagnostic-runtime-policy-review.json",
-  "nextOperation": "freeze E2 runtime20 without watcher source -> trusted N5a/history audit/fresh public financial target -> one new source-triggered diagnostic/native66 attempt, never rerun old18; independent E3 consumer12 continues",
+  "currentMetadataReview": "docs/execution/t02-studio-watch-fix-policy-review.json",
+  "nextOperation": "freeze13/managedE3metadataFF preserveWIP065728/raw17+2proof/N5a -> sameauthor minimalstartupcleanup andlateupgrade test; CI21 newfixedGittool sourcepolicy next; no remote retry ordev/main/tag",
   "nativeStudioCI": {
     "sourceCommit": "42df1d556246e1686563ba2e41a189bccb944fa7",
     "sourceReview": "docs/execution/t01-native-studio-ci-source-review.json",
@@ -351,14 +335,16 @@
     "runtimeCard": "docs/execution/t01-native-studio-ci-runtime-assignment.json",
     "runtimeIssued": true,
     "runtimeState": "terminal failure, no automatic retry",
-    "runId": 42438925420,
-    "driverRootCause": "unknown; generic marker only",
+    "runId": 42441082225,
+    "driverRootCause": "observed Git ordinary path type failure; local fixed Git nlink2 rejected by workspace-file rule, exact hosted component/nlink not yet observed",
     "companion353Passed": true,
     "diagnosticCard": "docs/execution/t01-native-studio-ci-diagnostic-assignment.json",
     "diagnosticState": "source ebcd477 approved after process-receipt fix1; Root242 and N5a84 pre/post/exact, actual runtime18 cause still unknown",
     "diagnosticSource": "ebcd477bc4959aef6a8d9f56b2848588f2d87c2f",
     "runtime20Card": "docs/execution/t01-native-studio-ci-diagnostic-runtime-assignment.json",
-    "runtime20State": "proposed not issued; immutable/N5a/full history/fresh public financial preflight remaining"
+    "runtime20State": "terminal failure at git/PATH_TYPE, actual66notentered",
+    "runtime20Receipt": "docs/execution/t01-native-studio-ci-diagnostic-runtime-validation.json",
+    "nextSource": "bounded dedicated fixed Git tool validation card21 proposed, no author or new runtime yet"
   },
   "watchDrain": {
     "sourceCommit": "f1fff1337a141ed6444fd9e6d82efb5224c2c93d",
@@ -371,6 +357,9 @@
     "notMergedIntoCISnapshot": true,
     "sourceIsolatedAssembly": "b089626e13a3820b23d70be9a92d875795172ff8",
     "consumerCard": "docs/execution/t02-studio-watch-assignment.json",
-    "consumerState": "Root379 baseline passed0skip, N5a84 and core106closure verified, E3 sole author dispatched"
+    "consumerState": "source12 peer needs-fix0P1/2P2, Root actual395passed but unaccepted, source065/test728 preserved",
+    "consumerFixCard": "docs/execution/t02-studio-watch-fix-assignment.json",
+    "consumerFixState": "policy approved, final exact TDD wording/static ledger check then immutable/raw/N5a; author held",
+    "advertiseFaultException": "two isolated metadata faults only, not real discovery; source13notstarted"
   }
 }

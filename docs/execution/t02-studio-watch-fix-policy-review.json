@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-08",
+  "taskId": "T02.a",
+  "assignmentRevision": 13,
+  "reviewerAgent": "/root/watch_drain_source_review",
+  "requestedModel": "gpt-6-astra",
+  "requestedEffort": "high",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "50d7b20ca3972bf6478d5f48c56986237804e5b0d28c00e20edcc4462bf812b5",
+  "approvedResourceException": "exact two isolated ownprofile advertise metadata mkdir/write fault cases with explicit synthetic key, no external discovery/defaultHOME/newDI",
+  "carriedSourceAccepted": false,
+  "sourceFindingsPending": [
+    "post-listen native init failure cleanup",
+    "late upgrade real pending query proof"
+  ],
+  "remaining": [
+    "immutable approval",
+    "managed E3 metadata FF while065/728WIP unchanged",
+    "raw17+2proof and trusted external N5a84",
+    "sameauthor boundedfix1 TDD then nonauthorreview"
+  ],
+  "fullTaskAccepted": false
+}

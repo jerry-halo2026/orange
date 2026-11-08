@@ -1,0 +1,55 @@
+name: Native Studio Windows verification
+on:
+  push:
+    branches: [codex/t05-path-policy]
+    paths:
+      - .github/workflows/native-studio.yml
+      - scripts/native-studio-ci.mjs
+      - scripts/native-studio-ci.test.mjs
+      - packages/openfilm/studio/server/project-file-symlink.test.mjs
+      - packages/openfilm/src/development-isolation.mjs
+      - packages/openfilm/src/development-isolation.test.mjs
+      - scripts/fission-path-ci.mjs
+      - scripts/phase1-admission.mjs
+      - scripts/phase1-isolation.test.mjs
+      - packages/openfilm/package.json
+      - pnpm-lock.yaml
+      - packages/openfilm/studio/server/project-control-guard.mjs
+      - packages/openfilm/studio/server/project-control-guard.test.mjs
+      - packages/openfilm/studio/server/projects.mjs
+      - packages/openfilm/studio/server/projects-control.test.mjs
+      - packages/openfilm/studio/server/auto-versions.mjs
+      - packages/openfilm/studio/server/auto-versions.test.mjs
+      - packages/openfilm/studio/server/server.mjs
+      - packages/openfilm/studio/server/server-auto-versions.test.mjs
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-studio-codex-t05-path-policy
+  cancel-in-progress: false
+jobs:
+  native-studio:
+    if: github.repository == 'jerry-halo2026/orange' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/t05-path-policy'
+    runs-on: windows-2025
+    timeout-minutes: 12
+    env:
+      ORANGE_REPOSITORY_VISIBILITY: ${{ github.event.repository.visibility }}
+    steps:
+      - name: Checkout only this candidate without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Require the preinstalled Node without downloads
+        shell: pwsh
+        run: node -e "const [a,b]=process.versions.node.split('.').map(Number); if(a<22 || (a===22 && b<18)) process.exit(1)"
+      - name: Test only pure source context result and archive validation
+        shell: pwsh
+        run: node --test --test-reporter=tap scripts/native-studio-ci.test.mjs
+      - name: Verify fixed sources and run actual Native Auto Studio and file-link cases
+        shell: pwsh
+        run: node scripts/native-studio-ci.mjs

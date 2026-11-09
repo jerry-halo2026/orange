@@ -181,6 +181,255 @@ public sealed class FissionEditPlanTests
         Assert.Equal("userStopped", (await work).StopReason);
         File.WriteAllText(f.Audio, "released only after codec drain");
     }
+    [Fact]
+    public async Task Prepare_FreezesRealChoicesBeforeAnyFinalWork_ExecuteConsumesWithoutSelection()
+    {
+        var f = new Fixture(); var job = f.Job(); job.SubtitleEnabled = true;
+        var prepared = await f.Engine.PrepareAsync(job);
+        var output = Assert.Single(prepared.Outputs); Assert.Equal(2, output.Cuts.Count);
+        Assert.All(f.CodecRequests, request => Assert.Contains("force_original_aspect_ratio", request.Arguments));
+        Assert.Empty(Directory.GetFiles(f.Policy.Paths.OutRoot, "*", SearchOption.AllDirectories));
+        var json = prepared.ToJson(); Assert.DoesNotContain("synthetic original voice", json);
+        // Candidate additions after preparation may not enter execution selection.
+        File.WriteAllText(Path.Combine(f.VideoDir, "1开场", "new-candidate.mp4"), "not selected");
+        var report = await f.Engine.ExecutePreparedAsync(job, Fission.Core.Pipeline.FissionPreparedDecisions.Parse(json));
+        Assert.Equal(1, report.Succeeded); Assert.Empty(report.Failures);
+        using var receipt = JsonDocument.Parse(File.ReadAllText(Assert.Single(report.Outputs).EditPlanPath!));
+        Assert.Equal(output.Cuts.Count, receipt.RootElement.GetProperty("visuals").GetArrayLength());
+        Assert.DoesNotContain(f.CodecRequests, r => r.Arguments.Contains("new-candidate", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_ChangedSourceRefusesBeforeAnyCodec()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job);
+        File.WriteAllText(f.Audio, "changed after prepare closed its held pins"); var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.Engine.ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_ClockDeviationRefusesWithoutChangingTheDecision()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job);
+        f.AssemblyClockOffset = 1;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.Engine.ExecutePreparedAsync(job, prepared));
+        Assert.DoesNotContain(f.CodecRequests, r => r.Arguments.Contains("loudnorm=", StringComparison.Ordinal));
+    }
+    [Fact]
+    public async Task PreparedGeneratedVoice_ReopensInNewNativeOwner_WithVersionAndOriginEvidence()
+    {
+        var f = new Fixture(); var job = f.Job(); job.AudioDir = null; job.GeneratedAudioCount = 1; job.GeneratedAudioDurationSec = 4;
+        var prepared = await f.Engine.PrepareAsync(job); var output = Assert.Single(prepared.Outputs);
+        Assert.NotNull(output.GeneratedVoice); Assert.Equal("native-offline-lavfi-voice/v1", output.GeneratedVoice.Purpose);
+        var reopened = Fission.Core.Pipeline.FissionPreparedDecisions.Parse(prepared.ToJson());
+        var report = await f.FreshEngine().ExecutePreparedAsync(job, reopened);
+        Assert.Equal(1, report.Succeeded); Assert.True(File.Exists(Assert.Single(report.Outputs).EditPlanPath));
+    }
+
+    [Fact]
+    public async Task PreparedGeneratedVoice_ProofReplacementRefusesBeforeAnyCodec()
+    {
+        var f = new Fixture(); var job = f.Job(); job.AudioDir = null; job.GeneratedAudioCount = 1; job.GeneratedAudioDurationSec = 4;
+        var prepared = await f.Engine.PrepareAsync(job); var proof = Assert.Single(prepared.Outputs).GeneratedVoice!;
+        File.WriteAllText(proof.ProofPath, "forged generated-origin marker"); var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.FreshEngine().ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+    [Fact]
+    public async Task Prepare_StillPhysicalDurationZero_IsSeparateFromSelectedHold()
+    {
+        var f = new Fixture(); File.Delete(Path.Combine(f.VideoDir, "1开场", "scene.mp4"));
+        File.WriteAllText(Path.Combine(f.VideoDir, "1开场", "still.png"), "owned synthetic still");
+        var job = f.Job(); job.ImageDurMinSec = 2; job.ImageDurMaxSec = 2;
+        var prepared = await f.Engine.PrepareAsync(job); var output = Assert.Single(prepared.Outputs);
+        var cut = Assert.Single(output.Cuts, c => output.Sources[c.Decision.Source].Kind == "still");
+        Assert.Equal(0, output.Sources[cut.Decision.Source].DurationSec); Assert.Equal(2, cut.Normalization.ImageHoldSec);
+        Assert.Equal(2, cut.Decision.DurationSec); Assert.DoesNotContain(f.CodecRequests, r => r.Arguments.StartsWith("-y -ss", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_AnalysisReplacementWithIdenticalBytesStillRefusesIdentityChange()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job);
+        var path = Assert.Single(prepared.Outputs).Cuts[0].Normalization.Path; var bytes = File.ReadAllBytes(path);
+        File.Move(path, path + ".old"); File.WriteAllBytes(path, bytes); var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.FreshEngine().ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+
+    [Fact]
+    public async Task PreparedSnapshot_AlteredOrMissingFactsAreNotRecipesToReplay()
+    {
+        var f = new Fixture(); var prepared = await f.Engine.PrepareAsync(f.Job());
+        var json = prepared.ToJson();
+        Assert.Throws<ConfigException>(() => Fission.Core.Pipeline.FissionPreparedDecisions.Parse(json.Replace(prepared.JobId, "tampered", StringComparison.Ordinal)));
+        Assert.Throws<ConfigException>(() => Fission.Core.Pipeline.FissionPreparedDecisions.Parse("{}"));
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_SelectedFxFailureDoesNotFallbackOrReselect()
+    {
+        var f = new Fixture(true); var job = f.Job(); job.TransitionSec = .25;
+        var prepared = await f.Engine.PrepareAsync(job);
+        Assert.Equal("prepared-intent", Assert.Single(prepared.Outputs).TransitionIntent.Outcome);
+        await Assert.ThrowsAnyAsync<EngineException>(() => f.Engine.ExecutePreparedAsync(job, prepared));
+        Assert.DoesNotContain(f.CodecRequests, r => r.Arguments.Contains("assembled-fallback", StringComparison.Ordinal));
+        Assert.DoesNotContain(f.CodecRequests, r => r.Arguments.Contains("loudnorm=", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task Prepare_CancelledNormalizationDrainsBeforeReleasingTheSourceNamespace()
+    {
+        var f = new Fixture(); var started = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        f.BeforeNormalize = async () => { started.TrySetResult(true); await release.Task; };
+        using var cancel = new CancellationTokenSource(); var work = f.Engine.PrepareAsync(f.Job(), cancel.Token);
+        await started.Task.WaitAsync(TimeSpan.FromSeconds(5)); cancel.Cancel();
+        try { await Task.Delay(20); Assert.False(work.IsCompleted); Assert.Throws<IOException>(() => File.WriteAllText(f.Audio, "must remain pinned")); }
+        finally { release.TrySetResult(true); }
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => work);
+        File.WriteAllText(f.Audio, "released after actual admitted work drained");
+    }
+    [Fact]
+    public async Task ExecutePrepared_MissingNormalizationIsSafeRefusalBeforeCodec()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job);
+        File.Delete(Assert.Single(prepared.Outputs).Cuts[0].Normalization.Path); var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.Engine.ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_ChangedConfiguredCodecBindingIsNotPartOfTheFrozenProducer()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job);
+        var extra = Path.Combine(f.Root, "read", "other-engine.exe"); File.WriteAllText(extra, "other synthetic codec never run");
+        var policy = new EnginePathPolicy(f.Policy.Paths with { FFmpeg6 = extra }, Path.Combine(f.Root, "owned"), "task-plan", "attempt-1");
+        var codec = new Codec(f, false, false); var engine = new FissionEngine(policy, codec, new Probe(f, codec), false); var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => engine.ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+    [Fact]
+    public async Task DefaultGeneratedRunDoesNotCreatePreparedOriginSeal()
+    {
+        var f = new Fixture(); var job = f.Job(); job.AudioDir = null; job.GeneratedAudioCount = 1; job.GeneratedAudioDurationSec = 4;
+        var report = await f.Engine.RunAsync(job); Assert.Equal(1, report.Succeeded);
+        Assert.False(File.Exists(Path.Combine(f.Policy.CacheRoot, ".native-prepared-generated.key")));
+    }
+    [Theory]
+    [InlineData("missing-key")]
+    [InlineData("wrong-purpose")]
+    [InlineData("forged-mac")]
+    public async Task PreparedGeneratedVoice_ValidLocalDigestCannotReplaceOriginEvidence(string tamper)
+    {
+        var f = new Fixture(); var job = f.Job(); job.AudioDir = null; job.GeneratedAudioCount = 1; job.GeneratedAudioDurationSec = 4;
+        var prepared = await f.Engine.PrepareAsync(job); var output = Assert.Single(prepared.Outputs); var evidence = output.GeneratedVoice!;
+        if (tamper == "missing-key") File.Delete(Path.Combine(f.Policy.CacheRoot, ".native-prepared-generated.key"));
+        if (tamper == "wrong-purpose") output = output with { GeneratedVoice = evidence with { Purpose = "copied-input-is-not-native-generated" } };
+        var versions = prepared.Versions.ToArray();
+        if (tamper == "forged-mac")
+        {
+            var proof = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(evidence.ProofPath))!; proof["mac"] = new string('0', 64);
+            File.WriteAllText(evidence.ProofPath, proof.ToJsonString());
+            var sha = Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(evidence.ProofPath)));
+            using var held = new FileStream(evidence.ProofPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var identity = Fission.Core.Pipeline.PreparedFileIdentity.Read(held.SafeFileHandle);
+            versions = versions.Select(v => v.Path == evidence.ProofPath ? v with { Sha256 = sha, Identity = identity } : v).ToArray();
+            output = output with { GeneratedVoice = evidence with { ProofSha256 = sha } };
+        }
+        prepared = Fission.Core.Pipeline.FissionPreparedDecisions.Create(job, prepared.JobId, prepared.WorkRoot, prepared.OutRoot,
+            prepared.CacheRoot, f.Policy.Paths, [output], versions);
+        var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.FreshEngine().ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+
+    [Fact]
+    public async Task PreparedGeneratedVoice_ConsumedOutputCannotBeReopenedOrUsedTwice()
+    {
+        var f = new Fixture(); var job = f.Job(); job.AudioDir = null; job.GeneratedAudioCount = 1; job.GeneratedAudioDurationSec = 4;
+        var prepared = await f.Engine.PrepareAsync(job); var report = await f.FreshEngine().ExecutePreparedAsync(job, prepared);
+        Assert.Equal(1, report.Succeeded); var before = f.CodecRequests.Count;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.FreshEngine().ExecutePreparedAsync(job, prepared));
+        Assert.Equal(before, f.CodecRequests.Count);
+    }
+    [Fact]
+    public async Task Prepare_SubtitleIsOnlyIntent_AndReceiptAppliedOnlyAfterBurn()
+    {
+        var f = new Fixture(); var job = f.Job(); job.SubtitleEnabled = true;
+        var prepared = await f.Engine.PrepareAsync(job);
+        Assert.Equal("prepared-intent", Assert.Single(prepared.Outputs).SubtitleIntent.Outcome);
+        Assert.DoesNotContain(f.CodecRequests, r => r.Arguments.Contains("ass=", StringComparison.Ordinal));
+        var report = await f.FreshEngine().ExecutePreparedAsync(job, prepared);
+        using var receipt = JsonDocument.Parse(File.ReadAllText(Assert.Single(report.Outputs).EditPlanPath!));
+        Assert.Equal("applied", receipt.RootElement.GetProperty("subtitles").GetProperty("outcome").GetString());
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_FinalClockDeviationRefusesBeforeExportOrConsumption()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job); f.FinalClockOffset = -2;
+        await Assert.ThrowsAnyAsync<FissionException>(() => f.FreshEngine().ExecutePreparedAsync(job, prepared));
+        Assert.Empty(Directory.GetFiles(f.Policy.Paths.OutRoot, "*", SearchOption.AllDirectories));
+        Assert.True(File.Exists(Assert.Single(prepared.Outputs).VoicePath));
+    }
+
+    [Fact]
+    public async Task ExecutePrepared_ReusedOriginalVoiceUsesOneNativePoolKeyAndCounter()
+    {
+        var f = new Fixture(); foreach (var group in new[] { "1开场", "2产品" }) File.WriteAllText(Path.Combine(f.VideoDir, group, "second.mp4"), "owned extra candidate");
+        var job = f.Job(); job.Count = 2; job.AudioUses = 2;
+        var prepared = await f.Engine.PrepareAsync(job); Assert.Equal(2, prepared.Outputs.Count);
+        var report = await f.FreshEngine().ExecutePreparedAsync(job, prepared); Assert.Equal(2, report.Succeeded);
+        Assert.Single(report.ConsumeLog.Select(row => row.Audio).Distinct());
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task NativeCli_PreparedNvencRequestRejectsChangedRuntimeBeforeAnyHardwareOrCodec(bool changeBytes)
+    {
+        if (!OperatingSystem.IsWindowsVersionAtLeast(7, 0)) throw new PlatformNotSupportedException("Original CLI targets Windows.");
+        var f = new Fixture(); var job = f.Job(); job.UseNvenc = true; var prepared = await f.Engine.PrepareAsync(job);
+        var paths = f.Policy.Paths;
+        if (changeBytes) File.WriteAllText(paths.FFmpeg, "changed invalid executable must never be started");
+        else { var alternate = Path.Combine(f.Root, "read", "alternate.exe"); File.WriteAllText(alternate, "invalid executable must never be started"); paths = paths with { FFmpeg = alternate }; }
+        var snapshot = Path.Combine(f.Policy.Paths.WorkRoot, "prepared.json"); File.WriteAllText(snapshot, prepared.ToJson());
+        var config = Path.Combine(f.Root, "cli-paths.json"); var file = Path.Combine(f.Root, "cli-job.json");
+        File.WriteAllText(config, JsonSerializer.Serialize(new { paths.FFmpeg, paths.FFprobe, paths.FFmpeg6, paths.TransitionsDir, paths.AssetsRoot, paths.LocalAssetsRoot }));
+        File.WriteAllText(file, JsonSerializer.Serialize(job));
+        var status = await Fission.Cli.Program.Main(["execute-prepared", "--paths", config, "--workspace", Path.Combine(f.Root, "owned"),
+            "--task", "task-plan", "--attempt", "attempt-1", "--job", file, "--prepared", snapshot, "--digest", prepared.Digest]);
+        Assert.Equal(2, status); Assert.Empty(Directory.GetFiles(f.Policy.Paths.OutRoot, "*", SearchOption.AllDirectories));
+    }
+    [Fact]
+    public async Task PreparedRuntimeLeaseHoldsTheActualToolAndNamespaceUntilDispose()
+    {
+        var f = new Fixture(); var job = f.Job(); var prepared = await f.Engine.PrepareAsync(job);
+        using (await f.FreshEngine().HoldPreparedRuntimeAsync(job, prepared))
+        {
+            Assert.Throws<IOException>(() => File.WriteAllText(f.Policy.Paths.FFmpeg, "must not change under hardware/codec"));
+            var read = Path.GetDirectoryName(f.Policy.Paths.FFmpeg)!;
+            Assert.Throws<IOException>(() => Directory.Move(read, read + "-replaced"));
+        }
+        using var writable = new FileStream(f.Policy.Paths.FFmpeg, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        Assert.True(writable.CanWrite);
+    }
+
+    [Fact]
+    public async Task PreparedGeneratedVoice_TwoNativeUsesShareOneSealedVersionWithoutOverwrite()
+    {
+        var f = new Fixture(); foreach (var group in new[] { "1开场", "2产品" }) File.WriteAllText(Path.Combine(f.VideoDir, group, "second.mp4"), "owned extra candidate");
+        var job = f.Job(); job.AudioDir = null; job.GeneratedAudioCount = 1; job.GeneratedAudioDurationSec = 4; job.AudioUses = 2; job.Count = 2;
+        var prepared = await f.Engine.PrepareAsync(job); Assert.Equal(2, prepared.Outputs.Count);
+        Assert.Equal(prepared.Outputs[0].GeneratedVoice, prepared.Outputs[1].GeneratedVoice);
+        var proof = prepared.Outputs[0].GeneratedVoice!; var proofBytes = File.ReadAllBytes(proof.ProofPath);
+        var report = await f.FreshEngine().ExecutePreparedAsync(job, prepared); Assert.Equal(2, report.Succeeded);
+        Assert.Single(report.ConsumeLog.Select(row => row.Audio).Distinct());
+        Assert.Equal(proofBytes, File.ReadAllBytes(proof.ProofPath));
+    }
+
     private sealed class Fixture
     {
         public Fixture(bool fallback = false, bool blockPlanWrite = false)
@@ -197,6 +446,9 @@ public sealed class FissionEditPlanTests
             File.WriteAllText(Path.Combine(Root, "meta.json"), "{\"items\":[{\"file\":\"voice.mp3\",\"text\":\"甲。乙乙。\"}]}");
             var codec = new Codec(this, fallback, blockPlanWrite); Engine = new FissionEngine(Policy, codec, new Probe(this, codec), false, Bus);
         }
+        public ConcurrentBag<VideoEngineRequest> CodecRequests { get; } = [];
+        public double AssemblyClockOffset { get; set; }
+        public double FinalClockOffset { get; set; }
         public Func<Task>? BeforeNormalize { get; set; }
         public Action<string>? AfterNormalizationRead { get; set; }
         public ConcurrentBag<(string Source, string Hash)> NormalizationReads { get; } = [];
@@ -208,6 +460,7 @@ public sealed class FissionEditPlanTests
         public string BgmDir { get; }
         public EnginePathPolicy Policy { get; }
         public FissionEngine Engine { get; }
+        public FissionEngine FreshEngine() { var codec = new Codec(this, false, false); return new FissionEngine(Policy, codec, new Probe(this, codec), false, Bus); }
         public FissionJob Job() => new() { VideoDir = VideoDir, AudioDir = AudioDir, Count = 1, Threads = 1, SplitMode = SplitMode.None,
             UseNvenc = false, RandomHFlip = false, SceneGroups = [new("1开场", TakePerOutput: 1), new("2产品", TakePerOutput: 1)] };
     }
@@ -229,6 +482,7 @@ public sealed class FissionEditPlanTests
                 using var metadata = JsonDocument.Parse(File.ReadAllText(file));
                 seconds = metadata.RootElement.GetProperty("durationSec").GetDouble();
             }
+            if (Path.GetFileName(file).StartsWith("assembled", StringComparison.Ordinal)) seconds += fixture.AssemblyClockOffset;
             Assert.StartsWith(fixture.Root + Path.DirectorySeparatorChar, file, StringComparison.Ordinal);
             return Task.FromResult(new MediaInfo(seconds, 1080, 1920, 30, false, "h264", "aac", 44100, true));
         }
@@ -239,6 +493,7 @@ public sealed class FissionEditPlanTests
         public async Task<ProcessResult> RunAsync(VideoEngineRequest request, Action<double>? onProgress = null, CancellationToken ct = default)
         {
             ct.ThrowIfCancellationRequested(); Assert.Equal(fixture.Policy.Paths.FFmpeg, request.EngineFileName);
+            fixture.CodecRequests.Add(request);
             var args = request.Arguments; var inputs = Regex.Matches(args, "-i \"([^\"]*)\"").Select(m => m.Groups[1].Value).ToArray();
             var output = Regex.Matches(args, "\"([^\"]*)\"").Last().Groups[1].Value;
             Assert.True(output.StartsWith(fixture.Policy.Paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal) || output.StartsWith(fixture.Policy.Paths.OutRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal));
@@ -252,6 +507,7 @@ public sealed class FissionEditPlanTests
             }
             if (fallback && args.Contains("gltransition=", StringComparison.Ordinal)) throw new EngineException("SYNTHETIC_TRANSITION_FAILURE", "synthetic transition failure");
             var seconds = request.TotalDurationSec ?? 4;
+            if (args.Contains("loudnorm=", StringComparison.Ordinal)) seconds += fixture.FinalClockOffset;
             if (args.StartsWith("-y -f concat", StringComparison.Ordinal)) seconds = File.ReadAllLines(Assert.Single(inputs)).Sum(line => Durations[line[6..^1]]);
             if (args.Contains("-frames:v 1", StringComparison.Ordinal) && blockPlanWrite) File.WriteAllText(Path.ChangeExtension(Assert.Single(inputs), ".edit-plan.json"), "preserved collision");
             using (var file = new FileStream(output, args.Contains("-f lavfi", StringComparison.Ordinal) ? FileMode.Truncate : FileMode.CreateNew, FileAccess.Write, FileShare.None)) file.Write(JsonSerializer.SerializeToUtf8Bytes(new { durationSec = seconds }));

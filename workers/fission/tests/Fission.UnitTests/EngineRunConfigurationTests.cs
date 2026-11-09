@@ -25,6 +25,26 @@ public sealed class EngineRunConfigurationTests
         Assert.False(Directory.Exists(f.Workspace));
     }
 
+    [Fact]
+    public void NativePrepareCommand_UsesOriginalFiveArgsAndDerivedSnapshotWithoutWriting()
+    {
+        var f = new Fixture(); var args = f.Args(); args[0] = "prepare";
+        var config = EngineRunConfiguration.LoadCommand(args);
+        Assert.Equal("prepare", config.Mode); Assert.Equal(Path.Combine(config.Policy.Paths.WorkRoot, "prepared.json"), config.SnapshotPath);
+        Assert.False(Directory.Exists(f.Workspace));
+        Assert.Equal("run", EngineRunConfiguration.LoadCommand(f.Args()).Mode);
+    }
+
+    [Fact]
+    public void ExecutePrepared_RequiresDigestAndExistingOwnedSnapshotBeforePoolOrHardware()
+    {
+        var f = new Fixture(); var args = f.Args(); args[0] = "execute-prepared";
+        AssertSafeRejection(f, () => EngineRunConfiguration.LoadCommand(args));
+        AssertSafeRejection(f, () => EngineRunConfiguration.LoadCommand([..args, "--prepared", Path.Combine(f.Workspace, "missing.json"), "--digest", new string('0', 64)]));
+        var prepare = f.Args(); prepare[0] = "prepare";
+        AssertSafeRejection(f, () => EngineRunConfiguration.LoadCommand([..prepare, "--out", f.Workspace]));
+    }
+
     [Theory]
     [InlineData("--paths")]
     [InlineData("--workspace")]

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Fission.Core.Engine;
 using Fission.Core.Errors;
 using Fission.Core.Jobs;
+using Fission.Core.Pipeline;
 
 namespace Fission.Cli;
 
@@ -24,6 +25,10 @@ public sealed class EngineRunConfiguration
 
     /// <summary>The unchanged original job.</summary>
     public FissionJob Job { get; }
+
+    public string Mode { get; private init; } = "run";
+    public string? SnapshotPath { get; private init; }
+    public FissionPreparedDecisions? Prepared { get; private init; }
 
     /// <summary>
     /// Read and validate all explicit run inputs before the caller creates a
@@ -60,6 +65,43 @@ public sealed class EngineRunConfiguration
             // Paths, JSON fragments and underlying I/O messages remain private.
             throw InvalidConfiguration();
         }
+    }
+
+    /// <summary>Native stage commands reuse the original job/five isolation options. They authorize no business.</summary>
+    public static EngineRunConfiguration LoadCommand(string[] args)
+    {
+        try
+        {
+            if (args.Length == 0) throw InvalidConfiguration();
+            var mode = args[0].ToLowerInvariant();
+            if (mode == "run") return Load(args);
+            if (mode == "prepare")
+            {
+                var original = (string[])args.Clone(); original[0] = "run";
+                var config = Load(original);
+                return new EngineRunConfiguration(config.Policy, config.Job) { Mode = mode, SnapshotPath = Path.Combine(config.Policy.Paths.WorkRoot, "prepared.json") };
+            }
+            if (mode != "execute-prepared" || args.Length != 15) throw InvalidConfiguration();
+            var nativeArgs = new List<string> { "run" }; string? file = null, digest = null;
+            for (var i = 1; i < args.Length; i += 2)
+            {
+                if (args[i] == "--prepared") { if (file is not null) throw InvalidConfiguration(); file = args[i + 1]; }
+                else if (args[i] == "--digest") { if (digest is not null) throw InvalidConfiguration(); digest = args[i + 1]; }
+                else { nativeArgs.Add(args[i]); nativeArgs.Add(args[i + 1]); }
+            }
+            if (file is null || digest is null || digest.Length != 64 || digest.Any(c => !char.IsAsciiHexDigit(c))) throw InvalidConfiguration();
+            var loaded = Load(nativeArgs.ToArray()); var files = new EngineJobFiles(loaded.Policy);
+            files.ValidateOwnedFile(file);
+            using var input = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+            files.ValidateOwnedFile(file); if (input.Length > 4 * 1024 * 1024) throw InvalidConfiguration();
+            using var reader = new StreamReader(input);
+            var prepared = FissionPreparedDecisions.Parse(reader.ReadToEnd());
+            if (prepared.Digest != digest || prepared.WorkRoot != loaded.Policy.Paths.WorkRoot || prepared.OutRoot != loaded.Policy.Paths.OutRoot
+                || prepared.CacheRoot != loaded.Policy.CacheRoot || prepared.JobSha256 != FissionPreparedDecisions.HashJob(loaded.Job)) throw InvalidConfiguration();
+            return new EngineRunConfiguration(loaded.Policy, loaded.Job) { Mode = mode, SnapshotPath = file, Prepared = prepared };
+        }
+        catch (Exception error) when (error is JsonException or IOException or UnauthorizedAccessException or ArgumentException or FissionException)
+        { throw InvalidConfiguration(); }
     }
 
     private static EnginePaths ReadPaths(string file)

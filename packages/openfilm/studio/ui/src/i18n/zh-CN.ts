@@ -9,6 +9,15 @@ const TRASH = typeof navigator !== 'undefined' && /^win/i.test(navigator.platfor
   : typeof navigator !== 'undefined' && /^mac/i.test(navigator.platform) ? '废纸篓' : '回收站';
 
 export const zhCN: Words = {
+  material: {
+    register: '登记到业务服务（上传）',
+    registering: '正在登记此文件…',
+    registered: '文件已登记；使用时仍检查当前许可。',
+    unknown: '登记结果尚未确认。原文件已保留；重试沿用同一请求。',
+    unavailable: '业务服务尚未配置，本地导入与编辑不受影响。',
+    stale: '源文件已变化，旧登记不能授权此文件。',
+    unregistered: '此文件尚未登记。',
+  },
   nav: {
     projects: '项目',
     desktop: '桌面版',

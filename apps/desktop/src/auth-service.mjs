@@ -522,11 +522,15 @@ export function createAuthService(configuration, dependencies) {
       if (notifying || state.kind !== 'active' || !session || session.evidence !== expected) fail('authentication-required');
     };
     current();
-    let path, method = 'POST', body;
+    let path, method = 'POST', body, binary=false, uploadHeaders={};
     if (kind === 'resolve' || kind === 'claim') {
       path = kind === 'resolve' ? '/api/materials/resolve' : '/api/fission/claims';
       try { body = JSON.stringify(input); } catch { fail('invalid-business-input'); }
       if (typeof body !== 'string' || encoder.encode(body).byteLength > 1024 * 1024) fail('invalid-business-input');
+    } else if(kind==='register') {
+      const upload=snapshot(input,['key','name','body']);
+      if(!upload||!header(upload.key)||upload.key.length>120||typeof upload.name!=='string'||!upload.name||upload.name.length>128||/[\/\\\x00-\x1f]/.test(upload.name)||typeof upload.body?.[Symbol.asyncIterator]!=='function')fail('invalid-business-input');
+      path='/api/materials/local';body=upload.body;binary=true;uploadHeaders={'idempotency-key':upload.key,'x-material-name':encodeURIComponent(upload.name)};
     } else if ((kind === 'status' || kind === 'cancel') && typeof input === 'string' && /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(input)) {
       path = '/api/fission/claims/' + input + (kind === 'cancel' ? '/cancel' : '');
       if (kind === 'status') method = 'GET'; else body = '{}';
@@ -540,7 +544,7 @@ export function createAuthService(configuration, dependencies) {
     let reader, responseBody;
     try {
       if (controller.signal.aborted) fail('superseded');
-      const response = await deps.fetch(business.origin + path,{method,headers:{accept:'application/json',authorization:`Bearer ${token}`,...(body === undefined ? {} : {'content-type':'application/json'})},redirect:'error',signal:controller.signal,...(body === undefined ? {} : {body})});
+      const response = await deps.fetch(business.origin + path,{method,headers:{accept:'application/json',authorization:`Bearer ${token}`,...(body === undefined ? {} : {'content-type':binary?'application/octet-stream':'application/json'}),...uploadHeaders},redirect:'error',signal:controller.signal,...(body === undefined ? {} : {body}),...(binary?{duplex:'half'}:{})});
       responseBody=response?.body;
       current();if (controller.signal.aborted) fail('superseded');
       if (!record(response) || !Number.isInteger(response.status) || response.status < 100 || response.status > 599) fail('invalid-response');

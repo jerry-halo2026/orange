@@ -1,7 +1,9 @@
 /** First-party authentication in the existing Studio utility. Never expose this object to a renderer. */
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { open } from 'node:fs/promises';
+import { finished } from 'node:stream/promises';
 import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, writeFileSync } from 'node:fs';
-import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
+import { basename, dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { createAuthService } from './auth-service.mjs';
@@ -11,6 +13,8 @@ const {createProjectAccessPolicy}=await import(new URL('./project-access.mjs',na
 const {createProjectControlGuard,ordinaryControlPath}=await import(new URL('./project-control-guard.mjs',nativeServer));
 const {withProjectAuthority,withProjectControlGuard}=await import(new URL('./projects.mjs',nativeServer));
 const {withSourceAuthorization,sourceAccessError}=await import(new URL('../../src/media-links.mjs',nativeServer));
+const {readable}=await import(new URL('./files.mjs',nativeServer));
+const {writeAtomic}=await import(new URL('./atomic.mjs',nativeServer));
 
 const deny = (code = 'authentication-required') => Object.assign(new Error(code === 'project-access-denied' ? 'Project access is not available.' : 'Sign in is required.'), {code,status:403});
 const samePath = (a,b) => (process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b);
@@ -39,7 +43,9 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   let service=null,policy=null,verified=null,handles=new Map(),sealed=true,disposed=false,failed=false,retiring=null,retired=false,epoch=0;
   let reservation=null;
   let businessRequest=null;
+  let materialScope=createHash('sha256').update('unconfigured').digest('hex');
   const businessAborters=new Set();
+  const materialQueues=new Map();
   const selectedSources=new Map(), selections=new WeakMap();
   const operations=new Set();
   const listeners=new Set();
@@ -92,8 +98,9 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     try {
       const {businessOrigin,...authConfiguration}=configuration;
       businessRequest=null;
+      materialScope=createHash('sha256').update('unconfigured').digest('hex');
       return createAuthService({...authConfiguration,instanceId,epoch:++epoch},{fetch:dependencies.fetch,monotonicNow:dependencies.monotonicNow,requestTimeoutMs:10000,onInvalidated:fence,
-        ...(businessOrigin===undefined?{}:{business:{origin:businessOrigin,bind:request=>{businessRequest=request;}}})});
+        ...(businessOrigin===undefined?{}:{business:{origin:businessOrigin,bind:request=>{materialScope=createHash('sha256').update(new URL(businessOrigin).origin).digest('hex');businessRequest=request;}}})});
     } catch { return null; }
   }
   service=makeService();
@@ -201,6 +208,67 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
       assertFile:stat=>{if(assertActive()!==evidence||fingerprint(stat)!==info.fingerprint||!stat.isFile()||stat.nlink!==1)throw sourceAccessError();const now=sourceInfo(path,operation,evidence);if(now.fingerprint!==info.fingerprint)throw sourceAccessError();}});
   }
 
+  const materialError=(code='material-metadata-unconfirmed')=>Object.assign(new Error(code),{code,status:503});
+  const materialUuid=value=>typeof value==='string'&&/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(value);
+  const materialIdentity=stat=>[stat.dev,stat.ino,stat.size,stat.mtimeNs,stat.ctimeNs,stat.nlink].map(String).join(':');
+  const materialPath=path=>typeof path==='string'&&!!path&&!/[\\:\x00-\x1f]/.test(path)&&path.split('/').every(part=>part&&part!=='.'&&part!=='..');
+  function materialFile(project){return ordinaryControlPath(join(project.path,'.film','orange-materials.json'));}
+  function loadMaterials(project,evidence){
+    const file=materialFile(project);
+    if(!existsSync(file))return {version:1,environmentId:evidence.environmentId,subjectId:evidence.subjectId,projectId:project.id,serviceScope:materialScope,records:[]};
+    try{
+      const stat=lstatSync(file);if(!stat.isFile()||stat.nlink!==1||stat.size>1024*1024)throw 0;
+      const data=JSON.parse(readFileSync(file,'utf8'));
+      if(!data||Object.keys(data).sort().join()!=='environmentId,projectId,records,serviceScope,subjectId,version'||data.version!==1||data.environmentId!==evidence.environmentId||data.subjectId!==evidence.subjectId||data.projectId!==project.id||data.serviceScope!==materialScope||!Array.isArray(data.records)||data.records.length>4096)throw 0;
+      const keys=new Set();for(const r of data.records){const expected=r?.state==='registered'?'assetId,identity,key,name,path,sha256,state,versionId':'identity,key,name,path,sha256,state';if(!r||Object.keys(r).sort().join()!==expected||!['unknown','registered'].includes(r.state)||!materialUuid(r.key)||keys.has(r.key)||!materialPath(r.path)||typeof r.name!=='string'||!r.name||r.name.length>128||/[\/\\\x00-\x1f]/.test(r.name)||typeof r.identity!=='string'||!/^\d+:\d+:\d+:-?\d+:-?\d+:1$/.test(r.identity)||!/^[a-f0-9]{64}$/.test(r.sha256)||r.state==='registered'&&(!materialUuid(r.assetId)||!materialUuid(r.versionId)))throw 0;keys.add(r.key);}
+      return data;
+    }catch{throw materialError();}
+  }
+  async function saveMaterials(project,evidence,data){
+    if(assertActive()!==evidence)throw deny();authorizeProject(project);materialFile(project);
+    const bytes=JSON.stringify(data,null,2)+'\n';if(Buffer.byteLength(bytes)>1024*1024)throw materialError();await writeAtomic(materialFile(project),bytes,{mode:0o600});if(assertActive()!==evidence)throw deny();authorizeProject(project);
+  }
+  async function materialHash(fd,evidence,ticket){const h=createHash('sha256'),b=Buffer.alloc(65536);let at=0;while(true){if(assertActive()!==evidence)throw deny();ticket.recheck();ticket.assertFile(await fd.stat());const {bytesRead}=await fd.read(b,0,b.length,at);if(!bytesRead)break;h.update(b.subarray(0,bytesRead));at+=bytesRead;}return h.digest('hex');}
+  async function materialTask(project,work){
+    const evidence=assertActive();authorizeProject(project);
+    const result=await controller.runNative(async()=>{const previous=materialQueues.get(project.id)||Promise.resolve();const queued=previous.catch(()=>{}).then(async()=>{if(assertActive()!==evidence)throw deny();authorizeProject(project);return work(evidence);});materialQueues.set(project.id,queued);try{return await queued;}finally{if(materialQueues.get(project.id)===queued)materialQueues.delete(project.id);}});
+    if(assertActive()!==evidence)throw deny();authorizeProject(project);return result;
+  }
+  async function inspectMaterial(project,rel,evidence,work){
+    if(!materialPath(rel)||basename(rel).length>128)throw materialError('invalid-material-source');const path=readable(project.path,rel),ticket=authorizeSource(path,'read',evidence),fd=await open(ticket.path,'r');
+    try{ticket.assertFile(await fd.stat());const identity=materialIdentity(await fd.stat({bigint:true})),sha256=await materialHash(fd,evidence,ticket);return await work({fd,ticket,identity,sha256});}finally{try{await fd.close();}catch(cause){throw Object.assign(sourceAccessError('source-preservation-failed',503),{cause});}}
+  }
+  async function materialStatus(project,rel){return materialTask(project,evidence=>{
+    const data=loadMaterials(project,evidence);
+    return inspectMaterial(project,rel,evidence,async({identity,sha256})=>{
+      const r=[...data.records].reverse().find(r=>r.path===rel&&r.identity===identity&&r.sha256===sha256);
+      if(!r)return {state:data.records.some(r=>r.path===rel)?'stale':businessRequest?'unregistered':'unavailable',available:!!businessRequest};
+      return {state:r.state,available:!!businessRequest,...(r.state==='registered'?{assetId:r.assetId,versionId:r.versionId}:{})};
+    });
+  });}
+  async function registerMaterial(project,rel){return materialTask(project,evidence=>{
+    const data=loadMaterials(project,evidence);if(!businessRequest)return {state:'unavailable',available:false};
+    return inspectMaterial(project,rel,evidence,async({fd,ticket,identity,sha256})=>{
+      let record=[...data.records].reverse().find(r=>r.path===rel&&r.identity===identity&&r.sha256===sha256);
+      if(record?.state==='registered')return {state:'registered',available:true,assetId:record.assetId,versionId:record.versionId};
+      if(!record){record={key:randomUUID(),name:basename(rel),path:rel,identity,sha256,state:'unknown'};data.records.push(record);await saveMaterials(project,evidence,data);}
+      if(assertActive()!==evidence)throw deny();ticket.recheck();ticket.assertFile(await fd.stat());if(materialIdentity(await fd.stat({bigint:true}))!==identity)throw sourceAccessError();
+      const stream=fd.createReadStream({start:0,autoClose:false});const completion=finished(stream,{cleanup:true});void completion.catch(()=>{});const hash=createHash('sha256');let sent=0;
+      const body=(async function*(){for await(const bytes of stream){if(assertActive()!==evidence)throw deny();ticket.recheck();ticket.assertFile(await fd.stat());sent+=bytes.length;if(sent>536870912)throw materialError('material-upload-limit');hash.update(bytes);yield bytes;}})();
+      const abort=()=>stream.destroy();businessAborters.add(abort);
+      try{
+        const reply=await runBusiness(project,'register',{key:record.key,name:record.name,body});
+        if(!stream.readableEnded)return {state:'unknown',available:true};await body.return();await completion;
+        if(assertActive()!==evidence)throw deny();ticket.recheck();ticket.assertFile(await fd.stat());
+        if(materialIdentity(await fd.stat({bigint:true}))!==identity||sent!==Number((await fd.stat({bigint:true})).size)||hash.digest('hex')!==sha256||await materialHash(fd,evidence,ticket)!==sha256)throw sourceAccessError();
+        if(reply.status!==200||reply.data?.registration!=='registered'||reply.data?.licensed!==false||!materialUuid(reply.data?.assetId)||!materialUuid(reply.data?.versionId))return {state:'unknown',available:true};
+        if(JSON.stringify(loadMaterials(project,evidence))!==JSON.stringify(data))throw materialError();record.state='registered';record.assetId=reply.data.assetId;record.versionId=reply.data.versionId;await saveMaterials(project,evidence,data);ticket.recheck();ticket.assertFile(await fd.stat());if(materialIdentity(await fd.stat({bigint:true}))!==identity||await materialHash(fd,evidence,ticket)!==sha256)throw sourceAccessError();if(assertActive()!==evidence)throw deny();
+        return {state:'registered',available:true,assetId:record.assetId,versionId:record.versionId};
+      }catch(error){if(sealed||assertActive()!==evidence)throw deny();if(error?.code==='material-metadata-unconfirmed'||error?.code?.startsWith('source-'))throw error;return {state:'unknown',available:true};}
+      finally{businessAborters.delete(abort);stream.destroy();await body.return().catch(()=>{});await completion.catch(()=>{});}
+    });
+  });}
+
   async function signIn(input) {
     if(disposed||failed||retiring)return Object.freeze({ok:false,code:disposed?'disposed':failed?'preservation-failed':'preservation-pending',state:getPublicState()});
     if(retired){service?.dispose();service=makeService();verified=null;retired=false;}
@@ -236,6 +304,8 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   }
   const controller={
     getPublicState,assertActive,signIn,signOut,
+    registerMaterial,materialStatus,
+    async materialVersionForSource(project,rel){const evidence=assertActive(),status=await materialStatus(project,rel);if(assertActive()!==evidence)throw deny();authorizeProject(project);if(status.state!=='registered')throw materialError('material-registration-required');return {assetId:status.assetId,versionId:status.versionId};},
     business:Object.freeze({
       resolve:(project,body,signal)=>runBusiness(project,'resolve',body,signal),
       claim:(project,body,signal)=>runBusiness(project,'claim',body,signal),

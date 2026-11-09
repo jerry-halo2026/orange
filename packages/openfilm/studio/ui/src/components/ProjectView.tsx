@@ -2676,6 +2676,7 @@ export function ProjectView({ projectId, onProject, onLeave }: {
       onReveal={reveal}
       onPick={onPick}
       onBring={onBring}
+      onRegister={studioHost ? (path) => submitProjectMaterialRegistration(projectId, path) : undefined}
       onRelink={onRelink}
       onCollect={onCollect}
       onSave={saveFiles}
@@ -5019,4 +5020,13 @@ export async function submitProjectFission(projectId: string, job: Record<string
   if (!result.project?.id) throw new Error('Fission did not return an editable native project.');
   onProject(result.project.id);
   return result;
+}
+
+/** Only the original explicit media menu calls this. No bearer, owner or server path belongs in the page. */
+export async function submitProjectMaterialRegistration(projectId: string, path: string, request: typeof fetch = fetch): Promise<{ state: string }> {
+  const response = await request('/api/projects/' + encodeURIComponent(projectId) + '/materials/registration', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ path }) });
+  const result = await response.json() as { state?: unknown; error?: string };
+  if (!response.ok) throw new Error(result.error ?? 'Material registration could not be confirmed.');
+  if (typeof result.state !== 'string' || !['registered','unknown','unavailable','stale','unregistered'].includes(result.state)) throw new Error('Material registration could not be confirmed.');
+  return { state: result.state };
 }

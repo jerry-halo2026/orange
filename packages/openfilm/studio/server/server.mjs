@@ -776,6 +776,12 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       }
       if (req.method === 'DELETE') { const reply=await fission.cancel(project.id);return reply?json(res,reply.status,reply.data):json(res,200,{stopped:true}); }
     }
+    if(rest==='materials/registration'&&desktopAuth){
+      try{
+        if(req.method==='GET')return json(res,200,await desktopAuth.materialStatus(project,url.searchParams.get('path')??''));
+        if(req.method==='POST'){const body=await readJson(req);if(!body||typeof body!=='object'||Object.keys(body).join()!=='path'||typeof body.path!=='string')throw new HttpError(400,'A project-relative material path is required.');return json(res,200,await desktopAuth.registerMaterial(project,body.path));}
+      }catch(error){const code=/** @type {any} */(error)?.code;if(typeof code==='string'&&(code.startsWith('material-')||code==='invalid-material-source'))throw new HttpError(code==='invalid-material-source'?400:503,'Material registration could not be confirmed.',{code});throw error;}
+    }
     if(rest==='materials/resolve'&&req.method==='POST'){
       const body=await readJson(req);
       if(!body||typeof body!=='object'||Array.isArray(body)||Object.keys(body).sort().join()!=='purpose,versionIds')throw new HttpError(400,'Invalid material request.');

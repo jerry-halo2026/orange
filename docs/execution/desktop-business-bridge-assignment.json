@@ -1,7 +1,7 @@
 {
   "taskId": "T03.business",
   "parentTask": "T03",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root/desktop_login_integration",
   "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
@@ -52,6 +52,16 @@
     {
       "kind": "port",
       "value": 18572,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18561,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18562,
       "exclusive": true
     }
   ],
@@ -301,5 +311,13 @@
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD native-consumed input review/tools metadata and actual freshN5a; branch already materialized fromverifieddev toqualified96d, no sourcewriter"
+  "dispatchState": "HELD native-consumed input review/tools metadata and actual freshN5a; branch already materialized fromverifieddev toqualified96d, no sourcewriter",
+  "mechanicalResourceForward": {
+    "fromRevision": 1,
+    "reason": "untouched original fission.test uses18561/18562; initial4leases omitted these old regression ports, no prior use approved",
+    "independentReviewer": "/root/integration_review",
+    "sourceScopeUnchanged": 8,
+    "dependenciesAndToolsUnchanged": true,
+    "physicalDualStackAvailabilityVerified": true
+  }
 }

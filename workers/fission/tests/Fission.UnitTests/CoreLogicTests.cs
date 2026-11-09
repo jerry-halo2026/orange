@@ -387,3 +387,25 @@ public class HandoffSubtitleCueTests
         Assert.Contains("Dialogue: 0,0:00:02.00,0:00:05.00", ass);
     }
 }
+/// <summary>Regressions observed with the actual standard codec and original CLI.</summary>
+public class FissionMediaCommandTests
+{
+    [Fact]
+    public void AlignSpeed_UsesVideoTimestampScalingAndTheRequestedDuration_NotAnAudioFilter()
+    {
+        var plan = new AlignPlan(AlignAction.Speed, 2, 2, "atempo=2", 1);
+        var args = Fission.Providers.Media.CommandBuilders.Align("source.mp4", "output.mp4", plan, false, 2);
+        Assert.Contains("-vf \"setpts=PTS/2\"", args);
+        Assert.Contains("-t 2.000", args);
+        Assert.DoesNotContain("atempo=", args);
+    }
+
+    [Fact]
+    public void AvMerge_WithBgm_MapsOnlyTheOneMixedAudioTrack()
+    {
+        var args = Fission.Providers.Media.CommandBuilders.AvMerge("video.mp4", "voice.wav", "bed.wav", "output.mp4", new Fission.Core.Jobs.FissionJob());
+        Assert.Contains("-map \"[v]\"", args);
+        Assert.DoesNotContain("-map 2:a:0", args);
+        Assert.Contains("amix=inputs=2:duration=first", args);
+    }
+}

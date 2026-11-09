@@ -104,7 +104,7 @@ public static class CommandBuilders
             AlignAction.Trim =>
                 $"-y -i \"{src}\" -t {plan.OutDurationSec:F3} -c:v copy -an \"{dst}\"",
             AlignAction.Speed =>
-                $"-y -i \"{src}\" -vf \"{plan.AtempoChain}\" -map 0:v:0 -an -c:v {vcodec} -pix_fmt yuv420p \"{dst}\"",
+                $"-y -i \"{src}\" -vf \"setpts=PTS/{plan.Tempo:0.####}\" -t {plan.OutDurationSec:F3} -map 0:v:0 -an -c:v {vcodec} -pix_fmt yuv420p \"{dst}\"",
             AlignAction.Loop =>
                 $"-y -stream_loop {Math.Max(plan.Loops - 1, 0)} -i \"{src}\" -t {plan.OutDurationSec:F3} -map 0:v:0 -an -c:v copy \"{dst}\"",
             _ => throw new ArgumentOutOfRangeException(nameof(plan), "未知对齐动作"),
@@ -122,7 +122,7 @@ public static class CommandBuilders
             : $"[1:a]volume={job.VoiceVolume:F2}[v0];[2:a]volume={job.BgmVolume:F2}[b0];[v0][b0]amix=inputs=2:duration=first:dropout_transition=3,loudnorm=I=-14:TP=-1.5:LRA=11[v]";
         return
             $"-y -i \"{video}\" {voiceInput} {bgmInput} " +
-            $"-filter_complex \"{mix}\" -map 0:v:0 {bgmMap} -map \"[v]\" " +
+            $"-filter_complex \"{mix}\" -map 0:v:0 -map \"[v]\" " +
             $"-c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart \"{dst}\"";
     }
 

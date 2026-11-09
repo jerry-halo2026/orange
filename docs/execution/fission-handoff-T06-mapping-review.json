@@ -1,0 +1,54 @@
+{
+  "taskId": "T06.mapping",
+  "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/src/fission-timing.mjs",
+      "sha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0",
+      "gitBlobSha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fission-import.mjs",
+      "sha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657",
+      "gitBlobSha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+      "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+      "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+      "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+      "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/fission-mapping.test.ts",
+      "sha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba",
+      "gitBlobSha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fission-import.test.mjs",
+      "sha256": "d293e0eff9f538e7272d041428fb9eeff4027f9e733b1c3cbba9877640419204",
+      "gitBlobSha256": "d293e0eff9f538e7272d041428fb9eeff4027f9e733b1c3cbba9877640419204"
+    }
+  ],
+  "scope": "exact qualified current producer/contract reused for concrete backend native handoff, not new implementation/fullpilot acceptance",
+  "evidence": {
+    "dispatchSource": "3a73d45abb5ddf9b7af82740f0f3a5e280e3f32f",
+    "dispatchReview": "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027",
+    "materialSource": "374ee238a0592fe61f71c9e98f35600092e1e2b1",
+    "materialReview": "24f7a5c5f1826aa242b07b7f44244bdc3351f208fd9fcff5e9e14a7c9d27a88d",
+    "mappingReview": "f83a13bfbac944c67964a809374bdb532ddb46c25272a1b1841c4665441554e4",
+    "nativeOriginalSourceReview": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

@@ -1,0 +1,49 @@
+{
+  "taskId": "T06.dispatch",
+  "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/admission.ts",
+      "sha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3",
+      "gitBlobSha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3"
+    },
+    {
+      "path": "apps/api/src/supabase.ts",
+      "sha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116",
+      "gitBlobSha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116"
+    },
+    {
+      "path": "apps/api/sql/business.sql",
+      "sha256": "3667a7d388fb0de1411a68fd1b54a590940b4b95b1bf7d444a0345b6f389dd93",
+      "gitBlobSha256": "3667a7d388fb0de1411a68fd1b54a590940b4b95b1bf7d444a0345b6f389dd93"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/fission-dispatch.test.ts",
+      "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
+      "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
+    },
+    {
+      "path": "apps/api/tests/postgres17.test.mjs",
+      "sha256": "373b0881e274c7c2a718b214636e7b4daf4c0631cd2301f7b81da4ed1a44e6e1",
+      "gitBlobSha256": "373b0881e274c7c2a718b214636e7b4daf4c0631cd2301f7b81da4ed1a44e6e1"
+    }
+  ],
+  "scope": "exact qualified current producer/contract reused for concrete backend native handoff, not new implementation/fullpilot acceptance",
+  "evidence": {
+    "dispatchSource": "3a73d45abb5ddf9b7af82740f0f3a5e280e3f32f",
+    "dispatchReview": "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027",
+    "materialSource": "374ee238a0592fe61f71c9e98f35600092e1e2b1",
+    "materialReview": "24f7a5c5f1826aa242b07b7f44244bdc3351f208fd9fcff5e9e14a7c9d27a88d",
+    "mappingReview": "f83a13bfbac944c67964a809374bdb532ddb46c25272a1b1841c4665441554e4",
+    "nativeOriginalSourceReview": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

@@ -1,0 +1,34 @@
+{
+  "taskId": "T04.material",
+  "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/materials.ts",
+      "sha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16",
+      "gitBlobSha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/materials.test.ts",
+      "sha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5",
+      "gitBlobSha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5"
+    }
+  ],
+  "scope": "exact qualified current producer/contract reused for concrete backend native handoff, not new implementation/fullpilot acceptance",
+  "evidence": {
+    "dispatchSource": "3a73d45abb5ddf9b7af82740f0f3a5e280e3f32f",
+    "dispatchReview": "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027",
+    "materialSource": "374ee238a0592fe61f71c9e98f35600092e1e2b1",
+    "materialReview": "24f7a5c5f1826aa242b07b7f44244bdc3351f208fd9fcff5e9e14a7c9d27a88d",
+    "mappingReview": "f83a13bfbac944c67964a809374bdb532ddb46c25272a1b1841c4665441554e4",
+    "nativeOriginalSourceReview": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

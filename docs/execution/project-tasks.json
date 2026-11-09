@@ -495,6 +495,20 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/desktop-material-assignment.json"
+    },
+    {
+      "id": "T06.handoff",
+      "parentTask": "T06",
+      "status": "in_progress",
+      "scope": "Actual owner/group-fresh backend candidate inspection + server-minted delivery evidence + restricted native edit-plan/source-ordinal byte handoff to trusted desktop. No MP4-as-source, new Timeline/Job/NLE pack format, queue, billing/human-review or general recovery framework.",
+      "dependsOn": [
+        "T01",
+        "T06.dispatch",
+        "T04.material",
+        "T06.mapping"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-business-handoff-assignment.json"
     }
   ],
   "umbrella": [

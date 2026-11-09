@@ -1,0 +1,466 @@
+{
+  "taskId": "T06.handoff",
+  "parentTask": "T06",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-reuse original edit-plan/source graph and necessary verified business artifact/FD handoff, no new Job/NLE/Timeline/schema/queue",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "a80798006db19dc1c1c710ada05b4e707361ddd1",
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/fission-source-handoff",
+  "scope": "Actual owner/group-fresh backend candidate inspection + server-minted delivery evidence + restricted native edit-plan/source-ordinal byte handoff to trusted desktop. No MP4-as-source, new Timeline/Job/NLE pack format, queue, billing/human-review or general recovery framework.",
+  "writeAllowlist": [
+    "apps/api/src/fission-handoff.ts",
+    "apps/api/src/fission-handoff.test.ts",
+    "apps/api/src/fission-dispatch.ts",
+    "apps/api/src/server.ts"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18641,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18642,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18651,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18652,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18591,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18592,
+      "exclusive": true
+    },
+    {
+      "kind": "database",
+      "value": "owned874f16-postgres17-handoff-new-own-tests",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T06.dispatch",
+        "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "apps/api/src/admission.ts",
+            "sha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3",
+            "gitBlobSha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3"
+          },
+          {
+            "path": "apps/api/src/supabase.ts",
+            "sha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116",
+            "gitBlobSha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116"
+          },
+          {
+            "path": "apps/api/sql/business.sql",
+            "sha256": "3667a7d388fb0de1411a68fd1b54a590940b4b95b1bf7d444a0345b6f389dd93",
+            "gitBlobSha256": "3667a7d388fb0de1411a68fd1b54a590940b4b95b1bf7d444a0345b6f389dd93"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/fission-dispatch.test.ts",
+            "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
+            "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
+          },
+          {
+            "path": "apps/api/tests/postgres17.test.mjs",
+            "sha256": "373b0881e274c7c2a718b214636e7b4daf4c0631cd2301f7b81da4ed1a44e6e1",
+            "gitBlobSha256": "373b0881e274c7c2a718b214636e7b4daf4c0631cd2301f7b81da4ed1a44e6e1"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-handoff-T06-dispatch-review.json",
+          "sha256": "4bf6c1429a3d1fbe4760daf46b9c630a7cbc8e8757a5dadfeca5b6ecee357611",
+          "gitBlobSha256": "4bf6c1429a3d1fbe4760daf46b9c630a7cbc8e8757a5dadfeca5b6ecee357611"
+        }
+      },
+      {
+        "taskId": "T04.material",
+        "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "apps/api/src/materials.ts",
+            "sha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16",
+            "gitBlobSha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/materials.test.ts",
+            "sha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5",
+            "gitBlobSha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-handoff-T04-material-review.json",
+          "sha256": "3a46a25019943044ecc5d83229e8939f76e18bd42df13438d4c70554591c34a7",
+          "gitBlobSha256": "3a46a25019943044ecc5d83229e8939f76e18bd42df13438d4c70554591c34a7"
+        }
+      },
+      {
+        "taskId": "T06.mapping",
+        "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "packages/openfilm/src/fission-timing.mjs",
+            "sha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0",
+            "gitBlobSha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fission-import.mjs",
+            "sha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657",
+            "gitBlobSha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+            "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+            "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+            "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+            "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/fission-mapping.test.ts",
+            "sha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba",
+            "gitBlobSha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fission-import.test.mjs",
+            "sha256": "d293e0eff9f538e7272d041428fb9eeff4027f9e733b1c3cbba9877640419204",
+            "gitBlobSha256": "d293e0eff9f538e7272d041428fb9eeff4027f9e733b1c3cbba9877640419204"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-handoff-T06-mapping-review.json",
+          "sha256": "22b74c15ff1bb19c378cd03a6a24634ffbeb8f63efcf25cff3cc377145d432dd",
+          "gitBlobSha256": "22b74c15ff1bb19c378cd03a6a24634ffbeb8f63efcf25cff3cc377145d432dd"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "a80798006db19dc1c1c710ada05b4e707361ddd1",
+    "files": [
+      {
+        "path": "apps/api/src/fission-dispatch.ts",
+        "sha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45",
+        "gitBlobSha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45"
+      },
+      {
+        "path": "apps/api/src/server.ts",
+        "sha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749",
+        "gitBlobSha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749"
+      }
+    ],
+    "newFiles": [
+      "apps/api/src/fission-handoff.ts",
+      "apps/api/src/fission-handoff.test.ts"
+    ],
+    "rule": "source/geometry/time/claim/default endpoint behavior stay; only candidate inspection/trusted evidence/private handoff composition"
+  },
+  "interfaces": {
+    "dispatcher": "Add private Node-only withCandidate(context,{batchId,index},consumer) on concrete dispatcher. Resolve original claim/nonces/prepare/report/source-stage association from owned journal; wait actual task drain if active; no prepare/start/retry/release. Fresh claim/group/owner gate before and after. Known definite completed journals may be inspected read-only; unknown/cancel/unconfirmed/missing provenance stays reconciliation-needed, not automatic recovery success.",
+    "handoff": "createFissionHandoff({dispatcher,materials,admission,runtime}) exposes withStudioPlan/context/ref/consumer, withSource/context/ref/ordinal/consumer, withVerifiedVideo/context/ref/consumer, verifyDelivery(context,claimId,opaqueEvidence), close. These are concrete file/FD consumers, not provider stubs.",
+    "sourceLookup": "Original sidecar source ordinal -> exact original prepared Source path/SHA/kind -> private recorded stage entry -> existing versionId + metadata. No client path/hash/ordinal alone grants read; no material registration or second catalog created.",
+    "transport": "Native C# edit-plan schema/seconds/Index retained. Only resource path strings relocate to fixed source-ordinal slots; manifest associates ordinal with existing versionId/SHA/kind/intrinsic metadata and original-sidecar/transport digests. Original server path inverse table stays private. No server FS paths, WindowsIdentity, token or node-owned FDs go to renderer.",
+    "deliveryEvidence": "withVerifiedVideo performs real owned MP4/sidecar/FrozenPlan/claim checks and pinned-tool probe/decode as approved, hashes actual open FDs; issues an opaque WeakMap-branded active evidence object tied to subject/session/environment/claim/nonce/contentKey/artifact digest. Clone/client JSON/random evidenceId cannot pass verifyDelivery. FD and rights lease remain active while consumer calls existing admission.delivery; RPC result/unknown is returned as actual, never fabricated.",
+    "serverComposition": "Keep current endpoints compatible. Install real handoff after concrete dispatcher/material service. Use base admission for fresh status, then an outer existing createAdmission({rpc,verifyDelivery:handoff.verifyDelivery}) for API delivery path, avoiding a new mutable verifier-registration API or fifth source. No report/evidence callback installed from HTTP/config JSON."
+  },
+  "sequence": [
+    "Backend candidate resolver uses only opaque batch/index, current subject/environment, actual owned request/prepared/nonce/exit+close0/rendered journal and exact original claim. Revalidate original native receipt with assertNativeCandidateReceipt; verify owned artifact bounds and current actual bytes/identity. Missing or legacy insufficient facts are pending, not guessed.",
+    "For studio recipe/source read: fresh admission.status owner/group gate, resolve/map only actual source ordinals, then materials.use(studio) for exact existing material versions; known min auth/lease expiry, caller disconnect and close abort streaming. Keep real FD held through the response/consumer finish; fresh postcheck before returning.",
+    "Native plan returned to trusted desktop is the same source-based edit-plan with only resource placeholders, original semantics/provenance digests and explicit blockers. MP4 is separate video output only, never inserted as editable clip source.",
+    "For video verification/export read: material.use(export), hold actual candidate MP4/receipt FDs, hash/probe/decode/clock/source association checks against private genuine candidate/claim, then mint active opaque evidence. Existing admission.delivery/record_delivery executes only inside this real consumer. No arbitrary client report reaches success.",
+    "Only actual verified video may produce kind=video business evidence here. Merely fetching a sidecar/source recipe is not NLE delivery. kind=nle remains unavailable until original native client creates/saves/reopens a real engineering artifact and a real verifier can inspect it.",
+    "Known GLSL/ASS/hflip/audio equivalence limits remain. First client import is explicitly draft with original blockers/exportReady:false/equivalenceVerified:false. Runtime effect bytes without a genuinely approved distributable dependency stay pending; never drop shader/style or bake to MP4 to bypass original importer.",
+    "Cross-machine staging changes local file identity legitimately. Server prepare WindowsIdentity stays private provenance; client never installs it as local identity. Client verifies SHA, allocates ordinary files under its verified epoch/own staging, constructs actual local absolute resource paths and lets original importer read real local FDs."
+  ],
+  "httpMinimum": {
+    "ref": "Existing opaque batchId + originalIndex; source ordinal bounded by original sources array.",
+    "routes": "Add only dedicated owner-bound studio-plan/source-ordinal and verified-video read/verify actions under that output. Purpose is fixed by action: studio for native source handoff, export for video verification/bytes; no arbitrary purpose/path query.",
+    "response": "Source-ordinal metadata/native resource-relocated schema and bytes only to trusted Node bridge; renderer sees original native project ID/rev/blockers after import. New backend/private paths/tokens never forwarded."
+  },
+  "nextNativeClient": {
+    "exactEntry": "Original packages/openfilm/studio/server/fission.mjs business flow, using the qualified private desktop backend bridge, requests handoff by batch/index. This is a separate desktop/native writer after backend qualification, not an editor replacement.",
+    "work": "Trusted Node allocates actor/epoch-bound staging, reads ordinal bytes through fixed studio-purpose calls, checks size/SHA and current auth epoch, rewrites ONLY native source/shader resource path slots to actual local files, then calls original importFissionEditPlan. Read/save/reopen/Undo remain original IO/Op/revision interfaces.",
+    "provenance": "Record original sidecar + transported/local path relocation digest and ordinal/version association with native handoff metadata; references are not permanent rights. Future native reads/exports still use fresh purpose/expiry gates, no automatic permanent local license."
+  },
+  "requirements": [
+    "Backend candidate resolver uses only opaque batch/index, current subject/environment, actual owned request/prepared/nonce/exit+close0/rendered journal and exact original claim. Revalidate original native receipt with assertNativeCandidateReceipt; verify owned artifact bounds and current actual bytes/identity. Missing or legacy insufficient facts are pending, not guessed.",
+    "For studio recipe/source read: fresh admission.status owner/group gate, resolve/map only actual source ordinals, then materials.use(studio) for exact existing material versions; known min auth/lease expiry, caller disconnect and close abort streaming. Keep real FD held through the response/consumer finish; fresh postcheck before returning.",
+    "Native plan returned to trusted desktop is the same source-based edit-plan with only resource placeholders, original semantics/provenance digests and explicit blockers. MP4 is separate video output only, never inserted as editable clip source.",
+    "For video verification/export read: material.use(export), hold actual candidate MP4/receipt FDs, hash/probe/decode/clock/source association checks against private genuine candidate/claim, then mint active opaque evidence. Existing admission.delivery/record_delivery executes only inside this real consumer. No arbitrary client report reaches success.",
+    "Only actual verified video may produce kind=video business evidence here. Merely fetching a sidecar/source recipe is not NLE delivery. kind=nle remains unavailable until original native client creates/saves/reopens a real engineering artifact and a real verifier can inspect it.",
+    "Known GLSL/ASS/hflip/audio equivalence limits remain. First client import is explicitly draft with original blockers/exportReady:false/equivalenceVerified:false. Runtime effect bytes without a genuinely approved distributable dependency stay pending; never drop shader/style or bake to MP4 to bypass original importer.",
+    "Cross-machine staging changes local file identity legitimately. Server prepare WindowsIdentity stays private provenance; client never installs it as local identity. Client verifies SHA, allocates ordinary files under its verified epoch/own staging, constructs actual local absolute resource paths and lets original importer read real local FDs.",
+    "Use the real existing dispatcher.withCandidate closed proven batch/claim/index, private nonce/actual child exit+close0/source snapshot and genuine native receipt. Do not accept client receipt/path/approved/evidenceId as producer authority, no reroll/prepare/start/claim side effects while reading. Unknown/insufficient journal stays reconciliation-needed; only fully proven known candidate readonly reuse, no generic recovery framework.",
+    "Existing createAdmission.delivery verify callback must accept only active WeakMap evidence minted by THIS actual file verifier and bound to current subject/session/environment/claim/nonce/contentKey/digest. Clone/JSON/foreign/expired/after-consumer evidence denies. Evidence active only while candidate/source leases and actual consumer remain; underlying RPC unknown retains original state, no fabricated success or new execution.",
+    "All source reads fixed studio purpose; all video verify/read fixed export purpose, no client purpose/path choices. Original source ordinal maps via this genuine prepared/source-stage relation to exact existing version IDs; alias/hash alone is not access. Fresh owner/group + SQL rights/current earliest authNotAfter/notAfter/ctx deadline before open and after use. FD/body/consumer promises held until actual finish; disconnect/deadline/close aborts entry and true process/stream work, no abort-as-rollback.",
+    "Own receipt/video/tool FD close errors must not produce confirmed preservation/release. Reuse concrete existing failed/sealed/unknown-preservation paths, reject close when actual closure unconfirmed; no new IPC/framework. Add actual ownedFD refusal regression, not fake fd.closed flags.",
+    "Native plan schema/numeric seconds/Index and every non-resource field preserved. Only exact resource slots may relocate to ordinal references/local paths; original digest and inverse resource proof retained privately. No backend absolute paths/WindowsIdentity/token/FD into renderer, no MP4 replacing source clips. Still intrinsic duration0 separate from original native receipt hold.",
+    "Video evidence only after actual candidate FD hash, native receipt/prepared/FrozenPlan consistency plus pinned ffprobe/decode/stream/clock checks. Fetching plan/source is never NLE delivery. Existing history idempotency/unknown behavior stays, no billing rate/charge permission created; no nle evidence until real native artifact verifier exists.",
+    "Use original Node API/server composition. Runtime/config may install only concrete trusted implementation; absent config affects only feature/health truthful, no HTTP dependency injector. Keep original single and batch request/status/cancel/old health behavior compatible; source/stream statuses sanitized.",
+    "No approved distributable shader/resource proof -> affected source handoff pending, no silent drop/bake; original FX/ASS/hflip/audio/fullsource-tail targets remain explicit. Genuinely available draft retains original blockers/exportReadyfalse/equivalencefalse, not full editable equivalence claim.",
+    "TDD true missing feature RED, forged evidence/owner/group revoke/wrongordinal/purpose/expiry/filemutation/realFD drain/closefail, schema-only resource inverse and original source SHA/kind. At least actual own registered/licensed source + genuine native candidate through actual handoff bytes/verified video existing record_delivery in localPG. Use qualified prior real4second outputs if rights still genuinely current; if expired do not backdate/alter frozen auth/forge grant simply to reuse. New current own fixture batch is allowed only to qualify this NEW consumer, not rerun old Count3 gratuitously.",
+    "No original C#/worker/SQL/admission/material/desktop source writes, no packages/lock/config edits/new deps or install. Existing local openfilm alias/compiler/14pinned CLI/stdFFmpeg9 readonly revalidate actual pins. All helpers/GUI-free profiles/cache/logs/stage/testDB data only fresh .dev/fission-handoff/attempt-*.",
+    "Owned exact874/image73bed PostgreSQL17 only after Root stopped-inspect handoff; new own orange_handoff_* DB or verified current own snapshot without overwrite. Preserve all previous dumps/failedDBs, never drop/restore unknown or change fixture authority solely to green an expired claim. End dump own new DB and roles then actual stop, no prune/pull/other containers.",
+    "Only leasedloopback18591/92 (original dispatcher tests),18641/42,18651/52; no real Supabase/vendor/private/user media/model/GUI/Electron/Edge/Web/doctor/stress/Bench. Real tiny CPU video<=4seconds/Threads1/noNVENC is test limit not product CountN/FX shrink. No privateFFmpeg6/resources.",
+    "60sec pure/type helper;180sec actual tiny media/codec tool cap20MiB logs, actual exit+close and immutable source beforeafter. Do not fail-open on timeout/unknowns or call same media check green after editing its assertion without exact closure evidence.",
+    "Final freeze exact4 raw/canonical/full diff/actual proof refs and precise reused closures/blocked fullStudio/cloud/NLE/recovery for nonauthor SPECQUALITY and Root freshN5a/serial integration. No author commit/spawn."
+  ],
+  "tooling": {
+    "path": "docs/execution/fission-dispatch-local-tools.json",
+    "sha256": "2f6a315cbd8df181da0390aed33db899b36d4ca9837b1900a5a5becea47b5746",
+    "onlyMissingOrdinaryParentsAndOneLocalWorkspaceJunction": true,
+    "noOverwrite": true
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "nativeBinaries": {
+    "bindingPath": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-subset/attempt-1794245396009-13448/real-media/binary-binding.json",
+    "bindingSHA256": "439521923c8ac007603f109a1998f7c144e9df3bcdbc51a814eb3f4cdf40ceb1",
+    "cliDirectory": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-subset/attempt-1794245396009-13448/build/bin/Fission.Cli/debug",
+    "files": [
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.AI.dll",
+        "sha256": "f2172eb80a54bcb251dc1adf66b2f70a49f20f2e4482b6fba464e0d9788ceef4"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.AI.pdb",
+        "sha256": "056557616e9ee6b993ff14ccdc357eca7cc7034bfad515b277ecb4188a29717a"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.deps.json",
+        "sha256": "bb97debce548899f480095f1b2a7df0aabf11e7fba33856705ffe6f5dff11df8"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.dll",
+        "sha256": "903fdd6021af35a515a99011a75e65803402a955c940be3b4d9f44fce44177cc"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.pdb",
+        "sha256": "7d29b30625d1f15a905402787dea1cabbc100302bc31757fdff2beae990447c4"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.runtimeconfig.json",
+        "sha256": "79d12e54ac614d5fe8cdeb8849ab5f6568250bb7ac1c2647c2bce5876475f20e"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Core.dll",
+        "sha256": "bbd7a87a25a307398ce50393aa4b51250910f78e2392d55d8ed4a9ab4e9988d2"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Core.pdb",
+        "sha256": "d2bff500d10dbacc44590951f56afc08e840528d9d9edcfdff62debad06e7455"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Providers.dll",
+        "sha256": "d080c9d31c20c60f0267c92afe3f4257675ff5cc9a156916f5832a519d2cc3c4"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Providers.pdb",
+        "sha256": "3ace610e1f38ce573f4035b3386cdc714c2a589832e3e51a057c4a758fb67f1c"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Steps.dll",
+        "sha256": "37f31b720b90b9f64ee90b5a5224b5889e5aef0c28da70c8d6e55d061e337460"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Steps.pdb",
+        "sha256": "08b0e4cd3a84d69e1b7a3ac17c69c60ba33203a30ce1bc0abb031404f0807feb"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\System.CodeDom.dll",
+        "sha256": "427c87ad526d5719ae178663e192f602d0bf7dd17a65c4c06f7a9be424d88345"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\System.Management.dll",
+        "sha256": "8c4760f2f49d7af9dc1e7db81f86cbf460e22cfabfd870ae28853130f365606b"
+      }
+    ],
+    "graphDocumentsValidated": true,
+    "sourceUnchangedThrough": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+    "beforeLaunchRevalidationRequired": true
+  },
+  "runtime": {
+    "files": "fresh .dev/fission-handoff/attempt-* only",
+    "network": "leased own loopback only/exact PG Dockerexec, no realcloud/vendor/models",
+    "database": {
+      "containerId": "874f16ba79e58d1b115f3f896b647106566a0ea15277f4db0d519abb15c3f145",
+      "imageId": "sha256:73bedc9eaa0121b92b9b26bb52e5141b3f6f37479c7ef913c0160455763ca80a",
+      "scope": "new own orange_handoff_* tests DB; previous own snapshots/dumps preserved"
+    },
+    "dotnet": "existing installed official dotnet.exe, Root pin at handoff; no SDK install",
+    "media": "copy only already owned synthetic4sec video/WAV/PNG or create same tiny standard9 fixtures; no usermedia",
+    "models": 0
+  },
+  "sourceDraft": {
+    "path": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-handoff/attempt-1794257851103-29612/fission-handoff.DRAFT.json",
+    "sha256": "3d52ff68555ccf15692ccc113e028c9deec0568f3898f88585270173fc5d1739"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T06/U01 original source-based Studio handoff",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD metadata/resource-stopped pin+actualN5a only, then concrete4 TDD; no external key waits"
+}

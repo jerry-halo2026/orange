@@ -1,0 +1,264 @@
+{
+  "taskId": "T06.subset",
+  "parentTask": "T06",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-extension only necessary original frozen-output selection before execution, no new Job/Timeline/business protocol",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "45836eb256f4f55004618aae85bf7bfd272e3115"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/fission-admitted-subset",
+  "scope": "After backend per-output admission can execute only original frozen output indices in one worker; no reroll/whole-batch rejection/Count1 product restriction, no business grant. Current Node producer/catalog remain separate missing real chain.",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+    "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+    "workers/fission/src/Fission.Cli/Program.cs",
+    "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "gpu",
+      "value": "local-readonly-hardware-detection",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T06.prepare",
+        "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+            "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+            "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+            "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+            "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+            "sha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
+            "gitBlobSha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+            "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+            "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+            "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+            "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-subset-T06-review.json",
+          "sha256": "ab5b68fe4c63b8ca3bcc2f7ced5081c3e5f89f5984f3d5eff636e3fa98675a61",
+          "gitBlobSha256": "ab5b68fe4c63b8ca3bcc2f7ced5081c3e5f89f5984f3d5eff636e3fa98675a61"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+    "files": [
+      {
+        "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+        "sha256": "e00d92fbaf6e91046e4cd4d137980311194c21b6c87c6215b33a5b1c6c4998ab",
+        "gitBlobSha256": "e00d92fbaf6e91046e4cd4d137980311194c21b6c87c6215b33a5b1c6c4998ab"
+      },
+      {
+        "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+        "sha256": "42e236641cd753ad3c1d1fcfd1ce99696aa53123dfc8415582fdff3179ff92bb",
+        "gitBlobSha256": "42e236641cd753ad3c1d1fcfd1ce99696aa53123dfc8415582fdff3179ff92bb"
+      },
+      {
+        "path": "workers/fission/src/Fission.Cli/Program.cs",
+        "sha256": "d0a18ac9106a68c25a6fffc117fa5413f3a51aebb48ab4d966e51697f2782dfe",
+        "gitBlobSha256": "d0a18ac9106a68c25a6fffc117fa5413f3a51aebb48ab4d966e51697f2782dfe"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+        "sha256": "557c8bc534a837f347192a824b078112dd4d0b5e0571797144351499c65c7e9d",
+        "gitBlobSha256": "557c8bc534a837f347192a824b078112dd4d0b5e0571797144351499c65c7e9d"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+        "sha256": "f25468a2e30b8b495a7af65ca8cf4d5b8fb907122439b16e1ceee6031dbc8519",
+        "gitBlobSha256": "f25468a2e30b8b495a7af65ca8cf4d5b8fb907122439b16e1ceee6031dbc8519"
+      }
+    ],
+    "preservation": "old112 tests/API behavior retained; original run/prepare/whole execute path kept"
+  },
+  "requirements": [
+    "Keep ExecutePreparedAsync(FissionJob,FissionPreparedDecisions,CancellationToken) whole-plan behavior and original CLI run/prepare/execute default compatible. Add one overload with immutable original output-index set and one optional execute-prepared --outputs JSON integer array selector; original Job, full snapshot, Digest/JobSha/RuntimeSha/Index unchanged. Selector is NOT authorization.",
+    "At CLI and engine, before first source copy/reservation/hardware/codec, refuse empty/null explicit selector, duplicates, unknown/noninteger indices, and selector supplied to wrong mode. Preserve native zero-based actual Index and execution order; no renumber, randomPick or new seed. Missing option retains original full behavior.",
+    "Pin only actual selected output dependency closure (original sources, normalization, audio/text/shader/generated proof as actually referenced) plus fixed exact runtime tools, before use and held through true worker/process drain. No missing selected dependency guessed away. Changed unselected files must not falsely reject selected valid output; runtime/selected mutations still zero final work. Preserve prior hardware-before-runtime-pin P1 fix.",
+    "Only selected outputs may create/copy/adopt voices, Reserve/Confirm/Archive or change MaterialPool uses/cache. Shared existing/generated voice keys and original AudioUses semantics apply to actual selected executions; excluded duplicate outputs consume nothing. Generated native seal is provenance only, never material license. Report only executed outputs preserving actual indices, never manufacture excluded successes/failures.",
+    "Preserve original seconds/native IDs/clock intentions, final actual clock/FX outcome verification and existing source protection. Do not rewrite full snapshot or job.Count to pick subset, bake outputMP4 as editable input, treat indices/client approved as grant or add queue/framework/new DTO.",
+    "TDD original two allowed tests: CountN partial duplicate noncontiguous chosen indices, existing and generated shared voice/AudioUses, rejected index zero copy/reserve/codec before hardware, unchanged full snapshot digest/jobSha, selected dependency mutation refusal and unselected-only mutation no false block, EOF/cancel actual drain and original full/default regression. All duplicates means Node does not launch worker; this native API rejects empty, it does not fabricate admission.",
+    "Use existing approved original6graph SDK10.0.300/shim/16offlinefeed and original verified FFmpeg9 only. Own fresh .dev/fission-subset/attempt-* HOME/TMP/Nuget/cache/artifacts/inputs/work/out/config/logs; no prior artifact overwrite or default-profile paths. Exact new source/binary/PDB hashes captured before real test, no stale DLL as new source.",
+    "One real own tiny CPU integration package: prepare original Count3 then execute only two noncontiguous actual frozen indices with same Job/snapshot/digest, Threads1 UseNvencfalse, <=4sec each selected output (<=8sec total), actual exit+close0/probe/decode/sidecar/source unchanged and excluded output absent. Existing/generated positive/negative semantics covered in original Unit; no repeated old2media/112 unless affected regression, no model/TTS/realGPU stress/Edge/NodeHTTP/cloud/private media.",
+    "If exact closure or signature requires a sixth product source stop only that branch and report one forward amendment; do not edit frozen Core/Job outside5 or ignore a required dependency. Freeze source/raw/canonical/REDGREEN/actual process and latest candidate for nonauthor SPECQUALITY/freshN5a before sourcecommit; serial integration only."
+  ],
+  "runtime": {
+    "tooling": "existing original SDK10.0.300/shim/props/original6project graph/16offline-feed and original Node tools only; no newpackages/download/install/models",
+    "media": "one own Count3/selected2 package, each<=4sec total<=8sec CPU/Threads1/UseNvencfalse, original tools only;180sec per child20MiB logs",
+    "hardware": "Original CLI UseNvenc:false still calls HardwareDetector. Explicitly allow ONLY original bounded read-only C:/Windows/System32/nvidia-smi.exe --query-gpu=name,driver_version,vbios_version --format=csv,noheader; its original empty-args CUDA header query and memory.total csv query (15s each), standard ffmpeg -hide_banner -encoders (30s), WMI SELECT Name,NumberOfLogicalProcessors FROM Win32_Processor and SELECT TotalPhysicalMemory FROM Win32_ComputerSystem. Private hardware output retained/sanitized; never use foreign GPU process rows to kill/query other processes. No hardware encoding/gpu stress.",
+    "network": "none; no NodeHTTP/browser/GUI/auth/DB/cloud/model/private inputs"
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.c/T06 CountN partial admission native execution seam",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD five-source scope/input independent review, metadata and actualN5a; native managed tree fromverifieddev already atqualified458 clean"
+}

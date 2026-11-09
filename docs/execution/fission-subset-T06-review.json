@@ -1,0 +1,80 @@
+{
+  "taskId": "T06.prepare",
+  "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+      "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+      "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+      "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+      "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+      "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+      "sha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
+      "gitBlobSha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+      "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+      "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    }
+  ],
+  "scope": "exact native immutable prepared/file/Job/process inputs and five-file subset execution change; not business grant",
+  "priorEvidence": {
+    "sourceCommit": "fb2d2d26fd89a0ddb6da8e4edcc6fa850138c06a",
+    "finalSourceReviewSHA256": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a",
+    "latestOriginalRunReviewSHA256": "faa8efbc98c9be38d338f0894ad855596099d8ca3adbae566f6bedfba724df78",
+    "realFileSymlink": "32pass2ENV permission failures, not all green"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "evidence": {
+    "reviewKind": "non-author read-only bounded assignment and exact native consumed inputs; not implementation acceptance",
+    "assignmentSHA256": "01b397d64aa0af76706c0aea9f9cd09a76657b9d9818cf360dbf3f7ed0086cfb",
+    "worktree": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "actualHead": "45836eb256f4f55004618aae85bf7bfd272e3115",
+    "actualBranch": "codex/fission-admitted-subset",
+    "gitClean": true,
+    "immutableRawAndGitMatches": 12,
+    "editableBaselineRawAndGitMatches": 5,
+    "immutableAndWriteSetOverlap": [],
+    "activeCardsAtScopeReview": 0,
+    "nativeContracts": {
+      "wholeSignature": "ExecutePreparedAsync(FissionJob,FissionPreparedDecisions,CancellationToken) retained with full default; selector overload preserves original Index/JobSha/RuntimeSha/Digest and exact snapshot",
+      "selectedClosure": "Selected output Sources, Cuts.Normalization path/hash, original source voice+VoicePath/AudioItem, MusicPath, explicit TransitionIntent.Shader path/hash, GeneratedVoice path+proof path/hash; actual fixed tools always retained",
+      "subtitleAssociation": "The original PrepareOne/FindScriptText deterministically uses the bound Job.AudioDir parent/meta.json after trimming trailing directory separator. Include its existing prepared.Versions fact for selected subtitle dependency; do not filter only output.Sources and silently omit text. No sixth schema source required to derive this original path.",
+      "generatedProvenance": "Existing EngineJobFiles AdoptPreparedGeneratedAudio requires held original file identity/hash, prepared proof binding and HMAC seal. Retain original helper verification, including its private seal-key read protection; mere generated marker/hash is not license or grant.",
+      "preflightPitfall": "Original LoadCommand->Load and HoldPreparedRuntimeAsync/ExecutePreparedAsync call ValidateJobInputs whole-directory enumeration. The selected path must validate exact selected closure before hardware/copy while original full/default path remains unchanged; unselected changed/removed input must not cause false rejection.",
+      "selectionValidation": "explicit empty/null/duplicates/noninteger/unknown/wrongmode fail before any copy/adopt/reserve/hardware/codec; omitted selector keeps full behavior, preserved index order not selector order",
+      "effects": "Only selected actual executions may reserve/confirm/archive and consume AudioUses; excluded records no writes/uses/generated adoption. EOF/cancel holds pins through actual worker/process drain."
+    },
+    "scopeAndResources": "5 existing source/test files only; no Core/Job schema change/new framework/business grant. Fresh own namespace; one Count3 selected2 noncontiguous CPU tiny case <=4s each. No Edge/GUI/NodeHTTP/cloud/model; inherited browser metadata grants no browser execution.",
+    "priorEvidence": "f884 final7 source review and faa8 latest original-run review retained as earlier scopes; no re-review or rerun claimed",
+    "runtimeGate": "Root metadata/fresh N5a and actual current source/binary/PDB pins before TDD/media. If implementation proves a sixth source necessary, stop only that branch for a precise forward amendment.",
+    "reviewerProductTestsRun": 0,
+    "reviewerMediaBuildNetworkModelCalls": 0,
+    "sourceWrites": 0,
+    "priorPendingReviewSHA256": "9766b4b0edb9bc3a450786246041fd255bcfdee5f51cf4f673a8ae128be0af47"
+  }
+}

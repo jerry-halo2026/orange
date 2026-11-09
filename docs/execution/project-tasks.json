@@ -419,6 +419,18 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/desktop-business-bridge-assignment.json"
+    },
+    {
+      "id": "T06.subset",
+      "parentTask": "T06",
+      "status": "in_progress",
+      "scope": "After backend per-output admission can execute only original frozen output indices in one worker; no reroll/whole-batch rejection/Count1 product restriction, no business grant. Current Node producer/catalog remain separate missing real chain.",
+      "dependsOn": [
+        "T01",
+        "T06.prepare"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-subset-assignment.json"
     }
   ],
   "umbrella": [

@@ -102,3 +102,63 @@ test('desktop controlled reservation admits only its private scope and validates
  held.close();await assert.rejects(held.run(()=>true,()=>{}),{code:'control-invalid'});
  await assert.rejects(guard.withNativeAccess(r,()=>{}),{code:'control-required'});
 });
+// T01rev24: each default-root check runs in an independent Node process. A trusted
+// fixture denies real OS-home coordination writes BEFORE calling the actual fs.
+import { resolveIsolationProfile as guardIsolationProfile, isolationEnvironment as guardIsolationEnvironment } from '../../src/development-isolation.mjs';
+const isolatedGuardRoot = (()=>{
+ const selected=process.env.ORANGE_GUARD_TEST_ROOT;
+ if(selected){if(!/([\\/])\.dev\1native-guard-isolation\1attempt-\d+-\d+([\\/]|$)/.test(selected)||resolve(selected)!==selected)throw Error('explicit owned guard test root required');mkdirSync(selected,{recursive:true});return selected;}
+ const family=resolve('.dev/native-guard-isolation');mkdirSync(family,{recursive:true});const fresh=join(family,`attempt-${Date.now()}-${process.pid}`);mkdirSync(fresh);return fresh;
+})();
+async function isolatedRootCase(kind){
+ const root=mkdtempSync(join(isolatedGuardRoot,'case-'));const scratch=join(root,'scratch');mkdirSync(scratch);
+ const baseRoot=join(root,'profiles');
+ const profile=id=>guardIsolationProfile({baseRoot,instanceId:'guard-isolation',taskId:'T01_GUARD',attemptId:id,ports:{studio:18485,film:18486}},{approvedBaseRoot:baseRoot});
+ const first=profile('first'),second=profile('second');for(const p of [first,second])for(const dir of Object.values(p.paths))mkdirSync(dir,{recursive:true});
+ const explicit=join(root,'explicit-coord'),target=join(root,'target');mkdirSync(target);
+ const env={...process.env};for(const key of Object.keys(env))if(key.startsWith('OPENFILM_'))delete env[key];
+ for(const key of ['HOME','USERPROFILE','APPDATA','LOCALAPPDATA','TEMP','TMP','TMPDIR','XDG_CONFIG_HOME']){env[key]=join(scratch,key);mkdirSync(env[key]);}
+ const source=`
+ import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {syncBuiltinESMExports} from 'node:module';
+ const kind=${JSON.stringify(kind)},root=${JSON.stringify(root)},target=${JSON.stringify(target)},explicit=${JSON.stringify(explicit)};
+ const envA=${JSON.stringify(guardIsolationEnvironment(first))},envB=${JSON.stringify(guardIsolationEnvironment(second))};
+ const ownA=${JSON.stringify(join(first.paths.home,'.orange-coordination'))},ownB=${JSON.stringify(join(second.paths.home,'.orange-coordination'))};
+ const realRoot=path.join(os.userInfo().homedir,'.openfilm-control-coordination');
+ const fold=p=>process.platform==='win32'?path.resolve(String(p)).toLowerCase():path.resolve(String(p));const under=(p,r)=>fold(p)===fold(r)||fold(p).startsWith(fold(r)+path.sep);
+ let realRootObserved=0,blockedWrites=0,passed=false;const mutations=[];process.once('exit',()=>fs.writeSync(1,JSON.stringify({kind,realRootObserved,blockedWrites,externalWritesSucceeded:0,mutations,passed})));
+ const originalStat=fs.lstatSync;fs.lstatSync=function(p,...args){if(typeof p==='string'&&under(p,realRoot))realRootObserved++;return originalStat.call(this,p,...args);};
+ for(const [name,indexes] of [['mkdirSync',[0]],['openSync',[0]],['writeFileSync',[0]],['renameSync',[0,1]],['unlinkSync',[0]],['rmSync',[0]],['appendFileSync',[0]]]){
+  const original=fs[name];fs[name]=function(...args){for(const i of indexes){const p=args[i];if(typeof p!=='string')continue;if(under(p,realRoot)||!under(p,root)){blockedWrites++;throw Object.assign(Error('fixture blocked external write before side effect'),{code:'EACCES'});}mutations.push({op:name,relative:path.relative(root,p)});}return original.apply(this,args);};
+ }
+ syncBuiltinESMExports();
+ const {createProjectControlGuard}=await import(${JSON.stringify(new URL('./project-control-guard.mjs',import.meta.url).href)});
+ const resources={homes:[],roots:[],targets:[target]};
+ const apply=env=>{for(const key of Object.keys(process.env))if(key.startsWith('OPENFILM_'))delete process.env[key];Object.assign(process.env,env);};
+ const registry=dir=>JSON.parse(fs.readFileSync(path.join(dir,'registry.json'),'utf8'));
+ if(kind==='default-profile'){
+  apply(envA);const guard=createProjectControlGuard();let entered=false;
+  await guard.withNativeAccess(resources,async lease=>{entered=true;assert.equal(registry(ownA).readers.length,1);await lease.include([path.join(target,'tail')]);});
+  assert.equal(entered,true);assert.deepEqual(registry(ownA),{version:1,readers:[],reservations:[]});assert.equal(realRootObserved,0);assert.equal(blockedWrites,0);
+ }else if(kind==='explicit-priority'){
+  apply({OPENFILM_ISOLATION_PROFILE:'malformed',OPENFILM_ISOLATION_ROOT:root});const guard=createProjectControlGuard({coordinationRoot:explicit});assert.equal(fs.existsSync(explicit),false);
+  await guard.withNativeAccess(resources,()=>{});assert.deepEqual(registry(explicit),{version:1,readers:[],reservations:[]});assert.equal(realRootObserved,0);assert.equal(blockedWrites,0);
+ }else if(kind==='ordinary-no-profile'){
+  apply({});const guard=createProjectControlGuard();assert.equal(realRootObserved,0);await assert.rejects(guard.withNativeAccess(resources,()=>{}),{code:'control-invalid'});assert.ok(realRootObserved>0);assert.ok(blockedWrites>0);
+ }else if(kind==='malformed-profile'){
+  apply({OPENFILM_ISOLATION_PROFILE:'malformed',OPENFILM_ISOLATION_ROOT:root});const guard=createProjectControlGuard();assert.equal(mutations.length,0);
+  await assert.rejects(guard.withNativeAccess(resources,()=>{}),{code:'control-invalid'});assert.equal(realRootObserved,0);assert.equal(blockedWrites,0);assert.equal(mutations.length,0);
+ }else if(kind==='reader-bound'){
+  apply(envA);const guard=createProjectControlGuard();await guard.withNativeAccess(resources,async lease=>{assert.equal(registry(ownA).readers.length,1);apply(envB);await lease.include([path.join(target,'included')]);assert.equal(registry(ownA).readers.length,1);assert.equal(fs.existsSync(ownB),false);});
+  assert.equal(registry(ownA).readers.length,0);await guard.withNativeAccess(resources,()=>{});assert.equal(fs.existsSync(ownB),false);assert.equal(realRootObserved,0);assert.equal(blockedWrites,0);
+ }else if(kind==='reservation-bound'){
+  apply(envA);const guard=createProjectControlGuard(),held=await guard.acquireControlledReservation(resources);assert.equal(registry(ownA).reservations.length,1);apply(envB);held.close();assert.equal(registry(ownA).reservations.length,0);assert.equal(fs.existsSync(ownB),false);assert.equal(realRootObserved,0);assert.equal(blockedWrites,0);
+ }else throw Error('unknown fixture kind');
+ passed=true;
+ `;
+ const child=spawn(process.execPath,['--input-type=module','-e',source],{cwd:scratch,env,windowsHide:true,stdio:['ignore','pipe','pipe']});let stdout='',stderr='',exit;
+ const timer=setTimeout(()=>child.kill(),10000);child.stdout.on('data',d=>stdout+=d);child.stderr.on('data',d=>stderr+=d);child.once('exit',(code,signal)=>exit={code,signal});
+ await new Promise((done,reject)=>{child.once('error',reject);child.once('close',(code,signal)=>{clearTimeout(timer);assert.equal(code,exit.code);assert.equal(signal,exit.signal);done();});});
+ writeFileSync(join(root,'child-source.mjs'),source,{flag:'wx'});writeFileSync(join(root,'stdout.json'),stdout,{flag:'wx'});writeFileSync(join(root,'stderr.log'),stderr,{flag:'wx'});writeFileSync(join(root,'process.json'),JSON.stringify({pid:child.pid,exit,actualClose:true}),{flag:'wx'});
+ assert.equal(exit.code,0,stderr);assert.equal(exit.signal,null);assert.equal(JSON.parse(stdout).passed,true);
+}
+for(const kind of ['default-profile','explicit-priority','ordinary-no-profile','malformed-profile','reader-bound','reservation-bound'])test(`isolated coordination ${kind} keeps actual registry in its bound original namespace`,()=>isolatedRootCase(kind));

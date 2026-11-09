@@ -4,6 +4,7 @@ import { closeSync, lstatSync, mkdirSync, openSync, readFileSync, realpathSync, 
 import { userInfo } from 'node:os';
 import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { types } from 'node:util';
+import { readIsolationProfile } from '../../src/development-isolation.mjs';
 
 const brands = new WeakSet();
 const active = new AsyncLocalStorage();
@@ -91,8 +92,16 @@ export function createProjectControlGuard(options = {}) {
  const desc = Object.getOwnPropertyDescriptors(options);
  if (Reflect.ownKeys(desc).some(k => k !== 'coordinationRoot') || (desc.coordinationRoot && !('value' in desc.coordinationRoot))) throw controlError();
  const explicit = desc.coordinationRoot ? pathValue(desc.coordinationRoot.value) : null;
- // No filesystem access until acquisition. Environment HOME never selects this namespace.
- const root = () => explicit ?? join(userInfo().homedir, '.openfilm-control-coordination');
+ // Resolve lazily at first acquisition, then keep this guard's registry stable
+ // through include/release and later acquisitions, even when environment changes.
+ // Plain HOME is not authority: only a validated explicit native profile is used.
+ let boundRoot = explicit;
+ const root = () => {
+  if (boundRoot !== null) return boundRoot;
+  const profile = readIsolationProfile(); // Invalid opt-in fails closed; never fall back.
+  boundRoot = pathValue(profile ? join(profile.paths.home, '.orange-coordination') : join(userInfo().homedir, '.openfilm-control-coordination'));
+  return boundRoot;
+ };
  // Failed releases remain reachable by this guard only. A later operation retries these exact owned records.
  const pendingReleases = new Map();
  const pause = new Int32Array(new SharedArrayBuffer(4));

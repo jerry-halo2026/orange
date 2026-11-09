@@ -306,6 +306,20 @@
       "classification": "native-reuse",
       "plannedWrite": "one new native characterization test file; production/oldtests/07/CLI/API unchanged",
       "modelASRCallsAllowed": 0
+    },
+    {
+      "id": "T06.a",
+      "parentTask": "T06",
+      "scope": "Actual original Fission edit-decision record -> internal native editable draft/round-trip. Part of T06, not full group-admitted FrozenPlan, media/equivalence or exported-user-ready handoff.",
+      "status": "in_progress",
+      "dependsOn": [
+        "T01",
+        "T05.a",
+        "T02.a"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-handoff-assignment.json",
+      "fullParentDependenciesRetained": true
     }
   ],
   "umbrella": [

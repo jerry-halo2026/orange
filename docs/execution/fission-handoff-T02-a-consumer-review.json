@@ -1,0 +1,65 @@
+{
+  "taskId": "T02.a",
+  "commit": "c8a38622b84cf028a97b4648e037135e98815343",
+  "authorAgent": "/root",
+  "attribution": "Root assembled qualified native-reuse baseline; original source authors/commits and producer review receipts remain unchanged, not new source authorship",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+      "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+      "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.mjs",
+      "sha256": "0c2573e02ed942608edbeaff41cb896f5f7cc015b94993a45b3a9caca21c5636",
+      "gitBlobSha256": "0c2573e02ed942608edbeaff41cb896f5f7cc015b94993a45b3a9caca21c5636"
+    },
+    {
+      "path": "packages/openfilm/studio/server/film.mjs",
+      "sha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+      "gitBlobSha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29"
+    },
+    {
+      "path": "packages/openfilm/src/film-doc.mjs",
+      "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+      "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+    },
+    {
+      "path": "packages/openfilm/src/captions.mjs",
+      "sha256": "45a732fbbe386d6113e2ec149d368d6a9c9af4dd23d4b55d8bda50dc45973595",
+      "gitBlobSha256": "45a732fbbe386d6113e2ec149d368d6a9c9af4dd23d4b55d8bda50dc45973595"
+    },
+    {
+      "path": "packages/openfilm/studio/server/ops.mjs",
+      "sha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0",
+      "gitBlobSha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0"
+    },
+    {
+      "path": "packages/openfilm/studio/server/history.mjs",
+      "sha256": "2fa9cfa10579518574520341bd8217853f3a7e11cb973f280766c7ad944ff620",
+      "gitBlobSha256": "2fa9cfa10579518574520341bd8217853f3a7e11cb973f280766c7ad944ff620"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/src/film-doc.test.mjs",
+      "sha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94",
+      "gitBlobSha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94"
+    },
+    {
+      "path": "packages/openfilm/src/captions.test.mjs",
+      "sha256": "dbcbdb6c1b6c289614cbbf308f3d4069cf5e67d80ff29d3452c3e7ad4dab149e",
+      "gitBlobSha256": "dbcbdb6c1b6c289614cbbf308f3d4069cf5e67d80ff29d3452c3e7ad4dab149e"
+    }
+  ],
+  "scope": "Only actual consumer subset of existing original modules, no fullAuth/group/media/pilot acceptance"
+}

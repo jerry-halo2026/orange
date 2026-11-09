@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-09",
+  "reviewerAgent": "/root/integration_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "78b0ca3b612e76d9ea802966a48bc092a79c9dc6e5323a26ced4c3362c66a436",
+  "inputProofs": [
+    {
+      "path": "docs/execution/fission-handoff-T01-consumer-review.json",
+      "sha256": "b9548a0808895e2ef218559083282d6ffb348f51d756bec35d44a5b794106768"
+    },
+    {
+      "path": "docs/execution/fission-handoff-T05-a-consumer-review.json",
+      "sha256": "ff59b680de6d18bb2edd2747a56ce94f16a83a6e7cb9e72273069aa1193dbea8"
+    },
+    {
+      "path": "docs/execution/fission-handoff-T02-a-consumer-review.json",
+      "sha256": "7b09173d78ab96ee8508f3306fc245ff826c53498677b360a2c84b4acc5aff2b"
+    }
+  ],
+  "registrySnapshotSHA256": "0373df667eea130464504feb8d8a565c74df3b29dc17234f4ebc89e9138226b3",
+  "scope": "actual Fission decision record to internal isolated native editable draft only; not fullT06/E03/E04/groupadmission/media/equivalence or exported-user-ready",
+  "conditions": "Only7 original Fission/Studio files, no second mutabletimeline/newapp. source+record actual values; original IDs/seconds/Job preserved. Internal profile only, no user recent/default export; blocking flags cannot be JSON overridden. Actual server outlet gate later serial shared-writer integration before user exposure. Fresh managed branch from actual dev plus FF, existing scoped N5a, real RED/GREEN, preserved originals, nonauthor source/result before commit."
+}

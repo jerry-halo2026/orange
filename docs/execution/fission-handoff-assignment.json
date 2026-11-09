@@ -1,0 +1,303 @@
+{
+  "taskId": "T06.a",
+  "assignmentRevision": 1,
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "existing inherited runtime not exposed/attested, no override",
+  "classification": "native-extension of original Fission decisions and native-reuse original Studio import/edit",
+  "status": "active",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "c8a38622b84cf028a97b4648e037135e98815343"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/fission-studio-handoff",
+  "scope": "Actual original Fission edit-decision record -> internal native editable draft/round-trip. Part of T06, not full group-admitted FrozenPlan, media/equivalence or exported-user-ready handoff.",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+    "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+    "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+    "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+    "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+    "packages/openfilm/studio/server/fission-import.mjs",
+    "packages/openfilm/studio/server/fission-import.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/login-chain-assignment.json",
+        "assignmentRevision": 2,
+        "sha256": "69436cb84d7bf2a1e477506f6368bf8f06eabc1f4d0e7e86ad42daa99928953f"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "c8a38622b84cf028a97b4648e037135e98815343",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-handoff-T01-consumer-review.json",
+          "sha256": "b9548a0808895e2ef218559083282d6ffb348f51d756bec35d44a5b794106768",
+          "gitBlobSha256": "b9548a0808895e2ef218559083282d6ffb348f51d756bec35d44a5b794106768"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "c8a38622b84cf028a97b4648e037135e98815343",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EnginePaths.cs",
+            "sha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff",
+            "gitBlobSha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+            "sha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+            "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+            "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+            "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+            "sha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28",
+            "gitBlobSha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28"
+          },
+          {
+            "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+            "sha256": "85f7b946377ba40d9dc46d9c62af1911fe1372d165326d119b98cb0c7cae4cde",
+            "gitBlobSha256": "85f7b946377ba40d9dc46d9c62af1911fe1372d165326d119b98cb0c7cae4cde"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+            "sha256": "c8697ca60bd22630c63640f9b8694107754588903811a6ad355c661b6994460d",
+            "gitBlobSha256": "dc0d303cb15c171cba74b9d52d394481d0d92f8bd9cc73cc662d3f3e7ad9bd95"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs",
+            "sha256": "12558c0e6aad6b8b28ed11a4b3d40b2405fdb95aba0d16ac9712756ed8a37d77",
+            "gitBlobSha256": "12558c0e6aad6b8b28ed11a4b3d40b2405fdb95aba0d16ac9712756ed8a37d77"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+            "sha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5",
+            "gitBlobSha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+            "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+            "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-handoff-T05-a-consumer-review.json",
+          "sha256": "ff59b680de6d18bb2edd2747a56ce94f16a83a6e7cb9e72273069aa1193dbea8",
+          "gitBlobSha256": "ff59b680de6d18bb2edd2747a56ce94f16a83a6e7cb9e72273069aa1193dbea8"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "c8a38622b84cf028a97b4648e037135e98815343",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+            "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+            "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.mjs",
+            "sha256": "0c2573e02ed942608edbeaff41cb896f5f7cc015b94993a45b3a9caca21c5636",
+            "gitBlobSha256": "0c2573e02ed942608edbeaff41cb896f5f7cc015b94993a45b3a9caca21c5636"
+          },
+          {
+            "path": "packages/openfilm/studio/server/film.mjs",
+            "sha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+            "gitBlobSha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29"
+          },
+          {
+            "path": "packages/openfilm/src/film-doc.mjs",
+            "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+            "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+          },
+          {
+            "path": "packages/openfilm/src/captions.mjs",
+            "sha256": "45a732fbbe386d6113e2ec149d368d6a9c9af4dd23d4b55d8bda50dc45973595",
+            "gitBlobSha256": "45a732fbbe386d6113e2ec149d368d6a9c9af4dd23d4b55d8bda50dc45973595"
+          },
+          {
+            "path": "packages/openfilm/studio/server/ops.mjs",
+            "sha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0",
+            "gitBlobSha256": "1a0ef83ceb8f2daa020d8c9486d1e1bf1240d33be29feeff25dbbd32489124d0"
+          },
+          {
+            "path": "packages/openfilm/studio/server/history.mjs",
+            "sha256": "2fa9cfa10579518574520341bd8217853f3a7e11cb973f280766c7ad944ff620",
+            "gitBlobSha256": "2fa9cfa10579518574520341bd8217853f3a7e11cb973f280766c7ad944ff620"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/src/film-doc.test.mjs",
+            "sha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94",
+            "gitBlobSha256": "dd92f8eae5add57b8d39c934fd15db75ee800a511347ee055c0da37a5aa3df94"
+          },
+          {
+            "path": "packages/openfilm/src/captions.test.mjs",
+            "sha256": "dbcbdb6c1b6c289614cbbf308f3d4069cf5e67d80ff29d3452c3e7ad4dab149e",
+            "gitBlobSha256": "dbcbdb6c1b6c289614cbbf308f3d4069cf5e67d80ff29d3452c3e7ad4dab149e"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-handoff-T02-a-consumer-review.json",
+          "sha256": "7b09173d78ab96ee8508f3306fc245ff826c53498677b360a2c84b4acc5aff2b",
+          "gitBlobSha256": "7b09173d78ab96ee8508f3306fc245ff826c53498677b360a2c84b4acc5aff2b"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "c8a38622b84cf028a97b4648e037135e98815343",
+    "files": [
+      {
+        "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+        "sha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb",
+        "gitBlobSha256": "22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb"
+      },
+      {
+        "path": "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+        "sha256": "688e49c4908bd95bb239f4afadbaefcff6bb8a433bfca77175e15dc0bb29369c",
+        "gitBlobSha256": "688e49c4908bd95bb239f4afadbaefcff6bb8a433bfca77175e15dc0bb29369c"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+        "sha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65",
+        "gitBlobSha256": "9712689a974a7257064fdbcce439b228c2ee8b967e2fa9b65238074445c01b65"
+      }
+    ],
+    "newFiles": [
+      "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+      "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+      "packages/openfilm/studio/server/fission-import.mjs",
+      "packages/openfilm/studio/server/fission-import.test.mjs"
+    ],
+    "originalCoreLogicExactBytePrefix": true
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T06",
+  "requirements": [
+    "C# is sole immutable decision-record producer: camelCase schemaVersion1, job/output index, stage nativew/h, fps, original sources+content SHA+kind/duration, ordered visual source-index/role/group/source seconds/speed/hflip/actual image duration, actual alignment, original voice/BGM source/gain/loop, actual loudnorm -14/-1.5/11, selected transition shader/hash/tail/outcome including fallback, same shared ASS/VTT cues/style/approximation provenance. No source from seed, report or MP4 inference; no parallel mutable timeline.",
+    "Capture at original actual choices and make codec execution consume those same record values. Preserve original 5-positional OutputResult/deconstruct; optional init-only EditPlanPath may point one unique owned sidecar. Plan write failure cannot report successful handoff. Control source/staged voice mapping before ArchiveAudio; references must not point at consumed/deleted temporary originals.",
+    "SubtitlePlanner.BuildCues must be the common original ASS and plan timing source; append tests without altering original CoreLogic prefix. Sentence-weighted timing is not ASR; no guessed word ends. Preserve old Job fields, original pool/source behavior, original mutable Studio film as sole edit authority.",
+    "Trusted internal Node importer validates exact schema, finite/positive bounds, supported native mapping and all actual source bytes BEFORE native creation. Trusted caller sourceRoots are not JSON fields; reject unapproved/out-of-scope/linked/changed source references and hashes. Stream large hashes, no secret/raw path output.",
+    "Use actual original createProject -> bringIn(copy)/importFile VTT -> editProjectFilm native stage/insert/keyframes/captions -> readProjectFilm; source IDs/time/FilmDoc untouched. Existing Op/Undo used. No custom HTML editor/Job protocol/DTO clone or MP4-as-editable.",
+    "Explicit staged boundary: all currently postmix-loudnorm/media-equivalence-unverified records remain exportReady:false and equivalenceVerified:false; recompute blockers, never trust JSON true. Keep actual supported/unsupported effect details, do not omit/bake/turn off for green. This is an INTERNAL ISOLATED DRAFT only, NOT visible in any user recent/HOME/default export route until original server export gate is actually integrated serially after Auth writer release.",
+    "No user-facing route or export-ready capability in this package. Persist original decision sidecar/blocking metadata in internal native project. Failed import preserves files and diagnostic state, never success. Subsequent work must implement missing native effect/audio equivalence and actual server出口gate before goal acceptance; no scope reduction."
+  ],
+  "runtimeNamespaces": {
+    "family": ".dev/fission-studio-handoff",
+    "attemptRule": "Only fresh attempt-<timestamp>-<pid>, all new packages/build/tmp/input/fixture/native-profile/projects/Git metadata/logs/output under that attempt; internal native profile separate from all user HOME/recent. Original N5a immutable test namespace is coordinator-owned.",
+    "preserve": "All old files/dirs/links and prior frozen candidates retained. No cleanup/overwrite. Existing SDK10.0.300 inventory/original16offline-feed and existing43+Zod tools are readonly inputs."
+  },
+  "validation": {
+    "tdd": "Actual target behavior RED then minimal GREEN; API capability failures/compile errors separately recorded, not behavioral RED.",
+    "dotnet": "Original six-project Unit/Core/Steps/Providers/CLI/AI graph; same original props/shim SDK10.0.300 + exact16offlinepackages, new own artifacts/config/HOME/ProgramData/packages; no installer/network/private engine. New plan/appendcue cases plus existing SubtitlePlanner/AlignPlanner/MaterialPool/CLI cases. Original EngineJobFiles34 affected regression required; two local realfilelink permission failures remain ENV not skip/pass, actual new-candidate hosted closure later.",
+    "node": "Real C# RunAsync with explicitly Fake codecs writes real owned decision/sample and source bytes; Node consumes EXACT output -> native create/copy/edit/read/reedit/Undo. This is real file/native edit IO but not media/rendering/GUI/Auth/cloud. Keep producer-vs-consumer sample SHA and independent fixed expected timeline assertions.",
+    "git": "If original native history requires local Git, only bounded direct own children and new internal native project, clean Git config env/own empty HOME, no remotes/credentials/global config. Do not stub entire editor or use fake generated-success proof.",
+    "boundary": "Require actual isolation profile and internal draft target; no user HOME/recent/production or native server launch. No browser/codec/FFmpeg/ffprobe/.NET real media/hardware/models/remote cloud/production/owner claims.",
+    "final": "Relevant original Node tests/typecheck/syntax and original .NET build; snapshots/raw-canonical records/frozen source+result, nonauthor SPEC/QUALITY before commit. No re-running unaffected historical matrices or altering CI/lock/producer fixtures for green."
+  },
+  "forbidden": [
+    "source outside7files",
+    "root package/lock/CI/07/Job format/server/main/UI changes",
+    "actual codecs/media/browser/GPU/provider/model/network/private data/production",
+    "publishing drafts into real user history or exporting blocked plans",
+    "main/dev/push/tag/release/fullT06/pilot claim"
+  ],
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD pending independent exact card/input and registry review, immutable metadata, managed freshdev branch and scoped actual N5a"
+}

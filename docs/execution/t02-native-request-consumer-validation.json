@@ -1,0 +1,191 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 22,
+  "authorAgent": "/root",
+  "modelAndEffort": "runtime unexposed/unattested",
+  "status": "approved_actual_independent_round2_source_result_review",
+  "approvalCommit": "7b3eaa042fd92cb48fa92b18e367164671cfa6ea",
+  "sourceCommit": null,
+  "candidateId": "015c651c9a2b4882520ced46a80916a1df7bb3f932513630a7a139d3794e935d",
+  "sources": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "f965897ca11f6203cfd2c85b6001ccc4ab4a4d4ba2f6ca1d3a45c9681ca70acc",
+      "gitBlobSha256": "f965897ca11f6203cfd2c85b6001ccc4ab4a4d4ba2f6ca1d3a45c9681ca70acc"
+    },
+    {
+      "path": "packages/openfilm/studio/server/server-request-drain.test.mjs",
+      "sha256": "764cdbe88154200a631b62670e5966f820d9343f644b1f2ff3aec0d3ce2221aa",
+      "gitBlobSha256": "764cdbe88154200a631b62670e5966f820d9343f644b1f2ff3aec0d3ce2221aa"
+    }
+  ],
+  "scope": "only per-instance entered editor HTTP route Promise and error bookkeeping; real own native empty projects/stage merge, original keep test provider realFS bytes and original atomic replacement. NOT native Git history/detached streams/WS/pages/render descendants/desktop parent/global shared Worker/owner N1",
+  "actualTDD": {
+    "core": {
+      "RED": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "GREEN": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "actualFailure": "close settled before original native HTTP/FS tails; both sockets/ports gone, two real keep byte writes gated before native atomic replacements"
+    },
+    "callbackFailures": {
+      "RED": {
+        "tests": 3,
+        "pass": 1,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "GREEN": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "reasons": [
+        "Error identity",
+        "null rejection retained"
+      ]
+    },
+    "compatibility": "2 first-GREEN actual HttpError503 and native quit, not fabricated defect RED",
+    "typeFailure": {
+      "exitCode": 2,
+      "diagnostics": 1,
+      "code": "TS2810 private completion Promise inferred unknown; fixed only JSDoc Promise<void>, no config/any/strictness changes"
+    }
+  },
+  "finalConsumer": {
+    "tests": 6,
+    "pass": 6,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalAutoWatchConsumerRegression": {
+    "tests": 26,
+    "pass": 26,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalServerTypes": {
+    "exitCode": 0,
+    "diagnostics": 0
+  },
+  "syntaxExit0": 2,
+  "preservation": {
+    "old29379Records": true,
+    "immutable31Plus2Proofs": true,
+    "planRegistryCanonicalSnapshots": true,
+    "Core106OrdinaryDirectory": true,
+    "old43Links1311PinsAndZod840": true,
+    "oldBranches": true,
+    "primaryDev41bCleanUnchanged": true,
+    "sourceWriteSetExactly2": true,
+    "indexEmpty": true
+  },
+  "leasedPorts": [
+    18475,
+    18476,
+    18483,
+    18484
+  ],
+  "bothFamiliesBindClose": true,
+  "admissionBeforeAfter": {
+    "revision": 22,
+    "actualPureCasesEach": [
+      81,
+      3
+    ],
+    "beforeSourceWriter": true,
+    "afterSource": true,
+    "checkerSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+  },
+  "runtimeEnvironment": "newfile clean7 unchanged after onlyOPENFILMprofile; original frozen regression native profile mappings preserved/not falsely same7inside",
+  "rawResultSHA256": "578180de71cd5e4aadca2683288b02577acba9fa9a346a5a62532ed810278127",
+  "rawManifestSHA256": "28979e345ea94a735d1862010f284c0fde7e6f86a63d55579b34a41494f33fc5",
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "nativeAPIsUIIOCLIFormatUnchanged": true,
+  "noNewProductionSeamOrPublicGetter": true,
+  "noGlobalWorkerStop": true,
+  "nativeGitHistoryNotTestedOrInvoked": true,
+  "ciServerPinNowStale": true,
+  "sharedCIUpdateAndLatestAffectedIntegrationStillRequired": true,
+  "devIntegrated": false,
+  "cloudPush": false,
+  "productModelCalls": 0,
+  "approvedProductModelBudgetCNY": 50,
+  "wholeServerRetirement": false,
+  "ownerN1": false,
+  "realAuth": false,
+  "actualNativeDesktopE2E": false,
+  "realMedia": false,
+  "installerRecovery": false,
+  "macArm64Hardware": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "round1Review": {
+    "path": "docs/execution/t02-native-request-consumer-source-review-round1.json",
+    "sha256": "2a091e3eef281e095e79b569093c38430b8e39b23987d74adaf6a48720270e77",
+    "result": "original request ownership/falsey/FS verified; default quit P2 needs_fix, old220 retained"
+  },
+  "round2DefaultQuit": {
+    "finding": "R22-default-quit-rejection",
+    "RED": {
+      "tests": 6,
+      "pass": 5,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "GREEN": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "actualFailureType": "unhandledRejection",
+    "redPointer": {
+      "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\studio-request-drain\\runs\\attempt-1794200993778-33420\\result.json",
+      "sha256": "acbedfe37182333251742d06b2e5b619da8bee9591113771acf2caff7a1a4776",
+      "out": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\studio-request-drain\\runs\\attempt-1794200993778-33420"
+    },
+    "greenPointer": {
+      "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\studio-request-drain\\runs\\attempt-1794201040633-44380\\result.json",
+      "sha256": "028a0ea87f228e594660bf24d2920c5dc4df93f947c9e0ec947e1fcee17f5c35",
+      "out": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\studio-request-drain\\runs\\attempt-1794201040633-44380"
+    },
+    "mechanism": "original default API quit, existingAuto factory delegates actual native.stop then reports controlled Error; no global swallow listener",
+    "fix": "default fire-and-forget observes stable closing rejection and generic diagnostic only; original closing identity/state/reason preserved",
+    "nativeKeepRejectNotFalselyClaimedPropagated": true,
+    "oldCandidate220AndReviewPreserved": true
+  },
+  "privateGeneratorCorrection": "private audit generator exact quoted suffix assertion failed before runtime; corrected actual unique token, no product source/test changes or productRED claim"
+}

@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 22,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "candidateId": "c8e702180e24baa8d52d92d9cf91d5d74bca9c8c6f39b7a55076f7ceb07c8fe7",
+  "manifestSHA256": "c3994827acf302d4b21662cb1156b9f34dcf4df08d884b22a531a5473d4e214a",
+  "spec": "needs_fix",
+  "quality": "needs_fix",
+  "P1": 0,
+  "P2": 1,
+  "finding": {
+    "id": "R22-default-quit-rejection",
+    "path": "packages/openfilm/studio/server/server.mjs",
+    "issue": "default native /api/quit fire-and-forget close has no rejection observer; entered unexpected request failures can reject stable closing, custom onQuit test only did not cover default caller",
+    "required": "true default native quit failure RED/GREEN, keep stable close identity/rejection/originalreason; no unhandled rejection or success coercion"
+  },
+  "otherFindings": "per-instance pre-registration/fence/snapshot/allstop initiation/falsey state and actual5+original26/types0/syntax2 verified; no other P1/P2",
+  "evidenceVerified": {
+    "packageFiles": 220,
+    "immutable31Plus2": true,
+    "Core106Tools1311Zod840Links43": true,
+    "old29379": true,
+    "prePostN5a22": true,
+    "typeTS2810HistoryRetained": true,
+    "compatibilityNotFalselyRED": true
+  },
+  "proposedScenarioWasNotExecutedByReviewer": true,
+  "rootCausalClarification": "native personEdits.keepAside catches keep-provider rejection, so no claim that keep reject itself propagates to closing; actual next RED will use existing Auto factory delegating real native stop then reporting an explicit controlled failure, defaultquit unchanged",
+  "sourceCommitApproved": false,
+  "receiptActivationApproved": false,
+  "cloudPush": false,
+  "devIntegrated": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

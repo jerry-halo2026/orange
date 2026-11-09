@@ -16,7 +16,9 @@
       "currentEngineeringSlice": "Source33c87 onefileflag aligned withinunchangedCI180s, Root34local178b880/fourtype0 actualpass+nonauthorapproved0P1P2; no newNode22hosted51/161, deeperfilelatencyunknown/no dev/PG.",
       "latestIntegratedEvidence": "docs/execution/t02-fetch-zod-latest-integration-validation.json",
       "latestHostedEvidence": "docs/execution/t01-native-worker-observable-runtime-validation.json",
-      "deliverySlice": "Latest C21 local native880+actualGitLF Fetch64=944, original17 resource-adapted+separate1guard, four originaltypes0; actual nonauthor SPECQUALITY0P1P2/receipt24f09571. CI35 hosted Native161+companion353 remains historical da865 scope, NOT newFetch/owner/fullclient/pilot; no dev integration."
+      "deliverySlice": "Latest C21 local native880+actualGitLF Fetch64=944, original17 resource-adapted+separate1guard, four originaltypes0; actual nonauthor SPECQUALITY0P1P2/receipt24f09571. CI35 hosted Native161+companion353 remains historical da865 scope, NOT newFetch/owner/fullclient/pilot; no dev integration.",
+      "currentCIProducerInputs": "C19 d70ff35 +C22 f723045 reviewed; oldNativeCI server pin is now stale, no current hosted pass",
+      "nextCIWriter": "/root/ci_fetch_readonly_design C23 proposed, no source/runtime before independentcard/immutable/native/N5a; no cloud permission"
     },
     {
       "id": "T03",
@@ -158,7 +160,10 @@
       "currentFetchProducerSource": "d70ff3567f1693787c12ad0b75bc1bda8d549dac",
       "currentFetchSourceReview": "docs/execution/t02-fetch-review-fixes-source-review.json",
       "currentLocalCandidate": "8db7aec35d788899dd97a46cf9c6a84a360d65d2",
-      "nativeRequestConsumer": "design_readiness_only; original startStudio route Promise tail not yet retired/implemented; new bounded author card, source freeze/review/N5a before any writes/runtime"
+      "nativeRequestConsumer": "qualified editor-route-Promise subset at f723045 with actual6+original26/servertypes0/syntax2 and independent0P1P2; defaultquit P2 realRED→GREEN fixed, old220/59/reviews retained; NOT streams/WS/pages/parent/sharedWorker/fullowner",
+      "currentNativeRequestSource": "f72304590af52555f6d36d1b5a0d4cd6b9b3270e",
+      "currentNativeRequestEvidence": "docs/execution/t02-native-request-consumer-validation.json",
+      "currentCIServerPin": "stale after f723045; separate C23 data-only serverpin migration +newlifecycle job before latestCI/integration"
     },
     {
       "id": "T02.b",

@@ -510,3 +510,13 @@ Spec: docs/superpowers/specs/2026-11-09-native-entered-request-drain-design.md. 
 - [ ] Error and null reentrant working callback RED/GREEN; expected HttpError503 compatibility, native quit self-close no deadlock; no new public getters/protocol/Worker-global stop.
 - [ ] Full newfile/oldserver-auto+watch regressions, originalserver noEmit0; source/fixtures/Core/tools/oldignored/ports and fresh N5a after. Unknown retirement stops further phases.
 - [ ] Non-author source/result SPECQUALITY before localsource commit; then separate sharedCI pin+Fetchjob source task and affectedE2E before serialdevgate; fullowner/Auth/UI/media/install/Mac/PG stillpending.
+
+## 2026-11-09 C23 native lifecycle CI consumer
+
+Spec: docs/superpowers/specs/2026-11-09-native-lifecycle-ci-design.md. CI writer /root/ci_fetch_readonly_design ONLY after immutable author/input/policy/native E2/resource/newN5a. OriginalUI/API/protocol unchanged.
+- [ ] Freeze qualified C19/C22 producer/source36 and3mutablebase files; independentcard/input/spec/currentregistry/HEADplanappend review, immutable partial metadata, native E2 from actual latestdev thenFF, Core/old31281/resources/newtrusted23 N5a before writer.
+- [ ] Existing399 on newf723 producer actual serverpin RED; only driver/test one serverliteral migration each, inverse restores oldbytes/399names/assertions/budgets unchanged, GREEN399.
+- [ ] Workflow9missing trigger paths/newclosed independentjob behavior RED; append exact filters/job without oldNative/Worker budget changes.
+- [ ] Append closedselector/exact22/threefreshenv/fixedextra9/TAP64layer+request6flat+legacy18/inverse/ownedexitclose/timeoutoverflow/postcheck/TDZ-noimportIO cases; implement minimum same-driver helpers and reusedCore/tooling, RED/GREEN each.
+- [ ] Fullold399+allnewactualcounts zero skip, syntax3/YAMLsourcepolicy, source/prefix/Core/tools/old31281/resources/newN5a after; no actualNode22/cloud/native mode/privateAPI/model/download.
+- [ ] Non-author source/result review beforelocalcommit3; then separately audit fullunpublishedpayload/currentPUBLIC/zero-standardcost and NEW single-use pushlease for actualNode22 CI; no CI35lease reuse/dev/main/tag/release/fullGoal claim.

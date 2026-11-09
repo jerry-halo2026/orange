@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T01",
+  "assignmentRevision": 23,
+  "authorAgent": "/root/ci_fetch_readonly_design",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "10f38f5b7e08d09ab233a08616148df01b652bca0e1f75e772219f86d79d74b4",
+  "specSHA256": "5dfd99feaa85d34c9f0fccafd2f625a715c28eadbeec24166e8fec5a8009c75d",
+  "planSnapshotSHA256": "006114899751911d1782ff1ed80ff3867cfd924bc081d060c95274c17f9a96e5",
+  "registrySnapshotSHA256": "d53280caf3151934edc855407af25cf04f588f80a94ab9340c20b219b229de38",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-native-lifecycle-ci-input-review.json",
+      "sha256": "e0454ef63f6810cdc1eb0554a841262a2e6a391442570eeb899ee7fae601f3cc"
+    },
+    {
+      "path": "docs/execution/t02-native-lifecycle-ci-input-review.json",
+      "sha256": "b1c94e7995bbc33c2de8cfdfb9dab561a078e986ba1e0104f211df1cd4b074d0"
+    }
+  ],
+  "verified": {
+    "uniqueImmutableInputs": 36,
+    "unchangedTargetRawInputs": 10,
+    "prospectiveTargetInputsRequiringPostFFVerification": 26,
+    "editableBaselineFiles": 3,
+    "oldUnitPrefixBytes": 64663,
+    "oldServerLiteralOccurrencesDriver": 1,
+    "oldServerLiteralOccurrencesTestPrefix": 1,
+    "missingAdditionalWorkflowPaths": 9,
+    "existingCore106Matched": true,
+    "oldIgnored31281Unchanged": true,
+    "planOriginalAndWorkingPrefixesPreserved": true,
+    "planAppendBytes": 1531,
+    "registryChangedFieldsOnlyT01T02": 6,
+    "statusesDependenciesGatesAndOtherTasksUnchanged": true
+  },
+  "scope": "CI driver/test/workflow source implementation and bounded local pure TDD only; no actual native/lifecycle or cloud execution.",
+  "proofActivation": "Only status/spec/quality to approved and P1/P2 to 0; all other bytes unchanged.",
+  "conditions": [
+    "Commit only card, spec, two proofs, canonical plan snapshot, canonical registry snapshot and this policy. Preserve unrelated working WIP; stage reviewed snapshot bytes, not whole working plan/registry.",
+    "Bind only the named existing author without model override, quota-route retry or new agents. Require immutable metadata, native-managed fresh-dev E2 branch and exact FF, old branches/31281/Core preservation, actual 36 inputs plus proofs/tools/resources, fresh trusted revision 23 N5a and explicit Root dispatch before writing.",
+    "Author writes only the three granted CI files. Preserve old399 names/assertions/counts/import prefix except exactly one server digest replacement; inverse replacement must restore original bytes. Require actual pin RED then GREEN and append new tests/imports.",
+    "Keep default Native27 and Native110/Worker51 budgets/helpers unchanged except the approved server digest and closed CLI dispatch. Add a separate fixed nine-source validator and all nine workflow triggers, not a generalized caller-selected policy.",
+    "Defer both selector and runner until module evaluation completes; no top-level IO/await. New mode is only --lifecycle, with fixed actual Windows Node22 minor>=18 and no runtime download/fallback.",
+    "Local CLI negative tests must use an invalid execution context on every runtime and fail before native work/Core restoration/download. The same pure tests on hosted Node22 must remain negative, not skip or accidentally enter real lifecycle execution.",
+    "Local lower process fixtures are bounded owned Node children only; no listening ports, descendants, native consumers or network. Preserve actual exit and close evidence; unknown retirement stops further work.",
+    "Designed lifecycle execution has total 540000ms, phase caps 180000/180000/120000 bounded by remaining time, combined stdout/stderr limit 20MiB per phase, and strict separate Fetch64/Request6/Legacy17+guard validation. Nonempty stderr is allowed but bounded, private and hashed; no raw output or no-warnings workaround.",
+    "Require source/prefix/input/Core/old-resource/post-N5a evidence and independent source/result review before source commit. Actual Node22 behavior is not established by local Node26 or synthetic TAP.",
+    "Any cloud run needs a separate card, full unpublished-payload audit, fresh PUBLIC/ref/runner/financial checks and one new push lease. No CI35 lease reuse, push/dev/main/tag/release, model calls or full owner/pilot claim under this card."
+  ],
+  "metadataCommitCreated": false,
+  "authorDispatched": false,
+  "sourceOrTestsWritten": false,
+  "N5aAdmitted": false,
+  "runtimeExecuted": false,
+  "actualNode22Verified": false,
+  "cloudLeaseGranted": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

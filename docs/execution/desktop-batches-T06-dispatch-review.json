@@ -1,0 +1,49 @@
+{
+  "taskId": "T06.dispatch",
+  "commit": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/fission-dispatch.ts",
+      "sha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45",
+      "gitBlobSha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45"
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749",
+      "gitBlobSha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749"
+    },
+    {
+      "path": "apps/api/src/admission.ts",
+      "sha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3",
+      "gitBlobSha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/fission-dispatch.test.ts",
+      "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
+      "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
+    },
+    {
+      "path": "apps/api/src/business.test.ts",
+      "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+    }
+  ],
+  "scope": "exact current qualified batch endpoint/source association/native injection inputs only; no new client implementation approval",
+  "evidence": {
+    "dispatchSource": "3a73d45abb5ddf9b7af82740f0f3a5e280e3f32f",
+    "dispatchReview": "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027",
+    "desktopSource": "921945b873da1ec3200f4a4e492742aa48dec04e",
+    "desktopReview": "0428abdfa637e2e882a282f0b55ac39383c94ba9e1c216157c0a96161afeed56",
+    "rootActualCombined195Types5": true,
+    "publicCancelContract": "known live state awaits actual task; missing/restarted state also returns200 needs-reconciliation without proven drain, not universally confirmation"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

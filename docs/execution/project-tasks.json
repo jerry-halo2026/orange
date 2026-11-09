@@ -509,6 +509,20 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/fission-business-handoff-assignment.json"
+    },
+    {
+      "id": "T03.batch",
+      "parentTask": "T03",
+      "status": "in_progress",
+      "scope": "Original Fission modal starts real qualified asynchronous CountN batch, reads actual phase/perIndex state and cooperatively cancels through private fixed endpoints, owner-bound durable local intent and source-version selection; real edit import remains qualified handoff consumer next, never fake MP4 project.",
+      "dependsOn": [
+        "T01",
+        "T03",
+        "T06.dispatch",
+        "T03.material"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/desktop-fission-batch-assignment.json"
     }
   ],
   "umbrella": [

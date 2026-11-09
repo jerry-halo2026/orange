@@ -1,0 +1,44 @@
+{
+  "taskId": "T03.material",
+  "commit": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/ui/src/components/MediaPool.tsx",
+      "sha256": "c382eecd81c6614a0440250074db0ea22430ffce0230fdbbe8474e87bd7f9c2f",
+      "gitBlobSha256": "c382eecd81c6614a0440250074db0ea22430ffce0230fdbbe8474e87bd7f9c2f"
+    },
+    {
+      "path": "apps/desktop/src/studio-process.mjs",
+      "sha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a",
+      "gitBlobSha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
+      "sha256": "9c86e63894c11d947a2254fa02cf6bc52975cf035ae776bc4bbeb49a8507371e",
+      "gitBlobSha256": "9c86e63894c11d947a2254fa02cf6bc52975cf035ae776bc4bbeb49a8507371e"
+    },
+    {
+      "path": "apps/desktop/src/studio.test.mjs",
+      "sha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324",
+      "gitBlobSha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324"
+    }
+  ],
+  "scope": "exact current qualified batch endpoint/source association/native injection inputs only; no new client implementation approval",
+  "evidence": {
+    "dispatchSource": "3a73d45abb5ddf9b7af82740f0f3a5e280e3f32f",
+    "dispatchReview": "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027",
+    "desktopSource": "921945b873da1ec3200f4a4e492742aa48dec04e",
+    "desktopReview": "0428abdfa637e2e882a282f0b55ac39383c94ba9e1c216157c0a96161afeed56",
+    "rootActualCombined195Types5": true,
+    "publicCancelContract": "known live state awaits actual task; missing/restarted state also returns200 needs-reconciliation without proven drain, not universally confirmation"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

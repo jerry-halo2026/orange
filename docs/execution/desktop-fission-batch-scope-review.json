@@ -1,0 +1,54 @@
+{
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "reviewerAgent": "/root/integration_review",
+  "scope": "selected10 actual client batch/strict cancel-retirement semantics and current endpoint contract, not whole17/implementation",
+  "evidence": {
+    "reviewKind": "selected input/scope approval with ONE explicitly held positive producer-contract branch; not implementation acceptance",
+    "assignmentSHA256": "a588db37ef55a692891056416aeb118dec1dc3e8450cc9c6f4d2dcbcbc231fa3",
+    "actualWorktree": "E:/CodexData/worktrees/orange-business-admission/orange",
+    "actualHead": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+    "actualBranch": "codex/desktop-fission-batches",
+    "gitCleanAtInputReview": true,
+    "allTenEditableCurrentRawAndGitExact": true,
+    "priorT01Native6b1aDispatch53699Material0428SelectedProofPinsMatch": true,
+    "activePeerAtInputReview": {
+      "path": "docs/execution/fission-business-handoff-assignment.json",
+      "sha256": "64f83ae428a81984e53cf18ddc440e44edd05bfffc4b7422d17516d2538a97c7",
+      "sourceIntersection": [],
+      "portIntersection": []
+    },
+    "tooling": {
+      "existing45ManifestSHA256": "e3f138f5a87d3ff9a421e81f93b7c45a92e91854fe2e7f9da7c9da442505ae01",
+      "ownE5WorkspaceOnly": true,
+      "newInstallOrLinksAllowed": false
+    },
+    "readyForImplementation": [
+      "Original inline modal with explicit empty editable groupUUID lookup hint, no fake default/cloud group creation.",
+      "Private fixed batch submit/status/cancel endpoints with current owner/epoch/sourceFD/registered-version association under one native guard, no recursive queue selfwait.",
+      "Persist original intent/key before submit, same immutable body/key on response loss, actual phase/perIndex state after202, no invented percent/Count1/onProject/MP4 editor.",
+      "Current cancel result may be consumed only FAILCLOSED: expired/revoked/unacknowledged/unknown/unproven drain must keep existing failed guard and refuse B."
+    ],
+    "heldBranch": {
+      "positiveRetirementConfirmationReady": false,
+      "name": "confirmed physical drain allowing retirement/accountB activation",
+      "reason": "Current published dispatcher cancel returns only publicState: both known live task settlement and unknown/restart can returnHTTP200 needs-reconciliation. Existing marker re-created in memory is not ownership or proof old children/FDs drained. run catches errors, so await task by itself is not a reliable preservation receipt.",
+      "doNotInferFrom": [
+        "HTTP200",
+        "status string",
+        "timeout/abort",
+        "settled swallowed-error state.task",
+        "old marker seen after restart"
+      ],
+      "requiredProducerForward": "One bounded actual cancel/retirement receipt bound to original batch/request, confirmed ONLY for original wx-intent owned by that producer plus observed childexit/close/streams and material/FD completion; restart/unknown marker/unconfirmedclose yields unconfirmed. No credentials/grant fields or new platform.",
+      "rootCoordination": "Root explicitly approved same existing4-source handoff writer forward and tests in its existing handoff.test; this10 does not edit producer files. Consume positive branch only after exact slice independently reviewed/frozen and actual metadata/N5a dependency handoff.",
+      "otherReadyUiWorkMayContinue": true
+    },
+    "privacyAndAuthority": "Auth6/nativeID/rev/time/Job Count0..N/SceneGroups unchanged. Closing credentials narrow private existing-bound cancel-only before retirement, never newwork/read/getter/renderer/disk token. Registration association is metadata hint, fresh backend resolve/use remains rights. No field guessing from unqualified producer.",
+    "runtime": "Only leased mockloopback/own files/types/build; no realworker/Docker/codec/GUI/network suppliers/cloud/private media/model/secret reads. No tests or network executed by reviewer.",
+    "executionHeldUntil": "Root scope hash binding/metadata/actualresources/freshN5a for ready10; positive retirement branch staysheld, not falsely consumer-ready.",
+    "reviewerSourceOrOtherDocChanges": 0,
+    "priorPendingReviewSHA256": "21911546a9115607e344548608577af94f02fe1e44ce35e841e3a559a67dfc09"
+  }
+}

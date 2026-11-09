@@ -1,0 +1,518 @@
+{
+  "taskId": "T03.batch",
+  "parentTask": "T03",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-extension original Fission modal/client/server/private authorization; actual business batch consumer, no new shell/editor/Timeline/queue",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "f9c8766a636cc908a972cd4c7af75b38880cd056"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
+  "branch": "codex/desktop-fission-batches",
+  "scope": "Original Fission modal starts real qualified asynchronous CountN batch, reads actual phase/perIndex state and cooperatively cancels through private fixed endpoints, owner-bound durable local intent and source-version selection; real edit import remains qualified handoff consumer next, never fake MP4 project.",
+  "writeAllowlist": [
+    "apps/desktop/src/auth-service.mjs",
+    "apps/desktop/src/desktop-auth.mjs",
+    "packages/openfilm/studio/server/fission.mjs",
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/ui/src/components/ProjectView.tsx",
+    "packages/openfilm/studio/ui/src/i18n/en.ts",
+    "packages/openfilm/studio/ui/src/i18n/zh-CN.ts",
+    "apps/desktop/src/auth-service.test.mjs",
+    "apps/desktop/src/desktop-auth.test.mjs",
+    "packages/openfilm/studio/server/fission.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18471,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18472,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18551,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18552,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18561,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18562,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18571,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18572,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18661,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18662,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18671,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18672,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/server.mjs",
+      "packages/openfilm/studio/ui/src/components/ProjectView.tsx"
+    ],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-business-handoff-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "64f83ae428a81984e53cf18ddc440e44edd05bfffc4b7422d17516d2538a97c7"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T03",
+        "commit": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+            "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+            "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.mjs",
+            "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+            "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          },
+          {
+            "path": "packages/openfilm/src/media-links.mjs",
+            "sha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580",
+            "gitBlobSha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+            "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+            "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.test.mjs",
+            "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+            "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.test.mjs",
+            "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+            "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+          },
+          {
+            "path": "packages/openfilm/studio/server/native-source-import.test.mjs",
+            "sha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85",
+            "gitBlobSha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-material-native-review.json",
+          "sha256": "6b1a1337dd7c6f2216e19c82d9546e1c3795b944340c3a24b539f899d37ef10b",
+          "gitBlobSha256": "6b1a1337dd7c6f2216e19c82d9546e1c3795b944340c3a24b539f899d37ef10b"
+        }
+      },
+      {
+        "taskId": "T06.dispatch",
+        "commit": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "apps/api/src/fission-dispatch.ts",
+            "sha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45",
+            "gitBlobSha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45"
+          },
+          {
+            "path": "apps/api/src/server.ts",
+            "sha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749",
+            "gitBlobSha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749"
+          },
+          {
+            "path": "apps/api/src/admission.ts",
+            "sha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3",
+            "gitBlobSha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/fission-dispatch.test.ts",
+            "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
+            "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
+          },
+          {
+            "path": "apps/api/src/business.test.ts",
+            "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+            "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-batches-T06-dispatch-review.json",
+          "sha256": "043c923fa1e73ec5c6b48e18fcb44e26bc74aa8285bd85792ca3548599bd4f57",
+          "gitBlobSha256": "043c923fa1e73ec5c6b48e18fcb44e26bc74aa8285bd85792ca3548599bd4f57"
+        }
+      },
+      {
+        "taskId": "T03.material",
+        "commit": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/ui/src/components/MediaPool.tsx",
+            "sha256": "c382eecd81c6614a0440250074db0ea22430ffce0230fdbbe8474e87bd7f9c2f",
+            "gitBlobSha256": "c382eecd81c6614a0440250074db0ea22430ffce0230fdbbe8474e87bd7f9c2f"
+          },
+          {
+            "path": "apps/desktop/src/studio-process.mjs",
+            "sha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a",
+            "gitBlobSha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
+            "sha256": "9c86e63894c11d947a2254fa02cf6bc52975cf035ae776bc4bbeb49a8507371e",
+            "gitBlobSha256": "9c86e63894c11d947a2254fa02cf6bc52975cf035ae776bc4bbeb49a8507371e"
+          },
+          {
+            "path": "apps/desktop/src/studio.test.mjs",
+            "sha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324",
+            "gitBlobSha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-batches-T03-material-review.json",
+          "sha256": "ebe5debbf4f990505772380bbd87e43fc486438d24a3e64151ff47b2cf5bb2fd",
+          "gitBlobSha256": "ebe5debbf4f990505772380bbd87e43fc486438d24a3e64151ff47b2cf5bb2fd"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+    "files": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "sha256": "db71b341fbd4810462c12cc7b86f5189c5c8d120312978fd7812f0d6209e310b",
+        "gitBlobSha256": "db71b341fbd4810462c12cc7b86f5189c5c8d120312978fd7812f0d6209e310b"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.mjs",
+        "sha256": "93e4d740b92aaa6c1555ca408f03d1efd8d9dbbebd6af2e73e8ccdf42774b2e4",
+        "gitBlobSha256": "93e4d740b92aaa6c1555ca408f03d1efd8d9dbbebd6af2e73e8ccdf42774b2e4"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fission.mjs",
+        "sha256": "74c89afe1dd85cee8608fcfe2c52bf866d54eb68a5c554048a1955193c161e5a",
+        "gitBlobSha256": "74c89afe1dd85cee8608fcfe2c52bf866d54eb68a5c554048a1955193c161e5a"
+      },
+      {
+        "path": "packages/openfilm/studio/server/server.mjs",
+        "sha256": "7f0cafb851fe3af577c6e269470e1429f18f28baa21d4de93f24ee163ec34cfa",
+        "gitBlobSha256": "7f0cafb851fe3af577c6e269470e1429f18f28baa21d4de93f24ee163ec34cfa"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/components/ProjectView.tsx",
+        "sha256": "389035fbc90d8ec5c2eecb4117137eb017a1e1732ddc2f03a792a79c274ab9d6",
+        "gitBlobSha256": "389035fbc90d8ec5c2eecb4117137eb017a1e1732ddc2f03a792a79c274ab9d6"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/i18n/en.ts",
+        "sha256": "2bdfea7e6d599f6f6c6bbe09db0bcd3fd2414d62cd35bdfb7e71a2d3891c5036",
+        "gitBlobSha256": "2bdfea7e6d599f6f6c6bbe09db0bcd3fd2414d62cd35bdfb7e71a2d3891c5036"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/i18n/zh-CN.ts",
+        "sha256": "260ca4abe4112d0e2b23309fd482f4ebc14d102232f7181bb5be672bc8fb0ea5",
+        "gitBlobSha256": "260ca4abe4112d0e2b23309fd482f4ebc14d102232f7181bb5be672bc8fb0ea5"
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "sha256": "0fb75b98499b56025f3f0eaecf6dc697b270141339202f76e8db4cffef6c4802",
+        "gitBlobSha256": "0fb75b98499b56025f3f0eaecf6dc697b270141339202f76e8db4cffef6c4802"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.test.mjs",
+        "sha256": "1f927d8ef78462a465270f23788c6bb319faa92d505d77e1f699e32f17771be4",
+        "gitBlobSha256": "1f927d8ef78462a465270f23788c6bb319faa92d505d77e1f699e32f17771be4"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fission.test.mjs",
+        "sha256": "604a99aa7cf2880a1238c542d0482fb1b00f8e46c1dc86012c0f013c909d9a98",
+        "gitBlobSha256": "604a99aa7cf2880a1238c542d0482fb1b00f8e46c1dc86012c0f013c909d9a98"
+      }
+    ],
+    "newFiles": [],
+    "peerWriteIntersection": [],
+    "previousAuthControllerAssociationReview": "0428abdfa637e2e882a282f0b55ac39383c94ba9e1c216157c0a96161afeed56",
+    "currentKnownOriginalFissionGuard": "45836eb256f4f55004618aae85bf7bfd272e3115"
+  },
+  "actualBackend": {
+    "submit": "POST /api/fission/batches ->202",
+    "requestFields": [
+      "groupId",
+      "projectId",
+      "filmRev",
+      "job",
+      "idempotencyKey",
+      "sourceSelection"
+    ],
+    "selection": "video:[{group,versionIds}],audio:uuid[],bgm:uuid[],intro:uuid[],outro:uuid[]; original native VideoDir top files + immediate subdir scene groups, other native role directory enumeration",
+    "status": "GET /api/fission/batches/:24hex",
+    "cancel": "POST /api/fission/batches/:24hex/cancel {} -> awaits actual state.task",
+    "publicFields": [
+      "batchId",
+      "status",
+      "outputs[index,state,code?,claimId?,contentKey?]",
+      "executionReady:false",
+      "deliveryVerified:false",
+      "code?"
+    ],
+    "noPublicFields": [
+      "native projectId/rev",
+      "worker PID/path",
+      "native imported project",
+      "progress percent",
+      "editable source carrier"
+    ]
+  },
+  "requirements": [
+    "Actual current owner/epoch/source identity+SHA validation; preserve original PascalCase FissionJob Count0..N/Threads and SceneGroups, native opaque ID/readProjectFilm16hexrev",
+    "Private .film/orange-fission-batches.json with original writeAtomic: immutable request intent/key/source version snapshot and acknowledged batchID scoped current environment/subject/project/origin; no Timeline/Film or new framework",
+    "Persist intent before submit, response-loss stays exact same request/key, no blind new-key/reroll. Status/cancel use stored project-to-batch association because backend public reply has no projectId; edited current film does not erase a past batch or forbid cancellation",
+    "Original project-scoped batch proxy calls only fixed backend endpoints; renderer controls Job and group lookup hint, not sourceSelection/owner/epoch/cache paths/token",
+    "UI retains modal after202, polls actual phase/output states, offers actual cancel; show no invented percentage or Count1 collapse. rendered-unverified is candidate/pending edit handoff, never delivered/imported MP4 or fake onProject callback",
+    "Only actual qualified future source/sidecar handoff may open a new editable native project; no current fake callback, no wait to implement submit/status/cancel",
+    "Root accepts one explicit editable group UUID lookup hint in ORIGINAL modal, empty/no fake default, no single-group product constraint/cloud group creation. No new org/group management framework; backend fresh membership is authority. This stage UI is not full pilot UX signoff.",
+    "Use existing actual provider/owner/source capabilities and lower-level original FD inspector under one native guard/epoch, no recursive public materialVersionForSource per-project queue selfwait. SourceSelection built only in trusted Node from actual current original file association+SHA+identity/kind; renderer cannot supply version IDs/owner/env/body-approved/source paths as grant. Preserve original Job/CountN/SceneGroups and opaqueID/16hexrev; never clamp0/unknown unsupported native branch to1 or fabricate capability.",
+    "Source enumeration follows original role folders/root/group semantics and original filename ordering, ordinary allowed files only; current source change/malformed association/unknown upload key denies only affected operation without overwriting originals. Registry UUIDs are hints, server use/fresh SQL decides. No implicit uploads to make a missing version appear.",
+    "Private .film/orange-fission-batches.json only business intent/association using original writeAtomic + owner guard/project serialization. Persist original immutable request/key/source snapshot BEFORE submit; no credential/raw token/backend path. Exact response loss replay remains same key/same body, never auto-new-key/reroll. Unknown existing/restart state stays explicitly pending/reconciliation, not failed-and-replaced. Malformed/foreign metadata preserved and denied, not reset to empty.",
+    "Fixed private Bearer batch submit/status/cancel only, Auth6 unchanged, no generic URL/header/method/worker callback injection. Match receipt id/schema and bind through private persisted environment/subject/project/requesthash because backend public response has no native project/rev. Renderer handles local project operation refs only; no tokens/FS/owner or business source authority.",
+    "Seal new LOCAL entry synchronously on logout/quit/revoke, keep only narrowly scoped existing tracked-batch cancellation capability through trusted retirement ordering BEFORE token retirement or equivalent private cancel-only stage. No resolve/register/submit/newwork through closing credentials; never expose token/getter or persist it. Unknown unacknowledged submit cannot be redispatched merely for closing discovery.",
+    "Cancellation HTTP abort/timeout/any200 is NOT worker stop. Qualified current cancel awaits state.task only for known live state; missing/restarted state returns200 needs-reconciliation too. Use only original endpoint semantics with actual bound known receipt and provable terminal/drain result, not a guessed stopped flag. Ambiguous/missing/expired/revoked/close-failed proof must route existing source-preservation-failed/failed sealed guard and preventB activation. Business claim unknown/history differs from physical child drain; never release claims as canceled. If currently published fields cannot prove a normal stop, report ONE precise producer forward, keep other ready UI work going rather than invent proof.",
+    "Original native fission.stopAll/server.close swallowed errors must propagate actual unconfirmed retirement through existing controller guard instead of reporting closed. Preserve original sourceFD close-error/P1 handling and old selftest/single legacy routes; no new IPC/main/preload/tooling scope. All real entered private HTTP/body promises wait actual completion; session-expiry does not silently refresh an old grant to drain.",
+    "UI keeps original modal open after202, actual phase and perIndex states, realcancel and explicit pending/unknown/errors. No invented percent/delivered/equivalence/opened project; rendered-unverified only candidate pending actual qualified source handoff, never onProject(fakeId) or MP4 as editable source. Do not wait for backend handoff to implement submit/status/cancel.",
+    "TDD missingbehavior RED -> actual own loopback proxy body/receipt/owner/version association/nativeID/rev, stablekey unknown/reopen/crossproject reject, entered submit/cancel delay, seal-before-token-retire onlycancel credential, actual retirement unresolved→guard1/Bdenied and eventual proven drain, original APIs/Auth6 remain. Failed-close actualFD regressions must remain intact. Existing no-access Fission job zero worker invariant unchanged.",
+    "Author runtime only own tiny fixture files and leased mockloopback endpoints/new18661/62/18671/72 plus old18471/72,18551/52,18561/62,18571/72. No handoff peer18641/42/18651/52/18591/92. Original other suites needing unleased ports request precise resource forward or exact ignored path/port adapter with inverse, never bind implicitly.",
+    "Existing45+APIopenfilm dependency links read-only, no install/package/lock/tsconfig/source dependency aliases changed. All original UI/server/shell/chat types and affected original UI build only own T01 HOME/TMP/cache/out under fresh .dev/desktop-fission-batch/attempt-*; config.envDirfalse/no implicit.env/cache takeovers, no source build config edits.",
+    "Only fresh own helpers/archives/evidence namespace; preserve old candidates/dumps/associated userprojects and originalfiles.60sec child/20MiB log cap, actualexitclose; no timeout as safe release. No actual worker/codec/Docker/GUI/Electron/Edge/real Supabase/vendor/cloud business row/private media/model invocation. Synthetic transport tests are not realcloud/GUI demonstration.",
+    "Freeze exact10 raw/canonical/full+targeted diff/realtests/type/build closure/known missingimport and actual remote configuration for nonauthor SPECQUALITY/RootfreshN5a/serial merge. No authorcommit/spawn; no full17 gate expansion before this concrete coding."
+  ],
+  "rootDecision": {
+    "groupInput": "editable lookup hint approved by Root, not an authority/fake default or pilot scope reduction",
+    "retirement": "existing-bound cancel-only private phase; no response/receipt certainty => preservationfailed not timeout-success"
+  },
+  "scopeReview": {
+    "path": "docs/execution/desktop-fission-batch-scope-review.json",
+    "sha256": "ab07d4bf3dfd2e28ec66d3d8a4f8f5b1bde75bf958ced6777452706357f06a93",
+    "scopeReviewedCardSHA256": "a588db37ef55a692891056416aeb118dec1dc3e8450cc9c6f4d2dcbcbc231fa3",
+    "bindingOnlyAfterReview": true
+  },
+  "tooling": {
+    "existingManifest": "docs/execution/desktop-business-local-tools.json",
+    "sha256": "e3f138f5a87d3ff9a421e81f93b7c45a92e91854fe2e7f9da7c9da442505ae01",
+    "oldLinks": 45,
+    "additionalAlreadyApprovedLocalApiOpenfilm": true,
+    "newLinksAllowed": false,
+    "sourceExportsMustResolveOwnE5": true,
+    "noInstaller": true
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "sourceDraft": {
+    "path": "E:/CodexData/worktrees/orange-business-admission/orange/.dev/desktop-fission-batch/attempt-1794259245100-20328/draft.json",
+    "sha256": "b97206683afcac6d229dba726339875dfe4a3b2863241a678757cc9e271e354d"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T03/T06 actual modal batch consumer",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD only selected scope nonauthor review/metadata/actualports/N5a then direct10 TDD",
+  "partialReadiness": {
+    "submitStatusCurrentFailclosedCancel": true,
+    "positiveRetirementConfirmationReady": false,
+    "heldPart": "consume only independently qualified actual producer retirement receipt, no guessed success or fake mock-ready; only this positive branch waits",
+    "producerTask": "T06.handoff"
+  }
+}

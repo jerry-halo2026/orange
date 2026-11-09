@@ -16,8 +16,47 @@ import { lstat, mkdir, readdir, rename, rm, stat, writeFile } from 'node:fs/prom
 import { join } from 'node:path';
 import { FILM_FILE } from '../../src/film-doc.mjs';
 import { SKILL_FILE, holdsSkills } from '../../src/skills.mjs';
+import { isProxy } from 'node:util/types';
 import { FetchError } from './fetch-error.mjs';
-import { downloadFiles, listFiles, resolveCommit } from './fetch-github.mjs';
+import { downloadFiles, hasIncompleteCleanup, listFiles, resolveCommit } from './fetch-github.mjs';
+
+/** Private recovery facts, never fields of public FetchError/Job or a parallel protocol.
+ * @type {WeakMap<Error, { committedPath?: string, cleanupFailures: unknown[], operationFailure?: unknown }>}
+ */
+const failureFacts = new WeakMap();
+
+/**
+ * Node-only capabilities, scoped to one call/manager. These keep the original native signatures and real resources.
+ * @typedef {{ spawn?: typeof import('node:child_process').spawn, fetch?: typeof globalThis.fetch,
+ *   fs?: Partial<Pick<typeof import('node:fs/promises'), 'mkdir' | 'readdir' | 'lstat' | 'rename' | 'rm'>>,
+ *   createWriteStream?: typeof import('node:fs').createWriteStream }} TrustedNode
+ */
+
+/** Snapshot only own data functions: validation must not invoke a capability getter. @param {unknown} value @returns {TrustedNode} */
+function trustedFunctions(value) {
+  if (value === undefined) return Object.freeze(Object.create(null));
+  /** @param {unknown} object @param {string[]} names @param {boolean} [nested] @returns {Record<string, unknown>} */
+  const copy = (object, names, nested = false) => {
+    if (object === null || typeof object !== 'object' || isProxy(object) || ![null, Object.prototype].includes(Object.getPrototypeOf(object))) {
+      throw new TypeError('trustedNode must contain only own function capabilities.');
+    }
+    /** @type {Record<string, unknown>} */
+    const result = Object.create(null);
+    for (const key of Reflect.ownKeys(object)) {
+      const descriptor = Object.getOwnPropertyDescriptor(object, key);
+      if (typeof key !== 'string' || !names.includes(key) || !descriptor || !('value' in descriptor)) {
+        throw new TypeError('Unknown or accessor trustedNode capability.');
+      }
+      if (!nested && key === 'fs') result[key] = copy(descriptor.value, ['mkdir', 'readdir', 'lstat', 'rename', 'rm'], true);
+      else {
+        if (typeof descriptor.value !== 'function') throw new TypeError('trustedNode capabilities must be functions.');
+        result[key] = descriptor.value;
+      }
+    }
+    return Object.freeze(result);
+  };
+  return /** @type {TrustedNode} */ (copy(value, ['spawn', 'fetch', 'fs', 'createWriteStream']));
+}
 
 export { FetchError };
 
@@ -103,43 +142,55 @@ export function splitTree(tree, refs, blob) {
  * Run git, never through a shell, without asking anything in a terminal; `onLine` hears its progress (git writes it
  * on stderr, each step ending in \r); `input` is written to its stdin. Resolves to stdout; a failure rejects with what
  * git said.
- * @param {string[]} args @param {{ cwd?: string, signal?: AbortSignal, onLine?: (line: string) => void, input?: string }} [options]
+ * @param {string[]} args @param {{ cwd?: string, signal?: AbortSignal, onLine?: (line: string) => void, input?: string, trustedNode?: TrustedNode }} [options]
  * @returns {Promise<string>}
  */
-function git(args, { cwd, signal, onLine, input } = {}) {
+function git(args, { cwd, signal, onLine, input, trustedNode } = {}) {
   return new Promise((done, fail) => {
     /* stopped before it began: git never runs */
     if (signal?.aborted) { fail(new Error('stopped')); return; }
-    const child = spawn('git', ['-c', 'core.hooksPath=/dev/null', '-c', 'protocol.ext.allow=never', ...args], {
+    const child = (trustedNode?.spawn ?? spawn)('git', ['-c', 'core.hooksPath=/dev/null', '-c', 'protocol.ext.allow=never', ...args], {
       cwd,
       windowsHide: true,
       env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GCM_INTERACTIVE: 'never', GIT_PROGRESS_DELAY: '0' },
       stdio: ['pipe', 'pipe', 'pipe'],
     });
-    child.stdin.on('error', () => {}).end(input ?? '');
     let out = '';
     let err = '';
     let partial = '';
-    child.stdout.setEncoding('utf8').on('data', (d) => { out += d; });
-    child.stderr.setEncoding('utf8').on('data', (/** @type {string} */ d) => {
-      err = (err + d).slice(-8000);
-      const lines = (partial + d).split(/[\r\n]/);
-      partial = lines.pop() ?? '';
-      for (const line of lines) if (line.trim()) onLine?.(line.trim());
-    });
-    const stop = () => child.kill();
-    signal?.addEventListener('abort', stop, { once: true });
-    child.on('error', (e) => {
-      signal?.removeEventListener('abort', stop);
-      fail(/** @type {NodeJS.ErrnoException} */ (e).code === 'ENOENT'
-        ? new FetchError('Studio needs git to fetch films: install git, then try again.', 500, 'git')
-        : e);
-    });
+    let childFailed = false;
+    /** @type {unknown} */
+    let childFailure;
+    const rememberFailure = (/** @type {unknown} */ error) => {
+      if (childFailed) return;
+      childFailed = true;
+      childFailure = error;
+    };
+    const stop = () => { try { child.kill(); } catch (error) { rememberFailure(error); } };
+    /* Acquire close/error/abort ownership before any pipe setup can reenter or throw. */
+    child.on('error', (error) => rememberFailure(/** @type {NodeJS.ErrnoException} */ (error).code === 'ENOENT'
+      ? new FetchError('Studio needs git to fetch films: install git, then try again.', 500, 'git')
+      : error));
     child.on('close', (code) => {
       signal?.removeEventListener('abort', stop);
-      if (code === 0) done(out);
+      if (childFailed) fail(childFailure);
+      else if (code === 0) done(out);
       else fail(Object.assign(new Error(err.trim() || `git exited with ${code}`), { gitOutput: err }));
     });
+    signal?.addEventListener('abort', stop, { once: true });
+    if (signal?.aborted) stop();
+    try {
+      child.stdout.setEncoding('utf8').on('data', (d) => { out += d; });
+      child.stderr.setEncoding('utf8').on('data', (/** @type {string} */ d) => {
+        err = (err + d).slice(-8000);
+        const lines = (partial + d).split(/[\r\n]/);
+        partial = lines.pop() ?? '';
+        if (childFailed) return;
+        try { for (const line of lines) if (line.trim()) onLine?.(line.trim()); }
+        catch (error) { rememberFailure(error); stop(); }
+      });
+      child.stdin.on('error', () => {}).end(input ?? '');
+    } catch (error) { rememberFailure(error); stop(); }
   });
 }
 
@@ -162,9 +213,10 @@ function explain(e, where) {
   return new FetchError(`git could not fetch it: ${last.replace(/^fatal:\s*/, '')}`, 502, 'failed');
 }
 
-/** The branch and tag names of a repository. @param {string} cloneUrl @param {AbortSignal} [signal] */
-export async function remoteRefs(cloneUrl, signal) {
-  const out = await git(['ls-remote', '--heads', '--tags', '--', cloneUrl], { signal });
+/** The branch and tag names of a repository. @param {string} cloneUrl @param {AbortSignal} [signal] @param {{ trustedNode?: TrustedNode }} [options] */
+export async function remoteRefs(cloneUrl, signal, { trustedNode } = {}) {
+  trustedNode = trustedFunctions(trustedNode);
+  const out = await git(['ls-remote', '--heads', '--tags', '--', cloneUrl], { signal, trustedNode });
   const refs = new Set();
   for (const line of out.split('\n')) {
     const m = /\trefs\/(?:heads|tags)\/(.+?)(\^\{\})?$/.exec(line);
@@ -173,14 +225,14 @@ export async function remoteRefs(cloneUrl, signal) {
   return refs;
 }
 
-/** How many bytes are in a folder (its links not followed). @param {string} dir @returns {Promise<number>} */
-async function folderSize(dir) {
+/** How many bytes are in a folder (its links not followed). @param {string} dir @param {TrustedNode} [trustedNode] @returns {Promise<number>} */
+async function folderSize(dir, trustedNode) {
   let total = 0;
-  const entries = await readdir(dir, { withFileTypes: true }).catch(() => []);
+  const entries = await (trustedNode?.fs?.readdir ?? readdir)(dir, { withFileTypes: true }).catch(() => []);
   for (const entry of entries) {
     const path = join(dir, entry.name);
-    if (entry.isDirectory()) total += await folderSize(path);
-    else total += await lstat(path).then((s) => s.size, () => 0);
+    if (entry.isDirectory()) total += await folderSize(path, trustedNode);
+    else total += await (trustedNode?.fs?.lstat ?? lstat)(path).then((s) => s.size, () => 0);
   }
   return total;
 }
@@ -196,28 +248,29 @@ async function folderSize(dir) {
  * Clone `cloneUrl` at `ref` (null: its default branch) into `dir`, shallow; with `folder`, a partial clone whose
  * checkout holds only that folder. Leaves `.git` in `dir` (the caller drops it). `onLine` hears git's progress for the
  * download of the files only: a folder's list of files comes first, unheard.
- * @param {{ cloneUrl: string, ref: string | null, folder: string[], dir: string, signal?: AbortSignal, onLine?: (line: string) => void }} options
+ * @param {{ cloneUrl: string, ref: string | null, folder: string[], dir: string, signal?: AbortSignal, onLine?: (line: string) => void, trustedNode?: TrustedNode }} options
  */
-export async function cloneInto({ cloneUrl, ref, folder, dir, signal, onLine }) {
+export async function cloneInto({ cloneUrl, ref, folder, dir, signal, onLine, trustedNode }) {
+  trustedNode = trustedFunctions(trustedNode);
   if (ref != null && (!/^[^\u0000- ~^:?*[\\]+$/.test(ref) || ref.startsWith('-') || ref.includes('..'))) throw new FetchError('That branch’s name cannot be fetched.', 400, 'ref');
   const branch = ref ? [`--branch=${ref}`] : [];
   if (!folder.length) {
-    await git(['clone', '--depth=1', '--single-branch', '--no-tags', '--progress', ...branch, '--', cloneUrl, dir], { signal, onLine });
+    await git(['clone', '--depth=1', '--single-branch', '--no-tags', '--progress', ...branch, '--', cloneUrl, dir], { signal, onLine, trustedNode });
     return;
   }
-  await git(['clone', '--depth=1', '--single-branch', '--no-tags', '--filter=blob:none', '--no-checkout', ...branch, '--', cloneUrl, dir], { signal });
+  await git(['clone', '--depth=1', '--single-branch', '--no-tags', '--filter=blob:none', '--no-checkout', ...branch, '--', cloneUrl, dir], { signal, trustedNode });
   /* the folder's files, asked for by name: read-tree would fetch them too, but says nothing about how far it got */
-  const listed = await git(['ls-tree', '-r', '-z', 'HEAD', '--', folder.join('/')], { cwd: dir, signal });
+  const listed = await git(['ls-tree', '-r', '-z', 'HEAD', '--', folder.join('/')], { cwd: dir, signal, trustedNode });
   const blobs = listed.split('\0').map((entry) => /^\d+ blob ([0-9a-f]+)\t/.exec(entry)?.[1]).filter(Boolean);
   if (blobs.length) {
-    await git(['-c', 'fetch.negotiationAlgorithm=noop', 'fetch', '--progress', '--no-tags', '--no-write-fetch-head', '--recurse-submodules=no', '--stdin', 'origin'], { cwd: dir, signal, onLine, input: `${blobs.join('\n')}\n` });
+    await git(['-c', 'fetch.negotiationAlgorithm=noop', 'fetch', '--progress', '--no-tags', '--no-write-fetch-head', '--recurse-submodules=no', '--stdin', 'origin'], { cwd: dir, signal, onLine, input: `${blobs.join('\n')}\n`, trustedNode });
   }
   /* only the folder: a sparse checkout whose one pattern is the folder (anchored, so a same-named folder deeper down is
      not taken too); read-tree then writes just its files */
-  await git(['config', 'core.sparseCheckout', 'true'], { cwd: dir, signal });
-  await mkdir(join(dir, '.git', 'info'), { recursive: true });
+  await git(['config', 'core.sparseCheckout', 'true'], { cwd: dir, signal, trustedNode });
+  await (trustedNode.fs?.mkdir ?? mkdir)(join(dir, '.git', 'info'), { recursive: true });
   await writeFile(join(dir, '.git', 'info', 'sparse-checkout'), `/${folder.join('/')}/\n`);
-  await git(['read-tree', '-mu', 'HEAD'], { cwd: dir, signal, onLine });
+  await git(['read-tree', '-mu', 'HEAD'], { cwd: dir, signal, onLine, trustedNode });
 }
 
 /**
@@ -228,9 +281,12 @@ export async function cloneInto({ cloneUrl, ref, folder, dir, signal, onLine }) 
  * in place of film.html: src/skills.mjs).
  * @param {RepoSource} source
  * @param {{ library: string, onProgress?: (p: FetchProgress) => void, signal?: AbortSignal, maxBytes?: number, timeoutMs?: number,
- *   hosts?: import('./fetch-github.mjs').GitHubHosts, skill?: boolean }} options
+ *   hosts?: import('./fetch-github.mjs').GitHubHosts, skill?: boolean, trustedNode?: TrustedNode }} options
  */
-export async function fetchFilm(source, { library, onProgress = () => {}, signal, maxBytes = MAX_BYTES, timeoutMs = TIMEOUT_MS, hosts, skill = false }) {
+export async function fetchFilm(source, { library, onProgress = () => {}, signal, maxBytes = MAX_BYTES, timeoutMs = TIMEOUT_MS, hosts, skill = false, trustedNode }) {
+  trustedNode = trustedFunctions(trustedNode);
+  /* Already stopped: do not acquire timers, listeners, directories or a transport. */
+  if (signal?.aborted) throw new FetchError('Cancelled.', 499, 'cancelled');
   const where = source.host === 'github' ? 'GitHub' : 'GitLab';
   /* why it stopped, when it was stopped here (nothing coming, too big) or by the caller */
   /** @type {FetchError | null} */
@@ -268,13 +324,24 @@ export async function fetchFilm(source, { library, onProgress = () => {}, signal
     tell();
     if (bytes > maxBytes) stop(tooBig());
   };
-  await mkdir(library, { recursive: true });
+  try {
+    await (trustedNode.fs?.mkdir ?? mkdir)(library, { recursive: true });
+  } catch (error) {
+    /* Startup owns these resources even before a temporary work directory exists. */
+    clearTimeout(timer);
+    signal?.removeEventListener('abort', onAbort);
+    throw error;
+  }
   const work = join(library, `.fetching-${randomBytes(6).toString('hex')}`);
+  /** @type {string | undefined} */
+  let committedPath;
+  /** @type {unknown} */
+  let operationFailure;
 
   /** Over https: the list of files and their sizes first, so nothing is downloaded for a folder that is not a film. */
   const overHttp = async (/** @type {{ owner: string, repo: string }} */ at) => {
-    const { commit, folder } = await resolveCommit(at, source.tree, source.blob, { signal: control.signal, hosts });
-    const files = await listFiles(at, commit, folder, { signal: control.signal, hosts });
+    const { commit, folder } = await resolveCommit(at, source.tree, source.blob, { signal: control.signal, hosts, trustedNode });
+    const files = await listFiles(at, commit, folder, { signal: control.signal, hosts, trustedNode });
     const fits = skill ? files.some((file) => file.path === SKILL_FILE || file.path.endsWith(`/${SKILL_FILE}`)) : files.some((file) => file.path === FILM_FILE);
     if (!fits) throw notThere(folder);
     const total = files.reduce((sum, file) => sum + file.size, 0);
@@ -282,9 +349,9 @@ export async function fetchFilm(source, { library, onProgress = () => {}, signal
     Object.assign(progress, { phase: 'download', total, percent: 0 });
     tell();
     const dir = join(work, 'files');
-    await mkdir(dir, { recursive: true });
+    await (trustedNode.fs?.mkdir ?? mkdir)(dir, { recursive: true });
     let got = 0;
-    await downloadFiles(at, commit, folder, files, { dir, signal: control.signal, hosts, onBytes: (n) => grew((got += n)) });
+    await downloadFiles(at, commit, folder, files, { dir, signal: control.signal, hosts, trustedNode, onBytes: (n) => grew((got += n)) });
     return { from: dir, folder };
   };
 
@@ -293,12 +360,24 @@ export async function fetchFilm(source, { library, onProgress = () => {}, signal
     let ref = null;
     /** @type {string[]} */
     let folder = [];
-    if (source.tree) ({ ref, folder } = splitTree(source.tree, await remoteRefs(source.cloneUrl, control.signal), source.blob));
+    if (source.tree) ({ ref, folder } = splitTree(source.tree, await remoteRefs(source.cloneUrl, control.signal, { trustedNode }), source.blob));
     Object.assign(progress, { phase: 'download', total: null, percent: null });
     tell();
     const clone = join(work, 'clone');
     const kept = join(clone, '.git');
-    const measure = setInterval(() => { void folderSize(kept).then(grew); }, 500);
+    let measuring = true;
+    let measurementFailed = false;
+    /** @type {unknown} */
+    let measurementFailure;
+    /** @type {Promise<void> | undefined} */
+    let measurement;
+    const measure = setInterval(() => {
+      if (measurement || measurementFailed || stopped) return;
+      measurement = folderSize(kept, trustedNode)
+        .then(bytes => { if (measuring && !stopped) grew(bytes); })
+        .catch(error => { measurementFailed = true; measurementFailure = error; control.abort(); })
+        .finally(() => { measurement = undefined; });
+    }, 500);
     const onLine = (/** @type {string} */ line) => {
       /* only these two say how far the download and the writing are: the server's counting and compressing, and the
          resolving after, each run 0 to 100 too */
@@ -313,24 +392,28 @@ export async function fetchFilm(source, { library, onProgress = () => {}, signal
       tell();
     };
     try {
-      await cloneInto({ cloneUrl: source.cloneUrl, ref, folder, dir: clone, signal: control.signal, onLine });
+      await cloneInto({ cloneUrl: source.cloneUrl, ref, folder, dir: clone, signal: control.signal, onLine, trustedNode });
     } finally {
+      measuring = false;
       clearInterval(measure);
+      await measurement;
+      if (measurementFailed) throw measurementFailure;
     }
     if (stopped) throw stopped;
     /* done between two looks at its size: looked at once more */
-    grew(await folderSize(kept));
+    grew(await folderSize(kept, trustedNode));
     if (progress.bytes > maxBytes) throw tooBig();
     const from = join(clone, ...folder);
     const kind = await stat(from).catch(() => null);
     if (!kind?.isDirectory()) throw new FetchError(`There is no folder “${folder.join('/')}” in that repository.`, 404, 'no-folder');
     if (skill ? !holdsSkills(from) : !existsSync(join(from, FILM_FILE))) throw notThere(folder);
     /* the copy is the person's own: no history of where it came from, no remote */
-    await rm(join(from, '.git'), { recursive: true, force: true });
+    await (trustedNode.fs?.rm ?? rm)(join(from, '.git'), { recursive: true, force: true });
     return { from, folder };
   };
 
   try {
+    if (stopped) throw stopped;
     tell();
     const github = source.github;
     const got = (github ? await overHttp(github).catch((e) => {
@@ -340,15 +423,26 @@ export async function fetchFilm(source, { library, onProgress = () => {}, signal
     if (stopped) throw stopped;
     Object.assign(progress, { phase: 'copy' });
     tell();
+    if (stopped) throw stopped;
     const to = freeName(library, got.folder.length ? got.folder[got.folder.length - 1] : source.name);
-    await rename(got.from, to);
+    await (trustedNode.fs?.rename ?? rename)(got.from, to);
+    committedPath = to;
     return to;
   } catch (e) {
-    throw stopped ?? explain(e, where);
+    if (hasIncompleteCleanup(e)) {
+      failureFacts.set(e, { committedPath, cleanupFailures: [e] });
+      operationFailure = e;
+    } else operationFailure = stopped ?? explain(e, where);
+    throw operationFailure;
   } finally {
     clearTimeout(timer);
     signal?.removeEventListener('abort', onAbort);
-    await rm(work, { recursive: true, force: true, maxRetries: 3 }).catch(() => {});
+    try { await (trustedNode.fs?.rm ?? rm)(work, { recursive: true, force: true, maxRetries: 3 }); }
+    catch (cleanupFailure) {
+      const error = new FetchError('The fetch could not finish cleaning up.', 500, 'failed');
+      failureFacts.set(error, { committedPath, cleanupFailures: [cleanupFailure], operationFailure });
+      throw error;
+    }
   }
 }
 
@@ -363,34 +457,80 @@ function freeName(/** @type {string} */ root, /** @type {string} */ name) {
 /**
  * The fetches running in Studio, each a job the editor asks after (`get`) until it is done or failed. A finished job
  * is kept a while, then forgotten. `open` makes the fetched folder a project.
- * @param {{ library: () => string, open: (folder: string) => Promise<{ id: string }>, maxBytes?: number, timeoutMs?: number }} options
+ * @param {{ library: () => string, open: (folder: string) => Promise<{ id: string }>, maxBytes?: number, timeoutMs?: number, trustedNode?: TrustedNode }} options
  */
-export function createFetches({ library, open, maxBytes, timeoutMs }) {
+export function createFetches({ library, open, maxBytes, timeoutMs, trustedNode }) {
+  trustedNode = trustedFunctions(trustedNode);
   /**
    * @typedef {{ id: string, url: string, label: string, state: 'running' | 'done' | 'failed', phase: FetchProgress['phase'],
    *   percent: number | null, bytes: number, total: number | null, error?: string, code?: string, project?: { id: string } }} FetchJob
+   * @typedef {{ job: FetchJob, control: AbortController, task: Promise<void>, finish: () => void,
+   *   keepTimer?: ReturnType<typeof setTimeout>, committedPath?: string }} FetchEntry
    */
-  /** @type {Map<string, { job: FetchJob, control: AbortController }>} */
+  /** @type {Map<string, FetchEntry>} */
   const jobs = new Map();
+  /** @type {Set<Promise<void>>} */
+  const pending = new Set();
+  /** Retain failed retirement even after its native job stopped running. @type {Error[]} */
+  const retirementFailures = [];
   const KEEP_MS = 10 * 60 * 1000;
+  let closing = false;
+  /** @type {Promise<void> | undefined} */
+  let stopped;
+  const cancelled = () => new FetchError('Fetches have been stopped.', 499, 'cancelled');
+  /** @param {FetchEntry} entry @param {unknown} error */
+  const failed = (entry, error) => Object.assign(entry.job, {
+    state: /** @type {const} */ ('failed'), error: error instanceof Error ? error.message : String(error),
+    code: error instanceof FetchError ? error.code : 'failed',
+  });
+  /** End ownership only after the actual continuation and its bookkeeping. @param {FetchEntry} entry */
+  const finished = (entry) => {
+    if (!closing) entry.keepTimer = setTimeout(() => jobs.delete(entry.job.id), KEEP_MS).unref();
+    pending.delete(entry.task);
+    entry.finish();
+  };
   return {
-    /** Start fetching `url` (refused at once when it is not an address Studio fetches). */
+    /** Start fetching url, refused synchronously once this manager is terminal. */
     start(/** @type {unknown} */ url) {
-      const source = parseRepoUrl(url);
+      if (closing) throw cancelled();
+      const preparedUrl = String(url ?? '').trim();
+      const source = parseRepoUrl(preparedUrl);
+      if (closing) throw cancelled();
       const id = randomBytes(8).toString('base64url');
       const control = new AbortController();
       const label = [source.web.replace(/^https:\/\/[^/]+\//, ''), ...(source.tree ?? []).slice(1)].join(' / ');
       /** @type {FetchJob} */
-      const job = { id, url: String(url).trim(), label, state: 'running', phase: 'lookup', percent: null, bytes: 0, total: null };
-      jobs.set(id, { job, control });
+      const job = { id, url: preparedUrl, label, state: 'running', phase: 'lookup', percent: null, bytes: 0, total: null };
+      /** @type {() => void} */
+      let finish = () => {};
+      /** @type {Promise<void>} */
+      const task = new Promise(resolve => { finish = () => resolve(); });
+      /** @type {FetchEntry} */
+      const entry = { job, control, task, finish };
+      jobs.set(id, entry);
+      pending.add(task);
+      let destination;
+      try { destination = library(); }
+      catch (error) { failed(entry, error); finished(entry); throw error; }
+      if (closing || control.signal.aborted) {
+        failed(entry, cancelled()); finished(entry); return { ...job };
+      }
       void fetchFilm(source, {
-        library: library(), signal: control.signal, ...(maxBytes ? { maxBytes } : {}), ...(timeoutMs ? { timeoutMs } : {}),
+        library: destination, signal: control.signal, trustedNode, ...(maxBytes ? { maxBytes } : {}), ...(timeoutMs ? { timeoutMs } : {}),
         onProgress: (p) => Object.assign(job, p),
       })
-        .then(open)
-        .then((project) => Object.assign(job, { state: 'done', project }))
-        .catch((e) => Object.assign(job, { state: 'failed', error: e instanceof Error ? e.message : String(e), code: e instanceof FetchError ? e.code : 'failed' }))
-        .finally(() => setTimeout(() => jobs.delete(id), KEEP_MS).unref());
+        .then(folder => {
+          /* The job owns this published fact even when terminal admission refuses open. */
+          entry.committedPath = folder;
+          if (closing || control.signal.aborted) throw cancelled();
+          return open(folder);
+        })
+        .then(project => Object.assign(job, { state: /** @type {const} */ ('done'), project }))
+        .catch(error => {
+          if (error instanceof Error && failureFacts.get(error)?.cleanupFailures.length) retirementFailures.push(error);
+          failed(entry, error);
+        })
+        .finally(() => finished(entry));
       return { ...job };
     },
     get(/** @type {string} */ id) {
@@ -399,6 +539,28 @@ export function createFetches({ library, open, maxBytes, timeoutMs }) {
       return { ...found.job };
     },
     cancel(/** @type {string} */ id) { jobs.get(id)?.control.abort(); },
-    stopAll() { for (const { control } of jobs.values()) control.abort(); },
+    stopAll() {
+      if (stopped) return stopped;
+      closing = true;
+      /** @type {() => void} */
+      let done = () => {};
+      /** @type {(reason: unknown) => void} */
+      let fail = () => {};
+      /** @type {Promise<void>} */
+      const completion = new Promise((resolve, reject) => { done = () => resolve(); fail = reject; });
+      stopped = completion;
+      const acquired = [...pending];
+      /** @type {unknown[]} */
+      const abortErrors = [];
+      for (const entry of jobs.values()) {
+        clearTimeout(entry.keepTimer); entry.keepTimer = undefined;
+        try { entry.control.abort(); } catch (error) { abortErrors.push(error); }
+      }
+      void Promise.allSettled(acquired).then(() => {
+        if (abortErrors.length || retirementFailures.length) fail(new AggregateError([...abortErrors, ...retirementFailures], 'Fetches could not fully retire.'));
+        else done();
+      });
+      return completion;
+    },
   };
 }

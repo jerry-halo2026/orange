@@ -1,0 +1,305 @@
+{
+  "taskId": "T03.business",
+  "parentTask": "T03",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
+  "classification": "native-extension; original desktop utility private current-session relay to actual existing Orange backend, no new shell/module/protocol/DTO",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "96d957cfe94534a5b33af9c216078502421facd4"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
+  "branch": "codex/desktop-business-bridge",
+  "scope": "One minimum real private desktop-to-backend wire for existing materials resolve/Fission claim/status/cancel. Worker native prepare/execute composition still separate consumer; absent genuine producer remains explicit unavailable with zero worker spawn, no selftest business grant.",
+  "writeAllowlist": [
+    "apps/desktop/src/auth-service.mjs",
+    "apps/desktop/src/desktop-auth.mjs",
+    "apps/desktop/src/studio-process.mjs",
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/server/fission.mjs",
+    "apps/desktop/src/auth-service.test.mjs",
+    "apps/desktop/src/desktop-auth.test.mjs",
+    "packages/openfilm/studio/server/fission.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18471,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18472,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18571,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18572,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/server.mjs"
+    ],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-prepare-assignment.json",
+        "assignmentRevision": 3,
+        "sha256": "3c8e562d890f2e69e8966c1e0dce936577646d6dbc0eec160e071df1e71fa493"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T02.business",
+        "commit": "96d957cfe94534a5b33af9c216078502421facd4",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "apps/api/src/server.ts",
+            "sha256": "d21b4bd66f19671a3f1164b451488032125d1c7a815003ff2d5362d835a57624",
+            "gitBlobSha256": "d21b4bd66f19671a3f1164b451488032125d1c7a815003ff2d5362d835a57624"
+          },
+          {
+            "path": "apps/api/src/admission.ts",
+            "sha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54",
+            "gitBlobSha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54"
+          },
+          {
+            "path": "apps/api/src/supabase.ts",
+            "sha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44",
+            "gitBlobSha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/business.test.ts",
+            "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+            "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+          },
+          {
+            "path": "apps/api/fixtures/prepared-v1.json",
+            "sha256": "efdc30d264fb5a15f6312d616cff66f4de7bcc99b739dc660dad39d3e2c165ac",
+            "gitBlobSha256": "efdc30d264fb5a15f6312d616cff66f4de7bcc99b739dc660dad39d3e2c165ac"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-business-T02-review.json",
+          "sha256": "50462b6106ab402d562511fadf321281f1ceeefa70940418647db93f7605db6c",
+          "gitBlobSha256": "50462b6106ab402d562511fadf321281f1ceeefa70940418647db93f7605db6c"
+        }
+      },
+      {
+        "taskId": "T03",
+        "commit": "96d957cfe94534a5b33af9c216078502421facd4",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+            "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+            "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/project-access.test.mjs",
+            "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+            "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+            "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+            "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-business-T03-review.json",
+          "sha256": "16b7fb681be702e7191a7f50652c89bcf9ac87fa777cbfd5d4459113726f7efd",
+          "gitBlobSha256": "16b7fb681be702e7191a7f50652c89bcf9ac87fa777cbfd5d4459113726f7efd"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "96d957cfe94534a5b33af9c216078502421facd4",
+    "files": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+        "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.mjs",
+        "sha256": "a0418ffcf55d680324e69b9ae8543cc9ffd278700bedf52806224cec4da69f5a",
+        "gitBlobSha256": "a0418ffcf55d680324e69b9ae8543cc9ffd278700bedf52806224cec4da69f5a"
+      },
+      {
+        "path": "apps/desktop/src/studio-process.mjs",
+        "sha256": "b1fdb741f57cf6788eea515b9e54aae58bef8d18153dbeba36064f4563ba4a92",
+        "gitBlobSha256": "b1fdb741f57cf6788eea515b9e54aae58bef8d18153dbeba36064f4563ba4a92"
+      },
+      {
+        "path": "packages/openfilm/studio/server/server.mjs",
+        "sha256": "aa40f2f803e6c41a532b56a721d75e1b33bd2749be1aa16178835514d3b6c25f",
+        "gitBlobSha256": "aa40f2f803e6c41a532b56a721d75e1b33bd2749be1aa16178835514d3b6c25f"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fission.mjs",
+        "sha256": "fdcc321a4920b1dead28eb0038e692ebf62713759054d7401e25e82bdbc5e001",
+        "gitBlobSha256": "fdcc321a4920b1dead28eb0038e692ebf62713759054d7401e25e82bdbc5e001"
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+        "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.test.mjs",
+        "sha256": "251b11290e677d74835d5d58ae1184aedcaf8d13bee5722f0f612bc4f93b6ecd",
+        "gitBlobSha256": "251b11290e677d74835d5d58ae1184aedcaf8d13bee5722f0f612bc4f93b6ecd"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fission.test.mjs",
+        "sha256": "58d8c5299559cfc654c2912c2fa00e321aee8ebcc60b66bcc21a6049cf1ebc26",
+        "gitBlobSha256": "58d8c5299559cfc654c2912c2fa00e321aee8ebcc60b66bcc21a6049cf1ebc26"
+      }
+    ],
+    "preservation": "all original tests retained; original Auth6 public methods, Job/IO/CLI/IDs/seconds/16hex rev and UI kept"
+  },
+  "requirements": [
+    "Extend only original safe auth configuration with optional businessOrigin; old threefields still valid and are stripped to original auth config before construction. Missing business target disables only business. Fixed trusted HTTPS or explicit numeric loopback HTTP, no credentials/query/fragment/redirect/custom caller target; never read normal user fallback.",
+    "Original createAuthService six public methods and evidence fields unchanged. Optional trusted dependencies.business={origin,bind} may bind a generation-scoped request capability inside token closure for exactly existing backend resolve/claim/status/cancel operations; no raw token getter/return/log/env/renderer, no proxy/framework/newmodule.",
+    "Business capability checks same current verified evidence/epoch/deadline before dispatch and acceptance. DesktopAuth also gates actual active owned workspace and records in original operations set. Fence/signout/expiry/revocation/failed activation synchronously seal and cancel, await true requests/entered native operations on retirement; late responses cannot reactivate/change account. Abort is NOT evidence remote claim rolled back.",
+    "Only original native server key/Origin and actual owned project entry allowed. Read native projectId and readProjectFilm revision at request, do not trust HTTP replacement owner/admin/prepared/approved/subject/token/projectRev fields. Preserve original FissionJob; groupId and idempotencyKey are existing backend arguments, no default fake membership/fixture permission.",
+    "Utility injects only private trusted adapter into original startStudio/createFission. HTTP cannot install an adapter/credentials or select a foreign endpoint. Forward exact current verified Bearer to actual backend, no role key in desktop; remote backend remains sole fresh membership/license/plan authority. Known authentication rejection fences; material permission denial must not be mislabeled as successful login or unconditionally grant.",
+    "Original Fission route/run/cancel uses existing backend fields. Status/duplicate/unknown/cancel uncertainty stays original backend result; same operation stable key is retained, no automatic newkey/reprepare/retry after response loss, no fabricated release. Current genuine native worker producer absent means explicit503/zero old selftest/worker launch; this package alone is not executable business chain or shrink of it.",
+    "TDD first within three allowed original test files: old config/Auth6 compatibility, no token/redirect, A/B and expiry syncfence/late response, true business request retirement drain, original HTTP relay payload/projectRev binding, cancel uncertainty, original Job compatibility, missing realprepare zero worker. Use actual small loopback HTTP+existing actual backend composition with synthetic own principals; no real cloud/key/user media/LLM.",
+    "Only eight source/test files. No main/preload/renderer/newmodules/Job DTO/lock/CI/newdeps or tool/provider installation. Use new own .dev/desktop-business/attempt-* HOME/TMP/cache/logs; already-approved original package links may be materialized by Root only according to exact new tools manifest, workspace packages must target E5, no source alias to live E4 or .bin/default-profile fallback.",
+    "After targeted RED/GREEN run affected original tests and original typechecks; freeze raw/canonical/actual process exit+close+latest candidate, nonauthor SPECQUALITY and actual N5a before sourcecommit, serial integration. Do not repeat unrelated19PG/C# or media. Full17/realbinding/real business permissions/worker integration remain pending."
+  ],
+  "implementationSteps": [
+    "Add exact original tests to prove missing private relay/fence/HTTP behavior RED without environment failure.",
+    "Implement smallest original five-source injection/closure/route wire; preserve original tests/API.",
+    "Prove targeted green, real loopback HTTP forwarding/drain/zero worker fallback and affected original regressions/types.",
+    "Freeze exact8 for nonauthor review; same-card forward fixes and root serial integration only."
+  ],
+  "tooling": {
+    "path": "docs/execution/desktop-business-local-tools.json",
+    "sha256": "e3f138f5a87d3ff9a421e81f93b7c45a92e91854fe2e7f9da7c9da442505ae01",
+    "allow": "Root creates only missing approved ordinary parents/package directory junctions; original exact external packages readonly. No install/download/scripts/whole live node_modules alias or changes to normal profiles.",
+    "links": 45,
+    "forwardCorrection": "Only previously installed exact playwright-core package missing at E5 packages/openfilm level; explicit own directory junction added, no new package/version."
+  },
+  "runtime": {
+    "network": "only owned loopback fixture listeners18471/18472/18571/18572, no cloud/HTTP suppliers/models",
+    "files": "fresh own attempt only; preserve all old profiles/archives/artifacts",
+    "processes": "original Node tests/types, no Electron UI/Edge/Harness/model/media/Docker worker launch",
+    "limits": "60sec per test child,20MiB logs; timeout/forced exit recorded as failure, no fake preservation"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.b/T03/T04 real existing desktop consumer",
+  "forbidden": [
+    "source outside8",
+    "new shell/material library/editor/Job/Timeline/protocol framework",
+    "real cloud business writes/rolekey/cloud settings/media/model/network suppliers",
+    "default user credentials or live E4 writes",
+    "dev/main/tag/push/release"
+  ],
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD native-consumed input review/tools metadata and actual freshN5a; branch already materialized fromverifieddev toqualified96d, no sourcewriter"
+}

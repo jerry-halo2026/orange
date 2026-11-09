@@ -1,0 +1,79 @@
+{
+  "taskId": "T03",
+  "commit": "96d957cfe94534a5b33af9c216078502421facd4",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+      "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+      "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    }
+  ],
+  "scope": "original native readProjectFilm/project ID/rev and owner/guard primitives used by private relay only; no broader pilot",
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "evidence": {
+    "reviewKind": "non-author read-only consumed-input and bounded assignment/tools review; not implementation or full-cloud acceptance",
+    "assignmentSHA256": "770aff84b51808d564ad5ed2b6cdde55965802760d33f484260dd06124ed6a8b",
+    "toolsSHA256": "e3f138f5a87d3ff9a421e81f93b7c45a92e91854fe2e7f9da7c9da442505ae01",
+    "actualWorktree": "E:/CodexData/worktrees/orange-business-admission/orange",
+    "actualHead": "96d957cfe94534a5b33af9c216078502421facd4",
+    "actualBranch": "codex/desktop-business-bridge",
+    "gitCleanAtReview": true,
+    "scopeReviewed": "8 existing files only:5 source+3 original tests, Auth6 public API/native UI/Job/IO unchanged; no main/preload/renderer/new module",
+    "all16ConsumedSourceAndFixtureE5RawAndReferencedGitMatch": true,
+    "all8EditableBaselineE5RawAndGitMatch": true,
+    "toolLinks": {
+      "planned": 45,
+      "externalReadOnlyE1PinnedPackages": 43,
+      "workspaceE5Only": 2,
+      "packageNameVersionAndManifestHashChecked": true,
+      "notMaterializedOrExecutedByReviewer": true,
+      "coreMissingCorrected": "packages/openfilm/node_modules/playwright-core is absent inE5; newly permitted exact own junction to pinnedE1 1.61.1, never an alleged existingE4 identity",
+      "liveE4SourceAlias": false,
+      "wholeNodeModulesAlias": false,
+      "installOrNetwork": false
+    },
+    "nativeSignatures": {
+      "readProjectFilm": "async readProjectFilm(root) -> {text,rev,value,doc,problems}; original16hex rev, current owned root at request",
+      "filmModuleSHA256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+      "owner": "desktopAuth authorizeProject/projectRecord: verified environmentId+subjectId+native projectId+canonical root; runNative retains controlled guard/operations",
+      "guard": "createProjectControlGuard.withNativeAccess(input,work); controlled reservation run/include/close retained; no raw request owner/subject/admin replaces authority"
+    },
+    "existingBackend": "exact existing POST materials/resolve,POST claims,GET claim,POST claim/cancel; payload filmRev from native read, original Job preserved; credential only private current-session closure",
+    "securityBoundaries": "same evidence/epoch/deadline before dispatch and acceptance; synchronous fence/abort plus actual request drain, no redirect/token getter/HTTP supplied adapter; remote claim outcome stays uncertain after lost response",
+    "missingProducer": "real prepare/execute not connected by this package; explicit503 and zero worker/selftest grant required",
+    "otherProofsReused": "T01 approved frozen3956cb1e; T02.business Root non-author50462b61 only selected consumer scope, no new cloud qualification",
+    "activeWorkerWriteIntersection": [],
+    "reviewerTestsRun": 0,
+    "reviewerNetworkOrGUIOrModelCalls": 0,
+    "executionHeldFor": "Root actual tool materialization+metadata+fresh N5a before author TDD; later source non-author review and serial integration",
+    "priorPendingReviewSHA256": "b15b8436b3315a7f0089d8380f9b815302d716d49d7a19a2650f57e7e4021081"
+  }
+}

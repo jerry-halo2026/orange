@@ -1,0 +1,48 @@
+{
+  "taskId": "T02.business",
+  "commit": "96d957cfe94534a5b33af9c216078502421facd4",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "d21b4bd66f19671a3f1164b451488032125d1c7a815003ff2d5362d835a57624",
+      "gitBlobSha256": "d21b4bd66f19671a3f1164b451488032125d1c7a815003ff2d5362d835a57624"
+    },
+    {
+      "path": "apps/api/src/admission.ts",
+      "sha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54",
+      "gitBlobSha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54"
+    },
+    {
+      "path": "apps/api/src/supabase.ts",
+      "sha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44",
+      "gitBlobSha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/business.test.ts",
+      "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+    },
+    {
+      "path": "apps/api/fixtures/prepared-v1.json",
+      "sha256": "efdc30d264fb5a15f6312d616cff66f4de7bcc99b739dc660dad39d3e2c165ac",
+      "gitBlobSha256": "efdc30d264fb5a15f6312d616cff66f4de7bcc99b739dc660dad39d3e2c165ac"
+    }
+  ],
+  "scope": "exact HTTP material/claim/status/cancel consumer and native original Job fingerprint input only; no real cloud/worker/whole business acceptance",
+  "evidence": {
+    "sourceCommit": "f5b0ea000dbdf5f8fd3d6d69a219629ec46b41a7",
+    "sourceNonAuthorReviewSHA256": "6de5096829d65fa88d74ee0b7fd19911624036919e5adcbc667b5040380cd4d2",
+    "rootActualLatestNode13AndDeclaredTypesExitClose0": true,
+    "latestNonAuthorReviewSHA256": "21b44290da0d132e1d23aa36678b183c3013a1e4bee9a2f952ba3ffb8eb685ac",
+    "sourceAndSelectedFixtureGitMatch": true
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

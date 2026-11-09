@@ -406,6 +406,19 @@
       "externalGates": [],
       "currentAssignment": "docs/execution/fission-prepare-assignment.json",
       "businessGrantNotConferredBySnapshot": true
+    },
+    {
+      "id": "T03.business",
+      "parentTask": "T03",
+      "status": "in_progress",
+      "scope": "One minimum real private desktop-to-backend wire for existing materials resolve/Fission claim/status/cancel. Worker native prepare/execute composition still separate consumer; absent genuine producer remains explicit unavailable with zero worker spawn, no selftest business grant.",
+      "dependsOn": [
+        "T01",
+        "T02.business",
+        "T03"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/desktop-business-bridge-assignment.json"
     }
   ],
   "umbrella": [

@@ -1,0 +1,412 @@
+{
+  "root": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+  "links": [
+    {
+      "path": "apps/desktop/node_modules/@agentclientprotocol/claude-agent-acp",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@agentclientprotocol+claude-agent-acp@0.81.2_@anthropic-ai+sdk@0.129.0_zod@4.6.6__@modelconte_l2ce5kcepuysmovids52yszjye/node_modules/@agentclientprotocol/claude-agent-acp",
+      "package": {
+        "name": "@agentclientprotocol/claude-agent-acp",
+        "version": "0.81.2",
+        "sha256": "babacb99324687f02d54f0894c6ebdab1240fa057e4c325464f3390b93ea8a65"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@agentclientprotocol/codex-acp",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@agentclientprotocol+codex-acp@1.13.1/node_modules/@agentclientprotocol/codex-acp",
+      "package": {
+        "name": "@agentclientprotocol/codex-acp",
+        "version": "1.13.1",
+        "sha256": "21ad8f19e81d9c65ff32c48161de14235e91d30626cd32e05856875ae0f48b8a"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@agentclientprotocol/sdk",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@agentclientprotocol+sdk@1.5.0_zod@4.6.6/node_modules/@agentclientprotocol/sdk",
+      "package": {
+        "name": "@agentclientprotocol/sdk",
+        "version": "1.5.0",
+        "sha256": "969fdad4337472e3394a2295fe00c6fc73871f1e909b97d4e86de5f5c53c516f"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@earendil-works/pi-codemode",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@earendil-works+pi-codemode@1.1.0/node_modules/@earendil-works/pi-codemode",
+      "package": {
+        "name": "@earendil-works/pi-codemode",
+        "version": "1.1.0",
+        "sha256": "db29ead32ca3101649e20b6c9bacfdbf1196bd8e95248b66ed621c48440acf03"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@earendil-works/pi-coding-agent",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@earendil-works+pi-coding-agent@1.1.0_@aws-sdk+credential-provider-node@3.972.84_@modelcontex_dmorh2hmha6ydiiovtvu54tvdm/node_modules/@earendil-works/pi-coding-agent",
+      "package": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "1.1.0",
+        "sha256": "c662a36f8bc47843393a60dc8616a34dfcc8376e8fcc96dbc2f1020c60e38e2a"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@fontsource-variable/inter",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@fontsource-variable+inter@5.3.0/node_modules/@fontsource-variable/inter",
+      "package": {
+        "name": "@fontsource-variable/inter",
+        "version": "5.3.0",
+        "sha256": "1075dffa0a9ec739bdee2af296b481d2867d305d41be9e0439ca3313d3ad1298"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@lexical/react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@lexical+react@0.49.0_react-dom@19.3.0_react@19.3.0__react@19.3.0_typescript@5.9.3_yjs@13.6.33/node_modules/@lexical/react",
+      "package": {
+        "name": "@lexical/react",
+        "version": "0.49.0",
+        "sha256": "241ce4f9289e70ada5508cb6d8a0860fc497c24ceddf4629b11864e7c5ed9408"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@openfilm/shared",
+      "target": "E:/CodexData/worktrees/orange-native-type-baseline/orange/packages/shared",
+      "package": {
+        "name": "@openfilm/shared",
+        "version": "0.3.0",
+        "sha256": "95612c99a625912eeb4721664d232f10699333a500a0abf489497fccc8ea2907"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@tailwindcss/vite",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@tailwindcss+vite@4.3.3_vite@7.3.7_@types+node@24.19.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.15_yaml@2.9.0_/node_modules/@tailwindcss/vite",
+      "package": {
+        "name": "@tailwindcss/vite",
+        "version": "4.3.3",
+        "sha256": "cba2bb8613106ca608bbd757998b2cf56a464584e3848310338fe3fe3b4761aa"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@types/react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@types+react@19.3.0/node_modules/@types/react",
+      "package": {
+        "name": "@types/react",
+        "version": "19.3.0",
+        "sha256": "505c0df4cd73d6a02c946bd9b81451584bd9c83ea72d75cff9b826efceaa19c2"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@types/react-dom",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@types+react-dom@19.3.0_@types+react@19.3.0/node_modules/@types/react-dom",
+      "package": {
+        "name": "@types/react-dom",
+        "version": "19.3.0",
+        "sha256": "4a2052bb362c34f1d39cfe0818b6fe01a9f988b609e8b7e4832aff7dbf2f7180"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/@vitejs/plugin-react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@vitejs+plugin-react@5.2.0_vite@7.3.7_@types+node@24.19.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.15_yaml@2.9.0_/node_modules/@vitejs/plugin-react",
+      "package": {
+        "name": "@vitejs/plugin-react",
+        "version": "5.2.0",
+        "sha256": "162dae2eb246170739d7899d2ce1715a3e17f775fcd75a674da6be6f681225d6"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/diff",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/diff@9.0.0/node_modules/diff",
+      "package": {
+        "name": "diff",
+        "version": "9.0.0",
+        "sha256": "1c625fe9bba43722c8d8fbd8c2b70edcab5473d75f8d66a862f9800b415aa014"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/electron",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/electron@44.9.3/node_modules/electron",
+      "package": {
+        "name": "electron",
+        "version": "44.9.3",
+        "sha256": "a0c3441998dbec5eb87ba7b8b809e97692bd7f1893ec4d1c51ccd15573445308"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/electron-builder",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/electron-builder@26.15.3_electron-builder-squirrel-windows@26.15.3/node_modules/electron-builder",
+      "package": {
+        "name": "electron-builder",
+        "version": "26.15.3",
+        "sha256": "181429cbec2bbf9286b8e421034dde4386ddefc5fe938b6e15711d63126fd51f"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/electron-updater",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/electron-updater@6.8.9/node_modules/electron-updater",
+      "package": {
+        "name": "electron-updater",
+        "version": "6.8.9",
+        "sha256": "ea6e61c4b56bbcd46aeae6b0636cc6c115ccee7f8ce6de4faea9ef3bf94d8988"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/gsap",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/gsap@3.15.0/node_modules/gsap",
+      "package": {
+        "name": "gsap",
+        "version": "3.15.0",
+        "sha256": "85cc13e31f7a3cd124b587a40f545f265f47d0dfb9a556bb122d70fc0fca3459"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/lexical",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/lexical@0.49.0_typescript@5.9.3/node_modules/lexical",
+      "package": {
+        "name": "lexical",
+        "version": "0.49.0",
+        "sha256": "e8f3553206726b043821886d32ae92238264bbc00219d5aecd4333364a824bc0"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/lucide-react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/lucide-react@0.469.0_react@19.3.0/node_modules/lucide-react",
+      "package": {
+        "name": "lucide-react",
+        "version": "0.469.0",
+        "sha256": "5f7847069af4891ebb8ba137a0bf2213e7580d5123e079ebfe14c649a47fc4ad"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/openfilm",
+      "target": "E:/CodexData/worktrees/orange-native-type-baseline/orange/packages/openfilm",
+      "package": {
+        "name": "openfilm",
+        "version": "0.3.0",
+        "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/pe-library",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/pe-library@2.0.1/node_modules/pe-library",
+      "package": {
+        "name": "pe-library",
+        "version": "2.0.1",
+        "sha256": "8ae5b2ecc0b4ad7e83b0e22be58e1c3b5079009fb18072dc2ec5ef792b9bbd0d"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/playwright-core",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/playwright-core@1.61.1/node_modules/playwright-core",
+      "package": {
+        "name": "playwright-core",
+        "version": "1.61.1",
+        "sha256": "759e376f995bf39edd4810d699b99469bab1d7428b6fbc78d41912f367df7ba9"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/react@19.3.0/node_modules/react",
+      "package": {
+        "name": "react",
+        "version": "19.3.0",
+        "sha256": "6e003e4e9ed25afa7fdd55613f8aa877cefa9b359d9c13f81ee704030248e24e"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/react-dom",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom",
+      "package": {
+        "name": "react-dom",
+        "version": "19.3.0",
+        "sha256": "136d4af63de473392ea79d6a21932b0ed9eb37fe518ce70f4621250f3d79e9bb"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/resedit",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/resedit@3.1.0/node_modules/resedit",
+      "package": {
+        "name": "resedit",
+        "version": "3.1.0",
+        "sha256": "3f3f8543b9215c275b712bc0aefebbd703b4258ad337af9211eba9bc91c2a62e"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/tailwindcss",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/tailwindcss@4.3.3/node_modules/tailwindcss",
+      "package": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "sha256": "3dc86b46c511947ca00838aa3f1776243abe923ac347c092e60a0cbc7ae68559"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/typescript",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript",
+      "package": {
+        "name": "typescript",
+        "version": "5.9.3",
+        "sha256": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/undici",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/undici@8.12.2/node_modules/undici",
+      "package": {
+        "name": "undici",
+        "version": "8.12.2",
+        "sha256": "16723528eaa06df7f3b29ea52584e9127608fd9e8de066c39339aa806ad9da84"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/vite",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/vite@7.3.7_@types+node@24.19.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.15_yaml@2.9.0/node_modules/vite",
+      "package": {
+        "name": "vite",
+        "version": "7.3.7",
+        "sha256": "aae1f593c0e6f320989b60af6e90f8ed4ea5137e5a0b9db663f9b0088333eb3c"
+      }
+    },
+    {
+      "path": "apps/desktop/node_modules/zustand",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/zustand@5.0.15_@types+react@19.3.0_react@19.3.0_use-sync-external-store@1.7.0_react@19.3.0_/node_modules/zustand",
+      "package": {
+        "name": "zustand",
+        "version": "5.0.15",
+        "sha256": "b53b4d5e7f6baeb1e832792390354f8af54edaefbd6fe23b490a4d2d2e37dff1"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@fontsource-variable/inter",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@fontsource-variable+inter@5.3.0/node_modules/@fontsource-variable/inter",
+      "package": {
+        "name": "@fontsource-variable/inter",
+        "version": "5.3.0",
+        "sha256": "1075dffa0a9ec739bdee2af296b481d2867d305d41be9e0439ca3313d3ad1298"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@tailwindcss/vite",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@tailwindcss+vite@4.3.3_vite@7.3.7_@types+node@22.20.5_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.15_yaml@2.9.0_/node_modules/@tailwindcss/vite",
+      "package": {
+        "name": "@tailwindcss/vite",
+        "version": "4.3.3",
+        "sha256": "cba2bb8613106ca608bbd757998b2cf56a464584e3848310338fe3fe3b4761aa"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@types/node",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@types+node@22.20.5/node_modules/@types/node",
+      "package": {
+        "name": "@types/node",
+        "version": "22.20.5",
+        "sha256": "234e64edc31580d6052f8abc89b96f156de29d3b4c7121214b960dec09bd2a25"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@types/react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@types+react@19.3.0/node_modules/@types/react",
+      "package": {
+        "name": "@types/react",
+        "version": "19.3.0",
+        "sha256": "505c0df4cd73d6a02c946bd9b81451584bd9c83ea72d75cff9b826efceaa19c2"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@types/react-dom",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@types+react-dom@19.3.0_@types+react@19.3.0/node_modules/@types/react-dom",
+      "package": {
+        "name": "@types/react-dom",
+        "version": "19.3.0",
+        "sha256": "4a2052bb362c34f1d39cfe0818b6fe01a9f988b609e8b7e4832aff7dbf2f7180"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@vitejs/plugin-react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@vitejs+plugin-react@5.2.0_vite@7.3.7_@types+node@22.20.5_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.15_yaml@2.9.0_/node_modules/@vitejs/plugin-react",
+      "package": {
+        "name": "@vitejs/plugin-react",
+        "version": "5.2.0",
+        "sha256": "162dae2eb246170739d7899d2ce1715a3e17f775fcd75a674da6be6f681225d6"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/@xyflow/react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/@xyflow+react@12.12.0_@types+react-dom@19.3.0_@types+react@19.3.0__@types+react@19.3.0_react-_yswax5wfcqt5fud5eytr3fbz5e/node_modules/@xyflow/react",
+      "package": {
+        "name": "@xyflow/react",
+        "version": "12.12.0",
+        "sha256": "92d35db4281bb51c2b755b26b9d479957273d48e8c17e5d7faceab704aee58cb"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/lucide-react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/lucide-react@0.469.0_react@19.3.0/node_modules/lucide-react",
+      "package": {
+        "name": "lucide-react",
+        "version": "0.469.0",
+        "sha256": "5f7847069af4891ebb8ba137a0bf2213e7580d5123e079ebfe14c649a47fc4ad"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/react",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/react@19.3.0/node_modules/react",
+      "package": {
+        "name": "react",
+        "version": "19.3.0",
+        "sha256": "6e003e4e9ed25afa7fdd55613f8aa877cefa9b359d9c13f81ee704030248e24e"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/react-dom",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/react-dom@19.3.0_react@19.3.0/node_modules/react-dom",
+      "package": {
+        "name": "react-dom",
+        "version": "19.3.0",
+        "sha256": "136d4af63de473392ea79d6a21932b0ed9eb37fe518ce70f4621250f3d79e9bb"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/tailwindcss",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/tailwindcss@4.3.3/node_modules/tailwindcss",
+      "package": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "sha256": "3dc86b46c511947ca00838aa3f1776243abe923ac347c092e60a0cbc7ae68559"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/typescript",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript",
+      "package": {
+        "name": "typescript",
+        "version": "5.9.3",
+        "sha256": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6"
+      }
+    },
+    {
+      "path": "packages/openfilm/node_modules/vite",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/vite@7.3.7_@types+node@22.20.5_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.15_yaml@2.9.0/node_modules/vite",
+      "package": {
+        "name": "vite",
+        "version": "7.3.7",
+        "sha256": "aae1f593c0e6f320989b60af6e90f8ed4ea5137e5a0b9db663f9b0088333eb3c"
+      }
+    },
+    {
+      "path": "packages/shared/node_modules/zod",
+      "target": "E:/CodexData/worktrees/orange-t01-isolation/orange/node_modules/.pnpm/zod@4.6.6/node_modules/zod",
+      "package": {
+        "name": "zod",
+        "version": "4.6.6",
+        "sha256": "cff7e142055a9dd9bc2947a71ca3fb5e3aacdfda966d7728993ff3656245b94a"
+      }
+    }
+  ],
+  "scope": "Missing dependency directory junctions only, no install/download/scripts/lock/config/source changes. Preserve existing actual original Core106 (existing link identity and target bytes) and prior artifacts. Workspace aliases point to THIS E4 original source.",
+  "core": {
+    "path": "packages/openfilm/node_modules/playwright-core",
+    "isLink": true,
+    "linkTarget": "E:\\CodexData\\worktrees\\orange-t01-isolation\\orange\\packages\\openfilm\\node_modules\\playwright-core",
+    "realPath": "E:\\CodexData\\worktrees\\orange-t01-isolation\\orange\\node_modules\\.pnpm\\playwright-core@1.61.1\\node_modules\\playwright-core",
+    "version": "1.61.1",
+    "packageSHA256": "759e376f995bf39edd4810d699b99469bab1d7428b6fbc78d41912f367df7ba9",
+    "files": 106,
+    "preserveIdentityAndTarget": true
+  }
+}

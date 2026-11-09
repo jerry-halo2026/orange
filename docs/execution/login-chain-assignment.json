@@ -1,6 +1,6 @@
 {
   "taskId": "T03",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "authorAgent": "/root/desktop_login_integration",
   "actualModelAndEffort": "inherited runtime; backend not exposed or attested; no override",
   "status": "active",
@@ -28,7 +28,9 @@
     "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
     "packages/openfilm/studio/server/projects.mjs",
     "packages/openfilm/studio/server/project-control-guard.mjs",
-    "packages/openfilm/studio/server/project-control-guard.test.mjs"
+    "packages/openfilm/studio/server/project-control-guard.test.mjs",
+    "packages/openfilm/bin/openfilm.mjs",
+    "packages/openfilm/bin/openfilm-auth.test.mjs"
   ],
   "resourceLeases": [
     {
@@ -219,13 +221,19 @@
         "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
         "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
         "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+      },
+      {
+        "path": "packages/openfilm/bin/openfilm.mjs",
+        "sha256": "0e21c31a8a3be49e0bfef12aea2bc850d7a38fcd4fd1401a9f21b8e6577bb532",
+        "gitBlobSha256": "0e21c31a8a3be49e0bfef12aea2bc850d7a38fcd4fd1401a9f21b8e6577bb532"
       }
     ],
     "newFiles": [
       "apps/desktop/src/desktop-auth.mjs",
       "apps/desktop/src/desktop-auth.test.mjs",
       "apps/desktop/shell/Login.tsx",
-      "packages/openfilm/studio/server/desktop-auth-entry.test.mjs"
+      "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
+      "packages/openfilm/bin/openfilm-auth.test.mjs"
     ]
   },
   "runtimeNamespaces": {
@@ -254,5 +262,18 @@
     "owner": "private local metadata links verified environment+subject to native opaque project id+canonical root; create only on trusted authenticated original create; unknown old projects denied, no automatic claiming",
     "retirement": "seal admission before any await, hide existing views, await actual running native operations/streams+parent child close before allowing another identity; if retirement/preservation cannot be proven leave access locked, no fake zero-active claim",
     "noFullEnterprisePrerequisite": "No new IAM platform/generic policy service/framework; only necessary local login/project boundaries of this consumer"
+  },
+  "forwardScope": {
+    "reason": "Original CLI look/render enters host directly and must not bypass controlled-project ownership; same login functional package, not a new framework",
+    "files": [
+      "packages/openfilm/bin/openfilm.mjs",
+      "packages/openfilm/bin/openfilm-auth.test.mjs"
+    ],
+    "behavior": "Hold the original guard native reader over the ENTIRE actual look/render Promise and retirement, not a noop point check. Existing controlled marker refuses before open/keptNotice/host/render/download; generic instruction to use logged-in Studio export. Ordinary unmarked original project and help/version remain native; actual controlled ownership cannot race early reader release."
+  },
+  "tooling": {
+    "plan": "docs/execution/login-chain-local-tools.json",
+    "sha256": "6d65fd096c116723c374b1cf6b0cc26d1826c2be90f78d3e95e1fbe61d966111",
+    "allow": "Root materializes only missing approved links and ordinary parents, then author may use existing original TypeScript/React/Vite/build tools. Original vite config to fresh attempt/shell-build --emptyOutDir false only, never overwrite existing shell/dist. No package installer, download, scripts or new versions."
   }
 }

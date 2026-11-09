@@ -7,11 +7,11 @@
   "cards": [
     {
       "path": "docs/execution/login-chain-assignment.json",
-      "sha256": "f8e896353a16133726ed92fba180b7046590b3c466b967fe6cfd3664e128949e"
+      "sha256": "69436cb84d7bf2a1e477506f6368bf8f06eabc1f4d0e7e86ad42daa99928953f"
     },
     {
       "path": "docs/execution/fission-cli-chain-assignment.json",
-      "sha256": "ed1fc183f1e3400e83acb360421f4b483ec835a706d36aa200127d285db8bfdd"
+      "sha256": "cd5db7e3a439f160d0d29119777323dbe718eab3eea033292ebd82086fd4933b"
     }
   ],
   "inputProofs": [
@@ -46,5 +46,19 @@
     "cause": "E1 original mixed-newline raw differs from actual existing E3/E4 exact canonical Git LF; first N5a DEPENDENCY_HASH refusal preserved",
     "onlyChange": "T01 fixture raw SHA in two consumer proofs and corresponding card fixture/test records, proof/reference SHAs; original Git and actual files unchanged",
     "actual": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+  },
+  "forwardLoginRevision2": {
+    "reviewerAgent": "/root/integration_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0,
+    "cardSHA256": "69436cb84d7bf2a1e477506f6368bf8f06eabc1f4d0e7e86ad42daa99928953f",
+    "toolsSHA256": "6d65fd096c116723c374b1cf6b0cc26d1826c2be90f78d3e95e1fbe61d966111",
+    "additionalWrites": [
+      "packages/openfilm/bin/openfilm.mjs",
+      "packages/openfilm/bin/openfilm-auth.test.mjs"
+    ],
+    "conditions": "Whole look/render native guard reader lifetime; only44 missing original dependency junctions+ordinary parents, E4 workspace aliases point to itself; preserve actual existing Core junction1.61.1/106files; fresh N5a before newscope writes. No install/download/lock/source outside same package. New original Vite build only owned fresh outDir."
   }
 }

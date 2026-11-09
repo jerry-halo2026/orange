@@ -1,0 +1,81 @@
+{
+  "taskId": "T01",
+  "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/prepare_admission_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "scripts/phase1-isolation.mjs",
+      "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+      "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.mjs",
+      "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+      "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+    },
+    {
+      "path": "apps/desktop/src/flavor.mjs",
+      "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+      "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "scripts/phase1-isolation.test.mjs",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+      "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+    },
+    {
+      "path": "packages/openfilm/src/development-isolation.test.mjs",
+      "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+      "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+    },
+    {
+      "path": "apps/desktop/src/flavor.test.mjs",
+      "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+      "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+    }
+  ],
+  "scope": "only original native prepare producer consumed inputs, no business/parent/fullpilot readiness",
+  "actualModelAndEffort": "inherited runtime; not independently attested; no override",
+  "reviewedAt": "2026-11-09T15:25:01.832Z",
+  "assignment": {
+    "taskId": "T06.prepare",
+    "revision": 1,
+    "sha256": "a78188685ba0f9de51ef74142e47f7271c5f3821ff47e31bbcd5434104ee8e20"
+  },
+  "reviewKind": "independent pre-implementation consumed-input readiness and bounded assignment review only",
+  "evidence": {
+    "gitAndWorkingBytesMatch": true,
+    "sourceFixtureItemsChecked": 6,
+    "verifiedConsumerSource": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+    "verifiedSourceHead": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "backendCardSHA256": "40842baf7bb8fa20f3e3a7d225b285dd8173b1da3225e8006cd161d13fe0b6a2",
+    "sixWriteSetDisjointFromBackend13": true,
+    "e3ObservedHead": "2894ead7f1bb0e07413859f65bae2a8f9e975656",
+    "e3ObservedClean": true,
+    "testsExecutedThisReview": 0,
+    "mediaModelCloudCalls": 0
+  },
+  "findings": {
+    "blocking": [],
+    "verified": [
+      "Explicit profile derives all writable paths and rejects implicit official-home fallback. Freeze is read-only input admission, not an OS sandbox or authorization.",
+      "Native source classifies development flavor independently from product rights. Existing consumer tests remain pinned; no new parallel profile schema required."
+    ],
+    "implementationObligations": [
+      "Each runtime must revalidate ordinary ancestors immediately before writes; frozen profile alone does not prevent concurrent replacement."
+    ]
+  },
+  "dispatchNotGrantedByThisReview": [
+    "Root verifies native E3 dev-derived branch and materializes approved ddaa inputs plus metadata",
+    "Fresh actual N5a and current writer/resource leases before source work",
+    "Author RED/GREEN, affected original CLI/unit/media, independent SPEC and QUALITY before commit/integration"
+  ],
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

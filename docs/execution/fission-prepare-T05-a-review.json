@@ -1,0 +1,99 @@
+{
+  "taskId": "T05.a",
+  "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/prepare_admission_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+      "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+      "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+      "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+      "sha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+      "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+      "sha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
+      "gitBlobSha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+      "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+      "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+      "sha256": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91",
+      "gitBlobSha256": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs",
+      "sha256": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0",
+      "gitBlobSha256": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+      "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+      "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    }
+  ],
+  "scope": "only original native prepare producer consumed inputs, no business/parent/fullpilot readiness",
+  "actualModelAndEffort": "inherited runtime; not independently attested; no override",
+  "reviewedAt": "2026-11-09T15:25:01.832Z",
+  "assignment": {
+    "taskId": "T06.prepare",
+    "revision": 1,
+    "sha256": "a78188685ba0f9de51ef74142e47f7271c5f3821ff47e31bbcd5434104ee8e20"
+  },
+  "reviewKind": "independent pre-implementation consumed-input readiness and bounded assignment review only",
+  "evidence": {
+    "gitAndWorkingBytesMatch": true,
+    "sourceFixtureItemsChecked": 9,
+    "verifiedConsumerSource": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+    "verifiedSourceHead": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "backendCardSHA256": "40842baf7bb8fa20f3e3a7d225b285dd8173b1da3225e8006cd161d13fe0b6a2",
+    "sixWriteSetDisjointFromBackend13": true,
+    "e3ObservedHead": "2894ead7f1bb0e07413859f65bae2a8f9e975656",
+    "e3ObservedClean": true,
+    "testsExecutedThisReview": 0,
+    "mediaModelCloudCalls": 0
+  },
+  "findings": {
+    "blocking": [],
+    "verified": [
+      "Original FissionJob, EnginePathPolicy/EngineJobFiles, ProcessPool and edit-receipt helpers are adequate frozen references for a bounded native extension; no duplicate Job or timeline necessary.",
+      "Card correctly preserves full RNG consumption order, process-randomized string-hash limitation, actual assembled-clock distinction, still intrinsic-duration0 versus occurrence hold, legacy run arguments and actual cancellation drain.",
+      "Prepare/execute are explicitly non-authorizing, analysis-only before execution, with old current worker behavior as regression baseline."
+    ],
+    "implementationObligations": [
+      "EngineJobFiles explicitly does not prevent hostile concurrent path replacement. New implementation must bind source/normalized/text/shader pins before use and prove mutation refusal; present path validation/receipt hashes alone are insufficient. If six-file scope cannot implement this, stop only that branch and request exact forward amendment.",
+      "Original FissionEditPlan remains post-execution receipt. Prepared expected frame clock and FX intent must not be represented as measured assembly/applied fallback outcome.",
+      "Consume/pool counts and default legacy behavior must be regression-tested; test Count1 runtime is not a product scope reduction."
+    ]
+  },
+  "dispatchNotGrantedByThisReview": [
+    "Root verifies native E3 dev-derived branch and materializes approved ddaa inputs plus metadata",
+    "Fresh actual N5a and current writer/resource leases before source work",
+    "Author RED/GREEN, affected original CLI/unit/media, independent SPEC and QUALITY before commit/integration"
+  ],
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

@@ -393,6 +393,19 @@
       "realCloudApprovalPending": true,
       "realWorkerPreparePending": true,
       "localImplementationNotBlockedByThose": true
+    },
+    {
+      "id": "T06.prepare",
+      "parentTask": "T06",
+      "status": "in_progress",
+      "scope": "One minimal original worker prepare→same-decisions execute producer. Not shared business admission/auth, Node backend integration, cloud, arbitrary FX/preview or fullT06/17 completion.",
+      "dependsOn": [
+        "T01",
+        "T05.a"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-prepare-assignment.json",
+      "businessGrantNotConferredBySnapshot": true
     }
   ],
   "umbrella": [

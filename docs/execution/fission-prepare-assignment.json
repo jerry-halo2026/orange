@@ -1,0 +1,298 @@
+{
+  "taskId": "T06.prepare",
+  "parentTask": "T06",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
+  "classification": "native-extension original Fission planning/execution split, necessary pre-execution immutable facts only",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/fission-prepared-decisions",
+  "scope": "One minimal original worker prepare→same-decisions execute producer. Not shared business admission/auth, Node backend integration, cloud, arbitrary FX/preview or fullT06/17 completion.",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+    "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+    "workers/fission/src/Fission.Cli/Program.cs",
+    "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+    "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "gpu",
+      "value": "local-readonly-hardware-detection",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/business-producer-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "40842baf7bb8fa20f3e3a7d225b285dd8173b1da3225e8006cd161d13fe0b6a2"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+            "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+            "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+            "sha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+            "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+            "sha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
+            "gitBlobSha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+            "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+            "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+            "sha256": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91",
+            "gitBlobSha256": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs",
+            "sha256": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0",
+            "gitBlobSha256": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+            "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+            "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+            "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+            "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T05-a-review.json"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "files": [
+      {
+        "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+        "sha256": "286638cc31ab4b169f8b2ae82011757eea545e66a8d2a2d2d45306b31e8839bb",
+        "gitBlobSha256": "286638cc31ab4b169f8b2ae82011757eea545e66a8d2a2d2d45306b31e8839bb"
+      },
+      {
+        "path": "workers/fission/src/Fission.Cli/Program.cs",
+        "sha256": "021eda1765fa0458d21145cb4e3001e9a34b25934d6bc03cf36736cc7923b655",
+        "gitBlobSha256": "021eda1765fa0458d21145cb4e3001e9a34b25934d6bc03cf36736cc7923b655"
+      },
+      {
+        "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+        "sha256": "85f7b946377ba40d9dc46d9c62af1911fe1372d165326d119b98cb0c7cae4cde",
+        "gitBlobSha256": "85f7b946377ba40d9dc46d9c62af1911fe1372d165326d119b98cb0c7cae4cde"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+        "sha256": "aa49742c860d72a4658ee47595493e854b0d01382c8b11abb6f3d701de0500c4",
+        "gitBlobSha256": "aa49742c860d72a4658ee47595493e854b0d01382c8b11abb6f3d701de0500c4"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+        "sha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5",
+        "gitBlobSha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5"
+      }
+    ],
+    "newFiles": [
+      "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs"
+    ],
+    "preservation": "reuse original selected functions and records/Job; all unrelated original source/tests/default behavior preserved, genuine prior failures retained"
+  },
+  "requirements": [
+    "Extract real planning from original FissionEngine; reuse FissionJob, FissionSource/VisualDecision and other existing facts, original pool/selection/split/align helpers, not another worker/JobDTO/Timeline. New FissionPreparedDecisions immutable native facts have NO business approval/rights/token semantics. Post-execution FissionEditPlan stays a receipt, never rebrand it prepared.",
+    "Preserve original RNG consumption order exactly: source pool/audio/video reservation and retries, NameFor, full normFiles image-hold loop, per-source RandomRange then per-cut flip, intro/outro pick and duration, TransitionCatalog.Resolve, PickBgm. jobId.GetHashCode is process-randomized; never reconstruct selections by seed/job replay. Execute must not reach Pick/Random/Reserve-choice paths, only the frozen actual decisions.",
+    "Prepare may do required authorized version-pinning/probe/normalize/scene analysis. It MUST NOT do final Cut/entryTransition/assemble/AV merge/subtitle burn/cover/poolConfirm/consume/archive or publish deliverable success before business grant layer. All actual chosen inputs/content versions, exact ordered cut ranges/rate/flip/image holds, intro/outro, selected FX intent, voice/BGM/mix/subtitle cue/style evidence are frozen before execute. Source/text/shader versions are pinned before first use; no private text uploaded or printed.",
+    "Original alignment uses actual assembledInfo after encoding. Prepared clock is explicit expected frame-clock/effective-parameter intent from fixed source/normalized facts, never pretend measured assembled/applied FX. Execute verifies actual assembly clock and actual FX outcome within declared original frame tolerance before completion; mismatch rejects/deviates without reselect/re-align under a changed plan. Applied/fallback belongs execution receipt only; unknown must not masquerade as known backend freeze.",
+    "Execute reopens every declared original/normalized/text/shader source at exact pinned version before codec use, holds handles through real drain, and refuses changed/missing/aliased sources or unexpected job/filesystem bindings before final work. Separate prepare/execute process may not trust stale open-path checks. Reuse original EngineJobFiles/EnginePathPolicy/ProcessPool; if their real capability is insufficient, stop that branch for one exact forward amendment rather than bypass or fake grant.",
+    "CLI native extensions prepare/execute-prepared may be added with exact controlled args/config, still original Job and explicit existing paths/workspace/task/attempt; ordinary run fiveargs and help/default behavior compatible. New snapshot input/output paths ordinary+bounded, no legacy D/old defaults. Snapshot/header/flags do not authorize shared business; caller service still needs real group/asset/claim before invoking execute. Do not touch current E5 private Node/SQL adapter or expose service keys in worker.",
+    "Default run should reuse the extracted same-decisions code without changing original source-preservation/pool use counts/naming/fallback receipt semantics. New business prepared execution cannot silently change FX intent/output clock and count success. Cancel/EOF and exception paths await already-started worker/codec/streams before disposing pins; old real drain proofs retained, never infer retirement from counts or force-kill.",
+    "TDD exact original Unit project/CLI: before execute only allowed analysis commands0final outputs/0consume, deterministic chosen order/Random consumption frozen once, actual execute request cut/audio/source decisions match, no selection even if candidate order changes, source mutation refuses before codec, missing/altered snapshots refuse, actual-clock/FX deviation fails without reroll, cancellation/drain and default legacy regression. Reuse original tests and add only the2allowed original files; no temporary runtime app or hidden bypass.",
+    "Real self-owned standardCPU case after unit source is ready: generate/verify own tiny media inside freshattempt, original CLI prepare produces no deliverable, then execute same decisions produces qualified original output and native execution receipt, same content/intervals/source SHA; one controlled changed-source counterexample must refuse/no codec. No real user/cloud/model/private vendor assets. Native→business asset-ID/canonical mapping and actual claim remain later serial integration, do not claim current backend production works.",
+    "Physical still-image duration may be0; per-occurrence hold is a decision, not a fake intrinsic media duration. Preserve seconds/native IDs and all existing native time/IO contracts, never global microseconds or duplicate mutable project model. New source must not edit any apps/api/E4 UI source, rootlock/CI/07 or original Job outside6allowlist."
+  ],
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "runtimeNamespaces": {
+    "family": ".dev/fission-prepared",
+    "attemptRule": "Only fresh attempt-<timestamp>-<pid>; absolute checked mutations; own HOME/TEMP/cache/SDK/Nuget/artifacts/inputs/work/out/config/log; no old artifacts or true user config writes"
+  },
+  "runtime": {
+    "tooling": "existing original SDK10.0.300/shim/props/original6project graph/16offline-feed and original Node tools only; no newpackages/download/install/models",
+    "media": "standard verifiedFFmpeg9.0.2/FFprobe read-only from original approved path; Count1 Threads1 ≤4sec1080x1920/30 CPU, default noFX private assets. All source/input/output hashes and true process exit+close,180s percase/20MiB logs cap.",
+    "hardware": "Original CLI UseNvenc:false still calls HardwareDetector. Explicitly allow ONLY original bounded read-only C:/Windows/System32/nvidia-smi.exe --query-gpu=name,driver_version,vbios_version --format=csv,noheader; its original empty-args CUDA header query and memory.total csv query (15s each), standard ffmpeg -hide_banner -encoders (30s), WMI SELECT Name,NumberOfLogicalProcessors FROM Win32_Processor and SELECT TotalPhysicalMemory FROM Win32_ComputerSystem. Private hardware output retained/sanitized; never use foreign GPU process rows to kill/query other processes. No hardware encoding/gpu stress.",
+    "network": "none; no NodeHTTP/browser/GUI/realAuth/DB/cloud/model/network test. Original readonly hardware detection only as explicitly carried forward."
+  },
+  "validation": "Actual original6graph compilation+affected originalUnit/CLI, true behaviorRED→GREEN and one real local prepare/execute/counterexample media, no skip substitution; raw/canonical source/result/child timeline frozen and independent SPECQUALITY +fresh N5a before sourcecommit. Reuse prior unrelated exact qualified media/GUI as scoped evidence only.",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.c/T05.b/T06 genuine pre-execution decision producer",
+  "forbidden": [
+    "source outside6 or newJob/Timeline/IPC platform",
+    "postreceipt or seed replay passed as prepared",
+    "client flags grant sharedbusiness auth",
+    "private media/model/cloud/userconfig/production/assets/license changes",
+    "Root/E5 backend source or E4 liveGUI writes",
+    "dev/main/tag/push/release"
+  ],
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD exact scope/input review, metadata, nativeE3 verifieddev-derived/qualifiedDDaa and actualN5a; no source writer"
+}

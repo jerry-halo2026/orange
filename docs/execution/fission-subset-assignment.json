@@ -1,7 +1,7 @@
 {
   "taskId": "T06.subset",
   "parentTask": "T06",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root/fission_studio_integration",
   "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
@@ -13,13 +13,14 @@
   ],
   "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
   "branch": "codex/fission-admitted-subset",
-  "scope": "After backend per-output admission can execute only original frozen output indices in one worker; no reroll/whole-batch rejection/Count1 product restriction, no business grant. Current Node producer/catalog remain separate missing real chain.",
+  "scope": "After backend per-output admission can execute only original frozen output indices in one worker; no reroll/whole-batch rejection/Count1 product restriction, no business grant. Current Node producer/catalog remain separate missing real chain. Forward6: original FissionJob validation keeps full Validate unchanged while exposing shared configuration-domain validation for subset; no Job data/JSON/schema changes.",
   "writeAllowlist": [
     "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
     "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
     "workers/fission/src/Fission.Cli/Program.cs",
     "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
-    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs"
+    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+    "workers/fission/src/Fission.Core/Jobs/FissionJob.cs"
   ],
   "resourceLeases": [
     {
@@ -39,7 +40,13 @@
   ],
   "admission": {
     "sharedWriteGrants": [],
-    "activeCards": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/zhishang-readonly-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "0f69f4a7bd9cc3035397217f4a2d78a1039f9fec1e354dd1fa61922fe03fe093"
+      }
+    ],
     "dependencies": [
       {
         "taskId": "T01",
@@ -101,11 +108,6 @@
             "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
           },
           {
-            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
-            "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
-            "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
-          },
-          {
             "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
             "sha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
             "gitBlobSha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3"
@@ -124,9 +126,9 @@
           }
         ],
         "review": {
-          "path": "docs/execution/fission-subset-T06-review.json",
-          "sha256": "ab5b68fe4c63b8ca3bcc2f7ced5081c3e5f89f5984f3d5eff636e3fa98675a61",
-          "gitBlobSha256": "ab5b68fe4c63b8ca3bcc2f7ced5081c3e5f89f5984f3d5eff636e3fa98675a61"
+          "path": "docs/execution/fission-subset-T06-scalar-review.json",
+          "sha256": "50d1b4b722eec1b159c8f6f881913a45808f229cddfd4211799417b4fbe841c7",
+          "gitBlobSha256": "50d1b4b722eec1b159c8f6f881913a45808f229cddfd4211799417b4fbe841c7"
         }
       }
     ],
@@ -181,6 +183,11 @@
         "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
         "sha256": "f25468a2e30b8b495a7af65ca8cf4d5b8fb907122439b16e1ceee6031dbc8519",
         "gitBlobSha256": "f25468a2e30b8b495a7af65ca8cf4d5b8fb907122439b16e1ceee6031dbc8519"
+      },
+      {
+        "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+        "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+        "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
       }
     ],
     "preservation": "old112 tests/API behavior retained; original run/prepare/whole execute path kept"
@@ -194,7 +201,8 @@
     "TDD original two allowed tests: CountN partial duplicate noncontiguous chosen indices, existing and generated shared voice/AudioUses, rejected index zero copy/reserve/codec before hardware, unchanged full snapshot digest/jobSha, selected dependency mutation refusal and unselected-only mutation no false block, EOF/cancel actual drain and original full/default regression. All duplicates means Node does not launch worker; this native API rejects empty, it does not fabricate admission.",
     "Use existing approved original6graph SDK10.0.300/shim/16offlinefeed and original verified FFmpeg9 only. Own fresh .dev/fission-subset/attempt-* HOME/TMP/Nuget/cache/artifacts/inputs/work/out/config/logs; no prior artifact overwrite or default-profile paths. Exact new source/binary/PDB hashes captured before real test, no stale DLL as new source.",
     "One real own tiny CPU integration package: prepare original Count3 then execute only two noncontiguous actual frozen indices with same Job/snapshot/digest, Threads1 UseNvencfalse, <=4sec each selected output (<=8sec total), actual exit+close0/probe/decode/sidecar/source unchanged and excluded output absent. Existing/generated positive/negative semantics covered in original Unit; no repeated old2media/112 unless affected regression, no model/TTS/realGPU stress/Edge/NodeHTTP/cloud/private media.",
-    "If exact closure or signature requires a sixth product source stop only that branch and report one forward amendment; do not edit frozen Core/Job outside5 or ignore a required dependency. Freeze source/raw/canonical/REDGREEN/actual process and latest candidate for nonauthor SPECQUALITY/freshN5a before sourcecommit; serial integration only."
+    "If exact closure or signature requires a seventh product source stop only that branch and report one forward amendment; do not edit frozen Core/Job outside6 or ignore a required dependency. Freeze source/raw/canonical/REDGREEN/actual process and latest candidate for nonauthor SPECQUALITY/freshN5a before sourcecommit; serial integration only.",
+    "Exact sixth source FissionJob.cs only: preserve existing Validate() semantics/error ordering/default directory checks and all properties/serialization/HashJob. Extract/share scalar and configuration-domain checks through original type (e.g. one private validation core with directory-check mode and a narrow public domain method); subset Load uses original domain method then selected closure actual file checks. Never skip all validation, duplicate rules in CLI or create another Job. Original CoreLogicTests remains immutable; real failing unused emptyIntro deletion and scalar regressions go in allowed original two tests."
   ],
   "runtime": {
     "tooling": "existing original SDK10.0.300/shim/props/original6project graph/16offline-feed and original Node tools only; no newpackages/download/install/models",
@@ -260,5 +268,5 @@
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD five-source scope/input independent review, metadata and actualN5a; native managed tree fromverifieddev already atqualified458 clean"
+  "dispatchState": "Existing5 may continue; sixth Job source held until forward input nonauthor review+metadata+actualN5a2. Current vendor2 writer scope checked disjoint."
 }

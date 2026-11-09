@@ -1,0 +1,68 @@
+{
+  "taskId": "T06.prepare",
+  "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+      "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+      "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+      "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+      "sha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
+      "gitBlobSha256": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+      "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+      "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    }
+  ],
+  "scope": "only forward6 original shared scalar validation and remaining3 immutable prepared/file/process inputs; no new Job/JSON/directory permission",
+  "evidence": {
+    "previousInputReviewPath": "docs/execution/fission-subset-T06-review.json",
+    "previousInputReviewSHA256": "ab5b68fe4c63b8ca3bcc2f7ced5081c3e5f89f5984f3d5eff636e3fa98675a61",
+    "jobMovedToEditableBaseline": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+    "authorReportedMeaningfulRed": "135=134pass1fail NativeCli_SubsetDoesNotRevalidateUnusedEmptyIntroDirectory; not independently rerun",
+    "reviewKind": "read-only forward6 scope/input review only, not implementation/testing acceptance",
+    "assignmentRevision": 2,
+    "assignmentSHA256": "ae51e7beed8f8d7e7845a63b6e847e31af5d1ccf01856d4bd2821008f2dd0237",
+    "originalJobRawAnd458GitSHA256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+    "remainingThreeImmutableAndTwoFixturesE3RawAnd458GitExact": true,
+    "originalJobInspection": "Validate mixes VideoDir/AudioDir/IntroDir/OutroDir Directory.Exists with Threads/SceneGroups speed/image duration/transition/subtitle/generated-domain checks. Exact unusedIntro false rejection is supported by this source path; claimed135=134/1 remains author-reported, not independently rerun.",
+    "approvedMinimalChange": "FissionJob.cs only moves from immutable to editable baseline. Share original domain rules in original type without copying them toCLI; original Validate() order/errors/directory behavior unchanged, no property/default/JSON attributes/HashJob bytes changed. Subset domain-only call is followed by genuine selected closure validation, never skip all validation.",
+    "tests": "Only original FissionEditPlanTests.cs/EngineRunConfigurationTests.cs additions; frozen CoreLogicTests.cs unchanged. Existing full Validate/default behavior and scalar rejection remain necessary affected regressions.",
+    "peer": {
+      "assignment": "docs/execution/zhishang-readonly-assignment.json",
+      "sha256": "0f69f4a7bd9cc3035397217f4a2d78a1039f9fec1e354dd1fa61922fe03fe093",
+      "actualCardPinMatch": true,
+      "sourceWriteIntersection": [],
+      "worktreeSeparate": true,
+      "noSharedListenerOrMediaResources": true
+    },
+    "unchangedLimits": "Only6 sources total and prior bounded runtime; no new Job/DTO/authorization/queue, no cloud/model/GUI; seventh source needs precise forward amendment only for that branch.",
+    "reviewerSourceChanges": 0,
+    "reviewerTestsBuildNetworkCalls": 0,
+    "executionHeldUntil": "Root metadata+FF/freshN5a before sixth-source writer resumes",
+    "priorPendingReviewSHA256": "67db4150e920b5260f59e22d8833df2ef92f4c137777f69c8d8761fc65c4733a"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

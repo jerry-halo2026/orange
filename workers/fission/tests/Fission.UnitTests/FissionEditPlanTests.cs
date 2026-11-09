@@ -162,6 +162,25 @@ public sealed class FissionEditPlanTests
         }
         Assert.Single(f.NormalizationReads, read => read.Source == source);
     }
+    [Fact]
+    public async Task RunAsync_CancelDuringDispatch_DrainsLaunchedCodecBeforeReleasingSourcePins()
+    {
+        var f = new Fixture(); var job = f.Job(); job.Count = 2; job.AudioUses = 0;
+        var started = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        f.BeforeNormalize = async () => { started.TrySetResult(true); await release.Task; };
+        using var cancel = new CancellationTokenSource(); var work = f.Engine.RunAsync(job, cancel.Token);
+        await started.Task.WaitAsync(TimeSpan.FromSeconds(5)); cancel.Cancel();
+        try
+        {
+            await Task.Delay(30);
+            Assert.False(work.IsCompleted, "dispatch cancellation must drain the already-launched actual codec before returning");
+            Assert.Throws<IOException>(() => File.WriteAllText(f.Audio, "must stay version-pinned"));
+        }
+        finally { release.TrySetResult(true); try { await work; } catch (OperationCanceledException) { } }
+        Assert.Equal("userStopped", (await work).StopReason);
+        File.WriteAllText(f.Audio, "released only after codec drain");
+    }
     private sealed class Fixture
     {
         public Fixture(bool fallback = false, bool blockPlanWrite = false)
@@ -178,6 +197,7 @@ public sealed class FissionEditPlanTests
             File.WriteAllText(Path.Combine(Root, "meta.json"), "{\"items\":[{\"file\":\"voice.mp3\",\"text\":\"甲。乙乙。\"}]}");
             var codec = new Codec(this, fallback, blockPlanWrite); Engine = new FissionEngine(Policy, codec, new Probe(this, codec), false, Bus);
         }
+        public Func<Task>? BeforeNormalize { get; set; }
         public Action<string>? AfterNormalizationRead { get; set; }
         public ConcurrentBag<(string Source, string Hash)> NormalizationReads { get; } = [];
         public EventsBus Bus { get; } = new();
@@ -216,7 +236,7 @@ public sealed class FissionEditPlanTests
     private sealed class Codec(Fixture fixture, bool fallback, bool blockPlanWrite) : IVideoEngine
     {
         public ConcurrentDictionary<string, double> Durations { get; } = new(StringComparer.Ordinal);
-        public Task<ProcessResult> RunAsync(VideoEngineRequest request, Action<double>? onProgress = null, CancellationToken ct = default)
+        public async Task<ProcessResult> RunAsync(VideoEngineRequest request, Action<double>? onProgress = null, CancellationToken ct = default)
         {
             ct.ThrowIfCancellationRequested(); Assert.Equal(fixture.Policy.Paths.FFmpeg, request.EngineFileName);
             var args = request.Arguments; var inputs = Regex.Matches(args, "-i \"([^\"]*)\"").Select(m => m.Groups[1].Value).ToArray();
@@ -226,6 +246,7 @@ public sealed class FissionEditPlanTests
             else foreach (var input in inputs) Assert.True(File.Exists(input));
             if (args.Contains("force_original_aspect_ratio", StringComparison.Ordinal) && inputs.Length == 1)
             {
+                if (fixture.BeforeNormalize is not null) { await fixture.BeforeNormalize(); ct.ThrowIfCancellationRequested(); }
                 fixture.NormalizationReads.Add((inputs[0], Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(inputs[0])))));
                 fixture.AfterNormalizationRead?.Invoke(inputs[0]);
             }
@@ -234,7 +255,68 @@ public sealed class FissionEditPlanTests
             if (args.StartsWith("-y -f concat", StringComparison.Ordinal)) seconds = File.ReadAllLines(Assert.Single(inputs)).Sum(line => Durations[line[6..^1]]);
             if (args.Contains("-frames:v 1", StringComparison.Ordinal) && blockPlanWrite) File.WriteAllText(Path.ChangeExtension(Assert.Single(inputs), ".edit-plan.json"), "preserved collision");
             using (var file = new FileStream(output, args.Contains("-f lavfi", StringComparison.Ordinal) ? FileMode.Truncate : FileMode.CreateNew, FileAccess.Write, FileShare.None)) file.Write(JsonSerializer.SerializeToUtf8Bytes(new { durationSec = seconds }));
-            Durations[output] = seconds; onProgress?.Invoke(1); return Task.FromResult(new ProcessResult(0, "", "", 1));
+            Durations[output] = seconds; onProgress?.Invoke(1); return new ProcessResult(0, "", "", 1);
         }
+    }
+}
+/// <summary>Actual owned Node process: termination request is not actual retirement.</summary>
+public sealed class FissionProcessRetirementTests
+{
+    [Fact]
+    public async Task ControlledCli_OptedInParentEof_CancelsBeforeHardwareOrCodecAndReturnsStopped()
+    {
+        if (!OperatingSystem.IsWindowsVersionAtLeast(7, 0)) throw new PlatformNotSupportedException("Original CLI targets Windows.");
+        var root = Path.Combine(Environment.GetEnvironmentVariable("FISSION_PATH_POLICY_TEST_ROOT")!, "eof-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(root);
+        var read = Path.Combine(root, "read"); var video = Path.Combine(root, "video"); var audio = Path.Combine(root, "audio");
+        foreach (var dir in new[] { read, video, audio }) Directory.CreateDirectory(dir);
+        var exe = Path.Combine(read, "never-executed.exe"); File.WriteAllText(exe, "not an executable");
+        var config = Path.Combine(root, "paths.json");
+        File.WriteAllText(config, JsonSerializer.Serialize(new { FFmpeg = exe, FFprobe = exe, FFmpeg6 = exe, TransitionsDir = read, AssetsRoot = read, LocalAssetsRoot = read }));
+        var job = Path.Combine(root, "job.json"); File.WriteAllText(job, JsonSerializer.Serialize(new FissionJob { VideoDir = video, AudioDir = audio, Count = 1, Threads = 1, UseNvenc = false }));
+        var input = Console.In; var flag = Environment.GetEnvironmentVariable("FISSION_PARENT_STDIN_EOF");
+        try
+        {
+            Console.SetIn(new StringReader("")); Environment.SetEnvironmentVariable("FISSION_PARENT_STDIN_EOF", "1");
+            Assert.Equal(130, await Fission.Cli.Program.Main(["run", "--paths", config, "--workspace", Path.Combine(root, "owned"), "--task", "test", "--attempt", "eof", "--job", job]));
+            Assert.False(Directory.Exists(Path.Combine(root, "owned")), "known parent EOF must stop before runtime mkdir and hardware/codec use");
+        }
+        finally { Console.SetIn(input); Environment.SetEnvironmentVariable("FISSION_PARENT_STDIN_EOF", flag); }
+    }
+
+    [Fact]
+    public async Task Cancel_KillRequestReturningBeforeActualExit_DoesNotReleaseOwnedProcess()
+    {
+        var root = Path.Combine(Environment.GetEnvironmentVariable("FISSION_PATH_POLICY_TEST_ROOT")!, "retire-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(root);
+        var ready = Path.Combine(root, "ready"); var script = Path.Combine(root, "child.mjs");
+        File.WriteAllText(script, "import fs from 'node:fs';fs.writeFileSync(process.argv[2],'ready');setInterval(()=>{},1000);");
+        var requested = new TaskCompletionSource<System.Diagnostics.Process>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var pool = new ProcessPool(1, process => { requested.TrySetResult(System.Diagnostics.Process.GetProcessById(process.Id)); return Task.CompletedTask; });
+        using var cancel = new CancellationTokenSource();
+        var work = pool.RunAsync(new ProcessRequest(Environment.GetEnvironmentVariable("FISSION_TEST_NODE")!, $"\"{script}\" \"{ready}\"", TimeoutSec: 20), ct: cancel.Token);
+        for (var i = 0; !File.Exists(ready) && i < 1000; i++) await Task.Delay(5);
+        Assert.True(File.Exists(ready)); cancel.Cancel(); var child = await requested.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        try
+        {
+            await Task.Yield(); Assert.False(work.IsCompleted, "requesting a kill is not the actual codec exit"); Assert.Equal(1, pool.RunningCount);
+        }
+        finally { if (!child.HasExited) child.Kill(entireProcessTree: true); }
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => work);
+        Assert.True(child.HasExited); Assert.Equal(0, pool.RunningCount);
+    }
+
+    [Fact]
+    public async Task Dispose_WaitsActualOwnedExitInsteadOfClearingTheRegistry()
+    {
+        var root = Path.Combine(Environment.GetEnvironmentVariable("FISSION_PATH_POLICY_TEST_ROOT")!, "dispose-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(root);
+        var ready = Path.Combine(root, "ready"); var script = Path.Combine(root, "child.mjs");
+        File.WriteAllText(script, "import fs from 'node:fs';fs.writeFileSync(process.argv[2],'ready');setInterval(()=>{},1000);");
+        var requested = new TaskCompletionSource<System.Diagnostics.Process>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var pool = new ProcessPool(1, process => { requested.TrySetResult(System.Diagnostics.Process.GetProcessById(process.Id)); return Task.CompletedTask; });
+        var work = pool.RunAsync(new ProcessRequest(Environment.GetEnvironmentVariable("FISSION_TEST_NODE")!, $"\"{script}\" \"{ready}\"", TimeoutSec: 20));
+        for (var i = 0; !File.Exists(ready) && i < 1000; i++) await Task.Delay(5);
+        Assert.True(File.Exists(ready)); var disposing = Task.Run(pool.Dispose); var child = await requested.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        try { await Task.Yield(); Assert.False(disposing.IsCompleted); Assert.Equal(1, pool.RunningCount); }
+        finally { if (!child.HasExited) child.Kill(entireProcessTree: true); }
+        await disposing; await work; Assert.True(child.HasExited); Assert.Equal(0, pool.RunningCount); pool.Dispose();
     }
 }

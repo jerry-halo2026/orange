@@ -1,3 +1,4 @@
+import { recordFissionOrigin } from '../../src/fission-render.mjs';
 // @ts-check
 /** Internal isolated drafts only. No HTTP route, authorization or export grant. */
 import { createHash } from 'node:crypto';
@@ -139,19 +140,19 @@ function nativeOps(p, paths, captionSrc) {
     if (v.hflip) ops.push({ op: 'keyframes', set: { ['fission_flip_' + sequence]: '0% { scale: -1 1 } 100% { scale: -1 1 }' } });
     ops.push({ op: 'insert', clip, at, ...(count++ ? { track: 0 } : { newTrack: 0 }) }); at += length;
   }
-  const sound = (/** @type {any} */ a, /** @type {number} */ track) => {
+  const sound = (/** @type {any} */ a, /** @type {number} */ track, /** @type {string} */ role) => {
     const duration = p.sources[a.source].durationSec; let time = 0, first = true;
     const repeats = a.loop ? Math.ceil(target / duration) : 1;
     if (repeats > 10000) invalid();
     for (let i = 0; i < repeats && time < target; i++) {
       const length = Math.min(duration, target - time);
       const id = clipIdFor('fission-a-' + ++sequence + path.extname(paths[a.source]), taken); taken.push(id);
-      ops.push({ op: 'insert', clip: { id, src: paths[a.source], time: [0, length], volume: a.volume }, at: time,
+      ops.push({ op: 'insert', clip: { id, src: paths[a.source], time: [0, length], volume: a.volume, attrs: { "data-fission-role": role } }, at: time,
         ...(first ? { newTrack: track } : { track }) }); first = false; time += length;
     }
   };
-  sound(p.audio.voice, 1);
-  if (p.audio.music !== null) sound(p.audio.music, 2);
+  sound(p.audio.voice, 1, "voice");
+  if (p.audio.music !== null) sound(p.audio.music, 2, "music");
   if (captionSrc) ops.push({ op: 'captions', at: p.audio.music !== null ? 3 : 2, captions: { src: captionSrc, kind: 'subtitles', label: 'Fission subtitles (approximate)' } });
   const checked = readFilm(applyOps(/** @type {import('./ops.mjs').FilmValue} */ (structuredClone(/** @type {unknown} */ (EMPTY_FILM))), ops));
   if (!checked.doc || checked.problems.length) invalid();
@@ -163,7 +164,7 @@ function nativeOps(p, paths, captionSrc) {
  * development profile; sourceRoots and internalDraft are trusted caller facts,
  * never accepted from JSON. Never use as an owner/permission or export gate.
  * @param {Buffer | string} input
- * @param {{ name?: string, sourceRoots: string[], approvedBaseRoot: string, internalDraft: boolean }} options
+ * @param {{ name?: string, sourceRoots: string[], approvedBaseRoot: string, internalDraft: boolean, nativeAudioProfile?: "fission-v1" }} options
  */
 export async function importFissionEditPlan(input, options) {
   /** @type {import('node:fs/promises').FileHandle[]} */
@@ -210,7 +211,8 @@ export async function importFissionEditPlan(input, options) {
     const reopened = await readProjectFilm(project.path); if (!reopened.doc || reopened.problems.length) invalid();
     const sourcePlanSHA256 = createHash('sha256').update(bytes).digest('hex');
     await writeFile(path.join(project.path, '.film', 'fission-edit-plan.json'), bytes, { flag: 'wx' });
-    await writeFile(path.join(project.path, '.film', 'fission-handoff.json'), JSON.stringify({ sourcePlanSHA256, internalDraft: true, blockingCapabilities, exportReady: false, equivalenceVerified: false, sourceCopies: landed }, null, 2), { flag: 'wx' });
+    await writeFile(path.join(project.path, '.film', 'fission-handoff.json'), JSON.stringify({ sourcePlanSHA256, internalDraft: true, blockingCapabilities, exportReady: false, equivalenceVerified: false, sourceCopies: landed, ...(options.nativeAudioProfile === "fission-v1" ? { nativeAudioProfile: "fission-v1" } : {}), previewEquivalent: false }, null, 2), { flag: 'wx' });
+    recordFissionOrigin(project.path);
     return { project, blockingCapabilities, exportReady: false, equivalenceVerified: false };
   } catch {
     if (project) {

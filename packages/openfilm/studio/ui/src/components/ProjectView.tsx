@@ -4286,6 +4286,25 @@ export function ProjectView({ projectId, onProject, onLeave }: {
     pause();
     setHistoryOpen((v) => !v);
   };
+  const [fissionOpen, setFissionOpen] = React.useState(false);
+  const [fissionBusy, setFissionBusy] = React.useState(false);
+  const [fissionAvailable, setFissionAvailable] = React.useState(false);
+  const [fissionJob, setFissionJob] = React.useState<Record<string, unknown>>({ VideoDir: 'assets/video', AudioDir: 'assets/voice', Count: 1, Threads: 1, UseNvenc: false, RandomHFlip: false, SplitMode: 'None', TransitionSec: 0, SubtitleEnabled: false, Align: 'TrimLonger' });
+  const showFission = async () => {
+    setFissionAvailable(false); setFissionOpen(true);
+    try { const response = await fetch('/api/projects/' + encodeURIComponent(projectId) + '/fission'); const result = await response.json(); setFissionAvailable(response.ok && result.available === true); }
+    catch { toast.showError('无法读取混剪准入状态。'); }
+  };
+  const runFission = async () => {
+    setFissionBusy(true);
+    try { await submitProjectFission(projectId, fissionJob, onProject); setFissionOpen(false); }
+    catch (error) { toast.showError(error instanceof Error ? error.message : '混剪未能完成。'); }
+    finally { setFissionBusy(false); }
+  };
+  const cancelFission = async () => {
+    try { const response = await fetch('/api/projects/' + encodeURIComponent(projectId) + '/fission', { method: 'DELETE' }); if (!response.ok) throw new Error('无法确认混剪进程已停止。'); }
+    catch (error) { toast.showError(error instanceof Error ? error.message : '无法确认混剪进程已停止。'); }
+  };
   const [exportOpen, setExportOpen] = React.useState(false);
   const [exportClipId, setExportClipId] = React.useState<string | null>(null);
   /* the picture's menu is built before this: it reaches export through a ref */
@@ -4370,6 +4389,7 @@ export function ProjectView({ projectId, onProject, onLeave }: {
                 timeline={timelineOpen} inspector={inspectorOpen}
                 onTimeline={setTimelineOpen} onInspector={setInspectorOpen}
                 hostPanel={hostPanel ? { label: hostPanel.label, open: hostPanel.open, onChange: hostPanel.setOpen } : null} />
+              <button type="button" className={TOP_BTN} aria-label="Fission 混剪" onClick={() => { void showFission(); }}><Workflow size={16} /></button>
               <ProjectHistoryButton open={historyOpen} onClick={openHistory} className={TOP_BTN} />
               <Tooltip label={t('projectMenu.export')} side="bottom">
                 <button type="button" aria-label={t('projectMenu.export')} aria-haspopup="dialog" aria-expanded={exportOpen} className={TOP_BTN}
@@ -4891,6 +4911,18 @@ export function ProjectView({ projectId, onProject, onLeave }: {
         </div>
       ) : null}
       <DesktopDialog open={desktopOpen} onClose={() => setDesktopOpen(false)} />
+      {fissionOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" role="dialog" aria-modal="true" aria-label="Fission 混剪">
+        <div className="w-[420px] rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] p-5 text-[13px] text-[var(--text)]">
+          <h2 className="mb-3 font-medium">Fission → Studio 分轨续编</h2>
+          <p className="mb-3 text-[var(--text-muted)]">{fissionAvailable ? '当前仅允许已绑定输入哈希的隔离合成自测；不产生业务成功记录或积分消耗。' : '业务准入尚未接通，不能开始正式混剪。现有编辑、素材导入和导出功能不受影响。'}</p>
+          <p className="mb-3 text-[var(--text-muted)]">原素材保持不变。结果以原生分轨工程打开；GLSL、ASS、翻转等未等价效果禁止导出，预览音频等价仍待验收。</p>
+          {(['VideoDir', 'AudioDir', 'BgmDir'] as const).map((field, i) => <label key={field} className="mb-2 block">{['本人项目视频目录', '本人项目配音目录', '背景音乐目录（可空）'][i]}<input className="mt-1 block w-full rounded border border-[var(--border)] bg-[var(--bg-app)] px-2 py-1" value={String(fissionJob[field] ?? '')} disabled={fissionBusy} onChange={event => setFissionJob(value => ({ ...value, [field]: event.target.value }))} /></label>)}
+          <div className="mt-4 flex justify-end gap-2">
+            {fissionBusy ? <button type="button" onClick={() => { void cancelFission(); }}>停止并等待进程退出</button> : <button type="button" onClick={() => setFissionOpen(false)}>关闭</button>}
+            <button type="button" disabled={!fissionAvailable || fissionBusy} className="rounded bg-[var(--bg-hover)] px-3 py-1 disabled:opacity-40" onClick={() => { void runFission(); }}>{fissionBusy ? '混剪运行中…' : '运行绑定的合成自测'}</button>
+          </div>
+        </div>
+      </div>}
       <ExportCenter
         open={exportOpen}
         onClose={() => { setExportOpen(false); setExportClipId(null); }}
@@ -4977,4 +5009,14 @@ function PanelSeam({ panel, bottom }: { panel: HostPanel; bottom: number }) {
         panel.setWidth(panel.width + (e.key === 'ArrowRight' ? 24 : -24), true);
       }} />
   );
+}
+
+/** The original ProjectView's completion path: original Job in, native project id out. No admission flags. */
+export async function submitProjectFission(projectId: string, job: Record<string, unknown>, onProject: (id: string) => void, request: typeof fetch = fetch) {
+  const response = await request('/api/projects/' + encodeURIComponent(projectId) + '/fission', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(job) });
+  const result = await response.json() as { project?: { id?: string }, error?: string };
+  if (!response.ok) throw new Error(result.error ?? 'Fission could not finish.');
+  if (!result.project?.id) throw new Error('Fission did not return an editable native project.');
+  onProject(result.project.id);
+  return result;
 }

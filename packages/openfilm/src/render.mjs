@@ -1,3 +1,4 @@
+import { qualifyFissionRender, fissionAudioClips, FissionExportError } from './fission-render.mjs';
 // film render: the deliverable. Frames are rendered in parallel page instances, averaged
 // over the shutter for motion blur, encoded with tagged BT.709 color, and muxed with the mix of the film's sounds.
 import { spawn, spawnSync } from 'node:child_process';
@@ -80,6 +81,9 @@ export function outOfMemory(e, workers) {
 export async function render(args, opts = {}) {
   const started = Date.now();
   const { film: target, at, range } = parseTarget(args);
+  const fissionRoot = locate(target).root;
+  const fissionProfile = qualifyFissionRender(opts.root ?? fissionRoot, { ...opts, ...(range ? { range } : {}) });
+  if (opts.root && fissionRoot !== opts.root && fissionProfile) throw new FissionExportError(["fission-derived-audio-context"]);
   if (range && opts.ranges) throw new UsageError('choose a range or ranges, not both');
   if (opts.loudness != null && !isLoudness(opts.loudness)) throw new UsageError(`--loudness is a target from ${LOUDNESS_RANGE[0]} to ${LOUDNESS_RANGE[1]} LUFS, e.g. --loudness=-14 for online video`);
   if (at != null) throw new UsageError(`render takes a range (for example ${at}-${at + 2}), not one time; for one frame use openfilm look ${at}`);
@@ -118,7 +122,7 @@ export async function render(args, opts = {}) {
   let failed = true;
   let probe;
   try {
-    probe = await open(target, { ...(opts.root ? { root: opts.root } : {}), swap, ...(pool ? { browser: lent[0] } : {}) });
+    probe = await open(target, { ...(opts.launch ? { launch: opts.launch } : {}), ...(opts.root ? { root: opts.root } : {}), swap, ...(pool ? { browser: lent[0] } : {}) });
   } catch (e) {
     await pool?.give(lent, { retire: true });
     throw e;
@@ -246,7 +250,7 @@ export async function render(args, opts = {}) {
   const unlessCancelled = (/** @type {Promise<any>} */ step) => { step.catch(() => {}); return Promise.race([step, cancelled, crashed]); };
   try {
     /* a browser each: pages sharing one browser share its GPU process, and stop getting faster after three or four */
-    const more = pool ? lent.slice(1, workers) : await unlessCancelled(Promise.all(Array.from({ length: workers - 1 }, () => launch().then((b) => { browsers.push(b); return b; }))));
+    const more = pool ? lent.slice(1, workers) : await unlessCancelled(Promise.all(Array.from({ length: workers - 1 }, () => launch(opts.launch).then((b) => { browsers.push(b); return b; }))));
     for (const b of [browser, ...more]) watch(b);
     const opening = [browser, ...more].map((b) => FilmPage.open(b, site.url, entry, { scale, transparent: alpha }).then((p) => { tabs.push(p); return p; }));
     const pages = await unlessCancelled(Promise.all(opening));
@@ -304,7 +308,8 @@ export async function render(args, opts = {}) {
     for (const p of pages) problems.push(...p.problems);
 
     const allClips = opts.silent ? [] : await filmSound(probe, selection ? 0 : from);
-    const clips = selection ? selectionClips(allClips, selection.spans) : allClips;
+    const nativeClips = selection ? selectionClips(allClips, selection.spans) : allClips;
+    const clips = fissionProfile ? fissionAudioClips(nativeClips, fissionProfile) : nativeClips;
     if (opts.signal?.aborted) throw new Error('cancelled');
     const sound = clips.length ? join(work, `sound${extname(out) === '.mp4' ? '.m4a' : extname(out) === '.webm' ? '.webm' : '.wav'}`) : null;
     /* --loudness: the mix as it is (32-bit float: sounds added together pass full scale), brought to the target as it
@@ -313,7 +318,7 @@ export async function render(args, opts = {}) {
       const wav = join(work, 'mix.wav');
       await mix(clips, to - from, wav, ['-c:a', 'pcm_f32le']);
       loud = await toLoudness(wav, sound, format.audio, { lufs: opts.loudness, signal: opts.signal });
-    } else if (sound) await mix(clips, to - from, sound, format.audio);
+    } else if (sound) await mix(clips, to - from, sound, format.audio, fissionProfile);
     const after = [...format.tag, ...(extname(out) === '.mp4' ? ['-movflags', '+faststart'] : [])];
     /* the parts straight into `out`, with the sound: a page's frames are on the disk twice at most while it is written,
        not three times (a long page drawn as PNG for an editing project is gigabytes). A part with nothing to add is
@@ -322,7 +327,7 @@ export async function render(args, opts = {}) {
       /* names, not paths: concat reads them beside the list, and a path can hold a `'` (C:\\Users\\O'Brien) */
       if (parts.length > 1) writeFileSync(join(work, 'list.txt'), parts.map((p) => `file '${basename(p.file)}'`).join('\n'));
       const video = parts.length > 1 ? ['-f', 'concat', '-safe', '0', '-i', join(work, 'list.txt')] : ['-i', parts[0].file];
-      await ffmpeg([...video, ...(sound ? ['-i', sound, '-map', '0:v', '-map', '1:a'] : []), '-c', 'copy', ...after, out]).done;
+      await ffmpeg([...video, ...(sound ? ['-i', sound, '-map', '0:v', '-map', '1:a'] : []), '-c', 'copy', ...(fissionProfile ? ['-shortest'] : []), ...after, out]).done;
     }
     failed = false;
   } finally {

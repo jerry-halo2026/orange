@@ -1,3 +1,4 @@
+import { qualifyFissionRender } from '../../src/fission-render.mjs';
 import { readIsolationProfile, assertIsolationPath } from '../../src/development-isolation.mjs';
 // @ts-check
 /**
@@ -814,10 +815,11 @@ const nativeCopyFile = copyFile, nativeRm = rm, nativeEncoders = encoders, nativ
  * (captions.mjs by default).
  * `drafts(app)`: 剪映's or CapCut's drafts folder, where its draft goes (null: the exports folder); this computer's by default.
  * @param {{ onChange?: (job: ExportJob) => void, captions?: (root: string) => Promise<{ cues: Cue[], style: SubtitleStyle, tracks?: boolean }>,
+ *   renderLaunch?: Parameters<typeof import("../../src/host.mjs").launch>[0],
  *   drafts?: (app: 'jianying' | 'capcut') => string | null,
  *   trustedNode?: { forkRenderer?: typeof fork, encoders?: typeof encoders, fs?: { copyFile?: typeof copyFile, rename?: typeof rename, rm?: typeof rm } } }} [options]
  */
-export function createExports({ onChange = () => {}, captions = subtitlesForExport, drafts = defaultDrafts, trustedNode = {} } = {}) {
+export function createExports({ onChange = () => {}, captions = subtitlesForExport, drafts = defaultDrafts, trustedNode = {}, renderLaunch } = {}) {
   const invalid = () => new ExportError('invalid trusted Node functions');
   if (!trustedNode || typeof trustedNode !== 'object' || Array.isArray(trustedNode) || Object.getPrototypeOf(trustedNode) !== Object.prototype) throw invalid();
   for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(trustedNode))) {
@@ -904,8 +906,10 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
 
   /** Render the film (or `target`) to `out`, with progress. @param {ExportJob} job @param {string} target @param {string} out @param {Record<string, unknown>} opts @param {AbortSignal} signal */
   const renderTo = (job, target, out, opts, signal, share = 0.96) => {
+    const entered = work.get(job.id);
+    if (entered) qualifyFissionRender(entered.root, job.ask);
     const range = job.ask.range ? [`${num(job.ask.range[0])}-${num(job.ask.range[1])}`] : [];
-    return render([target, ...range], { ...opts, ...(job.ask.ranges ? { ranges: job.ask.ranges } : {}), out, signal, onProgress: frames(job, share) });
+    return render([target, ...range], { ...opts, ...(renderLaunch ? { launch: renderLaunch, workers: 1 } : {}), ...(job.ask.ranges ? { ranges: job.ask.ranges } : {}), out, signal, onProgress: frames(job, share) });
   };
 
   /** @param {ExportJob} job @param {string} root @param {string} dir @param {AbortSignal} signal */
@@ -1653,6 +1657,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     active = job.id;
     const { root, folder, abort, twin, finish } = /** @type {NonNullable<ReturnType<typeof work.get>>} */ (work.get(job.id));
     try {
+      qualifyFissionRender(root, job.ask);
       await mkdir(folder, { recursive: true });
       /* what an export Studio could not finish left behind, gone before this one starts */
       await Promise.all([sweep(folder, LEFT.output), sweep(join(root, '.film', 'cache', 'export'), LEFT.scratch),
@@ -1702,6 +1707,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
   /** @param {{ id: string, name: string, path: string }} project @param {ExportAsk} ask @param {string} folder @param {string} [twin] */
   function queue(project, ask, folder, twin) {
     admit();
+    qualifyFissionRender(project.path, ask);
     /** @type {ExportJob} */
     const job = {
       id: randomBytes(6).toString('hex'), project: project.id, name: project.name, label: ask.label ?? '', kind: ask.kind, ask,
@@ -1745,6 +1751,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
       /* Up to 100 selected stretches for each of the destinations a single export could already queue. */
       if (!Array.isArray(body?.jobs) || !body.jobs.length || body.jobs.length > 2400) throw new ExportError('jobs: a list of 1 to 2400 exports');
       const asks = body.jobs.map((ask) => checked(/** @type {ExportAsk} */ (ask)));
+      for (const ask of asks) qualifyFissionRender(project.path, ask);
       const folder = folderOf(body.folder);
       /* asks the same but for their name (platforms that take the same frame, size and rate: 抖音, 快手, 视频号) are
          drawn once, and the others get that one's files */

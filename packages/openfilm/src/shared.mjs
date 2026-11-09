@@ -205,7 +205,7 @@ export function audioClips(root, entry, clips, from = 0) {
     if (at < 0) { start -= at * speed; at = 0; }
     const fade = Array.isArray(c.fade) && c.to != null && (c.fade[0] > 0 || c.fade[1] > 0)
       ? { in: c.fade[0], out: c.fade[1], length: (c.to - (c.from ?? 0)) / speed, skip } : undefined;
-    return { file: fileOf(root, entry, c.src), at, from: start, to: c.to, volume: c.volume ?? 1, speed, ...(fade ? { fade } : {}) };
+    return { file: fileOf(root, entry, c.src), at, from: start, to: c.to, volume: c.volume ?? 1, speed, ...(c.clip ? { clip: c.clip } : {}), ...(fade ? { fade } : {}) };
   }).filter((c) => existsSync(c.file) && hasAudio(c.file) && (c.to == null || c.to > c.from));
 }
 
@@ -271,8 +271,8 @@ export function fadeFilter(fade) {
 }
 
 /** Mix clips into one track of `duration` seconds. */
-export async function mix(clips, duration, file, codec = ['-c:a', 'aac', '-b:a', '192k']) {
-  const { inputs, filter } = mixGraph(clips.map((c) => ({ ...c, channels: c.channels ?? audioChannels(c.file) })), duration);
+export async function mix(clips, duration, file, codec = ['-c:a', 'aac', '-b:a', '192k'], profile = null) {
+  const { inputs, filter } = mixGraph(clips.map((c) => ({ ...c, channels: c.channels ?? audioChannels(c.file) })), duration, profile);
   /* a mix takes seconds; one that has not ended in minutes never will */
   const timeoutMs = (120 + duration * 2) * 1000;
   /* a long graph goes in a file of its own: a command line has a limit (32,767 characters on Windows), and a film of
@@ -282,7 +282,7 @@ export async function mix(clips, duration, file, codec = ['-c:a', 'aac', '-b:a',
   if (script) writeFileSync(script, filter);
   try {
     const graph = script ? [await filterScriptOption(), script] : ['-filter_complex', filter];
-    await ffmpeg([...inputs, ...graph, '-map', '[out]', '-t', String(duration), ...codec, file], { timeoutMs, what: 'mixing the sound' }).done;
+    await ffmpeg([...inputs, ...graph, '-map', '[out]', ...(profile?.kind === 'fission-v1' ? [] : ['-t', String(duration)]), ...codec, file], { timeoutMs, what: 'mixing the sound' }).done;
   } finally {
     if (script) rmSync(script, { force: true });
   }
@@ -296,7 +296,8 @@ export const COMMAND_ROOM = 24_000;
  * clip deep inside a long recording is not decoded from the start); one used by several is read once and split, each
  * part cut from it, so a film that uses one sound a hundred times has one input, not a hundred.
  */
-export function mixGraph(clips, duration) {
+export function mixGraph(clips, duration, profile = null) {
+  if (profile?.kind === 'fission-v1') return fissionMixGraph(clips, duration, profile);
   /** @type {Map<string, number[]>} */
   const uses = new Map();
   clips.forEach((c, i) => uses.set(c.file, [...(uses.get(c.file) ?? []), i]));
@@ -334,6 +335,55 @@ export function mixGraph(clips, duration) {
      last sound ended before it did got a mix that ended there */
   const sum = `${clips.map((_, i) => `[a${i}]`).join('')}amix=inputs=${clips.length}:normalize=0:dropout_transition=0,asetpts=N/SR/TB,apad=whole_dur=${duration},atrim=0:${duration}[out]`;
   return { inputs, filter: [...splits, ...chains, sum].join(';') };
+}
+
+
+/** Original Fission postmix policy; default native mixing above remains unchanged.
+ * Each semantic role is one bus, so a loop split into editable clips does not
+ * divide its gain by the number of clips. Keep source channel/sample semantics.
+ * Analysis may extend beyond the visible video; crop only AFTER loudnorm.
+ */
+function fissionMixGraph(clips, duration, profile) {
+  if (!(Number.isFinite(duration) && duration > 0) || !clips.length) throw new Error('Invalid Fission audio layout.');
+  const inputs = [], chains = [], roles = { voice: [], music: [] };
+  const uses = new Map();
+  clips.forEach((c, i) => { if (!['voice', 'music'].includes(c.role)) throw new Error('Unsupported Fission audio role.'); uses.set(c.file + '\0' + Boolean(c.loopSource), [...(uses.get(c.file + '\0' + Boolean(c.loopSource)) ?? []), i]); });
+  const sources = [];
+  for (const indexes of uses.values()) {
+    const c = clips[indexes[0]], n = inputs.filter(x => x === '-i').length;
+    inputs.push(...(c.loopSource ? ['-stream_loop', '-1'] : []), '-vn', '-i', c.file);
+    if (indexes.length === 1) sources[indexes[0]] = '[' + n + ':a]';
+    else { chains.push('[' + n + ':a]asplit=' + indexes.length + indexes.map(i => '[s' + i + ']').join('')); for (const i of indexes) sources[i] = '[s' + i + ']'; }
+  }
+  clips.forEach((c, i) => {
+    const end = c.analysisTo ?? c.to;
+    const cut = 'atrim=start=' + c.from + (end != null ? ':end=' + end : '');
+    const rate = c.speed && c.speed !== 1 ? ',' + tempo(c.speed) : '';
+    let fade = fadeFilter(c.fade);
+    // FFmpeg9 may negotiate aeval c=same as stereo over a mono faded input
+    // when another current role is stereo. Keep known source layouts through
+    // the fade; leave normal native and unchanged Fission paths untouched.
+    if (profile?.preserveSourceTail === false && fade) {
+      if (c.channels !== 1 && c.channels !== 2) throw new Error('Fission edited fade channel layout is not qualified.');
+      const layout = c.channels === 1 ? 'mono' : 'stereo';
+      fade = fade.replace(/:c=same$/, ':c=' + layout) + ',aformat=channel_layouts=' + layout;
+    }
+    const delay = Math.round(c.at * 1000);
+    chains.push(sources[i] + cut + ',asetpts=PTS-STARTPTS' + rate + (fade ? ',' + fade : '') + ',volume=' + c.volume + (delay ? ',adelay=' + delay + ':all=1' : '') + '[a' + i + ']');
+    roles[c.role].push('[a' + i + ']');
+  });
+  for (const role of ['voice', 'music']) {
+    const members = roles[role];
+    if (members.length === 1) chains.push(members[0] + 'anull[' + role + ']');
+    else if (members.length) chains.push(members.join('') + 'amix=inputs=' + members.length + ':normalize=0:duration=longest:dropout_transition=0[' + role + ']');
+  }
+  if (!roles.voice.length && !roles.music.length) throw new Error('Fission audio buses are missing.');
+  // Current native edits keep all audible role tails; do not pad voice, so its real EOF still drives dropout.
+  // The unchanged original Fission prefix keeps its original first-role semantics byte-for-byte.
+  const end = profile?.preserveSourceTail === false ? 'longest' : 'first';
+  const bus = roles.voice.length && roles.music.length ? '[voice][music]amix=inputs=2:normalize=1:duration=' + end + ':dropout_transition=3' : roles.voice.length ? '[voice]anull' : '[music]anull';
+  chains.push(bus + ',loudnorm=I=-14:TP=-1.5:LRA=11,apad=whole_dur=' + duration + '[out]');
+  return { inputs, filter: chains.join(';') };
 }
 
 /** @type {Promise<string> | null} */

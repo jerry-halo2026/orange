@@ -1,0 +1,290 @@
+{
+  "taskId": "T02.business",
+  "parentTask": "T02.b",
+  "alsoConsumesBusinessScope": "T02.c",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
+  "classification": "business-addition only necessary trusted Node+Postgres asset/entitlement and shared immutable-plan admission producer; native formats and client kept",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "75465141d6568df4682e6cbd1f1486de1222d66d"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
+  "branch": "codex/business-admission",
+  "scope": "One minimum existing-direction trusted Node/TS backend and real PG17 producer. No second UI/editor/material library/application/DTO package. Local producer qualification is not real cloud/worker-prepared/complete chain or full K02/K03 acceptance.",
+  "writeAllowlist": [
+    "apps/api/package.json",
+    "apps/api/tsconfig.json",
+    "apps/api/src/server.ts",
+    "apps/api/src/admission.ts",
+    "apps/api/src/supabase.ts",
+    "apps/api/src/business.test.ts",
+    "apps/api/sql/business.sql",
+    "apps/api/tests/postgres17.test.mjs",
+    "apps/api/tests/pg-bootstrap.sql",
+    "apps/api/fixtures/prepared-v1.json",
+    "apps/api/fixtures/dotnet/Canonical.csproj",
+    "apps/api/fixtures/dotnet/Program.cs",
+    "pnpm-lock.yaml"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18571,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18572,
+      "exclusive": true
+    },
+    {
+      "kind": "database",
+      "value": "orange-business-T02-business-own-labelled-postgres17",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "pnpm-lock.yaml"
+    ],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-native-chain-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "74cdf5cb8e4632ccda8e6034038b29deb142ae76e731b9a5c56db0e00291a785"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "75465141d6568df4682e6cbd1f1486de1222d66d",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/business-producer-T01-review.json",
+          "sha256": "c2071e24600e5d4e85c7ae5a19f8f7c29b2ab7ac05b61c7debc39eda4be5d19a",
+          "gitBlobSha256": "c2071e24600e5d4e85c7ae5a19f8f7c29b2ab7ac05b61c7debc39eda4be5d19a"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "75465141d6568df4682e6cbd1f1486de1222d66d",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "apps/desktop/src/auth-service.mjs",
+            "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+            "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/desktop/src/auth-service.test.mjs",
+            "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+            "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.test.mjs",
+            "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+            "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/business-producer-T02-a-review.json",
+          "sha256": "80084518fdf34ac3abcf0655edd4f267465e51812a9ee5c2171641a45ed4514c",
+          "gitBlobSha256": "80084518fdf34ac3abcf0655edd4f267465e51812a9ee5c2171641a45ed4514c"
+        }
+      },
+      {
+        "taskId": "T05.a",
+        "commit": "75465141d6568df4682e6cbd1f1486de1222d66d",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+            "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+            "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+            "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+          },
+          {
+            "path": "workers/fission/Directory.Build.props",
+            "sha256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063",
+            "gitBlobSha256": "f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+            "sha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5",
+            "gitBlobSha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+            "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+            "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/business-producer-T05-a-review.json",
+          "sha256": "668bfc8f2256887c09c7a7aff2113048f19e2283ba9dea7a2a832ebdb1a47ca4",
+          "gitBlobSha256": "668bfc8f2256887c09c7a7aff2113048f19e2283ba9dea7a2a832ebdb1a47ca4"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "75465141d6568df4682e6cbd1f1486de1222d66d",
+    "files": [
+      {
+        "path": "pnpm-lock.yaml",
+        "sha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55",
+        "gitBlobSha256": "6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55"
+      }
+    ],
+    "newFiles": [
+      "apps/api/package.json",
+      "apps/api/tsconfig.json",
+      "apps/api/src/server.ts",
+      "apps/api/src/admission.ts",
+      "apps/api/src/supabase.ts",
+      "apps/api/src/business.test.ts",
+      "apps/api/sql/business.sql",
+      "apps/api/tests/postgres17.test.mjs",
+      "apps/api/tests/pg-bootstrap.sql",
+      "apps/api/fixtures/prepared-v1.json",
+      "apps/api/fixtures/dotnet/Canonical.csproj",
+      "apps/api/fixtures/dotnet/Program.cs"
+    ],
+    "rootLockRestriction": "Only mechanical empty apps/api importer if frozen-lockfile requires it; no existing importer/version/dependency/resolution changes. No runtime deps/root workspace/package edits. Original TS tools read-only reuse, no package installation."
+  },
+  "actualReadOnlyTargetFacts": {
+    "projectName": "orange",
+    "purpose": "dedicated isolated redevelopment per Ethan",
+    "postgresMajor": 17,
+    "publicApplicationTables": 0,
+    "customBusinessSchemas": 0,
+    "publicBusinessRoutines": 0,
+    "publicSupportRoutine": "rls_auto_enable only, preserve unchanged",
+    "deployedEdgeFunctions": 0,
+    "privateUserRowsQueried": 0,
+    "cloudWrites": 0,
+    "verifiedAuthColumns": "auth.sessions(id uuid,user_id uuid,not_after timestamptz), auth.users(id uuid,is_anonymous boolean,deleted_at/banned_until timestamptz)",
+    "permission": "Ethan async separate request for isolated DDL/synthetic records is still pending; this card grants local implementation/testing only"
+  },
+  "requirements": [
+    "Use one necessary apps/api Node/TS HTTP/fetch/crypto backend, built-ins and existing original TS tooling only; no new front-end/framework/root dependency graph. Node22.18+ erasable TypeScript and original native data conventions. Original FissionJob fields/serialization, opaque project/clip IDs,16hex film rev and seconds stay unchanged. New IDs only necessary business entities; no tenant/workspace duplicates or mutable timeline.",
+    "Config is explicit ORANGE_API_CONFIG_FILE with external safe credentialFile pointer, no .env lookup/fallback and no credentials copied into repo/desktop/renderer/commands/output. Trusted server privileged Supabase RPC key stays server-only. Ordinary HTTP body owner/accountKey/approved/prepared/admin flags cannot authorize. Fixed configured Supabase origin+fixed RPC allowlist, no arbitrary URL/SQL/file proxy.",
+    "For each request verify this exact Bearer with configured Supabase getUser; validate actual returned subject/nonanonymous against same validated token sub/exp/session_id. Never trust user_metadata or stale JWT app_metadata as group authority. Sensitive SQL RPC transaction rechecks live auth.sessions/not_after, nondeleted/unbanned/nonanonymous subject and fresh membership/license/version/review state; actor comes from trusted verified server context, not JSON fields.",
+    "Implement minimum groups/current memberships, stable assets/source/binding association, immutable asset_versions(sha256,durationSec,kind,probeRevision), exact-version/purpose/subject licenses with expiry/revocation, version-bound real review references where candidate semantics actually require human review, frozen_plans, group claims and append verified delivery facts. Do NOT impose a new unconditional AI-human-review workflow on ordinary valid local media; source/rights/human confirmations must remain distinct. No all-company scan or real cloud account writes.",
+    "All new tables RLS enabled/default deny; anon/authenticated cannot issue permissions/write assets/claims or directly call privileged RPC. Use SECURITY INVOKER, explicit schema/table/function privileges and full authority checks; no generic SECURITY DEFINER escape. Only required exposed RPC wrappers service_role-accessible, existing public rls_auto_enable/support managed schemas unchanged. Local bootstrap auth/groups are synthetic tests only, never deploy bootstrap or infer real orange already has them.",
+    "True local PG17 atomically freezes exact prepared ordered decisions and claims UNIQUE(group,contentFingerprint). Owner/idemKey/requestDigest distinct from content identity. Same key/same payload returns same actual result; changed payload conflicts; same content across group actors/paths/names cannot evade duplication, but no disclosure of others native project data. Different actual voice/BGM/cuts/effective content can claim. Export-only scale/codec/threads/title/project/owner/seed do not create new content history; two outputs only one content success.",
+    "Content canonical v1 uses explicit fixed order, UTF8 lengths and Float64BE preserving original seconds/effective execution semantics, not global microsecond migration/JSON float textual guesses. Normalize execution-equivalent numeric values such as negative zero. Resolve content bytes/version entitlement separately from ownership: digest is never permission. Store native FissionJob alongside actual prepared ordered cuts/audio/effects, not recipehash or post-execution .edit-plan receipt as authorization. Exclude merely administrative versions from content key but enforce them fresh for permission/idempotency.",
+    "No actual trusted pre-prepare exists yet in original worker. HTTP client prepared:true or fixture JSON cannot replace it; default production adapter must refuse to start/freeze when trusted producer missing or decisions unknown. Local private test prepare/provider injection proves only this Node/PG producer. Later original CLI/Engine prepare→same-decision execute remains required serial integration; do not touch current18writer worker source. C# fixture is decoder/canonical cross-check ONLY and must reference/check original Fission.Core/FissionJob serialization rather than copy a Job DTO; it is not another worker/app/protocol.",
+    "Claims persist unknown/success/history through response loss/API restart/long disconnected attempts; no TTL automatic release, unknown reroll or clearing success history. Cancel/late-success and exactly-once delivered-content transitions must be transactional. Verified local artifact/delivery authority is an INTERNAL trusted producer interface, never HTTP supplied verified:true/path/exit0; absent actual verifier stays pending, no business success or credits from HTTP200/renderer/worker claim alone. Do not implement a generalized ledger or invent points rates.",
+    "TDD must use actual PostgreSQL17 with two independent connections/concurrency, not one process mutex/in-memory DB oracle: same-group race1claim, idem replay/conflict, different content voice/BGM, export reuse, revoked/old membership/license/version/review, low privilege directDML/RPC denied, response lost after commit/restart/unknown/cancel-lateSuccess and two exports1history. Node HTTP/runtime validation plus cross-Node/SQL/BCL same canonical fixture, malformed/unknown field/refusal cases. Retain genuine RED and failed artifacts, do not skip required cases or fake real user login/cloud.",
+    "Original Fission18 task remains active on E3, source7546 E4 is reserved qualified GUI source. This E5 task may only write13allowlisted paths, no native desktop/worker/07/CI edits, no new UI. All K02/K03/worker integration/real environment stages not proven remain pending; actual producer local qualification can be consumed only within exact verified scope."
+  ],
+  "runtimeNamespaces": {
+    "family": ".dev/business-producer",
+    "attemptRule": "Only fresh attempt-<timestamp>-<pid>, all direct host writes absolute checked own root; clean HOME/USERPROFILE/APPDATA/LOCALAPPDATA/ProgramData/TEMP/cache/log/results/config/fixtures/SDK/Nuget. No old files/worktrees/archives/runtime overwrites; own Docker VM/image cache exception explicitly below."
+  },
+  "runtime": {
+    "node": "Existing original Node/TS/React type tools only, original SDK10.0.300/shim/props +16offline-feed read-only for new BCL canonical fixture referencing originalCore, no new NuGet/runtime packages or global installs. API/mock ports18571/18572 loopback only, ordinary C# fixture never Web/doctor/Bench/stress/media.",
+    "postgres": "Existing Docker29.9.3 Linux daemon verified; no postgres image currently. This card permits FIRST public anonymous official library/postgres:17 manifest metadata lookup from Docker Hub/registry, select actual daemon architecture and digest-pin BEFORE pull. Record exact official source/digest/license and give Root exact materialization facts before executing any container. Docker CLI --config fresh empty own avoids reading normal registry credentials. No paid registry/new service/model; no Supabase full stack.",
+    "dockerResources": "Approved explicit exception: one immutable digest image added to existing Docker daemon cache and one NEW own-labelled container with name/ID/attempt recorded; daemon storage is outside E and must not be falsely reported all-inside. Never inspect/change/stop/remove other containers/images/networks/volumes; no prune. Own DB network none/no host ports, CPU1/memory<=1GiB, own tmpfs or disposable own container storage only, no private/userdata mounts. SQL/bootstrap synthetic source copied readonly/client-side to own container, no SQL OS/file server reads.",
+    "retirement": "All direct Node/docker/psql/SDK child actual exit+close with bounded60s ordinary/180scompile; initial pinned imagepull<=300s/1GiB bounded. Record exact container state, stop only ownedID after evidence dump and actual inspect stopped; preserve failure/unknown state and logs, no inferred zero from CLI return. No process/permission/security policy/globalPATH/normalprofile changes.",
+    "network": "Only metadata/digest-pinned download official DockerHub/auth/registry/CDN for postgres17 and own loopback; container network none. No actual Supabase/Zhishang/business writes/production/cloud uploads/model calls, no real service_role/normal credential retrieval. Real privileged config/personal cloud binding/remote approval missing holds real integration only."
+  },
+  "validation": "Actual local Node/PG17 and cross-language canonical producer tests, relevant original pure source rules/types unchanged, immutable raw/canonical source/result/runtime/container manifests; independent SPEC/QUALITY before sourcecommit, exact fresh N5a. Root later registers only qualified minimal code/signatures in07, does not auto freeze whole K02/K03.",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.b/c minimum business additions needed by original native Fission chain",
+  "forbidden": [
+    "remoteDDL/data/config/key retrieval until separate explicit Ethan authorization+audit",
+    "real private media/transcripts/accounts/password/token output or upload",
+    "fake cloud/group/claim/final success",
+    "source beyond13/root existing dependencies/new frontend/framework/parallel Job/Timeline",
+    "private API archive/raw text or old shell/DDL reuse",
+    "dev/main/tag/push/release",
+    "foreign Docker/PID/worktree changes or native worktree bypass"
+  ],
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD exact one-package independent scope/input review, metadata, native E5 dev-derived branch/qualifiedsource and actual N5a; no writer yet"
+}

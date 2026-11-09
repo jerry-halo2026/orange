@@ -376,6 +376,23 @@
       "currentAssignment": "docs/execution/fission-native-chain-assignment.json",
       "ordinaryBusinessAdmissionReady": false,
       "fullParentAndAllEffectsTargetsRetained": true
+    },
+    {
+      "id": "T02.business",
+      "parentTask": "T02.b",
+      "alsoConsumes": "T02.c",
+      "status": "in_progress",
+      "scope": "One minimum existing-direction trusted Node/TS backend and real PG17 producer. No second UI/editor/material library/application/DTO package. Local producer qualification is not real cloud/worker-prepared/complete chain or full K02/K03 acceptance.",
+      "dependsOn": [
+        "T01",
+        "T02.a",
+        "T05.a"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/business-producer-assignment.json",
+      "realCloudApprovalPending": true,
+      "realWorkerPreparePending": true,
+      "localImplementationNotBlockedByThose": true
     }
   ],
   "umbrella": [

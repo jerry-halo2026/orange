@@ -28,6 +28,7 @@ public sealed class EngineRunConfiguration
 
     public string Mode { get; private init; } = "run";
     public string? SnapshotPath { get; private init; }
+    public IReadOnlyList<int>? OutputIndices { get; private init; }
     public FissionPreparedDecisions? Prepared { get; private init; }
 
     /// <summary>
@@ -35,7 +36,8 @@ public sealed class EngineRunConfiguration
     /// process pool, probes hardware or writes runtime directories. This does not
     /// establish media ownership, licensing or shared combination admission.
     /// </summary>
-    public static EngineRunConfiguration Load(string[] args)
+    public static EngineRunConfiguration Load(string[] args) => LoadCore(args, true);
+    private static EngineRunConfiguration LoadCore(string[] args, bool validateInputs)
     {
         try
         {
@@ -55,8 +57,8 @@ public sealed class EngineRunConfiguration
             var job = JsonSerializer.Deserialize<FissionJob>(File.ReadAllText(options["--job"]), JsonOptions)
                 ?? throw InvalidConfiguration();
             policy.ValidateJob(job);
-            new EngineJobFiles(policy).ValidateJobInputs(job);
-            job.Validate();
+            if (validateInputs) new EngineJobFiles(policy).ValidateJobInputs(job);
+            if (validateInputs) job.Validate(); else job.ValidateConfiguration();
             return new EngineRunConfiguration(policy, job);
         }
         catch (Exception error) when (error is JsonException or IOException or UnauthorizedAccessException
@@ -81,16 +83,26 @@ public sealed class EngineRunConfiguration
                 var config = Load(original);
                 return new EngineRunConfiguration(config.Policy, config.Job) { Mode = mode, SnapshotPath = Path.Combine(config.Policy.Paths.WorkRoot, "prepared.json") };
             }
-            if (mode != "execute-prepared" || args.Length != 15) throw InvalidConfiguration();
-            var nativeArgs = new List<string> { "run" }; string? file = null, digest = null;
+            if (mode != "execute-prepared" || args.Length is not (15 or 17)) throw InvalidConfiguration();
+            var nativeArgs = new List<string> { "run" }; string? file = null, digest = null, selection = null;
             for (var i = 1; i < args.Length; i += 2)
             {
                 if (args[i] == "--prepared") { if (file is not null) throw InvalidConfiguration(); file = args[i + 1]; }
                 else if (args[i] == "--digest") { if (digest is not null) throw InvalidConfiguration(); digest = args[i + 1]; }
+                else if (args[i] == "--outputs") { if (selection is not null || string.IsNullOrWhiteSpace(args[i + 1])) throw InvalidConfiguration(); selection = args[i + 1]; }
                 else { nativeArgs.Add(args[i]); nativeArgs.Add(args[i + 1]); }
             }
             if (file is null || digest is null || digest.Length != 64 || digest.Any(c => !char.IsAsciiHexDigit(c))) throw InvalidConfiguration();
-            var loaded = Load(nativeArgs.ToArray()); var files = new EngineJobFiles(loaded.Policy);
+            int[]? outputIndices = null;
+            if (selection is not null)
+            {
+                if (selection.Length > 131072) throw InvalidConfiguration();
+                using var json = JsonDocument.Parse(selection);
+                if (json.RootElement.ValueKind != JsonValueKind.Array || json.RootElement.GetArrayLength() is < 1 or > 10000) throw InvalidConfiguration();
+                outputIndices = json.RootElement.EnumerateArray().Select(value => value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var index) ? index : throw InvalidConfiguration()).ToArray();
+                if (outputIndices.Distinct().Count() != outputIndices.Length || outputIndices.Any(index => index < 0)) throw InvalidConfiguration();
+            }
+            var loaded = LoadCore(nativeArgs.ToArray(), outputIndices is null); var files = new EngineJobFiles(loaded.Policy);
             files.ValidateOwnedFile(file);
             using var input = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read);
             files.ValidateOwnedFile(file); if (input.Length > 4 * 1024 * 1024) throw InvalidConfiguration();
@@ -98,7 +110,9 @@ public sealed class EngineRunConfiguration
             var prepared = FissionPreparedDecisions.Parse(reader.ReadToEnd());
             if (prepared.Digest != digest || prepared.WorkRoot != loaded.Policy.Paths.WorkRoot || prepared.OutRoot != loaded.Policy.Paths.OutRoot
                 || prepared.CacheRoot != loaded.Policy.CacheRoot || prepared.JobSha256 != FissionPreparedDecisions.HashJob(loaded.Job)) throw InvalidConfiguration();
-            return new EngineRunConfiguration(loaded.Policy, loaded.Job) { Mode = mode, SnapshotPath = file, Prepared = prepared };
+            if (outputIndices is not null && outputIndices.Any(index => !prepared.Outputs.Any(output => output.Index == index))) throw InvalidConfiguration();
+            return new EngineRunConfiguration(loaded.Policy, loaded.Job) { Mode = mode, SnapshotPath = file, Prepared = prepared,
+                OutputIndices = outputIndices is null ? null : Array.AsReadOnly(outputIndices) };
         }
         catch (Exception error) when (error is JsonException or IOException or UnauthorizedAccessException or ArgumentException or FissionException)
         { throw InvalidConfiguration(); }

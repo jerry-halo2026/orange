@@ -204,7 +204,9 @@ public static class Program
         var job = configuration.Job;
         var runtimeOwner = new FissionEngine(configuration.Policy, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), false);
         using var runtimePins = configuration.Mode == "run" ? null
-            : await runtimeOwner.HoldPreparedRuntimeAsync(job, configuration.Prepared, ct).ConfigureAwait(false);
+            : configuration.OutputIndices is null
+                ? await runtimeOwner.HoldPreparedRuntimeAsync(job, configuration.Prepared, ct).ConfigureAwait(false)
+                : await runtimeOwner.HoldPreparedRuntimeAsync(job, configuration.Prepared!, configuration.OutputIndices, ct).ConfigureAwait(false);
         var hw = new HardwareDetector(paths, pool);
         var hasNvenc = false;
         if (configuration.Mode == "run" || job.UseNvenc) hasNvenc = (await hw.DetectAsync(ct).ConfigureAwait(false)).HasNvencH264;
@@ -220,7 +222,9 @@ public static class Program
             return 0;
         }
         var report = configuration.Mode == "execute-prepared"
-            ? await engine.ExecutePreparedAsync(job, configuration.Prepared!, ct).ConfigureAwait(false)
+            ? configuration.OutputIndices is null
+                ? await engine.ExecutePreparedAsync(job, configuration.Prepared!, ct).ConfigureAwait(false)
+                : await engine.ExecutePreparedAsync(job, configuration.Prepared!, configuration.OutputIndices, ct).ConfigureAwait(false)
             : await engine.RunAsync(job, ct).ConfigureAwait(false);
 
         Console.WriteLine($"═══ 任务完成 ═══");
@@ -432,7 +436,7 @@ public static class Program
     private static void PrintUsage()
     {
         Console.WriteLine("  prepare: same five explicit isolation/job options; produces native non-authorizing decisions only.");
-        Console.WriteLine("  execute-prepared: same options plus --prepared <owned snapshot> --digest <native digest>; caller still needs business admission.");
+        Console.WriteLine("  execute-prepared: same options plus --prepared <owned snapshot> --digest <native digest>; optional --outputs <JSON integer array> selects original frozen indices, not permission; caller still needs business admission.");
 
         Console.WriteLine("""
             Fission CLI

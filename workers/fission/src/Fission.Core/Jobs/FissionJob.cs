@@ -232,6 +232,12 @@ public sealed class FissionJob
             ThrowContract("MAT_OUTRO_DIR_EMPTY");
         }
 
+        ValidateConfiguration();
+    }
+
+    /// <summary>Directory-independent original configuration checks; frozen execution validates only its selected file dependencies.</summary>
+    public void ValidateConfiguration()
+    {
         if (Threads is < 1 or > 64)
         {
             ThrowContract("CFG_THREAD_LIMIT2");

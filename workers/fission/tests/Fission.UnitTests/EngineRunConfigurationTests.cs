@@ -242,6 +242,30 @@ public sealed class EngineRunConfigurationTests
         Assert.Equal(SplitMode.None, configuration.Job.SplitMode);
         Assert.False(Directory.Exists(f.Workspace));
     }
+    [Fact]
+    public void Load_OriginalRunAndPrepareDoNotImplicitlyRequestSubsetExecution()
+    {
+        var f = new Fixture(); Assert.Null(EngineRunConfiguration.Load(f.Args()).OutputIndices);
+        var args = f.Args(); args[0] = "prepare"; Assert.Null(EngineRunConfiguration.LoadCommand(args).OutputIndices);
+    }
+
+    [Theory]
+    [InlineData("threads")]
+    [InlineData("speed")]
+    [InlineData("image")]
+    [InlineData("transition")]
+    [InlineData("subtitle")]
+    public void OriginalPureConfigurationRetainsScalarRejectionsWithoutChangingJobBytes(string kind)
+    {
+        var f = new Fixture(); var job = EngineRunConfiguration.Load(f.Args()).Job;
+        switch (kind) { case "threads": job.Threads = 65; break; case "speed": job.SceneGroups = [new("x", Speed: .4)]; break;
+            case "image": job.ImageDurMinSec = 0; break; case "transition": job.TransitionSec = 3; break;
+            case "subtitle": job.SubtitleEnabled = true; job.SubtitleStyle = "invalid"; break; }
+        var before = JsonSerializer.Serialize(job); var hash = Fission.Core.Pipeline.FissionPreparedDecisions.HashJob(job);
+        Assert.Throws<ConfigException>(job.Validate); Assert.Throws<ConfigException>(job.ValidateConfiguration);
+        Assert.Equal(before, JsonSerializer.Serialize(job)); Assert.Equal(hash, Fission.Core.Pipeline.FissionPreparedDecisions.HashJob(job));
+    }
+
     private static void AssertSafeRejection(Fixture fixture, Action action)
     {
         var error = Assert.Throws<ConfigException>(action);

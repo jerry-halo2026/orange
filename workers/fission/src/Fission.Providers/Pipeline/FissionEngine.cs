@@ -108,14 +108,72 @@ public sealed class FissionEngine
         if (report.Failed != 0 || capture.Outputs.IsEmpty) throw new EngineException("ENC_PREPARE_FAILED", "Native preparation did not produce complete decisions.");
         return FissionPreparedDecisions.Create(job, report.JobId, _paths.WorkRoot, _paths.OutRoot, _policy.CacheRoot, _paths, capture.Outputs, capture.Versions);
     }
+    private static System.Collections.ObjectModel.ReadOnlyCollection<PreparedOutput> SelectPreparedOutputs(FissionPreparedDecisions prepared, IReadOnlyCollection<int> outputIndices)
+    {
+        if (outputIndices is null) throw new ConfigException("CFG_PREPARED_SELECTION", "An explicit native output selection is required.");
+        prepared.Validate(); var indices = outputIndices.ToArray();
+        if (indices.Length == 0 || indices.Length > prepared.Outputs.Count || indices.Distinct().Count() != indices.Length
+            || indices.Any(index => !prepared.Outputs.Any(output => output.Index == index)))
+            throw new ConfigException("CFG_PREPARED_SELECTION", "Native output indices must be a nonempty unique subset of the original snapshot.");
+        var wanted = indices.ToHashSet();
+        return Array.AsReadOnly(prepared.Outputs.Where(output => wanted.Contains(output.Index)).OrderBy(output => output.Index).ToArray());
+    }
+    // This is a dependency view, not another plan: the complete snapshot/digest is never rewritten.
+    private (IReadOnlyList<PreparedSourceVersion> Versions, IReadOnlyList<string> NativeKeys) SelectedDependencies(
+        FissionJob job, FissionPreparedDecisions prepared, IReadOnlyList<PreparedOutput> selected)
+    {
+        var paths = new HashSet<string>(StringComparer.Ordinal); var keys = new HashSet<string>(StringComparer.Ordinal);
+        void Require(string file, string? sha = null)
+        {
+            var matches = prepared.Versions.Where(v => v.Path == file).ToArray();
+            if (matches.Length != 1 || sha is not null && matches[0].Sha256 != sha)
+                throw new ConfigException("CFG_PREPARED_DEPENDENCY", "A selected native dependency is not bound to its prepared version.");
+            paths.Add(file);
+        }
+        foreach (var tool in new[] { _paths.FFmpeg, _paths.FFprobe, _paths.FFmpeg6 }) Require(tool);
+        foreach (var output in selected)
+        {
+            foreach (var source in output.Sources) Require(source.Path, source.Sha256);
+            foreach (var material in output.SelectedVideos) Require(material.Path);
+            var voice = output.Sources[output.Audio.Voice.Source]; Require(output.VoicePath, voice.Sha256);
+            foreach (var cut in output.Cuts) Require(cut.Normalization.Path, cut.Normalization.Sha256);
+            if (output.MusicPath is not null) Require(output.MusicPath, output.Sources[output.Audio.Music!.Source].Sha256);
+            if (output.TransitionIntent.Shader is { } shader) Require(shader.Path, shader.Sha256);
+            if (output.SubtitleIntent.Outcome == "prepared-intent")
+            {
+                if (job.AudioDir is null || output.SubtitleIntent.Style is null)
+                    throw new ConfigException("CFG_PREPARED_DEPENDENCY", "Selected subtitle text provenance is missing.");
+                Require(Path.Combine(Directory.GetParent(job.AudioDir.TrimEnd(Path.DirectorySeparatorChar))!.FullName, "meta.json"));
+            }
+            if (output.GeneratedVoice is { } generated)
+            {
+                Require(generated.Path, voice.Sha256); Require(generated.ProofPath, generated.ProofSha256);
+                keys.Add(Path.Combine(_policy!.CacheRoot, ".native-prepared-generated.key"));
+            }
+        }
+        return (Array.AsReadOnly(prepared.Versions.Where(v => paths.Contains(v.Path)).ToArray()), Array.AsReadOnly(keys.ToArray()));
+    }
     /// <summary>Pin the exact native tools before even hardware detection. No media selection or business authorization.</summary>
-    public async Task<IDisposable> HoldPreparedRuntimeAsync(FissionJob job, FissionPreparedDecisions? prepared, CancellationToken ct = default)
+    public Task<IDisposable> HoldPreparedRuntimeAsync(FissionJob job, FissionPreparedDecisions? prepared, CancellationToken ct = default)
+        => HoldPreparedRuntimeCoreAsync(job, prepared, null, ct);
+    public Task<IDisposable> HoldPreparedRuntimeAsync(FissionJob job, FissionPreparedDecisions prepared, IReadOnlyCollection<int> outputIndices, CancellationToken ct = default)
+        => HoldPreparedRuntimeCoreAsync(job, prepared, SelectPreparedOutputs(prepared, outputIndices), ct);
+    private async Task<IDisposable> HoldPreparedRuntimeCoreAsync(FissionJob job, FissionPreparedDecisions? prepared, IReadOnlyList<PreparedOutput>? selected, CancellationToken ct)
     {
         if (_policy is null || _files is null) throw new ConfigException("CFG_PREPARED_POLICY", "Native preparation requires the controlled policy.");
         var versions = new RunSourceVersions(_policy, _files, true);
         try
         {
-            _policy.ValidateJob(job); _files.ValidateJobInputs(job); ct.ThrowIfCancellationRequested();
+            _policy.ValidateJob(job);
+            if (selected is null) _files.ValidateJobInputs(job);
+            else
+            {
+                var dependencies = SelectedDependencies(job, prepared!, selected);
+                foreach (var version in dependencies.Versions)
+                    if (version.Owned) _files.ValidateOwnedFile(version.Path); else _files.ValidateReadOnlyFile(version.Path);
+                foreach (var key in dependencies.NativeKeys) _files.ValidateOwnedFile(key);
+            }
+            ct.ThrowIfCancellationRequested();
             if (prepared is not null)
             {
                 prepared.Validate();
@@ -136,7 +194,11 @@ public sealed class FissionEngine
         catch { versions.Dispose(); throw; }
     }
     /// <summary>Consume frozen native facts; no selector, RNG or recipe replay is reachable here.</summary>
-    public async Task<JobReport> ExecutePreparedAsync(FissionJob job, FissionPreparedDecisions prepared, CancellationToken ct = default)
+    public Task<JobReport> ExecutePreparedAsync(FissionJob job, FissionPreparedDecisions prepared, CancellationToken ct = default)
+        => ExecutePreparedCoreAsync(job, prepared, null, ct);
+    public Task<JobReport> ExecutePreparedAsync(FissionJob job, FissionPreparedDecisions prepared, IReadOnlyCollection<int> outputIndices, CancellationToken ct = default)
+        => ExecutePreparedCoreAsync(job, prepared, SelectPreparedOutputs(prepared, outputIndices), ct);
+    private async Task<JobReport> ExecutePreparedCoreAsync(FissionJob job, FissionPreparedDecisions prepared, IReadOnlyList<PreparedOutput>? selected, CancellationToken ct)
     {
         if (_policy is null || _files is null) throw new ConfigException("CFG_PREPARED_POLICY", "Prepared execution requires the explicit controlled native policy.");
         prepared.Validate();
@@ -144,8 +206,9 @@ public sealed class FissionEngine
         if (prepared.JobSha256 != FissionPreparedDecisions.HashJob(job) || prepared.WorkRoot != _paths.WorkRoot
             || prepared.RuntimeSha256 != FissionPreparedDecisions.HashRuntime(_paths) || prepared.OutRoot != _paths.OutRoot || prepared.CacheRoot != _policy.CacheRoot || outRoot != prepared.OutRoot)
             throw new ConfigException("CFG_PREPARED_BINDING", "Prepared decisions do not bind this exact original job and task-attempt.");
-        _files.ValidateJobInputs(job); ct.ThrowIfCancellationRequested();
-        using var versions = new RunSourceVersions(_policy, _files, true);
+        if (selected is null) _files.ValidateJobInputs(job);
+        ct.ThrowIfCancellationRequested();
+        using var versions = new RunSourceVersions(_policy, _files, true, selected is not null);
         // All original/analysis/text/shader versions are checked and held before any final codec, selection or new copy.
         var runtime = new List<(PreparedOutput Facts, MaterialItem Audio)>();
         var voiceCopies = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -154,14 +217,16 @@ public sealed class FissionEngine
         foreach (var executable in new[] { _paths.FFmpeg, _paths.FFprobe, _paths.FFmpeg6 })
             if (!prepared.Versions.Any(v => v.Path == executable && !v.Owned))
                 throw new ConfigException("CFG_PREPARED_RUNTIME", "Prepared native runtime version is missing.");
-        foreach (var version in prepared.Versions)
+        var dependencies = selected is null ? (prepared.Versions, (IReadOnlyList<string>)Array.Empty<string>()) : SelectedDependencies(job, prepared, selected);
+        foreach (var version in dependencies.Item1)
         {
             var owned = version.Path.StartsWith(_paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal);
             if (owned != version.Owned || await versions.PinAsync(version.Path, ct).ConfigureAwait(false) != version.Sha256
                 || versions.Identity(version.Path) != version.Identity)
                 throw new ConfigException("CFG_PREPARED_SOURCE_CHANGED", "A prepared native source version or filesystem binding changed.");
         }
-        foreach (var output in prepared.Outputs)
+        foreach (var key in dependencies.Item2) await versions.PinAsync(key, ct).ConfigureAwait(false);
+        foreach (var output in selected ?? prepared.Outputs)
         {
             _files.ValidateOwnedFile(output.VoicePath);
             foreach (var cut in output.Cuts)
@@ -211,7 +276,7 @@ public sealed class FissionEngine
             }
         }
         finally { pool.ReleaseAll(); }
-        var report = new JobReport(prepared.JobId, outputs.Count, 0, outputs.AsReadOnly(), Array.Empty<FailureRecord>(), "countReached", watch.ElapsedMilliseconds, pool.Log);
+        var report = new JobReport(prepared.JobId, outputs.Count, 0, outputs.AsReadOnly(), Array.Empty<FailureRecord>(), selected is null ? "countReached" : "preparedSelectionComplete", watch.ElapsedMilliseconds, pool.Log);
         await File.WriteAllTextAsync(NewOutput(Path.Combine(outRoot, prepared.JobId, "report.json")), report.ToJson(), ct).ConfigureAwait(false);
         return report;
     }
@@ -1050,7 +1115,7 @@ public sealed class FissionEngine
     // Pin before the first actual probe/copy/normalize. The existing per-run norm
     // cache and every output then refer to the SAME held original version, rather
     // than rehashing a changed path after a private copy or cached normalization.
-    private sealed class RunSourceVersions(EnginePathPolicy? policy, EngineJobFiles? files, bool stableOwned = false) : IDisposable
+    private sealed class RunSourceVersions(EnginePathPolicy? policy, EngineJobFiles? files, bool stableOwned = false, bool nativeCacheKey = false) : IDisposable
     {
         private readonly ConcurrentDictionary<string, Lazy<Task<string>>> versions = new(StringComparer.Ordinal);
         private readonly List<FileStream> handles = [];
@@ -1066,7 +1131,8 @@ public sealed class FissionEngine
         }
         private async Task<string> ReadAsync(string source, CancellationToken ct)
         {
-            var generated = source.StartsWith(policy!.Paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal);
+            var generated = source.StartsWith(policy!.Paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal)
+                || nativeCacheKey && source == Path.Combine(policy.CacheRoot, ".native-prepared-generated.key");
             if (generated) files!.ValidateOwnedFile(source); else files!.ValidateReadOnlyFile(source);
             HoldAncestors(source);
             var stream = new FileStream(source, FileMode.Open, FileAccess.Read,

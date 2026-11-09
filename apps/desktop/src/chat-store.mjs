@@ -400,51 +400,60 @@ export function writeModelLog(project, turnId, lines) {
     size += line.length + 1;
   }
   writeAtomic(join(dir, `${fileOf(turnId)}.model.jsonl`), kept.map((line) => `${line}\n`).join(''));
+    return Promise.resolve({confirmed:true});
 }
 
 /**
  * A turn's log, written as it happens: `write(kind, fields)` adds a line `{ t, kind, …fields }` (keptLine), `end()`
  * closes it. Past LOG_MAX it keeps no more of the agent's updates, past MODEL_LOG_MAX no more requests: a `cut` line
  * says so, and as it closes, how many were left out. Never throws: a log that cannot be written does not stop the turn.
+ * `completion` and `end()` await its real finish and descriptor close; ignored rejections are safely retained.
  * `part` '.model': its model requests' log.
  */
 export function openLog(project, turnId, onError = () => {}, part = '') {
-  if (typeof turnId !== 'string' || !ID.test(turnId)) return { write() {}, end() {} };
-  let stream = null;
-  let size = 0;
-  const max = part ? MODEL_LOG_MAX : LOG_MAX;
-  let dropped = 0;
-  try {
-    const dir = logsDir(project);
-    mkdirSync(dir, { recursive: true });
-    const file = join(dir, `${fileOf(turnId)}${part}.jsonl`);
-    /* a turn's log opened again (the agent's work adopted after it ended) goes on from its size */
-    size = statOf(file)?.size ?? 0;
-    stream = createWriteStream(file, { flags: 'a' });
-    stream.on('error', (e) => { onError(e); stream = null; });
-  } catch (e) { onError(e); }
-  const put = (line) => {
-    stream.write(`${line}\n`);
-    size += Buffer.byteLength(line) + 1;
+  if (typeof turnId !== 'string' || !ID.test(turnId)) {
+    const completion=Promise.resolve({confirmed:true,notStarted:true});
+    return {write(){},end(){return completion;},completion};
+  }
+  let stream=null,size=0,dropped=0,ending=false,finished=false,closed=false,failure=null;
+  const max=part?MODEL_LOG_MAX:LOG_MAX;
+  let resolveCompletion,rejectCompletion;
+  const completion=new Promise((resolve,reject)=>{resolveCompletion=resolve;rejectCompletion=reject;});
+  // Existing callers may ignore end(); strict native retirement consumes this same receipt.
+  void completion.catch(()=>{});
+  const fail=error=>{
+    if(failure)return;failure=error;
+    try{onError(error);}catch{/* observers cannot turn a failed writer into success */}
+    rejectCompletion(error);
   };
+  const check=()=>{if(closed&&!failure){if(!finished)fail(new Error('Native log writer closed without finish.'));else resolveCompletion({confirmed:true});}};
+  try {
+    const dir=logsDir(project);mkdirSync(dir,{recursive:true});
+    const file=join(dir,`${fileOf(turnId)}${part}.jsonl`);
+    size=statOf(file)?.size??0;
+    stream=createWriteStream(file,{flags:'a'});
+    stream.on('error',fail);
+    stream.once('finish',()=>{finished=true;check();});
+    stream.once('close',()=>{closed=true;check();});
+  } catch(error) { fail(error); }
+  const put=line=>{stream.write(`${line}\n`);size+=Buffer.byteLength(line)+1;};
   return {
-    write(kind, fields = {}) {
-      if (!stream) return;
+    completion,
+    write(kind,fields={}) {
+      if(!stream||ending||failure)return;
       try {
-        if (dropped && (part || kind === 'update')) { dropped += 1; return; }
-        const line = keptLine(project, JSON.stringify({ t: Date.now(), kind, ...fields }));
-        if (size + line.length > max && (part || kind === 'update')) {
-          dropped += 1;
-          put(JSON.stringify({ t: Date.now(), kind: 'cut', max }));
-          return;
-        }
+        if(dropped&&(part||kind==='update')){dropped++;return;}
+        const line=keptLine(project,JSON.stringify({t:Date.now(),kind,...fields}));
+        if(size+line.length>max&&(part||kind==='update')){dropped++;put(JSON.stringify({t:Date.now(),kind:'cut',max}));return;}
         put(line);
-      } catch (e) { onError(e); }
+      }catch(error){fail(error);}
     },
     end() {
-      try { if (stream && dropped) put(JSON.stringify({ t: Date.now(), kind: 'cut', dropped })); } catch (e) { onError(e); }
-      stream?.end();
-      stream = null;
+      if(ending)return completion;
+      ending=true;
+      try{if(stream&&dropped&&!failure)put(JSON.stringify({t:Date.now(),kind:'cut',dropped}));}catch(error){fail(error);}
+      try{stream?.end();}catch(error){fail(error);}
+      return completion;
     },
   };
 }

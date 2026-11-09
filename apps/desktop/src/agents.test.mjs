@@ -728,3 +728,47 @@ test('a Claude Code older than the one the chat was tried with is said, with how
   assert.equal(claudeOutdated('/x/claude', at('2.2.0')), null);
   assert.equal(claudeOutdated('/x/claude', at(null)), null);
 });
+
+// Forward T03.quit: original AgentSession, real owned ACP subprocess, no model/provider/network.
+async function retirementFixture(mode='ok', native={AgentSession,setChosenPaths}) {
+ const fs=await import('node:fs'),p=await import('node:path'),os=await import('node:os');
+ const dir=fs.mkdtempSync(p.join(os.tmpdir(),'of-retirement-')),program=p.join(dir,'dsh.mjs'),trace=p.join(dir,'trace.jsonl');
+ fs.writeFileSync(program,`import {appendFileSync} from 'node:fs';const mode=${JSON.stringify(mode)},trace=${JSON.stringify(trace)};const note=x=>appendFileSync(trace,JSON.stringify(x)+'\\n');let buf='',closed=false;const interval=setInterval(()=>{},1000);const send=(m,result)=>process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');process.stdin.on('data',d=>{buf+=d;let i;while((i=buf.indexOf('\\n'))>=0){const m=JSON.parse(buf.slice(0,i));buf=buf.slice(i+1);if(m.method==='initialize')send(m,{protocolVersion:1,agentCapabilities:{},authMethods:[]});else if(m.method==='session/new'){send(m,{sessionId:'s1'});if(mode==='premature')setTimeout(()=>process.exit(0),10);}else if(m.method&&m.method.endsWith('/close')){note('close-request');if(mode==='unsupported')process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,error:{code:-32601,message:'unsupported'}})+'\\n');else{closed=true;note('close-ack');send(m,{});}}}});process.stdin.on('end',()=>{note('stdin-eof');if(mode!=='stuck'){clearInterval(interval);process.exit(closed?0:2);}});`);
+ native.setChosenPaths({deepseek:program});const session=new native.AgentSession({agent:'deepseek',cwd:dir});await session.start();return {session,dir,program,trace,read:()=>fs.existsSync(trace)?fs.readFileSync(trace,'utf8').trim().split('\n').map(JSON.parse):[]};
+}
+test('actual AgentSession retirement waits for close acknowledgement, EOF and observed process close0',async()=>{
+ const f=await retirementFixture();try{assert.equal(typeof f.session.retire,'function');const one=f.session.retire();assert.equal(f.session.retire(),one,'idempotent receipt');const receipt=await one;assert.equal(receipt.confirmed,true);assert.equal(receipt.close.code,0);assert.equal(receipt.close.signal,null);assert.deepEqual(f.read(),['close-request','close-ack','stdin-eof']);assert.equal(f.session.child.exitCode,0);await assert.rejects(f.session.prompt([{type:'text',text:'must not run'}]),/retir|clos|seal/i);}finally{f.session.close();setChosenPaths({});}
+});
+for(const mode of ['stuck','unsupported','premature'])test('actual Agent retirement refuses '+mode+' instead of accepting force or premature exit',async()=>{
+ const f=await retirementFixture(mode);try{assert.equal(typeof f.session.retire,'function');if(mode==='premature')await new Promise(r=>setTimeout(r,40));await assert.rejects(f.session.retire({timeoutMs:100}),/retir|clos|preserv|deadline|unsupported/i);}finally{f.session.close();setChosenPaths({});}
+});
+
+test('strict original module drain observes a real successful child receipt and can reopen admission',async()=>{
+ const native=await import('./agents.mjs?retirement-success');const f=await retirementFixture('ok',native);
+ const result=await native.closeEverySession({seal:true});assert.equal(result.confirmed,true);assert.equal(f.session.closeObserved.code,0);
+ await assert.rejects(native.localAgent('deepseek'),/retir|seal/i);native.resumeAgentAdmission();const next=await retirementFixture('ok',native);await next.session.retire();native.setChosenPaths({});
+});
+test('retirement holds an entered open awaiting discovery and prevents its later spawn',async()=>{
+ const native=await import('./agents.mjs?retirement-pending-open');const session=new native.AgentSession({agent:'deepseek',cwd:process.env.TEMP});
+ let release;const gate=new Promise(r=>release=r),open=session.open.bind(session);session.open=async()=>{await gate;return open();};
+ const starting=session.start();let done=false;const closing=native.closeEverySession({seal:true});closing.then(()=>done=true,()=>done=true);await Promise.resolve();assert.equal(done,false);release();await starting.catch(()=>{});await closing;assert.equal(session.child,undefined);
+});
+
+test('initialization-only owned ACP process cannot use a premature close0 as its EOF receipt',async()=>{
+ const fs=await import('node:fs/promises');const source=await fs.readFile(new URL('./agents.mjs',import.meta.url),'utf8');
+ const begin=source.indexOf('function ownCommand('),end=source.indexOf('\n\n',source.indexOf('  return record;',begin));assert.ok(begin>=0&&end>begin);
+ const exact=source.slice(begin,end),ownedCommands=new Set(),retirementFailures=new Set();
+ const own=new Function('ownedCommands','retirementFailures','retirementWithin','retirementError',exact+';return ownCommand;')(ownedCommands,retirementFailures,async promise=>promise,()=>Error('retirement unconfirmed'));
+ const child=spawn(process.execPath,['-e','process.exit(0)'],{windowsHide:true,stdio:['pipe','pipe','pipe']});const record=own(child,{eof:true});await new Promise(r=>child.once('close',r));await assert.rejects(record.retire(),/retire|unconfirmed/i);
+});
+
+test('retirement awaits the actual original logging receiver close, including its entered HTTP request',async()=>{
+ const {spanReceiver}=await import('./agent-logs.mjs'),http=await import('node:http'),p=await import('node:path'),fs=await import('node:fs'),os=await import('node:os');
+ const dir=fs.mkdtempSync(p.join(os.tmpdir(),'of-retire-logging-')),receiver=await spanReceiver(p.join(dir,'spans.jsonl'));
+ const request=http.request(receiver.url+'/v1/traces',{method:'POST',headers:{'content-type':'application/json','content-length':'2',expect:'100-continue'}});request.on('error',()=>{});request.on('response',response=>response.resume());
+ const entered=new Promise(resolve=>request.once('continue',resolve));request.flushHeaders();await entered;request.write('{');
+ const session=new AgentSession({agent:'deepseek',cwd:dir});let observed=false,confirmed=false;
+ session.logging={close:()=>{const server=receiver.close();server.once('close',()=>observed=true);return server;}};
+ const closing=session.retire().then(receipt=>{confirmed=receipt.confirmed;});
+ try{await new Promise(r=>setImmediate(r));assert.equal(confirmed,false,'a returned Server object is not its close receipt');request.end('}');await closing;assert.equal(observed,true);}finally{request.end();await closing;}
+});

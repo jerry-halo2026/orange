@@ -139,13 +139,37 @@ for (const fail of [false, true]) {
         win.close();
       },
     });
-    quitAfterStudio({ preventDefault() { prevented = true; } }, options());
+    const closing=quitAfterStudio({ preventDefault() { prevented = true; } }, options());
     assert.equal(prevented, true);
     assert.equal(quitting, true);
     assert.equal(win.destroyed, false);
     if (fail) reject(new Error('Studio already stopped')); else resolve();
-    await done.catch(() => {});
-    assert.equal(win.destroyed, true);
+    await closing;
+    assert.equal(win.destroyed, !fail);
     assert.equal(stopped, 1);
   });
 }
+
+// Forward T03.quit: an authenticated Windows close is a request, not permission to destroy.
+test('Windows X and repeated X retain the native window until retirement is confirmed',()=>{
+ const win=new Window();let requested=0,confirmed=false;
+ keepWindowOnClose(win,{mac:false,isQuitting:()=>requested>0,save:()=>{},requestQuit:()=>requested++,canClose:()=>confirmed});
+ win.close();win.close();assert.equal(win.destroyed,false);assert.equal(requested,2);
+ confirmed=true;win.close();assert.equal(win.destroyed,true);
+});
+test('failed quit retains window and never re-enters successful quit',async()=>{
+ let reject,quit=0,failed=0;const pending=new Promise((_,no)=>reject=no);
+ const result=quitAfterStudio({preventDefault(){}},{quitting:false,markQuitting(){},studio:{quit:()=>pending},closeAgents:async()=>{},quit:()=>quit++,confirmQuit(){},onFailure:()=>failed++});
+ reject(Error('preservation failed'));await result;await new Promise(r=>setImmediate(r));assert.equal(quit,0);assert.equal(failed,1);
+});
+test('quit issues authoritative utility stop while awaiting the same Agent receipt before confirming destruction',async()=>{
+ let release;const pending=new Promise(r=>release=r),events=[];
+ const result=quitAfterStudio({preventDefault(){}},{quitting:false,markQuitting(){},studio:{quit:async()=>events.push('utility')},closeAgents:()=>pending,quit:()=>events.push('quit'),confirmQuit:()=>events.push('confirmed'),onFailure:()=>assert.fail('unexpected failure')});
+ await Promise.resolve();assert.deepEqual(events,['utility']);release();await result;assert.deepEqual(events,['utility','confirmed','quit']);
+});
+
+test('controlled quit without a ready Studio still awaits its owned Agent receipt',async()=>{
+ let release,confirmed=0,quit=0;const pending=new Promise(r=>release=r);
+ const closing=quitAfterStudio({preventDefault(){}},{quitting:false,markQuitting(){},studio:null,closeAgents:()=>pending,confirmQuit:()=>confirmed++,quit:()=>quit++,onFailure:()=>assert.fail('unexpected')});
+ await Promise.resolve();assert.equal(confirmed,0);assert.equal(quit,0);release();await closing;assert.equal(confirmed,1);assert.equal(quit,1);
+});

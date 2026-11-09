@@ -94,7 +94,7 @@ test('failed preservation locks future activation; expired authority cannot retu
   const e=await setup();await e.controller.signIn(input);e.setTime(60010);
   assert.equal(e.controller.getPublicState().kind,'expired');
   assert.throws(()=>e.controller.assertActive(),{code:'authentication-required'});
-  await e.controller.dispose();await s.controller.dispose();
+  await e.controller.dispose();assert.equal((await s.controller.dispose()).confirmed,false);
 });
 
 test('original desktop Login component renders accessible native account fields and an actionable missing configuration state',async()=>{
@@ -131,7 +131,7 @@ test('original desktop consumes the separately built shell only in explicit isol
   assert.throws(()=>mod.windowEditorDirectory({packaged:false,isolated:true,explicit:'relative',bundled:'original-shell'}),/shell|directory/i);
 });
 
-async function actualMainRetirement(directory) {
+async function actualMainRetirement(directory, retireAgents = async()=>{}) {
   const {EventEmitter}=await import('node:events');const {writeWindowState}=await import('./window-state.mjs');
   const {createHash}=await import('node:crypto');const source=await readFile(new URL('./main.mjs',import.meta.url),'utf8');
   const start=source.indexOf('function saveState('),end=source.indexOf('\n/** Links out of the page',start);
@@ -144,11 +144,11 @@ async function actualMainRetirement(directory) {
   const views=new Map([['project-view',{webContents:contents}]]);
   // Compile the exact production function bytes, without importing Electron or
   // substituting a rewritten retirement function. Only window/view inputs are synthetic.
-  const create=new Function('writeWindowState','directory','views',`
+  const create=new Function('writeWindowState','directory','views','retireAgents',`
     let win={isMaximized:()=>false,isFullScreen:()=>false,getNormalBounds:()=>({x:1,y:2,width:1000,height:700})};
     let state={},tabs={saved:()=>({tabs:[{id:'native-project'}],active:0})},accountStateDir=directory,desktopAuthActive=true,agentResourcesUsed=false;
     const HOME='home';${savedSource}\nconst retire=${retireSource};return {retire,saveState,snapshot:()=>({accountStateDir,tabs,views:views.size})};`);
-  return {caller:create(writeWindowState,directory,views),destroyed:()=>destroyed};
+  return {caller:create(writeWindowState,directory,views,retireAgents),destroyed:()=>destroyed};
 }
 
 for(const failure of ['mkdir','rename'])test(`actual main account retirement refuses ${failure} failure before destroying its existing views`,async()=>{
@@ -185,7 +185,7 @@ test('real guard release lock failure never emits retirement success and leaves 
  await writeFile(join(s.home,'coord','meta.lock'),'synthetic foreign holder preserved',{flag:'wx'});
  await s.controller.signOut();assert.deepEqual(events,[]);assert.equal(s.controller.getPublicState().reason,'preservation-failed');
  assert.equal((await s.controller.signIn(input)).code,'preservation-failed');assert.equal(await readFile(join(s.home,'coord','meta.lock'),'utf8'),'synthetic foreign holder preserved');
- await s.controller.dispose();assert.deepEqual(events,[]);
+ assert.equal((await s.controller.dispose()).confirmed,false);assert.deepEqual(events,[]);
 });
 
 test('private system selection scopes cannot be forged, reused, or transferred to the next epoch',async()=>{
@@ -211,4 +211,80 @@ test('expiry retires private source selection without granting ownership or expo
   assert.throws(()=>s.controller.completeSourceSelection(scope,[file]),{code:'authentication-required'});
   assert.doesNotMatch(JSON.stringify(s.controller.getPublicState()),/expiry-source|synthetic-access|subjectId|epoch/);
   await s.controller.dispose();
+});
+// Forward T03.quit: no successful process exit or permanently disposed UI after a refused activation.
+test('failed controller disposal propagates preservation failure rather than a false success',async()=>{
+ const s=await setup({retire:async()=>{throw Error('parent window unavailable');}});await s.controller.signIn(input);
+ assert.deepEqual(await s.controller.dispose(),{confirmed:false,reason:'preservation-failed'});
+});
+test('workspace rejection publishes the same retryable state as the final public and HTTP result',async()=>{
+ const first=await setup();await first.controller.signIn(input);
+ const events=[];const second=mod.createDesktopAuth({configuration,home:first.home,projects:first.projects,coordinationRoot:join(first.home,'coord'),instanceId:'samecoord-reopen'}, {fetch:async url=>url.includes('/token?')?Response.json({access_token:'fixture',refresh_token:'fixture',token_type:'bearer',expires_in:60,user:{id:A}}):Response.json({id:A,is_anonymous:false}),monotonicNow:()=>10,retire:async()=>{},onState:state=>events.push(state)});
+ const result=await second.signIn(input);assert.equal(result.code,'project-access-denied');assert.deepEqual(events.at(-1),second.getPublicState());assert.deepEqual(result.state,second.getPublicState());assert.equal(result.state.kind,'signed-out');await first.controller.dispose();await second.dispose();
+});
+test('successful actual disposal releases the same guard namespace for a reopened controller',async()=>{
+ const s=await setup();await s.controller.signIn(input);await s.controller.dispose();
+ const reopened=mod.createDesktopAuth({configuration,home:s.home,projects:s.projects,coordinationRoot:join(s.home,'coord'),instanceId:'actual-reopen'}, {fetch:async url=>url.includes('/token?')?Response.json({access_token:'fixture',refresh_token:'fixture',token_type:'bearer',expires_in:60,user:{id:A}}):Response.json({id:A,is_anonymous:false}),monotonicNow:()=>10,retire:async()=>{},onState:()=>{}});
+ assert.equal((await reopened.signIn(input)).ok,true);await reopened.dispose();
+});
+
+test('actual main waits for the Agent retirement receipt before destroying original project views',async()=>{
+ const directory=await mkdtemp(join(root,'main-agent-retire-'));let release;const pending=new Promise(r=>release=r);
+ const observed=await actualMainRetirement(directory,()=>pending),closing=observed.caller.retire();
+ await Promise.resolve();assert.equal(observed.destroyed(),0);release({confirmed:true});assert.equal(await closing,true);assert.equal(observed.destroyed(),1);
+});
+
+test('unknown original source preservation cannot release its real controlled reservation on dispose',async()=>{
+ const s=await setup();await s.controller.signIn(input);
+ await assert.rejects(s.controller.runNative(async()=>{throw Object.assign(Error('synthetic native unknown source close'),{code:'source-preservation-failed'});}),{code:'source-preservation-failed'});
+ const outcome=await s.controller.dispose().catch(()=>({confirmed:false}));assert.equal(outcome.confirmed,false);
+ const registry=JSON.parse(await readFile(join(s.home,'coord','registry.json'),'utf8'));assert.equal(registry.reservations.length,1,'unknown original source resources must retain their barrier');
+});
+// Forward P1: real original controller/utility bytes and native HTTP/WS/film, not renderer locking.
+async function quitAuthorityFixture(directory) {
+ const {fileURLToPath,pathToFileURL}=await import('node:url'),{spawn}=await import('node:child_process'),{EventEmitter}=await import('node:events');
+ const sourceRoot=fileURLToPath(new URL('../../../',import.meta.url)),source=await readFile(new URL('./studio-process.mjs',import.meta.url),'utf8');
+ const stopStart=source.indexOf('async function stop() {'),stopEnd=source.indexOf('\n/** the folders',stopStart),messageStart=source.indexOf("parent.on('message', ({ data }) => {"),messageEnd=source.indexOf('\n});',messageStart)+4;
+ const retirement=/retire:(async\(\)=>\{[\s\S]*?\n  \}),\n  \/\/ Only/.exec(source);assert.ok(stopStart>=0&&stopEnd>stopStart&&messageStart>=0&&messageEnd>messageStart&&retirement,'actual utility source extraction must match');
+ const utilitySource=source.slice(stopStart,stopEnd),messageSource=source.slice(messageStart,messageEnd),retireSource=retirement[1],script=join(directory,'actual-utility-fixture.mjs');
+ await writeFile(script,`import {mkdir} from 'node:fs/promises';import {join} from 'node:path';import {randomUUID} from 'node:crypto';import {pathToFileURL} from 'node:url';
+ const base=${JSON.stringify(sourceRoot)},own=${JSON.stringify(directory)};
+ const {resolveIsolationProfile,isolationEnvironment}=await import(pathToFileURL(join(base,'packages/openfilm/src/development-isolation.mjs')));
+ const baseRoot=join(own,'profiles'),profile=resolveIsolationProfile({baseRoot,instanceId:'quit-authority',taskId:'T03_QUIT',attemptId:'actual-'+process.pid,ports:{studio:18551,film:18552}},{approvedBaseRoot:baseRoot});for(const dir of Object.values(profile.paths))await mkdir(dir,{recursive:true});Object.assign(process.env,isolationEnvironment(profile));
+ const {createDesktopAuth}=await import(pathToFileURL(join(base,'apps/desktop/src/desktop-auth.mjs'))),{startStudio}=await import(pathToFileURL(join(base,'packages/openfilm/studio/server/server.mjs')));
+ let studio=null,stopping=false,parentRetirement=null,working=[];const asking=new Map(),send=message=>process.send(message),parent={on:(name,fn)=>process.on(name,data=>fn({data}))};
+ ${utilitySource}
+ ${messageSource}
+ const configuration={environmentId:'fixture-authority',authOrigin:'https://auth.invalid',publishableKey:'public-fixture'},subject='11111111-1111-4111-8111-111111111111',coord=join(profile.paths.home,'.orange-coordination');
+ const desktopAuth=createDesktopAuth({configuration,home:profile.paths.home,sharedHome:profile.paths.sharedHome,projects:profile.paths.projects,coordinationRoot:coord,instanceId:'actual-child'},{fetch:async url=>url.includes('/token?')?Response.json({access_token:'synthetic',refresh_token:'synthetic',token_type:'bearer',expires_in:600,user:{id:subject}}):Response.json({id:subject,is_anonymous:false}),monotonicNow:()=>10,onState:state=>send({type:'auth-fixture',state}),retire:${retireSource}});
+ const signed=await desktopAuth.signIn({email:'fixture@example.invalid',password:'synthetic-only'});if(!signed.ok)throw Error('fixture signin failed');
+ const {createProject}=await import(pathToFileURL(join(base,'packages/openfilm/studio/server/projects.mjs')));const project=await desktopAuth.runNative(()=>createProject('Authoritative quit fixture'));
+ const editor=join(profile.root,'editor');await mkdir(editor);await (await import('node:fs/promises')).writeFile(join(editor,'index.html'),'<html>original isolated shell fixture</html>');
+ studio=await desktopAuth.runNative(()=>startStudio({port:18551,key:'synthetic-quit-key',isolation:true,advertise:false,desktopAuth,editorDir:editor,openBrowser:()=>{throw Error('no browser');}}));send({type:'fixture-ready',origin:studio.origin,filmOrigin:studio.filmOrigin,coord,projectId:project.id,projectPath:project.path});`);
+ const events=new EventEmitter(),child=spawn(process.execPath,[script],{cwd:directory,env:{...process.env},windowsHide:true,stdio:['ignore','pipe','pipe','ipc']});let stderr='',exit=null,close=null;child.stderr.on('data',b=>stderr+=b);child.stdout.on('data',()=>{});const closed=new Promise(resolve=>child.once('close',(code,signal)=>{close={code,signal};resolve(close);}));child.once('exit',(code,signal)=>exit={code,signal});child.on('message',message=>events.emit(message.type,message));
+ const wait=(name,timeout=5000)=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('fixture '+name+' deadline')),timeout);events.once(name,value=>{clearTimeout(timer);resolve(value);});});
+ const ready=await wait('fixture-ready');return {child,events,wait,ready,closed,observed:()=>({exit,close,stderr}),send:data=>child.send(data)};
+}
+for(const rejectAgent of [false,true])test('native quit seals authoritative HTTP WS film during Agent wait and preserves rejection='+rejectAgent,async()=>{
+ const directory=await mkdtemp(join(root,'quit-authority-')),fixture=await quitAuthorityFixture(directory),{quitAfterStudio}=await import('./window-lifecycle.mjs'),{connect}=await import('node:net');
+ let release,reject;const agents=new Promise((yes,no)=>{release=yes;reject=no;});void agents.catch(()=>{});let quits=0,failures=0,mainSealed=false;
+ const window=await actualMainRetirement(directory,()=>agents);
+ fixture.events.on('auth-retire',message=>{void window.caller.retire().then(ok=>fixture.send({type:'auth-parent-retired',id:message.id,ok}),()=>fixture.send({type:'auth-parent-retired',id:message.id,ok:false}));});
+ const studio={quit(){fixture.send({type:'quit'});return fixture.closed.then(result=>{if(result.code!==0||result.signal)throw Error('utility preservation failed');});}};
+ const closing=quitAfterStudio({preventDefault(){}},{quitting:false,markQuitting(){},studio,closeAgents:()=>{mainSealed=true;return agents;},quit:()=>quits++,confirmQuit(){},onFailure:()=>failures++});
+ const api=async suffix=>{const response=await fetch(fixture.ready.origin+suffix,{headers:{'x-studio-key':'synthetic-quit-key',origin:fixture.ready.origin,connection:'close'},signal:AbortSignal.timeout(3000)});return {status:response.status,value:await response.json()};};
+ try{
+ await new Promise(r=>setTimeout(r,100));assert.equal(mainSealed,true);assert.equal((await api('/api/projects')).status,403,'not just main UI: original utility must already reject business while Agent is pending');assert.notEqual((await api('/api/auth/state')).value.kind,'active');
+ const next=await fetch(fixture.ready.origin+'/api/auth/sign-in',{method:'POST',headers:{'x-studio-key':'synthetic-quit-key',origin:fixture.ready.origin,'content-type':'application/json',connection:'close'},body:JSON.stringify({email:'b@example.invalid',password:'synthetic-only'}),signal:AbortSignal.timeout(3000)});assert.equal((await next.json()).ok,false,'pending authoritative retirement cannot activate B');
+ const before=await readFile(join(fixture.ready.projectPath,'film.html'));const edit=await fetch(fixture.ready.origin+'/api/projects/'+fixture.ready.projectId+'/edit',{method:'POST',headers:{'x-studio-key':'synthetic-quit-key',origin:fixture.ready.origin,'content-type':'application/json',connection:'close'},body:JSON.stringify({base:null,ops:[{op:'stage',w:1080,h:1920}]}),signal:AbortSignal.timeout(3000)});assert.equal(edit.status,403);await edit.text();assert.deepEqual(await readFile(join(fixture.ready.projectPath,'film.html')),before,'denied native edit leaves actual film bytes unchanged');
+ const film=await fetch(fixture.ready.filmOrigin+'/p/'+fixture.ready.projectId+'/film.html',{signal:AbortSignal.timeout(3000)});assert.equal(film.status,403);await film.text();
+ const ws=await new Promise((resolve,reject)=>{const socket=connect({host:'127.0.0.1',port:18551});let text='';socket.on('connect',()=>socket.write('GET /api/events HTTP/1.1\r\nHost: 127.0.0.1:18551\r\nOrigin: '+fixture.ready.origin+'\r\nx-studio-key: synthetic-quit-key\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Key: c3ludGhldGljLXRlc3Q=\r\nSec-WebSocket-Version: 13\r\n\r\n'));socket.on('data',bytes=>text+=bytes);socket.on('error',reject);socket.on('close',()=>resolve(text));});assert.match(ws,/^HTTP\/1\.1 403/);
+ const pending=JSON.parse(await readFile(join(fixture.ready.coord,'registry.json'),'utf8'));assert.equal(pending.reservations.length,1);
+ if(rejectAgent)reject(Error('actual Agent retirement refused'));else release({confirmed:true});await closing;await fixture.closed;
+ assert.equal(fixture.observed().exit.code,rejectAgent?1:0);assert.equal(fixture.observed().close.signal,null);assert.equal(quits,rejectAgent?0:1);assert.equal(failures,rejectAgent?1:0);assert.equal(window.destroyed(),rejectAgent?0:1);
+ const registry=JSON.parse(await readFile(join(fixture.ready.coord,'registry.json'),'utf8'));assert.equal(registry.reservations.length,rejectAgent?1:0);
+ }finally{
+ release?.({confirmed:true});if(!fixture.observed().close){fixture.send({type:'quit'});await Promise.race([fixture.closed,new Promise(r=>setTimeout(r,5000))]);if(!fixture.observed().close)fixture.child.kill();}
+ await closing;
+ }
 });

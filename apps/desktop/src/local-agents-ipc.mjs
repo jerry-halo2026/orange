@@ -72,18 +72,21 @@ const RECORD_SETTLE_MS = 800;
 
 /**
  * The agent's requests to its model from `from` to `to` (ms), read from its own record (or `agentLog`, the log it was
- * started with) into the turn's model log. Never throws: a record that cannot be read leaves the turn without one.
+ * started with) into the turn's model log. Missing vendor history is best effort; entered local writes must complete.
  */
 export async function keepAgentRecord({ agent, sessionId, cwd, turnId, from, to, agentLog = null, log = () => {}, settleMs = LOG_SETTLE_MS[agent] ?? RECORD_SETTLE_MS }) {
-  if (!RECORDED_AGENTS.includes(agent) || !sessionId || !turnId) return;
+  if(!RECORDED_AGENTS.includes(agent)||!sessionId||!turnId)return;
+  let lines;
   try {
-    await new Promise((done) => setTimeout(done, settleMs));
-    const env = await loginShellVariables({ staleOk: true });
-    const found = agentRecordCalls({ agent, sessionId, cwd, from, to, env, log: agentLog });
-    if (found?.calls.length) writeModelLog(cwd, turnId, compactCalls(found.calls));
-  } catch (e) {
-    log(`agent record ${turnId}: ${e instanceof Error ? e.message : String(e)}\n`);
-  }
+    await new Promise(done=>setTimeout(done,settleMs));
+    const env=await loginShellVariables({staleOk:true});
+    const found=agentRecordCalls({agent,sessionId,cwd,from,to,env,log:agentLog});
+    if(!found?.calls.length)return;
+    lines=compactCalls(found.calls);
+  }catch(error){log(`agent record ${turnId}: unavailable\n`);return;}
+  // Missing vendor history is best effort; an entered original local write is not.
+  try { await writeModelLog(cwd,turnId,lines); }
+  catch(error){log(`agent record ${turnId}: local preservation failed\n`);throw error;}
 }
 
 /**
@@ -151,7 +154,34 @@ export function agentProblem(entry, step, e, turnId = null) {
  *           skills?: { dataDir: string, mine: string } | null }} opts
  */
 export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbackDir = null, env = {}, harness = async () => null, log = () => {}, onWorking = () => {}, onAsking = () => {}, onConnectionResult = (_agent, _error) => {}, logDir = () => null, skills = null }) {
-  const harnessFor = async (agent) => (HARNESS_AGENTS.includes(agent) ? harness(agent) : undefined);
+  let sealed = false, closingAll = null;
+  const entered = new Set(), retiring = new Set(), records = new Set(), failures = new Set();
+  const unavailable = () => Object.assign(new Error('Agent IPC is sealed for retirement.'), {code:'agent-retirement-failed'});
+  const assertAdmission = () => { if(sealed) throw unavailable(); };
+  const remember = (promise, set = entered) => {
+    const pending=Promise.resolve(promise);set.add(pending);
+    void pending.then(()=>set.delete(pending),()=>set.delete(pending));return pending;
+  };
+  const preserveRecord = promise => {
+    const pending=remember(promise,records);void pending.catch(error=>failures.add(error));return pending;
+  };
+  const openOwnedLog = (...args) => {
+    const writer=openLog(...args);preserveRecord(writer.completion);return writer;
+  };
+  const finishAdopt = (entry,ok=true) => {
+    const adopted=entry.adopted;if(!adopted)return Promise.resolve();entry.adopted=null;
+    adopted.write('done',{ok,unprompted:true});
+    return preserveRecord(Promise.all([adopted.end(),keepAgentRecord({agent:entry.agent,sessionId:entry.info?.sessionId,cwd:entry.cwd,turnId:adopted.turnId,from:adopted.from,to:Date.now(),agentLog:entry.session?.opened?.log,log})]));
+  };
+  const closeSession = session => {
+    if(!session) return Promise.resolve();
+    const pending=remember(session.retire(),retiring);
+    void pending.catch(error=>failures.add(error));return pending;
+  };
+  const harnessFor = async (agent) => {
+    assertAdmission();const value=HARNESS_AGENTS.includes(agent) ? await harness(agent) : undefined;
+    assertAdmission();return value;
+  };
   const skillRecord = skills ? skillStore(skills.dataDir) : null;
   /* what went wrong, kept in Studio's home with Studio's own problems (openfilm's problems.mjs), for its report */
   const problems = env.OPENFILM_HOME ? problemsFile(env.OPENFILM_HOME) : undefined;
@@ -169,7 +199,8 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
   const tellAsking = () => onAsking([...new Set([...sessions.values()].filter((entry) => entry.pending.size > 0).map((entry) => entry.cwd))]);
   const handle = (channel, fn) => ipcMain.handle(channel, (event, opts) => {
     if (!trusted(event)) throw new Error('not the chat');
-    return fn(event, opts);
+    assertAdmission();
+    return remember(fn(event, opts));
   });
 
   const send = (entry, key, payload) => {
@@ -195,9 +226,11 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
     const entry = sessions.get(key);
     if (!entry) return;
     for (const answer of entry.pending.values()) answer(null);
-    entry.session.close();
-    sessions.delete(key);
-    if (entry.running > 0) onWorking(working());
+    entry.closing = true;
+    const done=remember(closeSession(entry.session).then(()=>finishAdopt(entry),async error=>{await finishAdopt(entry,false);throw error;}),retiring);
+    void done.catch(error=>failures.add(error));
+    void done.then(()=>{sessions.delete(key);if(entry.running>0)onWorking(working());},()=>{});
+    return done;
   };
 
   handle('desktop:local-agents:list', () => listAgents());
@@ -237,7 +270,7 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
       onConnectionResult(agent, e);
       return { ok: false, error, ...(e?.code ? { code: String(e.code) } : {}) };
     } finally {
-      session?.close();
+      if(session) void closeSession(session);
     }
   });
 
@@ -251,7 +284,7 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
     if (typeof cwd !== 'string' || !cwd) return { ok: false, error: 'Missing project folder.' };
     lastAgent = agent;
     /* the conversation still open here (the page was reloaded): taken up as it is, no second process */
-    const open = resume ? [...sessions].find(([, e]) => e.agent === agent && e.cwd === cwd && e.info?.sessionId === resume && e.sender === event.sender) : null;
+    const open = resume ? [...sessions].find(([, e]) => !e.closing && e.agent === agent && e.cwd === cwd && e.info?.sessionId === resume && e.sender === event.sender) : null;
     if (open) {
       open[1].lastUsed = Date.now();
       return { ok: true, key: open[0], info: { ...open[1].info, resumed: true, authMethods: [], mcp: false } };
@@ -307,7 +340,7 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
       onConnectionResult(agent, e);
       if (meta?.turnId) {
         const raw = sentError(e);
-        const file = openLog(cwd, meta.turnId, (err) => log(`turn log ${meta.turnId}: ${err.message}\n`));
+        const file = openOwnedLog(cwd, meta.turnId, (err) => log(`turn log ${meta.turnId}: ${err.message}\n`));
         file?.write('start', { ...result, agent, cwd, resume, meta, ...(raw ? { raw } : {}), ...entry.session?.failure?.() });
         file?.end();
       }
@@ -323,7 +356,7 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
     const entry = sessions.get(key);
     if (!entry) return { ok: false, error: 'This session has ended.' };
     const meta = opts?.meta && typeof opts.meta === 'object' ? opts.meta : null;
-    const file = meta ? openLog(entry.cwd, meta.turnId, (e) => log(`turn log ${meta.turnId}: ${e.message}\n`)) : null;
+    const file = meta ? openOwnedLog(entry.cwd, meta.turnId, (e) => log(`turn log ${meta.turnId}: ${e.message}\n`)) : null;
     const turn = meta ? { meta, log: [], done: null, file } : null;
     const text = String(opts?.text ?? '');
     /* an agent that takes no pictures is given none: the text names each one's file, which it can open itself */
@@ -371,7 +404,7 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
       entry.turnEnded = Date.now();
       /* its skills changed while it worked: closed now its turn is over (refreshSkills) */
       if (entry.stale) setTimeout(() => { if (sessions.get(key) === entry && !(entry.running > 0)) close(key); }, STALE_CLOSE_MS);
-      void keepAgentRecord({ agent: entry.agent, sessionId: entry.info?.sessionId, cwd: entry.cwd, turnId: meta.turnId, from, to: entry.turnEnded, agentLog: entry.session.opened?.log, log });
+      void preserveRecord(keepAgentRecord({ agent: entry.agent, sessionId: entry.info?.sessionId, cwd: entry.cwd, turnId: meta.turnId, from, to: entry.turnEnded, agentLog: entry.session.opened?.log, log }));
       /* the page that asked may be gone (reloaded): say it on the channel too */
       if (!entry.sender.isDestroyed()) entry.sender.send('desktop:local-agents:event', { key, kind: 'done', turnId: meta.turnId, ...result });
     }
@@ -409,14 +442,9 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
   handle('desktop:local-agents:adopt', (_event, opts) => {
     const entry = sessions.get(opts?.key);
     if (!entry) return { ok: false };
-    if (entry.adopted) {
-      entry.adopted.write('done', { ok: true, unprompted: true });
-      entry.adopted.end();
-      void keepAgentRecord({ agent: entry.agent, sessionId: entry.info?.sessionId, cwd: entry.cwd, turnId: entry.adopted.turnId, from: entry.adopted.from, to: Date.now(), agentLog: entry.session?.opened?.log, log });
-    }
-    entry.adopted = null;
+    if(entry.adopted)void finishAdopt(entry);
     if (typeof opts?.turnId === 'string') {
-      entry.adopted = Object.assign(openLog(entry.cwd, opts.turnId, (e) => log(`turn log ${opts.turnId}: ${e.message}\n`)), { turnId: opts.turnId, from: entry.turnEnded ?? Date.now() });
+      entry.adopted = Object.assign(openOwnedLog(entry.cwd, opts.turnId, (e) => log(`turn log ${opts.turnId}: ${e.message}\n`)), { turnId: opts.turnId, from: entry.turnEnded ?? Date.now() });
       /* `meta`: the page's turn, so a log found without a saved turn can be made a turn again (chat-store unsavedTurns) */
       const meta = opts?.meta && typeof opts.meta === 'object' ? opts.meta : null;
       entry.adopted.write('prompt', { agent: entry.agent, cwd: entry.cwd, session: entry.info ?? null, opened: entry.session?.opened ?? null, meta, unprompted: true, text: '' });
@@ -482,7 +510,9 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
      * permission refused; every question skipped); its words, whole. `signal` stops it.
      * @param {string} agent @param {string} text @param {AbortSignal} [signal] @returns {Promise<string>}
      */
-    ask: async (agent, text, signal) => {
+    ask: (agent, text, signal) => {
+      assertAdmission();
+      return remember((async()=>{
       if (!isChatAgent(agent)) throw new Error(`Unknown agent: ${String(agent)}`);
       let said = '';
       const session = new AgentSession({
@@ -490,7 +520,7 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
         onUpdate: (update) => { if (update?.sessionUpdate === 'agent_message_chunk' && update.content?.type === 'text') said += update.content.text ?? ''; },
         onQuestion: async () => null,
       });
-      const stop = () => { void session.cancel().catch(() => {}); session.close(); };
+      const stop = () => { void session.cancel().catch(() => {}); void closeSession(session); };
       signal?.addEventListener('abort', stop, { once: true });
       try {
         await session.start();
@@ -499,10 +529,28 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
         return said;
       } finally {
         signal?.removeEventListener('abort', stop);
-        session.close();
+        void closeSession(session);
       }
+      })());
     },
-    closeAll: () => [...sessions.keys()].forEach(close),
+    closeAll() {
+      sealed=true;
+      if(closingAll) return closingAll;
+      for(const key of [...sessions.keys()]) close(key);
+      const drain=(async()=>{
+        while(entered.size || retiring.size || records.size) await Promise.allSettled([...entered,...retiring,...records]);
+        if(failures.size || sessions.size) throw unavailable();
+        return {confirmed:true};
+      })();
+      let timer;
+      closingAll=Promise.race([drain,new Promise((_,reject)=>{timer=setTimeout(()=>reject(unavailable()),60000);})]).finally(()=>clearTimeout(timer));
+      void closingAll.catch(()=>{});return closingAll;
+    },
+    resume() {
+      if(!sealed)return;
+      if(failures.size || entered.size || retiring.size || records.size || sessions.size)throw unavailable();
+      sealed=false;closingAll=null;
+    },
     /** an agent disconnected in Settings: its sessions close */
     closeAgent: (agent) => { for (const [key, entry] of [...sessions]) if (entry.agent === agent) close(key); },
     /**

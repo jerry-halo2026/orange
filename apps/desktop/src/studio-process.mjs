@@ -34,7 +34,11 @@ let stopping = false;
 async function stop() {
   if (stopping) return;
   stopping = true;
-  try { await studio?.close(); await desktopAuth.dispose(); process.exit(0); }
+  try {
+    const retirement=await desktopAuth.dispose();
+    if(retirement?.confirmed!==true)throw new Error('Desktop preservation is unconfirmed.');
+    await studio?.close();process.exit(0);
+  }
   catch { send({type:'auth',state:{kind:'locked',reason:'preservation-failed'}});process.exit(1); }
 }
 /** the folders the chat's agents are working in, as the main process last told */
@@ -66,7 +70,7 @@ const desktopAuth=createDesktopAuth({
   },
   retire:async()=>{
     await new Promise((resolve,reject)=>{
-      const id=randomUUID(),timer=setTimeout(()=>{if(parentRetirement?.id===id)parentRetirement=null;reject(new Error('Parent preservation is unconfirmed.'));},5000);
+      const id=randomUUID(),timer=setTimeout(()=>{if(parentRetirement?.id===id)parentRetirement=null;reject(new Error('Parent preservation is unconfirmed.'));},60000);
       parentRetirement={id,timer,resolve,reject};send({type:'auth-retire',id});
     });
     await studio?.close();

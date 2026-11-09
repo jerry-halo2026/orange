@@ -78,6 +78,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
         if(['authentication-required','project-access-denied','source-selection-required','source-access-denied','source-capability-unavailable'].includes(error?.code))return;
         throw error;
       })));
+      if(failed)throw new Error('Desktop preservation failed.');
       reservation?.close();reservation=null;retired=true;
       dependencies.onRetired?.();
     }).catch(()=>{failed=true;notify(safeState('locked','preservation-failed'));}).finally(()=>{retiring=null;});
@@ -91,8 +92,8 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   }
   service=makeService();
   function getPublicState() {
-    if(disposed)return safeState('disposed','disposed');
     if(failed)return safeState('locked','preservation-failed');
+    if(disposed)return safeState('disposed','disposed');
     if(retiring)return safeState('locked','preservation-pending');
     if(!service)return safeState('signed-out','configuration-required');
     return service.getPublicState();
@@ -199,6 +200,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     } catch {
       sealed=true;reservation?.close();reservation=null;
       service.dispose();service=makeService();verified=null;
+      notify(getPublicState());
       return Object.freeze({ok:false,code:'project-access-denied',state:getPublicState()});
     }
   }
@@ -260,7 +262,13 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
         throw error;
       }finally{operations.delete(operation);}
     },
-    async dispose(){if(disposed)return;disposed=true;sealed=true;selectedSources.clear();policy?.dispose();service?.dispose();if(verified)await beginRetirement();notify(safeState('disposed','disposed'));},
+    async dispose(){
+      if(!disposed){disposed=true;sealed=true;selectedSources.clear();policy?.dispose();service?.dispose();}
+      if(verified)await beginRetirement();
+      const result=Object.freeze({confirmed:!failed,reason:failed?'preservation-failed':null});
+      notify(failed?safeState('locked','preservation-failed'):safeState('disposed','disposed'));
+      return result;
+    },
   };
   return Object.freeze(controller);
 }

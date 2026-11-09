@@ -48,6 +48,50 @@ import { AGENT_DEFINITIONS } from './agent-definitions.mjs';
 
 const require = createRequire(import.meta.url);
 
+// Only this module's admitted operations and owned handles. No process scanning or foreign cleanup.
+let agentAdmissionSealed = false, agentDrain = null;
+const agentEntries = new Set(), ownedCommands = new Set(), retirementFailures = new Set();
+const retirementError = () => Object.assign(new Error('Agent retirement or preservation is unconfirmed.'), { code: 'agent-retirement-failed' });
+function admitAgent() { if (agentAdmissionSealed) throw retirementError(); }
+function agentEntry(work) {
+  try { admitAgent(); } catch(error) { return Promise.reject(error); }
+  const entered = Promise.resolve().then(work);
+  agentEntries.add(entered);
+  void entered.then(() => agentEntries.delete(entered), () => agentEntries.delete(entered));
+  return entered;
+}
+async function retirementWithin(promise, ms) {
+  let timer;
+  try { return await Promise.race([promise, new Promise((_, reject) => { timer = setTimeout(() => reject(retirementError()), ms); })]); }
+  finally { clearTimeout(timer); }
+}
+export function sealAgentAdmission() { agentAdmissionSealed = true; }
+export function resumeAgentAdmission() {
+  if(!agentAdmissionSealed) return;
+  if (retirementFailures.size || LIVE.size || ownedCommands.size || agentEntries.size) throw retirementError();
+  agentAdmissionSealed = false; agentDrain = null;
+}
+function ownCommand(child, { eof = false } = {}) {
+  let observed = null, stopped = false, eofSent = false;
+  const closed = new Promise(resolve => child.once('close', (code, signal) => { observed = { code, signal }; resolve(observed); }));
+  const record = { async retire() {
+    if(eof) {
+      if(observed && !eofSent) throw retirementError();
+      if(!eofSent) { eofSent=true; child.stdin?.end(); }
+    }
+    const result = await retirementWithin(closed, 15000);
+    if (stopped || result.signal || (eof && result.code !== 0)) throw retirementError();
+    ownedCommands.delete(record); return result;
+  }, forced() { stopped = true; retirementFailures.add(record); } };
+  ownedCommands.add(record);
+  void closed.then(result => {
+    if (stopped || result.signal || (eof && (!eofSent || result.code!==0))) retirementFailures.add(record);
+    else ownedCommands.delete(record);
+  });
+  return record;
+}
+
+
 /**
  * Each agent: through an adapter the app carries (`adapter`, told where the person's program is by `env`), or the
  * person's program itself with `args`. Signed in? `auth` asks the program (its words say); without it, a session is
@@ -301,9 +345,13 @@ const findAgentCli = (id, options) => afterFirstReading(() => resolveAgentCli(id
 function run(cmd, args, timeoutMs = 10_000, { cwd, env, options } = {}) {
   return new Promise((resolve) => {
     try {
-      execFile(cmd, args, { timeout: timeoutMs, encoding: 'utf8', windowsHide: true, ...options, ...(cwd ? { cwd } : {}), ...(env ? { env } : {}) }, (error, stdout, stderr) => {
+      admitAgent();
+      let receipt;
+      const child = execFile(cmd, args, { timeout: timeoutMs, encoding: 'utf8', windowsHide: true, ...options, ...(cwd ? { cwd } : {}), ...(env ? { env } : {}) }, (error, stdout, stderr) => {
+        if (error?.killed || error?.signal) receipt?.forced();
         resolve({ ok: !error, out: `${stdout ?? ''}\n${stderr ?? ''}`, stdout: stdout ?? '' });
       });
+      receipt = ownCommand(child);
     } catch (e) {
       /* a program Windows cannot start that way (EINVAL) */
       resolve({ ok: false, out: e instanceof Error ? e.message : String(e), stdout: '' });
@@ -346,7 +394,7 @@ const NOT_THE_AGENT = Object.freeze({
  * not: `code` 'not-a-program' (nothing there this computer can start), 'app' or 'not-cursor-agent' (not the agent:
  * an editor or a desktop app, never started) or 'did-not-start' (with what it said).
  */
-export async function checkAgentProgram(id, path) {
+async function checkAgentProgramEntered(id, path) {
   const spec = AGENTS[id];
   if (!spec) return { ok: false, error: `No agent ${id}`, code: 'not-a-program' };
   const cli = chosenProgram(path, { names: AGENT_PROGRAMS[id]?.names ?? [id] });
@@ -373,7 +421,7 @@ async function inWsl(names) {
  * global folder and whether it is in WSL instead. `hint`, when it is not found: chosen-missing (the program chosen is
  * gone) · wsl (only in WSL) · unusable (files with its name, none that starts) · none.
  */
-export async function diagnoseAgent(id, { appVersion = '' } = {}) {
+async function diagnoseAgentEntered(id, { appVersion = '' } = {}) {
   const spec = AGENTS[id];
   if (!spec) return null;
   const shell = await loginShellEnvironment({ maxAgeMs: 0 });
@@ -421,7 +469,7 @@ export async function agentSignedIn(id, cliPath) {
  * organization, plan; Codex: how, ChatGPT or an API key), never a key or a token.
  * @returns {Promise<{ signedIn: boolean | null, account: AgentAccount | null, problem?: string }>}
  */
-export async function agentStatus(id, cliPath, { fresh = false } = {}) {
+async function agentStatusEntered(id, cliPath, { fresh = false } = {}) {
   const spec = AGENTS[id];
   if (!spec || !cliPath) return { signedIn: null, account: null };
   if (!spec.auth) return { signedIn: await acpSignedIn(id, { fresh }), account: null };
@@ -486,7 +534,7 @@ export function probeFolder() {
  * Signed in, for an agent with no command that says: a session opened (in an empty folder of the app's) and closed.
  * One it refuses for its sign-in (ACP's auth_required) is signed out; one that opens, signed in; anything else, null.
  */
-export function acpSignedIn(id, { fresh = false } = {}) {
+function acpSignedInEntered(id, { fresh = false } = {}) {
   const kept = asked.get(id);
   // A sign-in just completed in Terminal: bypass a cached negative result, but share an in-flight probe.
   if (kept && (kept.pending || ((!fresh || kept.signedIn) && Date.now() - kept.at < (kept.signedIn ? SIGNED_IN_FOR_MS : ASKED_FOR_MS)))) return kept.answer;
@@ -582,7 +630,9 @@ async function powerShellWindow(name, script, env, { track = false } = {}) {
   const file = join(dir, track ? `${randomUUID()}-${name}` : name);
   writeFileSync(file, script, 'utf8');
   const how = powerShellWindowLaunch(file, { wait: track });
+  admitAgent();
   const child = spawn(how.cmd, how.args, { cwd: dir, detached: true, stdio: 'ignore', env, ...how.options });
+  ownCommand(child);
   await new Promise((done, fail) => { child.once('spawn', done); child.once('error', fail); });
   if (track) child.once('exit', () => { try { unlinkSync(file); } catch { /* already removed */ } });
   child.unref();
@@ -599,14 +649,16 @@ export function agentShell(id, shell) {
  * Anthropic Console). `[{ id, name, description?, args, env }]`, asked of the adapter as it shakes hands; none for an
  * agent signed in its own way (no `acpSignIn`) or one that cannot be started.
  */
-export async function agentSignInMethods(id) {
+async function agentSignInMethodsEntered(id) {
   const spec = AGENTS[id];
   if (!spec?.acpSignIn) return [];
   const shell = agentShell(id, await loginShellVariables());
   const cli = await findAgentCli(id, { pathDirs: shell.PATH.split(PATH_SEP) });
   if (!cli) return [];
   const launch = adapterLaunch(id, cli.path);
+  admitAgent();
   const child = spawn(launch.cmd, launch.args, { ...OWN_GROUP, env: childEnvironment({ shell, extra: launch.env }), stdio: ['pipe', 'pipe', 'ignore'], windowsHide: true });
+  const retirement = ownCommand(child, { eof: true });
   child.once('error', () => {});
   try {
     const conn = acp.client({ name: 'openfilm-desktop' }).connect(acp.ndJsonStream(Writable.toWeb(child.stdin), Readable.toWeb(child.stdout)));
@@ -621,7 +673,7 @@ export async function agentSignInMethods(id) {
   } catch {
     return [];
   } finally {
-    stopTree(child);
+    try { await retirement.retire(); } catch(error) { retirementFailures.add(retirement); stopTree(child); throw error; }
   }
 }
 
@@ -637,7 +689,7 @@ const SIGN_IN_DIR = () => join(tmpdir(), 'openfilm-sign-in');
  * signed in the way its adapter offers (`acpSignIn`, that way's id) runs the adapter with that way's arguments, as ACP
  * has a client do it. `track` adds an `isOpen` check for the roster, kept inside the main process.
  */
-export async function openAgentSignIn(id, { track = false } = {}) {
+async function openAgentSignInEntered(id, { track = false } = {}) {
   const spec = AGENTS[id];
   const pathDirs = (await loginShellEnvironment()).PATH.split(PATH_SEP);
   const cli = spec ? await findAgentCli(id, { pathDirs }) : null;
@@ -689,7 +741,7 @@ export async function openAgentSignIn(id, { track = false } = {}) {
  * the agent's sign-in (openAgentSignIn). What it said is the error when it fails. Whether it is signed in is asked
  * afresh from then on.
  */
-export async function signOutAgent(id) {
+async function signOutAgentEntered(id) {
   const spec = AGENTS[id];
   if (!spec?.logout) return { ok: false, error: `${spec?.label ?? id} has no sign-out command: switch accounts in ${spec?.label ?? id} itself.` };
   const cli = await findAgentCli(id, { pathDirs: (await loginShellEnvironment()).PATH.split(PATH_SEP) });
@@ -706,7 +758,7 @@ export async function signOutAgent(id) {
  * Mac, PowerShell on Windows. The person agreed to that exact command in Settings → Agents first. Whether it worked is
  * learnt by looking for the agent again (agent-roster.mjs).
  */
-export async function openAgentInstaller(id) {
+async function openAgentInstallerEntered(id) {
   const spec = AGENTS[id];
   const command = spec ? installCommand(id) : null;
   if (!command) return { ok: false, error: `${spec?.label ?? id} has no installer to run here.` };
@@ -725,7 +777,7 @@ export async function openAgentInstaller(id) {
  * here but has not downloaded Claude Code yet (opening its Code tab does). One not found: `app`, the maker's desktop
  * app when it is here without the agent's program; `installer`, the official command that installs it, when it has one.
  */
-export async function listAgents({ ids = Object.keys(AGENTS), statusIds = ids, fresh = false, onAgent = () => {} } = {}) {
+async function listAgentsEntered({ ids = Object.keys(AGENTS), statusIds = ids, fresh = false, onAgent = () => {} } = {}) {
   const wanted = [...new Set(ids)].filter((id) => Object.hasOwn(AGENTS, id));
   if (!wanted.length) return [];
   /* looked at as the person comes back from installing one: a PATH from a few seconds ago at most */
@@ -745,7 +797,7 @@ export async function listAgents({ ids = Object.keys(AGENTS), statusIds = ids, f
 }
 
 /** One agent as listAgents has it, asked alone when connecting, diagnosing or waiting for sign-in. */
-export async function localAgent(id, { fresh = false } = {}) {
+async function localAgentEntered(id, { fresh = false } = {}) {
   if (!isAgentId(id)) throw new Error(`No agent ${id}`);
   const pathDirs = (await loginShellEnvironment({ maxAgeMs: 10_000 })).PATH.split(PATH_SEP);
   const quick = windows ? resolveAgentCli(id, { pathDirs }) : undefined;
@@ -1178,7 +1230,16 @@ export class AgentSession {
    * (their keys, gateways, tokens; Claude Code only its PATH and the like, agentShell), as in their terminal, and the app's
    * `openfilm` first on its PATH; the app's ffmpeg (`fallbackDir`) last, for a computer that has none of its own.
    */
-  async start() {
+  start() {
+    if (this.retirement || agentAdmissionSealed) return Promise.reject(retirementError());
+    if (this.opening) return this.opening;
+    LIVE.add(this);
+    this.opening = this.startEntered();
+    void this.opening.catch(() => {});
+    return this.opening;
+  }
+
+  async startEntered() {
     try {
       const info = await this.open();
       this.step = null;
@@ -1265,12 +1326,14 @@ export class AgentSession {
     this.instructions = harness || this.spec.systemPrompt ? null : instructions;
 
     const script = harness ? fileURLToPath(new URL('./pi-agent.mjs', import.meta.url)) : native ? null : adapterScript(this.spec.adapter);
+    if (this.retirement) throw retirementError();
+    admitAgent();
     this.child = native
       ? spawn(native.cmd, native.args, { ...native.options, ...OWN_GROUP, cwd: this.opts.cwd, env, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true })
       : spawn(node.command, node.env.ELECTRON_RUN_AS_NODE ? asNode(script) : [script], { ...OWN_GROUP, cwd: this.opts.cwd, env, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true });
     this.child.stderr.on('data', (d) => { this.stderr = (this.stderr + String(d)).slice(-16_000); });
-    LIVE.add(this);
-    this.child.once('exit', (code) => { LIVE.delete(this); this.exited = { code }; this.opts.onExit?.({ code, stderr: this.stderr }); });
+    this.actualClose = new Promise(resolve => this.child.once('close', (code, signal) => { this.closeObserved = { code, signal }; resolve(this.closeObserved); }));
+    this.child.once('exit', (code) => { this.exited = { code }; this.opts.onExit?.({ code, stderr: this.stderr }); });
     this.child.once('error', () => {});
 
     const stream = acp.ndJsonStream(Writable.toWeb(this.child.stdin), Readable.toWeb(this.child.stdout));
@@ -1382,7 +1445,15 @@ export class AgentSession {
    * Send a message; resolves with the stopReason when the turn ends. Everything on the way comes from onUpdate.
    * `turnId`: the app's own agent writes each request to its model in that turn's log (chat-store.mjs).
    */
-  async prompt(blocks, { turnId } = {}) {
+  prompt(blocks, meta = {}) {
+    if(this.retirement || agentAdmissionSealed) return Promise.reject(retirementError());
+    this.turns ??= new Set();
+    const turn = this.promptEntered(blocks, meta); this.turns.add(turn);
+    void turn.then(() => this.turns.delete(turn), () => this.turns.delete(turn));
+    return turn;
+  }
+
+  async promptEntered(blocks, { turnId } = {}) {
     if (!this.sessionId) throw new Error('The session has not started.');
     const meta = this.opts.harness && turnId ? { _meta: { openfilm: { turnId, cwd: this.opts.cwd } } } : {};
     const told = this.instructions ? [{ type: 'text', text: this.instructions }] : [];
@@ -1470,12 +1541,48 @@ export class AgentSession {
     return this.conn.agent.request(acp.methods.agent.session.setMode, { sessionId: this.sessionId, modeId });
   }
 
-  close() {
-    LIVE.delete(this);
-    try { this.conn?.close(); } catch { /* gone already */ }
-    stopTree(this.child);
-    this.logging?.close();
+  async closeLogging() {
+    const closed=this.logging?.close();
+    // OpenCode's original span receiver returns its Node Server, not a Promise.
+    if(closed && typeof closed.once==='function') await new Promise((resolve,reject)=>{
+      const done=()=>{closed.removeListener('error',fail);resolve();};
+      const fail=error=>{closed.removeListener('close',done);reject(error);};
+      closed.once('close',done);closed.once('error',fail);
+    });
+    else await closed;
   }
+
+  retire({ timeoutMs = 15000 } = {}) {
+    if (this.retirement) return this.retirement;
+    this.retirement = Promise.resolve().then(async () => {
+      // An open admitted before the fence may still be discovering the program.
+      if(this.opening) await Promise.allSettled([this.opening]);
+      if(!this.child) { await this.closeLogging(); LIVE.delete(this); return {confirmed:true,notStarted:true}; }
+      if(this.closeObserved || this.child.exitCode !== null || this.child.signalCode !== null) throw retirementError();
+      if(this.turns?.size) { await this.cancel(); await Promise.allSettled([...this.turns]); }
+      let closeAcknowledged = false;
+      if(this.sessionId) {
+        await this.conn.agent.request(acp.methods.agent.session.close, {sessionId:this.sessionId});
+        closeAcknowledged = true;
+      }
+      // Do not dispose the connection first: that rejects the acknowledgement we need.
+      this.child.stdin.end();
+      const close = await this.actualClose;
+      if(close.code !== 0 || close.signal || (this.sessionId && !closeAcknowledged)) throw retirementError();
+      this.conn?.close(); await this.closeLogging(); LIVE.delete(this);
+      return {confirmed:true,closeAcknowledged,close};
+    });
+    this.retirement = retirementWithin(this.retirement, timeoutMs).catch(error => {
+      retirementFailures.add(this);
+      // Cleanup is not a preservation receipt; the rejected retirement remains retained.
+      try { this.conn?.close(); } catch { /* already disconnected */ }
+      stopTree(this.child); this.logging?.close(); throw error;
+    });
+    void this.retirement.catch(() => {});
+    return this.retirement;
+  }
+
+  close() { return this.retire(); }
 }
 
 /**
@@ -1509,8 +1616,46 @@ const LIVE = new Set();
  * Close every agent process, a session opened only to ask included (the chat's own are closed by their owner): the
  * app is quitting, and one left would outlive it.
  */
-export function closeEverySession() {
-  for (const session of [...LIVE]) session.close();
+export function closeEverySession({ seal = false } = {}) {
+  if(!seal) { const pending=Promise.allSettled([...LIVE].map(session=>session.close())); return pending; }
+  sealAgentAdmission();
+  if(agentDrain) return agentDrain;
+  agentDrain = retirementWithin((async()=>{
+    // Start cancellation before waiting for handlers whose prompts it settles.
+    const sessions=[...LIVE].map(session=>session.retire());
+    const commands=[...ownedCommands].map(record=>record.retire().catch(error=>{retirementFailures.add(record);throw error;}));
+    const outcomes=await Promise.allSettled([...sessions,...commands,...agentEntries]);
+    if(retirementFailures.size || outcomes.slice(0,sessions.length+commands.length).some(x=>x.status==='rejected')) throw retirementError();
+    if(LIVE.size || ownedCommands.size || agentEntries.size) throw retirementError();
+    return {confirmed:true};
+  })(),60000);
+  void agentDrain.catch(()=>{}); return agentDrain;
 }
 /* and as the process ends without quitting the usual way: none outlives it */
 process.once('exit', closeEverySession);
+
+export function checkAgentProgram(...args) { return agentEntry(() => checkAgentProgramEntered(...args)); }
+
+export function diagnoseAgent(...args) { return agentEntry(() => diagnoseAgentEntered(...args)); }
+
+export function agentStatus(...args) { return agentEntry(() => agentStatusEntered(...args)); }
+
+export function agentSignInMethods(...args) { return agentEntry(() => agentSignInMethodsEntered(...args)); }
+
+export function openAgentSignIn(...args) { return agentEntry(() => openAgentSignInEntered(...args)); }
+
+export function signOutAgent(...args) { return agentEntry(() => signOutAgentEntered(...args)); }
+
+export function openAgentInstaller(...args) { return agentEntry(() => openAgentInstallerEntered(...args)); }
+
+export function listAgents(...args) { return agentEntry(() => listAgentsEntered(...args)); }
+
+export function localAgent(...args) { return agentEntry(() => localAgentEntered(...args)); }
+
+export function acpSignedIn(...args) {
+  try { admitAgent(); } catch(error) { return Promise.reject(error); }
+  const entered=acpSignedInEntered(...args);
+  agentEntries.add(entered);
+  void entered.then(()=>agentEntries.delete(entered),()=>agentEntries.delete(entered));
+  return entered;
+}

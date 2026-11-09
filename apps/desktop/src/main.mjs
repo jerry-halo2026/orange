@@ -27,7 +27,7 @@ import { registerLocalAgentIpc } from './local-agents-ipc.mjs';
 import { readPreferences, registerChatIpc } from './chat-ipc.mjs';
 import { registerSkillsIpc } from './skills-ipc.mjs';
 import { createRoster } from './agent-roster.mjs';
-import { checkAgentProgram, closeEverySession, diagnoseAgent, forgetAgentStatus, listAgents, localAgent, openAgentInstaller, openAgentSignIn, setChosenPaths, signOutAgent } from './agents.mjs';
+import { checkAgentProgram, closeEverySession, sealAgentAdmission, resumeAgentAdmission, diagnoseAgent, forgetAgentStatus, listAgents, localAgent, openAgentInstaller, openAgentSignIn, setChosenPaths, signOutAgent } from './agents.mjs';
 import { agentUsage, forgetAgentUsage } from './agent-usage.mjs';
 import { installOpenfilmCommand } from './openfilm-command.mjs';
 import { startUpdates } from './updates.mjs';
@@ -109,7 +109,12 @@ let state = readWindowState(DATA);
 state = {...state,tabs:null};
 let accountStateDir = null;
 let desktopAuthActive = false;
-let agentResourcesUsed = false;
+let agentRetirement = null;
+function retireAgents() {
+  sealAgentAdmission(); desktopAuthActive=false;
+  if(!agentRetirement) agentRetirement=Promise.all([localAgents?.closeAll(),closeEverySession({seal:true})]);
+  return agentRetirement;
+}
 let authRetirementConfirmed = false;
 let theme = 'dark';
 /** whether Studio has ffmpeg: true, false, { state: 'downloading', progress } or { state: 'failed', message } (null: not known yet) */
@@ -120,6 +125,7 @@ const tellFfmpeg = (state) => { ffmpegFound = state; broadcast('desktop:ffmpeg',
 /** @type {ReturnType<typeof startUpdates> | null} */
 let updates = null;
 let quitting = false;
+let quitConfirmed = false;
 let cancelWindowClose = () => {};
 /** @type {ReturnType<typeof registerLocalAgentIpc> | null} */
 let localAgents = null;
@@ -455,6 +461,8 @@ async function runStudio(env) {
     onAuth: (next, scope) => {
       if (!next || typeof next.kind !== 'string') return;
       if (next.kind === 'active' && typeof scope === 'string' && /^[0-9a-f]{64}$/.test(scope)) {
+        try { resumeAgentAdmission(); localAgents?.resume(); agentRetirement=null; }
+        catch { broadcast('desktop:auth',{kind:'locked',reason:'preservation-failed'}); return; }
         accountStateDir = join(DATA,'orange-accounts',scope);
         state = {...state,tabs:readWindowState(accountStateDir).tabs};
         desktopAuthActive = true;
@@ -467,10 +475,8 @@ async function runStudio(env) {
       }
     },
     onAuthRetire: async () => {
-      // The original Agent APIs return void on close. Until their caller has a
-      // real exit receipt, preserve and lock instead of pretending B is safe.
-      if (agentResourcesUsed) return false;
-      try { saveState(true); } catch { return false; }
+      // Hold the original window/views until both real Agent receipts and strict save succeed.
+      try { await retireAgents(); saveState(true); } catch { return false; }
       desktopAuthActive = false;
       const current=[...views.entries()].filter(([id])=>id!==HOME);
       try {
@@ -498,8 +504,8 @@ async function runStudio(env) {
     onExit: (code) => {
       if (quitting) return;
       desktopAuthActive = false;
-      broadcast('desktop:auth',{kind:'locked',reason:agentResourcesUsed?'preservation-failed':'preservation-pending'});
-      if (agentResourcesUsed) return;
+      broadcast('desktop:auth',{kind:'locked',reason:authRetirementConfirmed?'preservation-pending':'preservation-failed'});
+      if (!authRetirementConfirmed) { sealAgentAdmission(); return; }
       if (authRetirementConfirmed && code === 0) {
         authRetirementConfirmed = false;
         for (const id of [...views.keys()]) destroyView(id);
@@ -542,11 +548,12 @@ async function start() {
     },
     /* what before-quit would do, done first (`quitting`), so the quit Squirrel starts is not held up or cancelled */
     beforeInstall: async () => {
-      quitting = true;
-      localAgents?.closeAll();
-      closeEverySession();
       for (const v of views.values()) v.webContents.on('will-prevent-unload', (event) => event.preventDefault());
-      await studio?.quit();
+      await quitAfterStudio({preventDefault(){}},{
+        quitting:false,markQuitting:()=>{quitting=true;},studio,closeAgents:retireAgents,
+        confirmQuit:()=>{quitConfirmed=true;},quit:()=>{},
+        onFailure:error=>{quitting=false;desktopAuthActive=false;broadcast('desktop:auth',{kind:'locked',reason:'preservation-failed'});throw error;},
+      });
       updates?.close();
     },
   });
@@ -613,7 +620,7 @@ async function start() {
   win.on('moved', saveState);
   win.on('enter-full-screen', () => broadcast('desktop:full-screen', true));
   win.on('leave-full-screen', () => broadcast('desktop:full-screen', false));
-  cancelWindowClose = keepWindowOnClose(win, { mac, isQuitting: () => quitting, save: saveState });
+  cancelWindowClose = keepWindowOnClose(win, { mac, isQuitting: () => quitting, save: saveState, requestQuit: () => app.quit(), canClose: () => quitConfirmed });
   win.on('closed', () => { win = null; views.clear(); pagePresentation = null; app.quit(); });
 
   ipcMain.on('desktop:theme', (event, next) => { if (fromPage(event)) setTheme(next); });
@@ -694,7 +701,7 @@ async function start() {
   const prefsHome = env.OPENFILM_SHARED_HOME || env.OPENFILM_HOME;
   const mySkills = process.env.OPENFILM_SKILLS || (env.OPENFILM_LIBRARY ? join(dirname(env.OPENFILM_LIBRARY), 'Skills') : (await import('openfilm/skills')).mySkillsDir());
   localAgents = registerLocalAgentIpc(ipcMain, {
-    trusted: event => { if (!fromPage(event)) return false; agentResourcesUsed = true; return true; },
+    trusted: event => fromPage(event) && desktopAuthActive,
     log,
     /* Studio refuses to delete a project an agent is working in */
     onWorking: tellWorking,
@@ -757,8 +764,7 @@ async function start() {
     diagnose: (id) => diagnoseAgent(id, { appVersion: app.getVersion() }),
   });
   const agentHandle = (channel, fn) => ipcMain.handle(channel, (event, opts) => {
-    if (!fromPage(event)) throw new Error('not the window\'s page');
-    agentResourcesUsed = true;
+    if (!fromPage(event) || !desktopAuthActive) throw new Error('not the active account page');
     return fn(opts ?? {});
   });
   agentHandle('desktop:agents:list', () => { void roster.refresh(); return roster.list(); });
@@ -876,9 +882,12 @@ process.on('SIGTERM', () => app.quit());
 app.on('activate', () => focusWindow());
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', (event) => {
+  if(quitConfirmed)return;
   quitAfterStudio(event, {
     quitting, markQuitting: () => { quitting = true; }, studio,
     /* and the ones opened only to ask (signed in? its options?), which belong to no chat */
-    closeAgents: () => { localAgents?.closeAll(); closeEverySession(); }, quit: () => app.quit(),
+    closeAgents: retireAgents, quit: () => app.quit(),
+    confirmQuit: () => { quitConfirmed=true; },
+    onFailure: () => { quitting=false;desktopAuthActive=false;broadcast('desktop:auth',{kind:'locked',reason:'preservation-failed'}); },
   });
 });

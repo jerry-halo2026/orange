@@ -1,0 +1,23 @@
+{
+  "taskId": "T03.quit",
+  "assignmentRevision": 2,
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "frozenPreviousManifestSHA256": "afdec71f9edea703c8d2e97722ffd7e44a95b24e718c96b5507b21328ed5e178",
+  "findings": [
+    "P1 parentUI-only fence leaves utility HTTP active before/after Agent failure",
+    "P2 adopted/late records and underlying WriteStream end lack actual flush/close receipt"
+  ],
+  "addedSource": {
+    "path": "apps/desktop/src/chat-store.mjs",
+    "sha256": "be7a806b9360a8da04e577fe81c0105896687a2a57c283f413b5604bd82a8541",
+    "gitBlobSha256": "be7a806b9360a8da04e577fe81c0105896687a2a57c283f413b5604bd82a8541"
+  },
+  "exactWriteCount": 11,
+  "noOverlapWithActiveT06": true,
+  "oldRegistryRecoveryAuthorized": false,
+  "actualPaidModelCallsAllowed": 0
+}

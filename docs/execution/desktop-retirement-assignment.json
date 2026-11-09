@@ -1,7 +1,7 @@
 {
   "taskId": "T03.quit",
   "parentTask": "T03",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root/desktop_login_integration",
   "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
@@ -12,7 +12,7 @@
   ],
   "worktreePath": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
   "branch": "codex/native-desktop-retirement",
-  "scope": "One functional close→preserve/retire→restart and failed-login-state package in original desktop. Preserve original native UI/API/CLI/project format. Not old-registry recovery, all-Agent compatibility, full T03, installer or pilot completion.",
+  "scope": "One original desktop close→actual preserve/Agent and record drain→restart + failed-login-state package; now11source after independent1P1+1P2 forward fixes. Not old-registry recovery, all-Agent compatibility, installer/full T03/PG completion.",
   "writeAllowlist": [
     "apps/desktop/src/main.mjs",
     "apps/desktop/src/window-lifecycle.mjs",
@@ -23,7 +23,8 @@
     "apps/desktop/src/agents.mjs",
     "apps/desktop/src/agents.test.mjs",
     "apps/desktop/src/local-agents-ipc.mjs",
-    "apps/desktop/src/local-agents-ipc.test.mjs"
+    "apps/desktop/src/local-agents-ipc.test.mjs",
+    "apps/desktop/src/chat-store.mjs"
   ],
   "resourceLeases": [
     {
@@ -50,7 +51,13 @@
     "sharedWriteGrants": [
       "apps/desktop/src/main.mjs"
     ],
-    "activeCards": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-native-chain-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "74cdf5cb8e4632ccda8e6034038b29deb142ae76e731b9a5c56db0e00291a785"
+      }
+    ],
     "dependencies": [
       {
         "taskId": "T01",
@@ -271,6 +278,11 @@
         "path": "apps/desktop/src/local-agents-ipc.test.mjs",
         "sha256": "0dc089133ab5ea6622a2995a58811571921ec0bc2ec7b55e4e6474e331999c93",
         "gitBlobSha256": "0dc089133ab5ea6622a2995a58811571921ec0bc2ec7b55e4e6474e331999c93"
+      },
+      {
+        "path": "apps/desktop/src/chat-store.mjs",
+        "sha256": "be7a806b9360a8da04e577fe81c0105896687a2a57c283f413b5604bd82a8541",
+        "gitBlobSha256": "be7a806b9360a8da04e577fe81c0105896687a2a57c283f413b5604bd82a8541"
       }
     ],
     "preservation": "Keep original unrelated source/test expectations. Add behavior RED regressions; only adjust pre-existing assertions that explicitly encode the old unsafe quit-on-failure behavior, with old bytes/diff and strengthened failure expectations retained."
@@ -295,7 +307,9 @@
     "Never mutate/prune/reset old guard registry, lock, domain marker, owners, test project, normal Harness credentials/profile, or choose new coordination root to make reopen pass. Old failure record has no PID; recovery requires separately reviewed exact evidence and authority. Only fresh synthetic samecoord reopen after this new real retirement can be claimed in this package.",
     "Tests must be genuine RED then minimal GREEN: normal X ordering/reentry/save failure; exact utility stop no false0; same synthetic coordination namespace release/relogin; UI event/public state consistency with real Login compilation; actual synthetic ACP child ack→EOF→close0 and counterexamples ack-but-stays/premature-exit/unsupported/deadline/forced cleanup; opens/probes awaiting dependency when retirement starts; original prompt/record finally awaited. Fixtures are not real account/OS dialog/product completion evidence.",
     "One actual installed original Harness metadata-only lifecycle test is allowed after source review readiness and exact private runtime boundary review: same original installed0.2.2-rc.1 CLI/vendorNode24.21.0, normal DEEPSEEK_API_KEY reference only inside original credentials provider, fresh shadow/profile, same reviewed FS/whole-network-zero/child/watch guard, tool/MCP/telemetry/auxLLM disabled, limit0 no prompt. Use original AgentSession code, await native close ack/EOF/actualexitclose0. No Root StageB onecall wrapper/latch/budget consumption; no other installed Agent commands or native sign-in windows executed.",
-    "Keep full goal and missing Agent/OS/PG/real recovery evidence explicit. No extra IAM/Harness/application/editor/budget framework, rootpackage/locks/CI/07 or parallel protocol. Preserve source provenance and all frozen candidates."
+    "Keep full goal and missing Agent/OS/PG/real recovery evidence explicit. No extra IAM/Harness/application/editor/budget framework, rootpackage/locks/CI/07 or parallel protocol. Preserve source provenance and all frozen candidates.",
+    "Forward P1 from frozen afdec: synchronous main+low-level Agent admission seal must not prevent sending original Studio.quit; original utility.stop/controller.dispose seals trusted HTTP/WS/film admission, original auth-retire is confirmation before main awaits actual Agent retirement/strict save. No-verified-session quit still awaits actual aggregate before confirmation. Pending/rejected retirement keeps auth/state nonactive, real GET/edit/WS/film denied, window and guard preserved, B cannot activate. Reuse original parentPort quit handshake, not a new IPC platform. Existing 10s Studio watchdog is a failure bound, not proof60s retirement succeeded; forced/timeout never permit guard release.",
+    "Forward P2: use original chat-store.mjs writer, no replacement logs. Make actual entered JSONL WriteStream end/finish/close and writeModelLog completion awaitable with errors, preserving old caller compatibility/no unhandled rejection. Original localIPC must aggregate prompt AND adopt/entry.adopted/late model-backfill and final record writes before strict receipt; an empty records set before real stream flush is not proof. Vendor record not found may stay best-effort, but entered local write/flush failure must reject retirement and retain fence/guard. Add real owned FS/WriteStream finish+close barriers and late-adopt/failed-flush tests only in existing allowed tests, no extra12thsource."
   ],
   "runtimeNamespaces": {
     "families": [
@@ -310,5 +324,10 @@
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD one exact scope/input independent review, metadata, existing managed E4 materialization from latest verified dev and actual N5a"
+  "dispatchState": "Original10writes already active; NEW chat-store11th write HELD until exact revision2 forward review/metadata/freshN5a",
+  "forwardReview": {
+    "path": "docs/execution/desktop-retirement-forward-review.json",
+    "gitBlobSha256": "29c13523dec56c047f3d522d3b58d6155c0803477b22a4e82f12e057c529b4c0",
+    "sha256": "29c13523dec56c047f3d522d3b58d6155c0803477b22a4e82f12e057c529b4c0"
+  }
 }

@@ -1,7 +1,7 @@
 {
   "taskId": "T01.ci-cohort",
   "parentTask": "T01",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root",
   "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
@@ -13,7 +13,7 @@
   ],
   "worktreePath": "E:/CodexData/worktrees/orange-native-root-role/orange",
   "branch": "codex/native-chain-ci",
-  "scope": "Refresh existing path/controlledIO/nativeStudio pure consumer CI to qualified d963 cohort, actual6 native graph/fixed source pins/new dedicatedpublic branch/117 current native tests and own guard environment. Not actual hostedCI pass before authorized run.",
+  "scope": "Bounded Native117 failure diagnostics forward after actual hosted tests/TAP_INVALID; exact prior117/mandatory/Worker51 acceptance unchanged. No product changes or remote run authorization.",
   "writeAllowlist": [
     "scripts/fission-path-ci.mjs",
     "scripts/fission-path-ci.test.mjs",
@@ -258,14 +258,27 @@
     "e4c80f235d1e814fdcd3f55ab9a7b36c4e16d93b54fd962a2707bc0d04c6fc4e"
   ],
   "scopeReview": {
-    "path": "docs/execution/native-chain-ci-scope-review.json",
-    "sha256": "55f01f5c89613f2cd6a8adc785db730ba563739ecea78e02906af67a46303714",
-    "scopeReviewedCardSHA256": "c3a6ccbcd5ea4032c0463dbc628a0d24cf2a5330cb838ca41bd03ca64ee70ae9",
+    "path": "docs/execution/native-chain-ci-diagnostics-scope-review.json",
+    "sha256": "37e131ed46b8c26b641e345193c74db4491717f9db30237823aa9f8a429211fd",
+    "scopeReviewedCardSHA256": "ac6df888f12ea6a2867479abef8402a552254afde124f852756a01e3a521eb94",
     "bindingOnlyAfterReview": true
   },
   "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T01 latest qualified cohort CI before dev",
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD nonauthor Rootauthored scope/role input proof+metadata+actualN5a before7CI edits. No remoteCI until current public/$0/lease verify."
+  "dispatchState": "HELD independent forward-scope review and metadata approval+fresh actual N5a before two-source edit",
+  "previousSourceCommit": "1bdeb578d6c8b113bf6669d250b44fc1c5131d15",
+  "forwardWriteSubset": [
+    "scripts/native-studio-ci.mjs",
+    "scripts/native-studio-ci.test.mjs"
+  ],
+  "forwardRequirements": [
+    "Reuse private actual-assessment identity and immutable Buffer snapshot principles, attach separately tagged nativeEvidence to CLI failure only; original three-field format unchanged. Native and Worker identities, phases and postchecks cannot cross-contaminate.",
+    "Only actual bounded process status/error+signal booleans/output SHA/unique TAP counters/plan/first failed ordinal/closed code+failureType/fixed TESTS basename+line+column. No raw TAP, title, thrown error objects, arbitrary path/message/stack, artifact/cache upload or private data.",
+    "Tests first meaningful failure then minimal implementation. Preserve whole original401 Native pure and306 Path, no modified assertions or count relaxation; subprocess source-beforeafter and exitclose receipt.",
+    "No source-test weakening, no deleting original symlink or mandatory cases, no guessing a guardRoot fix. Existing failed hosted candidate stays failed and frozen. Current diagnostic consumer is actual Native run failure; no generic framework.",
+    "Root uses own fresh attempt HOME/TEMP/cache, no ports/GUI/worker/Docker/cloud/model. Any new public push/run still separately requires independent final review and current public/officialstandardfree lease/audit; no automatic retry.",
+    "Correct only stale success aggregate161 to actual117+51=168 and add a source-bound regression for the real returned aggregate; no fake native pass, no widening or shortening either verifier."
+  ]
 }

@@ -542,7 +542,7 @@
       "id": "T01.ci-cohort",
       "parentTask": "T01",
       "status": "in_progress",
-      "scope": "Refresh existing path/controlledIO/nativeStudio pure consumer CI to qualified d963 cohort, actual6 native graph/fixed source pins/new dedicatedpublic branch/117 current native tests and own guard environment. Not actual hostedCI pass before authorized run.",
+      "scope": "Bounded Native117 failure diagnostics forward after actual hosted tests/TAP_INVALID; exact prior117/mandatory/Worker51 acceptance unchanged. No product changes or remote run authorization.",
       "dependsOn": [
         "T01",
         "T05.root-role"

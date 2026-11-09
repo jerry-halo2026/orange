@@ -1,0 +1,130 @@
+{
+  "task": "T01.ci-cohort",
+  "assignmentRevision": 2,
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/fission_studio_integration",
+  "reviewKind": "independent bounded forward scope/input review only, not implementation/failure-rootcause/remoteCI approval",
+  "assignment": {
+    "path": "E:\\CodexData\\worktrees\\orange-native-root-role\\orange\\.dev\\native-ci-diagnostics\\attempt-1794264841901-21036\\assignment-v2.DRAFT.json",
+    "sha256": "ac6df888f12ea6a2867479abef8402a552254afde124f852756a01e3a521eb94",
+    "oldDraftSHA256": "972a446100637837d8bfa8fd3c0b12f9e8dae8d5871eed2d11d613f16f24bfad",
+    "oldHashHistoricalOnly": true
+  },
+  "actualTree": "E:/CodexData/worktrees/orange-native-root-role/orange",
+  "actualHead": "1bdeb578d6c8b113bf6669d250b44fc1c5131d15",
+  "actualGitClean": true,
+  "exactForwardWriteSubset": [
+    "scripts/native-studio-ci.mjs",
+    "scripts/native-studio-ci.test.mjs"
+  ],
+  "protectedFiveOtherOriginalCI7": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "rawSHA256": "6812c1e825d869493297d221e1a86209aac26e047dc798cf29f8b0ddc5e2fc0f",
+      "gitBlobSHA256": "6812c1e825d869493297d221e1a86209aac26e047dc798cf29f8b0ddc5e2fc0f",
+      "editable": false
+    },
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "rawSHA256": "fb00bc4e4a9f17add86a30757955f80143fdcc565316d9682faef8a4caab92d0",
+      "gitBlobSHA256": "fb00bc4e4a9f17add86a30757955f80143fdcc565316d9682faef8a4caab92d0",
+      "editable": false
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "rawSHA256": "2329e0ca13fa0d1a2fb9bda55e26da6bf610a4310a8d1673c65bb05ae8dd0ab2",
+      "gitBlobSHA256": "2329e0ca13fa0d1a2fb9bda55e26da6bf610a4310a8d1673c65bb05ae8dd0ab2",
+      "editable": false
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "rawSHA256": "aaa174905020437d23da70aeec2dc210d9e63ddeee21f3f0500aa6501acaeb98",
+      "gitBlobSHA256": "aaa174905020437d23da70aeec2dc210d9e63ddeee21f3f0500aa6501acaeb98",
+      "editable": false
+    },
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "rawSHA256": "bd32feb62b3228e6299572fe581983a97ea9e777249aed0cb8d88f86bbcd4814",
+      "gitBlobSHA256": "bd32feb62b3228e6299572fe581983a97ea9e777249aed0cb8d88f86bbcd4814",
+      "editable": false
+    }
+  ],
+  "sourceInputs": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "rawSHA256": "6812c1e825d869493297d221e1a86209aac26e047dc798cf29f8b0ddc5e2fc0f",
+      "gitBlobSHA256": "6812c1e825d869493297d221e1a86209aac26e047dc798cf29f8b0ddc5e2fc0f",
+      "editable": false
+    },
+    {
+      "path": "scripts/fission-path-ci.test.mjs",
+      "rawSHA256": "fb00bc4e4a9f17add86a30757955f80143fdcc565316d9682faef8a4caab92d0",
+      "gitBlobSHA256": "fb00bc4e4a9f17add86a30757955f80143fdcc565316d9682faef8a4caab92d0",
+      "editable": false
+    },
+    {
+      "path": "scripts/native-studio-ci.mjs",
+      "rawSHA256": "84eb47f234055b8bcbd04baa50ae5a7e5296de816eb8b76e43a96fa9fa1d8b3e",
+      "gitBlobSHA256": "84eb47f234055b8bcbd04baa50ae5a7e5296de816eb8b76e43a96fa9fa1d8b3e",
+      "editable": true
+    },
+    {
+      "path": "scripts/native-studio-ci.test.mjs",
+      "rawSHA256": "ed9cf5fd0e276e9845ddca2f5587b5d6456bf8ce8ac93c45f202aca4cd7d28bb",
+      "gitBlobSHA256": "ed9cf5fd0e276e9845ddca2f5587b5d6456bf8ce8ac93c45f202aca4cd7d28bb",
+      "editable": true
+    },
+    {
+      "path": ".github/workflows/phase1.yml",
+      "rawSHA256": "2329e0ca13fa0d1a2fb9bda55e26da6bf610a4310a8d1673c65bb05ae8dd0ab2",
+      "gitBlobSHA256": "2329e0ca13fa0d1a2fb9bda55e26da6bf610a4310a8d1673c65bb05ae8dd0ab2",
+      "editable": false
+    },
+    {
+      "path": ".github/workflows/fission-path-policy.yml",
+      "rawSHA256": "aaa174905020437d23da70aeec2dc210d9e63ddeee21f3f0500aa6501acaeb98",
+      "gitBlobSHA256": "aaa174905020437d23da70aeec2dc210d9e63ddeee21f3f0500aa6501acaeb98",
+      "editable": false
+    },
+    {
+      "path": ".github/workflows/native-studio.yml",
+      "rawSHA256": "bd32feb62b3228e6299572fe581983a97ea9e777249aed0cb8d88f86bbcd4814",
+      "gitBlobSHA256": "bd32feb62b3228e6299572fe581983a97ea9e777249aed0cb8d88f86bbcd4814",
+      "editable": false
+    }
+  ],
+  "findings": [],
+  "boundaries": [
+    "Inherited original7 writeAllowlist is prior package envelope; this revision permits source writes ONLY forwardWriteSubset2, other5 must remain byteexact to previousSourceCommit1bdeb through finalfreeze. Oldd963 nativeEditableBaseline not evidence that current CI2 implementation matches old bytes; current pins recorded above.",
+    "Actual Native subprocess bounded Buffer snapshot/WeakMap assessment must be privately minted and same captured failure identity/phase/postcheck. Worker and Native maps/evidence cannot cross, no caller-supplied success or expectedcount policy.",
+    "New separately tagged nativeEvidence permits only bounded actual process exit/error/signal facts, stdout/stderr SHA, unique TAP counters/plan and first-failure ordinal, closed code/failureType, fixed TESTS basename+line+column; no title/TAP/message/stack/token/path/object reflection, getter/coercion or unbounded regex diagnostics. Unknown/malformed metadata becomes closed null/unknown, never success.",
+    "Original formatNativeStudioFailure remains exact3 fields. CLI only adds explicit nativeEvidence for actualNative assessment; private raw TAP/stderr stay own logs, no artifact/upload or transcript echo.",
+    "Native117/mandatoryWindowslinks andWorker51/18-exit checks remain exact. Preserve all original401 Native/306 Path pure assertions and source checks; add meaningful TDD failures for actualNative assessment/identity isolation/private sentinel/hash/structural failure variants.",
+    "Success aggregate161 ->168 is same2file bounded consistency fix: test actual returned combined summary using source-bound consumed helper/path after both original verified suites. Never use this aggregate to relax either suite or claim current TAP_INVALID cause, because observed failure precedes aggregate.",
+    "No guardRoot guessing/fix, no product/source-test/SDK/URL/package/branch/workflow changes in this forward. No generic diagnostics platform or remote retry authority."
+  ],
+  "resources": {
+    "directory": "E:/CodexData/worktrees/orange-native-root-role/orange",
+    "cpuNonExclusive": true,
+    "authorOnlyFreshOwnedHOME_TEMP": true,
+    "ports": 0,
+    "worker": 0,
+    "Docker": 0,
+    "GUI": 0,
+    "network": 0,
+    "models": 0,
+    "sourceNamesPeer": "E3 exact4 remains frozen; no write/resource intersection",
+    "UI10Peer": "E5 separate native product files; no twoCI-source write intersection"
+  },
+  "actualReviewerActions": {
+    "tests": 0,
+    "CI": 0,
+    "network": 0,
+    "sourceWrites": 0,
+    "onlyOwnScopeReceipt": true
+  },
+  "next": "Root metadata binds exact newdraft+this receipt then freshN5a before two-source TDD. Independent final source review and separate currentpublic/$0/lease remain required before any push/run."
+}

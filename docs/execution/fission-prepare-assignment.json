@@ -1,7 +1,7 @@
 {
   "taskId": "T06.prepare",
   "parentTask": "T06",
-  "assignmentRevision": 2,
+  "assignmentRevision": 3,
   "status": "active",
   "authorAgent": "/root/fission_studio_integration",
   "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
@@ -12,14 +12,15 @@
   ],
   "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
   "branch": "codex/fission-prepared-decisions",
-  "scope": "One minimal original worker prepare→same-decisions execute producer. Not shared business admission/auth, Node backend integration, cloud, arbitrary FX/preview or fullT06/17 completion.",
+  "scope": "One minimal original worker prepare→same-decisions execute producer. Not shared business admission/auth, Node backend integration, cloud, arbitrary FX/preview or fullT06/17 completion. Exact forward addition: one original EngineJobFiles prepared-generated registration seam, no new read/write root or TTS execution.",
   "writeAllowlist": [
     "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
     "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
     "workers/fission/src/Fission.Cli/Program.cs",
     "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
     "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
-    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs"
+    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+    "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs"
   ],
   "resourceLeases": [
     {
@@ -102,11 +103,6 @@
             "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
           },
           {
-            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
-            "sha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
-            "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
-          },
-          {
             "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
             "sha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
             "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
@@ -145,9 +141,9 @@
           }
         ],
         "review": {
-          "path": "docs/execution/fission-prepare-T05-a-review.json",
-          "sha256": "4afd166280e697d59d2698e5cb052d9b96abaf1de196d40177eed6eac3f693f9",
-          "gitBlobSha256": "4afd166280e697d59d2698e5cb052d9b96abaf1de196d40177eed6eac3f693f9"
+          "path": "docs/execution/fission-prepare-T05-a-generated-review.json",
+          "sha256": "41befa0004bc6265c17bd8d84d6359ad35bc9f19ac4b53fdbf41abb6ed86dfe0",
+          "gitBlobSha256": "41befa0004bc6265c17bd8d84d6359ad35bc9f19ac4b53fdbf41abb6ed86dfe0"
         }
       }
     ],
@@ -202,6 +198,11 @@
         "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
         "sha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5",
         "gitBlobSha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5"
+      },
+      {
+        "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+        "sha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+        "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
       }
     ],
     "newFiles": [
@@ -219,7 +220,8 @@
     "Default run should reuse the extracted same-decisions code without changing original source-preservation/pool use counts/naming/fallback receipt semantics. New business prepared execution cannot silently change FX intent/output clock and count success. Cancel/EOF and exception paths await already-started worker/codec/streams before disposing pins; old real drain proofs retained, never infer retirement from counts or force-kill.",
     "TDD exact original Unit project/CLI: before execute only allowed analysis commands0final outputs/0consume, deterministic chosen order/Random consumption frozen once, actual execute request cut/audio/source decisions match, no selection even if candidate order changes, source mutation refuses before codec, missing/altered snapshots refuse, actual-clock/FX deviation fails without reroll, cancellation/drain and default legacy regression. Reuse original tests and add only the2allowed original files; no temporary runtime app or hidden bypass.",
     "Real self-owned standardCPU case after unit source is ready: generate/verify own tiny media inside freshattempt, original CLI prepare produces no deliverable, then execute same decisions produces qualified original output and native execution receipt, same content/intervals/source SHA; one controlled changed-source counterexample must refuse/no codec. No real user/cloud/model/private vendor assets. Native→business asset-ID/canonical mapping and actual claim remain later serial integration, do not claim current backend production works.",
-    "Physical still-image duration may be0; per-occurrence hold is a decision, not a fake intrinsic media duration. Preserve seconds/native IDs and all existing native time/IO contracts, never global microseconds or duplicate mutable project model. New source must not edit any apps/api/E4 UI source, rootlock/CI/07 or original Job outside6allowlist."
+    "Physical still-image duration may be0; per-occurrence hold is a decision, not a fake intrinsic media duration. Preserve seconds/native IDs and all existing native time/IO contracts, never global microseconds or duplicate mutable project model. New source must not edit any apps/api/E4 UI source, rootlock/CI/07 or original Job outside7allowlist.",
+    "Forward7 EngineJobFiles only: a separate execute process may adopt ONLY original prepare-produced owned voice/gen*.mp3 under the already approved exact work/voice binding with actual content/file identity and ordinary no-alias ancestry held through codec drain. Never adopt by prefix/path/hash alone, never promote source/incoming/unrelated files to generated, expand allowed roots, overwrite or bypass per-instance registration by reflection. Bind native prepared provenance+task/attempt and generation purpose; same-process legacy generated registration semantics unchanged. Existing allowed FissionEditPlanTests cover cross-process/generated reopen and tamper/refusal; old EngineJobFilesTests remains immutable input. No new TTS/model/network call."
   ],
   "readOnlyRuntime": {
     "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
@@ -288,7 +290,7 @@
   "validation": "Actual original6graph compilation+affected originalUnit/CLI, true behaviorRED→GREEN and one real local prepare/execute/counterexample media, no skip substitution; raw/canonical source/result/child timeline frozen and independent SPECQUALITY +fresh N5a before sourcecommit. Reuse prior unrelated exact qualified media/GUI as scoped evidence only.",
   "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.c/T05.b/T06 genuine pre-execution decision producer",
   "forbidden": [
-    "source outside6 or newJob/Timeline/IPC platform",
+    "source outside7 or newJob/Timeline/IPC platform",
     "postreceipt or seed replay passed as prepared",
     "client flags grant sharedbusiness auth",
     "private media/model/cloud/userconfig/production/assets/license changes",
@@ -298,5 +300,5 @@
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD exact scope/input review, metadata, nativeE3 verifieddev-derived/qualifiedDDaa and actualN5a; no source writer"
+  "dispatchState": "Original6 remains admitted; Forward7 requires Root actual freshN5a against approved rev3 metadata/current candidate before seventh source write. Final source requires actual tests/nonauthor SPECQUALITY before commit."
 }

@@ -7,9 +7,9 @@ import path from 'node:path';
 import { resolveIsolationProfile, isolationEnvironment } from '../../src/development-isolation.mjs';
 
 const own = process.env.FISSION_HANDOFF_ATTEMPT;
-assert.match(own ?? '', /[\\/]\.dev[\\/]fission-studio-handoff[\\/]attempt-\d+-\d+$/);
+assert.match(own ?? '', /[\\/]\.dev[\\/](?:fission-studio-handoff|fission-native-chain)[\\/]attempt-\d+-\d+$/);
 const baseRoot = path.join(own, 'native-profiles');
-const profile = resolveIsolationProfile({ baseRoot, instanceId: 'handoff', taskId: 'T06_HANDOFF', attemptId: 'a-' + process.pid + '-' + Date.now(), ports: { studio: 18501, film: 18502 } }, { approvedBaseRoot: baseRoot });
+const profile = resolveIsolationProfile({ baseRoot, instanceId: 'handoff', taskId: 'T06_HANDOFF', attemptId: 'a-' + process.pid + '-' + Date.now(), ports: own.includes('fission-native-chain') ? { studio: 18561, film: 18562 } : { studio: 18501, film: 18502 } }, { approvedBaseRoot: baseRoot });
 for (const directory of Object.values(profile.paths)) mkdirSync(directory, { recursive: true });
 Object.assign(process.env, isolationEnvironment(profile));
 const sampleBytes = await fs.readFile(process.env.FISSION_HANDOFF_SAMPLE);

@@ -37,13 +37,30 @@ public static class Program
         }
 
         var controlledRun = string.Equals(args[0], "run", StringComparison.OrdinalIgnoreCase);
+        using var parentCancelled = new CancellationTokenSource();
+        using var parentReaderStopped = new CancellationTokenSource();
         try
         {
             if (controlledRun)
             {
                 var configuration = EngineRunConfiguration.Load(args);
+                if (Environment.GetEnvironmentVariable("FISSION_PARENT_STDIN_EOF") == "1")
+                {
+                    // Opt-in trusted parent pipe only; normal standalone CLI is unchanged.
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            var buffer = new char[1];
+                            while (await Console.In.ReadAsync(buffer.AsMemory(), parentReaderStopped.Token).ConfigureAwait(false) != 0) { }
+                            if (!parentReaderStopped.IsCancellationRequested) parentCancelled.Cancel();
+                        }
+                        catch (OperationCanceledException) when (parentReaderStopped.IsCancellationRequested) { }
+                        catch (Exception) { if (!parentReaderStopped.IsCancellationRequested) parentCancelled.Cancel(); }
+                    }, CancellationToken.None);
+                }
                 using var runPool = new ProcessPool();
-                return await RunFissionAsync(configuration, runPool).ConfigureAwait(false);
+                return await RunFissionAsync(configuration, runPool, parentCancelled.Token).ConfigureAwait(false);
             }
 
             var paths = LoadPaths();
@@ -57,6 +74,11 @@ public static class Program
                 _ => Unknown(args[0]),
             };
         }
+        catch (OperationCanceledException) when (controlledRun && parentCancelled.IsCancellationRequested)
+        {
+            Console.Error.WriteLine("[Fission:STOPPED] Parent requested cancellation; owned engines have drained.");
+            return 130;
+        }
         catch (ConfigException) when (controlledRun)
         {
             Console.Error.WriteLine("[Fission:CFG_ARGS] 混剪配置或任务无效；请提供完整的显式隔离参数。");
@@ -67,6 +89,7 @@ public static class Program
             Console.Error.WriteLine($"[Fission:{ex.Code}] {ex.Message}");
             return ex is EngineException or ConfigException ? 3 : ex is MaterialException ? 4 : 5;
         }
+        finally { parentReaderStopped.Cancel(); }
     }
 
     private static EnginePaths LoadPaths()
@@ -175,14 +198,14 @@ public static class Program
         return args[i];
     }
 
-    private static async Task<int> RunFissionAsync(EngineRunConfiguration configuration, ProcessPool pool)
+    private static async Task<int> RunFissionAsync(EngineRunConfiguration configuration, ProcessPool pool, CancellationToken ct)
     {
         var paths = configuration.Policy.Paths;
         var job = configuration.Job;
         var hw = new HardwareDetector(paths, pool);
-        var hwInfo = await hw.DetectAsync().ConfigureAwait(false);
+        var hwInfo = await hw.DetectAsync(ct).ConfigureAwait(false);
         var engine = new FissionEngine(configuration.Policy, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), hwInfo.HasNvencH264 && job.UseNvenc);
-        var report = await engine.RunAsync(job).ConfigureAwait(false);
+        var report = await engine.RunAsync(job, ct).ConfigureAwait(false);
 
         Console.WriteLine($"═══ 任务完成 ═══");
         Console.WriteLine($"成功 {report.Succeeded} / 失败 {report.Failed} / 停止原因 {report.StopReason} / 总耗时 {report.TotalWallMs / 1000.0:F1}s");
@@ -196,7 +219,7 @@ public static class Program
             Console.WriteLine($"  [失败 {f.Index + 1:D2}] {f.Code}: {f.Message}");
         }
 
-        return report.Failed == 0 ? 0 : 4;
+        return report.StopReason == "userStopped" ? 130 : report.Failed == 0 ? 0 : 4;
     }
 
     private static async Task<int> RunMkaudioAsync(EnginePaths paths, ProcessPool pool, string[] args)

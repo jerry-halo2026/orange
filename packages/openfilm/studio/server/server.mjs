@@ -1,3 +1,5 @@
+import { createFission, FissionError } from './fission.mjs';
+import { FissionExportError } from '../../src/fission-render.mjs';
 // @ts-check
 /**
  * OpenFilm Studio's server: one process for the whole editor. Two origins, so a web page can never reach the editor:
@@ -118,9 +120,9 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
  * `autoVersionsFactory`: trusted Node-only dependency injection; defaults to the native automatic versions producer.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth>, pickFiles?: typeof nativePickFiles }} [options]
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth>, pickFiles?: typeof nativePickFiles, fissionOptions?: Parameters<typeof createFission>[0], renderLaunch?: Parameters<typeof import("../../src/host.mjs").launch>[0] }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth, pickFiles = nativePickFiles } = {}) {
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth, pickFiles = nativePickFiles, fissionOptions, renderLaunch } = {}) {
   const isolation = readIsolationProfile();
   if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
   if (isolation) {
@@ -195,7 +197,8 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
 
   /** where each project's exports report their progress: the pages watching it */
   const exportRoots = new Map();
-  const exports = createExports({ onChange: (job) => { const root = exportRoots.get(job.project); if (root) watchers.emit(root, { type: 'export', job }); } });
+  const fission = createFission(fissionOptions);
+  const exports = createExports({ renderLaunch, onChange: (job) => { const root = exportRoots.get(job.project); if (root) watchers.emit(root, { type: 'export', job }); } });
   /** films fetched from GitHub into the library (fetch-repo.mjs), each opened as a project when it lands */
   const fetches = createFetches({ library: libraryRoot, open: (folder) => openProject(folder) });
 
@@ -765,6 +768,11 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     if (!(!rest && req.method === 'DELETE')) {
       requireProject({ film: !filmOptional });
     }
+    if (rest === 'fission') {
+      if (req.method === 'GET') return json(res, 200, fission.capabilities(project));
+      if (req.method === 'POST') return json(res, 200, await fission.run(project, await readJson(req)));
+      if (req.method === 'DELETE') { await fission.cancel(project.id); return json(res, 200, { stopped: true }); }
+    }
     /* ── subtitles: the film's lines, the person's subtitle style, translation (see captions.mjs) ── */
     if (await captionRoutes(req, res, project.path, rest, { translate: (root) => subtitleTranslator(root, { askAgent }), transcribe: await subtitleTranscriber() })) return;
     /* caption tracks: a track's WebVTT file, read and written whole (caption-tracks.mjs) */
@@ -1268,11 +1276,13 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     // A normal HTTP error need not have a close consumer, but must never be unhandled.
     void completion.catch(() => {});
     const handled = route(req, res).catch((/** @type {unknown} */ e) => {
-      const status = e instanceof HttpError || e instanceof ProjectError || e instanceof FileError || e instanceof HistoryError || e instanceof MediaError || e instanceof ExportError
+      const status = e instanceof HttpError || e instanceof ProjectError || e instanceof FileError || e instanceof HistoryError || e instanceof MediaError || e instanceof ExportError || e instanceof FissionError || e instanceof FissionExportError
         || e instanceof FetchError || e instanceof BrowseError ? e.status : 500;
       if (status === 500) console.error(e);
       if (res.headersSent) res.end();
       else json(res, status, { error: e instanceof Error ? e.message : String(e), ...(e instanceof HttpError ? e.extra : {}),
+        ...((e instanceof FissionError || e instanceof FissionExportError) ? { code: e.code } : {}),
+        ...(e instanceof FissionExportError ? { blockingCapabilities: e.blockingCapabilities } : {}),
         ...((e instanceof ProjectError || e instanceof FetchError || e instanceof BrowseError) && e.code ? { code: e.code } : {}),
         ...(e instanceof HistoryError && e.code ? { code: e.code } : {}) });
       // Explicit HTTP denials remain handled responses; unexpected entered failures
@@ -1333,7 +1343,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   const historyPreviews = createHistoryPreviews();
   /** @type {Awaited<ReturnType<typeof startPages>>} */
   let pages;
-  const sealAccess = () => { for (const socket of streamSockets) socket.destroy(); pages?.sealAccess(); };
+  const sealAccess = () => { void fission.stopAll().catch(() => {}); for (const socket of streamSockets) socket.destroy(); pages?.sealAccess(); };
   const stopAuthListener = desktopAuth?.onState((/** @type {{kind:string}} */ state) => { if (state.kind !== 'active') sealAccess(); });
   /** @type {Promise<void> | undefined} */
   let closing;
@@ -1360,6 +1370,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     if (editor.listening) collect(() => new Promise((/** @type {(value: void | PromiseLike<void>) => void} */ resolve) => editor.close(() => resolve())));
     if (pages) collect(() => pages.close());
     collect(() => { if (advertise && advertised()?.pid === process.pid) rmSync(runFile(), { force: true }); });
+    collect(() => fission.stopAll());
     collect(() => exports.stopAll());
     collect(() => fetches.stopAll());
     collect(() => closePageFrames());

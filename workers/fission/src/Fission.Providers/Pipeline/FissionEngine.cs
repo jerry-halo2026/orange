@@ -154,6 +154,8 @@ public sealed class FissionEngine
         var stopReason = "countReached";
 
         var workers = new List<Task>(planned);
+        try
+        {
         for (var i = 0; i < planned; i++)
         {
             var index = i;
@@ -191,15 +193,17 @@ public sealed class FissionEngine
                 {
                     workerGate.Release();
                 }
-            }, ct));
+            }, CancellationToken.None));
         }
 
-        await Task.WhenAll(workers).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested) { stopReason = "userStopped"; }
+        finally { await Task.WhenAll(workers).ConfigureAwait(false); }
         pool.ReleaseAll();
         swTotal.Stop();
 
         var report = new JobReport(jobId, outputs.Count, failures.Count, outputs.OrderBy(o => o.Index).ToList(), failures.OrderBy(f => f.Index).ToList(), stopReason, swTotal.ElapsedMilliseconds, pool.Log);
-        await File.WriteAllTextAsync(NewOutput(Path.Combine(outRoot, jobId, "report.json")), report.ToJson(), ct).ConfigureAwait(false);
+        await File.WriteAllTextAsync(NewOutput(Path.Combine(outRoot, jobId, "report.json")), report.ToJson(), CancellationToken.None).ConfigureAwait(false);
         Emit(jobId, -1, JobStage.Done, 1, $"所有任务全部执行完毕：成功 {outputs.Count} / 失败 {failures.Count} / 停止原因 {stopReason} / 总耗时 {swTotal.ElapsedMilliseconds / 1000.0:F1}s");
         return report;
     }

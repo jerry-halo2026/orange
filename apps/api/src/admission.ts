@@ -151,9 +151,26 @@ export function createAdmission(deps: Dependencies) {
     if(!Array.isArray(materials)||materials.length!==versions.length||materials.some((m:any,i:number)=>m?.versionId?.toLowerCase()!==versions[i]||!['still','video','sound'].includes(m.kind)||typeof m.durationSec!=='number'||!Number.isFinite(m.durationSec)||(m.kind==='still'?m.durationSec!==0:m.durationSec<=0)))throw new BusinessError('backend-unconfirmed',503);
     return materials;
   };
+  const preparedIndexArgs=(ctx:unknown,raw:unknown,index:number)=>{
+    const auth=authority(ctx),r=exact(raw,['groupId','projectId','filmRev','job','idempotencyKey','sourceSelection']);
+    const request={groupId:uuid(r.groupId),projectId:text(r.projectId),filmRev:text(r.filmRev),job:record(r.job),idempotencyKey:text(r.idempotencyKey,120),sourceSelection:record(r.sourceSelection)};
+    if(!/^[a-f0-9]{16}$/.test(request.filmRev))fail('invalid-native-revision');integer(index,0,9999);
+    return {request,args:{...auth,p_group:request.groupId,p_key:requestDigest(['orange-fission-index',1,request.idempotencyKey,index]),p_request_hash:requestDigest(request)}};
+  };
   return {
     integration: Object.freeze({workerPreparation:deps.prepare?'adapter-configured':'not-connected',deliveryVerifier:deps.verifyDelivery?'adapter-configured':'not-connected',executionReady:false}),
     resolve,
+    async preflightPreparedOutput(ctx:unknown,raw:unknown,index:number){
+      const {args}=preparedIndexArgs(ctx,raw,index),previous=await deps.rpc('preflight',args);
+      if(previous?.status==='prepare-required'&&Object.keys(previous).length===1)return previous;
+      return claimReply(previous,true);
+    },
+    async claimPreparedOutput(ctx:unknown,raw:unknown,index:number,prepared:unknown){
+      const {request,args}=preparedIndexArgs(ctx,raw,index),p=record(prepared);contentParts(p);
+      if(p.projectId!==request.projectId||p.filmRev!==request.filmRev||requestDigest(p.job)!==requestDigest(request.job))fail('prepared-input-mismatch');
+      const previous=await deps.rpc('preflight',args);if(previous?.status!=='prepare-required')return claimReply(previous,true);
+      return claimReply(await deps.rpc('freeze_claim',{...args,p_plan:p,p_content_key:contentKey(p)}),true);
+    },
     async prepareAndClaim(ctx: unknown, raw: unknown) {
       const auth = authority(ctx), r = exact(raw, ['groupId','projectId','filmRev','job','idempotencyKey']);
       const request: Request = {groupId:uuid(r.groupId),projectId:text(r.projectId),filmRev:text(r.filmRev),job:record(r.job),idempotencyKey:text(r.idempotencyKey,120)};

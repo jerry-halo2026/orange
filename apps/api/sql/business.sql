@@ -142,9 +142,13 @@ CREATE FUNCTION orange_business.claim_access(p_actor uuid,p_claim uuid) RETURNS 
 END$$;
 CREATE FUNCTION orange_business.reply(c orange_business.claims) RETURNS jsonb LANGUAGE sql STABLE SET search_path=pg_catalog AS $$SELECT jsonb_build_object('claimId',c.id,'planId',c.plan_id,'status',c.state,'contentKey',c.content_key,'historyCount',CASE WHEN c.state='succeeded' THEN 1 ELSE 0 END,'executionReady',false,'frozenPlan',(SELECT payload FROM orange_business.frozen_plans WHERE id=c.plan_id AND owner_id=c.owner_id))$$;
 
-CREATE FUNCTION public.orange_resolve_materials(p_actor uuid,p_session uuid,p_until timestamptz,p_ids uuid[],p_purpose text) RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog AS $$DECLARE result jsonb:='[]';id uuid;BEGIN
- PERFORM orange_business.identity(p_actor,p_session,p_until);IF cardinality(p_ids) NOT BETWEEN 1 AND 10000 THEN RAISE EXCEPTION 'orange:invalid-input';END IF;
- FOREACH id IN ARRAY p_ids LOOP result:=result||jsonb_build_array(orange_business.material(p_actor,id,p_purpose));END LOOP;RETURN result;
+CREATE FUNCTION public.orange_resolve_materials(p_actor uuid,p_session uuid,p_until timestamptz,p_ids uuid[],p_purpose text) RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog AS $$DECLARE result jsonb:='[]';id uuid;auth_until timestamptz;BEGIN
+ auth_until:=orange_business.identity(p_actor,p_session,p_until);IF cardinality(p_ids) NOT BETWEEN 1 AND 10000 THEN RAISE EXCEPTION 'orange:invalid-input';END IF;
+ FOREACH id IN ARRAY p_ids LOOP result:=result||jsonb_build_array(orange_business.material(p_actor,id,p_purpose));END LOOP;
+ -- Rights calls above may wait for row locks; an earlier managed-session cutoff is never extended here.
+ auth_until:=least(auth_until,orange_business.identity(p_actor,p_session,p_until));
+ SELECT coalesce(jsonb_agg(e.value||jsonb_build_object('authNotAfter',auth_until) ORDER BY e.ordinal),'[]'::jsonb) INTO result FROM jsonb_array_elements(result) WITH ORDINALITY e(value,ordinal);
+ RETURN result;
 END$$;
 CREATE FUNCTION orange_business.idempotency_input(p_key text,p_hash text) RETURNS void LANGUAGE plpgsql IMMUTABLE SET search_path=pg_catalog AS $$BEGIN IF p_key IS NULL OR length(p_key) NOT BETWEEN 1 AND 120 OR p_hash IS NULL OR p_hash!~'^[a-f0-9]{64}$' THEN RAISE EXCEPTION 'orange:invalid-input';END IF;END$$;
 CREATE FUNCTION public.orange_preflight(p_actor uuid,p_session uuid,p_until timestamptz,p_group uuid,p_key text,p_request_hash text) RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog AS $$DECLARE c orange_business.claims%ROWTYPE;d orange_business.fission_duplicate_requests%ROWTYPE;BEGIN

@@ -8,10 +8,11 @@ test('material entity registration is persistent service-only SQL rather than a 
  const result=await sql("select to_regprocedure('public.orange_begin_material(uuid,uuid,timestamp with time zone,text,text,jsonb)') is not null");assert.equal(result.stdout.trim(),'t','real atomic material ingestion procedure exists');
 });
 const own=resolve(process.env.ORANGE_PG_TEST_ROOT||''),family=resolve(fileURLToPath(new URL('../../../.dev/business-producer',import.meta.url)));
+const dispatchFamily=resolve(fileURLToPath(new URL('../../../.dev/fission-dispatch',import.meta.url)));
 const materialFamily=resolve(fileURLToPath(new URL('../../../.dev/material-producer',import.meta.url)));
-assert(own.startsWith(family+sep)||own.startsWith(materialFamily+sep),'explicit owned PG test root');
+assert(own.startsWith(family+sep)||own.startsWith(materialFamily+sep)||own.startsWith(dispatchFamily+sep),'explicit owned PG test root');
 const instance=JSON.parse(readFileSync(join(own,'container-record.json'),'utf8'));assert(/^[a-f0-9]{64}$/.test(instance.id));
-const database=instance.database??'orange_test';assert(/^(?:orange_test|orange_material_\d+)$/.test(database));
+const database=instance.database??'orange_test';assert(/^(?:orange_test|orange_material_\d+|orange_dispatch_[a-z0-9_]+)$/.test(database));
 let sequence=0;
 export async function sql(query,{role='postgres',expectedFailure=false}={}) {
  const env={...process.env,DOCKER_CONFIG:join(own,'clean/docker-config')};delete env.DOCKER_CONTEXT;
@@ -188,4 +189,28 @@ test('HTTP duplicate result survives response loss and API restart without calli
  try{first=await start('first');const committed=first.wait('claim-committed'),pending=fetch('http://127.0.0.1:18571/api/fission/claims',{method:'POST',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify(body),signal:abort.signal}).catch(()=>null);assert.equal((await committed).status,'duplicate');abort.abort();await pending;first.child.kill('SIGTERM');await first.completion;
  recovery=await start('recovered');const response=await fetch('http://127.0.0.1:18571/api/fission/claims',{method:'POST',headers:{authorization:'Bearer '+token,'content-type':'application/json'},body:JSON.stringify(body)});assert.equal(response.status,409);assert.deepEqual(await response.json(),{status:'duplicate'});assert.equal(recovery.prepared(),0);const count=await sql('select count(*) from orange_business.fission_duplicate_requests where owner_id='+quote(A)+' and idempotency_key='+quote(key));assert.equal(Number(count.stdout.trim()),1);recovery.child.send('stop');assert.equal((await recovery.completion).code,0);
  }finally{abort.abort();for(const proc of [first,recovery])if(proc&&!proc.closed()){proc.child.kill('SIGTERM');await proc.completion;}}
+});
+
+test('resolve exposes actual earlier managed Auth cutoff without replacing material license expiry',async()=>{
+ const d=await domainFixture(),v=d.plans[A].materials[0].versionId;
+ try{
+  await sql('update auth.sessions set not_after=clock_timestamp()+interval \'8 seconds\' where id='+quote(SA));
+  const row=(await rpc('resolve_materials',A,[`ARRAY[${quote(v)}]::uuid[]`,quote('fission')]))[0];
+  assert.equal(typeof row.authNotAfter,'string','actual managed Auth cutoff must be additive response metadata');
+  const cutoff=Date.parse(row.authNotAfter);assert(Number.isFinite(cutoff)&&cutoff>Date.now()&&cutoff<Date.now()+9000);
+  assert(Date.parse(row.notAfter)>cutoff,'material license expiry remains independently preserved');
+ }finally{await sql('update auth.sessions set not_after=clock_timestamp()+interval \'2 hours\' where id='+quote(SA));}
+});
+
+test('resolve rechecks actual managed Auth expiry after a real material-version lock wait',async()=>{
+ const d=await domainFixture(),v=d.plans[A].materials[0].versionId,tag='dispatch_auth_wait_'+Date.now();
+ try{
+  await sql('update auth.sessions set not_after=clock_timestamp()+interval \'2 seconds\' where id='+quote(SA));
+  const holder=sql(`BEGIN;SELECT id FROM orange_business.asset_versions WHERE id=${quote(v)} FOR UPDATE;SELECT pg_sleep(4) /*${tag}*/;COMMIT;`);
+  let locked=false;for(let i=0;i<15;i++){const seen=await sql(`select count(*) from pg_stat_activity where datname=current_database() and wait_event='PgSleep' and query like ${quote('%'+tag+'%')}`);if(Number(seen.stdout.trim())>0){locked=true;break;}}
+  assert.equal(locked,true,'actual row-lock holder must be observed before resolving');
+  const started=Date.now(),pending=rpc('resolve_materials',A,[`ARRAY[${quote(v)}]::uuid[]`,quote('fission')],{expectedFailure:true});
+  let waiting=false;for(let i=0;i<10;i++){const seen=await sql("select count(*) from pg_stat_activity where datname=current_database() and wait_event_type='Lock' and query like '%public.orange_resolve_materials(%'");if(Number(seen.stdout.trim())>0){waiting=true;break;}}
+  const result=await pending;await holder;assert.equal(waiting,true,'resolver must actually wait, not merely run after expiry');assert(Date.now()-started>1000);assert(result.close&&result.close.code!==0,'resolver must refuse rather than return a successful material array after managed Auth expiry');assert.match(result.stderr,/authentication-required/);
+ }finally{await sql('update auth.sessions set not_after=clock_timestamp()+interval \'2 hours\' where id='+quote(SA));}
 });

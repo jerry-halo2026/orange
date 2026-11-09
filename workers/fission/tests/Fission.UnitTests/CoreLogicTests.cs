@@ -371,3 +371,19 @@ public class SanitizeTests
     }
 }
 
+
+/// <summary>The same real sentence timing must feed ASS and the handoff record.</summary>
+public class HandoffSubtitleCueTests
+{
+    [Fact]
+    public void BuildCues_PreservesOriginalWeightedTimesUsedByAss()
+    {
+        var cues = SubtitlePlanner.BuildCues("甲。乙乙。", 5);
+        Assert.Equal(2, cues.Count);
+        Assert.Equal(0, cues[0].StartSec); Assert.Equal(2, cues[0].EndSec);
+        Assert.Equal(2, cues[1].StartSec); Assert.Equal(5, cues[1].EndSec);
+        var ass = SubtitlePlanner.BuildAss("甲。乙乙。", 5, "white-outline", "bottom", 64);
+        Assert.Contains("Dialogue: 0,0:00:00.00,0:00:02.00", ass);
+        Assert.Contains("Dialogue: 0,0:00:02.00,0:00:05.00", ass);
+    }
+}

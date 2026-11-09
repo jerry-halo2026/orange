@@ -17,8 +17,11 @@ public static class SubtitlePlanner
     /// <param name="pos">位置（top / middle / bottom）。</param>
     /// <param name="fontSize">字号。</param>
     public static string BuildAss(string text, double totalSec, string style, string pos, int fontSize)
+        => BuildAss(BuildCues(text, totalSec), style, pos, fontSize);
+
+    /// <summary>Render exactly the cues stored in the edit decision receipt.</summary>
+    public static string BuildAss(IReadOnlyList<SubtitleCue> cues, string style, string pos, int fontSize)
     {
-        var sentences = Split(text);
         var sb = new StringBuilder();
         _ = sb.Append("[Script Info]\n");
         _ = sb.Append("ScriptType: v4.00+\n");
@@ -30,6 +33,20 @@ public static class SubtitlePlanner
         _ = sb.Append("\n[Events]\n");
         _ = sb.Append("Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n");
 
+        foreach (var cue in cues)
+        {
+            _ = sb.Append("Dialogue: 0,").Append(Ts(cue.StartSec)).Append(',').Append(Ts(cue.EndSec))
+                .Append(",Default,,0,0,0,,{\\fad(120,120)}").Append(Escaped(cue.Text)).Append('\n');
+        }
+
+        return sb.ToString();
+    }
+
+    /// <summary>The original sentence-weighted timings, shared by ASS and edit receipts; not ASR.</summary>
+    public static IReadOnlyList<SubtitleCue> BuildCues(string text, double totalSec)
+    {
+        var sentences = Split(text);
+        var cues = new List<SubtitleCue>();
         var totalChars = sentences.Sum(s => s.Length);
         var t = 0.0;
         for (var i = 0; i < sentences.Count; i++)
@@ -38,23 +55,13 @@ public static class SubtitlePlanner
             var dur = Math.Max(share * totalSec, 0.6);
             var start = t;
             var end = i == sentences.Count - 1 ? totalSec : Math.Min(start + dur, totalSec);
-            if (end - start < 0.2)
-            {
-                continue; // 过短句并给后句（时间轴末尾挤压）
-            }
-
-            _ = sb.Append("Dialogue: 0,").Append(Ts(start)).Append(',').Append(Ts(end))
-                .Append(",Default,,0,0,0,,{\\fad(120,120)}").Append(Escaped(sentences[i])).Append('\n');
+            if (end - start < 0.2) continue;
+            cues.Add(new SubtitleCue(start, end, sentences[i]));
             t = end;
-            if (t >= totalSec - 0.05)
-            {
-                break;
-            }
+            if (t >= totalSec - 0.05) break;
         }
-
-        return sb.ToString();
+        return cues.AsReadOnly();
     }
-
     /// <summary>切句（保留标点；空句丢弃）。</summary>
     public static IReadOnlyList<string> Split(string text)
     {

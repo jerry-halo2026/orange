@@ -334,6 +334,19 @@
       "currentAssignment": "docs/execution/fission-media-assignment.json",
       "notBusinessAdmission": true,
       "parentBusinessDependenciesUnchanged": true
+    },
+    {
+      "id": "T04.local",
+      "parentTask": "T04.a",
+      "status": "in_progress",
+      "scope": "One existing native local import functional package. Preserve full T04/T03/PG goals and original IDs, film, API request shape, list and Op. Not full cloud/license/material business readiness.",
+      "dependsOn": [
+        "T01",
+        "T03"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/native-material-import-assignment.json",
+      "deliveryBoundary": "local native source ownership/import only, full personal cloud/license/parent/pilot retained"
     }
   ],
   "umbrella": [

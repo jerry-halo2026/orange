@@ -118,9 +118,9 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
  * `autoVersionsFactory`: trusted Node-only dependency injection; defaults to the native automatic versions producer.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers }} [options]
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth> }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers } = {}) {
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth } = {}) {
   const isolation = readIsolationProfile();
   if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
   if (isolation) {
@@ -268,7 +268,24 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
 
     authorize(req);
     const parts = studioApiParts(path);
-    return isolationResourceCall(isolation,parts,req.method,async () => {
+    if (desktopAuth && parts[0] === 'auth') {
+      const fromOrigin = req.headers.origin === origin || (req.method === 'GET' && !req.headers.origin && req.headers['sec-fetch-site'] === 'same-origin');
+      if (!fromOrigin) throw new HttpError(403, 'Authentication must come from this Studio.');
+      if (parts.length === 2 && parts[1] === 'state' && req.method === 'GET') return json(res,200,desktopAuth.getPublicState());
+      if (parts.length === 2 && parts[1] === 'sign-in' && req.method === 'POST') return json(res,200,await desktopAuth.signIn(await readJson(req)));
+      if (parts.length === 2 && parts[1] === 'sign-out' && req.method === 'POST') {
+        // Seal synchronously; do not make close wait on its own logout HTTP response.
+        void desktopAuth.signOut().catch(()=>{});return json(res,200,{state:desktopAuth.getPublicState()});
+      }
+      throw new HttpError(404,'No such authentication operation.');
+    }
+    if (desktopAuth) {
+      try { desktopAuth.assertActive(); } catch { throw new HttpError(403,'Sign in is required.',{code:'authentication-required'}); }
+      // These original private shared stores need their account mapping before use.
+      // They are not silently treated as public or replaced with a parallel library.
+      if (['saved','browse','skills','kept','get','canvas','canvas-templates','canvas-characters','doctor','diagnostics'].includes(parts[0]) || (parts[0] === 'locations' && req.method !== 'GET')) throw new HttpError(503,'This private resource is not yet connected to the signed-in account.',{code:'account-resource-unavailable'});
+    }
+    const run = () => isolationResourceCall(isolation,parts,req.method,async () => {
 
     /* stop: another app is taking over this machine's Studio, or `openfilm open` starts it afresh (`whenIdle`: not
        while an export runs or media is made — it would be lost). `pages`: how many were open, to come back */
@@ -713,7 +730,9 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       if (typeof folder !== 'string' || !isAbsolute(folder)) throw new HttpError(400, 'the folder\'s full path, please');
       return json(res, 200, { project: await locateProject(parts[1], folder) });
     }
+    if (desktopAuth) desktopAuth.authorizeProjectId(parts[1]);
     const project = await projectById(parts[1]);
+    if (desktopAuth) desktopAuth.authorizeProject(project);
     const rest = projectApiOperation(parts);
     /* Never enter or write into a project removed outside Studio, even if cache writers left its folder behind.
        `film`: false where film.html alone missing is no reason to refuse (the project itself, as its page opens) */
@@ -1208,6 +1227,12 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     }
     throw new HttpError(404, 'no such API');
     });
+    if (!desktopAuth) return run();
+    try { return await desktopAuth.runNative(run); }
+    catch (error) {
+      if (/** @type {any} */ (error)?.code === 'authentication-required' || /** @type {any} */ (error)?.code === 'project-access-denied') throw new HttpError(403,'Project access is not available.',{code:/** @type {any} */ (error).code});
+      throw error;
+    }
   }
 
   const editor = createServer((req, res) => {
@@ -1259,6 +1284,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       const path = new URL(req.url ?? '/', origin).pathname;
       const keyed = sameKey(/** @type {string | undefined} */ (req.headers['x-studio-key'])) || (sameKey(cookieKey(req)) && req.headers.origin === origin);
       if (!keyed) return refuse('401 Unauthorized');
+      if (desktopAuth) { try { desktopAuth.assertActive(); } catch { return refuse('403 Forbidden'); } }
       const parts = path.split('/').slice(1).map(decodeURIComponent);
       /** @type {() => void} */
       let stop = () => {};
@@ -1272,9 +1298,10 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
         return;
       }
       if (parts.length === 4 && parts[0] === 'api' && parts[1] === 'projects' && parts[3] === 'events') {
-        const project = await projectById(parts[2]).catch(() => null);
+        const project = await (desktopAuth ? desktopAuth.runNative(()=>projectById(parts[2])) : projectById(parts[2])).catch(() => null);
         if (stopping || socket.destroyed) { socket.destroy(); return; }
         if (!project || (project.missing && project.missingReason !== 'film')) return refuse('404 Not Found');
+        if (desktopAuth) { try { desktopAuth.authorizeProject(project); } catch { return refuse('403 Forbidden'); } }
         const send = acceptWebSocket(req, socket, () => stop());
         if (send) stop = projectStream(project, send);
         return;
@@ -1285,6 +1312,8 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   const historyPreviews = createHistoryPreviews();
   /** @type {Awaited<ReturnType<typeof startPages>>} */
   let pages;
+  const sealAccess = () => { for (const socket of streamSockets) socket.destroy(); pages?.sealAccess(); };
+  const stopAuthListener = desktopAuth?.onState((/** @type {{kind:string}} */ state) => { if (state.kind !== 'active') sealAccess(); });
   /** @type {Promise<void> | undefined} */
   let closing;
   function close() {
@@ -1293,6 +1322,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     let /** @type {() => void} */ done, /** @type {(reason: unknown) => void} */ fail;
     closing = new Promise((resolve, reject) => { done = resolve; fail = reject; });
     stopping = true;
+    stopAuthListener?.();
     /** @type {Promise<unknown>[]} */
     // Admission is terminal; retain every entered handler before external stops reenter.
     const tasks = [...enteredRequests];
@@ -1334,7 +1364,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   COOKIE = cookieName(address.port);
   FRAMED = framedCookieName(address.port);
   /* the film's port is the next one: when it is not free, the editor's is let go again, so a caller can try others */
-  pages = await startPages({ port: port ? address.port + 1 : 0, editorOrigin: () => origin, secret: key, projects: listProjects }).catch(failedStart);
+  pages = await startPages({ port: port ? address.port + 1 : 0, editorOrigin: () => origin, secret: key, projects: () => desktopAuth ? desktopAuth.runNative(listProjects) : listProjects(), ...(desktopAuth ? { desktopAuth } : {}) }).catch(failedStart);
   filmOrigin = pages.origin;
   try {
     if (advertise) {
@@ -1355,6 +1385,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     port: address.port,
     key,
     close,
+    sealAccess,
   };
   return studio;
 }

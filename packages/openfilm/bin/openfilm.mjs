@@ -145,7 +145,7 @@ if (RAW.length === 1 && (RAW[0] === '--version' || RAW[0] === '-v')) {
   console.log(JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version);
   process.exit(0);
 }
-if (RAW[0] !== 'update') await updateNotice(RAW[0] === 'open');
+if (RAW[0] !== 'update' && RAW[0] !== 'look' && RAW[0] !== 'render') await updateNotice(RAW[0] === 'open');
 /**
  * What the person changed in Studio while the agent worked and Studio kept, said once before a command's answer, on
  * stderr (stdout stays the command's own); Studio hears it was said once it is printed.
@@ -298,14 +298,34 @@ if (RAW[0] === 'get') {
   }
   if (!commands[cmd]) { console.error(`${RUN}: no command ${cmd}\n\n${HELP}`); process.exit(2); }
 
+  let guardedProject = null;
+  let guardedResources = null;
   if (cmd === 'look' || cmd === 'render') {
     const { existsSync } = await import('node:fs');
     const { dirname, join, resolve } = await import('node:path');
     /* a project is made by \`open\`: look and render work in one (the one around here, or around what they look at) */
     const around = (from) => { for (let up = resolve(from); up !== dirname(up); up = dirname(up)) if (existsSync(join(up, 'film.html'))) return up; return null; };
-    const target = args.find((a) => !/^\d+(\.\d+)?(-\d+(\.\d+)?)?$/.test(a));
-    const project = around('.') ?? (target ? around(target) : null);
+    // The actual tool consumes the LAST path, not args.find's first path.
+    // Reuse its native target/location/output rules before any host or codec runs.
+    const { parseTarget, locate, homeFor } = await import('../src/shared.mjs');
+    let location;
+    try { location = locate(parseTarget(args).film); }
+    catch (error) { console.error(`${RUN} ${cmd}: ${error.message}`); process.exit(2); }
+    const project = around('.') ?? around(location.dir);
     if (!project) { console.error(`${RUN} ${cmd}: ${resolve('.')} is not in a project; \`${RUN} open\` makes one and shows it in Studio`); process.exit(2); }
+    guardedProject = project;
+    guardedResources = {
+      homes: [],
+      roots: [...new Set([project,location.root,location.dir,...(cmd === 'look' ? [homeFor(location.dir)] : [])])],
+      targets: cmd === 'render' && opts.out ? [resolve(opts.out)] : [],
+    };
+  }
+  async function execute() {
+  if (guardedProject) {
+    const { existsSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const project = guardedProject;
+    await updateNotice(false);
     /* a project Studio has never shown (copied, cloned, forked): show it now, so the person watches from the start */
     if (!existsSync(join(project, '.film', 'opened'))) {
       const shown = await open(project);
@@ -333,7 +353,7 @@ if (RAW[0] === 'get') {
   };
   if ((cmd === 'look' || cmd === 'render') && await noFfmpeg()) {
     console.error(`${RUN} ${cmd}: needs ffmpeg and ffprobe on the PATH (${FFMPEG_HELP})`);
-    process.exit(2);
+    process.exitCode = 2; return;
   }
   if (cmd === 'open') {
     /* Studio draws pages' pictures in the headless browser: have it before Studio starts, not after its first try */
@@ -356,6 +376,17 @@ if (RAW[0] === 'get') {
   } catch (e) {
     console.error(`${RUN} ${cmd}: ${e.message}`);
     const { UsageError } = await import('../src/shared.mjs');
-    process.exit(e instanceof UsageError ? 2 : 1);
+    process.exitCode = e instanceof UsageError ? 2 : 1;
   }
+  }
+  if (guardedProject) {
+    const { createProjectControlGuard } = await import('../studio/server/project-control-guard.mjs');
+    try {
+      // The original native reader lives until look/render and its cleanup really finish.
+      await createProjectControlGuard().withNativeAccess(guardedResources,execute);
+    } catch {
+      console.error(`${RUN} ${cmd}: controlled projects must use the logged-in Studio; direct native execution is unavailable.`);
+      process.exitCode = 1;
+    }
+  } else await execute();
 }

@@ -1,7 +1,7 @@
 {
   "taskId": "T06.prepare",
   "parentTask": "T06",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root/fission_studio_integration",
   "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
@@ -86,7 +86,9 @@
           }
         ],
         "review": {
-          "path": "docs/execution/fission-prepare-T01-review.json"
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
         }
       },
       {
@@ -143,7 +145,9 @@
           }
         ],
         "review": {
-          "path": "docs/execution/fission-prepare-T05-a-review.json"
+          "path": "docs/execution/fission-prepare-T05-a-review.json",
+          "sha256": "4afd166280e697d59d2698e5cb052d9b96abaf1de196d40177eed6eac3f693f9",
+          "gitBlobSha256": "4afd166280e697d59d2698e5cb052d9b96abaf1de196d40177eed6eac3f693f9"
         }
       }
     ],

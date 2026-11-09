@@ -83,7 +83,7 @@
         "fixtures": [
           {
             "path": "scripts/phase1-isolation.test.mjs",
-            "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
             "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
           },
           {
@@ -99,8 +99,8 @@
         ],
         "review": {
           "path": "docs/execution/login-T01-consumer-review.json",
-          "sha256": "492005b417bb0e203a16a4cec85e76eccf5271f7d9f691e5022253a8c6121cb8",
-          "gitBlobSha256": "492005b417bb0e203a16a4cec85e76eccf5271f7d9f691e5022253a8c6121cb8"
+          "sha256": "47179dafb877f51e7ad53fe000796588c95503381e9a0ce6d87447cec3bc6a95",
+          "gitBlobSha256": "47179dafb877f51e7ad53fe000796588c95503381e9a0ce6d87447cec3bc6a95"
         }
       },
       {
@@ -141,7 +141,7 @@
     "tests": [
       {
         "path": "scripts/phase1-isolation.test.mjs",
-        "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
         "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
         "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
         "requiredNames": [

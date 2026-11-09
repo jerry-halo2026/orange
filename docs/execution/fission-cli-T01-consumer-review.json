@@ -27,7 +27,7 @@
   "fixtures": [
     {
       "path": "scripts/phase1-isolation.test.mjs",
-      "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+      "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
       "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
     },
     {

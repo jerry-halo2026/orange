@@ -1,0 +1,271 @@
+{
+  "taskId": "T01.ci-cohort",
+  "parentTask": "T01",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "necessary existing CI refresh for current independently qualified source cohort, no product/protocol/framework",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "d963f529a79519098af6618a2391bf17174caa9b",
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-native-root-role/orange",
+  "branch": "codex/native-chain-ci",
+  "scope": "Refresh existing path/controlledIO/nativeStudio pure consumer CI to qualified d963 cohort, actual6 native graph/fixed source pins/new dedicatedpublic branch/117 current native tests and own guard environment. Not actual hostedCI pass before authorized run.",
+  "writeAllowlist": [
+    "scripts/fission-path-ci.mjs",
+    "scripts/fission-path-ci.test.mjs",
+    "scripts/native-studio-ci.mjs",
+    "scripts/native-studio-ci.test.mjs",
+    ".github/workflows/phase1.yml",
+    ".github/workflows/fission-path-policy.yml",
+    ".github/workflows/native-studio.yml"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-native-root-role/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "scripts/fission-path-ci.mjs",
+      "scripts/fission-path-ci.test.mjs",
+      "scripts/native-studio-ci.mjs",
+      "scripts/native-studio-ci.test.mjs",
+      ".github/workflows/phase1.yml",
+      ".github/workflows/fission-path-policy.yml",
+      ".github/workflows/native-studio.yml"
+    ],
+    "activeCards": [
+      {
+        "path": "docs/execution/desktop-fission-batch-assignment.json",
+        "assignmentRevision": 2,
+        "sha256": "fa208f2ea7516ed22cd6edf1b57ef4d52015477f08fd180b77dd9660daf0b419"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T05.root-role",
+        "commit": "d963f529a79519098af6618a2391bf17174caa9b",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+            "sha256": "5a063d611dac59fe042de89659fb3993f1200c967bb88c97a93ed95e9fdb7bd2",
+            "gitBlobSha256": "5a063d611dac59fe042de89659fb3993f1200c967bb88c97a93ed95e9fdb7bd2"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+            "sha256": "43145b60e64807fc2b7e43b9791e7025effea9931109cb3b784c62a6c88f6ccc",
+            "gitBlobSha256": "43145b60e64807fc2b7e43b9791e7025effea9931109cb3b784c62a6c88f6ccc"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+            "sha256": "9360afc2ce6274f4d2ba811f1e0d226e1f3992beb3d60ceeae4a91933e41daae",
+            "gitBlobSha256": "9360afc2ce6274f4d2ba811f1e0d226e1f3992beb3d60ceeae4a91933e41daae"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+            "sha256": "bde79bebe28a878491a477d971745be9de8ccbf2f5fb811abe9e1d1986a47134",
+            "gitBlobSha256": "bde79bebe28a878491a477d971745be9de8ccbf2f5fb811abe9e1d1986a47134"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/native-chain-ci-role-input-review.json",
+          "sha256": "8b04b109a634158e13e170cd2efa5600cb74367ef2ae9b4adbe10a7e9a7f620f",
+          "gitBlobSha256": "8b04b109a634158e13e170cd2efa5600cb74367ef2ae9b4adbe10a7e9a7f620f"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "d963f529a79519098af6618a2391bf17174caa9b",
+    "files": [
+      {
+        "path": "scripts/fission-path-ci.mjs",
+        "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+        "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+      },
+      {
+        "path": "scripts/fission-path-ci.test.mjs",
+        "sha256": "a176bf3b6421b028fec44581756326a703b17e3e234f8b1c5fa1f0f01b9de307",
+        "gitBlobSha256": "a176bf3b6421b028fec44581756326a703b17e3e234f8b1c5fa1f0f01b9de307"
+      },
+      {
+        "path": "scripts/native-studio-ci.mjs",
+        "sha256": "bb144d19eccef0bfe71a037a0d02a1e7d88d4060aef86f2c9bf85008b333d690",
+        "gitBlobSha256": "bb144d19eccef0bfe71a037a0d02a1e7d88d4060aef86f2c9bf85008b333d690"
+      },
+      {
+        "path": "scripts/native-studio-ci.test.mjs",
+        "sha256": "9a0608583d0c35625675e092e9e15d873f2f1aa25758c855338c54824ebf98d0",
+        "gitBlobSha256": "9a0608583d0c35625675e092e9e15d873f2f1aa25758c855338c54824ebf98d0"
+      },
+      {
+        "path": ".github/workflows/phase1.yml",
+        "sha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb",
+        "gitBlobSha256": "e2d0c80911dcff654aed6455dc6fc961b6be8769d2bbc3e67ea9c735cab1e5fb"
+      },
+      {
+        "path": ".github/workflows/fission-path-policy.yml",
+        "sha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5",
+        "gitBlobSha256": "8226d53b4ee22125d91fffed94b9c922369224670ff271b6694e72b30ef08eb5"
+      },
+      {
+        "path": ".github/workflows/native-studio.yml",
+        "sha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3",
+        "gitBlobSha256": "6920973ae00ee259b91af9f1f2893d5e7217de1ca0849e8b0b243c9372df85b3"
+      }
+    ],
+    "newFiles": [],
+    "oldE2Frozen69Untouched": true,
+    "oldE6NativeRoleCsAndBinariesMustRemainExact": true
+  },
+  "requirementsByFile": {
+    "scripts/fission-path-ci.mjs": [
+      "Exact validatePathCiContext branch refs/heads/codex/native-chain-ci, old topic rejects; keep repository public/windows/exacthead/nocredentials gates.",
+      "BUILD_ROOTS actual6 Core/Steps/Providers/Cli/AI/Unit, pin all qualified tracked source/project inputs to qualified-inputs rather than accepting unreviewed newcs from a caller/tracked HEAD. Update old EngineJobFiles/Engine/Unitcsproj and2Auth pins.",
+      "assetProjects must be exact sorted AI,Cli,Core,Providers,Steps; actual16public packages unchanged. SDK10.0.403 selection remains explicit failclosed until actualhost capability evidence, no download/fallback.",
+      "Keep strict Path43/IO34 incl truefile-symlink mandatory cases, actual child/trx/source-postcheck/FD fail evidence, no skip-as-green. This job remains path+IO scope, not claiming147/native-media covered here."
+    ],
+    "scripts/fission-path-ci.test.mjs": [
+      "Update approved fixed blobs/auth tuple and6root fixture. CLI is now legitimate, replace old outside-CLI negative with outside-Web and add missingCLI/missingAI/changedAI/changedCLI/extra-project/source/hardlink failures, preserve all other original assertions.",
+      "Exact allowed newbranch and oldbranch rejection. Keep43/34 strictTRX+mandatory true links, package16, no broadened context.",
+      "phase1 expectedCases353 assertion and printed value must be set to ACTUAL new qualified5-file pure command count in author TDD beforefreeze, not guessed or stale; this RO does not execute tests."
+    ],
+    "scripts/native-studio-ci.mjs": [
+      "PINS update lockfile/current guard/projects/server/guardtest plus fixed12 changed reachable native dependencies listed in inputs; baseline canonical/raw/links/tree guards remain.",
+      "Update fission-path-ci producer pin once AFTER its reviewed implementation. One-way pin pathCI -> nativeCI, no cyclic selfpin chase. SELF samecandidate binding retained.",
+      "Native exact110 ->117, including one new controlled-reservation +six isolatedcoordination kinds; preserve real Windows file-symbolic mandatory test; Worker51 +18 actual-exit evidence unchanged.",
+      "Give current new guard isolation sixcases a fresh explicit ORANGE_GUARD_TEST_ROOT with its original native-guard-isolation/attempt-digits-digits lexical family inside the CI ownattempt, ordinary ancestors, length preflight. Do not read/write OS coordination or patch tests. Existing approved standalone original fixture parents preserved."
+    ],
+    "scripts/native-studio-ci.test.mjs": [
+      "Mirror fixed sourceFixturePins/added frozen dependency records; rejected retired source set/count now bound to current exact set. No caller expectedpins/count override.",
+      "Update117 exactTAP summaries/synthetic boundary cases116/118, add literal mandatory newguard names; keep existing real marker, Worker51 strict evidence and native Unicode exception confinement.",
+      "Keep all source mutation/raw+blob/hardlink/archive/private sentinel/exit/drain assertions, only expected cohort constants change."
+    ],
+    ".github/workflows/phase1.yml": [
+      "Keep dev/codex/** and PR safety/currenthead source binding, no credential persistence. Print new actual qualified pure count only after author localTDD receipt; do not claim current353. UI10 live files not added as accepted inputs."
+    ],
+    ".github/workflows/fission-path-policy.yml": [
+      "Exact new dedicated branch in push/jobs.if/concurrency; retain public official windows-2025/$0-only gates, original actions checkout immutable SHA, nocredentials/full source checks and current43+34 scope."
+    ],
+    ".github/workflows/native-studio.yml": [
+      "Exact new dedicated branch in push/jobs.if/concurrency. Add explicit changed pinned path triggers (guard source/test lock and12 dependencies) so new qualified consumer changes cannot silently miss this workflow. Keep public/windows officialrunner gating."
+    ]
+  },
+  "requirements": [
+    "True current pin/6graph/117/newbranch RED on old producer constants, then minimal constants/closure/env GREEN.",
+    "Original pure governance/Auth exactcount must be actually observed before updating353 literal; 117 is source-derived expectation, still requires true run acceptance.",
+    "Necessary hosted Windows true symlink IO34+Path43 and Native117+Worker51 after Root independently verifies current public repo/$0/lease. Any real fail remains fail; do not delete case or trust screenshot/agent status.",
+    "All accepted source/cohort descriptors fixed from exact qualified-inputs and reviewed commits, never accept arbitrary currentHEAD/newcaller expectedpins/counts/graph. Rejected source/tree/hardlink/CRC/Unicode/drain tests retain original assertions. Scope is old path43+IO34 trueWindowslinks/native117+Worker51, no full147/media/wholepilot claim.",
+    "Current UI10 WIP not accepted source cohort. Keep frozen qualifiedd963 data while it develops; only separately audited forward may refresh to later accepted cohort. Preserve oldE2/source/failedtests/runtime dumps and nativeRootRoleCLI6PDB61 docs in E6, no cleanup.",
+    "Use fresh .dev/native-ci-refresh/attempt-* HOME/TMP/cache/helper/evidence only, no model/GUI/worker/Docker/Supabase/privatecredentials/userdata. Pure local Node test/type source only; no real package/runner/remote calls under author runtime. Do not installSDK/download packages to fake unavailable10.0.403; local Windows fullruntime unavailable remainsENV until actualhosted proof.",
+    "Before any push/remote dispatch/standardpublic runner: Root must actually verify exact own repo public, official standardwindows-2025 pricing=$0/current capability and bounded newlease, source/diff/license/secrets audited+independentreview+N5a, then exact remoteSHA. This card is not hosted execution or new network spend authorization. Keep checkout immutableSHA/no credentials/read-only perms/no private modeldata/artifacts.",
+    "TDD newexpectedcohort/6graph/117/newref tests fail old constants then minimal currentguards. Existing oldpure tests remain, true current5file count observed before replacing353; no guess/new cases claimedasrealacceptance. One-way finalpin pathhelper->nativehelper no mutualcycle.",
+    "60s pure command/20MiB logs actualexitclose, source beforeafter; any failure staysfailed/env explicitly, no skipgreen or timeout release. Final exact7 raw/canonical/diff/proof/source frozen for nonauthorSPECQUALITY/RootfreshN5a before sourcecommit/push; independent latestcohort qualification/realCI stilllater."
+  ],
+  "fixedInputManifest": {
+    "path": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/native-ci-refresh/attempt-1794262891274-24156/qualified-inputs.json",
+    "sha256": "a44aa1d3fa0a7e1b9727c7f099903e2be4a439051819e348ad2981a02d2c3cc1",
+    "includeWip": false
+  },
+  "sourceDraft": {
+    "path": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/native-ci-refresh/attempt-1794262891274-24156/native-ci-refresh.DRAFT.json",
+    "sha256": "484e4f97a54ea4f26564217d0a7e84fa093be2877a56f678d9c0b44ff68464fa"
+  },
+  "knownOriginalSourceReviews": [
+    "0428abdfa637e2e882a282f0b55ac39383c94ba9e1c216157c0a96161afeed56",
+    "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027",
+    "d5f937aa684c0422118f243f44c88b4e4a7cc7ff75b96140737f2614d4f99fb8",
+    "e4c80f235d1e814fdcd3f55ab9a7b36c4e16d93b54fd962a2707bc0d04c6fc4e"
+  ],
+  "scopeReview": {
+    "path": "docs/execution/native-chain-ci-scope-review.json",
+    "sha256": "55f01f5c89613f2cd6a8adc785db730ba563739ecea78e02906af67a46303714",
+    "scopeReviewedCardSHA256": "c3a6ccbcd5ea4032c0463dbc628a0d24cf2a5330cb838ca41bd03ca64ee70ae9",
+    "bindingOnlyAfterReview": true
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T01 latest qualified cohort CI before dev",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD nonauthor Rootauthored scope/role input proof+metadata+actualN5a before7CI edits. No remoteCI until current public/$0/lease verify."
+}

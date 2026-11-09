@@ -1,0 +1,80 @@
+{
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/fission_studio_integration",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "scope": "fixed existingCI7 refresh, not product/hosted approval",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "reviewedAt": "2026-11-09T22:26:12.495Z",
+  "reviewKind": "independent Root-authored bounded CI7 assignment and selected frozen input reuse review only; not implementation/hosted execution approval",
+  "taskId": "T01.ci-cohort",
+  "assignmentRevision": 1,
+  "evidence": {
+    "assignmentSHA256": "c3a6ccbcd5ea4032c0463dbc628a0d24cf2a5330cb838ca41bd03ca64ee70ae9",
+    "actualTree": "E:/CodexData/worktrees/orange-native-root-role/orange",
+    "actualBranch": "codex/native-chain-ci",
+    "actualHead": "d963f529a79519098af6618a2391bf17174caa9b",
+    "actualGitClean": true,
+    "fromVerifiedDevManagedTree": "Root managed derivation reported; reviewer only inspected actual checkout, did not create/bypass worktree",
+    "sevenEditableBaselinesRawAndGitBlobExact": true,
+    "fixedManifest": {
+      "path": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/native-ci-refresh/attempt-1794262891274-24156/qualified-inputs.json",
+      "sha256": "a44aa1d3fa0a7e1b9727c7f099903e2be4a439051819e348ad2981a02d2c3cc1"
+    },
+    "sourceDraft": {
+      "path": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/native-ci-refresh/attempt-1794262891274-24156/native-ci-refresh.DRAFT.json",
+      "sha256": "484e4f97a54ea4f26564217d0a7e84fa093be2877a56f678d9c0b44ff68464fa"
+    },
+    "actual6Project49FileClosureGitBlobPinsAndWorkingCanonicalExact": true,
+    "additional12QualifiedChangedNativeImportsGitAndWorkingCanonicalExact": true,
+    "rawCanonicalDistinction": "Fixed49 manifest sha256 fields are Git blob pins. Seven original props/csproj raw files have only reviewed CRLF vs LF differences; raw hashes retained by existing role protected-build evidence. No BOM stripping/trimming/other normalization accepted. First reviewer comparison incorrectly equated raw and blob for props, then corrected to the original strict CRLF-only contract, no product mismatch.",
+    "scopeNecessaryAndSufficient": [
+      "Existing seven CI producer/test/workflow files contain all needed fixed-branch guards, fixed pin tables, six-project inventory and exact assets project-set check. No product/schema/queue/alternative test harness or eighth source needed.",
+      "Current qualified d963 cohort is source only; UI10 active files not accepted or dynamically pinned. Fixed49 closure disallows unreviewed injectedCS/project/extra source while preserving all original source/tree/hardlink/encoding checks.",
+      "117 is original110 plus exact one controlled reservation and six fixed isolatedcoordination tests; Worker51 and18 actual-exit evidence unchanged, Path43 andIO34 mandatory true-file links unchanged. No skips or ENV falsely green.",
+      "New explicit guard test root stays inside current CI owned attempt and original lexical family with ancestor/length checks. No source-test assertion edits or normal coordination fallback.",
+      "Phase1 expectedCases353 must be replaced only with actually observed current five-file pure TDD count. One-way final pathhelper pin into nativehelper avoids circular mutable trust."
+    ],
+    "peers": {
+      "activeUI10CardSHA256": "fa208f2ea7516ed22cd6edf1b57ef4d52015477f08fd180b77dd9660daf0b419",
+      "actualPeerTree": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "sourceWriteIntersection": [],
+      "directoryResourceIntersection": [],
+      "runtimeNetworkAndDbIntersection": [],
+      "cpu": "both explicitly nonexclusive; author runtime pure local Node only; no GUI/model/worker/PG/network resources"
+    },
+    "heldExecution": "Root must record metadata references and run actual freshN5a before seven source edits. This review grants no source implementation pass, commit/push/remoteCI or $0 entitlement.",
+    "runtimeLimits": {
+      "localSDK403AbsentNotDownloaded": true,
+      "authorOnlyPureTDD": true,
+      "timeoutSeconds": 60,
+      "logsMiB": 20,
+      "models": 0,
+      "network": 0,
+      "worker": 0,
+      "GUI": 0,
+      "Docker": 0
+    },
+    "hostedStillRequires": "Root actual current exact own repo public + official standardwindows-2025 $0/current capability + bounded lease + independent source review/N5a + exact remoteSHA before push/run. Hosted true symlink/results not assumed.",
+    "preservation": [
+      "E2 frozen69 and old reports untouched",
+      "E6 role4 source and qualified DLL/PDB untouched",
+      "E3 handoff/source/oldCLI unchanged",
+      "No liveUI10 success claimed; full17 scope remains pending"
+    ],
+    "reviewerActions": {
+      "tests": 0,
+      "build": 0,
+      "codec": 0,
+      "worker": 0,
+      "GUI": 0,
+      "Docker": 0,
+      "network": 0,
+      "models": 0,
+      "productSourceWrites": 0,
+      "docsWrites": 2
+    },
+    "decision": "approved selected scope/input only; proceed Root metadata+actualN5a then bounded pureTDD. No material missing input or extra product decision."
+  }
+}

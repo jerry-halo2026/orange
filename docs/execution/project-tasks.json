@@ -537,6 +537,18 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/native-material-role-assignment.json"
+    },
+    {
+      "id": "T01.ci-cohort",
+      "parentTask": "T01",
+      "status": "in_progress",
+      "scope": "Refresh existing path/controlledIO/nativeStudio pure consumer CI to qualified d963 cohort, actual6 native graph/fixed source pins/new dedicatedpublic branch/117 current native tests and own guard environment. Not actual hostedCI pass before authorized run.",
+      "dependsOn": [
+        "T01",
+        "T05.root-role"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/native-chain-ci-assignment.json"
     }
   ],
   "umbrella": [

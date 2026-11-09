@@ -1,0 +1,59 @@
+{
+  "taskId": "T05.root-role",
+  "commit": "d963f529a79519098af6618a2391bf17174caa9b",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/fission_studio_integration",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+      "sha256": "5a063d611dac59fe042de89659fb3993f1200c967bb88c97a93ed95e9fdb7bd2",
+      "gitBlobSha256": "5a063d611dac59fe042de89659fb3993f1200c967bb88c97a93ed95e9fdb7bd2"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "sha256": "43145b60e64807fc2b7e43b9791e7025effea9931109cb3b784c62a6c88f6ccc",
+      "gitBlobSha256": "43145b60e64807fc2b7e43b9791e7025effea9931109cb3b784c62a6c88f6ccc"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+      "sha256": "9360afc2ce6274f4d2ba811f1e0d226e1f3992beb3d60ceeae4a91933e41daae",
+      "gitBlobSha256": "9360afc2ce6274f4d2ba811f1e0d226e1f3992beb3d60ceeae4a91933e41daae"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+      "sha256": "bde79bebe28a878491a477d971745be9de8ccbf2f5fb811abe9e1d1986a47134",
+      "gitBlobSha256": "bde79bebe28a878491a477d971745be9de8ccbf2f5fb811abe9e1d1986a47134"
+    }
+  ],
+  "scope": "reuse qualified17552/e4c80 original role4 inputs, not rereview implementation",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "reviewedAt": "2026-11-09T22:26:12.495Z",
+  "reviewKind": "independent Root-authored bounded CI7 assignment and selected frozen input reuse review only; not implementation/hosted execution approval",
+  "assignment": {
+    "taskId": "T01.ci-cohort",
+    "revision": 1,
+    "sha256": "c3a6ccbcd5ea4032c0463dbc628a0d24cf2a5330cb838ca41bd03ca64ee70ae9"
+  },
+  "evidence": {
+    "reusedRoleSourceCommit": "17552a602269f25cc46137614ebad214d78b09e2",
+    "cohort": "d963f529a79519098af6618a2391bf17174caa9b",
+    "actualConsumerTree": "E:/CodexData/worktrees/orange-native-root-role/orange",
+    "all4OriginalRoleSourceAndFixturesRawAndGitBlobExact": true,
+    "priorIndependentReview": {
+      "path": "E:/CodexData/worktrees/orange-native-root-role/orange/.dev/native-material-role/attempt-1794260463459-10996/review-independent-1794261287049-29076/review.json",
+      "sha256": "e4c80f235d1e814fdcd3f55ab9a7b36c4e16d93b54fd962a2707bc0d04c6fc4e",
+      "spec": "approved",
+      "quality": "approved"
+    },
+    "existing6ProjectDllPdb12ActualHashesStillExact": true,
+    "binaryBindingSHA256": "6ef9d3ab55c4fdf9312f58ea270fd115ad9f11db1d21cce7a6f80ced3c9c8fa0",
+    "all16ReadOnlyOfflineFeedHashesStillMatch": true,
+    "notRerunOriginalPipeline": true,
+    "noCSharpBinaryOrArchiveWrites": true
+  }
+}

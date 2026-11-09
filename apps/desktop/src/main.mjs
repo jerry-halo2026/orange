@@ -17,7 +17,7 @@ import { FLAVOR, IDENTITY, PRODUCT_NAME } from './flavor.mjs';
 import { folderDialogOptions, programDialogOptions } from './folder-dialog.mjs';
 import { childEnvironment, lastPathSource, loginShellEnvironment } from './environment.mjs';
 import { gatherAppReport } from './app-report.mjs';
-import { startWindowStudio } from './studio.mjs';
+import { startWindowStudio, windowEditorDirectory } from './studio.mjs';
 import { CHAT_MIN, STUDIO_MIN, WINDOW_MIN, placeOnDisplays, readWindowState, writeWindowState } from './window-state.mjs';
 import { createPagePresentation, preparePage, revealPage } from './page-presentation.mjs';
 import { closeTabOrWindow, keepWindowOnClose, quitAfterStudio } from './window-lifecycle.mjs';
@@ -105,6 +105,12 @@ const GONE_TOGETHER_MS = 150;
 /** @type {Awaited<ReturnType<typeof startWindowStudio>> | null} */
 let studio = null;
 let state = readWindowState(DATA);
+// Historical unbound tabs are preserved on disk, never attributed to the next login.
+state = {...state,tabs:null};
+let accountStateDir = null;
+let desktopAuthActive = false;
+let agentResourcesUsed = false;
+let authRetirementConfirmed = false;
 let theme = 'dark';
 /** whether Studio has ffmpeg: true, false, { state: 'downloading', progress } or { state: 'failed', message } (null: not known yet) */
 let ffmpegFound = null;
@@ -138,11 +144,13 @@ function layout() {
   for (const v of views.values()) v.setBounds({ x: 0, y: 0, width, height });
 }
 
-function saveState() {
-  if (!win) return;
+function saveState(strict = false) {
+  strict = strict === true;
+  if (!win) { if (strict) throw new Error('Window preservation is unavailable.'); return; }
   const maximized = win.isMaximized() || win.isFullScreen();
   state = { ...state, maximized, bounds: maximized ? state.bounds : win.getNormalBounds(), ...(tabs ? { tabs: tabs.saved() } : {}) };
-  try { writeWindowState(DATA, state); } catch { /* kept until next time */ }
+  if (!accountStateDir) { if (strict) throw new Error('Account state directory is unavailable.'); return; }
+  try { writeWindowState(accountStateDir, state); } catch (error) { if (strict) throw error; /* ordinary save remains best effort */ }
 }
 
 /** Links out of the page open in the person's browser; the page never navigates away from Studio. */
@@ -160,7 +168,8 @@ function guard(contents, allowed) {
 }
 
 /** IPC only from a tab's page, its own main frame. */
-const fromPage = (event) => tabOf(event.sender) != null && event.senderFrame === event.sender.mainFrame;
+const fromShell = (event) => tabOf(event.sender) != null && event.senderFrame === event.sender.mainFrame;
+const fromPage = (event) => desktopAuthActive && fromShell(event);
 
 /** A page for a tab: Studio's editor at its project (or its launcher), on Studio's origin. */
 function makeView(tabId) {
@@ -373,6 +382,7 @@ async function pickFolder(options) {
 
 /** File › Open Project…: the folder picked, shown in the window (Studio switches its pages to it). */
 async function openProjectFolder() {
+  if (!desktopAuthActive) return;
   const folder = await pickFolder();
   if (!folder || !studio) return;
   try {
@@ -440,8 +450,42 @@ async function runStudio(env) {
     port: isolation?.ports.studio ?? IDENTITY.studioPort,
     /* Studio serves the window's page as its editor (shell/: its editor with the chat beside it) */
     /* its diagnostic file takes the app's own logs too (Studio's diagnostics.mjs) */
-    env: { ...env, OPENFILM_EDITOR_DIR: here('../shell/dist/'), OPENFILM_APP_LOGS: LOGS },
+    env: { ...env, OPENFILM_EDITOR_DIR: windowEditorDirectory({packaged:app.isPackaged,isolated:Boolean(isolation),explicit:process.env.OPENFILM_EDITOR_DIR,bundled:here('../shell/dist/')}), OPENFILM_APP_LOGS: LOGS },
     log,
+    onAuth: (next, scope) => {
+      if (!next || typeof next.kind !== 'string') return;
+      if (next.kind === 'active' && typeof scope === 'string' && /^[0-9a-f]{64}$/.test(scope)) {
+        accountStateDir = join(DATA,'orange-accounts',scope);
+        state = {...state,tabs:readWindowState(accountStateDir).tabs};
+        desktopAuthActive = true;
+        broadcast('desktop:auth',next);
+        void openTabs();
+      } else {
+        saveState();desktopAuthActive = false;
+        broadcast('desktop:auth',next);
+        if (studio && win) void showPage(HOME);
+      }
+    },
+    onAuthRetire: async () => {
+      // The original Agent APIs return void on close. Until their caller has a
+      // real exit receipt, preserve and lock instead of pretending B is safe.
+      if (agentResourcesUsed) return false;
+      try { saveState(true); } catch { return false; }
+      desktopAuthActive = false;
+      const current=[...views.entries()].filter(([id])=>id!==HOME);
+      try {
+        await Promise.all(current.map(([id,view])=>new Promise((resolve,reject)=>{
+          const contents=view.webContents;
+          if(contents.isDestroyed())return resolve(undefined);
+          const timer=setTimeout(()=>reject(new Error('Page preservation is unconfirmed.')),5000);
+          contents.once('destroyed',()=>{clearTimeout(timer);views.delete(id);resolve(undefined);});
+          contents.close({waitForBeforeUnload:true});
+        })));
+      } catch { return false; }
+      tabs=null;accountStateDir=null;
+      return true;
+    },
+    onAuthRetired: () => { authRetirementConfirmed = true; },
     onOpen: (url) => {
       /* Studio would open a browser for an address of its own: the window already shows Studio */
       if (studio && url.startsWith(studio.origin)) focusWindow();
@@ -453,6 +497,16 @@ async function runStudio(env) {
     },
     onExit: (code) => {
       if (quitting) return;
+      desktopAuthActive = false;
+      broadcast('desktop:auth',{kind:'locked',reason:agentResourcesUsed?'preservation-failed':'preservation-pending'});
+      if (agentResourcesUsed) return;
+      if (authRetirementConfirmed && code === 0) {
+        authRetirementConfirmed = false;
+        for (const id of [...views.keys()]) destroyView(id);
+        pagePresentation=null;
+        void runStudio(env).catch(()=>log('Studio could not restart after account retirement.\n'));
+        return;
+      }
       /* stopping again and again at once: started again later each time (studio-restart.mjs) */
       restartWait = restartDelay(restartWait, Date.now() - startedAt);
       log(`Studio stopped (${code}); starting it again in ${restartWait / 1000} s\n`);
@@ -517,6 +571,7 @@ async function start() {
       ...(process.env.OPENFILM_EXAMPLES_INDEX ? { OPENFILM_EXAMPLES_INDEX: process.env.OPENFILM_EXAMPLES_INDEX } : {}),
       /* another OpenFilm service (a local one, to develop it), passed through when run from source */
       ...(process.env.OPENFILM_API_URL ? { OPENFILM_API_URL: process.env.OPENFILM_API_URL } : {}),
+      ...(process.env.ORANGE_AUTH_CONFIG_FILE ? { ORANGE_AUTH_CONFIG_FILE: process.env.ORANGE_AUTH_CONFIG_FILE } : {}),
     },
   });
 
@@ -568,11 +623,11 @@ async function start() {
   ipcMain.on('desktop:language', (event, next) => {
     if (!fromPage(event) || typeof next !== 'string' || next === state.language) return;
     state = { ...state, language: next.slice(0, 20) };
-    try { writeWindowState(DATA, state); } catch { /* kept until next time */ }
+    if (accountStateDir) try { writeWindowState(accountStateDir, state); } catch { /* kept until next time */ }
     showMenu();
   });
   ipcMain.handle('desktop:hello', (event) => {
-    if (!fromPage(event)) throw new Error('not the window\'s page');
+    if (!fromShell(event)) throw new Error('not the window\'s page');
     return { flavor: FLAVOR, version: app.getVersion(), ffmpeg: ffmpegFound, update: updates?.snapshot() ?? null, chatOpen: state.chatOpen, chatWidth: state.chatWidth, chatMin: CHAT_MIN, studioMin: STUDIO_MIN, fullScreen: Boolean(win?.isFullScreen()) };
   });
   /* the chat's column as the person left it (the page sizes it; the window keeps it for next time) */
@@ -639,7 +694,7 @@ async function start() {
   const prefsHome = env.OPENFILM_SHARED_HOME || env.OPENFILM_HOME;
   const mySkills = process.env.OPENFILM_SKILLS || (env.OPENFILM_LIBRARY ? join(dirname(env.OPENFILM_LIBRARY), 'Skills') : (await import('openfilm/skills')).mySkillsDir());
   localAgents = registerLocalAgentIpc(ipcMain, {
-    trusted: fromPage,
+    trusted: event => { if (!fromPage(event)) return false; agentResourcesUsed = true; return true; },
     log,
     /* Studio refuses to delete a project an agent is working in */
     onWorking: tellWorking,
@@ -703,6 +758,7 @@ async function start() {
   });
   const agentHandle = (channel, fn) => ipcMain.handle(channel, (event, opts) => {
     if (!fromPage(event)) throw new Error('not the window\'s page');
+    agentResourcesUsed = true;
     return fn(opts ?? {});
   });
   agentHandle('desktop:agents:list', () => { void roster.refresh(); return roster.list(); });

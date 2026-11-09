@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld('openfilmNative', {
   platform: process.platform,
   /* the app: its flavour and version, the layout it kept, ffmpeg and updates as they are */
   hello: () => ipcRenderer.invoke('desktop:hello'),
+  onAuth: on('desktop:auth'),
   pathForFile: (file) => { try { return webUtils.getPathForFile(file); } catch { return ''; } },
   revealPath: (path) => ipcRenderer.invoke('desktop:reveal', String(path)),
   /* a folder the person picks (Studio's "Open…" on its Projects list, the export's "Save to"): its path, or null */

@@ -91,3 +91,14 @@ test('fix1 sync native finally also retries a real child short metadata mutex',a
  guard.withNativeAccessSync(r,()=>{child=spawn(process.execPath,['--input-type=module','-e',code],{stdio:'ignore'});const pause=new Int32Array(new SharedArrayBuffer(4));let attempts=0;while(!existsSync(ready)&&attempts++<1000)Atomics.wait(pause,0,0,2);assert.equal(existsSync(ready),true);});
  assert.equal(await new Promise((resolve,reject)=>{child.once('error',reject);child.once('exit',resolve);}),0);const h=await guard.acquireControlledReservation(r);h.close();
 });
+
+test('desktop controlled reservation admits only its private scope and validates every nested native operation',async()=>{
+ const {guard,r,target}=setup();const held=await guard.acquireControlledReservation(r);
+ assert.equal(typeof held.run,'function');let allowed=true;
+ writeFileSync(join(target,'.openfilm-control.json'),JSON.stringify({version:1,domainId:'synthetic-desktop'}));
+ await held.run(()=>allowed,()=>guard.withNativeAccess(r,async lease=>{lease.assertActive();await lease.include([join(target,'new')]);assert.equal(guard.isControlledAccess(),true);allowed=false;assert.throws(()=>lease.assertActive(),{code:'control-required'});}));
+ await assert.rejects(held.run(()=>false,()=>guard.withNativeAccess(r,()=>{})),{code:'control-required'});
+ await assert.rejects(held.run(()=>true,()=>guard.withNativeAccess({...r,targets:[resolve(target,'..','outside')]},()=>{})),{code:'control-invalid'});
+ held.close();await assert.rejects(held.run(()=>true,()=>{}),{code:'control-invalid'});
+ await assert.rejects(guard.withNativeAccess(r,()=>{}),{code:'control-required'});
+});

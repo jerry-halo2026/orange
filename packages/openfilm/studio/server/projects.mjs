@@ -50,6 +50,14 @@ export class ProjectError extends Error {
 /** Where Studio keeps its own state (not projects): ~/.openfilm, or OPENFILM_HOME. */
 export const studioHome = studioHomeDir;
 
+/** Trusted desktop context: original StudioState, stored separately for each verified subject. */
+/** @typedef {{stateFile:string, owns:(project:{id:string,path:string})=>boolean, pathAllowed:(path:string)=>boolean, created:(project:any)=>Promise<any>, moved:(project:any,from:string)=>Promise<any>, newTarget?:string}} ProjectAuthority */
+/** @type {AsyncLocalStorage<ProjectAuthority>} */
+const projectAuthority = new AsyncLocalStorage();
+/** @template T @param {ProjectAuthority} authority @param {()=>T} work @returns {T} */
+export function withProjectAuthority(authority, work) { return projectAuthority.run(authority, work); }
+const nativeStateFile = () => projectAuthority.getStore()?.stateFile ?? join(studioHome(), 'studio.json');
+
 /**
  * The key this machine's Studio opens with (~/.openfilm/key, readable by this user only), the same at every launch: an
  * address Studio printed, and a page open on it, still work after it restarts (an update, a reboot).
@@ -95,7 +103,7 @@ function exclusive(change) {
 /** The list of projects and the person's preferences, read fresh each time (another Studio command may have written). */
 async function native_readState() {
   let text;
-  try { text = await readFile(join(studioHome(), 'studio.json'), 'utf8'); }
+  try { text = await readFile(ordinaryControlPath(nativeStateFile()), 'utf8'); }
   catch (e) { if (/** @type {NodeJS.ErrnoException | null | undefined} */ (e)?.code === 'ENOENT') return /** @type {StudioState} */ ({ recent: [], folders: [] }); throw controlError(); }
   let raw;
   try { raw = JSON.parse(text); } catch { throw controlError(); }
@@ -104,8 +112,9 @@ async function native_readState() {
   const recent = raw.recent ?? [];
   // Validate the whole list before resolving/admitting any item; corruption is not an empty history.
   if (recent.some(r => !r || typeof r !== 'object' || Array.isArray(r) || typeof r.id !== 'string' || typeof r.path !== 'string' || !isAbsolute(r.path) || r.path.includes('\0'))) throw controlError();
+  const authority = projectAuthority.getStore();
   const state = /** @type {StudioState} */ ({
-    recent,
+    recent: authority ? recent.filter(r => authority.owns(/** @type {Recent} */ (r))) : recent,
     folders: Array.isArray(raw.folders) ? raw.folders.filter((/** @type {Record<string, unknown>} */ f) => f && typeof f.id === 'string' && typeof f.name === 'string') : [],
   });
   await includeProjects(state.recent.map(r => resolve(r.path)));
@@ -115,8 +124,8 @@ async function native_readState() {
 /* the file is shared with every OpenFilm on this computer (`npx openfilm`, the app), older or newer: what this one does
    not know of it is written back as it was */
 async function writeState(/** @type {StudioState} */ state) {
-  await mkdir(studioHome(), { recursive: true });
-  const path = join(studioHome(), 'studio.json');
+  const path = ordinaryControlPath(nativeStateFile());
+  await mkdir(dirname(path), { recursive: true });
   const kept = await readFile(path, 'utf8').then(JSON.parse, () => null);
   await writeAtomic(path, `${JSON.stringify({ ...(kept && typeof kept === 'object' && !Array.isArray(kept) ? kept : {}), ...state }, null, 2)}\n`);
 }
@@ -170,6 +179,8 @@ async function folderId(/** @type {string} */ folder, /** @type {StudioState} */
  * @param {string} path @param {{ create?: boolean }} [options]
  */
 async function native_openProject(path, { create = true } = {}) {
+  const authority = projectAuthority.getStore();
+  if (authority && resolve(path) !== authority.newTarget && !authority.pathAllowed(resolve(path))) throw new ProjectError('Project ownership is not established.', 403, 'project-access-denied');
   const state = await native_readState();
   const profile = readIsolationProfile();
   if (profile) {
@@ -207,7 +218,11 @@ async function native_createProject(name = 'Untitled') {
   let candidate = join(root, clean);
   for (let n = 2; existsSync(candidate); n++) candidate = join(root, `${clean} ${n}`);
   await includeProjects([candidate]);
-  return native_openProject(candidate);
+  const authority = projectAuthority.getStore();
+  if (!authority) return native_openProject(candidate);
+  const project = await projectAuthority.run({...authority,newTarget:resolve(candidate)}, () => native_openProject(candidate));
+  await authority.created(project);
+  return project;
 }
 
 /**
@@ -269,7 +284,8 @@ async function followLibrary(state) {
   const before = state.recent.length;
   state.recent = state.recent.filter((r) => !((dirname(r.path) === real || dirname(r.path) === root) && !existsSync(r.path)));
   let changed = state.recent.length !== before;
-  const foundProjects = libraryProjects(real);
+  const authority = projectAuthority.getStore();
+  const foundProjects = libraryProjects(real).filter(path => !authority || authority.pathAllowed(path));
   await includeProjects([...state.recent.map(r => resolve(r.path)), ...foundProjects]);
   for (const found of foundProjects) {
     if (state.recent.some((r) => r.path === found)) continue;
@@ -428,6 +444,8 @@ async function native_markOpened(/** @type {string} */ id) {
  * @param {string} id @param {string} path
  */
 async function native_locateProject(id, path) {
+  const authority = projectAuthority.getStore();
+  if (authority && !authority.pathAllowed(resolve(path))) throw new ProjectError('Project ownership is not established.', 403, 'project-access-denied');
   return exclusive(async () => {
     const state = await native_readState();
     const entry = state.recent.find((r) => r.id === id);
@@ -468,9 +486,11 @@ async function native_renameProject(/** @type {string} */ id, /** @type {string}
     if (to === entry.path) return describe(entry);
     /* taken: retrying can't help, so it says so; the same folder in another case (on a disk that ignores it) is not */
     if (existsSync(to) && !sameFolder(to, entry.path)) throw new ProjectError(`the name "${basename(to)}" is taken: there is already a folder by that name beside this project`, 409);
+    const from = entry.path;
     await rename(entry.path, to);
     entry.path = to;
     await writeState(state);
+    await projectAuthority.getStore()?.moved(describe(entry), from);
     return describe(entry);
   });
 }
@@ -617,7 +637,7 @@ function checkPrivateControlState() {
     let raw;
     try { raw = JSON.parse(readFileSync(file, 'utf8')); } catch { throw controlError(); }
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw controlError();
-    if (Object.hasOwn(raw, 'orangeControl')) throw controlError('control-required');
+    if (Object.hasOwn(raw, 'orangeControl') && !(projectGuardContext.getStore() ?? defaultProjectGuard).isControlledAccess()) throw controlError('control-required');
   }
 }
 /** @returns {ReturnType<typeof native_readState>} */

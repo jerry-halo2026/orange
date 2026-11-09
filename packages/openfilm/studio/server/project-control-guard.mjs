@@ -150,17 +150,41 @@ export function createProjectControlGuard(options = {}) {
   return { close, lease: Object.freeze({ assertActive, include: async paths => includeSync(paths) }), includeSync, record };
  }
  const guard = Object.freeze({
+  isControlledAccess() {
+   const scope = active.getStore();
+   if (scope?.guard !== guard || !scope.controlled) return false;
+   scope.controlled.check(); return true;
+  },
   async withNativeAccess(input, work) {
+   const scope = active.getStore();
+   if (scope?.guard === guard && scope.controlled) {
+    scope.controlled.admit(input); return work(scope.controlled.lease);
+   }
    const holder = acquire(input, false);
    try { resources(input); return await active.run({ guard }, () => work(holder.lease)); } finally { holder.close(); }
   },
   withNativeAccessSync(input, work) {
+   const scope = active.getStore();
+   if (scope?.guard === guard && scope.controlled) {
+    scope.controlled.admit(input); const value = work(); if (value && typeof value.then === 'function') throw controlError(); return value;
+   }
    const holder = acquire(input, false);
    try { resources(input); const value = active.run({ guard }, work); if (value && typeof value.then === 'function') throw controlError(); return value; } finally { holder.close(); }
   },
   async acquireControlledReservation(input) {
    const holder = acquire(input, true);
-   return Object.freeze({ instanceId: holder.record.instanceId, epoch: holder.record.epoch, close: holder.close });
+   return Object.freeze({ instanceId: holder.record.instanceId, epoch: holder.record.epoch, close: holder.close,
+    async run(validate, work) {
+     if (typeof validate !== 'function' || typeof work !== 'function') throw controlError();
+     const check = () => { holder.lease.assertActive(); if (validate() !== true) throw controlError('control-required'); };
+     const admit = input => {
+      check(); const requested = resources(input, false);
+      if (!requested.every(path => holder.record.paths.some(root => path === root || path.startsWith(root.endsWith(sep) ? root : root + sep)))) throw controlError();
+     };
+     const lease = Object.freeze({ assertActive:check, include:async paths => admit({homes:[],roots:[],targets:paths}) });
+     check(); return active.run({guard,controlled:{check,admit,lease}}, work);
+    },
+   });
   },
  });
  brands.add(guard); return guard;

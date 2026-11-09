@@ -16,12 +16,14 @@
  *   ← { type: 'working', folders }                   the folders the chat's agents are working in now (not deletable)
  */
 import { spawn, spawnSync } from 'node:child_process';
-import { randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { startStudio } from 'openfilm/studio';
 import { launch } from 'openfilm/host';
 import { readIsolationProfile } from './isolation.mjs';
+import { createDesktopAuth, readDesktopAuthConfiguration } from './desktop-auth.mjs';
+import { pathToFileURL } from 'node:url';
 const isolation = readIsolationProfile(process.env);
 
 const parent = process.parentPort;
@@ -32,18 +34,51 @@ let stopping = false;
 async function stop() {
   if (stopping) return;
   stopping = true;
-  await studio?.close().catch(() => {});
-  process.exit(0);
+  try { await studio?.close(); await desktopAuth.dispose(); process.exit(0); }
+  catch { send({type:'auth',state:{kind:'locked',reason:'preservation-failed'}});process.exit(1); }
 }
 /** the folders the chat's agents are working in, as the main process last told */
 let working = [];
 /** the questions asked of the person's agent, waiting for their answers, by id */
 const asking = new Map();
+let parentRetirement = null;
 parent.on('message', ({ data }) => {
   if (data?.type === 'quit') void stop();
   if (data?.type === 'working' && Array.isArray(data.folders)) working = data.folders.filter((f) => typeof f === 'string');
   if (data?.type === 'answer') asking.get(data.id)?.(data);
+  if (data?.type === 'auth-parent-retired' && parentRetirement?.id === data.id) {
+    const held=parentRetirement;parentRetirement=null;clearTimeout(held.timer);
+    if(data.ok===true)held.resolve();else held.reject(new Error('Parent preservation is unconfirmed.'));
+  }
 });
+
+const nativeRoot=dirname(createRequire(import.meta.url).resolve('openfilm/package.json'));
+const {libraryRoot:originalLibraryRoot,sharedHome:originalSharedHome,studioHomeDir}=await import(pathToFileURL(join(nativeRoot,'src','locations.mjs')).href);
+const desktopAuth=createDesktopAuth({
+  configuration:readDesktopAuthConfiguration(process.env),
+  home:studioHomeDir(),sharedHome:originalSharedHome(),projects:originalLibraryRoot(),
+  coordinationRoot:join(studioHomeDir(),'.orange-coordination'),instanceId:randomUUID(),
+},{
+  fetch:globalThis.fetch,monotonicNow:()=>performance.now(),
+  onState:state=>{
+    let scope=null;try{if(state.kind==='active')scope=desktopAuth.windowScope();}catch{/* state remains locked */}
+    send({type:'auth',state,scope});if(state.kind!=='active')studio?.sealAccess();
+  },
+  retire:async()=>{
+    await new Promise((resolve,reject)=>{
+      const id=randomUUID(),timer=setTimeout(()=>{if(parentRetirement?.id===id)parentRetirement=null;reject(new Error('Parent preservation is unconfirmed.'));},5000);
+      parentRetirement={id,timer,resolve,reject};send({type:'auth-retire',id});
+    });
+    await studio?.close();
+  },
+  // Only the controller can announce completion: its entered operations and
+  // actual guard release still follow the Studio.close callback above.
+  onRetired:()=>{
+    send({type:'auth-retired'});
+    setImmediate(()=>process.exit(0));
+  },
+});
+const authClock=setInterval(()=>desktopAuth.getPublicState(),1000);authClock.unref();
 
 /**
  * One question answered by the person's agent's own model (the main process picks the agent and asks it, with no
@@ -74,12 +109,15 @@ try {
     openBrowser: (url) => send({ type: 'open', url }),
     /* another app (or `openfilm open`) asked this Studio to stop: the window still needs it, so it stays and says so */
     stays: true,
+    key:randomBytes(24).toString('hex'),
+    desktopAuth,
     working: () => working,
     askAgent,
     /* the window's page, Studio's editor with the chat beside it (shell/), in place of the editor alone */
     ...(process.env.OPENFILM_EDITOR_DIR ? { editorDir: process.env.OPENFILM_EDITOR_DIR } : {}),
   });
   send({ type: 'ready', origin: studio.origin, filmOrigin: studio.filmOrigin, key: studio.key });
+  send({type:'auth',state:desktopAuth.getPublicState(),scope:null});
 } catch (e) {
   send({ type: 'failed', code: e?.code ?? null, message: e?.message ?? String(e) });
   process.exit(1);

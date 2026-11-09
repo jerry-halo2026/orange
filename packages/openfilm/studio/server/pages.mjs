@@ -115,9 +115,9 @@ function servable(root, plain) {
 /**
  * `secret`: what tokens are signed with (Studio's key). `projects`: the projects there are, for a token not seen since
  * this launch (a page open from before Studio restarted).
- * @param {{ port: number, editorOrigin: () => string, secret: string, projects: () => Promise<{ id: string, path: string }[]> }} options
+ * @param {{ port: number, editorOrigin: () => string, secret: string, projects: () => Promise<{ id: string, path: string }[]>, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth> }} options
  */
-export async function startPages({ port, editorOrigin, secret, projects }) {
+export async function startPages({ port, editorOrigin, secret, projects, desktopAuth }) {
   /* read by the editor (its mixer fetches the media). Framed by it with no frame-ancestors rule: that rule is checked
      against every frame up to the window, so Studio shown inside another app's frame (an agent's preview pane) would
      lose its picture; a page is reached only through its project's token, which only the editor has */
@@ -147,7 +147,7 @@ export async function startPages({ port, editorOrigin, secret, projects }) {
   /** a project's playable copies (UNPLAYABLE), served as its files are */
   const copiesOf = (/** @type {string} */ root) => folderFiles(join(root, PLAYABLE_DIR), { headers: policy() });
 
-  /** @type {Map<string, { root: string, files: ReturnType<typeof folderFiles> }>} */
+  /** @type {Map<string, { root: string, project: {id:string,path:string}, files: ReturnType<typeof folderFiles> }>} */
   const byToken = new Map();
   const tokenOf = (/** @type {string} */ id) => createHmac('sha256', secret).update(`film origin\0${id}`).digest().subarray(0, 18).toString('base64url');
   /**
@@ -157,7 +157,7 @@ export async function startPages({ port, editorOrigin, secret, projects }) {
   const serve = (/** @type {{ id: string, path: string }} */ project) => {
     const token = tokenOf(project.id);
     const root = compoundOuter(project.path);
-    if (byToken.get(token)?.root !== root) byToken.set(token, { root, files: filesOf(root) });
+    if (byToken.get(token)?.root !== root) byToken.set(token, { root, project, files: filesOf(root) });
     return token;
   };
   /** Where the project's folder is in what its token serves: nothing, or a compound clip's `parts/<name>/`. */
@@ -174,7 +174,10 @@ export async function startPages({ port, editorOrigin, secret, projects }) {
     return byToken.get(token);
   };
 
-  const server = createServer(async (req, res) => {
+  /** @type {Set<Promise<unknown>>} */
+  const entered = new Set();
+  const server = createServer((req, res) => {
+    const run = async () => {
     const headers = policy();
     if (!ownHost(req, /** @type {import('node:net').AddressInfo} */ (server.address()).port)) { res.writeHead(403, headers).end('not this address'); return; }
     const url = new URL(req.url ?? '/', 'http://pages');
@@ -182,6 +185,7 @@ export async function startPages({ port, editorOrigin, secret, projects }) {
     const match = /^\/p\/([\w-]+)(\/.*)?$/.exec(url.pathname);
     const entry = match && await entryOf(match[1]);
     if (!match || !entry) { res.writeHead(404, headers).end('not found'); return; }
+    if (desktopAuth) desktopAuth.authorizeProject(entry.project);
     const path = match[2] ?? '/';
     /* what the address names once decoded (an escaped dot or `\` is the same name): never a hidden file or folder, a
        Windows stream, or a file out of the folder */
@@ -210,6 +214,12 @@ export async function startPages({ port, editorOrigin, secret, projects }) {
       return;
     }
     if (!entry.files(req, res, path, url.searchParams)) res.writeHead(403, headers).end();
+    };
+    const work = (desktopAuth ? desktopAuth.runNative(run) : run()).catch(() => {
+      if (!res.headersSent) res.writeHead(desktopAuth ? 403 : 500, policy());
+      res.end(desktopAuth ? 'sign in or project access is required' : 'page unavailable');
+    });
+    entered.add(work);void work.finally(()=>entered.delete(work));
   });
   await listenLocal(server, port);
   /* named `localhost`, not 127.0.0.1 as the editor is: another site to the browser, not only another origin, so it puts
@@ -218,8 +228,9 @@ export async function startPages({ port, editorOrigin, secret, projects }) {
 
   return {
     origin,
+    sealAccess: () => { server.closeAllConnections(); },
     /** The address of a project's folder on the film's origin; a renamed folder keeps it (pass the project as it is now). */
     folderUrl: (/** @type {{ id: string, path: string }} */ project) => `${origin}/p/${serve(project)}/${within(project.path)}`,
-    close: () => new Promise((done) => { server.closeAllConnections(); server.close(() => done(undefined)); }),
+    close: async () => { const pending=[...entered];await new Promise((done) => { server.closeAllConnections(); server.close(() => done(undefined)); });await Promise.all(pending); },
   };
 }

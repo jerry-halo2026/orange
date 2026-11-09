@@ -16,3 +16,18 @@
 #of-chat-layer { height: 0; background: transparent; }
 /* focused by a click to keep the keyboard in the chat (index.html), never ringed */
 #of-chat:focus, #of-chat-layer:focus { outline: none; }
+/* First-party login lives in the original desktop shell, using Studio's theme. */
+.orange-login { position:fixed;inset:0;display:grid;place-items:center;background:var(--bg-app,#111114);color:var(--text-primary,#ebebed);font:14px/1.5 system-ui,sans-serif; }
+.orange-login-drag { position:absolute;inset:0 138px auto 0;height:40px;-webkit-app-region:drag; }
+.orange-login-card { width:min(390px,calc(100vw - 64px));display:flex;flex-direction:column;gap:12px;padding:32px;border:1px solid var(--border,#33333a);border-radius:16px;background:var(--bg-panel,#1b1b20); }
+.orange-login-card h1 { margin:10px 0 0;font-size:24px; }
+.orange-login-card p { margin:0;color:var(--text-secondary,#b3b3be); }
+.orange-login-wordmark { font-size:20px;font-weight:650; }
+.orange-login-wordmark span { display:block;font-size:12px;font-weight:400;color:var(--text-secondary,#b3b3be); }
+.orange-login-card input { width:100%;box-sizing:border-box;border:1px solid var(--border,#44444d);border-radius:7px;background:var(--bg-app,#111114);color:inherit;padding:10px 12px; }
+.orange-login-card button { padding:11px 14px;border-radius:7px;border:1px solid var(--border,#55555d);background:var(--text-primary,#ebebed);color:var(--bg-app,#111114);cursor:pointer;font-weight:600; }
+.orange-login-card button:disabled,.orange-login-card input:disabled { opacity:.55;cursor:default; }
+.orange-login-card :focus-visible { outline:2px solid var(--accent,#b5b5ee);outline-offset:3px; }
+.orange-login-card .orange-login-message { color:var(--text-primary,#ebebed);font-size:13px; }
+.orange-login-card small { font-size:12px;color:var(--text-secondary,#b3b3be); }
+.orange-account-exit { position:fixed;right:150px;top:6px;z-index:1000;font-size:11px;background:var(--bg-panel,#1b1b20);color:var(--text-primary,#ebebed);border:1px solid var(--border,#44444d);border-radius:5px;padding:2px 7px;-webkit-app-region:no-drag; }

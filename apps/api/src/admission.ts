@@ -179,3 +179,107 @@ export function createAdmission(deps: Dependencies) {
     },
   };
 }
+// The following is a pure mapper, not a worker/stager, rights producer, or claim entry point.
+type ResolvedMappingMaterial = Readonly<{versionId:string;contentSha256:string;kind:string;durationSec:number}>;
+type PrivateStagingAssociation = Readonly<{filePath:string;fileIdentity:string;contentSha256:string;resolvedMeta:ResolvedMappingMaterial}>;
+const mappingPending = (code:string):never => {throw new BusinessError(code,422);};
+function freezeMapped<T>(value:T):T {
+ if(value&&typeof value==='object'){for(const child of Object.values(value))freezeMapped(child);Object.freeze(value);}return value;
+}
+/** Consume only original PREPARE output facts. The trusted caller must bind the
+ * actual job/digest, hold real source capabilities and later run fresh SQL rights.
+ * Snapshot headers/associations here are data checks, never proof of a grant.
+ */
+export async function mapPreparedFissionOutput(nativeSnapshot:unknown, outputIndex:number,
+ context:Readonly<{projectId:string;filmRev:string;job:Readonly<Record<string,unknown>>}>, staging:readonly PrivateStagingAssociation[]):Promise<Readonly<Record<string,unknown>>> {
+ try {
+  const snapshot=exact(nativeSnapshot,['schemaVersion','jobId','jobSha256','workRoot','outRoot','cacheRoot','runtimeSha256','outputs','versions','digest','authorizesBusiness','measuredAssemblyClock']);
+  if(snapshot.schemaVersion!==1||snapshot.authorizesBusiness!==false||snapshot.measuredAssemblyClock!==false)mappingPending('native-preparation-invalid');
+  digest(snapshot.jobSha256);digest(snapshot.runtimeSha256);digest(snapshot.digest);text(snapshot.jobId);
+  for(const key of ['workRoot','outRoot','cacheRoot'])text(snapshot[key]);
+  const outputs=list(snapshot.outputs),indices=outputs.map(o=>integer(record(o).index));
+  if(!outputs.length||new Set(indices).size!==outputs.length||!Number.isSafeInteger(outputIndex))mappingPending('native-output-index-invalid');
+  const matches=outputs.filter(o=>o.index===outputIndex);if(matches.length!==1)mappingPending('native-output-index-invalid');
+  const output=exact(matches[0],['index','title','voicePath','musicPath','targetSec','audio','audioItem','selectedVideos','sources','cuts','alignmentIntent','transitionIntent','subtitleIntent','consumeVideoPaths','generatedVoice']);
+  const originalContext=exact(context,['projectId','filmRev','job']);text(originalContext.projectId);if(!/^[a-f0-9]{16}$/.test(text(originalContext.filmRev)))mappingPending('native-project-binding-invalid');
+  const job=record(originalContext.job),fps=integer(job.OutFps,1,240);integer(job.OutWidth,1,16384);integer(job.OutHeight,1,16384);
+  const sources=list(output.sources),cuts=list(output.cuts);if(!sources.length||!cuts.length)mappingPending('native-preparation-invalid');
+  const versions=new Map<string,Record<string,any>>();
+  for(const raw of list(snapshot.versions,100000)){
+   const v=exact(raw,['path','sha256','owned','identity']);text(v.path,32768);digest(v.sha256);bool(v.owned);
+   if(!/^[a-f0-9]{8}:[a-f0-9]{16}:[a-f0-9]{16}:[a-f0-9]{16}$/.test(text(v.identity)))mappingPending('native-file-identity-invalid');
+   if(versions.has(v.path))mappingPending('native-version-ambiguous');versions.set(v.path,v);
+  }
+  const version=(file:unknown,sha:unknown)=>{const p=text(file,32768),v=versions.get(p);if(!v||v.sha256!==digest(sha))mappingPending('native-version-unbound');return v!;};
+  for(const raw of sources){const s=exact(raw,['path','sha256','kind','durationSec']);if(!['video','still','sound'].includes(s.kind))mappingPending('native-source-kind-invalid');number(s.durationSec,s.kind==='still'?0:Number.MIN_VALUE);if(s.kind==='still'&&s.durationSec!==0)mappingPending('native-still-intrinsic-invalid');version(s.path,s.sha256);}
+  const audio=exact(output.audio,['voice','music','loudnorm']),voiceFacts=record(audio.voice),voiceIndex=integer(voiceFacts.source,0,sources.length-1),voiceSource=sources[voiceIndex];
+  const voiceItem=exact(output.audioItem,['path','group','durationSec','isImage']);number(voiceItem.durationSec,Number.MIN_VALUE);
+  if(voiceSource.kind!=='sound'||voiceItem.path!==output.voicePath||voiceItem.isImage!==false||typeof voiceItem.group!=='string')mappingPending('native-audio-source-mismatch');
+  version(output.voicePath,voiceSource.sha256);
+  if(audio.music===null){if(output.musicPath!==null)mappingPending('native-audio-source-mismatch');}
+  else {const musicFacts=record(audio.music),musicIndex=integer(musicFacts.source,0,sources.length-1);if(output.musicPath!==sources[musicIndex].path)mappingPending('native-audio-source-mismatch');}
+  if(output.generatedVoice!==null){
+   const generated=exact(output.generatedVoice,['path','proofPath','proofSha256','purpose']);
+   if(generated.purpose!=='native-offline-lavfi-voice/v1'||generated.path!==output.voicePath||voiceSource.path!==generated.path
+    ||!generated.path.startsWith(snapshot.workRoot+'\\'+snapshot.jobId+'\\voice\\')||!/[\\/]gen_[0-9]{3,}\.mp3$/.test(generated.path)
+    ||generated.proofPath!==generated.path+'.prepared-generated.json'||!version(generated.path,voiceSource.sha256).owned
+    ||!version(generated.proofPath,generated.proofSha256).owned)mappingPending('native-generated-origin-invalid');
+  }
+  const visuals=cuts.map(raw=>{
+   const cut=exact(raw,['decision','normalization']),v=exact(cut.decision,['source','role','group','startSec','durationSec','speed','hflip']),n=exact(cut.normalization,['source','path','sha256','durationSec','imageHoldSec']);
+   const i=integer(v.source,0,sources.length-1);if(!['video','still'].includes(sources[i].kind)||!['intro','main','outro'].includes(v.role)||n.source!==i)mappingPending('native-cut-invalid');text(v.group||v.role);number(v.startSec);number(v.durationSec,Number.MIN_VALUE);number(v.speed,Number.MIN_VALUE);bool(v.hflip);number(n.durationSec,Number.MIN_VALUE);if(!version(n.path,n.sha256).owned)mappingPending('native-cut-invalid');
+   if(v.startSec+v.durationSec>n.durationSec+.001)mappingPending('native-cut-invalid');
+   if(sources[i].kind==='still'){number(n.imageHoldSec,Number.MIN_VALUE);if(Math.abs(n.imageHoldSec-n.durationSec)>1/fps)mappingPending('native-still-hold-invalid');}else if(n.imageHoldSec!==null)mappingPending('native-cut-invalid');
+   return v;
+  });
+  const alignment=exact(output.alignmentIntent,['action','inputDurationSec','outputDurationSec','tempo','loops']);
+  if(!['trim','speed','loop'].includes(alignment.action))mappingPending('native-alignment-unsupported');number(alignment.inputDurationSec,Number.MIN_VALUE);number(alignment.outputDurationSec,Number.MIN_VALUE);number(alignment.tempo,Number.MIN_VALUE);integer(alignment.loops,1,10000);
+  if(Math.abs(visuals.reduce((sum,v)=>sum+v.durationSec/v.speed,0)-alignment.inputDurationSec)>1/fps)mappingPending('native-alignment-clock-invalid');
+  if(alignment.action==='trim'&&(alignment.tempo!==1||alignment.loops!==1||alignment.outputDurationSec>alignment.inputDurationSec+1/fps)
+   ||alignment.action==='speed'&&(alignment.loops!==1||Math.abs(alignment.tempo-alignment.inputDurationSec/alignment.outputDurationSec)>1e-9)
+   ||alignment.action==='loop'&&(alignment.tempo!==1||alignment.loops!==Math.ceil(alignment.outputDurationSec/alignment.inputDurationSec)))mappingPending('native-alignment-invalid');
+  // Computed fixed local import keeps the original JSDoc helper authoritative;
+  // results cross the JS/TS boundary only after explicit runtime checks below.
+  const helper=await import(new URL('../../../packages/openfilm/src/fission-timing.mjs',import.meta.url).href);
+  if(typeof helper.alignedVisualSpans!=='function')mappingPending('native-timing-unavailable');
+  const timing=exact(helper.alignedVisualSpans({durationSec:alignment.outputDurationSec,alignment,visuals,sources}),['target','spans']);
+  const duration=number(timing.target,Number.MIN_VALUE);if(duration!==alignment.outputDurationSec)mappingPending('native-timing-invalid');
+  if(!Array.isArray(staging))mappingPending('native-staging-unavailable');
+  const materialCache=new Map<number,ResolvedMappingMaterial>(),used=new Map<string,ResolvedMappingMaterial>();
+  const material=(index:number)=>{
+   if(materialCache.has(index))return materialCache.get(index)!;const s=sources[index];if(!s)mappingPending('native-source-index-invalid');const v=version(s.path,s.sha256);
+   const found=staging.filter(row=>row.filePath===s.path&&row.fileIdentity===v.identity&&row.contentSha256===s.sha256);if(found.length!==1)mappingPending('native-staging-association-unavailable');
+   const m=exact(found[0].resolvedMeta,['versionId','contentSha256','kind','durationSec']);const id=uuid(m.versionId);digest(m.contentSha256);number(m.durationSec,m.kind==='still'?0:Number.MIN_VALUE);
+   if(m.contentSha256!==s.sha256||m.kind!==s.kind||m.kind==='still'&&m.durationSec!==0)mappingPending('native-material-version-mismatch');
+   const copied={versionId:id,contentSha256:m.contentSha256,kind:m.kind,durationSec:m.durationSec};
+   const prior=used.get(id);if(prior&&requestDigest(prior)!==requestDigest(copied))mappingPending('native-material-version-ambiguous');used.set(id,copied);materialCache.set(index,copied);return copied;
+  };
+  let end=0;const scenes=list(timing.spans).map((raw,ordinal)=>{
+   const span=exact(raw,['visualIndex','source','at','length','rate','fromSec','toSec','still','hflip']),cut=visuals[integer(span.visualIndex,0,visuals.length-1)];
+   const i=integer(span.source,0,sources.length-1);if(i!==cut.source||bool(span.hflip)!==cut.hflip||bool(span.still)!==(sources[i].kind==='still'))mappingPending('native-timing-invalid');
+   const at=number(span.at),length=number(span.length,Number.MIN_VALUE),rate=number(span.rate,Number.MIN_VALUE),from=number(span.fromSec),to=number(span.toSec);
+   if(to<=from||at<end-1e-9||at+length>duration+1e-9)mappingPending('native-timing-invalid');end=at+length;const m=material(i);
+   if(m.kind!=='still'&&to>m.durationSec)mappingPending('native-source-frame-boundary-pending');
+   return {ordinal,name:cut.role+':'+cut.group,clips:[{versionId:m.versionId,fromSec:from,toSec:to,atSec:at,speed:span.still?1:rate,hflip:span.hflip,framing:'contain-center'}]};
+  });
+  const track=(raw:unknown,voice:boolean)=>{const a=exact(raw,['source','volume','loop']),i=integer(a.source,0,sources.length-1),m=material(i);if(m.kind!=='sound'||voice&&bool(a.loop))mappingPending('native-audio-unsupported');return{versionId:m.versionId,fromSec:0,toSec:m.durationSec,volume:number(a.volume,0,2),loop:bool(a.loop)};};
+  const voice=track(audio.voice,true),music=audio.music===null?null:track(audio.music,false),loudnorm=exact(audio.loudnorm,['integratedLUFS','truePeakDBTP','loudnessRangeLU']);
+  if(loudnorm.integratedLUFS!==-14||loudnorm.truePeakDBTP!==-1.5||loudnorm.loudnessRangeLU!==11)mappingPending('native-audio-unsupported');
+  const subtitle=exact(output.subtitleIntent,['requested','outcome','timingSource','cues','style']);bool(subtitle.requested);if(subtitle.timingSource!=='sentence-weighted-approximation')mappingPending('native-subtitle-unsupported');
+  let captions:unknown=null;
+  if(subtitle.requested){
+   if(subtitle.outcome!=='prepared-intent'||!subtitle.style)mappingPending('native-subtitle-preparation-pending');
+   const style=exact(subtitle.style,['preset','position','fontSize','assStyle','fadeInSec','fadeOutSec']);
+   if(!['white-outline','yellow-outline','white-box','center-bold'].includes(style.preset)||!['top','middle','bottom'].includes(style.position)||style.fadeInSec!==.12||style.fadeOutSec!==.12)mappingPending('native-subtitle-unsupported');integer(style.fontSize,20,160);text(style.assStyle,100000);
+   let last=0;const cues=list(subtitle.cues).map(raw=>{const c=exact(raw,['startSec','endSec','text']),from=number(c.startSec),to=number(c.endSec);if(to<=from||from<last)mappingPending('native-subtitle-unsupported');last=to;return{fromSec:from,toSec:Math.min(to,duration),text:text(c.text,100000)};}).filter(c=>c.fromSec<duration);
+   captions={style:JSON.stringify({preset:style.preset,position:style.position,fontSize:style.fontSize,assStyle:style.assStyle,fadeInSec:style.fadeInSec,fadeOutSec:style.fadeOutSec}),cues};
+  }else if(subtitle.outcome!=='disabled'||subtitle.style!==null||list(subtitle.cues).length)mappingPending('native-subtitle-unsupported');
+  const fx=exact(output.transitionIntent,['requestedName','durationSec','selectedName','shader','outcome','tailPaddingSec']);
+  if(fx.outcome!=='prepared-intent'||fx.tailPaddingSec!==.2)mappingPending('native-transition-unsupported');number(fx.durationSec,0,2);
+  let transition:unknown=null;
+  if(fx.shader!==null){const shader=exact(fx.shader,['path','sha256']);version(shader.path,shader.sha256);transition={name:text(fx.selectedName),durationSec:number(fx.durationSec,Number.MIN_VALUE,duration),shaderSha256:digest(shader.sha256)};}
+  else if(fx.durationSec>0||typeof job.TransitionSec==='number'&&job.TransitionSec>0)mappingPending('native-transition-preparation-pending');
+  const plan={version:1,projectId:originalContext.projectId,filmRev:originalContext.filmRev,job:structuredClone(job),durationSec:duration,aspect:[job.OutWidth,job.OutHeight],fps,materials:[...used.values()],scenes,audio:{voice,music,postmix:{kind:'loudnorm',integratedLUFS:-14,truePeakDBTP:-1.5,loudnessRangeLU:11}},captions,transition};
+  contentParts(plan);return freezeMapped(plan);
+ }catch(error){if(error instanceof BusinessError&&error.code.startsWith('native-'))throw error;throw new BusinessError('native-preparation-invalid',422);}
+}

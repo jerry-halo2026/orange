@@ -1,4 +1,5 @@
 import { recordFissionOrigin } from '../../src/fission-render.mjs';
+import { alignedVisualSpans } from '../../src/fission-timing.mjs';
 // @ts-check
 /** Internal isolated drafts only. No HTTP route, authorization or export grant. */
 import { createHash } from 'node:crypto';
@@ -123,22 +124,15 @@ function nativeOps(p, paths, captionSrc) {
   const ops = [{ op: 'stage', w: p.stage.w, h: p.stage.h }];
   /** @type {string[]} */
   const taken = []; let sequence = 0, count = 0;
-  const target = Math.min(p.durationSec, p.alignment.outputDurationSec);
-  const tempo = p.alignment.action === 'speed' ? p.alignment.tempo : 1;
-  const one = p.visuals.reduce((/** @type {number} */ n, /** @type {any} */ v) => n + v.durationSec / v.speed / tempo, 0);
-  const loops = p.alignment.action === 'loop' ? Math.ceil(target / one) : 1;
-  if (!Number.isSafeInteger(loops) || loops < 1 || loops * p.visuals.length > 10000) invalid();
-  let at = 0;
-  for (let loop = 0; loop < loops; loop++) for (const v of p.visuals) {
-    if (at >= target - 1e-9) break;
-    const rate = v.speed * tempo, length = Math.min(v.durationSec / rate, target - at);
-    const still = p.sources[v.source].kind === 'still';
-    const id = clipIdFor('fission-v-' + ++sequence + path.extname(paths[v.source]), taken); taken.push(id);
-    const clip = { id, src: paths[v.source], at, time: still ? [0, length] : [v.startSec, v.startSec + length * rate],
+  const { target, spans } = alignedVisualSpans(p);
+  for (const span of spans) {
+    const { source, at, rate, fromSec, toSec, still, hflip } = span;
+    const id = clipIdFor('fission-v-' + ++sequence + path.extname(paths[source]), taken); taken.push(id);
+    const clip = { id, src: paths[source], at, time: [fromSec, toSec],
       ...(still ? {} : { speed: rate, volume: 0 }),
-      ...(v.hflip ? { style: 'animation: fission_flip_' + sequence + ' 0.001s linear both' } : {}) };
-    if (v.hflip) ops.push({ op: 'keyframes', set: { ['fission_flip_' + sequence]: '0% { scale: -1 1 } 100% { scale: -1 1 }' } });
-    ops.push({ op: 'insert', clip, at, ...(count++ ? { track: 0 } : { newTrack: 0 }) }); at += length;
+      ...(hflip ? { style: 'animation: fission_flip_' + sequence + ' 0.001s linear both' } : {}) };
+    if (hflip) ops.push({ op: 'keyframes', set: { ['fission_flip_' + sequence]: '0% { scale: -1 1 } 100% { scale: -1 1 }' } });
+    ops.push({ op: 'insert', clip, at, ...(count++ ? { track: 0 } : { newTrack: 0 }) });
   }
   const sound = (/** @type {any} */ a, /** @type {number} */ track, /** @type {string} */ role) => {
     const duration = p.sources[a.source].durationSec; let time = 0, first = true;

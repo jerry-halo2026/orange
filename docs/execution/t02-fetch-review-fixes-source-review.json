@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 19,
+  "commit": "d70ff3567f1693787c12ad0b75bc1bda8d549dac",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "scope": "only current forward native Fetch four-file source/result; original C17 author deviation not retrospectively approved",
+  "candidateId": "d5f6d5e50b8121ef02aa2419910af14463cec45c37fc18803b32b8cc12d63267",
+  "manifestSHA256": "356faa8e13ef542e04ec51b6c23f669252635977eee1f3db709610c256dc08e3",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+      "sha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2",
+      "gitBlobSha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "sha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1",
+      "gitBlobSha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo-drain.test.mjs",
+      "sha256": "a082452a7f328e7dc7fc4251d06090a0f9340e029bc96f670f43bf3acf78a2ca",
+      "gitBlobSha256": "a082452a7f328e7dc7fc4251d06090a0f9340e029bc96f670f43bf3acf78a2ca"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github-drain.test.mjs",
+      "sha256": "61aa33bbb0fe084c82647b8c4314d455ec7600dfb2181ea31ba2358a7e2af9ea",
+      "gitBlobSha256": "61aa33bbb0fe084c82647b8c4314d455ec7600dfb2181ea31ba2358a7e2af9ea"
+    }
+  ],
+  "runtimeRawSourceAndCanonicalGit": [
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+      "sha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2",
+      "gitBlobSha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "sha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1",
+      "gitBlobSha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo-drain.test.mjs",
+      "sha256": "23b8d4fc20f0c90d2bab39eb47d804d58bc8299922c84457ccca289f86791609",
+      "gitBlobSha256": "a082452a7f328e7dc7fc4251d06090a0f9340e029bc96f670f43bf3acf78a2ca"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github-drain.test.mjs",
+      "sha256": "7929eb2171690164520f6be6711bbe7c534878c961d4a418130e4e450790d3fa",
+      "gitBlobSha256": "61aa33bbb0fe084c82647b8c4314d455ec7600dfb2181ea31ba2358a7e2af9ea"
+    }
+  ],
+  "actualReview": {
+    "round1": "F01/F02/F03 addressed, F04 queued producer/read-closed race P2 needs_fix; original candidate retained",
+    "round2": "F04 true queued-producer RED64/62/2 then GREEN64/64, cancel rejection awaits actual owned closed outcome; genuine underlying cancel rejection fatal and foreign-reader refusal intact",
+    "F03": "named reviewer actually followed assignment before open fence, jobs Map strong ownership, original KEEP/stop retention and public copy boundary; no invented RED/getter",
+    "canonicalStaging": "independently checked exact CRLF-to-LF only under existing attributes, no filter/encoding/ident; actual E4 raw retained14/7CRLF; production raw=Git",
+    "metadataActivation": "validation only five approved values SHA c5beed993d8b2d98b6d8f563de607a1b0b23f95a2430ac46886339772457ff3b"
+  },
+  "rootObservedCommit": {
+    "actualLocalCommit": "d70ff3567f1693787c12ad0b75bc1bda8d549dac",
+    "parent": "6c882c2c8757f83da80eeee82dab6229e9d14c75",
+    "onlyFourStagedPaths": true,
+    "canonicalBlobHashesMatched": true,
+    "actualE4RawUnchanged": true,
+    "E4CleanAfterCommit": true,
+    "coordinatorFastForwardOnly": true,
+    "coordinatorActualCanonicalLFBytesMatched": true,
+    "coordinatorIgnored92586AndSixWorkingFilesPreserved": true,
+    "primaryDevMainUntouched": true,
+    "remotePush": false
+  },
+  "runtimeBoundary": {
+    "actualFreshPrecommitRawTests": 64,
+    "originalLegacyResourceAdapted": 17,
+    "separateGuard": 1,
+    "originalServerTypesExit0": true,
+    "syntax4Exit0": true,
+    "exactGitCanonicalLFRuntime": "not yet run; next latest combined integration required",
+    "reviewerRanTests": false
+  },
+  "oldFrozen199AndRound1Frozen243AndRound2Frozen116Preserved": true,
+  "oldAuthorRecordsAndDeviationNotRewritten": true,
+  "qualifiedForFourFileConsumedNativeSource": true,
+  "devIntegrated": false,
+  "hostedForThisSource": false,
+  "ownerN1": false,
+  "fullBackgroundRetirement": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "productModelCalls": 0
+}

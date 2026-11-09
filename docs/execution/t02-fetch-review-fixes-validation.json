@@ -1,0 +1,198 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 19,
+  "authorAgent": "/root",
+  "modelAndEffort": "current primary runtime not exposed or backend-attested",
+  "authorization": "docs/execution/t02-fetch-forward-authorization-20261109.json",
+  "approvalCommit": "6c882c2c8757f83da80eeee82dab6229e9d14c75",
+  "sourceCommit": null,
+  "candidateId": "d5f6d5e50b8121ef02aa2419910af14463cec45c37fc18803b32b8cc12d63267",
+  "sources": [
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+      "sha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "sha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo-drain.test.mjs",
+      "sha256": "23b8d4fc20f0c90d2bab39eb47d804d58bc8299922c84457ccca289f86791609"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github-drain.test.mjs",
+      "sha256": "7929eb2171690164520f6be6711bbe7c534878c961d4a418130e4e450790d3fa"
+    }
+  ],
+  "status": "approved_actual_independent_round2_source_result_review",
+  "historicalDeviation": {
+    "originalC17Unchanged": true,
+    "oldFrozenCandidateAnd199EvidenceRetained": true,
+    "priorAuthorRebindFailureNotRetroapproved": true,
+    "scope": "only current forward candidate may qualify after actual gates"
+  },
+  "fixes": {
+    "F01": "three real late-cleanup RED57/54/3 -> GREEN57/57",
+    "F02": "two externalcoercion RED59/57/2 -> GREEN59/59",
+    "F04": "knownreaderror RED62/60/2 -> GREEN62; round1 actual nonauthor found queued microtask P2; real producer RED64/62/2 -> GREEN64/64; true underlying cancel failures still fatal",
+    "F03": "actual round1 nonauthor dataflow/lifetime review addressed: private strong entry before open fence, jobs Map/KEEP/stop retention and no public leak; no invented RED"
+  },
+  "TDD": {
+    "F01": {
+      "RED": {
+        "tests": 57,
+        "pass": 54,
+        "fail": 3
+      },
+      "GREEN": {
+        "tests": 57,
+        "pass": 57,
+        "fail": 0
+      },
+      "modes": [
+        "pipeline",
+        "unused-error-body",
+        "writer-setup"
+      ]
+    },
+    "F02": {
+      "RED": {
+        "tests": 59,
+        "pass": 57,
+        "fail": 2
+      },
+      "GREEN": {
+        "tests": 59,
+        "pass": 59,
+        "fail": 0
+      },
+      "libraryAndTransportAcquisitionsOnTerminalCoercion": 0,
+      "externalCoercions": 1
+    },
+    "F04": {
+      "RED": {
+        "tests": 62,
+        "pass": 60,
+        "fail": 2
+      },
+      "GREEN": {
+        "tests": 62,
+        "pass": 62,
+        "fail": 0
+      },
+      "foreignReaderCase": "firstGREEN existing boundary, not new defect RED",
+      "queuedProducer": {
+        "RED": {
+          "tests": 64,
+          "pass": 62,
+          "fail": 2
+        },
+        "GREEN": {
+          "tests": 64,
+          "pass": 64,
+          "fail": 0
+        },
+        "boundedActualReaderLockObserver": true,
+        "underlyingCancelCallsInQueuedReadCases": 0
+      }
+    },
+    "F03": {
+      "newPublicObservableBehavior": false,
+      "newFailingTestClaim": false,
+      "privateEntryDataflowReview": "actual round1 nonauthor review ADDRESSED; jobs Map/KEEP/stop lifetime and no public leak inspected",
+      "existingActualRenameCancelBoundaryRetested": true
+    }
+  },
+  "latestDrain": {
+    "tests": 64,
+    "pass": 64,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "legacy": {
+    "originalResourceAdapted": 17,
+    "extraSafetyGuard": 1,
+    "unchangedOriginalFileExecution": false,
+    "actualCloses": 2
+  },
+  "originalServerTypecheckExitCode": 0,
+  "syntaxChecksExit0": 4,
+  "preservation": {
+    "old54TestPrefixesByteIdentical": true,
+    "sourceFixture17PlusProof2": true,
+    "oldCandidate199": true,
+    "oldIgnored": 5887,
+    "oldIgnoredNoFollowUnchanged": true,
+    "Core106Typescript132NodeTypes74Unchanged": true
+  },
+  "verificationFailureRetained": {
+    "label": "f03-existing-boundaries-green-v1",
+    "actual": "62/58/4 Git failures; retained, not green or F03 RED",
+    "rootCause": "same-owned-source sparse clone depth comparison actual Gitclose128 Filename too long vs shortclose0",
+    "ruling": "private scratch labels shortened only; original source/old tests/timeouts/flags/OS policy unchanged; full62green v2"
+  },
+  "toolReadOnlyProbeCorrection": "initial Core package read at wrong root yielded ENOENT; existing package-level junction then read and frozen; no installation or module execution",
+  "freshTrustedN5a": {
+    "revision": 19,
+    "beforeWriter": true,
+    "afterSource": true,
+    "eachActualPureFiles": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "cases": 81
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "cases": 3
+      }
+    ],
+    "checkerSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+  },
+  "processBoundary": "21 observed runtime controller Node exit/close records across preserved rounds; each legacy runner/file2 closes separately; no whole Git helper-tree or global count claim",
+  "resources": {
+    "exclusiveManagedWorktree": "E4/codex/fetch-completion",
+    "loopbackPorts": [
+      18481,
+      18482
+    ],
+    "IPv4AndIPv6BindCloseVerified": true,
+    "allSevenHomeTempFreshAndEqual": true,
+    "productionConfigurationChanged": false
+  },
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "scopeNotClaimed": [
+    "dev integration of this candidate",
+    "hosted Node22 validation of this source",
+    "full native server retirement",
+    "real login/account switching/personal binding",
+    "real native desktop/AV/media/install recovery",
+    "macOS arm64 hardware",
+    "owner N1 or docs17 pilot gates/signoff"
+  ],
+  "cloudPush": false,
+  "productModelCalls": 0,
+  "approvedProductModelBudgetCNY": 50,
+  "fullFetchAccepted": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "round1SourceReview": {
+    "path": "docs/execution/t02-fetch-review-fixes-source-review-round1.json",
+    "sha256": "dd23b9931d7e64386ed05c45f809ac00ade8df35b67a65068d643f0bf3e299d6",
+    "result": "F01/F02/F03 addressed, F04 queued P2 needs_fix; candidate retained, not committed"
+  },
+  "auditGeneratorFailure": {
+    "failure": "derived private audit missing parenthesis before runtime; failed source copy retained, corrected/check syntax then real audit ran",
+    "notProductRED": true,
+    "sourceTestsChanged": false
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 19,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "candidateId": "fad388d538962e16ad7ba659e2c58262274a86119d61528325b272f83323667f",
+  "manifestSHA256": "5fbcf1366cbeb1e22ab8abbbcf432c9653bcc4518b2f8c1d8850c7f0b310e818",
+  "spec": "needs_fix",
+  "quality": "needs_fix",
+  "P1": 0,
+  "P2": 1,
+  "findings": [
+    {
+      "id": "F04.microtask",
+      "priority": "P2",
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "start": 128,
+      "end": 137,
+      "issue": "reader.closed observer may run after await continuation; actual queued producer error can make cancel replay read failure while current code unconditionally brands cleanup failure",
+      "required": "real bounded microtask producer RED, then await owned reader.closed in cancel rejection path to distinguish read error from actual underlying cancel rejection; no text guess or foreign-reader theft"
+    }
+  ],
+  "addressed": [
+    "F01 all cleanup brands collected independently after all workers",
+    "F02 one coercion and terminal fence before library",
+    "F03 private entry committedPath before open fence, jobs Map strong lifetime and native KEEP/stop retention; actual nonauthor dataflow review, not new RED"
+  ],
+  "verified": {
+    "newPackage243": true,
+    "oldFrozen199": true,
+    "source4": true,
+    "inputs17Plus2": true,
+    "Core106Typescript132NodeTypes74": true,
+    "oldIgnored5887": true,
+    "old54TestPrefixes": true,
+    "legacy17plusSeparateGuard": true,
+    "latest62GreenButNewWindowUncovered": true,
+    "type0": true,
+    "syntax4": true,
+    "freshRev19BeforeAndAfter": true,
+    "retainedFailedGitPathEvidence": true
+  },
+  "executionByReviewer": false,
+  "sourceCommitApproved": false,
+  "cloudPushApproved": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

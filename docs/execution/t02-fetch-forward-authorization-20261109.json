@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-09",
+  "operator": "Ethan",
+  "decision": "approve_forward_only_no_retrospective_approval",
+  "source": "actual user instruction in this chat",
+  "instruction": "批准前向修复，不追认历史。保留冻结候选和偏差记录，先完成新作者任务卡独审和准入，再修复这1个P1和3个P2，继续执行，不缩小试用目标。",
+  "scope": "F01 P1 and F02/F03/F04 P2 only in original four-file native Fetch slice",
+  "newAuthor": "/root",
+  "historicalAssignmentsNotRewritten": true,
+  "frozenCandidatePreserved": {
+    "candidateId": "7d86365246729f459fb98804ce370fe45659593ad323810a97203dede8c7ee08",
+    "manifestSHA256": "e2f801d18e9fd4ce84c73bdba7c13f052038b24c1423f5d6b61bee826ec8c016",
+    "sources": [
+      {
+        "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+        "sha256": "13c6c9184026f773a20a4937870d858b08f626769e13937437e574e60091fec6"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fetch-github.mjs",
+        "sha256": "0b49004f4a7fef28b9018a24d0c11eaa4e03f15ba802fc38d613f4c354342649"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fetch-repo-drain.test.mjs",
+        "sha256": "596f20d6bb114336da0884e42ab85f5c2f2f9e1cf7c31430df16a3241556e471"
+      },
+      {
+        "path": "packages/openfilm/studio/server/fetch-github-drain.test.mjs",
+        "sha256": "db8c74622ba05c0be6708ebb00e67514a43fd815c6ee4f783e2ee7705fa7216a"
+      }
+    ],
+    "producerCommit": null,
+    "qualified": false,
+    "reviewResult": "needs_fix1P1+3P2"
+  },
+  "prerequisites": [
+    "independent new author card/input/policy review",
+    "immutable reviewed metadata",
+    "native managed worktree and resources preserved",
+    "fresh trusted N5a before test/source writer"
+  ],
+  "doesNotApprove": [
+    "historical unrebound author contribution",
+    "candidate qualification",
+    "scope reduction",
+    "main/tag/release",
+    "production or cloud business write",
+    "private data upload",
+    "model budget increase"
+  ],
+  "pilotGoalUnchanged": "docs/discovery/17_小范围试用交付与Goal验收.md"
+}

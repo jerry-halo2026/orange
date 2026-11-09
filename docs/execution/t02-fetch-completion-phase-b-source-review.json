@@ -1,0 +1,108 @@
+{
+  "date": "2026-11-08T16:16:27.842Z",
+  "taskId": "T02.a",
+  "assignmentRevision": 17,
+  "candidateId": "7d86365246729f459fb98804ce370fe45659593ad323810a97203dede8c7ee08",
+  "baselineHead": "289b1f6f5e84cc70c58c273e4e26ef99eb0addb5",
+  "manifestSHA256": "e2f801d18e9fd4ce84c73bdba7c13f052038b24c1423f5d6b61bee826ec8c016",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "reviewerWasPreviouslyCompleted": true,
+  "actualReviewTurnUsedExistingRoleNoModelOverrideOrNewAgent": true,
+  "backendAttested": false,
+  "implementationAuthor": "/root existingprimary forB; earlierApreviousAgent",
+  "spec": "needs_fix",
+  "quality": "needs_fix",
+  "P1": 1,
+  "P2": 3,
+  "verification": {
+    "files199HashesAndSizesMatched": true,
+    "actualFourSourcesMatchedFrozen": true,
+    "RootActual54LogsType0Legacy17AndGuardChecked": true,
+    "legacyInverseBytesMatched": true,
+    "reviewerRanTests": false,
+    "reviewerRanServerGitWriteOrNetwork": false
+  },
+  "sources": [
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+      "sha256": "13c6c9184026f773a20a4937870d858b08f626769e13937437e574e60091fec6"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "sha256": "0b49004f4a7fef28b9018a24d0c11eaa4e03f15ba802fc38d613f4c354342649"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-repo-drain.test.mjs",
+      "sha256": "596f20d6bb114336da0884e42ab85f5c2f2f9e1cf7c31430df16a3241556e471"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fetch-github-drain.test.mjs",
+      "sha256": "db8c74622ba05c0be6708ebb00e67514a43fd815c6ee4f783e2ee7705fa7216a"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F01",
+      "priority": "P1",
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "start": 320,
+      "end": 328,
+      "issue": "firstordinaryworkerfailure dropslater siblingbrandedcleanupfailures, allowingmanagerstopresolveunknownretirement",
+      "minimumCase": "fouractualResponses/3realWriteStreams; first404then siblingcancelrejectheldgate; awaitallfilecloses; cleanupbrand mustsurvive ordinaryfirstfailure",
+      "required": "retainallprivatecleanupfailures andprioritizegenericbrandedFetchError afterallworkers; rawcauses/businessfirsterror private"
+    },
+    {
+      "id": "F02",
+      "priority": "P2",
+      "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+      "start": 494,
+      "end": 510,
+      "issue": "externalURLStringcoercion mayreenterstop beforejob/library registration; closingnotrechecked andconversionrepeated",
+      "minimumCase": "url.toString callsstopAll thenreturnsvalidnativeURL; startrejects/library0/nojobresources",
+      "required": "preparecoerciononce andcheckterminaladmission againbeforeregistration/library"
+    },
+    {
+      "id": "F03",
+      "priority": "P2",
+      "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+      "start": 519,
+      "end": 520,
+      "relatedRange": [
+        428,
+        430
+      ],
+      "issue": "late-cancel discardsreturnedcommittedfolder withoutprivateper-jobstronglyretainedrecoveryfacts",
+      "required": "recordcommittedfolder privatelybeforeopenadmission; privateentry liveswithjob, no publicJob/errorpath/newDTO; bareephemeralWeakMapkey insufficient"
+    },
+    {
+      "id": "F04",
+      "priority": "P2",
+      "path": "packages/openfilm/studio/server/fetch-github.mjs",
+      "start": 123,
+      "end": 126,
+      "issue": "unusednonOKbody.cancel merelyreplayspriorreaderror butisalwaysbrandedcleanupfailure",
+      "minimumCase": "real404Response streamstart.error, underlyingcancel0, no cleanupbrand/ordinarymanagerdrain",
+      "required": "actualreaderstate distinguishknownreaderror vsrealcancelrejection, no text/codeguess"
+    }
+  ],
+  "rootRulings": {
+    "privateWeakMapBooleanBrand": "directionacceptable butaggregation incomplete",
+    "singleActualReaderWebStream": "directionacceptable butunusederrorbodyclassification incomplete"
+  },
+  "governance": {
+    "status": "blockedawaitingEthanorpreexistingwrittennonauthority",
+    "originalCard17NotReboundBeforeRootImplementation": true,
+    "review18OnlyProposalNotAdmission": true,
+    "noRetroactiveApproval": true,
+    "userDecisionRequestedAsync": true,
+    "forwardConditions": [
+      "retainfrozenpackage/provenance/deviation, norewriteC17",
+      "explicitEthanhandlingdecision orvalidexistingwrittennonauthorgovernanceauthority",
+      "completeforwardnewauthorfixcard/policy+inputreview/immutable/trustedN5abeforewriter",
+      "actualREDGREEN/snapshots/source-rereview/newresourcevalidation",
+      "integration/Node22hosted/ownerN1PGremainseparate"
+    ]
+  },
+  "currentImplementationAccepted": false,
+  "fullPhaseBAccepted": false
+}

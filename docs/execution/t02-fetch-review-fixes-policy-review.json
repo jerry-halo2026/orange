@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 19,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "2ad1e947e14f407fbeceb56cc2d0bfe412750b1e35295d34624ab8a6f3d98ebf",
+  "authorizationSHA256": "12e1acedb357b87f2ec304703e3c88149c221797be659d198b084617fb8e6af8",
+  "designSHA256": "c44555ee6daed1f524ab45703a0fa7ffd45cf5cc57f49f2c6d28f5ffa8ff9ab5",
+  "historicalSourceReviewSHA256": "4e586f2113528a3a21ebb51f7507810b20e220ffd66564a2127c1d4761300d91",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-fetch-fixes-input-review.json",
+      "sha256": "32c209218d018381a871db88f0fa4200fc1b60c7a0d44b29990707c030559f17"
+    },
+    {
+      "path": "docs/execution/t02-native-fetch-fixes-input-review.json",
+      "sha256": "8ed2e4bc5a1c46363b4263e8439a54c2f58c6bdfdee081b9a054ae460e8029f5"
+    }
+  ],
+  "actualIndependentChecks": {
+    "targetRawAndGitInputs": 17,
+    "frozenPackageFiles": 199,
+    "frozenEditableSourceFiles": 4,
+    "C17AndHistoricalDeviationUnchanged": true,
+    "from289bTo4a25FastForwardAncestor": true,
+    "thatCommitIntervalDoesNotChangeEditableFour": true,
+    "pureRequiredTestNamesVerified": true
+  },
+  "governance": "actual Ethan instruction approves forward only, not historical author deviation or candidate; full docs17 goal unchanged",
+  "proposalCorrection": "scratch prefix corrected to .dev/fetch-drain/fixes-<uniqueattempt> under frozen assertions; proposal fix not product RED; old proposal bytes preserved",
+  "proofActivation": {
+    "onlyFields": [
+      "status",
+      "spec",
+      "quality",
+      "P1",
+      "P2"
+    ],
+    "actualFinalHashesIndependentlyApproved": true
+  },
+  "metadataCommit": {
+    "paths": [
+      "docs/execution/t02-fetch-forward-authorization-20261109.json",
+      "docs/execution/t02-fetch-review-fixes-assignment.json",
+      "docs/execution/t01-fetch-fixes-input-review.json",
+      "docs/execution/t02-native-fetch-fixes-input-review.json",
+      "docs/superpowers/specs/2026-11-09-fetch-review-fixes-forward-design.md",
+      "docs/execution/t02-fetch-completion-phase-b-source-review.json",
+      "docs/execution/t02-fetch-review-fixes-policy-review.json"
+    ],
+    "count": 7,
+    "scope": "empty index, exact seven paths, verify staged blobs; no global WIP/proposals/source"
+  },
+  "conditions": [
+    "native managed E4 inventory and full no-follow ignored snapshot plus frozen dirty4 before FF",
+    "exact reviewed immutable metadata FF only, no stash/reset/normalization; preserve four WIP, 199 frozen files and 5887 existing ignored records",
+    "post-FF verify actual17+2proof/raw/tools/Core/resources and no overlapping live actor",
+    "fresh external trusted rev19 N5a admitted BEFORE any new test or source write",
+    "F01/F02/F04 true lifecycle RED before minimal fix; F03 honest existing observable firstGREEN plus named nonauthor private entry/lifetime dataflow review, no test-only getter",
+    "retain old54, original17 resource-adapted plus separate guard, original server type0, owned children actual close and ports18481/82 released",
+    "independent source/result SPEC+QUALITY before source commit; no push/dev/main/tag/release/model call/scope reduction"
+  ],
+  "actualMetadataCommitCreated": false,
+  "N5aAdmitted": false,
+  "newSourceWritten": false,
+  "newTestsExecuted": false,
+  "fullFetchAccepted": false,
+  "fullPilotAccepted": false
+}

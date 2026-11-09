@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+  "authorAgent": "/root/auth_invalidation_impl",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "scope": "Current consumer subset only; original producer review/readiness retained, not full task or real external-service acceptance"
+}

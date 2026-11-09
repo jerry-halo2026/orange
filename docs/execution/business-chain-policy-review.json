@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-09",
+  "reviewerAgent": "/root/integration_review",
+  "spec": "approved",
+  "quality": "approved",
+  "scope": "two consumer tasks only; no source/runtime/wholepilot success",
+  "cards": [
+    {
+      "path": "docs/execution/login-chain-assignment.json",
+      "sha256": "9102842c6583827d20a6d584bf1efdac4eaadeb0879bcdaae4657ee3150fb8ed"
+    },
+    {
+      "path": "docs/execution/fission-cli-chain-assignment.json",
+      "sha256": "614403e45ec28b151a90f4bfb4a90f9f8daa266d2506db74523c4210f94a5892"
+    }
+  ],
+  "inputProofs": [
+    {
+      "path": "docs/execution/login-T01-consumer-review.json",
+      "sha256": "492005b417bb0e203a16a4cec85e76eccf5271f7d9f691e5022253a8c6121cb8"
+    },
+    {
+      "path": "docs/execution/login-T02-a-consumer-review.json",
+      "sha256": "aaec41a73a419eaf013bd42dba772db635f928eac27ac7229ccede4e6557fc72"
+    },
+    {
+      "path": "docs/execution/fission-cli-T01-consumer-review.json",
+      "sha256": "492005b417bb0e203a16a4cec85e76eccf5271f7d9f691e5022253a8c6121cb8"
+    }
+  ],
+  "registrySnapshotSHA256": "23ee3694a9820556306c445940c1dc55af9621242595738a5fa4052c6938812c",
+  "registryChanges": "T03 status/currentEngineeringSlice and T05.a currentEngineeringSlice only",
+  "mechanicalActivation": "Proof status/spec/quality only to approved, card review SHA updated, second card points first as active. Original source 21/8 pins checked independently.",
+  "conditions": [
+    "actual latest dev branch ancestry and managed worktrees",
+    "fresh existing N5a before each source writer",
+    "no changed immutable producers/fixtures or CI/lock",
+    "bounded new runtime attempt only; no old artifact cleanup",
+    "actual nonauthor source/result review; real GUI/media/cloud later with truthful evidence",
+    "C23 dirty three frozen, not prerequisite to first functional implementation"
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "taskId": "T05.a",
+  "assignmentRevision": 4,
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "inherited runtime; backend not exposed or attested; no override",
+  "status": "active",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "9fe83253bf058f1d1d167e19e55c11b2bafa1975"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/fission-cli-chain",
+  "scope": "T05.a native-extension; path-ready subset only, not group admission, real media, editable plan or T05.b/PG completion.",
+  "goal": "Original CLI run consumes existing EnginePathPolicy/EngineJobFiles/controlled FissionEngine. Require explicit --paths --workspace --task --attempt --job once each; no legacy defaults on controlled run. Six read-only config fields required, no writable grant from config. Job and output/input validation BEFORE ProcessPool/hardware/mkdir; generic errors without paths. Original non-run commands retained but not executed. Original FissionJob JSON unchanged; no new worker/Job protocol.",
+  "authority": "Ethan latest explicit execution approval; existing phase1 plan T03/T05; no new requirements proof or full-framework prerequisite",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Cli/Program.cs",
+    "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+    "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+    "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/login-chain-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "9102842c6583827d20a6d584bf1efdac4eaadeb0879bcdaae4657ee3150fb8ed"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-cli-T01-consumer-review.json",
+          "sha256": "492005b417bb0e203a16a4cec85e76eccf5271f7d9f691e5022253a8c6121cb8",
+          "gitBlobSha256": "492005b417bb0e203a16a4cec85e76eccf5271f7d9f691e5022253a8c6121cb8"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "062eb961340419bb0f2c1523322c8b8938c2881a8658937543790639fb4d60bf",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+    "files": [
+      {
+        "path": "workers/fission/src/Fission.Cli/Program.cs",
+        "sha256": "903cda2afe67fedfa5b5d64e0523e5a22681451f72494ec2884ae08935d24f51",
+        "gitBlobSha256": "903cda2afe67fedfa5b5d64e0523e5a22681451f72494ec2884ae08935d24f51"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+        "sha256": "f3bc4cfae988940875f9ef5d4fdf0a964a6f344462927798af08c0ce9e25399c",
+        "gitBlobSha256": "1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef"
+      }
+    ],
+    "newFiles": [
+      "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+      "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs"
+    ]
+  },
+  "runtimeNamespaces": {
+    "family": ".dev/fission-cli-chain",
+    "attemptRule": "ONLY fresh attempt-<timestamp>-<pid>, absent before creation; all new runtime/log/scratch/output below that attempt; no writes to older attempts",
+    "preservation": "no cleanup/rename/overwrite of old artifacts or frozen candidates"
+  },
+  "runtime": "Offline original Unit project graph with additional original CLI+AI refs, existing SDK10.0.300/shim and E3 .dev/fission-io/offline-feed fixed16 packages only. New attempt owns HOME/ProgramData/Nuget/cache/temp/globaljson/SDK links/build/results/synthetic input. Original restore --configfile fresh clear offline --packages own --artifacts-path own; build --no-restore --no-incremental; test --no-build --no-restore exact new class + original MaterialPool cases. No network/installation/new packages/private config/real codecs/media/doctor/Web/Bench/hardware/model/security changes. Preserve existing files/dirs/links; ordinary ancestors checked before new paths.",
+  "validation": "Genuine behavior RED for missing/duplicate/unknown args, missing six fields, invalid/null job, output escape/input overlap, real junction refusal, successful original job/derived paths with no mkdir. Original Main invalid config must return2 without source path leakage or legacy access. Compile actual original CLI/Providers/Core/Steps/AI graph, no stubs/temp projects; keep original tests/source/props/shim. Local realfile-symlink EPERM remains ENV not skip/pass; do not unnecessarily rerun old symlink suites for unchanged policy.",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+  "dispatchState": "HELD pending independent exact card/input review, metadata commit, actual managed materialization and fresh existing N5a",
+  "forbidden": [
+    "source outside allowlist",
+    "root lock/package/CI/gate or producer fixture edits",
+    "remote writes/login/model calls/production/private data sending",
+    "dev/main/tag/push/release",
+    "claim full pilot or entire chain from unit tests"
+  ],
+  "productModelCallsAllowed": 0,
+  "fullPilotAccepted": false
+}

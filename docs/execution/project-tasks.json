@@ -23,12 +23,13 @@
     {
       "id": "T03",
       "scope": "original HOME and real auth navigation",
-      "status": "proposed",
+      "status": "in_progress",
       "dependsOn": [
         "T01",
         "T02.a"
       ],
-      "externalGates": []
+      "externalGates": [],
+      "currentEngineeringSlice": "Ethan-approved native desktop login integration; only consumed Auth/policy subset, not full owner/pilot acceptance"
     },
     {
       "id": "T04.a",
@@ -63,7 +64,8 @@
       "deliverySlice": "purepolicy43ready and originalRunAsync controlledIO34ready at6048 after actualWindowsCI42419906355; Fakecodec+BCL only, notfullruntime/host/media/T05.b",
       "readinessEvidence": "docs/execution/t05-path-readiness.json",
       "controlledIOReadinessEvidence": "docs/execution/t05-controlled-io-readiness.json",
-      "originalMaterialPoolRegression": "docs/execution/t05-material-pool-validation.json (actual6/6localSDK10.0.300, source unchanged)"
+      "originalMaterialPoolRegression": "docs/execution/t05-material-pool-validation.json (actual6/6localSDK10.0.300, source unchanged)",
+      "currentEngineeringSlice": "Ethan-approved original CLI controlled path consumption; real media and Studio plan remain separate actual validation"
     },
     {
       "id": "T05.b",

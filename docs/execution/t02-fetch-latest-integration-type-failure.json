@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 20,
+  "candidateCommit": "0b98a42270f0c7ff9f08e132cfca90e2bb33877e",
+  "sourceCommit": "d70ff3567f1693787c12ad0b75bc1bda8d549dac",
+  "executor": "/root",
+  "actualResults": {
+    "original880": {
+      "tests": 880,
+      "pass": 880,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "todo": 0
+    },
+    "canonicalGitLFFetch64": {
+      "tests": 64,
+      "pass": 64,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "todo": 0
+    },
+    "originalResourceAdapted17": 17,
+    "independentSafetyGuard": 1,
+    "types": {
+      "serverExit": 0,
+      "StudioUIExit": 0,
+      "desktopChatExit": 2,
+      "desktopChatDiagnostics": 53,
+      "desktopShell": "not_run_after_chat_failure"
+    },
+    "Worker": {
+      "created": 18,
+      "actualExits": 18,
+      "peak": 3,
+      "finalAlive": 0
+    },
+    "Exports": {
+      "created": 10,
+      "actualExits": 10,
+      "actualCloses": 10,
+      "peak": 2,
+      "finalAlive": 0
+    }
+  },
+  "typeGate": "FAILED not fourtypes0, no dev integration or fullpilot claim",
+  "cause": {
+    "nativeOriginalSharedPackageRequiresZod": true,
+    "actualTS2307In": [
+      "packages/shared/src/contract.ts",
+      "packages/shared/src/prompt-reference.ts"
+    ],
+    "E3SharedNodeModulesAbsent": true,
+    "PromptReferenceIdLabelDetailErrorsAreDownstreamInference": "z.infer schema cannot resolve without original declared Zod dependency",
+    "existingApprovedE1ZodVersion": "4.6.6",
+    "license": "MIT"
+  },
+  "historicalC20ExactBootstrap43AndPolicyNotRewritten": true,
+  "rawFailureLogsRetained": true,
+  "ownedTypeProcessesActuallyClosed": [
+    0,
+    0,
+    2
+  ],
+  "unknownOwnedRetirement": false,
+  "sourceTestsUIContractsConfigsChanged": false,
+  "dependencyFixNotYetApplied": true,
+  "priorRawLFAndSourceReviewsRemainHistoricalQualifiedSubsetOnly": true,
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "classification": "pending independent failure accuracy review"
+  },
+  "cloudPush": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

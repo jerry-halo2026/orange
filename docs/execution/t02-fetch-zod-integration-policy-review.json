@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 21,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "scope": "Forward one existing Zod entry restoration and bounded validation only; no product changes or retrospective C20 pass.",
+  "cardSHA256": "2fd8ed6c13a430d589dc52be41513405e2024e9ac779ef14ec9ebe017bfa8a41",
+  "specSHA256": "1b2e0bff6592fd410249ad6f086a76b3c19e68679b761e3ddf8851717d02625c",
+  "toolingPlanSHA256": "e4d3245b15c84579d43ac1093d4422198cb750d1ed762b67f84adfc3464a7ad0",
+  "failureReceiptSHA256": "0ffed677f787cb41120cf6a92d70190c73bc1e304703329a8fcdb8220f99c8c4",
+  "failureReceiptReview": "Accurate preserved C20 failure snapshot; its pending classification is pre-review history. Chat exit 2 with 53 diagnostics, shell not run; other 51 diagnostics remain a causal inference until rechecked.",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-fetch-zod-integration-input-review.json",
+      "sha256": "5eb1bedcaec41e78fae2eb84f57bc32303478a0e3f9beb52d2d8d215f1fc4b68"
+    },
+    {
+      "path": "docs/execution/t02-fetch-zod-integration-input-review.json",
+      "sha256": "c125c81120c8e7452edeba3c29cbd9e0989865df8a9468b02e18c2c01db97c67"
+    }
+  ],
+  "verified": {
+    "inputRecords": 55,
+    "uniqueInputPaths": 53,
+    "actualRawAndGitMatched": true,
+    "zodFiles": 840,
+    "zodLinks": 0,
+    "newDirectoryAndEntryAbsent": true,
+    "prior43Junctions1311PinsAndCore106Matched": true
+  },
+  "proofActivation": "Only status/spec/quality to approved and P1/P2 to 0; all other bytes unchanged.",
+  "conditions": [
+    "Commit only the six reviewed metadata paths. Preserve C20 policy, failed evidence, old branches and all existing files, directories and links.",
+    "After immutable reviewed metadata FF and preservation checks, create only the still-absent directory and Zod junction in the hashed plan; exact realpath and all 840 hashes required. No install, scripts, download or replacement.",
+    "Verify actual inputs, tools, workspace aliases, preserved resources and leased ports after bootstrap; fresh trusted revision 21 N5a must admit before any causal/type/test runtime.",
+    "Run original chat noEmit causal check first within 180 seconds; on failure stop. Then original 880 within 240 seconds, canonical Fetch64 within 180 seconds, original17 resource-adapted plus separate guard, and all four original type projects within 180 seconds each.",
+    "Preserve card concurrency, peak limits, clean seven-location environment, original assertions and fixture namespaces. Unknown retirement stops subsequent phases; no foreign kill or whole Git-helper-tree claims.",
+    "Require post-run inputs/tools/full Zod/old-resource/port checks, fresh N5a and independent result review. No source/test/UI/type/config edits, hosted execution, push, model calls or full-pilot acceptance."
+  ],
+  "metadataCommitCreated": false,
+  "bootstrapExecuted": false,
+  "N5aAdmitted": false,
+  "runtimeExecuted": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

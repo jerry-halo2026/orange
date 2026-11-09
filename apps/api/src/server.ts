@@ -5,6 +5,8 @@ import {createAdmission,BusinessError} from './admission.ts';
 import {createSupabase,readConfiguration,type VerifiedSession} from './supabase.ts';
 import {createMaterials} from './materials.ts';
 import {createFissionDispatcher,readFissionConfiguration} from './fission-dispatch.ts';
+import {createFissionHandoff} from './fission-handoff.ts';
+import {pipeline} from 'node:stream/promises';
 
 type Admission=ReturnType<typeof createAdmission>;
 const send=(res:ServerResponse,status:number,body:unknown)=>{if(res.destroyed||res.writableEnded)return;res.writeHead(status,{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(body));};
@@ -15,7 +17,7 @@ async function body(req:IncomingMessage):Promise<unknown>{
  try{return JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{throw new BusinessError('invalid-json');}
 }
 /** Trusted composition root only; HTTP/config cannot install a prepare/verifier/provider. */
-export function createApiServer({verify,admission,materials,dispatcher}:{verify:(authorization:unknown)=>Promise<VerifiedSession>;admission:Admission;materials?:Awaited<ReturnType<typeof createMaterials>>;dispatcher?:Awaited<ReturnType<typeof createFissionDispatcher>>}){
+export function createApiServer({verify,admission,materials,dispatcher,handoff}:{verify:(authorization:unknown)=>Promise<VerifiedSession>;admission:Admission;materials?:Awaited<ReturnType<typeof createMaterials>>;dispatcher?:Awaited<ReturnType<typeof createFissionDispatcher>>;handoff?:ReturnType<typeof createFissionHandoff>}){
  let stopping=false,closing:Promise<void>|null=null;
  const entered=new Set<Promise<void>>();
  async function handle(req:IncomingMessage,res:ServerResponse){
@@ -33,6 +35,27 @@ export function createApiServer({verify,admission,materials,dispatcher}:{verify:
    const value=await body(req) as any;
    if(!value||Object.keys(value).sort().join()!=='purpose,versionIds'||!Array.isArray(value.versionIds)||!['studio','fission','export'].includes(value.purpose))throw new BusinessError('invalid-input');
    return send(res,200,{materials:await admission.resolve(context,value.versionIds,value.purpose)});
+  }
+  const resource=/^\/api\/fission\/batches\/([a-f0-9]{24})\/outputs\/(\d+)\/(studio-plan|sources\/(\d+)|video(?:\/verify)?)$/.exec(path);
+  if(resource){
+   if(!handoff)throw new BusinessError('fission-handoff-unavailable',503);
+   const ref={batchId:resource[1],index:Number(resource[2])},abort=new AbortController();const disconnected=()=>{if(!res.writableFinished)abort.abort();};res.once('close',disconnected);req.once('aborted',()=>abort.abort());
+   try{
+    if(resource[3]==='studio-plan'&&req.method==='GET')return await handoff.withStudioPlan(context,ref,async manifest=>{
+     await new Promise<void>((yes,no)=>{res.once('finish',yes);res.once('error',no);res.once('close',()=>{if(!res.writableFinished)no(new BusinessError('fission-handoff-aborted'));});send(res,200,manifest);});
+    },abort.signal);
+    if(resource[4]!==undefined&&req.method==='GET')return await handoff.withSource(context,ref,Number(resource[4]),async source=>{
+     if(source.signal.aborted)throw new BusinessError('fission-handoff-aborted');res.writeHead(200,{'content-type':'application/octet-stream','content-length':source.byteLength,'cache-control':'no-store','x-content-type-options':'nosniff'});await pipeline(source.handle.createReadStream({start:0,autoClose:false}),res,{signal:source.signal});
+    },abort.signal);
+    if(resource[3]==='video'&&req.method==='GET')return await handoff.withVerifiedVideo(context,ref,async video=>{
+     res.writeHead(200,{'content-type':'video/mp4','content-length':video.byteLength,'cache-control':'no-store','x-content-type-options':'nosniff'});await pipeline(video.handle.createReadStream({start:0,autoClose:false}),res,{signal:video.signal});
+    },abort.signal);
+    if(resource[3]==='video/verify'&&req.method==='POST'){
+     const input=await body(req);if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).length)throw new BusinessError('invalid-input');
+     const reply=await handoff.withVerifiedVideo(context,ref,async video=>admission.delivery(context,video.claimId,video.evidence),abort.signal);return send(res,200,reply);
+    }
+    return send(res,404,{code:'not-found'});
+   }finally{res.removeListener('close',disconnected);}
   }
   if(path==='/api/fission/batches'&&req.method==='POST'){
    if(!dispatcher)throw new BusinessError('fission-runtime-unavailable',503);
@@ -73,7 +96,7 @@ export function createApiServer({verify,admission,materials,dispatcher}:{verify:
    stopping=true;if(closing)return closing;
    const active=[...entered];const network=server.listening?new Promise<void>((yes,no)=>server.close(error=>error?no(error):yes())):Promise.resolve();
    server.closeIdleConnections();
-   closing=Promise.all([...active,network,dispatcher?.close(),materials?.close()]).then(()=>{});return closing;
+   closing=Promise.all([...active,network,handoff?.close(),dispatcher?.close(),materials?.close()]).then(()=>{});return closing;
   },
  };
 }
@@ -81,10 +104,12 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  try{
   if(process.env.NODE_TLS_REJECT_UNAUTHORIZED==='0')throw new BusinessError('configuration-required',503);
   const configuration=await readConfiguration(process.env.ORANGE_API_CONFIG_FILE),supabase=createSupabase(configuration);
-  const admission=createAdmission({rpc:supabase.rpc}),materials=configuration.materialRoot?await createMaterials({environmentId:configuration.environmentId,materialRoot:configuration.materialRoot},{rpc:supabase.rpc}):undefined;
-  let dispatcher:Awaited<ReturnType<typeof createFissionDispatcher>>|undefined;
-  if(process.env.ORANGE_FISSION_CONFIG_FILE&&materials){try{const fission=await readFissionConfiguration(process.env.ORANGE_FISSION_CONFIG_FILE);if(fission&&fission.environmentId===configuration.environmentId)dispatcher=await createFissionDispatcher({environmentId:configuration.environmentId,dispatchRoot:fission.dispatchRoot,runtime:fission.runtime,materials,admission});}catch{process.stderr.write('orange Fission configuration unavailable\n');}}
-  const api=createApiServer({verify:supabase.verify,admission,materials,dispatcher});
+  const baseAdmission=createAdmission({rpc:supabase.rpc}),materials=configuration.materialRoot?await createMaterials({environmentId:configuration.environmentId,materialRoot:configuration.materialRoot},{rpc:supabase.rpc}):undefined;
+  let dispatcher:Awaited<ReturnType<typeof createFissionDispatcher>>|undefined,handoff:ReturnType<typeof createFissionHandoff>|undefined;
+  if(process.env.ORANGE_FISSION_CONFIG_FILE&&materials){try{const fission=await readFissionConfiguration(process.env.ORANGE_FISSION_CONFIG_FILE);if(fission&&fission.environmentId===configuration.environmentId)dispatcher=await createFissionDispatcher({environmentId:configuration.environmentId,dispatchRoot:fission.dispatchRoot,runtime:fission.runtime,materials,admission:baseAdmission});}catch{process.stderr.write('orange Fission configuration unavailable\n');}}
+  if(dispatcher&&materials){const fission=await readFissionConfiguration(process.env.ORANGE_FISSION_CONFIG_FILE);if(fission)handoff=createFissionHandoff({dispatcher,materials,admission:baseAdmission,runtime:fission.runtime});}
+  const admission=handoff?createAdmission({rpc:supabase.rpc,verifyDelivery:handoff.verifyDelivery}):baseAdmission;
+  const api=createApiServer({verify:supabase.verify,admission,materials,dispatcher,handoff});
   await api.listen(configuration.port);
   const stop=()=>{void api.close().then(()=>{process.exitCode=0;},()=>{process.exitCode=1;});};process.once('SIGINT',stop);process.once('SIGTERM',stop);
   process.stdout.write(JSON.stringify({service:'orange-business',host:'loopback',port:configuration.port,...admission.integration})+'\n');

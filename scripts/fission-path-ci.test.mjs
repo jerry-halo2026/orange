@@ -17,7 +17,7 @@ function fixture() {
  const entries = names.map((_,i) => `<TestEntry testId="${guid(i+50)}" executionId="${guid(i)}"/>`).join('');
  return `<?xml version="1.0" encoding="utf-8"?><TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010"><Results>${results}</Results><TestDefinitions>${defs}</TestDefinitions><TestEntries>${entries}</TestEntries><ResultSummary outcome="Completed"><Counters total="43" executed="43" passed="43" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0"/></ResultSummary></TestRun>`;
 }
-const facts = () => ({GITHUB_ACTIONS:'true', RUNNER_OS:'Windows', GITHUB_REPOSITORY:'jerry-halo2026/orange', ORANGE_REPOSITORY_VISIBILITY:'public', GITHUB_REF:'refs/heads/codex/t05-path-policy', GITHUB_SHA:'a'.repeat(40), GITHUB_RUN_ID:'123', GITHUB_RUN_ATTEMPT:'1', GITHUB_WORKSPACE:'D:\\a\\orange\\orange'});
+const facts = () => ({GITHUB_ACTIONS:'true', RUNNER_OS:'Windows', GITHUB_REPOSITORY:'jerry-halo2026/orange', ORANGE_REPOSITORY_VISIBILITY:'public', GITHUB_REF:'refs/heads/codex/native-chain-ci', GITHUB_SHA:'a'.repeat(40), GITHUB_RUN_ID:'123', GITHUB_RUN_ATTEMPT:'1', GITHUB_WORKSPACE:'D:\\a\\orange\\orange'});
 test('accepts 43 linked all-passed results and both actual symbolic True names', () => {
  const result = verify(fixture()); assert.equal(result.passed,43); assert.equal(result.executed,43); assert.deepEqual([...result.testNames].sort(), [...names].sort());
 });
@@ -174,7 +174,7 @@ test('neither XML nor caller options can substitute a different sealed suite',()
 const {readFile,readdir,lstat}=await import('node:fs/promises');
 const {createHash}=await import('node:crypto');
 const sha256=data=>createHash('sha256').update(data).digest('hex');
-const buildRoots=['workers/fission/src/Fission.Core','workers/fission/src/Fission.Steps','workers/fission/src/Fission.Providers','workers/fission/tests/Fission.UnitTests'];
+const buildRoots=['workers/fission/src/Fission.Core','workers/fission/src/Fission.Steps','workers/fission/src/Fission.Providers','workers/fission/src/Fission.Cli','workers/fission/src/Fission.AI','workers/fission/tests/Fission.UnitTests'];
 async function closureFixture() {
  const snapshots=[];
  async function walk(directory) {for(const entry of await readdir(new URL('../'+directory+'/',import.meta.url),{withFileTypes:true})) {
@@ -185,14 +185,14 @@ async function closureFixture() {
  return {trackedPaths:snapshots.map(s=>s.path),snapshots};
 }
 const closure=sample=>{assert.equal(typeof api.validateBuildInputClosure,'function','missing closed build input validator');return api.validateBuildInputClosure(sample);};
-test('binds every original compiled source and four projects to candidate Git blobs with explicit CRLF equivalence',async()=>{
- const sample=await closureFixture(),result=closure(sample);assert.equal(result.length,34);assert.equal(result.filter(s=>s.path.endsWith('.csproj')).length,4);
+test('binds every original compiled source and six projects to candidate Git blobs with explicit CRLF equivalence',async()=>{
+ const sample=await closureFixture(),result=closure(sample);assert.equal(result.length,49);assert.equal(result.filter(s=>s.path.endsWith('.csproj')).length,6);
  for(const item of sample.snapshots) {const record=result.find(r=>r.path===item.path);assert.equal(record.gitBlobSha256,sha256(item.canonical));assert.equal(record.rawSha256,sha256(item.raw));}
  assert.equal(Object.isFrozen(result),true);assert.equal(result.every(Object.isFrozen),true);
  for(const item of sample.snapshots)item.raw=Buffer.from(item.canonical.toString().replaceAll('\n','\r\n'));
- assert.equal(closure(sample).length,34);
+ assert.equal(closure(sample).length,49);
 });
-for(const kind of ['missing','untracked','duplicate','changed-raw','changed-helper','changed-project-reference','extra-project','outside-CLI','traversal','changed-props','changed-shim','extra-targets','missing-providers','case-alias'])test('build closure refuses '+kind,async()=>{
+for(const kind of ['missing','untracked','duplicate','changed-raw','changed-helper','changed-project-reference','extra-project','outside-Web','traversal','changed-props','changed-shim','extra-targets','missing-providers','missing-cli','missing-ai','changed-cli','changed-ai','case-alias'])test('build closure refuses '+kind,async()=>{
  const sample=await closureFixture(),find=suffix=>sample.snapshots.find(s=>s.path.endsWith(suffix));
  if(kind==='missing')sample.snapshots.pop();
  if(kind==='untracked')sample.snapshots.push({path:buildRoots[0]+'/Injected.cs',raw:Buffer.from('class Injected {}'),canonical:Buffer.from('class Injected {}')});
@@ -203,11 +203,13 @@ for(const kind of ['missing','untracked','duplicate','changed-raw','changed-help
  if(kind==='changed-project-reference')change('/Fission.UnitTests.csproj');
  if(kind==='changed-props')change('/Directory.Build.props');
  if(kind==='changed-shim')change('/csc.bat');
- if(['extra-project','outside-CLI','traversal','extra-targets','case-alias'].includes(kind)) {
-  const names={'extra-project':buildRoots[0]+'/Nested.csproj','outside-CLI':'workers/fission/src/Fission.Cli/Program.cs',traversal:buildRoots[0]+'/../Foreign.cs','extra-targets':buildRoots[0]+'/Directory.Build.targets','case-alias':sample.snapshots[0].path.toUpperCase()};
+ if(['extra-project','outside-Web','traversal','extra-targets','case-alias'].includes(kind)) {
+  const names={'extra-project':buildRoots[0]+'/Nested.csproj','outside-Web':'workers/fission/src/Fission.Web/Program.cs',traversal:buildRoots[0]+'/../Foreign.cs','extra-targets':buildRoots[0]+'/Directory.Build.targets','case-alias':sample.snapshots[0].path.toUpperCase()};
   const path=names[kind];sample.trackedPaths.push(path);sample.snapshots.push({path,raw:Buffer.from('extra'),canonical:Buffer.from('extra')});
  }
  if(kind==='missing-providers'){sample.trackedPaths=sample.trackedPaths.filter(p=>!p.includes('Fission.Providers'));sample.snapshots=sample.snapshots.filter(s=>!s.path.includes('Fission.Providers'));}
+ if(kind==='missing-cli'||kind==='missing-ai'){const name=kind==='missing-cli'?'Fission.Cli':'Fission.AI';sample.trackedPaths=sample.trackedPaths.filter(p=>!p.includes(name));sample.snapshots=sample.snapshots.filter(s=>!s.path.includes(name));}
+ if(kind==='changed-cli')change('/Program.cs');if(kind==='changed-ai')change('/Abstractions.cs');
  assert.throws(()=>closure(sample),{message:/^CI_SOURCE_MISMATCH$/});
 });
 const commands=()=>{assert.equal(typeof api.buildControlledIoCommands,'function','missing bounded dual-suite command plan');return api.buildControlledIoCommands(facts());};
@@ -250,7 +252,7 @@ for(const kind of ['missing','extra','duplicate','other-version','private-feed-t
  const names=[...approvedPackages];if(kind==='missing')names.pop();if(kind==='extra')names.push('Foreign/1.0.0');if(kind==='duplicate')names.push(names[0]);if(kind==='other-version')names[0]='Microsoft.CodeCoverage/17.14.2';if(kind==='private-feed-text')names[0]='https://private.invalid/PRIVATE';assert.throws(()=>packageProof(names),{message:/^CI_SOURCE_MISMATCH$/});
 });
 test('phase1 producer step validates same-current-head original Auth and policy blobs before executing the full pure test command',async()=>{
- const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');assert.match(text,/validateAuthCiProducer/);assert.match(text,/GITHUB_SHA/);assert.ok(text.indexOf('validateAuthCiProducer')<text.indexOf('node --test '));assert.match(text,/expectedCases:353/);assert.match(text,/persist-credentials: false/);
+ const text=await readFile(new URL('../.github/workflows/phase1.yml',import.meta.url),'utf8');assert.match(text,/validateAuthCiProducer/);assert.match(text,/GITHUB_SHA/);assert.ok(text.indexOf('validateAuthCiProducer')<text.indexOf('node --test '));assert.match(text,/expectedCases:360/);assert.match(text,/persist-credentials: false/);
 });
 for(const kind of ['bom-raw','bare-cr','invalid-utf8','generated-extra'])test('source closure preserves byte-level refusal '+kind,async()=>{
  const sample=await closureFixture();
@@ -269,11 +271,26 @@ test('Auth producer pins d008 tuple and retires the prior tuple',async()=>{
  const proof=authProducer(await authFixture());
  const pins=Object.fromEntries(proof.map(item=>[item.path,item.gitBlobSha256]));
  assert.deepEqual(pins,{
-  'apps/desktop/src/auth-service.mjs':'b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66',
-  'apps/desktop/src/auth-service.test.mjs':'032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b',
+  'apps/desktop/src/auth-service.mjs':'db71b341fbd4810462c12cc7b86f5189c5c8d120312978fd7812f0d6209e310b',
+  'apps/desktop/src/auth-service.test.mjs':'0fb75b98499b56025f3f0eaecf6dc697b270141339202f76e8db4cffef6c4802',
   'packages/openfilm/studio/server/project-access.mjs':'345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71',
   'packages/openfilm/studio/server/project-access.test.mjs':'4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4',
  });
  assert.notEqual(pins['apps/desktop/src/auth-service.mjs'],'007cd205c9f8d3682839b263e662877349017ab07c30a70603d71183d0a1e2ac');
  assert.notEqual(pins['apps/desktop/src/auth-service.test.mjs'],'fb45589068de2aae5a384248cc2e134f086dbfe83ead26c0258609e205b99f1b');
+});
+
+
+test('qualified native chain CI accepts its exact new ref and rejects the retired topic',()=>{
+ const next={...facts(),GITHUB_REF:'refs/heads/codex/native-chain-ci'};
+ assert.equal(context(next).commit,next.GITHUB_SHA);
+ assert.throws(()=>context({...next,GITHUB_REF:'refs/heads/codex/t05-path-policy'}));
+});
+
+test('qualified native chain CI binds the actual complete six-project 49-file graph',async()=>{
+ const sample=await closureFixture();
+ assert.equal(sample.trackedPaths.length,49);
+ const result=closure(sample);
+ assert.equal(result.length,49);
+ assert.equal(result.filter(s=>s.path.endsWith('.csproj')).length,6);
 });

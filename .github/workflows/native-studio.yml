@@ -1,7 +1,7 @@
 name: Native Studio Windows verification
 on:
   push:
-    branches: [codex/t05-path-policy]
+    branches: [codex/native-chain-ci]
     paths:
       - .github/workflows/native-studio.yml
       - scripts/native-studio-ci.mjs
@@ -30,15 +30,27 @@ on:
       - packages/openfilm/studio/server/person-merge-worker.mjs
       - packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs
       - packages/openfilm/studio/server/person-merge.test.mjs
+      - packages/openfilm/src/fission-render.mjs
+      - packages/openfilm/src/fission-timing.mjs
+      - packages/openfilm/src/media-links.mjs
+      - packages/openfilm/src/render.mjs
+      - packages/openfilm/src/shared.mjs
+      - packages/openfilm/studio/server/exports.mjs
+      - packages/openfilm/studio/server/fetch-github.mjs
+      - packages/openfilm/studio/server/fetch-repo.mjs
+      - packages/openfilm/studio/server/files.mjs
+      - packages/openfilm/studio/server/fission-import.mjs
+      - packages/openfilm/studio/server/fission.mjs
+      - packages/openfilm/studio/server/pages.mjs
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: native-studio-codex-t05-path-policy
+  group: native-studio-codex-native-chain-ci
   cancel-in-progress: false
 jobs:
   native-studio:
-    if: github.repository == 'jerry-halo2026/orange' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/t05-path-policy'
+    if: github.repository == 'jerry-halo2026/orange' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/native-chain-ci'
     runs-on: windows-2025
     timeout-minutes: 12
     env:

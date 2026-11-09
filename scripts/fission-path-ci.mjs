@@ -139,7 +139,7 @@ function safeWindowsPath(value) {
 }
 export function validatePathCiContext(facts) {
   try {
-    const exact={GITHUB_ACTIONS:'true',RUNNER_OS:'Windows',GITHUB_REPOSITORY:'jerry-halo2026/orange',ORANGE_REPOSITORY_VISIBILITY:'public',GITHUB_REF:'refs/heads/codex/t05-path-policy'};
+    const exact={GITHUB_ACTIONS:'true',RUNNER_OS:'Windows',GITHUB_REPOSITORY:'jerry-halo2026/orange',ORANGE_REPOSITORY_VISIBILITY:'public',GITHUB_REF:'refs/heads/codex/native-chain-ci'};
     for(const [key,value] of Object.entries(exact)) if(facts[key]!==value) throw 0;
     if(typeof facts.GITHUB_SHA!=='string'||!/^[0-9a-f]{40}$/.test(facts.GITHUB_SHA)) throw 0;
     for(const key of ['GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT']) if(typeof facts[key]!=='string'||! /^[1-9][0-9]*$/.test(facts[key])) throw 0;
@@ -180,23 +180,61 @@ export function buildPathCiEnvironment(options) {
 }
 
 // This closure is the actual original project graph, not a replacement project.
-const BUILD_ROOTS=Object.freeze(['workers/fission/src/Fission.Core','workers/fission/src/Fission.Steps','workers/fission/src/Fission.Providers','workers/fission/tests/Fission.UnitTests']);
+const BUILD_ROOTS=Object.freeze(['workers/fission/src/Fission.Core','workers/fission/src/Fission.Steps','workers/fission/src/Fission.Providers','workers/fission/src/Fission.Cli','workers/fission/src/Fission.AI','workers/fission/tests/Fission.UnitTests']);
 const BUILD_PINS=Object.freeze({
- 'workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs':'d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac',
- 'workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs':'89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5',
- 'workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs':'4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1',
- 'workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs':'22664e0959690354604459316ff1c8d1573e637bd799008d87875c243d9f25cb',
- 'workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs':'199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a',
- 'workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj':'1a9ada8da0c01f6512658c61f08f861063851c508f6b756cd1e9822d1a644fef',
- 'workers/fission/src/Fission.Core/Fission.Core.csproj':'11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c',
- 'workers/fission/src/Fission.Steps/Fission.Steps.csproj':'dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81',
- 'workers/fission/src/Fission.Providers/Fission.Providers.csproj':'d474483d18b1594f6016d6efa62c1098b2504890a7f7a55d9cd6051f305d722c',
- 'workers/fission/Directory.Build.props':'f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b',
- 'workers/fission/tools/csc-shim/csc.bat':'5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0',
+  "workers/fission/Directory.Build.props": "f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b",
+  "workers/fission/src/Fission.AI/Abstractions.cs": "54f233c52364f73c9357a6db2168037c784fc7c2f2b163f97aaece07e0d12d51",
+  "workers/fission/src/Fission.AI/AiKeyStore.cs": "b584eb8b7b1273c4eb2680ee88fda01afea32288b940d2fb92628eba82c62b92",
+  "workers/fission/src/Fission.AI/DeepSeekProvider.cs": "7d94aeae6a868dc57b71618a7183e7eecd1954da10336878ffda2bd07a513ac6",
+  "workers/fission/src/Fission.AI/DoubaoTtsProvider.cs": "26618b655de84199f00945d27a716b90c527861a11003085440b479400b8f2d5",
+  "workers/fission/src/Fission.AI/Fission.AI.csproj": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81",
+  "workers/fission/src/Fission.AI/OfflineScriptProvider.cs": "fd3e8f511889f306ed78c388cc03cac61048eb791829ab5802780b1f5acbdea0",
+  "workers/fission/src/Fission.AI/PromptTemplates.cs": "ac47dd8406c8d67f152cce17b67991521c03ec8c05970b6b54e030d79dfc2faf",
+  "workers/fission/src/Fission.AI/VoiceCatalog.cs": "4dc877f3e43fb46c793670ab1294391157f446168dbacfa8ebbd1a98b83314c7",
+  "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e",
+  "workers/fission/src/Fission.Cli/Fission.Cli.csproj": "c426cfea033a3dbd368bc20800ca64dc28da6d28a46018c2741209cceb2b03e2",
+  "workers/fission/src/Fission.Cli/Program.cs": "c54e3f69c8fb78ef3da696f08da9cf58d8d9ec7efc48de54b4ed9abfc162a4f4",
+  "workers/fission/src/Fission.Core/Abstractions/IMediaProbe.cs": "2e2f54451fae2eb1be2b970663968c15c9ce59c62ec1498b57ec266ccae3b52e",
+  "workers/fission/src/Fission.Core/Abstractions/IVideoEngine.cs": "77bb57bf437f519bbbe44a2ccabf20e2706426831bffddf19a11211231416e43",
+  "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+  "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+  "workers/fission/src/Fission.Core/Engine/EnginePaths.cs": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff",
+  "workers/fission/src/Fission.Core/Errors/FissionException.cs": "5812fc693f6644eb42496a3cef718a51fffea53e69051ee9c6e19a00d7f3d6c3",
+  "workers/fission/src/Fission.Core/Fission.Core.csproj": "11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c",
+  "workers/fission/src/Fission.Core/Jobs/FissionJob.cs": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625",
+  "workers/fission/src/Fission.Core/Jobs/JobEventBus.cs": "76e20d76be2ad2efeabe90146dd591e1824e4f79d5b66f875e1c5501286f76e7",
+  "workers/fission/src/Fission.Core/Jobs/JobModels.cs": "852e16aa6173bee9d5c8236c9ecbf379ab474a5bd87459767ee82c6826a234ea",
+  "workers/fission/src/Fission.Core/Materials/MaterialPool.cs": "5a063d611dac59fe042de89659fb3993f1200c967bb88c97a93ed95e9fdb7bd2",
+  "workers/fission/src/Fission.Core/Pipeline/AlignStrategy.cs": "b6bb095652de5a6b04e4f787773e92a89bcbf64874cb7064f6e080fcbc12c5a8",
+  "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+  "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+  "workers/fission/src/Fission.Core/Pipeline/SplitPlanner.cs": "d1fb228a218924e0d1c20795cdb47b328ac86ee1697270fd09865214f863994b",
+  "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91",
+  "workers/fission/src/Fission.Core/Process/ProcessPool.cs": "f96bdd3a61c1ddbac3c92422728434db6f1fcf8f21d79a52246a5eeb0bff79a3",
+  "workers/fission/src/Fission.Core/Steps/StepAbstractions.cs": "9fa12c7b84220e282448409e504827621d65494a55d3ea7196123a52d89ba6fb",
+  "workers/fission/src/Fission.Core/Util/Sanitize.cs": "26e2a9308453bd2c37caf5a9c85fff674ff19bd74b8cdd35689ddd19c8fca117",
+  "workers/fission/src/Fission.Providers/Assets/AssetRegistry.cs": "d931f94ef07b664c49a5f911f54816adf988826cc62d6a748c871bdf3e490487",
+  "workers/fission/src/Fission.Providers/Diagnostics/DoctorService.cs": "9d9297ca7a5429031c378b98a7245c23ca0e1f223bcedfa3104ba2c0b5e11cd2",
+  "workers/fission/src/Fission.Providers/Fission.Providers.csproj": "d474483d18b1594f6016d6efa62c1098b2504890a7f7a55d9cd6051f305d722c",
+  "workers/fission/src/Fission.Providers/Hardware/HardwareDetector.cs": "a1847ce58d51e8eca194745df353aaf9337ac04299b72cb7045967aee0949d6f",
+  "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0",
+  "workers/fission/src/Fission.Providers/Media/FFmpegProvider.cs": "77005cfe5dc26b8e9573525452d3dd9e987f8e9b8f8c83f9c7edd50cbb841b62",
+  "workers/fission/src/Fission.Providers/Media/FFprobeProvider.cs": "336772ac5aad4eaa5cb3bdcc878da77b387d07a1573943fc9a65daf81e6069ac",
+  "workers/fission/src/Fission.Providers/Media/SceneDetector.cs": "1e56d8bc1beb713880997f59e23a25ba0cbd782841b9031606c7f34a618c3ce1",
+  "workers/fission/src/Fission.Providers/Media/TransitionCatalog.cs": "03f2a388eac7898c6b9a7b0e0ee7dbaa4f37c75512f1cc9be6f0bd2c4e1d6083",
+  "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs": "43145b60e64807fc2b7e43b9791e7025effea9931109cb3b784c62a6c88f6ccc",
+  "workers/fission/src/Fission.Steps/Fission.Steps.csproj": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81",
+  "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs": "9360afc2ce6274f4d2ba811f1e0d226e1f3992beb3d60ceeae4a91933e41daae",
+  "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+  "workers/fission/tests/Fission.UnitTests/EnginePathPolicyTests.cs": "89dbaf2d6b71c0d4dad1077715f8393872b23838117d92ffa68caf46bf50cef5",
+  "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9",
+  "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj": "dc0d303cb15c171cba74b9d52d394481d0d92f8bd9cc73cc662d3f3e7ad9bd95",
+  "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs": "bde79bebe28a878491a477d971745be9de8ccbf2f5fb811abe9e1d1986a47134",
+  "workers/fission/tools/csc-shim/csc.bat": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
 });
 const AUTH_PINS=Object.freeze({
- 'apps/desktop/src/auth-service.mjs':'b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66',
- 'apps/desktop/src/auth-service.test.mjs':'032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b',
+ 'apps/desktop/src/auth-service.mjs':'db71b341fbd4810462c12cc7b86f5189c5c8d120312978fd7812f0d6209e310b',
+ 'apps/desktop/src/auth-service.test.mjs':'0fb75b98499b56025f3f0eaecf6dc697b270141339202f76e8db4cffef6c4802',
  'packages/openfilm/studio/server/project-access.mjs':'345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71',
  'packages/openfilm/studio/server/project-access.test.mjs':'4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4',
 });
@@ -220,7 +258,7 @@ function bindSourceSnapshots(snapshots,expectedPaths,pins) {
 export function validateBuildInputClosure(input) {
  try {
   const {trackedPaths,snapshots}=input;
-  if(!Array.isArray(trackedPaths)||!Array.isArray(snapshots)||snapshots.some(item=>item?.linkCount!==1))throw 0;
+  if(!Array.isArray(trackedPaths)||!Array.isArray(snapshots)||trackedPaths.length!==Object.keys(BUILD_PINS).length||new Set(trackedPaths).size!==trackedPaths.length||trackedPaths.some(file=>!Object.hasOwn(BUILD_PINS,file))||snapshots.some(item=>item?.linkCount!==1))throw 0;
   const projects=BUILD_ROOTS.map(root=>root+'/'+root.split('/').at(-1)+'.csproj');
   for(const file of trackedPaths) {
    if(typeof file!=='string'||file.split('/').some(part=>!part||part==='.'||part==='..')||file.includes('\\')||(!Object.hasOwn(BUILD_PINS,file)&&!BUILD_ROOTS.some(root=>file.startsWith(root+'/')&&/^[-A-Za-z0-9_/.]+\.cs$/.test(file))))throw 0;
@@ -455,7 +493,7 @@ export async function runPathPolicyCi() {
   const assetsBytes=await fs.readFile(assets),assetsJson=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(assetsBytes));
   const packages=verifyPublicPackageClosure(Object.entries(assetsJson.libraries).filter(([,value])=>value.type==='package').map(([name])=>name));
   const assetProjects=Object.entries(assetsJson.libraries).filter(([,value])=>value.type==='project').map(([name])=>name.split('/')[0]).sort();
-  if(JSON.stringify(assetProjects)!==JSON.stringify(['Fission.Core','Fission.Providers','Fission.Steps']))fail('CI_SOURCE_MISMATCH');
+  if(JSON.stringify(assetProjects)!==JSON.stringify(['Fission.AI','Fission.Cli','Fission.Core','Fission.Providers','Fission.Steps']))fail('CI_SOURCE_MISMATCH');
   await readClosure();
   const suites={};
   for(const suite of commandPlan.suites) {

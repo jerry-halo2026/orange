@@ -13,17 +13,17 @@ import { verifyTap } from './phase1-admission.mjs';
 // raw checkout bytes may differ only by CRLF versus LF, never encoding or content.
 const PINS = Object.freeze({
  'packages/openfilm/src/development-isolation.mjs':'847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8',
- 'scripts/fission-path-ci.mjs':'913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc',
+ 'scripts/fission-path-ci.mjs':'6812c1e825d869493297d221e1a86209aac26e047dc798cf29f8b0ddc5e2fc0f',
  'scripts/phase1-admission.mjs':'a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd',
  'packages/openfilm/package.json':'374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399',
- 'pnpm-lock.yaml':'6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55',
+ 'pnpm-lock.yaml':'736f43ccc9f09d66a72a5286ff9f87d9b16f45fce8041db8bac44dd3a4e221ee',
  'scripts/phase1-isolation.test.mjs':'c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07',
  'packages/openfilm/src/development-isolation.test.mjs':'806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89',
- 'packages/openfilm/studio/server/project-control-guard.mjs':'ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c',
- 'packages/openfilm/studio/server/projects.mjs':'8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54',
+ 'packages/openfilm/studio/server/project-control-guard.mjs':'94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f',
+ 'packages/openfilm/studio/server/projects.mjs':'5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2',
  'packages/openfilm/studio/server/auto-versions.mjs':'3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad',
- 'packages/openfilm/studio/server/server.mjs':'34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2',
- 'packages/openfilm/studio/server/project-control-guard.test.mjs':'cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62',
+ 'packages/openfilm/studio/server/server.mjs':'7f0cafb851fe3af577c6e269470e1429f18f28baa21d4de93f24ee163ec34cfa',
+ 'packages/openfilm/studio/server/project-control-guard.test.mjs':'a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32',
  'packages/openfilm/studio/server/projects-control.test.mjs':'f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388',
  'packages/openfilm/studio/server/auto-versions.test.mjs':'c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa',
  'packages/openfilm/studio/server/server-auto-versions.test.mjs':'93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc',
@@ -35,6 +35,18 @@ const PINS = Object.freeze({
  'packages/openfilm/studio/server/person-merge-worker.mjs':'83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e',
  'packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs':'cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184',
  'packages/openfilm/studio/server/person-merge.test.mjs':'53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e',
+ 'packages/openfilm/src/fission-render.mjs':'6160a5f0c820944d95d5d6d15d7208783fa421cb8f7af7d04b598c4267b06914',
+ 'packages/openfilm/src/fission-timing.mjs':'5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0',
+ 'packages/openfilm/src/media-links.mjs':'7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580',
+ 'packages/openfilm/src/render.mjs':'9a08cd30934d43c852a812c4950dcd48dbf9f04ff61f2dd7664fa3644ac41c38',
+ 'packages/openfilm/src/shared.mjs':'5f286b91274156451e1a665d01638ce2e2787fc73a55f1a8cb64f3fb4395b919',
+ 'packages/openfilm/studio/server/exports.mjs':'ad499c2a1d46460a7a8422dd5d70a47eddcfc52d121641c1ed6b57093ddf9f01',
+ 'packages/openfilm/studio/server/fetch-github.mjs':'380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1',
+ 'packages/openfilm/studio/server/fetch-repo.mjs':'9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2',
+ 'packages/openfilm/studio/server/files.mjs':'ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803',
+ 'packages/openfilm/studio/server/fission-import.mjs':'e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657',
+ 'packages/openfilm/studio/server/fission.mjs':'74c89afe1dd85cee8608fcfe2c52bf866d54eb68a5c554048a1955193c161e5a',
+ 'packages/openfilm/studio/server/pages.mjs':'d2a5379a591504e154e19f9f13f0182d109f700d58043af74003a7cccf0b3b88',
 });
 const SELF = Object.freeze(['.github/workflows/native-studio.yml','scripts/native-studio-ci.mjs','scripts/native-studio-ci.test.mjs','packages/openfilm/studio/server/project-file-symlink.test.mjs']);
 const TESTS = Object.freeze(['packages/openfilm/studio/server/project-control-guard.test.mjs','packages/openfilm/studio/server/projects-control.test.mjs','packages/openfilm/studio/server/auto-versions.test.mjs','packages/openfilm/studio/server/server-auto-versions.test.mjs','packages/openfilm/studio/server/watch.test.mjs','packages/openfilm/studio/server/server-watch-drain.test.mjs',SELF[3]]);
@@ -42,6 +54,7 @@ const WORKER_TESTS = Object.freeze(['packages/openfilm/studio/server/person-merg
 const NATIVE_UNDO_NAME = 'the store: an undo is a write like any other: 1 → 4 → 6, undone to 4, an older copy with 1 gets 4';
 const WORKER_MANDATORY = Object.freeze(['default native worker merges two roots incrementally; stop waits for idle actual exit and restart is cold','stop waits for current and two retired actual threads, one exit at a time']);
 const MANDATORY = 'real Windows file-symbolic marker refuses before native callback';
+const GUARD_MANDATORY=Object.freeze(["desktop controlled reservation admits only its private scope and validates every nested native operation","isolated coordination default-profile keeps actual registry in its bound original namespace","isolated coordination explicit-priority keeps actual registry in its bound original namespace","isolated coordination ordinary-no-profile keeps actual registry in its bound original namespace","isolated coordination malformed-profile keeps actual registry in its bound original namespace","isolated coordination reader-bound keeps actual registry in its bound original namespace","isolated coordination reservation-bound keeps actual registry in its bound original namespace"]);
 const PACKAGE_URL = 'https://registry.npmjs.org/playwright-core/-/playwright-core-1.61.1.tgz';
 const PACKAGE_SHA512 = 'h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==';
 const MAX_ARCHIVE = 20 * 1024 * 1024, MAX_UNPACKED = 32 * 1024 * 1024;
@@ -130,10 +143,10 @@ export function validateNativeStudioContext(facts) {
 export function verifyNativeStudioTap(tap,exitCode) {
  need(arguments.length === 2 && typeof tap === 'string' && tap.length <= 8 * 1024 * 1024,'TAP_INVALID');
  tap = tap.replaceAll('\r\n','\n');
- let names;try {names=verifyTap(tap,exitCode,[MANDATORY]);}catch {throw ownedFailure('TAP_INVALID');}
- need(names.length === 110 && new Set(names).size === 110,'TAP_COUNT');
+ let names;try {names=verifyTap(tap,exitCode,[MANDATORY,...GUARD_MANDATORY]);}catch {throw ownedFailure('TAP_INVALID');}
+ need(names.length === 117 && new Set(names).size === 117,'TAP_COUNT');
  need(names.every(n => /^[\x20-\x7e]{1,400}$/.test(n)),'TAP_NAME');
- for (const [key,value] of Object.entries({tests:110,suites:0,pass:110,fail:0,cancelled:0,skipped:0,todo:0})) {
+ for (const [key,value] of Object.entries({tests:117,suites:0,pass:117,fail:0,cancelled:0,skipped:0,todo:0})) {
   const lines = tap.split('\n').filter(line => line.startsWith('# '+key+' '));
   need(lines.length === 1 && lines[0] === '# '+key+' '+value,'TAP_SUMMARY');
  }
@@ -141,7 +154,7 @@ export function verifyNativeStudioTap(tap,exitCode) {
   need(!/^\s*Bail out!/i.test(line),'TAP_STRUCTURE');
   if (/^\s*(?:not )?ok(?:\s|$)/.test(line)) need(/^ok [1-9][0-9]* - [^\r\n]+$/.test(line),'TAP_STRUCTURE');
  }
- return Object.freeze({total:110,passed:110,failed:0,skipped:0,cancelled:0,todo:0,testNames:Object.freeze(names)});
+ return Object.freeze({total:117,passed:117,failed:0,skipped:0,cancelled:0,todo:0,testNames:Object.freeze(names)});
 }
 export function validateNativeStudioSources(records) {
  need(arguments.length === 1 && Array.isArray(records) && records.length === Object.keys(PINS).length + SELF.length,'SOURCE_SET');
@@ -434,7 +447,10 @@ export async function runNativeStudioCI() {
  for(const name of ['home','appdata','localappdata','temp','cache','archive','stage','logs','results'])directory(path.win32.join(context.ownedRoot,name),true);
  const owned=name=>path.win32.join(context.ownedRoot,name);
  const emptyConfig=owned('empty.gitconfig');privateFile(emptyConfig,Buffer.alloc(0));
- const env={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:path.win32.join(system32,'cmd.exe'),PATH:system32+';'+path.win32.dirname(gitExe.executable),HOME:owned('home'),USERPROFILE:owned('home'),APPDATA:owned('appdata'),LOCALAPPDATA:owned('localappdata'),TEMP:owned('temp'),TMP:owned('temp'),TMPDIR:owned('temp'),XDG_CACHE_HOME:owned('cache'),npm_config_cache:owned('cache'),ORANGE_NATIVE_STUDIO_CI_TEMP:owned('temp'),GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyConfig,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0',PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:'1'};
+ const guardRoot=owned(path.win32.join('g','.dev','native-guard-isolation','attempt-'+process.env.GITHUB_RUN_ID+'-'+process.env.GITHUB_RUN_ATTEMPT));
+ need(guardRoot.length<=140,'PATH_INVALID');windows(guardRoot);
+ for(const q of [owned('g'),owned('g/.dev'),owned('g/.dev/native-guard-isolation'),guardRoot])directory(q,true);
+ const env={SystemRoot:systemRoot,WINDIR:systemRoot,ComSpec:path.win32.join(system32,'cmd.exe'),PATH:system32+';'+path.win32.dirname(gitExe.executable),HOME:owned('home'),USERPROFILE:owned('home'),APPDATA:owned('appdata'),LOCALAPPDATA:owned('localappdata'),TEMP:owned('temp'),TMP:owned('temp'),TMPDIR:owned('temp'),XDG_CACHE_HOME:owned('cache'),npm_config_cache:owned('cache'),ORANGE_NATIVE_STUDIO_CI_TEMP:owned('temp'),ORANGE_GUARD_TEST_ROOT:guardRoot,GIT_CONFIG_NOSYSTEM:'1',GIT_CONFIG_GLOBAL:emptyConfig,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0',PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:'1'};
  diagnostics.enter('source-snapshot');const before=snapshot(context,gitExe,env);
  diagnostics.enter('package-pins');packagePins(context.workspace);
  // Frozen tests own unique children in these existing namespaces. Never remove,
@@ -470,7 +486,7 @@ export async function runNativeStudioCI() {
  if(diagnostics.summary()!==null)throw diagnostics.failure();
  recheckSystemGit(gitExe);
  recheckSystemTar(tarExe);
- // Native110 has passed its own original checks and process receipt above.
+ // Native117 has passed its own original checks and process receipt above.
  // A different process gets only its fresh lifecycle scratch, never Native HOME.
  diagnostics.enter('worker-directory');
  const worker=deriveMergeWorkerEnvironment(process.env,systemRoot);

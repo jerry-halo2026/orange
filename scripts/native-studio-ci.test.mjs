@@ -2,15 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { gzipSync } from 'node:zlib';
 import { validateNativeStudioContext, verifyNativeStudioTap, validateNativeStudioSources, validatePlaywrightArchiveEntries, parsePlaywrightArchive, validatePlaywrightMetadata } from './native-studio-ci.mjs';
-const context = () => ({GITHUB_ACTIONS:'true',RUNNER_OS:'Windows',GITHUB_REPOSITORY:'jerry-halo2026/orange',ORANGE_REPOSITORY_VISIBILITY:'public',GITHUB_REF:'refs/heads/codex/t05-path-policy',GITHUB_SHA:'a'.repeat(40),GITHUB_RUN_ID:'123',GITHUB_RUN_ATTEMPT:'1',GITHUB_WORKSPACE:'D:\\a\\orange\\orange',GITHUB_EVENT_NAME:'push'});
+const context = () => ({GITHUB_ACTIONS:'true',RUNNER_OS:'Windows',GITHUB_REPOSITORY:'jerry-halo2026/orange',ORANGE_REPOSITORY_VISIBILITY:'public',GITHUB_REF:'refs/heads/codex/native-chain-ci',GITHUB_SHA:'a'.repeat(40),GITHUB_RUN_ID:'123',GITHUB_RUN_ATTEMPT:'1',GITHUB_WORKSPACE:'D:\\a\\orange\\orange',GITHUB_EVENT_NAME:'push'});
 const mandatory='real Windows file-symbolic marker refuses before native callback';
-function tap() {return 'TAP version 13\n'+Array.from({length:110},(_,i)=>`# Subtest: ${i===109?mandatory:'case-'+i}\nok ${i+1} - ${i===109?mandatory:'case-'+i}\n  ---\n  duration_ms: 1\n  type: test\n  ...\n`).join('')+'1..110\n# tests 110\n# suites 0\n# pass 110\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 110\n';}
+const extraGuardMandatory=["desktop controlled reservation admits only its private scope and validates every nested native operation","isolated coordination default-profile keeps actual registry in its bound original namespace","isolated coordination explicit-priority keeps actual registry in its bound original namespace","isolated coordination ordinary-no-profile keeps actual registry in its bound original namespace","isolated coordination malformed-profile keeps actual registry in its bound original namespace","isolated coordination reader-bound keeps actual registry in its bound original namespace","isolated coordination reservation-bound keeps actual registry in its bound original namespace"];
+function tap() {const names=Array.from({length:109},(_,i)=>'case-'+i).concat(extraGuardMandatory,[mandatory]);return 'TAP version 13\n'+names.map((n,i)=>'# Subtest: '+n+'\nok '+(i+1)+' - '+n+'\n  ---\n  duration_ms: 1\n  type: test\n  ...\n').join('')+'1..117\n# tests 117\n# suites 0\n# pass 117\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 117\n';}
 test('derives only the fresh native Studio CI namespace from the exact public topic',()=>{const got=validateNativeStudioContext(context());assert.equal(got.ownedRoot,'D:\\a\\orange\\orange\\.dev\\native-studio-ci\\123\\1');assert.equal(got.commit,'a'.repeat(40));assert.equal(validateNativeStudioContext({...context(),GITHUB_EVENT_NAME:'workflow_dispatch'}).workspace,'D:\\a\\orange\\orange');});
 for(const [key,value] of Object.entries({GITHUB_ACTIONS:'false',RUNNER_OS:'Linux',GITHUB_REPOSITORY:'fork/orange',ORANGE_REPOSITORY_VISIBILITY:'private',GITHUB_REF:'refs/pull/1/merge',GITHUB_SHA:'a'.repeat(39),GITHUB_RUN_ID:'../1',GITHUB_RUN_ATTEMPT:'0',GITHUB_WORKSPACE:'\\\\server\\share',GITHUB_EVENT_NAME:'pull_request'})) test('rejects untrusted context '+key,()=>assert.throws(()=>validateNativeStudioContext({...context(),[key]:value})));
 for(const workspace of ['C:\\a\\..\\orange','C:\\a\\CONIN$\\orange','C:\\a\\CONOUT$.txt\\orange','C:\\a\\bad.\\orange','C:\\a\\bad:stream\\orange','C:\\a\\UPPER~1\\orange','C:\\a\\orange\\','C:/a/orange']) test('rejects workspace alias '+JSON.stringify(workspace),()=>assert.throws(()=>validateNativeStudioContext({...context(),GITHUB_WORKSPACE:workspace})));
-test('accepts exactly 110 distinct passed cases including the real file marker',()=>{const x=verifyNativeStudioTap(tap(),0);assert.equal(x.passed,110);assert.equal(x.testNames.length,110);assert.equal(x.skipped,0);});
+test('accepts exactly 117 distinct passed cases including the real file marker',()=>{const x=verifyNativeStudioTap(tap(),0);assert.equal(x.passed,117);assert.equal(x.testNames.length,117);assert.equal(x.skipped,0);});
 for(const [name,change,exit] of [
- ['exit',s=>s,1],['109',s=>s.replace('1..110','1..109'),0],['111',s=>s.replace('1..110','1..111'),0],['duplicate',s=>s.replace('ok 2 - case-1','ok 2 - case-0'),0],['missing mandatory',s=>s.replaceAll(mandatory,'other'),0],['skip',s=>s.replace('ok 1 - case-0','ok 1 - case-0 # SKIP'),0],['todo',s=>s.replace('ok 1 - case-0','ok 1 - case-0 # TODO'),0],['cancelled',s=>s.replace('# cancelled 0','# cancelled 1'),0],['failed',s=>s.replace('ok 1 -','not ok 1 -'),0],['nested',s=>s.replace('ok 1 -','    ok 1 -'),0],['bail',s=>s+'Bail out!\n',0],['duplicate summary',s=>s+'# pass 110\n',0],['false pass',s=>s.replace('# pass 110','# pass 109'),0],['extra malformed result',s=>s+'ok unnumbered - injected\n',0],['incomplete',s=>s.replace('# skipped 0\n',''),0],['suite',s=>s.replace('# suites 0','# suites 1'),0]
+ ['exit',s=>s,1],['116',s=>s.replace('1..117','1..116'),0],['118',s=>s.replace('1..117','1..118'),0],['duplicate',s=>s.replace('ok 2 - case-1','ok 2 - case-0'),0],['missing mandatory',s=>s.replaceAll(mandatory,'other'),0],['skip',s=>s.replace('ok 1 - case-0','ok 1 - case-0 # SKIP'),0],['todo',s=>s.replace('ok 1 - case-0','ok 1 - case-0 # TODO'),0],['cancelled',s=>s.replace('# cancelled 0','# cancelled 1'),0],['failed',s=>s.replace('ok 1 -','not ok 1 -'),0],['nested',s=>s.replace('ok 1 -','    ok 1 -'),0],['bail',s=>s+'Bail out!\n',0],['duplicate summary',s=>s+'# pass 117\n',0],['false pass',s=>s.replace('# pass 117','# pass 116'),0],['extra malformed result',s=>s+'ok unnumbered - injected\n',0],['incomplete',s=>s.replace('# skipped 0\n',''),0],['suite',s=>s.replace('# suites 0','# suites 1'),0]
 ]) test('TAP refuses '+name,()=>assert.throws(()=>verifyNativeStudioTap(change(tap()),exit)));
 test('source policy rejects absent, duplicate, invented and caller-provided pin sets',()=>{for(const records of [[],[{path:'invented',raw:Buffer.from('x'),blob:Buffer.from('x'),mode:'100644',ordinary:true,nlink:1}],Array(27).fill({path:'scripts/native-studio-ci.mjs',raw:Buffer.from('x'),blob:Buffer.from('x'),mode:'100644',ordinary:true,nlink:1})]) assert.throws(()=>validateNativeStudioSources(records));assert.throws(()=>validateNativeStudioSources([], {pins:[]}));});
 const entries=()=>[{name:'package/',type:'directory',size:0},{name:'package/package.json',type:'file',size:64},{name:'package/LICENSE',type:'file',size:32},{name:'package/NOTICE',type:'file',size:16}];
@@ -33,19 +34,20 @@ test('tar parser rejects traversal, malformed compressed data and oversized stre
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { gunzipSync } from 'node:zlib';
+const additionalQualifiedPaths=["packages/openfilm/src/fission-render.mjs","packages/openfilm/src/fission-timing.mjs","packages/openfilm/src/media-links.mjs","packages/openfilm/src/render.mjs","packages/openfilm/src/shared.mjs","packages/openfilm/studio/server/exports.mjs","packages/openfilm/studio/server/fetch-github.mjs","packages/openfilm/studio/server/fetch-repo.mjs","packages/openfilm/studio/server/files.mjs","packages/openfilm/studio/server/fission-import.mjs","packages/openfilm/studio/server/fission.mjs","packages/openfilm/studio/server/pages.mjs"];
 const sourceFixturePins = [
  ['packages/openfilm/src/development-isolation.mjs','847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8'],
- ['scripts/fission-path-ci.mjs','913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc'],
+ ['scripts/fission-path-ci.mjs','6812c1e825d869493297d221e1a86209aac26e047dc798cf29f8b0ddc5e2fc0f'],
  ['scripts/phase1-admission.mjs','a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd'],
  ['packages/openfilm/package.json','374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399'],
- ['pnpm-lock.yaml','6e337f4e41abff52b05380b48517f1e479a2b96cae0a653d837b5ff6d1bd3c55'],
+ ['pnpm-lock.yaml','736f43ccc9f09d66a72a5286ff9f87d9b16f45fce8041db8bac44dd3a4e221ee'],
  ['scripts/phase1-isolation.test.mjs','c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07'],
  ['packages/openfilm/src/development-isolation.test.mjs','806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89'],
- ['packages/openfilm/studio/server/project-control-guard.mjs','ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c'],
- ['packages/openfilm/studio/server/projects.mjs','8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54'],
+ ['packages/openfilm/studio/server/project-control-guard.mjs','94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f'],
+ ['packages/openfilm/studio/server/projects.mjs','5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2'],
  ['packages/openfilm/studio/server/auto-versions.mjs','3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad'],
- ['packages/openfilm/studio/server/server.mjs','34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2'],
- ['packages/openfilm/studio/server/project-control-guard.test.mjs','cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62'],
+ ['packages/openfilm/studio/server/server.mjs','7f0cafb851fe3af577c6e269470e1429f18f28baa21d4de93f24ee163ec34cfa'],
+ ['packages/openfilm/studio/server/project-control-guard.test.mjs','a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32'],
  ['packages/openfilm/studio/server/projects-control.test.mjs','f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388'],
  ['packages/openfilm/studio/server/auto-versions.test.mjs','c9f73d5bed69f1bbc2831be50d8910b650e26f4effe4df0c22a07af79c2d76fa'],
  ['packages/openfilm/studio/server/server-auto-versions.test.mjs','93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc'],
@@ -57,6 +59,18 @@ const sourceFixturePins = [
  ['packages/openfilm/studio/server/person-merge-worker.mjs','83ea4a07b386d88fc7bb43f5c631d88dfa89a64d2e967031ca89925aaead6c5e'],
  ['packages/openfilm/studio/server/person-edits-worker-lifecycle.test.mjs','cac7a8d56bdd5ac9e8385c4e176880b77d6f775d476f9ce36db8b59f9972e184'],
  ['packages/openfilm/studio/server/person-merge.test.mjs','53478fca489452441b125d8709fa60f479f1713843c30bae77d31a4f1731518e'],
+ ['packages/openfilm/src/fission-render.mjs','6160a5f0c820944d95d5d6d15d7208783fa421cb8f7af7d04b598c4267b06914'],
+ ['packages/openfilm/src/fission-timing.mjs','5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0'],
+ ['packages/openfilm/src/media-links.mjs','7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580'],
+ ['packages/openfilm/src/render.mjs','9a08cd30934d43c852a812c4950dcd48dbf9f04ff61f2dd7664fa3644ac41c38'],
+ ['packages/openfilm/src/shared.mjs','5f286b91274156451e1a665d01638ce2e2787fc73a55f1a8cb64f3fb4395b919'],
+ ['packages/openfilm/studio/server/exports.mjs','ad499c2a1d46460a7a8422dd5d70a47eddcfc52d121641c1ed6b57093ddf9f01'],
+ ['packages/openfilm/studio/server/fetch-github.mjs','380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1'],
+ ['packages/openfilm/studio/server/fetch-repo.mjs','9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2'],
+ ['packages/openfilm/studio/server/files.mjs','ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803'],
+ ['packages/openfilm/studio/server/fission-import.mjs','e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657'],
+ ['packages/openfilm/studio/server/fission.mjs','74c89afe1dd85cee8608fcfe2c52bf866d54eb68a5c554048a1955193c161e5a'],
+ ['packages/openfilm/studio/server/pages.mjs','d2a5379a591504e154e19f9f13f0182d109f700d58043af74003a7cccf0b3b88'],
 ];
 function sourceRecords() {
  const digest=b=>createHash('sha256').update(b).digest('hex');
@@ -64,7 +78,7 @@ function sourceRecords() {
  for(const path of ['.github/workflows/native-studio.yml','scripts/native-studio-ci.mjs','scripts/native-studio-ci.test.mjs','packages/openfilm/studio/server/project-file-symlink.test.mjs'])records.push({path,raw:Buffer.from('current candidate\r\n'),blob:Buffer.from('current candidate\n'),mode:'100644',ordinary:true,nlink:1});
  return records;
 }
-test('sources accept the actual 23 frozen input byte fixtures and four same-candidate producers',()=>{const result=validateNativeStudioSources(sourceRecords());assert.equal(result.length,27);assert.equal(result.find(x=>x.path==='packages/openfilm/studio/server/project-control-guard.mjs').gitBlobSha256,'ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c');});
+test('sources accept the actual 35 frozen input byte fixtures and four same-candidate producers',()=>{const result=validateNativeStudioSources(sourceRecords());assert.equal(result.length,39);assert.equal(result.find(x=>x.path==='packages/openfilm/studio/server/project-control-guard.mjs').gitBlobSha256,'94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f');});
 for(const [name,change] of [
  ['modified raw',r=>{r[0].raw=Buffer.from('changed\n');}],['modified source and Git blob',r=>{r[0].raw=r[0].blob=Buffer.from('changed\n');}],['UTF8 BOM',r=>{r[0].raw=Buffer.concat([Buffer.from([239,187,191]),r[0].raw]);}],['invalid UTF8',r=>{r[0].raw=Buffer.from([0xc0,0xaf]);}],['bare CR',r=>{r[0].raw=Buffer.from('x\ry');}],['internal BOM',r=>{r[23].raw=r[23].blob=Buffer.from('x\uFEFFy');}],['symbolic Git mode',r=>{r[0].mode='120000';}],['nonordinary ancestor',r=>{r[0].ordinary=false;}],['hardlink',r=>{r[0].nlink=2;}],['missing',r=>r.pop()],['duplicate',r=>{r[1]=r[0];}],['untracked self',r=>{r[23].mode=undefined;}],['self raw differs from candidate',r=>{r[23].raw=Buffer.from('other\n');}]
 ]) test('sources refuse '+name,()=>{const r=sourceRecords();change(r);assert.throws(()=>validateNativeStudioSources(r));});
@@ -124,7 +138,7 @@ import { assessNativeStudioProcess } from './native-studio-ci.mjs';
 test('process assessment defers failed exit propagation so the driver can persist its original receipt',()=>{let assessment;assert.doesNotThrow(()=>{assessment=assessNativeStudioProcess({status:1,stdout:Buffer.from(tap()),error:undefined,signal:null});});assert.equal(assessment.ok,false);assert.deepEqual(formatNativeStudioFailure('tests',assessment.failure),failed('tests','TAP_INVALID'));});
 test('process assessment defers failed TAP while preserving module error identity',()=>{let assessment;assert.doesNotThrow(()=>{assessment=assessNativeStudioProcess({status:0,stdout:Buffer.from('invalid'),error:undefined,signal:null});});assert.equal(assessment.ok,false);assert.deepEqual(formatNativeStudioFailure('tests',assessment.failure),failed('tests','TAP_INVALID'));});
 for(const patch of [{error:new Error('PRIVATE_SENTINEL')},{signal:'SIGTERM'}])test('process assessment defers process failure '+Object.keys(patch)[0],()=>{let assessment;assert.doesNotThrow(()=>{assessment=assessNativeStudioProcess({status:0,stdout:Buffer.from(tap()),signal:null,...patch});});assert.equal(assessment.ok,false);assert.deepEqual(formatNativeStudioFailure('tests',assessment.failure),failed('tests','TEST_PROCESS'));});
-test('process assessment retains fixed 110 successful TAP evidence',()=>{const assessment=assessNativeStudioProcess({status:0,stdout:Buffer.from(tap()),error:undefined,signal:null});assert.equal(assessment.ok,true);assert.equal(assessment.counts.total,110);assert.equal(assessment.counts.passed,110);assert.equal(assessment.counts.skipped,0);assert.equal(Object.hasOwn(assessment,'failure'),false);});
+test('process assessment retains fixed 117 successful TAP evidence',()=>{const assessment=assessNativeStudioProcess({status:0,stdout:Buffer.from(tap()),error:undefined,signal:null});assert.equal(assessment.ok,true);assert.equal(assessment.counts.total,117);assert.equal(assessment.counts.passed,117);assert.equal(assessment.counts.skipped,0);assert.equal(Object.hasOwn(assessment,'failure'),false);});
 test('deferred process failure stays first if post-check later fails',()=>{const a=assessNativeStudioProcess({status:1,stdout:Buffer.from(tap()),error:undefined,signal:null});const d=createNativeStudioDiagnostics();d.enter('tests');d.capture(a.failure);d.enter('post-check');d.capture(thrownBy(()=>validateNativeStudioSources([])));assert.deepEqual(d.summary(),failed('tests','TAP_INVALID'));});
 
 import { validateSystemGitMetadata } from './native-studio-ci.mjs';
@@ -136,11 +150,11 @@ for(const [name,patch]of [
 ])test('fixed Git metadata rejects '+name,()=>assert.throws(()=>validateSystemGitMetadata({...systemGit(),...patch})));
 test('Git metadata acceptance does not relax workspace source hardlink policy',()=>{const r=sourceRecords();r[0].nlink=2;assert.throws(()=>validateNativeStudioSources(r));});
 
-function alignmentTap(n){return 'TAP version 13\n'+Array.from({length:n},(_,i)=>`ok ${i+1} - ${i===n-1?mandatory:'alignment-'+i}\n`).join('')+`1..${n}\n# tests ${n}\n# suites 0\n# pass ${n}\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n`;}
-test('latest alignment accepts exactly110 all-passed cases',()=>assert.equal(verifyNativeStudioTap(alignmentTap(110),0).passed,110));
-for(const count of [66,109,111])test('latest alignment rejects retired or incomplete count '+count,()=>assert.throws(()=>verifyNativeStudioTap(alignmentTap(count),0)));
-test('latest alignment accepts actual twenty-three fixed producers plus four synthetic self records',()=>assert.equal(validateNativeStudioSources(sourceRecords()).length,27));
-test('latest alignment rejects retired nineteen-record source subset',()=>{const r=sourceRecords().filter(x=>!['watch.mjs','watch.test.mjs','server-watch-drain.test.mjs','person-edits.mjs','person-merge.mjs','person-merge-worker.mjs','person-edits-worker-lifecycle.test.mjs','person-merge.test.mjs'].some(n=>x.path==='packages/openfilm/studio/server/'+n));assert.equal(r.length,19);assert.throws(()=>validateNativeStudioSources(r));});
+function alignmentTap(n){const names=Array.from({length:n-8},(_,i)=>'alignment-'+i).concat(extraGuardMandatory,[mandatory]);return 'TAP version 13\n'+names.map((name,i)=>`ok ${i+1} - ${name}\n`).join('')+`1..${n}\n# tests ${n}\n# suites 0\n# pass ${n}\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n`;}
+test('latest alignment accepts exactly117 all-passed cases',()=>assert.equal(verifyNativeStudioTap(alignmentTap(117),0).passed,117));
+for(const count of [66,116,118])test('latest alignment rejects retired or incomplete count '+count,()=>assert.throws(()=>verifyNativeStudioTap(alignmentTap(count),0)));
+test('latest alignment accepts actual thirty-five fixed producers plus four synthetic self records',()=>assert.equal(validateNativeStudioSources(sourceRecords()).length,39));
+test('latest alignment rejects retired nineteen-record source subset',()=>{const r=sourceRecords().filter(x=>!additionalQualifiedPaths.includes(x.path)).filter(x=>!['watch.mjs','watch.test.mjs','server-watch-drain.test.mjs','person-edits.mjs','person-merge.mjs','person-merge-worker.mjs','person-edits-worker-lifecycle.test.mjs','person-merge.test.mjs'].some(n=>x.path==='packages/openfilm/studio/server/'+n));assert.equal(r.length,19);assert.throws(()=>validateNativeStudioSources(r));});
 for(const name of ['watch.mjs','watch.test.mjs','server-watch-drain.test.mjs'])test('latest alignment refuses missing new producer '+name,()=>assert.throws(()=>validateNativeStudioSources(sourceRecords().filter(x=>x.path!=='packages/openfilm/studio/server/'+name))));
 test('latest alignment refuses raw versus blob mismatch on the actual watch producer',()=>{const r=sourceRecords();r.find(x=>x.path.endsWith('/watch.mjs')).raw=Buffer.from('changed raw\n');assert.throws(()=>validateNativeStudioSources(r));});
 test('latest alignment refuses unreviewed server bytes even when raw and blob agree',()=>{const r=sourceRecords(),server=r.find(x=>x.path.endsWith('/server.mjs'));server.raw=server.blob=Buffer.from('not the reviewed native caller\n');assert.throws(()=>validateNativeStudioSources(r));});
@@ -152,7 +166,7 @@ const workerEvidence = '# owned Worker evidence: created=18, actual exits=18, pe
 function workerTap(n=51) {return 'TAP version 13\n'+Array.from({length:n},(_,i)=>`# Subtest: ${workerMandatory[i]??'worker-case-'+i}\nok ${i+1} - ${workerMandatory[i]??'worker-case-'+i}\n  ---\n  duration_ms: 1\n  type: test\n  ...\n`).join('')+workerEvidence+`\n1..${n}\n# tests ${n}\n# suites 0\n# pass ${n}\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1\n`;}
 for(const peak of [1,2,3,4])test('Worker TAP accepts fixed51 and actual-exit evidence peak '+peak,()=>{const got=verifyMergeWorkerTap(workerTap().replace('peak=3','peak='+peak),0);assert.equal(got?.total,51);assert.equal(got.passed,51);assert.equal(got.testNames.length,51);assert.deepEqual(got.workerEvidence,{created:18,actualExits:18,peak,finalAlive:0});assert.equal(Object.isFrozen(got),true);assert.equal(Object.isFrozen(got.workerEvidence),true);assert.equal(Object.isFrozen(got.testNames),true);});
 test('Worker TAP accepts CRLF only as line ending normalization',()=>assert.equal(verifyMergeWorkerTap(workerTap().replaceAll('\n','\r\n'),0)?.passed,51));
-for(const count of [18,33,50,52,110,161])test('Worker TAP rejects retired or non51 count '+count,()=>assert.throws(()=>verifyMergeWorkerTap(workerTap(count),0)));
+for(const count of [18,33,50,52,117,161])test('Worker TAP rejects retired or non51 count '+count,()=>assert.throws(()=>verifyMergeWorkerTap(workerTap(count),0)));
 for(const [name,change,exit=0] of [
  ['failed exit',s=>s,1],['null exit',s=>s,null],['string exit',s=>s,'0'],
  ['missing first mandatory',s=>s.replaceAll(workerMandatory[0],'other-one')],['missing second mandatory',s=>s.replaceAll(workerMandatory[1],'other-two')],
@@ -166,7 +180,7 @@ for(const [name,line] of [
 ])test('Worker evidence refuses '+name,()=>assert.throws(()=>verifyMergeWorkerTap(workerTap().replace(workerEvidence,line),0)));
 test('Worker TAP refuses caller expected-count or evidence policy overrides',()=>{assert.throws(()=>verifyMergeWorkerTap(workerTap(),0,{expected:51}));assert.throws(()=>verifyMergeWorkerTap(workerTap(33),0,{expected:33}));assert.throws(()=>verifyMergeWorkerTap(Buffer.from(workerTap()),0));assert.throws(()=>verifyMergeWorkerTap('x'.repeat(8*1024*1024+1),0));});
 for(const [name,patch] of [['exit',{status:1}],['missing exit',{status:null}],['signal',{signal:'SIGTERM'}],['process error',{error:new Error('PRIVATE_SENTINEL')}],['invalid TAP',{stdout:Buffer.from('invalid')}],['forged evidence',{stdout:Buffer.from(workerTap().replace('exits=18','exits=17'))}]])test('Worker process preserves a deferred failed receipt for '+name,()=>{const result=assessMergeWorkerProcess({status:0,signal:null,stdout:Buffer.from(workerTap()),...patch});assert.equal(result?.ok,false);assert.deepEqual(Object.keys(formatNativeStudioFailure('worker-tests',result.failure)),['status','phase','code']);assert.equal(formatNativeStudioFailure('worker-tests',result.failure).phase,'worker-tests');});
-test('Worker process assessment retains51 without changing Native110',()=>{const r=assessMergeWorkerProcess({status:0,signal:null,stdout:Buffer.from(workerTap())});assert.equal(r?.ok,true);assert.equal(r.counts.passed,51);assert.equal(assessNativeStudioProcess({status:0,signal:null,stdout:Buffer.from(tap())}).counts.passed,110);assert.equal(Object.hasOwn(r,'failure'),false);});
+test('Worker process assessment retains51 without changing Native117',()=>{const r=assessMergeWorkerProcess({status:0,signal:null,stdout:Buffer.from(workerTap())});assert.equal(r?.ok,true);assert.equal(r.counts.passed,51);assert.equal(assessNativeStudioProcess({status:0,signal:null,stdout:Buffer.from(tap())}).counts.passed,117);assert.equal(Object.hasOwn(r,'failure'),false);});
 test('Worker failure stays first when final source check fails',()=>{const d=createNativeStudioDiagnostics(),a=assessMergeWorkerProcess({status:0,signal:null,stdout:Buffer.from(workerTap().replace('exits=18','exits=17'))});assert.equal(a?.ok,false);d.enter('worker-tests');d.capture(a.failure);d.enter('worker-post-check');d.capture(thrownBy(()=>validateNativeStudioSources([])));assert.deepEqual(d.summary(),failed('worker-tests','WORKER_EVIDENCE'));});
 test('forged Worker evidence errors cannot claim module diagnostic identity',()=>assert.deepEqual(formatNativeStudioFailure('worker-tests',new Error('WORKER_EVIDENCE')),failed('worker-tests','UNEXPECTED')));
 for(const phase of ['worker-directory','worker-tests','worker-post-check','worker-result'])test('diagnostics admit only reviewed Worker phase '+phase,()=>{const d=createNativeStudioDiagnostics();d.enter(phase);d.capture(thrownBy(()=>validateNativeStudioSources([])));assert.deepEqual(d.summary(),failed(phase,'SOURCE_SET'));});
@@ -179,7 +193,7 @@ test('Worker environment rejects policy override and overlong derived namespace'
 test('different Worker attempts cannot share scratch',()=>{const a=deriveMergeWorkerEnvironment(context(),'C:\\Windows'),b=deriveMergeWorkerEnvironment({...context(),GITHUB_RUN_ATTEMPT:'2'},'C:\\Windows');assert.equal(a?.scratch,expectedWorkerScratch);assert.notEqual(a.scratch,b.scratch);});
 const kernelNames=['person-edits.mjs','person-merge.mjs','person-merge-worker.mjs','person-edits-worker-lifecycle.test.mjs','person-merge.test.mjs'];
 for(const name of kernelNames)for(const kind of ['missing','changed raw','changed raw and blob','hardlink'])test('Worker source pin refuses '+kind+' '+name,()=>{const r=sourceRecords(),p='packages/openfilm/studio/server/'+name,i=r.findIndex(x=>x.path===p);assert.notEqual(i,-1);if(kind==='missing')r.splice(i,1);if(kind==='changed raw')r[i].raw=Buffer.from('changed\n');if(kind==='changed raw and blob')r[i].raw=r[i].blob=Buffer.from('changed\n');if(kind==='hardlink')r[i].nlink=2;assert.throws(()=>validateNativeStudioSources(r));});
-test('Worker source policy rejects the retired22-record source set',()=>{const r=sourceRecords().filter(x=>!kernelNames.some(n=>x.path==='packages/openfilm/studio/server/'+n));assert.equal(r.length,22);assert.throws(()=>validateNativeStudioSources(r));});
+test('Worker source policy rejects the retired22-record source set',()=>{const r=sourceRecords().filter(x=>!additionalQualifiedPaths.includes(x.path)).filter(x=>!kernelNames.some(n=>x.path==='packages/openfilm/studio/server/'+n));assert.equal(r.length,22);assert.throws(()=>validateNativeStudioSources(r));});
 
 // Reviewed literal names, independently compared with the pinned source below.
 // These fixtures do not import or execute either native test module.
@@ -273,7 +287,7 @@ const nativeUndoName='the store: an undo is a write like any other: 1 → 4 → 
 for(const [label,name] of [
  ['other Unicode','worker-雪'],['lookalike arrow',nativeUndoName.replace('→','➜')],['variation selector',nativeUndoName+'\uFE0F'],['zero width',nativeUndoName+'\u200B'],['normalization lookalike',nativeUndoName.replace('1','１')],['control',nativeUndoName+'\u001b'],['newline',nativeUndoName+'\ninjected'],['trailing space',nativeUndoName+' '],['prefix', 'x'+nativeUndoName],['nonliteral arrow name','another undo 1 → 4']
 ])test('native name exception remains closed for '+label,()=>assert.throws(()=>verifyMergeWorkerTap(workerTap().replaceAll('worker-case-2',name),0)));
-test('Native110 does not inherit the Worker-only native Unicode exception',()=>assert.throws(()=>verifyNativeStudioTap(tap().replaceAll('case-0',nativeUndoName),0)));
+test('Native117 does not inherit the Worker-only native Unicode exception',()=>assert.throws(()=>verifyNativeStudioTap(tap().replaceAll('case-0',nativeUndoName),0)));
 for(const source of ["test(name,()=>{});","test(`unknown`,()=>{});","test('escaped\\nname',()=>{});","test('supported',()=>{});\ntest(dynamic,()=>{});"])
  test('native source extraction fails closed for unsupported form '+JSON.stringify(source),()=>assert.throws(()=>sourceWorkerNames(source)));
 
@@ -305,7 +319,7 @@ for(const post of ['unknown','passed','failed'])test('Worker first diagnostic su
 test('successful Worker assessment still provides evidence on a genuine later post-check failure',()=>{
  const {assessment,error}=observedFailure(observedResult({status:0,stdout:Buffer.from(workerTap())}),'failed');
  assert.equal(assessment.ok,true);assert.deepEqual(formatNativeStudioFailure('unknown',error),failed('worker-post-check','SOURCE_SET'));assert.equal(cli(error).workerEvidence.tap.pass,51);assert.equal(cli(error).workerEvidence.postCheck,'failed');
- assert.equal(Object.hasOwn(cli(error).workerEvidence,'native'),false,'no unverified caller Native110 claim is emitted');
+ assert.equal(Object.hasOwn(cli(error).workerEvidence,'native'),false,'no unverified caller Native117 claim is emitted');
 });
 test('completed post-check cannot be retroactively changed and stale wrapper snapshots stay immutable',()=>{
  const {d,error}=observedFailure();d.enter('worker-post-check');d.workerPostCheck(new Error('PRIVATE_SENTINEL'));d.workerPostCheck();
@@ -397,4 +411,23 @@ test('Worker file deadline matches the native package command without raising ou
  assert.match(worker,/child\(process\.execPath,\['--test','--test-reporter=tap','--test-concurrency=1','--test-timeout=600000',\.\.\.WORKER_TESTS\],context\.workspace,worker\.env,180_000\)/);
  assert.match(worker,/maxBuffer:8\*1024\*1024/);
  assert.match(workflow,/timeout-minutes:\s*12\b/);
+});
+
+
+test('qualified native chain count is exactly117 with all newly qualified guard cases',()=>{
+ const extra=['desktop controlled reservation admits only its private scope and validates every nested native operation',...['default-profile','explicit-priority','ordinary-no-profile','malformed-profile','reader-bound','reservation-bound'].map(k=>'isolated coordination '+k+' keeps actual registry in its bound original namespace')];
+ const names=Array.from({length:109},(_,i)=>'current-case-'+i).concat(extra,[mandatory]);
+ assert.equal(names.length,117);
+ const value='TAP version 13\n'+names.map((n,i)=>'ok '+(i+1)+' - '+n+'\n').join('')+'1..117\n# tests 117\n# suites 0\n# pass 117\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n';
+ const result=verifyNativeStudioTap(value,0);assert.equal(result.passed,117);
+ for(const name of extra)assert.throws(()=>verifyNativeStudioTap(value.replace(name,'unqualified-missing-case'),0));
+});
+
+
+test('current CI guard cases receive a fresh original-family bound root before native execution',()=>{
+ const text=readFileSync(new URL('./native-studio-ci.mjs',import.meta.url),'utf8');
+ assert.match(text,/native-guard-isolation/);assert.match(text,/attempt-.*GITHUB_RUN_ID.*GITHUB_RUN_ATTEMPT/);
+ assert.match(text,/guardRoot.length<=140/);assert.match(text,/ORANGE_GUARD_TEST_ROOT:guardRoot/);
+ assert(text.indexOf('guardRoot.length<=140')<text.indexOf('for(const q of [owned('));
+ assert(text.indexOf('ORANGE_GUARD_TEST_ROOT:guardRoot')<text.indexOf("...TESTS],context.workspace,env"));
 });

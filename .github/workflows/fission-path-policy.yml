@@ -1,7 +1,7 @@
 name: Fission Windows path policy and controlled IO
 on:
   push:
-    branches: [codex/t05-path-policy]
+    branches: [codex/native-chain-ci]
     paths:
       - .github/workflows/fission-path-policy.yml
       - scripts/fission-path-ci.mjs
@@ -11,11 +11,11 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: fission-path-policy-codex-t05-path-policy
+  group: fission-path-policy-codex-native-chain-ci
   cancel-in-progress: false
 jobs:
   pure-path-policy:
-    if: github.repository == 'jerry-halo2026/orange' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/t05-path-policy'
+    if: github.repository == 'jerry-halo2026/orange' && github.event.repository.visibility == 'public' && github.ref == 'refs/heads/codex/native-chain-ci'
     runs-on: windows-2025
     timeout-minutes: 12
     env:

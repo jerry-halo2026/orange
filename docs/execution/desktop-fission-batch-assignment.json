@@ -1,7 +1,7 @@
 {
   "taskId": "T03.batch",
   "parentTask": "T03",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root/desktop_login_integration",
   "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
@@ -10,7 +10,8 @@
   "dependencyCommits": [
     "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
     "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
-    "f9c8766a636cc908a972cd4c7af75b38880cd056"
+    "f9c8766a636cc908a972cd4c7af75b38880cd056",
+    "7ca816c951d74afc59c17de96c1b1f11ee10287b"
   ],
   "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
   "branch": "codex/desktop-fission-batches",
@@ -103,13 +104,7 @@
       "packages/openfilm/studio/server/server.mjs",
       "packages/openfilm/studio/ui/src/components/ProjectView.tsx"
     ],
-    "activeCards": [
-      {
-        "path": "docs/execution/fission-business-handoff-assignment.json",
-        "assignmentRevision": 1,
-        "sha256": "64f83ae428a81984e53cf18ddc440e44edd05bfffc4b7422d17516d2538a97c7"
-      }
-    ],
+    "activeCards": [],
     "dependencies": [
       {
         "taskId": "T01",
@@ -221,19 +216,9 @@
       },
       {
         "taskId": "T06.dispatch",
-        "commit": "0f4be7c8300c0c3e35c8c7cccd4002fff7ab96f9",
+        "commit": "7ca816c951d74afc59c17de96c1b1f11ee10287b",
         "authorAgent": "/root/fission_studio_integration",
         "source": [
-          {
-            "path": "apps/api/src/fission-dispatch.ts",
-            "sha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45",
-            "gitBlobSha256": "f194eb67ee5b3ead6c5f74e0309521b8c2a3e8d4e114f148762950454e794d45"
-          },
-          {
-            "path": "apps/api/src/server.ts",
-            "sha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749",
-            "gitBlobSha256": "137c2e7a8fb437b72f237ac93febb8d311f8e04e42628f43d4d8d01d8247d749"
-          },
           {
             "path": "apps/api/src/admission.ts",
             "sha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3",
@@ -242,20 +227,20 @@
         ],
         "fixtures": [
           {
-            "path": "apps/api/src/fission-dispatch.test.ts",
-            "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
-            "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
-          },
-          {
             "path": "apps/api/src/business.test.ts",
             "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
             "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+          },
+          {
+            "path": "apps/api/src/fission-dispatch.test.ts",
+            "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
+            "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
           }
         ],
         "review": {
-          "path": "docs/execution/desktop-batches-T06-dispatch-review.json",
-          "sha256": "043c923fa1e73ec5c6b48e18fcb44e26bc74aa8285bd85792ca3548599bd4f57",
-          "gitBlobSha256": "043c923fa1e73ec5c6b48e18fcb44e26bc74aa8285bd85792ca3548599bd4f57"
+          "path": "docs/execution/desktop-batches-core-input-review-v2.json",
+          "sha256": "36160be9410d9217a8c4afc008e8337077e62c2f2458fc2dcb1f39afab690607",
+          "gitBlobSha256": "36160be9410d9217a8c4afc008e8337077e62c2f2458fc2dcb1f39afab690607"
         }
       },
       {
@@ -290,6 +275,40 @@
           "path": "docs/execution/desktop-batches-T03-material-review.json",
           "sha256": "ebe5debbf4f990505772380bbd87e43fc486438d24a3e64151ff47b2cf5bb2fd",
           "gitBlobSha256": "ebe5debbf4f990505772380bbd87e43fc486438d24a3e64151ff47b2cf5bb2fd"
+        }
+      },
+      {
+        "taskId": "T06.handoff",
+        "commit": "7ca816c951d74afc59c17de96c1b1f11ee10287b",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "apps/api/src/fission-dispatch.ts",
+            "sha256": "25a072223c85ce812eecb079f6faf49afc079f7a7fc7528ae15de00d090c549f",
+            "gitBlobSha256": "25a072223c85ce812eecb079f6faf49afc079f7a7fc7528ae15de00d090c549f"
+          },
+          {
+            "path": "apps/api/src/server.ts",
+            "sha256": "954e2cfbec78a87e465c6a70e22659f790edfe3b30d719ecf465574d87bbdb1e",
+            "gitBlobSha256": "954e2cfbec78a87e465c6a70e22659f790edfe3b30d719ecf465574d87bbdb1e"
+          },
+          {
+            "path": "apps/api/src/fission-handoff.ts",
+            "sha256": "f997bc044c0f69337b26ca7e0bb516d4d7786012a61b7da579434aba22f5fd63",
+            "gitBlobSha256": "f997bc044c0f69337b26ca7e0bb516d4d7786012a61b7da579434aba22f5fd63"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/fission-handoff.test.ts",
+            "sha256": "a3d198f339af4095f67a5056b16b867d22cf57d55c2edb616774221170bad7a0",
+            "gitBlobSha256": "a3d198f339af4095f67a5056b16b867d22cf57d55c2edb616774221170bad7a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-batches-retirement-producer-review-v2.json",
+          "sha256": "9fc154ce55b8fd42dc49826f20a1a4a19be6bc0e3112e7972c378ecf6b76b76e",
+          "gitBlobSha256": "9fc154ce55b8fd42dc49826f20a1a4a19be6bc0e3112e7972c378ecf6b76b76e"
         }
       }
     ],
@@ -508,8 +527,18 @@
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD only selected scope nonauthor review/metadata/actualports/N5a then direct10 TDD",
+  "dispatchState": "Rev2 forward exact qualified producer inputs/positive retirement release only; client10 WIP preserved. HELD actualN5a after FF, then resume same author. No task restart/GUI/cloud approval.",
   "partialReadiness": {
+    "submitStatusCurrentFailclosedCancel": true,
+    "positiveRetirementConfirmationReady": true,
+    "releasedOnlyForQualifiedProducer": {
+      "sourceCommit": "3f8072f4986297c529543b1162cc7b1b8b04b069",
+      "reviewSHA256": "d5f937aa684c0422118f243f44c88b4e4a7cc7ff75b96140737f2614d4f99fb8",
+      "consumerMustBindRequestBatchAndWx": true
+    },
+    "newNativeClientRetirementNotYetTested": true
+  },
+  "previousPartialReadiness": {
     "submitStatusCurrentFailclosedCancel": true,
     "positiveRetirementConfirmationReady": false,
     "heldPart": "consume only independently qualified actual producer retirement receipt, no guessed success or fake mock-ready; only this positive branch waits",

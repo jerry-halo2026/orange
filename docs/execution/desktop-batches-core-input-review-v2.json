@@ -1,0 +1,47 @@
+{
+  "taskId": "T06.dispatch",
+  "commit": "7ca816c951d74afc59c17de96c1b1f11ee10287b",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/admission.ts",
+      "sha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3",
+      "gitBlobSha256": "e6a74f64adb3382e743896c49567af82a7e9e8398fb131dcbda4c2d9b11168b3"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/business.test.ts",
+      "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+    },
+    {
+      "path": "apps/api/src/fission-dispatch.test.ts",
+      "sha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076",
+      "gitBlobSha256": "d84db2c9821f1e414152c478ffc519c6e28bcd5e4529ac90b23ba507214ff076"
+    }
+  ],
+  "scope": "exact independently approved current producer inputs; UI10 positive retirement branch only now consumable",
+  "producerSource": "3f8072f4986297c529543b1162cc7b1b8b04b069",
+  "producerReviewSHA256": "d5f937aa684c0422118f243f44c88b4e4a7cc7ff75b96140737f2614d4f99fb8",
+  "contract": {
+    "cancel": {
+      "batchId": "same opaque ID",
+      "request": {
+        "projectId": "original ID",
+        "filmRev": "original16hex",
+        "idempotencyKey": "original private key"
+      },
+      "coordinatorIntentId": "non-null only actual wx ownership",
+      "confirmed": "only actual observed resources drained; no unknown marker/close failure"
+    }
+  },
+  "physicalDrainedNotBusinessReleased": true,
+  "noClientReportAuthority": true,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

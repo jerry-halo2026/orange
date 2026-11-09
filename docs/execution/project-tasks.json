@@ -519,10 +519,12 @@
         "T01",
         "T03",
         "T06.dispatch",
-        "T03.material"
+        "T03.material",
+        "T06.handoff"
       ],
       "externalGates": [],
-      "currentAssignment": "docs/execution/desktop-fission-batch-assignment.json"
+      "currentAssignment": "docs/execution/desktop-fission-batch-assignment.json",
+      "assignmentRevision": 2
     },
     {
       "id": "T05.root-role",

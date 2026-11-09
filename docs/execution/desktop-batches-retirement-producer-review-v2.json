@@ -1,0 +1,52 @@
+{
+  "taskId": "T06.handoff",
+  "commit": "7ca816c951d74afc59c17de96c1b1f11ee10287b",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/fission-dispatch.ts",
+      "sha256": "25a072223c85ce812eecb079f6faf49afc079f7a7fc7528ae15de00d090c549f",
+      "gitBlobSha256": "25a072223c85ce812eecb079f6faf49afc079f7a7fc7528ae15de00d090c549f"
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "954e2cfbec78a87e465c6a70e22659f790edfe3b30d719ecf465574d87bbdb1e",
+      "gitBlobSha256": "954e2cfbec78a87e465c6a70e22659f790edfe3b30d719ecf465574d87bbdb1e"
+    },
+    {
+      "path": "apps/api/src/fission-handoff.ts",
+      "sha256": "f997bc044c0f69337b26ca7e0bb516d4d7786012a61b7da579434aba22f5fd63",
+      "gitBlobSha256": "f997bc044c0f69337b26ca7e0bb516d4d7786012a61b7da579434aba22f5fd63"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/fission-handoff.test.ts",
+      "sha256": "a3d198f339af4095f67a5056b16b867d22cf57d55c2edb616774221170bad7a0",
+      "gitBlobSha256": "a3d198f339af4095f67a5056b16b867d22cf57d55c2edb616774221170bad7a0"
+    }
+  ],
+  "scope": "exact independently approved current producer inputs; UI10 positive retirement branch only now consumable",
+  "producerSource": "3f8072f4986297c529543b1162cc7b1b8b04b069",
+  "producerReviewSHA256": "d5f937aa684c0422118f243f44c88b4e4a7cc7ff75b96140737f2614d4f99fb8",
+  "contract": {
+    "cancel": {
+      "batchId": "same opaque ID",
+      "request": {
+        "projectId": "original ID",
+        "filmRev": "original16hex",
+        "idempotencyKey": "original private key"
+      },
+      "coordinatorIntentId": "non-null only actual wx ownership",
+      "confirmed": "only actual observed resources drained; no unknown marker/close failure"
+    }
+  },
+  "physicalDrainedNotBusinessReleased": true,
+  "noClientReportAuthority": true,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

@@ -1,7 +1,7 @@
 {
   "taskId": "T03.business",
   "parentTask": "T03",
-  "assignmentRevision": 2,
+  "assignmentRevision": 3,
   "status": "active",
   "authorAgent": "/root/desktop_login_integration",
   "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
@@ -62,6 +62,16 @@
     {
       "kind": "port",
       "value": 18562,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18551,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18552,
       "exclusive": true
     }
   ],
@@ -295,7 +305,7 @@
     "forwardCorrection": "Only previously installed exact playwright-core package missing at E5 packages/openfilm level; explicit own directory junction added, no new package/version."
   },
   "runtime": {
-    "network": "only owned loopback fixture listeners18471/18472/18571/18572, no cloud/HTTP suppliers/models",
+    "network": "only owned loopback fixture listeners18471/18472/18551/18552/18561/18562/18571/18572; no cloud/HTTP suppliers/models",
     "files": "fresh own attempt only; preserve all old profiles/archives/artifacts",
     "processes": "original Node tests/types, no Electron UI/Edge/Harness/model/media/Docker worker launch",
     "limits": "60sec per test child,20MiB logs; timeout/forced exit recorded as failure, no fake preservation"
@@ -313,6 +323,14 @@
   "fullPilotAccepted": false,
   "dispatchState": "HELD native-consumed input review/tools metadata and actual freshN5a; branch already materialized fromverifieddev toqualified96d, no sourcewriter",
   "mechanicalResourceForward": {
+    "fromRevision": 2,
+    "reason": "Complete original listener inventory: unchanged desktopAuth utility/WS uses18551/18552; authService none/fission18561/62/newfixtures18571/72. Earlier missing pair not used.",
+    "independentReviewer": "/root/integration_review",
+    "sourceScopeUnchanged": 8,
+    "toolsUnchanged": 45,
+    "physicalDualStackAvailable": true
+  },
+  "priorMechanicalResourceForward": {
     "fromRevision": 1,
     "reason": "untouched original fission.test uses18561/18562; initial4leases omitted these old regression ports, no prior use approved",
     "independentReviewer": "/root/integration_review",

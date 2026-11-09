@@ -3,6 +3,7 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createAdmission,BusinessError} from './admission.ts';
 import {createSupabase,readConfiguration,type VerifiedSession} from './supabase.ts';
+import {createMaterials} from './materials.ts';
 
 type Admission=ReturnType<typeof createAdmission>;
 const send=(res:ServerResponse,status:number,body:unknown)=>{if(res.destroyed||res.writableEnded)return;res.writeHead(status,{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'});res.end(JSON.stringify(body));};
@@ -13,7 +14,7 @@ async function body(req:IncomingMessage):Promise<unknown>{
  try{return JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{throw new BusinessError('invalid-json');}
 }
 /** Trusted composition root only; HTTP/config cannot install a prepare/verifier/provider. */
-export function createApiServer({verify,admission}:{verify:(authorization:unknown)=>Promise<VerifiedSession>;admission:Admission}){
+export function createApiServer({verify,admission,materials}:{verify:(authorization:unknown)=>Promise<VerifiedSession>;admission:Admission;materials?:Awaited<ReturnType<typeof createMaterials>>}){
  let stopping=false,closing:Promise<void>|null=null;
  const entered=new Set<Promise<void>>();
  async function handle(req:IncomingMessage,res:ServerResponse){
@@ -21,6 +22,12 @@ export function createApiServer({verify,admission}:{verify:(authorization:unknow
   const path=new URL(req.url||'/','http://127.0.0.1').pathname;
   if(path==='/health'&&req.method==='GET')return send(res,200,{service:'orange-business',...admission.integration});
   const context=await verify(req.headers.authorization);
+  if(path==='/api/materials/local'&&req.method==='POST'){
+   if(!materials)throw new BusinessError('material-configuration-required',503);
+   if(req.headers['content-type']!=='application/octet-stream'||typeof req.headers['idempotency-key']!=='string'||typeof req.headers['x-material-name']!=='string')throw new BusinessError('invalid-input');
+   let name:string;try{name=decodeURIComponent(req.headers['x-material-name']);}catch{throw new BusinessError('invalid-input');}
+   return send(res,200,await materials.register(context,{key:req.headers['idempotency-key'],name},req));
+  }
   if(path==='/api/materials/resolve'&&req.method==='POST'){
    const value=await body(req) as any;
    if(!value||Object.keys(value).sort().join()!=='purpose,versionIds'||!Array.isArray(value.versionIds)||!['studio','fission','export'].includes(value.purpose))throw new BusinessError('invalid-input');
@@ -55,7 +62,7 @@ export function createApiServer({verify,admission}:{verify:(authorization:unknow
    stopping=true;if(closing)return closing;
    const active=[...entered];const network=server.listening?new Promise<void>((yes,no)=>server.close(error=>error?no(error):yes())):Promise.resolve();
    server.closeIdleConnections();
-   closing=Promise.all([...active,network]).then(()=>{});return closing;
+   closing=Promise.all([...active,network,materials?.close()]).then(()=>{});return closing;
   },
  };
 }
@@ -63,7 +70,7 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  try{
   if(process.env.NODE_TLS_REJECT_UNAUTHORIZED==='0')throw new BusinessError('configuration-required',503);
   const configuration=await readConfiguration(process.env.ORANGE_API_CONFIG_FILE),supabase=createSupabase(configuration);
-  const admission=createAdmission({rpc:supabase.rpc}),api=createApiServer({verify:supabase.verify,admission});
+  const admission=createAdmission({rpc:supabase.rpc}),materials=configuration.materialRoot?await createMaterials({environmentId:configuration.environmentId,materialRoot:configuration.materialRoot},{rpc:supabase.rpc}):undefined,api=createApiServer({verify:supabase.verify,admission,materials});
   await api.listen(configuration.port);
   const stop=()=>{void api.close().then(()=>{process.exitCode=0;},()=>{process.exitCode=1;});};process.once('SIGINT',stop);process.once('SIGTERM',stop);
   process.stdout.write(JSON.stringify({service:'orange-business',host:'loopback',port:configuration.port,...admission.integration})+'\n');

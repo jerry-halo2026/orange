@@ -197,4 +197,57 @@ END$$;
 REVOKE ALL ON ALL FUNCTIONS IN SCHEMA orange_business FROM PUBLIC,anon,authenticated;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA orange_business TO service_role;
 DO $$DECLARE f regprocedure;BEGIN FOR f IN SELECT p.oid::regprocedure FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='public' AND p.proname=ANY(ARRAY['orange_resolve_materials','orange_preflight','orange_freeze_claim','orange_claim_status','orange_start_attempt','orange_cancel_claim','orange_mark_unknown','orange_record_delivery']) LOOP EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC,anon,authenticated',f);EXECUTE format('GRANT EXECUTE ON FUNCTION %s TO service_role',f);END LOOP;END$$;
+-- Local byte ingestion records are not licenses, reviews, or reusable hash grants.
+CREATE TABLE orange_business.material_ingestions(
+ owner_id uuid NOT NULL,environment_id text NOT NULL,request_key text NOT NULL CHECK(length(request_key) BETWEEN 1 AND 120),request_hash text NOT NULL CHECK(request_hash~'^[a-f0-9]{64}$'),
+ asset_id uuid NOT NULL UNIQUE,version_id uuid NOT NULL UNIQUE,locator_id uuid NOT NULL UNIQUE,file_name text NOT NULL CHECK(file_name~'^source\.[a-z0-9]{1,8}$'),original_name text NOT NULL,
+ sha256 text NOT NULL CHECK(sha256~'^[a-f0-9]{64}$'),byte_length bigint NOT NULL CHECK(byte_length>0),file_identity jsonb NOT NULL,review_required boolean NOT NULL,
+ state text NOT NULL CHECK(state IN('preparing','registered')),probe jsonb,kind text,duration_sec float8,probe_revision bigint,PRIMARY KEY(owner_id,request_key));
+ALTER TABLE orange_business.material_ingestions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE orange_business.material_ingestions FORCE ROW LEVEL SECURITY;
+REVOKE ALL ON orange_business.material_ingestions FROM PUBLIC,anon,authenticated;
+GRANT SELECT,INSERT ON orange_business.material_ingestions TO service_role;
+GRANT UPDATE(state,probe,kind,duration_sec,probe_revision) ON orange_business.material_ingestions TO service_role;
+GRANT INSERT ON orange_business.assets,orange_business.asset_versions TO service_role;
+CREATE FUNCTION orange_business.ingestion_reply(r orange_business.material_ingestions) RETURNS jsonb LANGUAGE sql IMMUTABLE SET search_path=pg_catalog AS $$
+ SELECT jsonb_build_object('subjectId',r.owner_id,'environmentId',r.environment_id,'requestHash',r.request_hash,'assetId',r.asset_id,'versionId',r.version_id,'locatorId',r.locator_id,'fileName',r.file_name,'name',r.original_name,'sha256',r.sha256,'byteLength',r.byte_length,'identity',r.file_identity,'reviewRequired',r.review_required,'status',r.state,'kind',r.kind,'durationSec',r.duration_sec,'probeRevision',r.probe_revision,'probe',r.probe);
+$$;
+CREATE FUNCTION public.orange_begin_material(p_actor uuid,p_session uuid,p_until timestamptz,p_environment text,p_key text,p_payload jsonb) RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog AS $$
+DECLARE r orange_business.material_ingestions%ROWTYPE;h text;BEGIN
+ PERFORM orange_business.identity(p_actor,p_session,p_until);
+ IF p_environment IS NULL OR length(p_environment) NOT BETWEEN 1 AND 1024 OR p_key IS NULL OR length(p_key) NOT BETWEEN 1 AND 120 THEN RAISE EXCEPTION 'orange:invalid-input';END IF;
+ PERFORM orange_business.exact(p_payload,ARRAY['assetId','versionId','locatorId','fileName','name','sha256','byteLength','identity','requestHash','reviewRequired']);
+ PERFORM orange_business.exact(p_payload->'identity',ARRAY['dev','ino','size','mtimeNs','ctimeNs','nlink']);
+ IF p_payload->>'fileName'!~'^source\.[a-z0-9]{1,8}$' OR length(p_payload->>'name') NOT BETWEEN 1 AND 128 OR p_payload->>'sha256'!~'^[a-f0-9]{64}$' OR jsonb_typeof(p_payload->'reviewRequired')<>'boolean' OR orange_business.num(p_payload->'byteLength',1,536870912)<>trunc(orange_business.num(p_payload->'byteLength',1,536870912)) OR p_payload->'identity'->>'nlink'<>'1' OR (p_payload->'identity'->>'size')::bigint<>(p_payload->>'byteLength')::bigint THEN RAISE EXCEPTION 'orange:invalid-input';END IF;
+ h:=encode(sha256(orange_business.canonical(jsonb_build_object('name',p_payload->'name','sha256',p_payload->'sha256','byteLength',p_payload->'byteLength','reviewRequired',p_payload->'reviewRequired'))),'hex');
+ IF p_payload->>'requestHash' IS DISTINCT FROM h THEN RAISE EXCEPTION 'orange:invalid-input';END IF;
+ PERFORM pg_advisory_xact_lock(hashtextextended('material:'||p_actor::text||':'||p_key,0));
+ SELECT * INTO r FROM orange_business.material_ingestions WHERE owner_id=p_actor AND request_key=p_key FOR UPDATE;
+ IF FOUND THEN IF r.environment_id<>p_environment OR r.request_hash<>h THEN RAISE EXCEPTION 'orange:idempotency-conflict';END IF;PERFORM orange_business.identity(p_actor,p_session,p_until);RETURN orange_business.ingestion_reply(r)||jsonb_build_object('created',false);END IF;
+ INSERT INTO orange_business.material_ingestions VALUES(p_actor,p_environment,p_key,h,(p_payload->>'assetId')::uuid,(p_payload->>'versionId')::uuid,(p_payload->>'locatorId')::uuid,p_payload->>'fileName',p_payload->>'name',p_payload->>'sha256',(p_payload->>'byteLength')::bigint,p_payload->'identity',(p_payload->>'reviewRequired')::boolean,'preparing',NULL,NULL,NULL,NULL) RETURNING * INTO r;
+ PERFORM orange_business.identity(p_actor,p_session,p_until);RETURN orange_business.ingestion_reply(r)||jsonb_build_object('created',true);
+END$$;
+CREATE FUNCTION public.orange_finish_material(p_actor uuid,p_session uuid,p_until timestamptz,p_environment text,p_key text,p_hash text,p_result jsonb) RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog AS $$
+DECLARE r orange_business.material_ingestions%ROWTYPE;k text;d float8;BEGIN
+ PERFORM orange_business.identity(p_actor,p_session,p_until);PERFORM orange_business.exact(p_result,ARRAY['kind','durationSec','probeRevision','probe']);
+ k:=p_result->>'kind';d:=orange_business.num(p_result->'durationSec',0,1e12);
+ IF k NOT IN('video','still','sound') OR (k='still' AND d<>0) OR(k<>'still' AND d<=0) OR orange_business.integer(p_result->'probeRevision',1,1e6)<>1 OR jsonb_typeof(p_result->'probe')<>'object' THEN RAISE EXCEPTION 'orange:invalid-input';END IF;
+ SELECT * INTO r FROM orange_business.material_ingestions WHERE owner_id=p_actor AND request_key=p_key FOR UPDATE;
+ IF NOT FOUND OR r.environment_id<>p_environment OR r.request_hash<>p_hash THEN RAISE EXCEPTION 'orange:idempotency-conflict';END IF;
+ IF r.state='registered' THEN IF r.kind<>k OR r.duration_sec<>d OR r.probe<>p_result->'probe' THEN RAISE EXCEPTION 'orange:idempotency-conflict';END IF;PERFORM orange_business.identity(p_actor,p_session,p_until);RETURN orange_business.ingestion_reply(r);END IF;
+ INSERT INTO orange_business.assets(id,owner_id,source_kind,source_ref,active) VALUES(r.asset_id,p_actor,'local','local:'||r.locator_id::text,true);
+ INSERT INTO orange_business.asset_versions(id,asset_id,revision,sha256,kind,duration_sec,probe_revision,review_required) VALUES(r.version_id,r.asset_id,1,r.sha256,k,d,1,r.review_required);
+ UPDATE orange_business.material_ingestions SET state='registered',kind=k,duration_sec=d,probe_revision=1,probe=p_result->'probe' WHERE owner_id=p_actor AND request_key=p_key RETURNING * INTO r;
+ PERFORM orange_business.identity(p_actor,p_session,p_until);RETURN orange_business.ingestion_reply(r);
+END$$;
+CREATE FUNCTION public.orange_locate_material(p_actor uuid,p_session uuid,p_until timestamptz,p_environment text,p_version uuid,p_purpose text) RETURNS jsonb LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog AS $$
+DECLARE r orange_business.material_ingestions%ROWTYPE;permission jsonb;BEGIN
+ PERFORM orange_business.identity(p_actor,p_session,p_until);permission:=orange_business.material(p_actor,p_version,p_purpose);
+ SELECT * INTO r FROM orange_business.material_ingestions WHERE owner_id=p_actor AND environment_id=p_environment AND version_id=p_version AND state='registered' FOR SHARE;
+ IF NOT FOUND OR permission->>'contentSha256'<>r.sha256 OR (permission->>'probeRevision')::bigint<>r.probe_revision THEN RAISE EXCEPTION 'orange:material-unavailable';END IF;
+ PERFORM orange_business.identity(p_actor,p_session,p_until);RETURN orange_business.ingestion_reply(r);
+END$$;
+REVOKE ALL ON FUNCTION orange_business.ingestion_reply(orange_business.material_ingestions) FROM PUBLIC,anon,authenticated;
+GRANT EXECUTE ON FUNCTION orange_business.ingestion_reply(orange_business.material_ingestions) TO service_role;
+DO $$DECLARE f regprocedure;BEGIN FOR f IN SELECT p.oid::regprocedure FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='public' AND p.proname=ANY(ARRAY['orange_begin_material','orange_finish_material','orange_locate_material']) LOOP EXECUTE format('REVOKE ALL ON FUNCTION %s FROM PUBLIC,anon,authenticated',f);EXECUTE format('GRANT EXECUTE ON FUNCTION %s TO service_role',f);END LOOP;END$$;
 COMMIT;

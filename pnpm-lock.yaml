@@ -19,7 +19,11 @@ importers:
         specifier: 2.31.1
         version: 2.31.1(@types/node@24.19.2)
 
-  apps/api: {}
+  apps/api:
+    dependencies:
+      openfilm:
+        specifier: workspace:*
+        version: link:../../packages/openfilm
 
   apps/desktop:
     dependencies:

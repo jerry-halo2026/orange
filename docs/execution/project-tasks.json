@@ -468,6 +468,20 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/fission-mapping-assignment.json"
+    },
+    {
+      "id": "T06.dispatch",
+      "parentTask": "T06",
+      "status": "in_progress",
+      "scope": "Real trusted Node materialFD -> original CLI prepare once -> committed pure mapper -> originalIndex freshSQL claims/start -> one original CLI subset execute. Existing single prepareAndClaim remains compatible. Not a queue/JobDTO/Timeline, not delivery or full recovery completion.",
+      "dependsOn": [
+        "T01",
+        "T04.material",
+        "T06.mapping",
+        "T06.prepare"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-dispatch-assignment.json"
     }
   ],
   "umbrella": [

@@ -1,0 +1,40 @@
+{
+  "taskId": "T06.mapping",
+  "commit": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/src/fission-timing.mjs",
+      "sha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0",
+      "gitBlobSha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0"
+    },
+    {
+      "path": "packages/openfilm/studio/server/fission-import.mjs",
+      "sha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657",
+      "gitBlobSha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/fission-mapping.test.ts",
+      "sha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba",
+      "gitBlobSha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba"
+    }
+  ],
+  "scope": "qualified exact current source/fixtures reused as immediate original-CLI dispatcher inputs; no implementation/full pilot acceptance",
+  "evidence": {
+    "materialSource": "374ee238a0592fe61f71c9e98f35600092e1e2b1",
+    "materialReview": "24f7a5c5f1826aa242b07b7f44244bdc3351f208fd9fcff5e9e14a7c9d27a88d",
+    "mappingSource": "90565c507c3702a72002b4dd23f38cae07f1cba4",
+    "mappingReview": "f83a13bfbac944c67964a809374bdb532ddb46c25272a1b1841c4665441554e4",
+    "nativePrepareReview": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a",
+    "nativeSubsetReview": "8016ee83aec86e85606ae192108583a27232bcfbfe421110a7ad180ecccbbd1a",
+    "latestCombination44": true
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

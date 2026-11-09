@@ -1,0 +1,18 @@
+{
+  "root": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "links": [
+    {
+      "path": "apps/api/node_modules/openfilm",
+      "target": "E:/CodexData/worktrees/orange-t05-paths/orange/packages/openfilm",
+      "package": {
+        "name": "openfilm",
+        "version": "0.3.0",
+        "sha256": "374451a588d0975f4e8f31c4c9c3cfd41f77aed15d98e315154a7052c7dc3399"
+      }
+    }
+  ],
+  "scope": "only additional existing original workspace dependency directory link; no .bin/global/liveE4 alias or install; original45 links retained",
+  "network": false,
+  "installerScripts": false,
+  "overwrite": false
+}

@@ -1,0 +1,535 @@
+{
+  "taskId": "T06.dispatch",
+  "parentTask": "T06",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-reuse actual original CLI prepare/selected execute plus necessary business source-version/index orchestration; no new Job/Timeline/queue/framework",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/fission-business-dispatch",
+  "scope": "Real trusted Node materialFD -> original CLI prepare once -> committed pure mapper -> originalIndex freshSQL claims/start -> one original CLI subset execute. Existing single prepareAndClaim remains compatible. Not a queue/JobDTO/Timeline, not delivery or full recovery completion.",
+  "writeAllowlist": [
+    "apps/api/src/fission-dispatch.ts",
+    "apps/api/src/fission-dispatch.test.ts",
+    "apps/api/src/admission.ts",
+    "apps/api/src/server.ts",
+    "apps/api/sql/business.sql",
+    "apps/api/tests/postgres17.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18571,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18572,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18581,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18582,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18591,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18592,
+      "exclusive": true
+    },
+    {
+      "kind": "database",
+      "value": "owned874f16-postgres17-dispatch-new-own-tests",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T04.material",
+        "commit": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "apps/api/src/materials.ts",
+            "sha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16",
+            "gitBlobSha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16"
+          },
+          {
+            "path": "apps/api/src/supabase.ts",
+            "sha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116",
+            "gitBlobSha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/materials.test.ts",
+            "sha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5",
+            "gitBlobSha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5"
+          },
+          {
+            "path": "apps/api/src/business.test.ts",
+            "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+            "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-dispatch-T04-material-review.json",
+          "sha256": "f10489cb32332db8899054aba86df757dc2da133b12e63d0fca91e01459eb9d1",
+          "gitBlobSha256": "f10489cb32332db8899054aba86df757dc2da133b12e63d0fca91e01459eb9d1"
+        }
+      },
+      {
+        "taskId": "T06.mapping",
+        "commit": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "packages/openfilm/src/fission-timing.mjs",
+            "sha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0",
+            "gitBlobSha256": "5680d3ed9c3614ff157d254b6a7b8665cb0bc82d196659282b5ecc0bfb86fdb0"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fission-import.mjs",
+            "sha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657",
+            "gitBlobSha256": "e93e1e1a42f991cf025706add1fb2d9adb1ebe0306f5ce2979d2878e18b76657"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/fission-mapping.test.ts",
+            "sha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba",
+            "gitBlobSha256": "bf68a437d6c4ca6941b7c6f1742d0934af6f4f38f432eb30f3265e763797c9ba"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-dispatch-T06-mapping-review.json",
+          "sha256": "78271cb7decfbc27a33fdcb5bd62d143020d63780088b28c3f806aecf2470ba3",
+          "gitBlobSha256": "78271cb7decfbc27a33fdcb5bd62d143020d63780088b28c3f806aecf2470ba3"
+        }
+      },
+      {
+        "taskId": "T06.prepare",
+        "commit": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Cli/Program.cs",
+            "sha256": "c54e3f69c8fb78ef3da696f08da9cf58d8d9ec7efc48de54b4ed9abfc162a4f4",
+            "gitBlobSha256": "c54e3f69c8fb78ef3da696f08da9cf58d8d9ec7efc48de54b4ed9abfc162a4f4"
+          },
+          {
+            "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+            "sha256": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e",
+            "gitBlobSha256": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+            "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+            "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+            "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625",
+            "gitBlobSha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+            "sha256": "0d434b2d8232d48786e1e092470d1c52877e42d5684b9e92955c07f96d3b9326",
+            "gitBlobSha256": "0d434b2d8232d48786e1e092470d1c52877e42d5684b9e92955c07f96d3b9326"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+            "sha256": "466137f62b02881979f1e3ec9900723870c5aff22a4329311a31499cae01685a",
+            "gitBlobSha256": "466137f62b02881979f1e3ec9900723870c5aff22a4329311a31499cae01685a"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+            "sha256": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9",
+            "gitBlobSha256": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-dispatch-T06-prepare-review.json",
+          "sha256": "aec187a63b3e03548eab2dc643b1d8a0a7b1aeb531fdd54b8422da05b5ed6a44",
+          "gitBlobSha256": "aec187a63b3e03548eab2dc643b1d8a0a7b1aeb531fdd54b8422da05b5ed6a44"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+    "files": [
+      {
+        "path": "apps/api/src/admission.ts",
+        "sha256": "ebda49f7a78cda3f01ac8595d59dc0d3c2cd546978ad9b7e3bbd293a9bfaa76d",
+        "gitBlobSha256": "ebda49f7a78cda3f01ac8595d59dc0d3c2cd546978ad9b7e3bbd293a9bfaa76d"
+      },
+      {
+        "path": "apps/api/src/server.ts",
+        "sha256": "4d3d77167c860dcb8530d2f2e80430c59197de92556112f5646c9beadf1a5b3c",
+        "gitBlobSha256": "4d3d77167c860dcb8530d2f2e80430c59197de92556112f5646c9beadf1a5b3c"
+      },
+      {
+        "path": "apps/api/sql/business.sql",
+        "sha256": "7af9d2eb8329312a90c16d6f4f5c942e53e9e4551e2f582900b4e501b66c38c9",
+        "gitBlobSha256": "7af9d2eb8329312a90c16d6f4f5c942e53e9e4551e2f582900b4e501b66c38c9"
+      },
+      {
+        "path": "apps/api/tests/postgres17.test.mjs",
+        "sha256": "c1948ccb6d3778111d0d0af910b12e65587ecf7e56b00dbaf1760b9e00867a6b",
+        "gitBlobSha256": "c1948ccb6d3778111d0d0af910b12e65587ecf7e56b00dbaf1760b9e00867a6b"
+      }
+    ],
+    "newFiles": [
+      "apps/api/src/fission-dispatch.ts",
+      "apps/api/src/fission-dispatch.test.ts"
+    ],
+    "rule": "original API/single claims/body/reply, original authority/encoder/mapper and current SQL rights preserve; only bounded additive prepared-index gate/deadline metadata/test fixture-family changes"
+  },
+  "interfaceProposal": {
+    "privateFactory": "createFissionDispatcher({materials,admission,rpc,runtime,dispatchRoot}) with actual submit/status/cancel/close lifecycle; no pluggable fake prepare callback replacing real consumer.",
+    "additiveHttp": "Keep /api/fission/claims and its exact5field body/reply unchanged. Add dedicated /api/fission/batches POST + owner-bound status/cancel, installed only by trusted server startup.",
+    "batchRequest": {
+      "groupId": "existing group UUID lookup key, SQL determines membership",
+      "projectId": "original opaque native ID, never a filesystem root",
+      "filmRev": "original16hex revision",
+      "job": "original PascalCase FissionJob, CountN/other render settings preserved",
+      "idempotencyKey": "parent request key",
+      "sourceSelection": {
+        "video": [
+          {
+            "group": "existing native scene-group name, validated single path component / empty native root group",
+            "versionIds": [
+              "registered version IDs only as selection hints"
+            ]
+          }
+        ],
+        "audio": [
+          "existing sound version hints for AudioDir mode"
+        ],
+        "bgm": [
+          "sound version hints"
+        ],
+        "intro": [
+          "video version hints"
+        ],
+        "outro": [
+          "video version hints"
+        ]
+      }
+    },
+    "selectionMeaning": "No owner/approved/path/hash/FD/worker config/prepared fields accepted. UUIDs never grant access: use(ctx, unique IDs, fission, consumer) obtains and verifies real current owned material leases. No new material catalog or native project-format storage.",
+    "privateAdmission": "Append internal prepared-output claim operation reusing existing authority/contentParts/claimReply/RPC guards. Per-index child key is a deterministic hash of parent key + native Index (not a new random key); request fingerprint includes original complete batch body/source selection. Existing prepareAndClaim single-plan behavior preserved.",
+    "returnSemantics": "202 operation reference + original-index states/claim references. rendered-unverified is execution fact ONLY; executionReady/deliveryVerified never true before the next verifier. No raw server absolute artifact paths returned as access capabilities."
+  },
+  "actualConsumer": [
+    "Validate verified context, exact request/source-selection shape, native role/kind and group-component constraints. Fresh group/preflight gate before input work. Open an owned per-subject/environment/key attempt marker with wx before any worker. Same live request joins existing task; seen/uncertain receipt never reruns prepare.",
+    "Prepare phase calls actual materials.use for all explicitly selected input IDs. Copy bytes FROM leased FDs (not client paths), with abort checks, sync and hash/metadata checks into fresh inputs outside sibling worker writable root. Original FD stays provider-owned; close staged writable FD before C# read-only pinning. No normal material files modified.",
+    "Capture raw request job and effective original FissionJob separately. Only IO directory/OutDir adaptation is recorded; no new Job DTO, no Count1 rewrite. Write exact effectivejob file and original6paths config, run original CLI prepare via array argv/windowsHide/stdinEOF, await real exit+close. Persist complete immutable snapshot + native digest and job file hashes before any claim.",
+    "Build private tuple associations only for known staged destinations from material lease versionId + resolvedMeta. C# fileIdentity is copied verbatim ONLY from this actual prepare process Versions entry after path/SHA/stage-manifest checks; it was read on Windows by PreparedFileIdentity.GetFileInformationByHandle. Never synthesize it from Node ino/dev, a prior sample or client JSON.",
+    "Map each actual output.Index with committed mapPreparedFissionOutput using original request job/native projectId+rev and trusted associations. End initial use only after its fresh permission/FD post-check. No group claim from executed sidecar or fake measured/applied flags.",
+    "Each original Index gets deterministic idempotent fresh preflight/freeze_claim. Do not equate duplicate index0 with whole-batch duplicate. Only definite newly reserved/otherwise proven current own attempt outputs enter fresh start_attempt with recorded nonce. Returned frozen plan/contentKey must match the immutable mapped facts; unknown/denied mismatches never execute.",
+    "Reacquire materials.use for ONLY the union of actually admitted plans material IDs before execute, so excluded-only materials cannot invalidate accepted work after preparation. Recheck current metadata/rights, link lease signals and bounded verified-session/material-expiry cancellation. Use same original effectivejob/snapshot/digest and --outputs [original indices] once; no reroll/reselection/independent per-output workers.",
+    "Original CLI subset child stdinEOF cooperatively cancels; retain actual promises until exit+close and stream EOF, then allow provider FDs to close. Owner-bound close/status/cancel must drain real children and material operations. Preserve partial work and logs; mark actually uncertain attempts unknown when authority permits, else preserve local unconfirmed state. Never invent release or success.",
+    "On actual exit0, check the owned report/indices/artifact bounds and preserve the real MP4+edit-plan candidates. Stop at rendered-unverified: no record_delivery call, no history success, no Studio import/export claim until real verifier/native handoff is implemented."
+  ],
+  "persistenceBoundary": {
+    "minimumNow": "Owned wx request marker + raw/effective job pair + exact prepare snapshot/digest + per-index claim/nonces + actual child lifecycle are the no-reroll barrier. Existing marker after restart/uncertain transition returns needs-reconciliation, not automatic retry/release.",
+    "notClaimed": "No claim that a complete cross-host batch index/restart reconciliation UI/verified delivery ledger is done. Same coordinator root must retain its evidence; multiple-independent-host prepare races require a separate atomic admission decision if that deployment is introduced."
+  },
+  "generatedAndFx": {
+    "generated": "Preserve native generated CountN facts and files. New generated voice has no existing licensed material version merely because native origin proof exists. Missing real registration/review/license -> explicit authorization-pending, preserved same snapshot, no fake UUID or default license, no execution of those outputs. Actual origin-policy material registration/authorization remains necessary; do not silently replace generated with existing voice.",
+    "fx": "Preserve known intents; existing mapper source-tail pending and unknown ASS/GLSL cases remain explicit. Public standard runtime smoke may be no-FX, not a deletion of fullFX target."
+  },
+  "stopBoundary": "Actual original API batch request using real registered/licensed material FDs reaches same-decisions CountN subset MP4+sidecar files with real PG per-index claims/start and real CLI lifecycle. SQL claims remain running/unknown, not succeeded, until verified delivery.",
+  "necessaryNext": [
+    "Original native desktop material/version selection and approved batch bridge path, preserving project ownership/revision guards.",
+    "Original Studio import of verified original-source receipt, save/reopen/edit/export and trusted output verifier -> record_delivery.",
+    "Complete owner-bound persistent output/index recovery/reconciliation and real generated review/license/current-binding path.",
+    "Full FX/frame-tail/preview/target-machine/50-100/Goal17 gates remain pending, not scope-reduced."
+  ],
+  "rootRulings": [
+    {
+      "decision": "Accept additive owner-bound batches/sourceSelection as smallest planned business mapping. Preserve original native Job/settings/group semantics and old5field single /claims exactly.",
+      "why": "Current request has no versions and no existing trusted project->version selection producer. Deriving versions from raw client job paths/hash would grant the wrong thing; installing another unresolved selection callback would be a stub, not the requested real consumer."
+    },
+    {
+      "decision": "Six rather than four sources: extend only existing resolve_materials response with finite authNotAfter from original identity() result, recheck after any rights lock wait. Existing material notAfter already includes license/binding; no new schema/RPC/permission/secret or auth bypass. Keep old callers compatible.",
+      "why": "VerifiedSession contains JWT expiry only; auth.sessions.not_after can be earlier. Dispatcher must actually bound child EOF cancellation by min(real auth cutoff, applicable material/binding notAfter, original context), no invented grace/after-the-fact success. Supabase existing parser preserves extra fields so supabase/material sources remain immutable."
+    },
+    {
+      "decision": "Prepare maps every original output; missing registered generated origin or known unsupported/tail boundary marks only affected index pending/denied. Continue other independent permitted indices; full target stays pending, never Count1/wholebatch shrink."
+    }
+  ],
+  "requirements": [
+    "Validate verified context, exact request/source-selection shape, native role/kind and group-component constraints. Fresh group/preflight gate before input work. Open an owned per-subject/environment/key attempt marker with wx before any worker. Same live request joins existing task; seen/uncertain receipt never reruns prepare.",
+    "Prepare phase calls actual materials.use for all explicitly selected input IDs. Copy bytes FROM leased FDs (not client paths), with abort checks, sync and hash/metadata checks into fresh inputs outside sibling worker writable root. Original FD stays provider-owned; close staged writable FD before C# read-only pinning. No normal material files modified.",
+    "Capture raw request job and effective original FissionJob separately. Only IO directory/OutDir adaptation is recorded; no new Job DTO, no Count1 rewrite. Write exact effectivejob file and original6paths config, run original CLI prepare via array argv/windowsHide/stdinEOF, await real exit+close. Persist complete immutable snapshot + native digest and job file hashes before any claim.",
+    "Build private tuple associations only for known staged destinations from material lease versionId + resolvedMeta. C# fileIdentity is copied verbatim ONLY from this actual prepare process Versions entry after path/SHA/stage-manifest checks; it was read on Windows by PreparedFileIdentity.GetFileInformationByHandle. Never synthesize it from Node ino/dev, a prior sample or client JSON.",
+    "Map each actual output.Index with committed mapPreparedFissionOutput using original request job/native projectId+rev and trusted associations. End initial use only after its fresh permission/FD post-check. No group claim from executed sidecar or fake measured/applied flags.",
+    "Each original Index gets deterministic idempotent fresh preflight/freeze_claim. Do not equate duplicate index0 with whole-batch duplicate. Only definite newly reserved/otherwise proven current own attempt outputs enter fresh start_attempt with recorded nonce. Returned frozen plan/contentKey must match the immutable mapped facts; unknown/denied mismatches never execute.",
+    "Reacquire materials.use for ONLY the union of actually admitted plans material IDs before execute, so excluded-only materials cannot invalidate accepted work after preparation. Recheck current metadata/rights, link lease signals and bounded verified-session/material-expiry cancellation. Use same original effectivejob/snapshot/digest and --outputs [original indices] once; no reroll/reselection/independent per-output workers.",
+    "Original CLI subset child stdinEOF cooperatively cancels; retain actual promises until exit+close and stream EOF, then allow provider FDs to close. Owner-bound close/status/cancel must drain real children and material operations. Preserve partial work and logs; mark actually uncertain attempts unknown when authority permits, else preserve local unconfirmed state. Never invent release or success.",
+    "On actual exit0, check the owned report/indices/artifact bounds and preserve the real MP4+edit-plan candidates. Stop at rendered-unverified: no record_delivery call, no history success, no Studio import/export claim until real verifier/native handoff is implemented.",
+    "Only trusted startup may install concrete dispatcher; optional explicit ordinary private config file (e.g. ORANGE_FISSION_CONFIG_FILE) read by module/server, no HTTP config/plugin injection, client paths/worker grants, normal HOME or D/E defaults. Absent runtime affects only batch feature; old health/firstparty/single methods truth stays.",
+    "Known finite authorization deadline must be obtained from fresh real SQL response, validate units/UTC/expiry; link session/material lease/stop signals and timers to cooperative stdinEOF, retain real child/streams/probe promises until exit+close. Online loss/known revoke cannot be treated as a fresh grant; no speculative expiry from requested duration. Missing new cutoff in old remote deployment is unavailable, not fallback.",
+    "Append private preflight/freeze prepared-index admission using existing branded authority/contentParts/contentKey/claimReply guards; bind original complete body and sourceSelection plus originalIndex/deterministic childkey. A caller cannot inject prepared JSON over old/new HTTP. Fresh group check before stage, owner/authority on status and cancel, no filesystem paths as authorization.",
+    "Source staging uses real material provider FD reads, generated server filenames preserve actual kind and native group semantics, never original store deletion or node-owned close of provider FD. Hold/verify original versions across prepare; admit outputs independently, then reacquire only admitted closure before one same-snapshot subset execution.",
+    "Actual native Windows identity must be taken verbatim from this exact prepared snapshot after actual process provenance/stage byte validation, not fabricated from Nodeino or old sample. Full original CountN/job/snapshot/Digest/Indices remain unedited, IO relocation inverse explicit.",
+    "Minimum own durable wx no-reroll marker/jobs/native prepared snapshot/perIndex nonce+claim/lifecycle, bound environment+subject+request digest. Live replay joins actual entered task, restart/unknown existing marker remains reconciliation-needed; no false recovery success or automatic reroll/release. No extra crosshost queue/recovery framework.",
+    "Final actual report and source-sidecar/artifact paths ordinary owned/bounded and original indices agree. Report only rendered-unverified, no record_delivery/history success/Studio/import/equivalence claim or exposed raw path/capability. Missing genuine generated version/rights and FX/source-tail cases remain recoverable pending, not dropped goals.",
+    "TDD missing-feature RED; targeted source selection/owner/path/idem/partial duplicate/unknown/expiry/real EOF-drain. At least one actual local PG registered+licensed synthetic fixture -> actual native CLI CountN prepare -> perIndex claim/start -> subset actual MP4+sidecar with frame/audio/decode facts. No mock child output as real smoke. Preserve original single API/tests and scoped material/import semantics.",
+    "SQL changes only additive effective auth deadline response and required clock/session validation; real lock-wait and earlier auth cutoff tests, no weaker privileges/identity or old23 assertions. postgres17.test may accept exact new own family/DB only; no normal Docker config/oldDB mutation. Fresh full currentDDL on own new empty qualification DB before final proof.",
+    "No source/model/vendor/Supabase/private-media/GUI/Edge runtime. Own .dev/fission-dispatch/attempt-* only. Reuse exact pinned original CLI binaries and standard9; before launch actual file pins/source binding check, no install/rebuild/doctor/Web/stress/Bench/download. CPU testThreads1/UseNvencfalse/Count3 own tiny media<=4s, no private6/resources. This limits tests, not product CountN/FX/platform scope.",
+    "60s pure/test command and180s real tiny-media child cap/20MiB logs. If expiration/cancel occurs wait actual native stop and preserve files/unknowns, timeout never is success/drain. Own Docker exact874/image73bed/networknone/0ports/CPU1/768MiB only after Root inspected stopped handoff; inspect empty/new DB, preserve prior dumps, dump own new DB before stop.",
+    "Final freeze exact6 raw/canonical/source diff+actual exited process results/rights and expiry/loopback scope and explicit missing fullchain/GUI/delivery for nonauthor SPECQUALITY and Root freshN5a/serial integration. No author commit/spawn."
+  ],
+  "tooling": {
+    "path": "docs/execution/fission-dispatch-local-tools.json",
+    "sha256": "2f6a315cbd8df181da0390aed33db899b36d4ca9837b1900a5a5becea47b5746",
+    "onlyMissingOrdinaryParentsAndOneLocalWorkspaceJunction": true,
+    "noOverwrite": true
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "nativeBinaries": {
+    "bindingPath": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-subset/attempt-1794245396009-13448/real-media/binary-binding.json",
+    "bindingSHA256": "439521923c8ac007603f109a1998f7c144e9df3bcdbc51a814eb3f4cdf40ceb1",
+    "cliDirectory": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-subset/attempt-1794245396009-13448/build/bin/Fission.Cli/debug",
+    "files": [
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.AI.dll",
+        "sha256": "f2172eb80a54bcb251dc1adf66b2f70a49f20f2e4482b6fba464e0d9788ceef4"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.AI.pdb",
+        "sha256": "056557616e9ee6b993ff14ccdc357eca7cc7034bfad515b277ecb4188a29717a"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.deps.json",
+        "sha256": "bb97debce548899f480095f1b2a7df0aabf11e7fba33856705ffe6f5dff11df8"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.dll",
+        "sha256": "903fdd6021af35a515a99011a75e65803402a955c940be3b4d9f44fce44177cc"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.pdb",
+        "sha256": "7d29b30625d1f15a905402787dea1cabbc100302bc31757fdff2beae990447c4"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Cli.runtimeconfig.json",
+        "sha256": "79d12e54ac614d5fe8cdeb8849ab5f6568250bb7ac1c2647c2bce5876475f20e"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Core.dll",
+        "sha256": "bbd7a87a25a307398ce50393aa4b51250910f78e2392d55d8ed4a9ab4e9988d2"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Core.pdb",
+        "sha256": "d2bff500d10dbacc44590951f56afc08e840528d9d9edcfdff62debad06e7455"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Providers.dll",
+        "sha256": "d080c9d31c20c60f0267c92afe3f4257675ff5cc9a156916f5832a519d2cc3c4"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Providers.pdb",
+        "sha256": "3ace610e1f38ce573f4035b3386cdc714c2a589832e3e51a057c4a758fb67f1c"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Steps.dll",
+        "sha256": "37f31b720b90b9f64ee90b5a5224b5889e5aef0c28da70c8d6e55d061e337460"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\Fission.Steps.pdb",
+        "sha256": "08b0e4cd3a84d69e1b7a3ac17c69c60ba33203a30ce1bc0abb031404f0807feb"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\System.CodeDom.dll",
+        "sha256": "427c87ad526d5719ae178663e192f602d0bf7dd17a65c4c06f7a9be424d88345"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-subset\\attempt-1794245396009-13448\\build\\bin\\Fission.Cli\\debug\\System.Management.dll",
+        "sha256": "8c4760f2f49d7af9dc1e7db81f86cbf460e22cfabfd870ae28853130f365606b"
+      }
+    ],
+    "graphDocumentsValidated": true,
+    "sourceUnchangedThrough": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+    "beforeLaunchRevalidationRequired": true
+  },
+  "runtime": {
+    "files": "fresh .dev/fission-dispatch/attempt-* HOME/TMP/cache/stage/worker roots/journals/logs only",
+    "network": "leased loopback API only, exact owned PostgreSQL Dockerexec networknone; no realcloud/model/vendor",
+    "database": {
+      "containerId": "874f16ba79e58d1b115f3f896b647106566a0ea15277f4db0d519abb15c3f145",
+      "imageId": "sha256:73bedc9eaa0121b92b9b26bb52e5141b3f6f37479c7ef913c0160455763ca80a",
+      "scope": "new orange_dispatch_* tests DB, existing exact own dumps protected; no unknown restore/drop/prune/pull"
+    },
+    "dotnet": "existing installed official dotnet.exe, Root pin at handoff; no SDK install",
+    "media": "copy only already owned synthetic4sec video/WAV/PNG or create same tiny standard9 fixtures; no usermedia",
+    "models": 0
+  },
+  "sourceDraft": {
+    "path": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-dispatch/attempt-1794253345326-21556/fission-dispatch.DRAFT.json",
+    "sha256": "1cfc1b8344c7e0b4b4521865539273c4ea48a9c497c7f296efc047aeabab772e"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.c/T06 actual dispatcher",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD only metadata/current source tools + exact stopped Docker/dotnet/ports resources and actualN5a, then direct implementation; approved local scope no new product question"
+}

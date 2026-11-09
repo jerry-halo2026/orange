@@ -1,0 +1,45 @@
+{
+  "taskId": "T04.material",
+  "commit": "3f61aa83274bb4d007c8afbac6c72ec99b87bcd8",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/materials.ts",
+      "sha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16",
+      "gitBlobSha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16"
+    },
+    {
+      "path": "apps/api/src/supabase.ts",
+      "sha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116",
+      "gitBlobSha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/materials.test.ts",
+      "sha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5",
+      "gitBlobSha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5"
+    },
+    {
+      "path": "apps/api/src/business.test.ts",
+      "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+    }
+  ],
+  "scope": "qualified exact current source/fixtures reused as immediate original-CLI dispatcher inputs; no implementation/full pilot acceptance",
+  "evidence": {
+    "materialSource": "374ee238a0592fe61f71c9e98f35600092e1e2b1",
+    "materialReview": "24f7a5c5f1826aa242b07b7f44244bdc3351f208fd9fcff5e9e14a7c9d27a88d",
+    "mappingSource": "90565c507c3702a72002b4dd23f38cae07f1cba4",
+    "mappingReview": "f83a13bfbac944c67964a809374bdb532ddb46c25272a1b1841c4665441554e4",
+    "nativePrepareReview": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a",
+    "nativeSubsetReview": "8016ee83aec86e85606ae192108583a27232bcfbfe421110a7ad180ecccbbd1a",
+    "latestCombination44": true
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

@@ -1,0 +1,198 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 21,
+  "candidateId": "4d315f12d440880e395062f66a0d390620ae75144e2fcf84fe316a977a2d19f7",
+  "candidateCommit": "8db7aec35d788899dd97a46cf9c6a84a360d65d2",
+  "producerSourceCommit": "d70ff3567f1693787c12ad0b75bc1bda8d549dac",
+  "executor": "/root",
+  "modelAndEffort": "runtime unexposed/unattested",
+  "status": "approved_actual_independent_result_review",
+  "actualHost": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v26.13.0",
+    "osRelease": "10.0.26200"
+  },
+  "causalChat": {
+    "previousC20Diagnostics": 53,
+    "newOriginalConfigDiagnostics": 0,
+    "actualExitClose0": true,
+    "onlyOneExistingDeclaredDependencyEntryRestored": true,
+    "sourceUITypeConfigNoEdits": true,
+    "proofSHA256": "1b622bfe7c21c3dfecadd5bd777e96d979322bd6384dda5e705b7766845c2988"
+  },
+  "testWaves": {
+    "native880": {
+      "tests": 880,
+      "pass": 880,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "canonicalGitLFFetch64": {
+      "tests": 64,
+      "pass": 64,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "coreAggregate944": 944,
+    "countingNotice": "880 includes nested TAP cases, not flat880; 944 is sum of two actual finite waves, not whole project or admissions/causal repeats"
+  },
+  "legacy": {
+    "originalResourceAdapted17": 17,
+    "separateSafetyGuard": 1,
+    "inverseOriginalBytes": true,
+    "actualRunnerAndFileCloses": 2,
+    "unchangedOriginalFileExecution": false,
+    "proofSHA256": "8e742e2f93f2796a84ec8bae903975e6845b5d88eb251ac865535088d51e56a1"
+  },
+  "fourOriginalTypeProjects": [
+    {
+      "project": "packages/openfilm/studio/server",
+      "exitCode": 0,
+      "actualExitClose0": true,
+      "diagnostics": 0,
+      "configSHA256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "packages/openfilm/studio/ui",
+      "exitCode": 0,
+      "actualExitClose0": true,
+      "diagnostics": 0,
+      "configSHA256": "28e5ebf1bc70e76523d888b24e5865f8e7021aa835d109adfaa7e0d7e52b30a4",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "apps/desktop/chat",
+      "exitCode": 0,
+      "actualExitClose0": true,
+      "diagnostics": 0,
+      "configSHA256": "b0ee6438ab20d9433fff9f54301c629a817ad8c4ac7f655ffbda9d1bef6df088",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "project": "apps/desktop/shell",
+      "exitCode": 0,
+      "actualExitClose0": true,
+      "diagnostics": 0,
+      "configSHA256": "57851c0d76cb17014ed704f993eb00790988d15ec924269c81c77b8e81df5410",
+      "configUnchanged": true,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "Worker": {
+    "created": 18,
+    "actualExits": 18,
+    "peak": 3,
+    "finalAlive": 0,
+    "allActualThreadExits": true,
+    "receiptSHA256": "389c5735932bbcfe310da0ec34cb68af06e67b58eef6d48e1ab5868c57e0811c"
+  },
+  "Exports": {
+    "created": 10,
+    "actualExits": 10,
+    "actualCloses": 10,
+    "peak": 2,
+    "finalAlive": 0,
+    "allActualExitClose": true,
+    "receiptSHA256": "56bc967e0423991191f117fc97e4902563283ad216290fa78f3e4967a655e04d"
+  },
+  "failedSpawn": {
+    "attempts": 1,
+    "startedNode": 0,
+    "closes": 1,
+    "receiptSHA256": "621dc43b76285e4c1baf26b6398bdaa657299652a58f0e18573d38b035f86e89"
+  },
+  "preservation": {
+    "old27704Records": 27704,
+    "oldFilesDirectoriesAndLinksAllUnchanged": true,
+    "sourceFixtureRecords": 55,
+    "sourceFixtureUniquePaths": 53,
+    "reviewProofs": 2,
+    "actualRawGitMatched": true,
+    "prior43JunctionsAnd1311PinsAndCore106": true,
+    "ZodFull840": true,
+    "nativeWorkspaceAliasesToE3": true,
+    "noSourceTestsContractsConfigsWeakened": true,
+    "originalBudgetsAndAssertionsUnchanged": true
+  },
+  "leasedLoopbackPorts": [
+    18475,
+    18476,
+    18481,
+    18482
+  ],
+  "bothFamiliesBindCloseVerified": true,
+  "trustedN5a": {
+    "revision": 21,
+    "beforeRuntime": true,
+    "afterRuntime": true,
+    "eachActualPureCases": [
+      81,
+      3
+    ],
+    "checkerSHA256": "a56649bc301c6402d942dd094ae6cf9abe6399fc02decc5474d9b5db6c7731cd"
+  },
+  "preservedC20Failure": {
+    "candidate": "0b98a42270f0c7ff9f08e132cfca90e2bb33877e",
+    "desktopChatDiagnostics": 53,
+    "shellWasNotRun": true,
+    "immutableFailureReceipt": "docs/execution/t02-fetch-latest-integration-type-failure.json",
+    "notRetrospectivelyPassed": true
+  },
+  "originalFetchFreezePackages": [
+    {
+      "sha256": "e2f801d18e9fd4ce84c73bdba7c13f052038b24c1423f5d6b61bee826ec8c016",
+      "files": 199,
+      "unchanged": true
+    },
+    {
+      "sha256": "5fbcf1366cbeb1e22ab8abbbcf432c9653bcc4518b2f8c1d8850c7f0b310e818",
+      "files": 243,
+      "unchanged": true
+    },
+    {
+      "sha256": "356faa8e13ef542e04ec51b6c23f669252635977eee1f3db709610c256dc08e3",
+      "files": 116,
+      "unchanged": true
+    }
+  ],
+  "rawResultSHA256": "6282cf7cf47b250e0e32c57630823d9afefd57cd4f4c52a20a64ae2515d8abd1",
+  "rawManifestSHA256": "bc20a0ef706cf366448b7390ddcf3b5dde59c3faa4eb7147568bb1237957d6cb",
+  "countingBoundary": "944 actual tests across two finite waves; original17 adapter plus1 guard separately, fourtypes separately; causal/admission repeats not added; not whole project/fullpilot",
+  "review": {
+    "reviewerAgent": "/root/projects_admission_source_review",
+    "spec": "approved",
+    "quality": "approved",
+    "P1": 0,
+    "P2": 0
+  },
+  "sourceCodeTestsUIContractsConfigsEdited": false,
+  "onlyNewEnvironmentEntry": "one original declared Zod4.6.6 existing-package junction plus missing parent directory, no install/download/scripts/OS change; old43 entry bootstrap retained",
+  "devIntegrated": false,
+  "hostedNode22ForFetchCandidate": false,
+  "actualNativeDesktopE2EForThisCandidate": false,
+  "realAuth": false,
+  "realMedia": false,
+  "installerRecovery": false,
+  "macArm64Hardware": false,
+  "ownerN1": false,
+  "wholeBackgroundRetirement": false,
+  "cloudPush": false,
+  "productModelCalls": 0,
+  "approvedProductModelBudgetCNY": 50,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

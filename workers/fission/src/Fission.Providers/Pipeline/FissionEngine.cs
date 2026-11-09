@@ -254,7 +254,8 @@ public sealed class FissionEngine
         catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException or JsonException or FormatException)
         { throw new ConfigException("CFG_PREPARED_SOURCE_CHANGED", "A prepared native source or origin is missing, changed or unavailable."); }
         var items = runtime.SelectMany(r => r.Facts.SelectedVideos).Concat(runtime.Select(r => r.Audio)).DistinctBy(x => x.Path);
-        using var pool = new MaterialPool(items, NewOutput(Path.Combine(_policy.CacheRoot, "多场景素材缓存.ini")));
+        using var pool = new MaterialPool(items, NewOutput(Path.Combine(_policy.CacheRoot, "多场景素材缓存.ini")),
+            runtime.Select(row => row.Audio.Path).ToHashSet(StringComparer.Ordinal));
         foreach (var row in runtime.DistinctBy(r => r.Audio.Path)) pool.SetAudioUses(row.Audio.Path, job.AudioUses);
         using var nvencGate = new SemaphoreSlim(job.UseNvenc && _hasNvenc ? Math.Max(job.NvencGate, 1) : int.MaxValue);
         var outputs = new List<OutputResult>(); var watch = Stopwatch.StartNew();
@@ -923,7 +924,8 @@ public sealed class FissionEngine
         }
 
         var cacheIni = NewOutput(Path.Combine(_policy?.CacheRoot ?? _paths.WorkRoot, "多场景素材缓存.ini"));
-        var pool = new MaterialPool(items.Concat(audioItems), cacheIni);
+        var pool = new MaterialPool(items.Concat(audioItems), cacheIni,
+            audioItems.Select(audio => audio.Path).ToHashSet(StringComparer.Ordinal));
         foreach (var a in audioItems)
         {
             pool.SetAudioUses(a.Path, job.AudioUses);

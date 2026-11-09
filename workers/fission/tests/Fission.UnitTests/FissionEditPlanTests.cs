@@ -15,6 +15,37 @@ namespace Fission.UnitTests;
 // Real original RunAsync and BCL files; codecs/probe are explicitly synthetic.
 public sealed class FissionEditPlanTests
 {
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task PrepareAsync_RootVisualsRemainVisuals_WithSeparateVoiceAndUnchangedGroup(bool images)
+    {
+        var f = new Fixture();
+        var rootVisuals = Path.Combine(f.Root, "root-visuals"); Directory.CreateDirectory(rootVisuals);
+        var extension = images ? ".png" : ".mp4";
+        File.WriteAllText(Path.Combine(rootVisuals, "a" + extension), "synthetic root visual A");
+        File.WriteAllText(Path.Combine(rootVisuals, "b" + extension), "synthetic root visual B");
+        var job = f.Job(); job.VideoDir = rootVisuals; job.SceneGroups = null; job.Pick = PickRule.Sequential;
+        job.TransitionSec = 0; job.SubtitleEnabled = false; job.ImageDurMinSec = 2; job.ImageDurMaxSec = 2;
+        var prepared = await f.Engine.PrepareAsync(job);
+        var output = Assert.Single(prepared.Outputs);
+        Assert.Equal(f.Audio, output.Sources[output.Audio.Voice.Source].Path);
+        Assert.Equal(2, output.SelectedVideos.Count);
+        Assert.All(output.SelectedVideos, visual => { Assert.Equal(string.Empty, visual.Group); Assert.Equal(images, visual.IsImage); });
+        Assert.All(output.Cuts, cut => Assert.Equal(string.Empty, cut.Decision.Group));
+        var serialized = prepared.ToJson();
+        var report = await f.FreshEngine().ExecutePreparedAsync(job, prepared);
+        var delivered = Assert.Single(report.Outputs);
+        Assert.Equal(0, delivered.Index);
+        Assert.Equal(serialized, prepared.ToJson());
+        using var plan = JsonDocument.Parse(File.ReadAllText(delivered.EditPlanPath!));
+        var value = plan.RootElement;
+        var voice = value.GetProperty("sources")[value.GetProperty("audio").GetProperty("voice").GetProperty("source").GetInt32()];
+        Assert.Equal(f.Audio, voice.GetProperty("path").GetString());
+        Assert.All(value.GetProperty("visuals").EnumerateArray(), visual => Assert.Equal(string.Empty, visual.GetProperty("group").GetString()));
+    }
+
     [Fact]
     public async Task RunAsync_ActualChoicesBecomeEditableRecord_WithOriginalVoiceAndSharedCues()
     {

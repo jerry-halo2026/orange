@@ -51,6 +51,47 @@ public class AlignPlannerTests
 /// <summary>素材池消耗事务（ADR-002）：预留独占/确认计次/回滚/组合去重/并发零重复。</summary>
 public class MaterialPoolTests
 {
+
+    [Fact]
+    public void ExplicitAudioRole_RootVisualsStayVisual_AndRespectReservation()
+    {
+        var video = V("root.mp4", group: string.Empty);
+        var image = new MaterialItem("root.png", string.Empty, 0, IsImage: true);
+        var voice = A("voice.mp3");
+        using var pool = new MaterialPool([video, image, voice], null,
+            new HashSet<string>(StringComparer.Ordinal) { voice.Path });
+        Assert.Equal(2, pool.VideoAvailable); Assert.Equal(1, pool.AudioAvailable);
+        Assert.Equal(voice, Assert.Single(pool.List(a: true)));
+        Assert.Equal(2, pool.List(a: false).Count);
+        Assert.All(pool.List(a: false), item => Assert.Equal(string.Empty, item.Group));
+        pool.SetAudioUses(voice.Path, 1);
+        var reserved = pool.Reserve(voice, [video, image]);
+        Assert.False(pool.CheckAvailable(video.Path)); Assert.False(pool.CheckAvailable(image.Path));
+        pool.Release(reserved);
+        Assert.True(pool.CheckAvailable(video.Path)); Assert.True(pool.CheckAvailable(image.Path));
+    }
+
+    [Fact]
+    public void ExplicitAudioRole_ComesFromProducerRole_NotDisplayGroup()
+    {
+        var video = V("root.mp4", group: string.Empty);
+        var voice = new MaterialItem("voice.mp3", "label-only", 4);
+        using var pool = new MaterialPool([video, voice], null,
+            new HashSet<string>(StringComparer.Ordinal) { voice.Path });
+        Assert.Equal(voice, Assert.Single(pool.List(a: true)));
+        Assert.Equal(video, Assert.Single(pool.List(a: false)));
+    }
+
+    [Fact]
+    public void LegacyTwoArgumentConstructor_PreservesEmptyGroupAudioContract()
+    {
+        var voice = A("voice.mp3"); var video = V("named.mp4");
+        using var pool = new MaterialPool([voice, video], null);
+        Assert.Equal(voice, Assert.Single(pool.List(a: true)));
+        Assert.Equal(video, Assert.Single(pool.List(a: false)));
+        Assert.NotNull(typeof(MaterialPool).GetConstructor([typeof(IEnumerable<MaterialItem>), typeof(string)]));
+    }
+
     private static MaterialItem V(string path, double dur = 5, string group = "1组") => new(path, group, dur);
     private static MaterialItem A(string path, double dur = 10) => new(path, string.Empty, dur);
 

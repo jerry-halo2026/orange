@@ -45,9 +45,11 @@ public sealed class MaterialPool : IDisposable
     private bool _disposed;
 
 
-    private sealed class PoolEntry(MaterialItem item)
+    private sealed class PoolEntry(MaterialItem item, bool isAudio)
     {
         public MaterialItem Item { get; } = item;
+
+        public bool IsAudio { get; } = isAudio;
 
         public MaterialState State { get; set; } = MaterialState.Available;
 
@@ -58,10 +60,14 @@ public sealed class MaterialPool : IDisposable
 
     /// <summary>创建池。cacheIni=跨批次缓存文件（原版 多场景素材缓存.ini 同义，读入排除已消耗）。</summary>
     public MaterialPool(IEnumerable<MaterialItem> items, string? cacheIni = null)
+        : this(items, cacheIni, null) { }
+
+    /// <summary>Explicit producer roles; the original two-argument constructor remains binary/source compatible.</summary>
+    public MaterialPool(IEnumerable<MaterialItem> items, string? cacheIni, IReadOnlySet<string>? audioPaths)
     {
         foreach (var it in items)
         {
-            _items[it.Path] = new PoolEntry(it);
+            _items[it.Path] = new PoolEntry(it, audioPaths?.Contains(it.Path) ?? (it.Group.Length == 0));
         }
 
         _cacheIni = cacheIni ?? string.Empty;
@@ -74,7 +80,7 @@ public sealed class MaterialPool : IDisposable
     /// <summary>可用视频数。</summary>
     public int VideoAvailable => AvailableCount(a: false);
 
-    private int AvailableCount(bool a) { lock (_sync) { return _items.Values.Count(e => (e.Item.Group.Length == 0) == a && e.State == MaterialState.Available); } }
+    private int AvailableCount(bool a) { lock (_sync) { return _items.Values.Count(e => e.IsAudio == a && e.State == MaterialState.Available); } }
 
     /// <summary>开放预留数（并发监控）。</summary>
     public int OpenReservations { get { lock (_sync) { return _open.Count; } } }
@@ -84,7 +90,7 @@ public sealed class MaterialPool : IDisposable
     {
         lock (_sync)
         {
-            return _items.Values.Where(e => (e.Item.Group.Length == 0) == a).Select(e => e.Item).ToList();
+            return _items.Values.Where(e => e.IsAudio == a).Select(e => e.Item).ToList();
         }
     }
 
@@ -98,7 +104,7 @@ public sealed class MaterialPool : IDisposable
                 return false;
             }
 
-            if (e.Item.Group.Length == 0)
+            if (e.IsAudio)
             {
                 return e.State != MaterialState.Consumed && (e.UsesRemaining == 0 || e.ReservedCount < e.UsesRemaining);
             }

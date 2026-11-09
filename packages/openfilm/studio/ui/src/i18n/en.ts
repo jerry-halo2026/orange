@@ -9,6 +9,15 @@ const TRASH = typeof navigator !== 'undefined' && /^win/i.test(navigator.platfor
   : typeof navigator !== 'undefined' && /^mac/i.test(navigator.platform) ? 'the Trash' : 'the trash';
 
 export const en = {
+  material: {
+    register: 'Register with business service (upload)',
+    registering: 'Registering this file…',
+    registered: 'File registered. Current permission is checked when it is used.',
+    unknown: 'Registration is unconfirmed. The original file is kept; retry uses the same request.',
+    unavailable: 'Business service is not configured. Local import and editing are unchanged.',
+    stale: 'The source changed. Its old registration cannot authorize this file.',
+    unregistered: 'This file has not been registered.',
+  },
   nav: {
     projects: 'Projects',
     desktop: 'Desktop',

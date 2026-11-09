@@ -166,6 +166,8 @@ export interface MediaPoolProps {
    */
   onPick?: (title: string, folder: boolean) => Promise<string[] | 'no-dialog'>;
   onBring?: (paths: string[], folder: string, mode: 'copy' | 'link') => Promise<string[]>;
+  /** Explicit upload/registration only, never called by local pick/import. Registration is not permission. */
+  onRegister?: (path: string) => Promise<{ state: string }>;
   /** A link pointed at where its media is now (the person picks it), or copied into the project in its place. */
   onRelink?: (path: string, folder: boolean) => Promise<MediaResult>;
   onCollect?: (path: string) => Promise<MediaResult>;
@@ -215,6 +217,7 @@ export function MediaPool({
   onReveal,
   onPick,
   onBring,
+  onRegister,
   onRelink,
   onCollect,
   onSave,
@@ -243,6 +246,7 @@ export function MediaPool({
   const [confirm, setConfirm] = React.useState<{ targets: { path: string; folder: boolean }[]; name: string } | null>(null);
   const [uploads, setUploads] = React.useState<Upload[]>([]);
   const [notice, setNotice] = React.useState<string | null>(null);
+  const [registering, setRegistering] = React.useState<string | null>(null);
   const [dropTarget, setDropTarget] = React.useState<string | null>(null);
   const [osDrag, setOsDrag] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -572,6 +576,10 @@ export function MediaPool({
       { id: 'refer-sep', separator: true } as const,
     ] : []),
     ...commonEntries(file.path),
+    ...(scope === 'project' && onRegister && ['video','image','audio'].includes(file.kind) ? [{
+      id: 'register-material', label: t('material.register'), disabled: registering !== null,
+      onSelect: () => { setRegistering(file.path); setNotice(t('material.registering')); void onRegister(file.path).then(result => setNotice(t('material.' + result.state)), error => setNotice(error instanceof Error ? error.message : t('material.unknown'))).finally(() => setRegistering(null)); },
+    }] : []),
     ...(onSave ? [{ id: 'save', label: t('saved.add'), icon: <BookmarkPlus size={14} />, onSelect: () => onSave([file]) }] : []),
     { id: 'sep', separator: true } as const,
     ...linkEntries(file.path, false),

@@ -73,6 +73,13 @@ const exactState = (actual, kind, reason = null) => {
   assert.deepEqual(actual, { kind, reason });
   assert.ok(Object.isFrozen(actual));
 };
+
+test('material registration private capability sends actual binary only to the existing fixed endpoint without changing Auth6',async()=>{
+ let request;const h=setup(undefined,{deps:{business:{origin:'http://127.0.0.1:18621',bind:value=>request=value}}});await h.service.signIn(credentials());
+ const payload=Uint8Array.from([0,1,255,42]);let sent;
+ h.sequence.push(async(url,init)=>{assert.equal(url,'http://127.0.0.1:18621/api/materials/local');assert.equal(init.headers.authorization,'Bearer synthetic-access-sentinel');assert.equal(init.headers['content-type'],'application/octet-stream');assert.equal(init.headers['idempotency-key'],'00000000-0000-4000-8000-000000000003');assert.equal(init.headers['x-material-name'],encodeURIComponent('茶.wav'));assert.equal(init.duplex,'half');const chunks=[];for await(const chunk of init.body)chunks.push(Buffer.from(chunk));sent=Buffer.concat(chunks);return json({assetId:A,versionId:B,registration:'registered',licensed:false});});
+ const body=(async function*(){yield payload;})();const result=await request('register',{key:'00000000-0000-4000-8000-000000000003',name:'茶.wav',body},h.service.getVerifiedEvidence());assert.deepEqual(sent,Buffer.from(payload));assert.equal(result.status,200);assert.deepEqual(Object.keys(h.service).sort(),['dispose','getPublicState','getVerifiedEvidence','revalidate','signIn','signOut']);h.service.dispose();
+});
 const exactResult = (actual, ok, code, kind, reason = null) => {
   assert.deepEqual(Object.keys(actual).sort(), ['code', 'ok', 'state']);
   assert.ok(Object.isFrozen(actual));

@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\src\Fission.Core\Fission.Core.csproj" />
     <ProjectReference Include="..\..\src\Fission.Steps\Fission.Steps.csproj" />
     <ProjectReference Include="..\..\src\Fission.Providers\Fission.Providers.csproj" />
+    <ProjectReference Include="..\..\src\Fission.Cli\Fission.Cli.csproj" />
   </ItemGroup>
 
 </Project>

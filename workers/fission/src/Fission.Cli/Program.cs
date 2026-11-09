@@ -36,19 +36,31 @@ public static class Program
             return 2;
         }
 
-        var paths = LoadPaths();
-        using var pool = new ProcessPool();
+        var controlledRun = string.Equals(args[0], "run", StringComparison.OrdinalIgnoreCase);
         try
         {
+            if (controlledRun)
+            {
+                var configuration = EngineRunConfiguration.Load(args);
+                using var runPool = new ProcessPool();
+                return await RunFissionAsync(configuration, runPool).ConfigureAwait(false);
+            }
+
+            var paths = LoadPaths();
+            using var pool = new ProcessPool();
             return args[0].ToLowerInvariant() switch
             {
                 "doctor" => await RunDoctorAsync(paths, pool).ConfigureAwait(false),
                 "normalize" => await RunNormalizeAsync(paths, pool, args).ConfigureAwait(false),
-                "run" => await RunFissionAsync(paths, pool, args).ConfigureAwait(false),
                 "mkaudio" => await RunMkaudioAsync(paths, pool, args).ConfigureAwait(false),
                 "stress" => await RunStressAsync(paths, pool, args).ConfigureAwait(false),
                 _ => Unknown(args[0]),
             };
+        }
+        catch (ConfigException) when (controlledRun)
+        {
+            Console.Error.WriteLine("[Fission:CFG_ARGS] 混剪配置或任务无效；请提供完整的显式隔离参数。");
+            return 2;
         }
         catch (FissionException ex)
         {
@@ -163,78 +175,13 @@ public static class Program
         return args[i];
     }
 
-    private static async Task<int> RunFissionAsync(EnginePaths paths, ProcessPool pool, string[] args)
+    private static async Task<int> RunFissionAsync(EngineRunConfiguration configuration, ProcessPool pool)
     {
-        string? jobFile = null, video = null, audio = null, outDir = null;
-        var count = 3;
-        var threads = 4;
-        double? dur = null;
-        var audioUses = 1;
-        var split = "scene";
-        for (var i = 1; i < args.Length; i++)
-        {
-            switch (args[i])
-            {
-                case "--job": jobFile = Arg(args, ref i); break;
-                case "--video": video = Arg(args, ref i); break;
-                case "--audio": audio = Arg(args, ref i); break;
-                case "--out": outDir = Arg(args, ref i); break;
-                case "--count": count = int.Parse(Arg(args, ref i)); break;
-                case "--threads": threads = int.Parse(Arg(args, ref i)); break;
-                case "--dur": dur = double.Parse(Arg(args, ref i), CultureInfo.InvariantCulture); break;
-                case "--audio-uses": audioUses = int.Parse(Arg(args, ref i)); break;
-                case "--split": split = Arg(args, ref i); break;
-                default:
-                    Console.Error.WriteLine($"未知参数：{args[i]}");
-                    return 2;
-            }
-        }
-
-        FissionJob job;
-        if (jobFile is not null)
-        {
-            job = JsonSerializer.Deserialize<FissionJob>(await File.ReadAllTextAsync(jobFile).ConfigureAwait(false), JsonOpts) ?? new FissionJob();
-        }
-        else
-        {
-            if (video is null)
-            {
-                Console.Error.WriteLine("用法: fission run --video <素材目录> [--audio <配音目录>] [--count N --threads N --dur 秒 --split scene|avg|bysec|rand|none --audio-uses N --out 目录 | --job job.json]");
-                return 2;
-            }
-
-            job = new FissionJob
-            {
-                VideoDir = video,
-                AudioDir = audio,
-                Count = count,
-                Threads = threads,
-                TargetDurationSec = dur,
-                AudioUses = audioUses,
-                SplitMode = split.ToLowerInvariant() switch
-                {
-                    "avg" => SplitMode.AveragePieces,
-                    "bysec" => SplitMode.BySeconds,
-                    "rand" => SplitMode.RandomRange,
-                    "none" => SplitMode.None,
-                    _ => SplitMode.Scene,
-                },
-            };
-            if (audio is null)
-            {
-                job.GeneratedAudioCount = count;
-                job.GeneratedAudioDurationSec = dur ?? 15;
-            }
-
-            if (outDir is not null)
-            {
-                paths = paths with { OutRoot = Path.GetFullPath(outDir) };
-            }
-        }
-
+        var paths = configuration.Policy.Paths;
+        var job = configuration.Job;
         var hw = new HardwareDetector(paths, pool);
         var hwInfo = await hw.DetectAsync().ConfigureAwait(false);
-        var engine = new FissionEngine(paths, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), hwInfo.HasNvencH264 && job.UseNvenc);
+        var engine = new FissionEngine(configuration.Policy, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), hwInfo.HasNvencH264 && job.UseNvenc);
         var report = await engine.RunAsync(job).ConfigureAwait(false);
 
         Console.WriteLine($"═══ 任务完成 ═══");
@@ -446,10 +393,11 @@ public static class Program
     private static void PrintUsage()
     {
         Console.WriteLine("""
-            Fission CLI（M1：doctor / normalize）
+            Fission CLI
+              fission run --paths <只读引擎配置.json> --workspace <隔离根目录> --task <任务ID> --attempt <尝试ID> --job <任务.json>
               fission doctor
               fission normalize --in <源> --out <产物> [--w 1080 --h 1920 --fps 30] [--cpu] [--hwdec]
-            后续（M2+）：run / script / voice / step / mkaudio / bench
+            run 必须显式提供上述五项参数，不读取旧目录默认配置。
             """);
     }
 }

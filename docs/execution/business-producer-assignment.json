@@ -2,7 +2,7 @@
   "taskId": "T02.business",
   "parentTask": "T02.b",
   "alsoConsumesBusinessScope": "T02.c",
-  "assignmentRevision": 1,
+  "assignmentRevision": 2,
   "status": "active",
   "authorAgent": "/root/desktop_login_integration",
   "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
@@ -57,13 +57,16 @@
   ],
   "admission": {
     "sharedWriteGrants": [
-      "pnpm-lock.yaml"
+      "pnpm-lock.yaml",
+      "apps/api/fixtures/prepared-v1.json",
+      "apps/api/fixtures/dotnet/Canonical.csproj",
+      "apps/api/fixtures/dotnet/Program.cs"
     ],
     "activeCards": [
       {
-        "path": "docs/execution/fission-native-chain-assignment.json",
-        "assignmentRevision": 1,
-        "sha256": "74cdf5cb8e4632ccda8e6034038b29deb142ae76e731b9a5c56db0e00291a785"
+        "path": "docs/execution/fission-prepare-assignment.json",
+        "assignmentRevision": 3,
+        "sha256": "3c8e562d890f2e69e8966c1e0dce936577646d6dbc0eec160e071df1e71fa493"
       }
     ],
     "dependencies": [
@@ -286,5 +289,11 @@
   "productModelCallsAllowed": 0,
   "fullTaskAccepted": false,
   "fullPilotAccepted": false,
-  "dispatchState": "HELD exact one-package independent scope/input review, metadata, native E5 dev-derived branch/qualifiedsource and actual N5a; no writer yet"
+  "dispatchState": "HELD exact one-package independent scope/input review, metadata, native E5 dev-derived branch/qualifiedsource and actual N5a; no writer yet",
+  "mechanicalForward": {
+    "reason": "Original13 fixture paths already approved and frozen; explicit shared grants missing caused actual SHARED denial. Only those3 grants and actual peer snapshot updated, source13/inputs/resources unchanged.",
+    "independentReviewer": "/root/prepare_admission_review",
+    "sourceReviewStillBoundTo": "rev1/40842baf7bb8fa20f3e3a7d225b285dd8173b1da3225e8006cd161d13fe0b6a2; no retroactive assignment attestation",
+    "actualFreshN5aRequired": true
+  }
 }

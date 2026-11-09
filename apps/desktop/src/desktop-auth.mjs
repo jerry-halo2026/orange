@@ -10,6 +10,7 @@ const nativeServer=pathToFileURL(createRequire(import.meta.url).resolve('openfil
 const {createProjectAccessPolicy}=await import(new URL('./project-access.mjs',nativeServer));
 const {createProjectControlGuard,ordinaryControlPath}=await import(new URL('./project-control-guard.mjs',nativeServer));
 const {withProjectAuthority,withProjectControlGuard}=await import(new URL('./projects.mjs',nativeServer));
+const {withSourceAuthorization,sourceAccessError}=await import(new URL('../../src/media-links.mjs',nativeServer));
 
 const deny = (code = 'authentication-required') => Object.assign(new Error(code === 'project-access-denied' ? 'Project access is not available.' : 'Sign in is required.'), {code,status:403});
 const samePath = (a,b) => (process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b);
@@ -37,6 +38,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   const file=join(home,'orange-project-owners.json');
   let service=null,policy=null,verified=null,handles=new Map(),sealed=true,disposed=false,failed=false,retiring=null,retired=false,epoch=0;
   let reservation=null;
+  const selectedSources=new Map(), selections=new WeakMap();
   const operations=new Set();
   const listeners=new Set();
   const notify = state => {for(const listener of [dependencies.onState,...listeners])try{listener?.(Object.freeze({...state}));}catch{/* notification cannot grant authority */}};
@@ -60,17 +62,22 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     writeFileSync(temp,JSON.stringify({version:1,projects:items})+'\n',{flag:'wx',mode:0o600});renameSync(temp,file);
   }
   function fence(state) {
-    sealed=true;policy?.dispose();handles.clear();notify(state);
+    sealed=true;policy?.dispose();handles.clear();selectedSources.clear();notify(state);
     if(verified&&!retiring&&!retired)beginRetirement();
   }
   function beginRetirement() {
     if(retiring)return retiring;
     if(retired)return Promise.resolve();
-    sealed=true;policy?.dispose();handles.clear();
+    sealed=true;policy?.dispose();handles.clear();selectedSources.clear();
     // Assign the promise before invoking any trusted external callback.
     retiring=Promise.resolve().then(async()=>{
       await dependencies.retire();
-      await Promise.all([...operations]);
+      await Promise.all([...operations].map(operation=>operation.catch(error=>{
+        // A retired picker/source request may correctly deny. Its promise is
+        // already retired; do not mistake that expected outcome for failed IO preservation.
+        if(['authentication-required','project-access-denied','source-selection-required','source-access-denied','source-capability-unavailable'].includes(error?.code))return;
+        throw error;
+      })));
       reservation?.close();reservation=null;retired=true;
       dependencies.onRetired?.();
     }).catch(()=>{failed=true;notify(safeState('locked','preservation-failed'));}).finally(()=>{retiring=null;});
@@ -100,7 +107,9 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     if(!project||typeof project.id!=='string'||typeof project.path!=='string'||!isAbsolute(project.path))throw deny('project-access-denied');
     let root;try{root=realpathSync(project.path);}catch{throw deny('project-access-denied');}
     const record=loadOwners().find(r=>r.environmentId===evidence.environmentId&&r.projectId===project.id&&r.subjectId===evidence.subjectId&&samePath(r.root,root));
-    if(!record)throw deny('project-access-denied');return record;
+    if(!record)throw deny('project-access-denied');
+    for(const rel of ['film.html','.film','.film/id','.film/control.json','.film/cover.jpg','.film/cover.png','.film/cover.webp','.film/cover.gif'])ordinaryControlPath(join(root,rel));
+    return record;
   }
   function authorizeProject(project) {
     const evidence=assertActive();projectRecord(project);
@@ -113,6 +122,60 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     if(!policy.decide({environmentId,subjectId,instanceId,epoch,projectId:project.id},handle,'restricted').allowed)throw deny('project-access-denied');
     return true;
   }
+
+  const fingerprint = stat => [stat.dev,stat.ino,stat.size,stat.mtimeMs,stat.ctimeMs,stat.nlink].join(':');
+  const sourceKey = path => process.platform==='win32'?path.toLowerCase():path;
+  function sourceInfo(path,operation,evidence) {
+    if(assertActive()!==evidence)throw sourceAccessError();
+    if(typeof path!=='string'||!isAbsolute(path)||resolve(path)!==path)throw sourceAccessError();
+    try {
+      ordinaryControlPath(path);
+      const real=realpathSync.native(path),stat=lstatSync(real);
+      ordinaryControlPath(real);
+      const records=loadOwners();
+      const controlling=records.filter(r=>below(r.root,real)).sort((a,b)=>b.root.length-a.root.length)[0];
+      const own=controlling&&controlling.environmentId===evidence.environmentId&&controlling.subjectId===evidence.subjectId?controlling:null;
+      const controlled=Boolean(controlling)||roots.some(r=>below(r,real))||homes.some(r=>below(r,real));
+      if(controlled&&!own)throw sourceAccessError();
+      for(let at=real;;at=dirname(at)) {
+        for(const marker of [join(at,'.openfilm-control.json'),join(at,'.film','control.json')]) {
+          if(!existsSync(marker))continue;
+          ordinaryControlPath(marker);const st=lstatSync(marker);
+          if(!st.isFile()||st.nlink!==1||st.size>32768)throw sourceAccessError();
+          const boundary=JSON.parse(readFileSync(marker,'utf8'));
+          const known=[...homes,roots[1]].some(root=>samePath(root,at))||records.some(r=>r.environmentId===evidence.environmentId&&r.subjectId===evidence.subjectId&&samePath(r.root,at));
+          if(!known||boundary?.version!==1||boundary?.domainId!==domainId)throw sourceAccessError();
+        }
+        if(at===dirname(at))break;
+      }
+      if(own){
+        const suffix=real.slice(own.root.length).split(sep).filter(Boolean);
+        if(suffix.includes('.film')&&operation!=='control-read')throw sourceAccessError();
+        if(operation==='control-read'&&!/^\.film[\\/](?:cover\.(?:jpg|png|webp|gif))$/.test(suffix.join(sep)))throw sourceAccessError();
+      }
+      if(['link','linked-read','relink','directory'].includes(operation))throw sourceAccessError('source-capability-unavailable',503);
+      if(operation==='read'||operation==='control-read'){
+        if(!own)throw sourceAccessError();
+        return {path:real,fingerprint:fingerprint(stat),evidence};
+      }
+      if(!stat.isFile()||stat.nlink!==1)throw sourceAccessError('source-capability-unavailable',503);
+      if(operation!=='select'&&!own){
+        const grant=selectedSources.get(sourceKey(real));
+        if(!grant||grant.evidence!==evidence)throw sourceAccessError('source-selection-required');
+        if(grant.fingerprint!==fingerprint(stat))throw sourceAccessError();
+      }
+      return {path:real,fingerprint:fingerprint(stat),evidence};
+    } catch(error) {
+      if(error?.code?.startsWith('source-'))throw error;
+      throw sourceAccessError();
+    }
+  }
+  function authorizeSource(path,operation,evidence) {
+    const info=sourceInfo(path,operation,evidence);
+    return Object.freeze({path:info.path,recheck:()=>{const now=sourceInfo(path,operation,evidence);if(now.fingerprint!==info.fingerprint)throw sourceAccessError();},
+      assertFile:stat=>{if(assertActive()!==evidence||fingerprint(stat)!==info.fingerprint||!stat.isFile()||stat.nlink!==1)throw sourceAccessError();const now=sourceInfo(path,operation,evidence);if(now.fingerprint!==info.fingerprint)throw sourceAccessError();}});
+  }
+
   async function signIn(input) {
     if(disposed||failed||retiring)return Object.freeze({ok:false,code:disposed?'disposed':failed?'preservation-failed':'preservation-pending',state:getPublicState()});
     if(retired){service?.dispose();service=makeService();verified=null;retired=false;}
@@ -140,13 +203,21 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     }
   }
   async function signOut() {
-    sealed=true;policy?.dispose();handles.clear();notify(safeState('signed-out'));
+    sealed=true;policy?.dispose();handles.clear();selectedSources.clear();notify(safeState('signed-out'));
     const remote=service?.signOut();
     if(verified)await beginRetirement();
     await remote;return Object.freeze({state:getPublicState()});
   }
   const controller={
     getPublicState,assertActive,signIn,signOut,
+    beginSourceSelection(){const scope=Object.freeze({});selections.set(scope,assertActive());return scope;},
+    completeSourceSelection(scope,paths){
+      const evidence=assertActive();if(selections.get(scope)!==evidence)throw sourceAccessError();selections.delete(scope);
+      if(!Array.isArray(paths))throw sourceAccessError();
+      const infos=paths.map(path=>sourceInfo(path,'select',evidence));
+      for(const info of infos)selectedSources.set(sourceKey(info.path),info);
+      return infos.map(info=>info.path);
+    },
     onState(listener){if(typeof listener!=='function')throw deny();listeners.add(listener);return()=>listeners.delete(listener);},
     windowScope(){const evidence=assertActive();return createHash('sha256').update(evidence.environmentId+'\0'+evidence.subjectId).digest('hex');},
     revalidate:async()=>service?service.revalidate():{ok:false,code:'configuration-required',state:getPublicState()},
@@ -178,10 +249,18 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
           if(!item)throw deny('project-access-denied');item.root=realpathSync(project.path);saveOwners(items);
         },
       };
-      const operation=Promise.resolve().then(()=>reservation.run(()=>{try{assertActive();return true;}catch{return false;}},()=>withProjectControlGuard(guard,()=>withProjectAuthority(authority,work))));
-      operations.add(operation);try{return await operation;}finally{operations.delete(operation);}
+      const operation=Promise.resolve().then(()=>reservation.run(()=>{try{assertActive();return true;}catch{return false;}},()=>withProjectControlGuard(guard,()=>withProjectAuthority(authority,()=>withSourceAuthorization((path,operation)=>authorizeSource(path,operation,evidence),work)))));
+      operations.add(operation);
+      try{return await operation;}
+      catch(error){
+        if(error?.code==='source-preservation-failed'){
+          failed=true;sealed=true;policy?.dispose();handles.clear();selectedSources.clear();
+          notify(safeState('locked','preservation-failed'));
+        }
+        throw error;
+      }finally{operations.delete(operation);}
     },
-    async dispose(){if(disposed)return;disposed=true;sealed=true;policy?.dispose();service?.dispose();if(verified)await beginRetirement();notify(safeState('disposed','disposed'));},
+    async dispose(){if(disposed)return;disposed=true;sealed=true;selectedSources.clear();policy?.dispose();service?.dispose();if(verified)await beginRetirement();notify(safeState('disposed','disposed'));},
   };
   return Object.freeze(controller);
 }

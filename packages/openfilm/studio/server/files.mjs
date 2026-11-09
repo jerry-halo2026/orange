@@ -11,12 +11,12 @@
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { constants, createReadStream, createWriteStream, existsSync, lstatSync, realpathSync, statSync } from 'node:fs';
-import { copyFile, cp, lstat, mkdir, readFile, readdir, readlink, rename, rm, stat, symlink, unlink, utimes, writeFile } from 'node:fs/promises';
+import { copyFile, cp, lstat, mkdir, open, readFile, readdir, readlink, rename, rm, stat, symlink, unlink, utimes, writeFile } from 'node:fs/promises';
 import { basename, dirname, extname, isAbsolute, join, normalize, relative, sep } from 'node:path';
 import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { FILM_FILE, clipKind } from '../../src/film-doc.mjs';
-import { addLinkedPlaces, readableLink } from '../../src/media-links.mjs';
+import { addLinkedPlaces, readableLink, assertSourceAccess, sourceAccessError } from '../../src/media-links.mjs';
 import { changeProjectFilm, readProjectFilm } from './film.mjs';
 import { filesWritten } from './person-edits.mjs';
 import { TOOL_DIR } from './projects.mjs';
@@ -49,6 +49,7 @@ export function inside(root, rel, how = {}) {
   if (typeof rel !== 'string' || !rel || rel.includes('\0')) throw new FileError('which file?');
   const clean = normalize(rel.split('/').join(sep));
   const abs = join(root, clean);
+  if(how.read===true)assertSourceAccess(abs,'read');
   /* a compound clip's film names the files of the project it is in (`../../assets/a.mp4`): inside that one (parts.mjs) */
   const base = compoundOuter(root);
   const back = relative(base, abs);
@@ -559,11 +560,20 @@ function freeIn(/** @type {string} */ dir, /** @type {string} */ name) {
  */
 export async function bringIn(root, into, paths, mode, { anywhere = false } = {}) {
   if (!anywhere && into !== ASSETS && !into.startsWith(`${ASSETS}/`)) throw new FileError('media goes in assets/');
+  const tickets=paths.map(path=>assertSourceAccess(path,mode==='link'?'link':'copy'));
+  const opened=[];
+  try {
+  for(let i=0;i<paths.length;i++) {
+    const ticket=tickets[i];
+    if(!ticket){opened.push(null);continue;}
+    ticket.recheck();const handle=await open(ticket.path,'r');opened.push(handle);ticket.assertFile(await handle.stat());
+  }
   const dir = into ? inside(root, into) : root;
   await mkdir(dir, { recursive: true });
   /** @type {string[]} */
   const landed = [];
-  for (const path of paths) {
+  for (const [index,path] of paths.entries()) {
+    const ticket=tickets[index];ticket?.recheck();
     if (typeof path !== 'string' || !isAbsolute(path)) throw new FileError('a full path, please');
     const from = realpathSync.native(path);
     const info = await stat(from);
@@ -588,12 +598,16 @@ export async function bringIn(root, into, paths, mode, { anywhere = false } = {}
     try {
       if (info.isDirectory()) await cp(from, part, { recursive: true, mode: constants.COPYFILE_FICLONE, filter: (src) => !basename(src).startsWith('.') });
       else {
-        await copyFile(from, part, constants.COPYFILE_FICLONE);
+        if(ticket){
+          const handle=opened[index];if(!handle)throw sourceAccessError();ticket.assertFile(await handle.stat());
+          await pipeline(handle.createReadStream({autoClose:false,start:0}),createWriteStream(part,{flags:'wx'}));
+          ticket.assertFile(await handle.stat());ticket.recheck();
+        } else await copyFile(from, part, constants.COPYFILE_FICLONE);
         /* dated now, as it came in (a copy on Windows keeps the original's date): the pane lists it after the rest */
         const now = new Date();
         await utimes(part, now, now);
       }
-      await rename(part, at);
+      ticket?.recheck();await rename(part, at);ticket?.recheck();
     } catch (e) {
       await rm(part, { recursive: true, force: true });
       throw e;
@@ -601,6 +615,10 @@ export async function bringIn(root, into, paths, mode, { anywhere = false } = {}
     landed.push(posix(relative(root, at)));
   }
   return landed;
+  } finally {
+    const closed=await Promise.allSettled(opened.filter(handle=>handle!==null).map(handle=>handle.close()));
+    if(closed.some(result=>result.status==='rejected'))throw sourceAccessError('source-preservation-failed',503);
+  }
 }
 
 /**
@@ -608,6 +626,7 @@ export async function bringIn(root, into, paths, mode, { anywhere = false } = {}
  * @param {string} root @param {string} rel @param {string} to
  */
 export async function relink(root, rel, to) {
+  assertSourceAccess(to,'relink');
   const abs = entryInside(root, rel);
   if (!lstatSync(abs, { throwIfNoEntry: false })?.isSymbolicLink()) throw new FileError(`${rel} is not a link`);
   if (typeof to !== 'string' || !isAbsolute(to)) throw new FileError('a full path, please');

@@ -25,7 +25,7 @@ import { mkdir, rename } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { basename, dirname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { HOST_FLAG, folderFiles, listenLocal } from '../../src/host.mjs';
-import { readableLink } from '../../src/media-links.mjs';
+import { readableLink, assertSourceAccess } from '../../src/media-links.mjs';
 import { clipKind } from '../../src/film-doc.mjs';
 import { readPrefs } from './prefs.mjs';
 import { readyProxy, undecodable } from './proxies.mjs';
@@ -191,6 +191,7 @@ export async function startPages({ port, editorOrigin, secret, projects, desktop
        Windows stream, or a file out of the folder */
     let plain = path;
     try { plain = decodeURIComponent(path); } catch { /* folderFiles refuses it */ }
+    if (!plain.startsWith("/__film/")) assertSourceAccess(join(entry.root, ...plain.split("/").filter(Boolean)), "read");
     if (!servable(entry.root, plain)) { res.writeHead(404, headers).end('not found'); return; }
     if (url.searchParams.has('film-sound')) {
       /* waited for while it is made (a few seconds for a long recording): the mixer plays the film without it meanwhile */

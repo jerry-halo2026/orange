@@ -43,7 +43,7 @@ import {
 import { FetchError, createFetches, fetchFilm, parseRepoUrl } from './fetch-repo.mjs';
 import { BrowseError, browseFolder, browsePlaces } from './browse.mjs';
 import { exampleFile, exampleFolder, listExamples } from './examples.mjs';
-import { pickFiles, pickFolder } from './folder-picker.mjs';
+import { pickFiles as nativePickFiles, pickFolder } from './folder-picker.mjs';
 import { readPrefs, writePrefs } from './prefs.mjs';
 import { ensureProxies, playChecks } from './proxies.mjs';
 import { ensurePreviews, knownLate } from './preview-cache.mjs';
@@ -118,9 +118,9 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
  * `autoVersionsFactory`: trusted Node-only dependency injection; defaults to the native automatic versions producer.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth> }} [options]
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth>, pickFiles?: typeof nativePickFiles }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth } = {}) {
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth, pickFiles = nativePickFiles } = {}) {
   const isolation = readIsolationProfile();
   if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
   if (isolation) {
@@ -233,6 +233,23 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     return stop;
   };
 
+  /** @param {Req} req @param {Res} res */
+  /** @param {unknown} error @returns {never} */
+  function pickerError(error) {
+    const e=/** @type {any} */(error);
+    if(String(e?.code??'').startsWith('source-')||e?.code==='authentication-required'||e?.code==='project-access-denied')throw error;
+    throw new HttpError(501,String(e?.message??e));
+  }
+  /** @param {Parameters<typeof nativePickFiles>[0]} ask */
+  async function chooseSourceFiles(ask) {
+    const scope=desktopAuth?.beginSourceSelection();const paths=await pickFiles(ask);
+    return desktopAuth?desktopAuth.completeSourceSelection(scope,paths):paths;
+  }
+  /** @param {Parameters<typeof pickFolder>[0]} ask */
+  async function chooseSourceFolder(ask) {
+    if(desktopAuth)throw new HttpError(503,'Directory source authorization is not yet available.',{code:'source-capability-unavailable'});
+    return pickFolder(ask);
+  }
   /** @param {Req} req @param {Res} res */
   async function route(req, res) {
     const url = new URL(req.url ?? '/', origin);
@@ -418,12 +435,13 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     /* the system's folder dialog, opened here for a page in a browser (folder-picker.mjs): { path } (null: cancelled);
        501 when this system has none Studio can open */
     if (parts[0] === 'pick-folder' && parts.length === 1 && req.method === 'POST') {
+      if(desktopAuth)throw new HttpError(503,'Directory source authorization is not yet available.',{code:'source-capability-unavailable'});
       const { title, at } = /** @type {{ title?: unknown, at?: unknown }} */ (await readJson(req).catch(() => ({})) ?? {});
       try {
         const path = await pickFolder({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose a folder', at: typeof at === 'string' ? at : null });
         return json(res, 200, { path });
       } catch (e) {
-        throw new HttpError(501, /** @type {Error} */ (e).message);
+        pickerError(e);
       }
     }
     /* Saved, the person's own library for every project (saved.mjs): its files and folders as a project's media are
@@ -453,7 +471,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
         const { into, paths, folder, title } = /** @type {{ into?: unknown, paths?: unknown, folder?: unknown, title?: unknown }} */ (await readJson(req) ?? {});
         const ask = { title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose', at: null };
         const picked = Array.isArray(paths) ? paths.map(String)
-          : await (folder === true ? pickFolder(ask).then((p) => (p ? [p] : [])) : pickFiles(ask)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
+          : await (folder === true ? chooseSourceFolder(ask).then((p) => (p ? [p] : [])) : chooseSourceFiles(ask)).catch(pickerError);
         return json(res, 200, { landed: (await bringIn(lib, rel(into ?? 'saved'), picked, 'copy', { anywhere: true })).map(libraryPath) });
       }
       if (sub === 'reveal' && req.method === 'POST') {
@@ -540,9 +558,9 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     if (parts[0] === 'pick-files' && parts.length === 1 && req.method === 'POST') {
       const { title } = /** @type {{ title?: unknown }} */ (await readJson(req).catch(() => ({})) ?? {});
       try {
-        return json(res, 200, { paths: await pickFiles({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose files', at: null }) });
+        return json(res, 200, { paths: await chooseSourceFiles({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose files', at: null }) });
       } catch (e) {
-        throw new HttpError(501, /** @type {Error} */ (e).message);
+        pickerError(e);
       }
     }
     /* the web editor's folder browser (browse.mjs): `path`'s folders, only under the home folder, and where to start */
@@ -820,6 +838,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     /* the fonts its pages declare with @font-face, and with `page` (a project path) the families that page can draw with
        and names (project-fonts.mjs): the font menu's "In this project" */
     if (rest === 'fonts' && req.method === 'GET') {
+      if(desktopAuth)throw new HttpError(503,'Font source authorization is not yet available.',{code:'source-capability-unavailable'});
       const page = url.searchParams.get('page');
       return json(res, 200, await projectFonts(project.path, page ? resolveIn('', page) : null));
     }
@@ -827,6 +846,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
        component's folder in the project (brought in first when it is not there), declared in its fonts/own.css, which
        its page loads; so it goes with the project. → { family, path } */
     if (rest === 'fonts' && req.method === 'POST') {
+      if(desktopAuth)throw new HttpError(503,'Font source authorization is not yet available.',{code:'source-capability-unavailable'});
       const name = basename(url.searchParams.get('name') ?? '');
       if (!isFontFile(name)) throw new HttpError(400, 'a font file, please (.ttf, .otf, .woff or .woff2)');
       const taken = /** @type {{ path?: string, clip?: { src: string } }} */ (await takeSaved(project.path, `${BUILT_IN}/${TEXT_COMPONENT}`));
@@ -963,7 +983,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       const how = mode === 'link' ? 'link' : 'copy';
       const ask = { title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose', at: null };
       const picked = Array.isArray(paths) ? paths.map(String)
-        : await (folder === true ? pickFolder(ask).then((p) => (p ? [p] : [])) : pickFiles(ask)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
+        : await (folder === true ? chooseSourceFolder(ask).then((p) => (p ? [p] : [])) : chooseSourceFiles(ask)).catch(pickerError);
       return json(res, 200, { landed: await bringIn(project.path, String(into ?? 'assets'), picked, how) });
     }
     /* a link pointed somewhere else (files.mjs relink): the path given, else the person's pick. { path } (null: cancelled) */
@@ -971,7 +991,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       const { path: rel, to, folder, title } = /** @type {{ path?: unknown, to?: unknown, folder?: unknown, title?: unknown }} */ (await readJson(req));
       const ask = { title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose', at: null };
       const where = typeof to === 'string' ? to
-        : await (folder === true ? pickFolder(ask) : pickFiles(ask).then((p) => p[0] ?? null)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
+        : await (folder === true ? chooseSourceFolder(ask) : chooseSourceFiles(ask).then((p) => p[0] ?? null)).catch(pickerError);
       return json(res, 200, { path: where ? await relink(project.path, String(rel ?? ''), where) : null });
     }
     /* the proxies the preview plays heavy footage from (proxies.mjs), asked for when not made yet: each heavy video's
@@ -1230,6 +1250,7 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     if (!desktopAuth) return run();
     try { return await desktopAuth.runNative(run); }
     catch (error) {
+      if(String(/** @type {any} */ (error)?.code??'').startsWith('source-'))throw new HttpError(/** @type {any} */ (error).status??403,'Source access is not available.',{code:/** @type {any} */ (error).code});
       if (/** @type {any} */ (error)?.code === 'authentication-required' || /** @type {any} */ (error)?.code === 'project-access-denied') throw new HttpError(403,'Project access is not available.',{code:/** @type {any} */ (error).code});
       throw error;
     }

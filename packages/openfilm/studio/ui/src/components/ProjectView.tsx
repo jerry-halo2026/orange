@@ -3572,8 +3572,8 @@ export function ProjectView({ projectId, onProject, onLeave }: {
     return folder ? (typeof answer.path === 'string' ? [answer.path] : []) : Array.isArray(answer.paths) ? answer.paths.map(String) : [];
   }, [postJson]);
   const onBring = React.useCallback(async (paths: string[], into: string, mode: 'copy' | 'link'): Promise<string[]> => {
-    const { ok, answer } = await postJson(`${projectApi}/files/bring`, { paths, into, mode });
-    if (!ok) throw new Error(String(answer.error ?? t('assets.uploadFailed')));
+    const { ok, status, answer } = await postJson(`${projectApi}/files/bring`, { paths, into, mode });
+    if (!ok) throw new ApiError(String(answer.error ?? t('assets.uploadFailed')), status, answer);
     return Array.isArray(answer.landed) ? answer.landed.map(String) : [];
   }, [projectApi, postJson, t]);
   const onRelink = React.useCallback(async (path: string, folder: boolean): Promise<MediaResult> => {
@@ -3593,18 +3593,22 @@ export function ProjectView({ projectId, onProject, onLeave }: {
     const landed: string[] = [];
     /* in the app a dropped file's path is known: copied on this computer (cloned where the disk can: at once, and no
        more room taken), not sent through the page */
-    const paths = files.map((file) => studioHost?.folders?.pathOf(file) ?? '');
-    if (paths.length && paths.every(Boolean)) {
-      for (const [i, path] of paths.entries()) {
-        onProgress(i, -1);
-        // eslint-disable-next-line no-await-in-loop
-        const [at] = await onBring([path], into, 'copy');
-        if (at) landed.push(at);
-        onProgress(i, 1, at);
-      }
-      return landed;
-    }
     for (const [i, file] of files.entries()) {
+      const path = studioHost?.folders?.pathOf(file) ?? '';
+      if (path) {
+        onProgress(i, -1);
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const [at] = await onBring([path], into, 'copy');
+          if (at) landed.push(at);
+          onProgress(i, 1, at);
+          continue;
+        } catch (error) {
+          // A browser File is an explicit byte input, not an arbitrary path grant.
+          // Forbidden owned/control sources MUST NOT become a bytes fallback.
+          if (!(error instanceof ApiError && error.status === 403 && error.body.code === 'source-selection-required')) throw error;
+        }
+      }
       // eslint-disable-next-line no-await-in-loop
       const { ok, body } = await new Promise<{ ok: boolean; body: { path?: string; error?: string; unreadable?: string } }>((done) => {
         const xhr = new XMLHttpRequest();

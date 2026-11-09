@@ -187,3 +187,28 @@ test('real guard release lock failure never emits retirement success and leaves 
  assert.equal((await s.controller.signIn(input)).code,'preservation-failed');assert.equal(await readFile(join(s.home,'coord','meta.lock'),'utf8'),'synthetic foreign holder preserved');
  await s.controller.dispose();assert.deepEqual(events,[]);
 });
+
+test('private system selection scopes cannot be forged, reused, or transferred to the next epoch',async()=>{
+  const s=await setup();await s.controller.signIn(input);
+  const external=await mkdtemp(join(root,'ordinary-source-'));const file=join(external,'source.txt');await writeFile(file,'synthetic source');
+  const {assertSourceAccess}=await import('../../../packages/openfilm/src/media-links.mjs');
+  await assert.rejects(s.controller.runNative(()=>assertSourceAccess(file,'copy')),{code:'source-selection-required'});
+  assert.throws(()=>s.controller.completeSourceSelection({},[file]),{code:'source-access-denied'});
+  const scope=s.controller.beginSourceSelection();assert.deepEqual(s.controller.completeSourceSelection(scope,[file]),[file]);
+  assert.throws(()=>s.controller.completeSourceSelection(scope,[file]),{code:'source-access-denied'});
+  const ticket=await s.controller.runNative(()=>assertSourceAccess(file,'copy'));assert.equal(ticket.path,file);
+  const late=s.controller.beginSourceSelection();await s.controller.signOut();s.setSubject(B);await s.controller.signIn(input);
+  assert.throws(()=>s.controller.completeSourceSelection(late,[file]),{code:'source-access-denied'});
+  assert.throws(()=>ticket.recheck(),{code:'source-access-denied'});
+  await assert.rejects(s.controller.runNative(()=>assertSourceAccess(file,'copy')),{code:'source-selection-required'});
+  await s.controller.dispose();
+});
+
+test('expiry retires private source selection without granting ownership or exposing source state',async()=>{
+  const s=await setup();await s.controller.signIn(input);
+  const directory=await mkdtemp(join(root,'expiry-source-'));const file=join(directory,'source.txt');await writeFile(file,'synthetic');
+  const scope=s.controller.beginSourceSelection();s.setTime(60010);
+  assert.throws(()=>s.controller.completeSourceSelection(scope,[file]),{code:'authentication-required'});
+  assert.doesNotMatch(JSON.stringify(s.controller.getPublicState()),/expiry-source|synthetic-access|subjectId|epoch/);
+  await s.controller.dispose();
+});

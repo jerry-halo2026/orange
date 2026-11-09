@@ -7,9 +7,37 @@
  * (`links.json`): a project from elsewhere (a download, a zip) can carry a link to any of the person's files, and the
  * pages in it are code that could read what it reaches. Only reading goes through a link; nothing is written there.
  */
-import { mkdirSync, readFileSync, realpathSync, renameSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, realpathSync, renameSync, statSync, writeFileSync } from 'node:fs';
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, relative, sep } from 'node:path';
+
+
+/** Only trusted Node callers install this callback; it is never a JSON grant. */
+const sourceAuthority = new AsyncLocalStorage();
+/** @template T @param {(source:string, operation:string)=>any} authorize @param {()=>T} work @returns {T} */
+export function withSourceAuthorization(authorize, work) {
+  if (typeof authorize !== 'function' || typeof work !== 'function') throw sourceAccessError();
+  return sourceAuthority.run(authorize, work);
+}
+export function sourceAccessError(code = 'source-access-denied', status = 403) {
+  return Object.assign(new Error(code === 'source-selection-required' ? 'Select this source in the system file dialog first.' : 'Source access is not available.'), { code, status });
+}
+/** @param {string} source @param {string} [operation] @returns {any} */
+export function assertSourceAccess(source, operation = 'read') {
+  const authorize = sourceAuthority.getStore();
+  if (authorize) return authorize(source, operation);
+  if(typeof source!=='string'||!isAbsolute(source))return null;
+  // A separately started native reader may not turn a controlled path into an
+  // unmarked standalone resource. Unmarked native projects keep their behavior.
+  let real = source;
+  try { real = realpathSync.native(source); } catch { /* lexical ancestors still checked */ }
+  for (const start of new Set([source, real])) for (let at = start; ; at = dirname(at)) {
+    if (existsSync(join(at, '.openfilm-control.json')) || existsSync(join(at, '.film', 'control.json'))) throw sourceAccessError();
+    if (at === dirname(at)) break;
+  }
+  return null;
+}
 
 /** Studio's home: OPENFILM_HOME, else ~/.openfilm (studio/server/projects.mjs studioHome). */
 const home = () => process.env.OPENFILM_HOME || join(homedir(), '.openfilm');
@@ -50,6 +78,7 @@ export function addLinkedPlaces(paths) {
 
 /** Whether `real` (a real path) is a place the person linked, or inside one. @param {string} real */
 export function linkAllowed(real) {
+  assertSourceAccess(real, 'linked-read');
   return linkedPlaces().some((place) => {
     const back = relative(place, real);
     return !back || (back.split(sep)[0] !== '..' && !isAbsolute(back));

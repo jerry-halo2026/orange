@@ -1,0 +1,430 @@
+{
+  "taskId": "T03.material",
+  "parentTask": "T03",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-extension existing original source menu/controller/IO and necessary existing-version association, no shell/library/editor/Timeline or new WorkspaceResource",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "f9c8766a636cc908a972cd4c7af75b38880cd056",
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
+  "branch": "codex/desktop-material-registration",
+  "scope": "Original native project media file explicit Register menu -> actual private Bearer binary relay -> qualified byte registration; durable per-file association, original import independent. Not permission/humanreview grant, not cloud media or worker/wholegoal completion.",
+  "writeAllowlist": [
+    "apps/desktop/src/auth-service.mjs",
+    "apps/desktop/src/desktop-auth.mjs",
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/ui/src/components/ProjectView.tsx",
+    "packages/openfilm/studio/ui/src/components/MediaPool.tsx",
+    "packages/openfilm/studio/ui/src/i18n/en.ts",
+    "packages/openfilm/studio/ui/src/i18n/zh-CN.ts",
+    "apps/desktop/src/auth-service.test.mjs",
+    "apps/desktop/src/desktop-auth.test.mjs",
+    "packages/openfilm/studio/server/desktop-auth-entry.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18485,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18486,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18551,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18552,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18611,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18612,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18621,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18622,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/server.mjs",
+      "packages/openfilm/studio/ui/src/components/ProjectView.tsx"
+    ],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-dispatch-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "cbee7e6439e75fb1ce37e02a2e0149099e488807b4ec2b1ce320a4ebcb1ff8a5"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T03",
+        "commit": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+            "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+            "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.mjs",
+            "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+            "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          },
+          {
+            "path": "packages/openfilm/src/media-links.mjs",
+            "sha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580",
+            "gitBlobSha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+            "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+            "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.test.mjs",
+            "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+            "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.test.mjs",
+            "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+            "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+          },
+          {
+            "path": "packages/openfilm/studio/server/native-source-import.test.mjs",
+            "sha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85",
+            "gitBlobSha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-material-native-review.json",
+          "sha256": "6b1a1337dd7c6f2216e19c82d9546e1c3795b944340c3a24b539f899d37ef10b",
+          "gitBlobSha256": "6b1a1337dd7c6f2216e19c82d9546e1c3795b944340c3a24b539f899d37ef10b"
+        }
+      },
+      {
+        "taskId": "T04.material",
+        "commit": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "apps/api/src/materials.ts",
+            "sha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16",
+            "gitBlobSha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16"
+          },
+          {
+            "path": "apps/api/src/server.ts",
+            "sha256": "4d3d77167c860dcb8530d2f2e80430c59197de92556112f5646c9beadf1a5b3c",
+            "gitBlobSha256": "4d3d77167c860dcb8530d2f2e80430c59197de92556112f5646c9beadf1a5b3c"
+          },
+          {
+            "path": "apps/api/src/supabase.ts",
+            "sha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116",
+            "gitBlobSha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116"
+          },
+          {
+            "path": "apps/desktop/src/studio-process.mjs",
+            "sha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a",
+            "gitBlobSha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/materials.test.ts",
+            "sha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5",
+            "gitBlobSha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5"
+          },
+          {
+            "path": "apps/desktop/src/studio.test.mjs",
+            "sha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324",
+            "gitBlobSha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-material-service-review.json",
+          "sha256": "d5b324c6e8b1637617b6da36e78f50d1281978e4110884bf7e0875ff99ab4dc7",
+          "gitBlobSha256": "d5b324c6e8b1637617b6da36e78f50d1281978e4110884bf7e0875ff99ab4dc7"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+    "files": [
+      {
+        "path": "apps/desktop/src/auth-service.mjs",
+        "sha256": "298a5c1d230dec07a365033c0530c9acae21265ba2fbfe1dddd9115dbc540ecd",
+        "gitBlobSha256": "298a5c1d230dec07a365033c0530c9acae21265ba2fbfe1dddd9115dbc540ecd"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.mjs",
+        "sha256": "3391434efe8357fc0e590337db4c3bb640bdcf1d08e522abfd9497c6e3317f21",
+        "gitBlobSha256": "3391434efe8357fc0e590337db4c3bb640bdcf1d08e522abfd9497c6e3317f21"
+      },
+      {
+        "path": "packages/openfilm/studio/server/server.mjs",
+        "sha256": "f63b236374253ce02f932054bf230b69d423bcd35c25afa9b458305d5a05ad73",
+        "gitBlobSha256": "f63b236374253ce02f932054bf230b69d423bcd35c25afa9b458305d5a05ad73"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/components/ProjectView.tsx",
+        "sha256": "995af3a340b48e75ab0b16868c48fa4b647dcd844aadda52d38d5d7b8ed7b86b",
+        "gitBlobSha256": "995af3a340b48e75ab0b16868c48fa4b647dcd844aadda52d38d5d7b8ed7b86b"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/components/MediaPool.tsx",
+        "sha256": "77beef524a8121319c5dbbc6282bd526e08515a82218c7444b237e8b2ae5c5f5",
+        "gitBlobSha256": "77beef524a8121319c5dbbc6282bd526e08515a82218c7444b237e8b2ae5c5f5"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/i18n/en.ts",
+        "sha256": "5a8effacaaea88580debdf5335f7561e6f123d052dd28c827cf021ae1c2c1d77",
+        "gitBlobSha256": "5a8effacaaea88580debdf5335f7561e6f123d052dd28c827cf021ae1c2c1d77"
+      },
+      {
+        "path": "packages/openfilm/studio/ui/src/i18n/zh-CN.ts",
+        "sha256": "93d0dce68cbbde42b638b122f57d7ab49207b9eb2c8ffd158cb9967383cd521b",
+        "gitBlobSha256": "93d0dce68cbbde42b638b122f57d7ab49207b9eb2c8ffd158cb9967383cd521b"
+      },
+      {
+        "path": "apps/desktop/src/auth-service.test.mjs",
+        "sha256": "7d8adec4d92c0bd11a85c24b677cf2e20cff0c925ee7a0133d00623a787940c9",
+        "gitBlobSha256": "7d8adec4d92c0bd11a85c24b677cf2e20cff0c925ee7a0133d00623a787940c9"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.test.mjs",
+        "sha256": "4da8ab3a0f97dd502872a7b45601796fbd0d1aa2db927f53f369d6d0d528b734",
+        "gitBlobSha256": "4da8ab3a0f97dd502872a7b45601796fbd0d1aa2db927f53f369d6d0d528b734"
+      },
+      {
+        "path": "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
+        "sha256": "1b3bfabd31d67e78516bcdf4c58a4ef6b14f1beac957b2ca4d7e77ae56b30b1d",
+        "gitBlobSha256": "1b3bfabd31d67e78516bcdf4c58a4ef6b14f1beac957b2ca4d7e77ae56b30b1d"
+      }
+    ],
+    "noNewProductFiles": true,
+    "immutablePeerWriteIntersection": []
+  },
+  "requirements": [
+    "After native import/copy lands, explicit original project file action opens actual owned FD through original readable/source ticket, streams real bytes, holds body+network+FD drain, checks epoch/identity/SHA before accepting response",
+    "Persist stable random idempotency key before upload in original project .film/orange-materials.json via original writeAtomic, per-project serialized updates; scope env+verified subject+opaque native project id+relative path/file identity/SHA; no token/cache server absolute path",
+    "Known registered records survive same-owner project reopen/move; current session must revalidate owner/file and backend rights; unknown replay only same key/unchanged bytes, no auto-new-key or file rollback; changed source invalidates association",
+    "No film.html, Op, time-unit, mutable Timeline, native project format, WorkspaceResource or MediaSources change. No main/preload/utility edit needed: current desktopAuth injection suffices",
+    "New server project-scoped registration/status handlers accept relative paths only; sanitized UI response no owner/token/server absolute locator. Internal version-for-source selection returns association only, never licence; actual backend resolve/use stays authority",
+    "Original import succeeds independently; unavailable/unknown registration preserves original files and reports separately. Current unsupported link/folder/font boundaries stay unchanged",
+    "Root decides explicit native file-menu registration/upload, never silent on picker/local import. Source picker permission is local IO only, not remote upload/business consent. Button action preserves old local import/copy result on errors; disabled/unavailable meaningful and ordinary local editing unaffected. No new panels/application/library.",
+    "Only original ProjectView/MediaPool callbacks+en/zh-CN labels; existing WorkspaceResource/MediaSources/Film/Op/ID/rev/time APIs unchanged. No renderer token/owner/env/serverpath/FD/getter. Auth public6 API unchanged, private Node business closure only one fixed endpoint binary operation; no generic URL/header/body method injection.",
+    "Use current actual original project owner/access/source capability and ordinary real FD. Hash actual streamed bytes, validate source identity/nlink/hash and active epoch before and after, current project binding. Native projection is relative files only, no raw source filesystem authority from renderer or caller owner/approved. Hold FD/body/response promises through actual settle, known revocation/close stops entry+aborts network but does not invent rollback/drain.",
+    "Persist .film/orange-materials.json only via original writeAtomic and existing original project IO/owner/retire guard, serialized per-project updates. Stable random key stored BEFORE first upload, scope verified current firstparty namespace+subject/native project ID plus actual relative file identity/hash. No duplicate mutable Film or invented timeline/revision protocol.",
+    "Unknown result preserves exact prior key/record/files, replay only same bytes+scope. Changed source invalidates that association and must not retarget unknown existing key; explicit later new version can preserve old unknown history without overwriting it. Malformed/unknown metadata/junction/hardlink refuses registration changes, never resets to empty to hide recovery. Source unchanged in all negative paths.",
+    "Association/registration is not legal IP ownership, humanreview or material license. Registration response licensed:false says this operation did not create permission, not a permanent cached rights verdict; future use still fresh backend resolve/FD, and UI must not cache a blanket allow or permanent denial. No material_review/license writes.",
+    "Native known-file status/lookup returns only sanitized association status and existing opaque asset/version IDs; unknown/crosssubject/wrong origin changed file cannot expose another scope record. Reopen/move retains same original ID and same genuine version/owner constraints; not a transferable source grant.",
+    "TDD real missing behavior RED -> actual loopback byte relay, no renderer token, explicit action/import independence, stable samekey unknown/reopen, sourcechange/epoch/retire and realFD/body drain, metadata tamper, owner/foreign denies. Existing original Auth/controller/native-entry assertions preserved; do not rerun unrelated late UI/worker/pilot gates.",
+    "Actual runtime only self-owned tiny text/media fixture bytes to new leased loopback listener18611/12/18621/22, original test listeners18485/86+18551/52. Existing literal18572 configs in mocked fetch are not a listener lease; no real request/listener there because peer owns it. Original other tests needing unleased ports must stop affected check and ask Root resource forward, not silently bind.",
+    "Use existing approved45 dependency links plus API openfilm local link read-only. UI/API/server types and affected original UI build only with original T01 own isolation HOME/TMP/cache/output beneath fresh .dev/desktop-material/attempt-*; no source config/tsconfig/package/lock changes or installs. Mechanical helper/resource adapters may change only own paths/config/test family and must have exact inverse+assertions identical. No caches/build/profile takeover.",
+    "No real Supabase/vendor/cloud business write/private or user media upload/model inference/GUI/Electron/Edge/worker/Docker. Current backend service credentials/actual person binding remain local-impact blockers, not permission to fake login/catalog. New menu never secretly uploads. This card author uses synthetic transport only and does not claim realbusinesschain.",
+    "60sec child cap20MiB logs; actual child exit+close and source beforeafter, no timeout/abort as done. All own helpers under fresh namespace, not .dev root/pointer outside. Freeze exact10 raw/canonical/diff/source/actualtests/types/build and unresolved actualGUI/cloud/license for nonauthor SPECQUALITY/freshN5a/serial integration; no author commit/spawn."
+  ],
+  "scopeDecision": {
+    "explicitRegistrationApprovedByRoot": true,
+    "userProductDirectionReasked": false,
+    "why": "local picker was not an upload/business-write approval; explicit native action is minimum reversible UI addition"
+  },
+  "tooling": {
+    "existingManifest": "docs/execution/desktop-business-local-tools.json",
+    "sha256": "e3f138f5a87d3ff9a421e81f93b7c45a92e91854fe2e7f9da7c9da442505ae01",
+    "oldLinks": 45,
+    "additionalAlreadyApprovedLocalApiOpenfilm": true,
+    "newLinksAllowed": false,
+    "sourceExportsMustResolveOwnE5": true,
+    "noInstaller": true
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T03/T04.a native byte registration consumer",
+  "sourceDraft": {
+    "path": "E:/CodexData/worktrees/orange-business-admission/orange/.dev/desktop-material/attempt-1794254192785-28440/draft.json",
+    "sha256": "3ed091838b5b92d55de62d8e408d98771c6dcc100b6a45541ed24d5d72df44fa"
+  },
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD only selected native input/scope nonauthor review + metadata/actual resources/N5a, then direct10 implementation",
+  "inputScopeReview": {
+    "path": "docs/execution/desktop-material-native-review.json",
+    "sha256": "6b1a1337dd7c6f2216e19c82d9546e1c3795b944340c3a24b539f899d37ef10b",
+    "scopeReviewedCardSHA256": "47a7cdf1665ad40e681c345de1a910684f1f3a69a26b25a06f2570cb96d4a132",
+    "bindingOnlyAfterReview": true
+  }
+}

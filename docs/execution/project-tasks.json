@@ -482,6 +482,19 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/fission-dispatch-assignment.json"
+    },
+    {
+      "id": "T03.material",
+      "parentTask": "T03",
+      "status": "in_progress",
+      "scope": "Original native project media file explicit Register menu -> actual private Bearer binary relay -> qualified byte registration; durable per-file association, original import independent. Not permission/humanreview grant, not cloud media or worker/wholegoal completion.",
+      "dependsOn": [
+        "T01",
+        "T03",
+        "T04.material"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/desktop-material-assignment.json"
     }
   ],
   "umbrella": [

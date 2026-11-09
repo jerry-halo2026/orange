@@ -1,0 +1,54 @@
+{
+  "taskId": "T04.material",
+  "commit": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/materials.ts",
+      "sha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16",
+      "gitBlobSha256": "8489f9e4fc8de16435ac582758286fec98cb67d0289719c1c50765fa329e4e16"
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "4d3d77167c860dcb8530d2f2e80430c59197de92556112f5646c9beadf1a5b3c",
+      "gitBlobSha256": "4d3d77167c860dcb8530d2f2e80430c59197de92556112f5646c9beadf1a5b3c"
+    },
+    {
+      "path": "apps/api/src/supabase.ts",
+      "sha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116",
+      "gitBlobSha256": "dc548e5575601e7860f1172be5ca0262ade35b454ce840f4429c9e19f9bd5116"
+    },
+    {
+      "path": "apps/desktop/src/studio-process.mjs",
+      "sha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a",
+      "gitBlobSha256": "d7f54f7a1e7ac7771451978d66792893c1ae21e88416c284820b51d8b4f77d3a"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/materials.test.ts",
+      "sha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5",
+      "gitBlobSha256": "8303c317758a57b0461557045f66e4c76eb3e229e511cabb89204398f4eb11b5"
+    },
+    {
+      "path": "apps/desktop/src/studio.test.mjs",
+      "sha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324",
+      "gitBlobSha256": "1e7a2ca42c41345e3a49cf01b20b552ecdefcf981b57d251d4063baf26956324"
+    }
+  ],
+  "scope": "frozen actual material byte HTTP contract plus existing native studio-process desktopAuth private controller injection only",
+  "evidence": {
+    "materialCommit": "374ee238a0592fe61f71c9e98f35600092e1e2b1",
+    "materialReview": "24f7a5c5f1826aa242b07b7f44244bdc3351f208fd9fcff5e9e14a7c9d27a88d",
+    "privateRelayCommit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+    "privateRelayReview": "5cc95445b0d6134dcdbbc524594ca6b6c305e9408e85b9d2cf33511c25d9c6da",
+    "latestCombined44Types0": true,
+    "contract": "POST /api/materials/local application/octet-stream +Idempotency-Key/x-material-name -> assetId/versionId/registration/ licensed:false"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

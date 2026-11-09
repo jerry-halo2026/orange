@@ -1,0 +1,113 @@
+{
+  "taskId": "T03",
+  "commit": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+      "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+      "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.mjs",
+      "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+      "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+    },
+    {
+      "path": "packages/openfilm/studio/server/atomic.mjs",
+      "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+      "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+    },
+    {
+      "path": "packages/openfilm/src/media-links.mjs",
+      "sha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580",
+      "gitBlobSha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+      "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+      "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.test.mjs",
+      "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+      "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+    },
+    {
+      "path": "packages/openfilm/studio/server/native-source-import.test.mjs",
+      "sha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85",
+      "gitBlobSha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85"
+    }
+  ],
+  "scope": "original project owner/access/IO/readable/writeAtomic/sourcecapability selected native inputs plus bounded10 UI registration scope; not product implementation approval",
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "evidence": {
+    "reviewKind": "non-author selected native inputs and bounded10 scope review only; not source implementation approval",
+    "assignmentSHA256": "47a7cdf1665ad40e681c345de1a910684f1f3a69a26b25a06f2570cb96d4a132",
+    "actualHead": "f9c8766a636cc908a972cd4c7af75b38880cd056",
+    "actualBranch": "codex/desktop-material-registration",
+    "actualWorktree": "E:/CodexData/worktrees/orange-business-admission/orange",
+    "gitCleanBeforeAuthor": true,
+    "nativeSixSourcesAndFourFixturesRawAndGitExact": true,
+    "allTenEditableBaselinesRawAndGitExact": true,
+    "all22SelectedDependencyAndFixtureRawAndReferencedGitExact": true,
+    "originalNativeSemantics": {
+      "ownerAndAccess": "projectRecord/authorizeProject bind verified environment+subject+opaque native project ID+real current root; policy restricted action and controlled reservation/runNative retained. Request owner/project paths are not authority.",
+      "readable": "files.readable(root,relative) delegates inside(...,{read:true}), rejects traversal/.film/ADS and invokes current source authorization. It returns a path, NOT an opened FD or upload consent.",
+      "sourceTicket": "assertSourceAccess returns current epoch-bound recheck/assertFile(stat) capability. New code must open a real FD, assert that opened file identity/nlink/hash before and after streaming, retain actual body/response/FD promises through settlement; do not treat token/path alone as resource ownership.",
+      "metadata": "Original writeAtomic uses random sibling, retries Windows busy rename and rethrows failure; callers must supply ordinary private .film path/owner guard, serialize per native project, preserve malformed/unknown data and pre-upload random key rather than reset-to-empty.",
+      "scope": "orange-materials.json is existing business asset/version association only, not Film/rev/Op/Timeline or a permission ledger. Sameowner native ID survives move with revalidation; changed source does not silently reuse unknown key."
+    },
+    "explicitConsent": "Only original project file-menu explicit Register to business service. Local picker/import/copy must remain independent and never trigger upload implicitly; ordinary editing/import survives missing service or registration error.",
+    "privateRelay": "Auth6 API unchanged, Bearer remains private generation closure to one fixed binary endpoint; HTTP/UI cannot select URL/header/body transport or receive owner/token/absolute locator/FD. Registration itself grants no IP ownership/human review/license.",
+    "statusAndRights": "Sanitized native file status returns opaque association IDs/status only. licensed:false means this registration created no rights, not a cached permanent deny/allow; actual use remains fresh backend resolve/FD authority.",
+    "tools": {
+      "manifestSHA256": "e3f138f5a87d3ff9a421e81f93b7c45a92e91854fe2e7f9da7c9da442505ae01",
+      "all45ActualTargetsAndPackagePinsMatch": true,
+      "apiOpenfilmAliasAlsoOwnE5": true,
+      "newLinksAllowed": false,
+      "noLiveE4AliasOrInstaller": true
+    },
+    "peer": {
+      "cardSHA256": "cbee7e6439e75fb1ce37e02a2e0149099e488807b4ec2b1ce320a4ebcb1ff8a5",
+      "actualCardPinMatch": true,
+      "sourceIntersection": [],
+      "leasedPortIntersection": [],
+      "differentWorktree": true
+    },
+    "runtime": "Only leased18485/86,18551/52,18611/12,18621/22 actual loopback tests. Literal18572 mocked fetch is not a listener/egress permission. No Docker/worker/codec/GUI/Edge/cloud/vendor/user-media/model call; inherited browser metadata grants none.",
+    "priorEvidence": "T01 3956cb1e and Root selected material/private relay d5b324c6 with24f7/5cc evidence reused within selected scope, not whole product/full17 re-audit",
+    "reviewerActions": {
+      "sourceWrites": 0,
+      "tests": 0,
+      "network": 0,
+      "Docker": 0,
+      "GUI": 0,
+      "modelCalls": 0
+    },
+    "executionHeldUntil": "Root exactreview hash metadata/resource preflight/freshN5a, then immediate10 TDD. Final source and actual tests/build need separate non-author review.",
+    "priorPendingReviewSHA256": "2ea91709beaf2e5e83509e7bc053b0591e4e3381506d0d72605978a46e99f9d6"
+  }
+}

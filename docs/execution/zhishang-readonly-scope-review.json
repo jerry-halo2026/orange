@@ -1,0 +1,91 @@
+{
+  "taskId": "T04.transport",
+  "reviewerAgent": "/root/prepare_admission_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "scope": "only2 Node source and referenced external supplier request facts/callback boundary; not live cloud/personal rights",
+  "assignmentSHA256": "dedede896eec448e0a5c8e4958148b29e897c82631bfa70ac02408a8124bf1f0",
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "reviewedAt": "2026-11-09T17:32:41.422Z",
+  "reviewKind": "independent bounded pre-implementation scope/protocol and consumed-input review only",
+  "evidence": {
+    "assignmentRevision": 1,
+    "legacyStaticSources": [
+      {
+        "path": "D:/dev/orange-legacy-primary-20261107/orange/provider.py",
+        "sha256": "8492633b791061d01c68a247f78717b74d45b99e1d5ff4c8a67b2a9318ff4c27",
+        "verifiedHash": true,
+        "executed": false,
+        "scope": "static supplier request facts only; no legacy auth/application or private API text reused"
+      },
+      {
+        "path": "D:/dev/orange-legacy-primary-20261107/central/service.py",
+        "sha256": "12adeebe2ea7eccd289faa3b8b27b63c7d64753b404b414a0fb89457a93279a7",
+        "verifiedHash": true,
+        "executed": false,
+        "scope": "static supplier request facts only; no legacy auth/application or private API text reused"
+      }
+    ],
+    "canonicalVectors": [
+      {
+        "canonicalAndUpperMD5Match": true,
+        "signature": "27C6775D3A1AF911B52CE68D551186FF"
+      },
+      {
+        "canonicalAndUpperMD5Match": true,
+        "signature": "CA301560B78532B86C41BE6F721A6F6B"
+      }
+    ],
+    "maintainedSources": [
+      "docs/discovery/04_智尚接口能力与系统协同.md",
+      "docs/discovery/05_智尚只读验证与身份边界.md"
+    ],
+    "immutableInputs": {
+      "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+      "source": "apps/api/src/supabase.ts",
+      "sourceSHA256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44",
+      "fixture": "apps/api/src/business.test.ts",
+      "fixtureSHA256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "actualGitAndWorkingMatch": true
+    },
+    "peer": {
+      "path": "docs/execution/fission-subset-assignment.json",
+      "taskId": "T06.subset",
+      "sha256": "a59829e31998004c38c4708365fb5be227a3bb417ab89d6a2e68cb79e1cad656",
+      "actualE3CardMatches": true,
+      "writeOverlap": []
+    },
+    "e5": {
+      "branch": "codex/zhishang-readonly-native",
+      "head": "45836eb256f4f55004618aae85bf7bfd272e3115",
+      "clean": true,
+      "twoSourceFilesAbsent": true
+    },
+    "productTestsExecuted": 0,
+    "networkCalls": 0,
+    "modelCalls": 0,
+    "privateCredentialFilesRead": 0
+  },
+  "findings": {
+    "blocking": [],
+    "verified": [
+      "Exactly2new original apps/api source/test files; fixed3 readonly supplier JSON operations, no rawURL counting endpoint/media transfer/DB/cloud writes/new library/UI. Immediate material-registration/locator consumer identified.",
+      "RFC3986 UTF8 scalar signing, sorted keys, literal raw company_secret suffix and uppercase MD5 canonical vectors independently match; supplier access_token and invocation account_key remain separate from first-party auth and video author fields.",
+      "Existing branded current VerifiedSession/env/expiry and trusted default-deny lookup/current binding callbacks prevent company authentication or account-name equality from becoming personal identity/license.",
+      "Lossless externalID/raw type/unit preservation and explicit unknown/forbidden/malformed distinctions are required; no unverified positive supplier account fields or true binding claimed.",
+      "Bounded response/cancel/drain/redirect/no retry/private token singleflight and synthetic-only TDD resources are scoped; active native subset5 has no file/resource conflict."
+    ],
+    "implementationObligations": [
+      "Never reuse legacy displayName equality to authorize; exact lookup remains observation only, binding/grant comes from trusted service.",
+      "Do not coerce >2^53 supplier IDs through rounded Number or author accountKeys into invocation account_key.",
+      "Missing real credential/current binding/positive account sample stays pending live use, not an empty list or permission.",
+      "Only synthetic injected fetch in this task; original source implementation/testing and final SPECQUALITY/N5a still required."
+    ]
+  },
+  "dispatchNotGrantedByThisReview": [
+    "Root metadata-only binding and actual fresh N5a/current peer-writer check before source2 writer",
+    "Final exact-source independent SPECQUALITY before commit/serial integration"
+  ]
+}

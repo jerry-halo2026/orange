@@ -1,0 +1,32 @@
+{
+  "taskId": "T02.business",
+  "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/supabase.ts",
+      "sha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44",
+      "gitBlobSha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/business.test.ts",
+      "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+    }
+  ],
+  "scope": "exact existing branded online VerifiedSession/current expiry only; not company login or cloud material rights",
+  "evidence": {
+    "priorSourceNonAuthorReviewSHA256": "6de5096829d65fa88d74ee0b7fd19911624036919e5adcbc667b5040380cd4d2",
+    "latestSourceEquivalence": "458 exact original API13; unchanged through desktop8",
+    "rootReadAndActualNode13AndOriginalPackageTypes": true,
+    "latestNonAuthorCombinedReviewSHA256": "21b44290da0d132e1d23aa36678b183c3013a1e4bee9a2f952ba3ffb8eb685ac"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

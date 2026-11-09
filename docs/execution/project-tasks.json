@@ -431,6 +431,18 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/fission-subset-assignment.json"
+    },
+    {
+      "id": "T04.transport",
+      "parentTask": "T04.a",
+      "status": "in_progress",
+      "scope": "Real concrete server-only supplier request/sign/token handling and exact own-account metadata transport. No binding/material/license grant or DB write; current config/binding absence holds live use only.",
+      "dependsOn": [
+        "T01",
+        "T02.business"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/zhishang-readonly-assignment.json"
     }
   ],
   "umbrella": [

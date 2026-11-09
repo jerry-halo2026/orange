@@ -1,0 +1,254 @@
+{
+  "taskId": "T04.transport",
+  "parentTask": "T04.a",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "business-addition only concrete readonly Zhishang transport for immediate existing material-registration/locator consumer; no new UI/library/framework",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "45836eb256f4f55004618aae85bf7bfd272e3115"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
+  "branch": "codex/zhishang-readonly-native",
+  "scope": "Real concrete server-only supplier request/sign/token handling and exact own-account metadata transport. No binding/material/license grant or DB write; current config/binding absence holds live use only.",
+  "writeAllowlist": [
+    "apps/api/src/zhishang.ts",
+    "apps/api/src/zhishang.test.ts"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-subset-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "a59829e31998004c38c4708365fb5be227a3bb417ab89d6a2e68cb79e1cad656"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T02.business",
+        "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "apps/api/src/supabase.ts",
+            "sha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44",
+            "gitBlobSha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/business.test.ts",
+            "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+            "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/zhishang-readonly-T02-review.json",
+          "sha256": "782a12967e519b7376b71bb9738d455ac4d5fee07ed76bba5a9a395682ce0cd5",
+          "gitBlobSha256": "782a12967e519b7376b71bb9738d455ac4d5fee07ed76bba5a9a395682ce0cd5"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "45836eb256f4f55004618aae85bf7bfd272e3115",
+    "newFiles": [
+      "apps/api/src/zhishang.ts",
+      "apps/api/src/zhishang.test.ts"
+    ],
+    "preservation": "API13/Desktop8/native worker/source/lock/CI/config unchanged"
+  },
+  "supplierReference": {
+    "kind": "archived source request facts only, not development baseline or current person/license evidence",
+    "sources": [
+      {
+        "path": "D:/dev/orange-legacy-primary-20261107/orange/provider.py",
+        "sha256": "8492633b791061d01c68a247f78717b74d45b99e1d5ff4c8a67b2a9318ff4c27",
+        "methods": "sign:11/request:28/access_token:41"
+      },
+      {
+        "path": "D:/dev/orange-legacy-primary-20261107/central/service.py",
+        "sha256": "12adeebe2ea7eccd289faa3b8b27b63c7d64753b404b414a0fb89457a93279a7",
+        "methods": "call:52/binding:92/videos:99"
+      }
+    ],
+    "baseOrigin": "https://sucaiwang-open-api.zhishangsoft.com",
+    "allowedEndpoints": [
+      "/openapi/auth/access_token",
+      "/openapi/account/list",
+      "/openapi/video/list"
+    ],
+    "method": "POST JSON; no redirect",
+    "headers": {
+      "required": [
+        "company_key",
+        "timestamp",
+        "nonce",
+        "sign"
+      ],
+      "token": "access_token company token",
+      "personalScope": "account_key is invocation identity, NOT video author accountKeys"
+    },
+    "sign": "ASCII key sort of headers+flat body except sign; RFC3986 percent encoding UTF8 values as Python quote(safe=\"\"); key=value & joined, append literal &company_secret= then raw secret, MD5 uppercase; Content-Type added after signing",
+    "nonce": "8 random bytes hex16; timestamp Unix seconds",
+    "token": "response success===true,code===1,data.accessToken; private in-memory only; historical docs24h, conservative <=1h cache",
+    "accountBody": {
+      "pageNo": 1,
+      "pageSize": 5,
+      "account": "exact configured permitted login; never empty/wildcard/company directory fallback"
+    },
+    "videoBody": {
+      "pageNo": "bounded positive integer",
+      "pageSize": "1..100",
+      "isInner": 0,
+      "videoType": "documented0..4; default1",
+      "name": "optional bounded string",
+      "videoIds": "optional opaque exactID string; no author accountKeys filter"
+    },
+    "evidenceBoundary": "actual company auth succeeded historically, exact prior account lookup empty; current accountKey/field samples not verified. No legacy displayName equality/old app/userauth reused.",
+    "vectors": [
+      {
+        "fields": {
+          "company_key": "fixture_company",
+          "timestamp": 1730000000,
+          "nonce": "0011223344556677",
+          "pageNo": 1,
+          "pageSize": 5,
+          "account": "fixture_user"
+        },
+        "secret": "fixture_secret",
+        "canonical": "account=fixture_user&company_key=fixture_company&nonce=0011223344556677&pageNo=1&pageSize=5&timestamp=1730000000&company_secret=fixture_secret",
+        "signature": "27C6775D3A1AF911B52CE68D551186FF"
+      },
+      {
+        "fields": {
+          "company_key": "fixture_company",
+          "timestamp": 1730000000,
+          "nonce": "0011223344556677",
+          "access_token": "fixture_access",
+          "account_key": "fixture_account",
+          "pageNo": 1,
+          "pageSize": 12,
+          "isInner": 0,
+          "videoType": 1,
+          "name": "茶 A+!()*"
+        },
+        "secret": "fixture secret&+",
+        "canonical": "access_token=fixture_access&account_key=fixture_account&company_key=fixture_company&isInner=0&name=%E8%8C%B6%20A%2B%21%28%29%2A&nonce=0011223344556677&pageNo=1&pageSize=12&timestamp=1730000000&videoType=1&company_secret=fixture secret&+",
+        "signature": "CA301560B78532B86C41BE6F721A6F6B"
+      }
+    ]
+  },
+  "requirements": [
+    "Implement exactly concrete readonly server adapter createZhishangReadOnly and original samefolder tests, using existing Node crypto/fetch/standard types only. Fixed official supplier origin and only three allowed JSON POST paths; no generic endpoint/URL/header passthrough, rawURL query, upload/write/tag/admin/org scan or source media download.",
+    "Credentials accepted only from trusted Node factory configuration, never renderer/env fallback/default user store/return/log. Company token private memory single-flight cache<=1h, no rawtoken getter or auth response exposed; errors sanitized knowncodes. Token/authfailure clears cache, no automatic retry or hidden network on construction.",
+    "Every public lookup/list consumes existing isVerifiedSession(context) brand/environment/current expiry before dispatch and accepting result; not caller subject/owner/admin/approved booleans. lookupExactAccount additionally requires configured trusted authorizeLookup(context,exactName), default deny. listMaterials obtains current binding only through trusted bindingFor(context,providerScope), not caller account_key/body accountKeys.",
+    "Compute providerScope from fixed origin+company_key hash as namespace only, never ownership. Binding callback must return matching subject/environment/providerScope, positive immutable bindingId/revision, active and applicable finite expiry; recheck same binding before result. Changed/revoked/foreign binding or expired caller rejects late response, no cached A data to B. callbacks are existing trusted service composition, not HTTP/config plugin injection.",
+    "lookup uses only exact approved nonempty account query page1 size5. Distinguish empty/notfound, ambiguous, disabled, malformed, permission and timeout/unknown; require exact account match/accountKey present, do not retry broader names/pages/admin or infer no media. Lookup observation alone never proves person binding; do not copy legacy name-equality trust.",
+    "list video metadata only under callback supplied account_key. Preserve other authors legitimately visible in that binding; do not replace invocation identity with author accountKeys or create license from company auth/MD5/path. Keep source observations/raw unit semantics, no fake internalassetVersion or grant. Unknown/forbidden response is not empty list/no labels.",
+    "Preserve all external identifiers losslessly (including unquoted >2^53 IDs) using exact JSON number source or equally bounded existing-runtime parse; never stringify rounded numbers. Normalized external IDs strings retain original type/source evidence; unsupported unknown unsafe numbers refuse unconfirmed. Do not presume supplier duration units/native kind or convert missing/null into0.",
+    "Bound requests/response UTF8 body3MiB/time10s; redirect:error, abort/body cancellation awaited, no secrets in error/log/output/cachefiles. Scalar query whitelist/bounds and reserved field collisions refused. No new credentials/normal profile writes or package installs, and no real network/private file reads in this author task.",
+    "TDD first meaningful missing-module/behavior RED, then minimal signer/readonly operations. Exact golden canonical/signature vectors including RFC3986 Unicode/!()*; private token/no credential exposure; unauthorized/forged/expired context zero vendorcall; exact/filter/no-broadening; token failure/no autoretry; binding change/late response; lossless large IDs; body cap/redirect/timeout/cancel. Synthetic fetch only, no port listeners/cloud/model/media.",
+    "Immediate consumer is forthcoming material producer/locator in the same original apps/api, plus approved bounded connectivity checks by Root later. This module is supplier mechanics/observations, NOT a second library, binding store, permission service or new Job/Timeline. Missing trusted actual binding/credential does not stop local implementation and must remain explicit pending.",
+    "Fresh own .dev/zhishang-readonly/attempt-* HOME/TMP/cache/logs only, no current-pointer outside attempt. Existing E5 original45tool links readonly may be reused for types, no fallback source alias/liveE4 changes. Run targeted Node/source API types and affected checks only; preserve RED vs ENV separately and freeze exact2source/raw/Git/report for nonauthor review and freshN5a before Root serial integration."
+  ],
+  "runtime": {
+    "network": "none; synthetic injected fetch only, no actual supplier/Supabase/loopback/DB/model",
+    "tooling": "existing Node>=22.18 actual installed26 and original TypeScript/Node types from approved45links/read-only E1 if explicit adapter; no packages/installer",
+    "files": "only fresh .dev/zhishang-readonly/attempt-*; no private API docs/credential files/old source execution/normal profiles",
+    "limits": "60sec child/20MiB logs; no silent skip or forced-zero"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T04.a/T04.b provider adapter necessary local implementation",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD independent scope/protocol review, metadata/current active5 writer check and actualN5a; source2 not begun",
+  "scopeReview": {
+    "path": "docs/execution/zhishang-readonly-scope-review.json",
+    "sha256": "f253fbdd79ace9a54391358a29bbe1a0000d62c1ac8343c7bbe9665f50f9bada",
+    "scopeReviewedCardSha256": "dedede896eec448e0a5c8e4958148b29e897c82631bfa70ac02408a8124bf1f0",
+    "bindingOnlyAfterReview": true
+  }
+}

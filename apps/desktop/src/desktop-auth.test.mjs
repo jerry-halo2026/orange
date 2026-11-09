@@ -27,7 +27,7 @@ async function setup(options = {}) {
     if (url.endsWith('/auth/v1/logout?scope=local')) return new Response(null,{status:204});
     throw Error('unexpected endpoint');
   };
-  const controller = mod.createDesktopAuth({configuration,home,projects,coordinationRoot:join(home,'coord'),instanceId:'test-instance'}, {
+  const controller = mod.createDesktopAuth({configuration:options.configuration??configuration,home,projects,coordinationRoot:join(home,'coord'),instanceId:'test-instance'}, {
     fetch,monotonicNow:()=>now,retire:options.retire ?? (async()=>{}),onState:state=>states.push(state), ...options.dependencies,
   });
   return {controller,home,projects,calls,states,setTime:value=>{now=value;},setSubject:value=>{subject=value;}};
@@ -42,6 +42,54 @@ test('desktop login controller is signed out until actual two-step Auth succeeds
   assert.deepEqual(s.calls.map(c=>new URL(c.url).pathname),['/auth/v1/token','/auth/v1/user']);
   assert.doesNotMatch(JSON.stringify(s.controller.getPublicState()),/synthetic-access|synthetic-refresh|11111111|auth\.invalid/);
   await s.controller.dispose();
+});
+
+test('business configuration retains legacy login and permits only the explicit optional trusted backend origin',async()=>{
+ const home=await mkdtemp(join(root,'business-config-')),file=join(home,'config.json');
+ const value={...configuration,businessOrigin:'http://127.0.0.1:18572'};await writeFile(file,JSON.stringify(value));
+ assert.deepEqual(mod.readDesktopAuthConfiguration({ORANGE_AUTH_CONFIG_FILE:file}),value);
+ const s=await setup({configuration:value});assert.equal((await s.controller.signIn(input)).ok,true);assert.equal(typeof s.controller.business?.resolve,'function');await s.controller.dispose();
+});
+
+async function businessController(handler,retire=async()=>{}){
+ let subject=A;
+ const s=await setup({configuration:{...configuration,businessOrigin:'http://127.0.0.1:18572'},retire,dependencies:{fetch:async(url,init)=>{
+  if(url.includes('/auth/v1/token?'))return Response.json({access_token:subject===A?'only-private-access':'only-private-access-b',refresh_token:'only-private-refresh',token_type:'bearer',expires_in:60,user:{id:subject}});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:subject,is_anonymous:false});
+  if(url.includes('/auth/v1/logout'))return new Response(null,{status:204});
+  return handler(url,init);
+ }}});
+ assert.equal((await s.controller.signIn(input)).ok,true,'optional business config must not break native login');
+ const project={id:'opaque-business-'+Date.now(),path:join(s.projects,'owned')};await mkdir(project.path);await writeFile(join(project.path,'film.html'),'native film');await s.controller.registerCreatedProject(project);return {...s,project,setBusinessSubject:value=>{subject=value;}};
+}
+
+test('business controller requires an owned project and keeps the current token entirely in the service closure',async()=>{
+ let calls=0;const s=await businessController(async(url,init)=>{calls++;assert.equal(init.headers.authorization,'Bearer only-private-access');return Response.json({materials:[]});});
+ try{
+  const reply=await s.controller.business.resolve(s.project,{purpose:'studio',versionIds:[]});assert.equal(reply.status,200);
+  await assert.rejects(s.controller.business.resolve({...s.project,id:'foreign'},{purpose:'studio',versionIds:[]}),e=>e.code==='project-access-denied');assert.equal(calls,1);
+  assert.doesNotMatch(JSON.stringify(s.controller.getPublicState())+await readFile(join(s.home,'orange-project-owners.json'),'utf8'),/only-private/);
+ }finally{await s.controller.dispose();}
+});
+
+test('business retirement seals immediately and cannot release its reservation before the actual request settles',async()=>{
+ let finish,entered;const transport=new Promise(r=>finish=r),ready=new Promise(r=>entered=r);let signal;
+ const s=await businessController(async(url,init)=>{signal=init.signal;entered();return transport;});
+ const pending=s.controller.business.resolve(s.project,{purpose:'studio',versionIds:[]});const rejected=assert.rejects(pending,e=>/authentication|required|superseded|disposed/.test(e.code));await ready;
+ let retired=false;const out=s.controller.signOut();void out.then(()=>retired=true);
+ assert.equal(signal.aborted,true);assert.throws(()=>s.controller.assertActive());assert.equal((await s.controller.signIn(input)).code,'preservation-pending');
+ await new Promise(r=>setTimeout(r,10));assert.equal(retired,false);
+ const before=JSON.parse(await readFile(join(s.home,'coord','registry.json'),'utf8'));assert.equal(before.reservations.length,1);
+ finish(Response.json({materials:[]}));await rejected;await out;const after=JSON.parse(await readFile(join(s.home,'coord','registry.json'),'utf8'));assert.equal(after.reservations.length,0);
+ s.setBusinessSubject(B);assert.equal((await s.controller.signIn(input)).ok,true);assert.equal(s.controller.ownsProject(s.project),false,'A response/owner must never become a B capability');
+ await s.controller.dispose();
+});
+
+test('business expiry fences pending operations before accepting their response, and the original utility injects only its private adapter',async()=>{
+ let finish,entered;const pending=new Promise(r=>finish=r),ready=new Promise(r=>entered=r);
+ const s=await businessController(async()=>{entered();return pending;});const work=s.controller.business.resolve(s.project,{purpose:'studio',versionIds:[]});const denied=assert.rejects(work,e=>e.code==='authentication-required');await ready;
+ s.setTime(60010);assert.equal(s.controller.getPublicState().kind,'expired');assert.throws(()=>s.controller.assertActive());finish(Response.json({materials:[]}));await denied;await s.controller.dispose();
+ const source=await readFile(new URL('./studio-process.mjs',import.meta.url),'utf8');assert.match(source,/fissionOptions:\s*\{\s*business:\s*desktopAuth\.business\s*\}/,'actual original utility startup must pass its private controller adapter, not accept renderer installation');
 });
 
 test('configuration is explicit, absent leaves configuration-required, privileged or malformed configuration never transports',async()=>{

@@ -77,10 +77,10 @@ function inspectUser(data) {
  * the future trusted controller. JavaScript string memory is not securely erased.
  */
 export function createAuthService(configuration, dependencies) {
-  let config, deps, origin;
+  let config, deps, origin, business;
   try {
     config = snapshot(configuration, CONFIG);
-    deps = snapshot(dependencies, DEPS) || snapshot(dependencies, [...DEPS, 'onInvalidated']);
+    deps = snapshot(dependencies, DEPS) || snapshot(dependencies, [...DEPS, 'onInvalidated']) || snapshot(dependencies, [...DEPS, 'business']) || snapshot(dependencies, [...DEPS, 'onInvalidated', 'business']);
     if (
       !config ||
       !deps ||
@@ -112,6 +112,15 @@ export function createAuthService(configuration, dependencies) {
     )
       throw 0;
     origin = url.origin;
+    if (Object.hasOwn(deps, 'business')) {
+      business = snapshot(deps.business, ['origin', 'bind']);
+      if (!business || typeof business.bind !== 'function' || typeof business.origin !== 'string' || /[\s\\]/.test(business.origin)) throw 0;
+      const target = new URL(business.origin);
+      if (target.username || target.password || target.search || target.hash || target.pathname !== '/' ||
+        !/^https?:\/\/[^/?#]+\/?$/.test(business.origin) ||
+        !(target.protocol === 'https:' || target.protocol === 'http:' && /^http:\/\/(?:127\.0\.0\.1|\[::1\])(?::\d+)?\/?$/.test(business.origin))) throw 0;
+      business = Object.freeze({origin: target.origin, bind: business.bind});
+    }
   } catch {
     throw new Error('invalid-configuration');
   }
@@ -503,6 +512,65 @@ export function createAuthService(configuration, dependencies) {
     if (state.kind !== 'disposed') invalidate('disposed', 'disposed');
     return state;
   }
+
+  // This capability is delivered only to the trusted utility constructor. The
+  // public Auth6 object and its scalar evidence never contain a bearer token.
+  if (business) business.bind(async (kind, input, expected, signal) => {
+    const operation = {generation};
+    const current = () => {
+      check(operation);
+      if (notifying || state.kind !== 'active' || !session || session.evidence !== expected) fail('authentication-required');
+    };
+    current();
+    let path, method = 'POST', body;
+    if (kind === 'resolve' || kind === 'claim') {
+      path = kind === 'resolve' ? '/api/materials/resolve' : '/api/fission/claims';
+      try { body = JSON.stringify(input); } catch { fail('invalid-business-input'); }
+      if (typeof body !== 'string' || encoder.encode(body).byteLength > 1024 * 1024) fail('invalid-business-input');
+    } else if ((kind === 'status' || kind === 'cancel') && typeof input === 'string' && /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(input)) {
+      path = '/api/fission/claims/' + input + (kind === 'cancel' ? '/cancel' : '');
+      if (kind === 'status') method = 'GET'; else body = '{}';
+    } else fail('invalid-business-input');
+    current();
+    const token = session.token, controller = new AbortController();
+    const cancel = () => controller.abort();
+    requests.add(cancel);signal?.addEventListener('abort',cancel,{once:true});
+    if (signal?.aborted) cancel();
+    const timer = setTimeout(cancel,deps.requestTimeoutMs);
+    let reader, responseBody;
+    try {
+      if (controller.signal.aborted) fail('superseded');
+      const response = await deps.fetch(business.origin + path,{method,headers:{accept:'application/json',authorization:`Bearer ${token}`,...(body === undefined ? {} : {'content-type':'application/json'})},redirect:'error',signal:controller.signal,...(body === undefined ? {} : {body})});
+      responseBody=response?.body;
+      current();if (controller.signal.aborted) fail('superseded');
+      if (!record(response) || !Number.isInteger(response.status) || response.status < 100 || response.status > 599) fail('invalid-response');
+      if (response.redirected || response.status >= 300 && response.status < 400) fail('redirect-rejected');
+      if (response.status === 401) { operation.rejectedGeneration=generation+1;invalidate('revoked','authentication-rejected'); fail('authentication-rejected'); }
+      if (!/^application\/(?:[a-z0-9.+-]+\+)?json(?:\s*;|$)/i.test(response.headers.get('content-type') || '')) fail('invalid-response');
+      reader = response.body?.getReader();if (!reader) fail('invalid-response');
+      const chunks = [];let size = 0;
+      while (true) {
+        const chunk = await reader.read();current();if (controller.signal.aborted) fail('superseded');
+        if (chunk.done) break;
+        if (!(chunk.value instanceof Uint8Array) || (size += chunk.value.byteLength) > 1024 * 1024) fail('response-too-large');
+        chunks.push(chunk.value.slice());
+      }
+      const bytes = new Uint8Array(size);let offset = 0;for (const chunk of chunks) {bytes.set(chunk,offset);offset += chunk.length;}
+      let data;try {data=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));} catch {fail('invalid-response');}
+      current();
+      if (response.status === 403 && ['authentication-required','authentication-rejected'].includes(data?.code)) {operation.rejectedGeneration=generation+1;invalidate('revoked','authentication-rejected');fail('authentication-rejected');}
+      return {status:response.status,data};
+    } catch (error) {
+      current();
+      throw error instanceof Failure ? error : new Failure(controller.signal.aborted ? 'superseded' : 'business-unconfirmed');
+    } finally {
+      clearTimeout(timer);requests.delete(cancel);signal?.removeEventListener('abort',cancel);
+      // Unlike the Auth verification race, an entered business request settles
+      // only after its actual transport/body settles. Abort is not rollback.
+      try {if(reader)await reader.cancel();else await responseBody?.cancel();} catch { /* transport already failed */ }
+      try {reader?.releaseLock();} catch { /* closed reader */ }
+    }
+  });
 
   return Object.freeze({
     getPublicState: publicState,

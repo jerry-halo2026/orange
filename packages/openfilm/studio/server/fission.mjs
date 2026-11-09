@@ -7,6 +7,7 @@ import path from 'node:path';
 import {assertSourceAccess} from '../../src/media-links.mjs';
 import {bringIn} from './files.mjs';
 import {importFissionEditPlan} from './fission-import.mjs';
+import {readProjectFilm} from './film.mjs';
 
 export class FissionError extends Error {
   /** @param {string} code @param {number} status @param {string} message */
@@ -21,14 +22,52 @@ async function ordinary(file){for(let at=path.resolve(file);;at=path.dirname(at)
 /** @param {string} file */
 async function sourceHash(file){assertSourceAccess(file,'copy');await ordinary(file);const h=await open(file,'r');try{const before=await h.stat();const bytes=await h.readFile();const after=await lstat(file);assertSourceAccess(file,'copy');if(before.dev!==after.dev||before.ino!==after.ino||before.size!==after.size||before.mtimeMs!==after.mtimeMs)fail('source-changed');return hash(bytes);}finally{await h.close();}}
 /** Trusted Node startup options only. No renderer JSON can supply any option here.
- * @param {{runtime?:{dotnet:string,cli:string,paths:Record<string,string>},selftest?:{projectPath:string,jobSHA256:string,inputs:{path:string,sha256:string}[],approvedBaseRoot:string}}} [options] */
+ * @param {{business?:ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth>['business'],runtime?:{dotnet:string,cli:string,paths:Record<string,string>},selftest?:{projectPath:string,jobSHA256:string,inputs:{path:string,sha256:string}[],approvedBaseRoot:string}}} [options] */
 export function createFission(options={}){
   /** @type {Map<string,{task:Promise<any>,cancel:()=>void}>} */ const active=new Map();let sealed=false;
+  /** @type {Set<Promise<any>>} */ const pending=new Set();
+  /** @type {Set<AbortController>} */ const businessControllers=new Set();
   /** @type {Promise<void>|null} */ let terminal=null;
-  /** @param {{id:string,path:string,name:string}} project @param {any} job @param {AbortSignal} signal */
-  async function execute(project,job,signal){
+  /** @template T @param {Promise<T>} operation */
+  function track(operation){const task=operation.finally(()=>pending.delete(task));pending.add(task);return task;}
+  /** @param {{id:string,path:string}} project @param {'resolve'|'claim'|'status'|'cancel'} kind @param {any} input @param {AbortSignal} [signal] */
+  async function businessCall(project,kind,input,signal){
+    if(sealed||signal?.aborted)fail('fission-cancelled');
+    if(!options.business)fail('admission-required',503);
+    const before=await readProjectFilm(project.path),controller=new AbortController(),abort=()=>controller.abort();businessControllers.add(controller);signal?.addEventListener('abort',abort,{once:true});if(signal?.aborted||sealed)abort();
+    try{
+      if(controller.signal.aborted)fail('fission-cancelled');
+      const body=kind==='claim'?{...input,projectId:project.id,filmRev:before.rev}:input;
+      /** @param {{status:number,data:any}} reply */
+      const validate=async reply=>{
+        if(controller.signal.aborted||sealed)fail('fission-cancelled');
+        if((await readProjectFilm(project.path)).rev!==before.rev)fail('native-revision-changed');
+        if(!reply||!Number.isInteger(reply.status)||reply.status<200||reply.status>599||!reply.data||typeof reply.data!=='object')fail('business-unconfirmed',503);
+        const plan=reply.data.frozenPlan;
+        if(plan&&(plan.projectId!==project.id||kind==='claim'&&plan.filmRev!==before.rev))fail('business-project-mismatch',403);
+        return reply;
+      };
+      if(kind==='cancel'){
+        const status=await validate(await options.business.status(project,input,controller.signal));
+        if(status.status>=400)return status;
+        if(!status.data.frozenPlan)fail('business-unconfirmed',503);
+      }
+      return await validate(await options.business[kind](project,body,controller.signal));
+    }catch(error){
+      if(error instanceof FissionError||['authentication-required','project-access-denied'].includes(/** @type {any} */(error)?.code))throw error;
+      fail('business-unconfirmed',503);
+    }finally{signal?.removeEventListener('abort',abort);businessControllers.delete(controller);}
+  }
+  /** @param {{id:string,path:string,name:string}} project @param {any} job @param {AbortSignal} signal @param {{groupId?:string,idempotencyKey?:string}} [request] */
+  async function execute(project,job,signal,request){
     const assertRunning=()=>{if(signal.aborted||sealed)fail("fission-cancelled");};
     assertRunning();
+    if(options.business){
+      if(typeof request?.groupId!=='string'||typeof request.idempotencyKey!=='string'||!request.groupId||!request.idempotencyKey)fail('business-context-required',503);
+      // Only the backend can prepare/freeze/admit. No successful claim (nor a
+      // startup selftest) is permission to use the not-yet-connected executor.
+      return businessCall(project,'claim',{groupId:request.groupId,idempotencyKey:request.idempotencyKey,job},signal);
+    }
     const bound=options.selftest, runtime=options.runtime;
     if(!bound||bound.projectPath!==project.path||hash(JSON.stringify(job))!==bound.jobSHA256)fail('admission-required',503,'Fission business admission is not connected yet.');
     if(!runtime||job.Count!==1||job.Threads!==1||job.UseNvenc!==false||job.RandomHFlip!==false||!bound.inputs.length)fail('selftest-configuration',503);
@@ -76,13 +115,17 @@ export function createFission(options={}){
     return {report,project:imported.project,blockingCapabilities:imported.blockingCapabilities,previewEquivalent:false,businessAdmitted:false};
   }
   return {
-    capabilities:(/** @type {{path:string}|undefined} */ project)=>{const available=!!options.selftest&&!!options.runtime&&project?.path===options.selftest.projectPath;return {available,mode:available?'isolated-synthetic-selftest':'admission-required',businessAdmitted:false,previewEquivalent:false};},
-    /** @param {{id:string,path:string,name:string}} project @param {any} job */
-    run(project,job){if(sealed)return Promise.reject(new FissionError('fission-stopping',409,'Fission is stopping.'));if(active.has(project.id))return Promise.reject(new FissionError('fission-busy',409,'This project already has a Fission run.'));
+    capabilities:(/** @type {{path:string}|undefined} */ project)=>{const available=!options.business&&!!options.selftest&&!!options.runtime&&project?.path===options.selftest.projectPath;return {available,mode:options.business?'business-preparation-required':available?'isolated-synthetic-selftest':'admission-required',businessAdmitted:false,previewEquivalent:false};},
+    /** @param {{id:string,path:string,name:string}} project @param {any} job @param {{groupId?:string,idempotencyKey?:string}} [request] */
+    run(project,job,request){if(sealed)return Promise.reject(new FissionError('fission-stopping',409,'Fission is stopping.'));if(active.has(project.id))return Promise.reject(new FissionError('fission-busy',409,'This project already has a Fission run.'));
       const controller=new AbortController();const record={task:/** @type {Promise<any>} */(Promise.resolve()),cancel:()=>controller.abort()};active.set(project.id,record);
-      record.task=execute(project,job,controller.signal).finally(()=>{active.delete(project.id);});return record.task;},
-    /** Cancel is cooperative, and resolves only after the actual original CLI exit+close. @param {string} id */
-    async cancel(id){const record=active.get(id);if(record){record.cancel();await record.task.catch(()=>{});}},
-    stopAll(){if(terminal)return terminal;sealed=true;for(const record of active.values())record.cancel();terminal=Promise.all([...active.values()].map(record=>record.task.catch(()=>{}))).then(()=>{});return terminal;},
+      record.task=track(execute(project,job,controller.signal,request).finally(()=>{active.delete(project.id);}));return record.task;},
+    /** @param {{id:string,path:string}} project @param {any} body */
+    resolve(project,body){return track(businessCall(project,'resolve',body));},
+    /** @param {{id:string,path:string}} project @param {string} id */
+    status(project,id){return track(businessCall(project,'status',id));},
+    /** Cancel is cooperative, and resolves only after the actual original CLI exit+close. Remote cancel returns its actual result, never a fabricated release. @param {string|{id:string,path:string}} project @param {string} [claimId] */
+    async cancel(project,claimId){if(typeof project!=='string'&&claimId)return track(businessCall(project,'cancel',claimId));const record=active.get(typeof project==='string'?project:project.id);if(record){record.cancel();await record.task.catch(()=>{});}if(options.business)return {status:503,data:{code:'result-unknown'}};},
+    stopAll(){if(terminal)return terminal;sealed=true;for(const record of active.values())record.cancel();for(const controller of businessControllers)controller.abort();terminal=Promise.all([...pending].map(task=>task.catch(()=>{}))).then(()=>{});return terminal;},
   };
 }

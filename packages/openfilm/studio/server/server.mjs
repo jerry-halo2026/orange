@@ -770,8 +770,24 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     }
     if (rest === 'fission') {
       if (req.method === 'GET') return json(res, 200, fission.capabilities(project));
-      if (req.method === 'POST') return json(res, 200, await fission.run(project, await readJson(req)));
-      if (req.method === 'DELETE') { await fission.cancel(project.id); return json(res, 200, { stopped: true }); }
+      if (req.method === 'POST') {
+        const reply=await fission.run(project,await readJson(req),{groupId:typeof req.headers['x-orange-group-id']==='string'?req.headers['x-orange-group-id']:undefined,idempotencyKey:typeof req.headers['idempotency-key']==='string'?req.headers['idempotency-key']:undefined});
+        return reply&&typeof reply.status==='number'&&Object.hasOwn(reply,'data')?json(res,reply.status,reply.data):json(res,200,reply);
+      }
+      if (req.method === 'DELETE') { const reply=await fission.cancel(project.id);return reply?json(res,reply.status,reply.data):json(res,200,{stopped:true}); }
+    }
+    if(rest==='materials/resolve'&&req.method==='POST'){
+      const body=await readJson(req);
+      if(!body||typeof body!=='object'||Array.isArray(body)||Object.keys(body).sort().join()!=='purpose,versionIds')throw new HttpError(400,'Invalid material request.');
+      const reply=await fission.resolve(project,body);return json(res,reply.status,reply.data);
+    }
+    const claimRoute=/^fission\/claims\/([a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12})(\/cancel)?$/i.exec(rest);
+    if(claimRoute){
+      if(req.method==='GET'&&!claimRoute[2]){const reply=await fission.status(project,claimRoute[1]);return json(res,reply.status,reply.data);}
+      if(req.method==='POST'&&claimRoute[2]){
+        const body=await readJson(req);if(!body||typeof body!=='object'||Array.isArray(body)||Object.keys(body).length)throw new HttpError(400,'Invalid cancel request.');
+        const reply=await fission.cancel(project,claimRoute[1]);return json(res,reply.status,reply.data);
+      }
     }
     /* ── subtitles: the film's lines, the person's subtitle style, translation (see captions.mjs) ── */
     if (await captionRoutes(req, res, project.path, rest, { translate: (root) => subtitleTranslator(root, { askAgent }), transcribe: await subtitleTranscriber() })) return;

@@ -24,7 +24,7 @@ export function readDesktopAuthConfiguration(environment) {
     ordinaryControlPath(file);
     const stat=lstatSync(file);if(!stat.isFile() || stat.nlink !== 1 || stat.size>32768)return null;
     const value=JSON.parse(readFileSync(file,'utf8'));
-    if(!value || Object.getPrototypeOf(value)!==Object.prototype || Object.keys(value).sort().join()!=='authOrigin,environmentId,publishableKey')return null;
+    if(!value || Object.getPrototypeOf(value)!==Object.prototype || !['authOrigin,environmentId,publishableKey','authOrigin,businessOrigin,environmentId,publishableKey'].includes(Object.keys(value).sort().join()))return null;
     return value;
   } catch { return null; }
 }
@@ -38,6 +38,8 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   const file=join(home,'orange-project-owners.json');
   let service=null,policy=null,verified=null,handles=new Map(),sealed=true,disposed=false,failed=false,retiring=null,retired=false,epoch=0;
   let reservation=null;
+  let businessRequest=null;
+  const businessAborters=new Set();
   const selectedSources=new Map(), selections=new WeakMap();
   const operations=new Set();
   const listeners=new Set();
@@ -63,6 +65,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   }
   function fence(state) {
     sealed=true;policy?.dispose();handles.clear();selectedSources.clear();notify(state);
+    for(const abort of businessAborters)abort();
     if(verified&&!retiring&&!retired)beginRetirement();
   }
   function beginRetirement() {
@@ -87,7 +90,10 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   function makeService() {
     if(!configuration)return null;
     try {
-      return createAuthService({...configuration,instanceId,epoch:++epoch},{fetch:dependencies.fetch,monotonicNow:dependencies.monotonicNow,requestTimeoutMs:10000,onInvalidated:fence});
+      const {businessOrigin,...authConfiguration}=configuration;
+      businessRequest=null;
+      return createAuthService({...authConfiguration,instanceId,epoch:++epoch},{fetch:dependencies.fetch,monotonicNow:dependencies.monotonicNow,requestTimeoutMs:10000,onInvalidated:fence,
+        ...(businessOrigin===undefined?{}:{business:{origin:businessOrigin,bind:request=>{businessRequest=request;}}})});
     } catch { return null; }
   }
   service=makeService();
@@ -102,6 +108,24 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     const state=getPublicState();
     if(sealed||state.kind!=='active'||!verified)throw deny();
     return verified;
+  }
+  async function runBusiness(project,kind,input,signal) {
+    const evidence=assertActive();authorizeProject(project);
+    if(!businessRequest)throw Object.assign(new Error('Business configuration is required.'),{code:'business-configuration-required',status:503});
+    const request=businessRequest,aborter=new AbortController(),abort=()=>aborter.abort();
+    businessAborters.add(abort);signal?.addEventListener('abort',abort,{once:true});if(signal?.aborted)abort();
+    const operation=Promise.resolve().then(async()=>{
+      if(assertActive()!==evidence)throw deny();authorizeProject(project);
+      try {
+        const response=await request(kind,input,evidence,aborter.signal);
+        if(assertActive()!==evidence)throw deny();authorizeProject(project);return response;
+      } catch(error) {
+        if(sealed||assertActive()!==evidence)throw deny();
+        throw Object.assign(new Error('Business request is unconfirmed.'),{code:typeof error?.code==='string'?error.code:'business-unconfirmed',status:503});
+      }
+    });
+    operations.add(operation);
+    try{return await operation;}finally{operations.delete(operation);businessAborters.delete(abort);signal?.removeEventListener('abort',abort);}
   }
   function projectRecord(project) {
     const evidence=assertActive();
@@ -212,6 +236,12 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   }
   const controller={
     getPublicState,assertActive,signIn,signOut,
+    business:Object.freeze({
+      resolve:(project,body,signal)=>runBusiness(project,'resolve',body,signal),
+      claim:(project,body,signal)=>runBusiness(project,'claim',body,signal),
+      status:(project,id,signal)=>runBusiness(project,'status',id,signal),
+      cancel:(project,id,signal)=>runBusiness(project,'cancel',id,signal),
+    }),
     beginSourceSelection(){const scope=Object.freeze({});selections.set(scope,assertActive());return scope;},
     completeSourceSelection(scope,paths){
       const evidence=assertActive();if(selections.get(scope)!==evidence)throw sourceAccessError();selections.delete(scope);

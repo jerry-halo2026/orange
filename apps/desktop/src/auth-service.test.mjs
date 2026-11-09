@@ -81,6 +81,56 @@ const exactResult = (actual, ok, code, kind, reason = null) => {
   exactState(actual.state, kind, reason);
 };
 
+test('business capability is private, fixed-origin and accepts only the current evidence and four backend operations', async () => {
+  let request;
+  const h=setup(undefined,{deps:{business:{origin:'http://127.0.0.1:18572',bind:value=>{request=value;}}}});
+  assert.equal(typeof request,'function','trusted construction binds a private request, not a seventh Auth method');
+  assert.deepEqual(Object.keys(h.service).sort(),['dispose','getPublicState','getVerifiedEvidence','revalidate','signIn','signOut']);
+  await h.service.signIn(credentials());const evidence=h.service.getVerifiedEvidence();
+  h.sequence.push((url,init)=>{assert.equal(url,'http://127.0.0.1:18572/api/materials/resolve');assert.equal(init.headers.authorization,'Bearer synthetic-access-sentinel');assert.equal(init.headers.apikey,undefined);assert.equal(init.redirect,'error');return json({materials:[]});});
+  assert.deepEqual(await request('resolve',{purpose:'studio',versionIds:[]},evidence),{status:200,data:{materials:[]}});
+  await assert.rejects(request('resolve',{}, {...evidence}),e=>/superseded|authentication/.test(e.code));
+  await assert.rejects(request('https://foreign.invalid',{},evidence),e=>/invalid-business/.test(e.code));
+  assert.doesNotMatch(JSON.stringify(h.service.getPublicState())+JSON.stringify(evidence),/sentinel/);
+  h.service.dispose();
+});
+
+test('business origins reject normalization tricks and redirects; permission denial alone does not revoke Auth',async()=>{
+  for(const origin of ['http://localhost:18572','http://127.1:18572','http://2130706433:18572','https://user:pass@backend.invalid','https://backend.invalid/path',' https://backend.invalid','https://backend.invalid?x','https://backend.invalid#x','https://backend.invalid\\evil'])
+    assert.throws(()=>createAuthService(config(),{...deps(),business:{origin,bind(){}}}),/invalid-configuration/);
+  let request;const h=setup(undefined,{deps:{business:{origin:'https://backend.invalid',bind:r=>request=r}}});await h.service.signIn(credentials());const evidence=h.service.getVerifiedEvidence();
+  h.sequence.push(()=>json({code:'material-access-denied'},403));assert.equal((await request('resolve',{},evidence)).status,403);assert.equal(h.service.getPublicState().kind,'active');
+  h.sequence.push(()=>json({},302));await assert.rejects(request('resolve',{},evidence),e=>e.code==='redirect-rejected');
+  h.sequence.push(()=>json({code:'authentication-rejected'},403));await assert.rejects(request('resolve',{},evidence),e=>e.code==='authentication-rejected');assert.equal(h.service.getPublicState().kind,'revoked');
+});
+
+test('business invalidation aborts synchronously but awaits actual ignored-abort transport and refuses its late response',async()=>{
+  let request,signal;const transport=deferred();let entered;const ready=new Promise(r=>entered=r);
+  const h=setup(undefined,{deps:{business:{origin:'https://backend.invalid',bind:r=>request=r}}});await h.service.signIn(credentials());const evidence=h.service.getVerifiedEvidence();
+  h.sequence.push((url,init)=>{signal=init.signal;entered();return transport.promise;});
+  let settled=false;const work=request('claim',{},evidence);void work.then(()=>settled=true,()=>settled=true);await ready;
+  h.service.dispose();assert.equal(signal.aborted,true);await pause(5);assert.equal(settled,false,'abort is not actual transport drain');
+  transport.resolve(json({status:'reserved'}));await assert.rejects(work,e=>/superseded|disposed/.test(e.code));
+});
+
+test('business completion samples expiry before admitting a late successful response',async()=>{
+  let request;const h=setup(undefined,{deps:{business:{origin:'https://backend.invalid',bind:r=>request=r}}});await h.service.signIn(credentials());const evidence=h.service.getVerifiedEvidence();
+  h.sequence.push(()=>{h.setNow(10100);return json({materials:[]});});await assert.rejects(request('resolve',{},evidence),e=>/expired|superseded/.test(e.code));assert.equal(h.service.getPublicState().kind,'expired');
+});
+
+test('business invalid response still awaits actual body cancellation before it can retire',async()=>{
+ let request,finish,cancelled=false;const drained=new Promise(r=>finish=r);
+ const h=setup(undefined,{deps:{business:{origin:'https://backend.invalid',bind:r=>request=r}}});await h.service.signIn(credentials());
+ h.sequence.push(()=>new Response(new ReadableStream({cancel(){cancelled=true;return drained;}}),{headers:{'content-type':'text/plain'}}));
+ let settled=false;const work=request('resolve',{},h.service.getVerifiedEvidence());const rejected=assert.rejects(work,e=>e.code==='invalid-response');void work.then(()=>settled=true,()=>settled=true);
+ await pause(5);assert.equal(cancelled,true,'entered unread response body must be cancelled');assert.equal(settled,false);finish();await rejected;h.service.dispose();
+});
+
+test('business authentication-required rejection is authoritative, unlike a material permission denial',async()=>{
+ let request;const h=setup(undefined,{deps:{business:{origin:'https://backend.invalid',bind:r=>request=r}}});await h.service.signIn(credentials());
+ h.sequence.push(()=>json({code:'authentication-required'},403));await assert.rejects(request('resolve',{},h.service.getVerifiedEvidence()),e=>e.code==='authentication-rejected');assert.equal(h.service.getPublicState().kind,'revoked');
+});
+
 test('03 configuration snapshots refuse traps, unknown fields, unsafe headers and origins', async (t) => {
   for (const [label, changes] of [
     ['userinfo', { authOrigin: 'https://name:pass@auth.invalid' }],

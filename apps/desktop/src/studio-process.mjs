@@ -115,6 +115,7 @@ try {
     stays: true,
     key:randomBytes(24).toString('hex'),
     desktopAuth,
+    fissionOptions:{business:desktopAuth.business},
     working: () => working,
     askAgent,
     /* the window's page, Studio's editor with the chat beside it (shell/), in place of the editor alone */

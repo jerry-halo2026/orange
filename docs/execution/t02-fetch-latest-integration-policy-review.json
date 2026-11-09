@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 20,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "a6707722bea732ecf42b50ec22fcf51212dc49fbf1a005eb4634f8d9e6a5d335",
+  "specSHA256": "55927fbed30693d88e8c358daa087e6df1a239593d5e090e170e16d4fb1f8a12",
+  "toolingPlanSHA256": "09ca4c1ff4dcd8b20932f857bc9ca8427383b4251f226bc2f9bb499b9d85df97",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-fetch-latest-integration-input-review.json",
+      "sha256": "b5562ed9f213fcd789ba9f50d2a97093ec6c6783eb113e733721572472e04217"
+    },
+    {
+      "path": "docs/execution/t02-fetch-latest-integration-input-review.json",
+      "sha256": "86c2f71419492e8436a262e5658e34f5e341c60f3618782715a422c889bb056c"
+    }
+  ],
+  "actualIndependentChecks": {
+    "records": 49,
+    "uniquePaths": 47,
+    "existingRawRecords": 45,
+    "existingUniquePaths": 43,
+    "prospectiveFetchGitPaths": 4,
+    "prospectiveNotYetActualTarget": true,
+    "missingJunctionPaths": 43,
+    "missingDirectories": 14,
+    "toolDeclarationCompilerFilesHashed": 1311,
+    "workspaceAliasesToE3OwnNativeSources": true,
+    "existingCoreOrdinaryDirectory106Verified": true,
+    "freshPrimaryDev41bCleanAndAncestor": true,
+    "oldT07IgnoredRecords25952Preserved": true
+  },
+  "proposalCorrections": [
+    "CPU raw pin corrected to actual E3 c6ef87, no test/checker/normalization",
+    "remove old E1/ActiveFetch17 wording and preserve exact numeric unchanged budgets/currentE3Runtime concurrency1/clean7/Worker4/Exports2/FetchDirect2/unknown-stop",
+    "fixed Core existing directory description; read-only failed assumption before any bootstrap preserved, not product RED",
+    "fixed original fixture parents studio-watch-close/studio-auto-close/projects-admission and ONLY fresh t01-profile- namespace, no broad.dev authorization",
+    "records49 versus unique47 explicitly separate"
+  ],
+  "proofActivation": {
+    "onlyFields": [
+      "status",
+      "spec",
+      "quality",
+      "P1",
+      "P2"
+    ],
+    "actualFinalHashesIndependentlyComputed": true
+  },
+  "metadataCommit": {
+    "paths": [
+      "docs/execution/t02-fetch-latest-integration-assignment.json",
+      "docs/superpowers/specs/2026-11-09-fetch-latest-integration.md",
+      "docs/execution/t01-fetch-latest-integration-input-review.json",
+      "docs/execution/t02-fetch-latest-integration-input-review.json",
+      "docs/execution/t02-fetch-latest-integration-policy-review.json"
+    ],
+    "count": 5,
+    "toolingManifestIgnoredNotCommitted": true,
+    "finalAccuracyHashReviewRequiredBeforeCommit": true
+  },
+  "conditions": [
+    "immutable exact reviewed metadata before managed E3 branch materialization/tool bootstrap",
+    "native inventory; from actual latest primary dev41b new codex/fetch-latest-integration then FF with no-overwrite-ignore; retain old T07 branch and full no-follow ignored files/dirs/links",
+    "only still-absent exact43 junctions/14 directories; freeze1311 declarations/compiler and Core106; workspace aliases to E3; existing conflicts halt, no package manager/install/postinstall/OS changes",
+    "actual49 records47paths+two proofs after FF/tooling; prospective four MUST match actual LF; ports18475/76/81/82 double-stack bind-close; fresh trusted20 N5a before runtime",
+    "sequential original880 and Worker18 actualExits/Exports10exit-close/final0/failedspawn, Fetch64 actualLF, original17adapter+guard separately, fouroriginaltypeprojects0; no changing budgets/assertions/config/source/tests",
+    "all original fixture namespaces only fresh attempts/mkdtemp; old25952 full records/current11152fileslinks unchanged; no overwrite/delete/manual worktree bypass",
+    "unknown owned resource retirement immediately stops subsequent phases; no OS process scans/foreign kill/helper-tree claims",
+    "new source/tools/oldignored/resource/N5a after, actual result independent review before receipts or serial dev gate; no push/CI oldlease/main/tag/release/model/private data/fullpilot claim"
+  ],
+  "actualMetadataCommitCreated": false,
+  "branchCreated": false,
+  "bootstrapExecuted": false,
+  "N5aAdmitted": false,
+  "runtimeExecuted": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

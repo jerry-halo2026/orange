@@ -135,6 +135,8 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   key ??= advertise ? studioKey() : randomBytes(24).toString('hex');
   /* every change of an open project's folder: a version once it rests, when the person asked for that */
   let stopping = false;
+  /** Complete entered editor HTTP handlers; detached work and streams have separate owners. @type {Set<Promise<void>>} */
+  const enteredRequests = new Set();
   /** @type {ReturnType<typeof createAutoVersions> | undefined} */
   let autoVersions;
   /** @type {ReturnType<typeof createWatchers> | undefined} */
@@ -277,7 +279,11 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
       /* not busy, but kept (423, not 409: the app asks its own Studio whether it is busy this way) */
       if (stays) return json(res, 423, { error: 'it is the OpenFilm app\'s, which keeps it' });
       json(res, 200, { pages: editorPages.size });
-      setImmediate(() => (onQuit ?? (() => { void studio.close(); }))());
+      setImmediate(() => (onQuit ?? (() => {
+        // The native quit acknowledges admission, not successful retirement.
+        // Observe the fire-and-forget default without changing the stable rejected close.
+        void studio.close().catch(() => { console.error('Studio could not finish closing.'); });
+      }))());
       return;
     }
     /* `openfilm open [folder]`: open it (no folder: the project opened last, else the Projects window) and show it.
@@ -1207,14 +1213,32 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
   const editor = createServer((req, res) => {
     if (stopping) { res.writeHead(503).end(); return; }
     if (!ownHost(req, /** @type {import('node:net').AddressInfo} */ (editor.address()).port)) { json(res, 403, { error: 'not this address' }); return; }
-    route(req, res).catch((/** @type {unknown} */ e) => {
+    /** Register completion before a native route or callback can reenter close. */
+    let /** @type {() => void} */ done = () => {};
+    let /** @type {(reason: unknown) => void} */ fail = () => {};
+    /** @type {Promise<void>} */
+    const completion = new Promise((resolve, reject) => { done = () => resolve(); fail = reject; });
+    enteredRequests.add(completion);
+    // A normal HTTP error need not have a close consumer, but must never be unhandled.
+    void completion.catch(() => {});
+    const handled = route(req, res).catch((/** @type {unknown} */ e) => {
       const status = e instanceof HttpError || e instanceof ProjectError || e instanceof FileError || e instanceof HistoryError || e instanceof MediaError || e instanceof ExportError
         || e instanceof FetchError || e instanceof BrowseError ? e.status : 500;
       if (status === 500) console.error(e);
-      if (res.headersSent) return res.end();
-      json(res, status, { error: e instanceof Error ? e.message : String(e), ...(e instanceof HttpError ? e.extra : {}),
+      if (res.headersSent) res.end();
+      else json(res, status, { error: e instanceof Error ? e.message : String(e), ...(e instanceof HttpError ? e.extra : {}),
         ...((e instanceof ProjectError || e instanceof FetchError || e instanceof BrowseError) && e.code ? { code: e.code } : {}),
         ...(e instanceof HistoryError && e.code ? { code: e.code } : {}) });
+      // Explicit HTTP denials remain handled responses; unexpected entered failures
+      // must stay rejected for a close already waiting on this completion, even null.
+      if (!(e instanceof HttpError) && status >= 500) throw e;
+    });
+    void handled.then(() => {
+      enteredRequests.delete(completion);
+      done();
+    }, error => {
+      enteredRequests.delete(completion);
+      fail(error);
     });
   });
   /* the streams: the key, as for the API, and only from the editor's own origin (another site's page could otherwise
@@ -1270,7 +1294,8 @@ export async function startStudio({ port = 4747, key, openBrowser = systemBrowse
     closing = new Promise((resolve, reject) => { done = resolve; fail = reject; });
     stopping = true;
     /** @type {Promise<unknown>[]} */
-    const tasks = [];
+    // Admission is terminal; retain every entered handler before external stops reenter.
+    const tasks = [...enteredRequests];
     /** @param {() => unknown} job */
     const collect = (job) => {
       try { tasks.push(Promise.resolve(job())); }

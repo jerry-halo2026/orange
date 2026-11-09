@@ -1,0 +1,49 @@
+{
+  "taskId": "T04.local",
+  "commit": "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/server.mjs",
+      "sha256": "53d797c3c46f993a50f9083d914d26155b29144b7cea30bc7d22c2dc510fa1ea",
+      "gitBlobSha256": "53d797c3c46f993a50f9083d914d26155b29144b7cea30bc7d22c2dc510fa1ea"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.mjs",
+      "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+      "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+    },
+    {
+      "path": "packages/openfilm/src/media-links.mjs",
+      "sha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580",
+      "gitBlobSha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580"
+    },
+    {
+      "path": "packages/openfilm/studio/server/pages.mjs",
+      "sha256": "d2a5379a591504e154e19f9f13f0182d109f700d58043af74003a7cccf0b3b88",
+      "gitBlobSha256": "d2a5379a591504e154e19f9f13f0182d109f700d58043af74003a7cccf0b3b88"
+    },
+    {
+      "path": "packages/openfilm/studio/ui/src/components/ProjectView.tsx",
+      "sha256": "91b41b28119b911d8944de9b124e27c302b74bc5c74901ddd819879bd2d16762",
+      "gitBlobSha256": "91b41b28119b911d8944de9b124e27c302b74bc5c74901ddd819879bd2d16762"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/native-source-import.test.mjs",
+      "sha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85",
+      "gitBlobSha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.test.mjs",
+      "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+      "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+    }
+  ],
+  "scope": "Only consumed desktop retirement source subset, original authors retained, no full parent/PG acceptance"
+}

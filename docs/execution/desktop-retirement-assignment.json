@@ -1,0 +1,314 @@
+{
+  "taskId": "T03.quit",
+  "parentTask": "T03",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "existing inherited runtime not exposed/attested; no override",
+  "classification": "native-extension actual original Windows close/Agent retirement/workspace reopen bug fix",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+  "branch": "codex/native-desktop-retirement",
+  "scope": "One functional close→preserve/retire→restart and failed-login-state package in original desktop. Preserve original native UI/API/CLI/project format. Not old-registry recovery, all-Agent compatibility, full T03, installer or pilot completion.",
+  "writeAllowlist": [
+    "apps/desktop/src/main.mjs",
+    "apps/desktop/src/window-lifecycle.mjs",
+    "apps/desktop/src/window-lifecycle.test.mjs",
+    "apps/desktop/src/desktop-auth.mjs",
+    "apps/desktop/src/desktop-auth.test.mjs",
+    "apps/desktop/src/studio-process.mjs",
+    "apps/desktop/src/agents.mjs",
+    "apps/desktop/src/agents.test.mjs",
+    "apps/desktop/src/local-agents-ipc.mjs",
+    "apps/desktop/src/local-agents-ipc.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-native-type-baseline/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18551,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18552,
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "apps/desktop/src/main.mjs"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-retirement-T01-review.json",
+          "gitBlobSha256": "85854655af9d1b21cc6e35f49fb5a0c9791edafc6f9f4fe449fbb4c17d9403ab",
+          "sha256": "85854655af9d1b21cc6e35f49fb5a0c9791edafc6f9f4fe449fbb4c17d9403ab"
+        }
+      },
+      {
+        "taskId": "T03",
+        "commit": "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+            "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+          },
+          {
+            "path": "apps/desktop/src/auth-service.mjs",
+            "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+            "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
+            "sha256": "1b3bfabd31d67e78516bcdf4c58a4ef6b14f1beac957b2ca4d7e77ae56b30b1d",
+            "gitBlobSha256": "1b3bfabd31d67e78516bcdf4c58a4ef6b14f1beac957b2ca4d7e77ae56b30b1d"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+            "sha256": "a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32",
+            "gitBlobSha256": "a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32"
+          },
+          {
+            "path": "apps/desktop/src/auth-service.test.mjs",
+            "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+            "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.test.mjs",
+            "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+            "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-retirement-T03-review.json",
+          "gitBlobSha256": "69e85279eab2c6de1d2282037a3d2c5f25eef6d1ea54538ef9cbf10e89a8f266",
+          "sha256": "69e85279eab2c6de1d2282037a3d2c5f25eef6d1ea54538ef9cbf10e89a8f266"
+        }
+      },
+      {
+        "taskId": "T04.local",
+        "commit": "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/server.mjs",
+            "sha256": "53d797c3c46f993a50f9083d914d26155b29144b7cea30bc7d22c2dc510fa1ea",
+            "gitBlobSha256": "53d797c3c46f993a50f9083d914d26155b29144b7cea30bc7d22c2dc510fa1ea"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.mjs",
+            "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+            "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+          },
+          {
+            "path": "packages/openfilm/src/media-links.mjs",
+            "sha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580",
+            "gitBlobSha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580"
+          },
+          {
+            "path": "packages/openfilm/studio/server/pages.mjs",
+            "sha256": "d2a5379a591504e154e19f9f13f0182d109f700d58043af74003a7cccf0b3b88",
+            "gitBlobSha256": "d2a5379a591504e154e19f9f13f0182d109f700d58043af74003a7cccf0b3b88"
+          },
+          {
+            "path": "packages/openfilm/studio/ui/src/components/ProjectView.tsx",
+            "sha256": "91b41b28119b911d8944de9b124e27c302b74bc5c74901ddd819879bd2d16762",
+            "gitBlobSha256": "91b41b28119b911d8944de9b124e27c302b74bc5c74901ddd819879bd2d16762"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/native-source-import.test.mjs",
+            "sha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85",
+            "gitBlobSha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.test.mjs",
+            "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+            "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/desktop-retirement-T04-local-review.json",
+          "gitBlobSha256": "63ce9c90db10fd9039291ec4d7ba76075866933352bf512d371de2b0cbe2cd88",
+          "sha256": "63ce9c90db10fd9039291ec4d7ba76075866933352bf512d371de2b0cbe2cd88"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8",
+    "files": [
+      {
+        "path": "apps/desktop/src/main.mjs",
+        "sha256": "49628bd4df74fe95f864cf5bdc907d9592bd8bd9c95cd1d07897a280d2966845",
+        "gitBlobSha256": "49628bd4df74fe95f864cf5bdc907d9592bd8bd9c95cd1d07897a280d2966845"
+      },
+      {
+        "path": "apps/desktop/src/window-lifecycle.mjs",
+        "sha256": "e93e0ef0f15a45d46e591356e90e86611e352c95eaebcfd68eb87037f90b7ae6",
+        "gitBlobSha256": "e93e0ef0f15a45d46e591356e90e86611e352c95eaebcfd68eb87037f90b7ae6"
+      },
+      {
+        "path": "apps/desktop/src/window-lifecycle.test.mjs",
+        "sha256": "c6f66d1120287e0882e7bdcd0a8f94cf1a8438f3e7232e4066b5247e0ee17395",
+        "gitBlobSha256": "c6f66d1120287e0882e7bdcd0a8f94cf1a8438f3e7232e4066b5247e0ee17395"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.mjs",
+        "sha256": "f61313ee2d4b43f949062a325cd5462e4ca27bb499f47f1f352dff4d1975f697",
+        "gitBlobSha256": "f61313ee2d4b43f949062a325cd5462e4ca27bb499f47f1f352dff4d1975f697"
+      },
+      {
+        "path": "apps/desktop/src/desktop-auth.test.mjs",
+        "sha256": "8da1603a509505131e4412ccf222d4c3d4a04785200fc88be54af5dc86a4f84a",
+        "gitBlobSha256": "8da1603a509505131e4412ccf222d4c3d4a04785200fc88be54af5dc86a4f84a"
+      },
+      {
+        "path": "apps/desktop/src/studio-process.mjs",
+        "sha256": "9f0924049395624df722e38575c718fba7c77d04f41a538a18f034fe5b59ad88",
+        "gitBlobSha256": "9f0924049395624df722e38575c718fba7c77d04f41a538a18f034fe5b59ad88"
+      },
+      {
+        "path": "apps/desktop/src/agents.mjs",
+        "sha256": "3e72e9908e87931a6025b7e7b19e0304cffc29b8fe7f00e153ae0799553ef739",
+        "gitBlobSha256": "3e72e9908e87931a6025b7e7b19e0304cffc29b8fe7f00e153ae0799553ef739"
+      },
+      {
+        "path": "apps/desktop/src/agents.test.mjs",
+        "sha256": "05f92080aa5a899da03854de506ac714a11f443ea97782a91e690b03609ab93e",
+        "gitBlobSha256": "05f92080aa5a899da03854de506ac714a11f443ea97782a91e690b03609ab93e"
+      },
+      {
+        "path": "apps/desktop/src/local-agents-ipc.mjs",
+        "sha256": "b32dd46b0c4fc34c508da9047e14ae04637c48fbbcd5f9db7eec7e7c319385f8",
+        "gitBlobSha256": "b32dd46b0c4fc34c508da9047e14ae04637c48fbbcd5f9db7eec7e7c319385f8"
+      },
+      {
+        "path": "apps/desktop/src/local-agents-ipc.test.mjs",
+        "sha256": "0dc089133ab5ea6622a2995a58811571921ec0bc2ec7b55e4e6474e331999c93",
+        "gitBlobSha256": "0dc089133ab5ea6622a2995a58811571921ec0bc2ec7b55e4e6474e331999c93"
+      }
+    ],
+    "preservation": "Keep original unrelated source/test expectations. Add behavior RED regressions; only adjust pre-existing assertions that explicitly encode the old unsafe quit-on-failure behavior, with old bytes/diff and strengthened failure expectations retained."
+  },
+  "actualRED": {
+    "rootActualUI": "real test account after original Windows app restart: project-access-denied and all three Login controls disabled; no key/model issue",
+    "readonlyOldRecord": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/workspace-reopen-debug/attempt-1794222433050-10324",
+    "syntheticActualProof": "E:/CodexData/worktrees/orange-native-type-baseline/orange/.dev/workspace-reopen-debug/attempt-1794222547302-39764",
+    "facts": [
+      "real controller+guard and exact original stop bytes: actual child exit0 while preservation-failed and reservation1; samecoord restart denied",
+      "public/response signed-out yet final notified disposed; exact compiled Login disables3 vs0 controls"
+    ],
+    "oldArtifactsNotToMutate": true
+  },
+  "requirements": [
+    "Normal Windows X must prevent initial destruction and enter same single idempotent quit path while window/views still exist. Separate requested from confirmed state; repeated X/before-quit cannot bypass awaited work or prematurely destroy. Strict original save, actual Agent resource retirement, original utility/controller entered work and guard release must finish before quit. Do not change ordinary original unmarked/native Mac hide/activation behavior; no Mac tested claim.",
+    "Original quitAfterStudio may not then(quit,quit). Retirement/save/child failure retains window and locked state, never second successful quit. No closeAll void/empty map/synthetic active0 as success. Reuse same real pending promise for normal quit and main beforeInstall; do not execute installer/release or override failure with a forced exit0.",
+    "Controller dispose must propagate a truthful failure outcome to utility.stop; failed preservation cannot be swallowed and followed by exit0. Utility stop must not bypass parent strict-preservation handshake. signIn workspace failure still denies access but after disposing/resetting service publishes final signed-out state matching response/public state so original Login can retry; no access grant from failure.",
+    "Original agents module seals new entry and retains actual in-flight open, ephemeral signedIn/model/ACP method/version subprocess probe and start work. closeEverySession({seal:true}) must await owned entered operations and real retire promises, including async discovery returning later, not just LIVE/asked cache snapshots. Track only own handles; no foreign PID scan, killing, global config or new resource platform.",
+    "AgentSession awaitable retirement is idempotent, holds entered open to a closeable point, seals prompt admission, awaits actual in-flight prompt/finally/turn records. With original session id require original ACP session.close acknowledgement, stdin EOF and observed child close(code0,signalnull); initialization-only may EOF+actualclose0. LIVE stays until verified retirement; unknown unsupported close, deadline, forced taskkill or premature exit remains failure. Preserve existing public native Agent APIs compatibly; no all-Agent success claim from Harness test.",
+    "Original local-agents-ipc closeAll seals own start/probe/ask before await and aggregates actual child/session retirement plus entered IPC/prompts/turn-finalization/late keepAgentRecord writes. Finally paths cannot call old force-close before strict retirement. Main uses those real receipts instead of permanent agentResourcesUsed boolean set by any trusted/list IPC, while still tracking real resources a list/probe can start. No roster source rewrite needed; low-level sealed admission must prevent delayed refresh spawn.",
+    "Never mutate/prune/reset old guard registry, lock, domain marker, owners, test project, normal Harness credentials/profile, or choose new coordination root to make reopen pass. Old failure record has no PID; recovery requires separately reviewed exact evidence and authority. Only fresh synthetic samecoord reopen after this new real retirement can be claimed in this package.",
+    "Tests must be genuine RED then minimal GREEN: normal X ordering/reentry/save failure; exact utility stop no false0; same synthetic coordination namespace release/relogin; UI event/public state consistency with real Login compilation; actual synthetic ACP child ack→EOF→close0 and counterexamples ack-but-stays/premature-exit/unsupported/deadline/forced cleanup; opens/probes awaiting dependency when retirement starts; original prompt/record finally awaited. Fixtures are not real account/OS dialog/product completion evidence.",
+    "One actual installed original Harness metadata-only lifecycle test is allowed after source review readiness and exact private runtime boundary review: same original installed0.2.2-rc.1 CLI/vendorNode24.21.0, normal DEEPSEEK_API_KEY reference only inside original credentials provider, fresh shadow/profile, same reviewed FS/whole-network-zero/child/watch guard, tool/MCP/telemetry/auxLLM disabled, limit0 no prompt. Use original AgentSession code, await native close ack/EOF/actualexitclose0. No Root StageB onecall wrapper/latch/budget consumption; no other installed Agent commands or native sign-in windows executed.",
+    "Keep full goal and missing Agent/OS/PG/real recovery evidence explicit. No extra IAM/Harness/application/editor/budget framework, rootpackage/locks/CI/07 or parallel protocol. Preserve source provenance and all frozen candidates."
+  ],
+  "runtimeNamespaces": {
+    "families": [
+      ".dev/native-desktop-retirement",
+      ".dev/harness-credential-probe"
+    ],
+    "attemptRule": "Only fresh attempt-<timestamp>-<pid>; absolute resolved-prefix checked mutations; clean own HOME/USERPROFILE/APPDATA/LOCALAPPDATA/ProgramData/TEMP/cache/log/results. Original immutable test fixtures use their documented fresh namespaces only; no real OS home fallback."
+  },
+  "runtime": "Existing original Node/TypeScript/React only; local synthetic Auth transport and stdio ACP fixture, no external cloud/codec/media/GPU/install/real password/token. Direct own children actual exit+close with bounded20s normal/60s aggregate and bounded stdoutstderr. Exact installed Harness metadata zero-egress only under the described separately bound wrapper; never execute arbitrary discovered installed CLIs. Normal vendor credential contents not printed/copied/env/logged. Actual Windows GUI after final packet is Root-owned, real account self-login; it remains pending until observed.",
+  "validation": "Affected original Agent/localIPC/lifecycle/Auth/native source/import regressions, strict original server/UI/shell types plus explicit main/Login coverage where original tsconfig omits them; frozen raw/canonical source and actual process chronology, independent SPEC/QUALITY, fresh actual N5a before sourcecommit. No full media/ASR/CI reruns for unaffected dependencies.",
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T03 original desktop lifecycle and actual Windows functional chain",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD one exact scope/input independent review, metadata, existing managed E4 materialization from latest verified dev and actual N5a"
+}

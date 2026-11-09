@@ -1,0 +1,49 @@
+{
+  "taskId": "T03",
+  "commit": "9b8b6f37c75a1f24e0666fae0b4c3ca2fd7c4db8",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+      "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.mjs",
+      "sha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66",
+      "gitBlobSha256": "b4ddbc952df6513761201cb392213f7749432b8d7ade063c105598a87f780f66"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.mjs",
+      "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+      "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/desktop-auth-entry.test.mjs",
+      "sha256": "1b3bfabd31d67e78516bcdf4c58a4ef6b14f1beac957b2ca4d7e77ae56b30b1d",
+      "gitBlobSha256": "1b3bfabd31d67e78516bcdf4c58a4ef6b14f1beac957b2ca4d7e77ae56b30b1d"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32",
+      "gitBlobSha256": "a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32"
+    },
+    {
+      "path": "apps/desktop/src/auth-service.test.mjs",
+      "sha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b",
+      "gitBlobSha256": "032130aa427a9d31d7dd2f99101f2ec954c748763e164a29a498343f5a95d79b"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-access.test.mjs",
+      "sha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4",
+      "gitBlobSha256": "4d52d5fc884986387d86b79ea8f75e56ec8c7d15ad2724d0843e20ba033be0b4"
+    }
+  ],
+  "scope": "Only consumed desktop retirement source subset, original authors retained, no full parent/PG acceptance"
+}

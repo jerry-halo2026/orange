@@ -347,6 +347,20 @@
       "externalGates": [],
       "currentAssignment": "docs/execution/native-material-import-assignment.json",
       "deliveryBoundary": "local native source ownership/import only, full personal cloud/license/parent/pilot retained"
+    },
+    {
+      "id": "T03.quit",
+      "parentTask": "T03",
+      "status": "in_progress",
+      "scope": "One functional close→preserve/retire→restart and failed-login-state package in original desktop. Preserve original native UI/API/CLI/project format. Not old-registry recovery, all-Agent compatibility, full T03, installer or pilot completion.",
+      "dependsOn": [
+        "T01",
+        "T03",
+        "T04.local"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/desktop-retirement-assignment.json",
+      "oldRecoveryNotAuthorized": true
     }
   ],
   "umbrella": [

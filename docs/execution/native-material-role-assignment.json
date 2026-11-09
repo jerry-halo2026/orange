@@ -1,0 +1,410 @@
+{
+  "taskId": "T05.root-role",
+  "parentTask": "T05",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-extension root-cause fix within original MaterialPool/BuildPool, no parallel DTO/Job/format/schema",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "63c23d9caf535f4a07f3d12ef133c32f1d8a49c1",
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-native-root-role/orange",
+  "branch": "codex/native-material-role",
+  "scope": "Root-directory videos/stills must remain visuals even when native group is empty; audio role taken from actual original BuildPool audio list, not empty-group naming. Preserve original grouping and original2arg constructor/serialized records.",
+  "writeAllowlist": [
+    "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+    "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+    "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+    "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-native-root-role/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/fission-business-handoff-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "64f83ae428a81984e53cf18ddc440e44edd05bfffc4b7422d17516d2538a97c7"
+      },
+      {
+        "path": "docs/execution/desktop-fission-batch-assignment.json",
+        "assignmentRevision": 1,
+        "sha256": "4b8cd0f0be0fdfd7484a25610751a7ab0ccf00f72e43350e7f6492c8314d4aee"
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T06.prepare",
+        "commit": "63c23d9caf535f4a07f3d12ef133c32f1d8a49c1",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+            "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+            "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+            "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+            "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625",
+            "gitBlobSha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+            "sha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+            "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
+          },
+          {
+            "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+            "sha256": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e",
+            "gitBlobSha256": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+            "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+            "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+          },
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+            "sha256": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9",
+            "gitBlobSha256": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/native-material-role-input-review.json",
+          "sha256": "b258837287edb5abba503229aebf1e3039d906ffb2d0361fc9c2776353601e5a",
+          "gitBlobSha256": "b258837287edb5abba503229aebf1e3039d906ffb2d0361fc9c2776353601e5a"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "63c23d9caf535f4a07f3d12ef133c32f1d8a49c1",
+    "files": [
+      {
+        "path": "workers/fission/src/Fission.Core/Materials/MaterialPool.cs",
+        "sha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28",
+        "gitBlobSha256": "acd74c7b975d88be0ead61a8d0df53937c21497b680dba9d7def8fb568d12f28"
+      },
+      {
+        "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+        "sha256": "0d434b2d8232d48786e1e092470d1c52877e42d5684b9e92955c07f96d3b9326",
+        "gitBlobSha256": "0d434b2d8232d48786e1e092470d1c52877e42d5684b9e92955c07f96d3b9326"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/CoreLogicTests.cs",
+        "sha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530",
+        "gitBlobSha256": "aa7ed48429aaa2c7858b0fc616006189f0266bf5c10986389b901406894fd530"
+      },
+      {
+        "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+        "sha256": "466137f62b02881979f1e3ec9900723870c5aff22a4329311a31499cae01685a",
+        "gitBlobSha256": "466137f62b02881979f1e3ec9900723870c5aff22a4329311a31499cae01685a"
+      }
+    ],
+    "newFiles": [],
+    "materialItemRecordMustRemainByteExact": true
+  },
+  "requirements": [
+    "True existing failure first through original PrepareAsync root-level visual +separate voice (not merely adding a new overload compiler RED). Pool currently classifies all Group.Length==0 as audio. Prove actual regression and old named-group/audio behavior, keep each failure.",
+    "Minimal original MaterialPool role boundary: preserve exact MaterialItem/Reservation/ConsumeLog serialized records and FissionJob/prepared/edit-plan schema. Preserve actual existing2parameter public constructor signature/default behavior for old callers/binary ABI; if necessary add explicit role-aware overload/factory using original BuildPool known audioPaths, not a new material type/protocol.",
+    "Original BuildPool passes explicit source role only from its actual separate visual items and audioItems, including generated offline sine as audio. Pool AvailableCount/List/CheckAvailable/AudioList/VideosByGroup/consumption behavior must use true role; empty group remains empty, never rename to1 or infer kind from duration/path/hash for authority.",
+    "Preserve old named scene groups, native numeric group order, dynamic/explicit take/rule/reuse/delete/audioUses and original state transaction semantics. Root visuals must not enter AudioList/voice reservation or disappear; root still intrinsic0 retains original ImageToVideo hold. No source file deletion or external paths/writes outside controlled own roots.",
+    "TDD append original CoreLogicTests MaterialPool and original FissionEditPlanTests using their existing fixtures. RED on original root visual misclassification/prepare, then minimal source fix. Cover explicit audio vs root video/still/legacy ctor, reserve/release/consume, native root prepare/execute and old named-group regression. Do not weaken original142 assertions/cases or call ENV a product RED.",
+    "Reuse installed official pinned dotnet/SDK/offline16package feed only (below), readOnly source. No SDK/model/package download/install or normalHOME/cache/NuGet config. Existing buildPathCiEnvironment from frozen script with exact own inventory/junction to existing SDK may be reused; no manual worktree creation. Own restore/build artifacts/packages and all globals HOME/TMP/DOTNET/NUGET/GIT config beneath fresh .dev/native-material-role/attempt-*. SDK/version/compiler must be actually observed/pinned, no assumed10.0.403 or300 claim.",
+    "Build original six-project UnitTest graph using unchanged csproj/Directory.Build props/compiler shim, no source configuration edits. Full affected original pool/align/command/editplan/retire/subset/CLI config cases, original IO32+2ENV remain separate not calledgreen. New raw/canonical/source/PDB/binaries bind before real media; old peerCLI14 unchanged not overwritten.",
+    "After code+bound binaries, one new isolated original CLI tiny root-level own MP4(or still)+WAV prepare→same snapshot execute with standard FFmpeg9, CountN preserved, verify root visual/source association, voice from correct sound only, frame/audio/decode. Only own generated/copied tiny <=4s fixtures, CPUThreads1/noNVENC, no private6/resources or user media. This is new role-fix consumer proof not blanket repeat of prior group smoke.",
+    "No Web/doctor/stress/Bench/GUI/Electron/Edge/Docker/Supabase/vendor/model/network/real auth or cloud writes. No tools/package/lock/Node/API/desktop source changes. Dotnet180sec build/test cap/48MiB logs, media180sec/20MiB, actualexitclose, timeout notsuccess. Freeze source/actualresults/PDB/newbinaries and explicit Windows-only/local source scope for independent review before commit/integration. No delete/cleanup of older candidates/artifacts/worktrees."
+  ],
+  "offlineFeed": {
+    "root": "E:/CodexData/worktrees/orange-t05-paths/orange/.dev/fission-io/offline-feed",
+    "packages": [
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\coverlet.collector.6.0.4.nupkg",
+        "sha256": "89e89497b1b9a55290e15eabc6111ed1e85ea74feed51043dc4008eb70104c8d"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\microsoft.codecoverage.17.14.1.nupkg",
+        "sha256": "7fc432b46f06bd1a0fe3baced8a1269c32f1229c9eb1aab6e931630dd5b8d06b"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\microsoft.net.test.sdk.17.14.1.nupkg",
+        "sha256": "9995330c5bc5a7bc759caadc9d17748616cdbb983c11062df122a74607614ff0"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\microsoft.testplatform.objectmodel.17.14.1.nupkg",
+        "sha256": "40c7fa3bec34213fb5e8caf3a3bc27f8ddb47f72f5fe60e1b3faa3984a35ad8b"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\microsoft.testplatform.testhost.17.14.1.nupkg",
+        "sha256": "d5cc4759cbc7443ee8ad0dc41043cfc55184913a71a26d7fce82020bd4889c9b"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\newtonsoft.json.13.0.3.nupkg",
+        "sha256": "872fc189e638ab1056555b03aaa38f68bcb54286e221aa646eb1129babf63c77"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\system.codedom.10.0.14.nupkg",
+        "sha256": "899689130588ae67ef4e4347f6a5778637df3fc17914c55dbd84369a44a3e3c0"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\system.management.10.0.14.nupkg",
+        "sha256": "6261bd1cd3251401d57384971a39ac953faeea13176c819899794b3850f0d010"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.2.9.3.nupkg",
+        "sha256": "04fae949b8e5201ecfa07fa8702baca8c0eb3198114194b3793789cc72bf23d7"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.abstractions.2.0.3.nupkg",
+        "sha256": "d03d72fc2df8880448f7a81bddb00e1bcb5c18f323c7e7cc69b4cfa727469403"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.analyzers.1.18.0.nupkg",
+        "sha256": "0ce81a98b9df8bd51ae480e6dc9566f4c68e15b4926e6ab997c8f634f3b7a9dd"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.assert.2.9.3.nupkg",
+        "sha256": "bc760e75ef1b775d293a6afb89301836d3e5a87cec265e31dedd430ee61d0c20"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.core.2.9.3.nupkg",
+        "sha256": "aa4550f09c3f2d95a6c62ae43cec22af2edbbd99f722e691ceefeca761fc6a7c"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.extensibility.core.2.9.3.nupkg",
+        "sha256": "99ca555fe9b447b1747aff426819db6a2f60b6ee0655caa28c4b91a9ef3d0f48"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.extensibility.execution.2.9.3.nupkg",
+        "sha256": "dabc4cb360ede1c01c98e14cc0fe587774693f40679a22fc71794acac5d8d23c"
+      },
+      {
+        "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-io\\offline-feed\\xunit.runner.visualstudio.3.1.4.nupkg",
+        "sha256": "5b54674b105a5f2cbd5e6e0e67956a1b67e082d94eaa7fddbc803110e6eff2d4"
+      }
+    ],
+    "network": false,
+    "newDependencies": false,
+    "copyToOwnCacheAllowed": true
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "sourceAndBuildInputs": [
+    {
+      "path": "scripts/fission-path-ci.mjs",
+      "sha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc",
+      "gitBlobSha256": "913d98152b45df0fac17cbad91280017faee4fe6880249d09758432e6816e4cc"
+    },
+    {
+      "path": "workers/fission/Directory.Build.props",
+      "sha256": "dbe82861e94326eb58d6d17e6e1ea97ecb34107b50407011edc6f232337cf063",
+      "gitBlobSha256": "f6e395c72e106d1323d566f3694dec6b199b9d483a746de3782d88773149b83b"
+    },
+    {
+      "path": "workers/fission/tools/csc-shim/csc.bat",
+      "sha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0",
+      "gitBlobSha256": "5e385b1979523c8a0e366b24e088041e0447f04d5853b68a82737bf48ee6aba0"
+    },
+    {
+      "path": "workers/fission/src/Fission.AI/Fission.AI.csproj",
+      "sha256": "7b86a3cb31d83f4e8af04fc2a2e0a9d70f32e82648f460e3e9615124f8805e47",
+      "gitBlobSha256": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81"
+    },
+    {
+      "path": "workers/fission/src/Fission.Cli/Fission.Cli.csproj",
+      "sha256": "5212f51590d0d2e4542d913b26cf226cd2e85249b46f79b166689286ccc16e51",
+      "gitBlobSha256": "c426cfea033a3dbd368bc20800ca64dc28da6d28a46018c2741209cceb2b03e2"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Fission.Core.csproj",
+      "sha256": "61e3f2d043e37f0db4be1d8083dd31bebbfbb8fde2cf027327db2556c16bc385",
+      "gitBlobSha256": "11c0c110e19c9eaeaef66a0382f7a3e4ff6ab395d99ca6664e1ba378371cc47c"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Fission.Providers.csproj",
+      "sha256": "9061f927e9a98ce0ce0f6cd602fcbde90d55a6c66737184bd7ec7d7061dca11a",
+      "gitBlobSha256": "d474483d18b1594f6016d6efa62c1098b2504890a7f7a55d9cd6051f305d722c"
+    },
+    {
+      "path": "workers/fission/src/Fission.Steps/Fission.Steps.csproj",
+      "sha256": "7b86a3cb31d83f4e8af04fc2a2e0a9d70f32e82648f460e3e9615124f8805e47",
+      "gitBlobSha256": "dfb942a506bc8a64134c18be982b30dc40ef63530ce2d714305b177317c48b81"
+    },
+    {
+      "path": "workers/fission/src/Fission.Web/Fission.Web.csproj",
+      "sha256": "57470526817cc00f171458170d04c1cbe4498d18aa1b3fc127c47dd51b96d469",
+      "gitBlobSha256": "64b12b897bebca9cb5ef30d5977b559aa7c8ec4bfcd9d496f1b2511669c6acec"
+    },
+    {
+      "path": "workers/fission/tests/Fission.Bench/Fission.Bench.csproj",
+      "sha256": "ffe5bd094e46fa8b937ff6de227ebafa5a744ffe193db75d4a6cd3ffb6667754",
+      "gitBlobSha256": "2e4da07b012f523cabd04f5c275f25365a0ef1d9799a79e8344d6c68f9ceeb7a"
+    },
+    {
+      "path": "workers/fission/tests/Fission.IntegrationTests/Fission.IntegrationTests.csproj",
+      "sha256": "6dd2e32ff6729518b51812bf0119d202b5006c8102c412047251f7d82000eaf8",
+      "gitBlobSha256": "2ac60012b13ba94208b60e3af93407ad01c19c854d50bdd2a4dcb1f3ec056c91"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "sha256": "c8697ca60bd22630c63640f9b8694107754588903811a6ad355c661b6994460d",
+      "gitBlobSha256": "dc0d303cb15c171cba74b9d52d394481d0d92f8bd9cc73cc662d3f3e7ad9bd95"
+    }
+  ],
+  "knownRootCause": {
+    "pool": "AvailableCount/List/CheckAvailable use Item.Group.Length==0 as audio role",
+    "producer": "BuildPool creates root visual MaterialItem.Group empty as well as audio Group empty; roles were conflated",
+    "upstreamObservation": "handoff actual native prepare exit3/no norm with root group; grouped consumer can continue but is not proof root support"
+  },
+  "scopeReview": {
+    "path": "docs/execution/native-material-role-scope-review.json",
+    "sha256": "312370b2e4d1ef7904cd157ad51c82d1e9fec71b5396e438730f40023733e488",
+    "scopeReviewedCardSHA256": "509890dd6cd018d6e8d8d131cd423ae6e1b004c96310e9e62897083bba94220f",
+    "bindingOnlyAfterReview": true
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T05/T06 native compatibility root role",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD independent Root-authored scope review+metadata/SDKfeed resources/actualN5a before Root source writes",
+  "selectedScopeNotes": "Both existing Engine constructors (BuildPool and ExecutePreparedCore selectedVideos+runtime.Audio) use same explicit role boundary; unchanged original twoarg ABI/records/serialized snapshots."
+}

@@ -1,0 +1,56 @@
+{
+  "taskId": "T06.prepare",
+  "commit": "63c23d9caf535f4a07f3d12ef133c32f1d8a49c1",
+  "authorAgent": "/root/fission_studio_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+      "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+      "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+      "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+      "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+      "sha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625",
+      "gitBlobSha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65",
+      "gitBlobSha256": "61f20aa6ac8c8ebafd84085b68a22fe2e2a0f9182b0d916b5cfddbbced66dd65"
+    },
+    {
+      "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+      "sha256": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e",
+      "gitBlobSha256": "4d91c3a2d3bb259b129f6a9602dbdd08f8d9db497b4b2b441a0437047d42ca1e"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineJobFilesTests.cs",
+      "sha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a",
+      "gitBlobSha256": "199000b10d1f377088dcd294d7e5bb61a3baa24151ba5909c8772d3f46a45f3a"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+      "sha256": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9",
+      "gitBlobSha256": "0b2e4761e26f64c91e0fc41627d6afd2ef09881bb108660f5f0065433d3e0bc9"
+    }
+  ],
+  "scope": "exact original native job/record/snapshot/controlled IO contract, no producer role fix approval",
+  "evidence": {
+    "prepareReview": "f88402f81cdc87cacf48239ea0f699e2aa354ca31db2e8636e51e5c49b14c79a",
+    "subsetReview": "8016ee83aec86e85606ae192108583a27232bcfbfe421110a7ad180ecccbbd1a",
+    "dispatchReview": "53699f814cd79445b0370612b1749c921cf3bbdfcab2d2c09a5bac2c31243027"
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

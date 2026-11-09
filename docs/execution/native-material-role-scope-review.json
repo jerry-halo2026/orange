@@ -1,0 +1,51 @@
+{
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "scope": "native4 role boundary fix Root author; selected contract and runtime only",
+  "evidence": {
+    "reviewKind": "independent Root-authored4-file scope/selected input review only, not implementation validation",
+    "assignmentSHA256": "509890dd6cd018d6e8d8d131cd423ae6e1b004c96310e9e62897083bba94220f",
+    "actualWorktree": "E:/CodexData/worktrees/orange-native-root-role/orange",
+    "actualHead": "63c23d9caf535f4a07f3d12ef133c32f1d8a49c1",
+    "actualBranch": "codex/native-material-role",
+    "actualGitClean": true,
+    "nativeOperation": "Root reports managed operation2c2fad6a-f759-4d9e-9334-e45130ce2b46 completed/registered; reviewer only inspected checkout, did not create/bypass worktree",
+    "all13ConsumedNativeSourceAndFixtureRawAndReferencedGitExact": true,
+    "all4EditableBaselineRawAndGitExact": true,
+    "all12ProtectedBuildInputRawAndGitExact": true,
+    "offlineFeed": {
+      "actualNupkgCount": 16,
+      "all16ActualSHA256Match": true,
+      "sharedSourceReadOnly": true,
+      "onlyNewOwnRestoreCaches": true,
+      "noNetworkOrInstall": true
+    },
+    "rootCause": "Original MaterialPool AvailableCount/List/CheckAvailable conflates Group.Length==0 with audio; original BuildPool creates both root visual and actual audio empty group. Actual producer roles can disambiguate without changing MaterialItem or native group.",
+    "fourSourcesSufficient": "Original MaterialPool + FissionEngine + original CoreLogic/FissionEditPlanTests contain role boundary and both original pool construction paths; no new DTO/Job/schema or fifth source necessary.",
+    "minimalCorrectBoundary": [
+      "Keep exact MaterialItem/Reservation/ConsumeLog declarations and Job/prepared/editplan serialization, native seconds/IDs/group strings unchanged.",
+      "Keep actual existing2parameter MaterialPool(IEnumerable<MaterialItem>,string?cacheIni=null) signature/default legacy semantics. Add unambiguous explicit3arg role overload or factory; do not create nullable2arg overload ambiguity for existing new MaterialPool(items,null).",
+      "Explicit audioPaths must come only from actual BuildPool audioItems, including offline generated sine, not emptygroup/duration/hash/extension guesses or license claims. Root video/still stay visual with group empty.",
+      "Use same explicit role boundary in BOTH BuildPool items+audioItems and ExecutePreparedCore selectedVideos+runtime.Audio constructor paths, not only analysis path. Both are within allowed Engine source.",
+      "Preserve namedgroup/numericorder/rule/reuse/delete/audioUses, reservation/release/consume/cache semantics; rootrole is classification, not media ownership/license."
+    ],
+    "testAndRuntime": "Root must first capture actual old PrepareAsync rootvisual+independentvoice behavior RED, not just missing-overload compile failure; original142/pool/legacyctor/role/rootstill/prepare/execute affected cases remain. Observe/pin actual SDK/compiler with unchanged shim/csproj and own artifacts; bind new source/DLL/PDB before one new own tiny root4s standard9 CPU media consumer. No existing peer binaries overwritten.",
+    "peers": "handoff4 anddesktopbatch10 metadata pins match, both different managed trees and4-source write intersections empty; no shared network/DB/GPU runtime, CPU bounded nonexclusive.",
+    "executionHeldUntil": "Root receipt metadata+actualSDK/feed resources+freshN5a before source writes; final source/TDD/media need separate nonauthor review.",
+    "reviewerActions": {
+      "sourceWrites": 0,
+      "tests": 0,
+      "builds": 0,
+      "worker": 0,
+      "GUI": 0,
+      "Docker": 0,
+      "network": 0,
+      "modelCalls": 0
+    },
+    "full17NotPreconditionOrAccepted": true,
+    "priorPendingReviewSHA256": "5bd8df1581d065ba2d0fa6a34c0f29e5158636712b4d2ed64277aeeafa4d4ac5"
+  }
+}

@@ -523,6 +523,18 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/desktop-fission-batch-assignment.json"
+    },
+    {
+      "id": "T05.root-role",
+      "parentTask": "T05",
+      "status": "in_progress",
+      "scope": "Root-directory videos/stills must remain visuals even when native group is empty; audio role taken from actual original BuildPool audio list, not empty-group naming. Preserve original grouping and original2arg constructor/serialized records.",
+      "dependsOn": [
+        "T01",
+        "T06.prepare"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/native-material-role-assignment.json"
     }
   ],
   "umbrella": [

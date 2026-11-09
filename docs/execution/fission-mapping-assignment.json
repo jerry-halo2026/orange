@@ -1,0 +1,307 @@
+{
+  "taskId": "T06.mapping",
+  "parentTask": "T06",
+  "assignmentRevision": 1,
+  "status": "active",
+  "dispatchState": "scope/inputs independently approved; source held only until actualN5a on this metadata then immediate4 implementation",
+  "authorAgent": "/root/fission_studio_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "native-reuse/extraction original visual timing arithmetic plus necessary business mapping to existing12field plan, no JobDTO/Timeline/authorization producer",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "observedQualifiedHead": "10bee30a58f4a296a1c09fad99f3f13abc6740d5",
+  "latestRootQualifiedCommit": "7deb60310e017449c666f6c294ac5c6671991e4d",
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "proposedBranch": "codex/fission-native-plan-mapping",
+  "writeAllowlist": [
+    "packages/openfilm/src/fission-timing.mjs",
+    "packages/openfilm/studio/server/fission-import.mjs",
+    "apps/api/src/admission.ts",
+    "apps/api/src/fission-mapping.test.ts"
+  ],
+  "resources": {
+    "directory": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "exclusive": true,
+    "cpu": "nonexclusive bounded pure Node/type checks",
+    "ports": [],
+    "network": false,
+    "modelCalls": 0,
+    "workerOrCodecAllowed": false
+  },
+  "inputManifest": {
+    "path": "E:\\CodexData\\worktrees\\orange-t05-paths\\orange\\.dev\\fission-mapping\\attempt-1794250861898-20828\\frozen-inputs.json",
+    "sha256": "ab093cb2bece5d2e1f3f2c940c7e4d42769eb5b9b4805c0d997072cbbca085c5"
+  },
+  "reuseScopeReferences": [
+    {
+      "path": "docs/execution/business-producer-assignment.json",
+      "sha256": "c5eda6d16371a24790bc848631ae10f005beb8514c782d96f6c3c6e2a5cc4898",
+      "commit": "10bee30a58f4a296a1c09fad99f3f13abc6740d5"
+    },
+    {
+      "path": "docs/execution/business-producer-T01-review.json",
+      "sha256": "c2071e24600e5d4e85c7ae5a19f8f7c29b2ab7ac05b61c7debc39eda4be5d19a",
+      "commit": "10bee30a58f4a296a1c09fad99f3f13abc6740d5"
+    },
+    {
+      "path": "docs/execution/business-producer-T02-a-review.json",
+      "sha256": "80084518fdf34ac3abcf0655edd4f267465e51812a9ee5c2171641a45ed4514c",
+      "commit": "10bee30a58f4a296a1c09fad99f3f13abc6740d5"
+    },
+    {
+      "path": "docs/execution/fission-subset-assignment.json",
+      "sha256": "9a97c10b3198359d4dc0a5879e1a85776ec568a6282ffe868e4e9c2982f80acf",
+      "commit": "10bee30a58f4a296a1c09fad99f3f13abc6740d5"
+    }
+  ],
+  "firstConsumer": {
+    "source": "Original FissionEngine.PrepareAsync -> FissionPreparedDecisions -> one actual PreparedOutput selected by original Index",
+    "fields": [
+      "full snapshot JobId/JobSha256/RuntimeSha256/Digest/Versions(Path,Sha256,Identity,Owned)/Outputs unchanged",
+      "output.Sources/cuts[].Decision/cuts[].Normalization including ImageHoldSec/alignmentIntent/audio/transitionIntent/subtitleIntent",
+      "original PascalCase effective job + native opaque projectId +16hex filmRev unchanged"
+    ],
+    "chronology": "Map PREPARE facts -> existing business12plan/contentKey -> future fresh SQL rights/freeze/claim -> subset execute. NEVER execute/run first then call a receipt FrozenPlan.",
+    "clock": "alignmentIntent output expected clock only; no applied/measured/render/equivalence/export success flags manufactured. Actual final measured clock remains a later worker/verifier obligation."
+  },
+  "seams": {
+    "sharedHelper": "new pure alignedVisualSpans in native src; original fission-import.mjs nativeOps consumes it instead of its inline visual target/tempo/one/loops/at/rate/length arithmetic. No imports of project IO or writable Ops into helper.",
+    "mapper": "Append pure async native-prepared-output mapper to admission.ts; fixed local dynamic import of JSDoc helper with explicit runtime validation of returned spans, not framework/type suppression/second timing implementation. Result is existing exact12 fields only. Per-output Index stays external/private association, no added public schema.",
+    "lookup": "Private trusted stager-supplied association lookup of EXACT native filePath + opaque actual Windows Identity + SHA -> existing resolvedMeta {versionId,contentSha256,kind,durationSec}. Do not fabricate Windows identity from Node ino. No hash/path-derived rights, UUID creation, storage/registration, future locator8 internal shape or client callback.",
+    "authority": "No RPC/auth/network/new routes in mapper. Calling code must still run current SQL plan_rights/fresh claim gate; successful mapping is neither FD lease nor license/admission."
+  },
+  "requirements": [
+    "Keep full CountN Job and snapshot/Digest/Index byte-equivalent; select/map every requested original output independently, not Count1 or finalMP4 source. Return only the existing12field business plan, checked by contentParts/contentKey. No public plan/version change.",
+    "Extract original native visual timing as the SINGLE shared arithmetic implementation. Preserve existing importer behavior, epsilon1e-9, loop order, speed/tempo multiplication and final-source trimming; do not introduce per-clip frame rounding. Mapper uses expected alignment output duration; importer continues actual receipt duration min alignment output. Do not synthesize a fake receipt/applied outcome to reuse code.",
+    "Video source bounds remain native source seconds; source end=start+wallLength*effectiveRate. Preserve ordered intro/main/outro/group contributions and hflip. Normalization/ImageToVideo uses contain-center, never guess cover-center.",
+    "Still intrinsic physical duration is resolvedMeta0, not selected hold. Validate native hold/cut facts; effective exposure follows original native still wall-clock semantics. Hold, grouping speed and global alignment must affect exposure/contentKey without inventing physical video duration.",
+    "Audio fingerprint uses exact bound source version/full actual source intervals, volume, loop and original postmix(-14,-1.5,11). Do NOT derive these from nativeOps.sound clipped-to-target Ops, since original full-context loudnorm/AAC then-shortest semantics matter. Probe metadata remains intrinsic; image/generated requested durations are not substituted for a probe.",
+    "Preserve all known subtitle cue text/timing/style intent including original ASS style and known fade semantics, with original importer endpoint clipping where applicable; missing text/unknown timing/style must explicitly refuse rather than silently omit. Preserve known hflip and selected GLSL name/duration/shaderSHA/tail intent semantics; unknown/unrepresentable effect intent explicitly blocks mapping, not downgraded defaults or baked media.",
+    "Keep one recoverable incompatibility explicit: native importer permits video source end<=intrinsic+1/fps, current business contentParts/SQL strict source end<=intrinsic. A valid native tail frame beyond strict business bound must return an identifiable mapping-pending error (not invalid-native/full-ready), unchanged facts and no key/claim; no clamp/tolerance widening/SQL edit. Retain concrete fixture and full target pending independent later semantic fix.",
+    "Only actually used material metadata appears in materials closure; unknown/ambiguous staging tuple, mismatched SHA/kind, missing existing versionId or unsupported facts reject. Resolved metadata identity remains distinct from authorization; no path/hash alone grants source/license. No consumption or origin-key reads/writes.",
+    "Original business encoder/admission authority behavior untouched; append mapper only. No server/supabase/SQL/package-lock/tsconfig/material registration writes. Material author sole owner of their8files; do not consume their unqualified internal data.",
+    "TDD new mapping tests first: missing API/helper actual RED then CountN/noncontiguousIndex, trim/speed/loop/intro/outro, still0/hold, contain-center, full-context audio, subtitle/FX intent, strict-tail pending and tuple ambiguity/identity mismatch. Assert complete input immutability and contentKey sensitivity/invariance through existing encoder.",
+    "Use frozen actual CLI prepare snapshot (3outputs) for cross-language read-only fixture consumption; source-path resource remap only via explicit own copies/inverse if needed. Executed original sidecar is ONLY importer regression input, never business preparation. Synthetic fourfield metadata associations in tests never represent real grant.",
+    "Regress original fission-import nativeOps/import behavior using frozen actual C# sample and original tests; if original test fixed family/resource paths need adjustment use ignored mechanical resource adapter only (original import URLs/own namespace/source copy paths) with exact inverse/non-resource byte proof, no assertion edits or product fifth file. Original business pure content cases only; do not run its HTTP test under this noHTTP card.",
+    "Run pure Node tests and existing strict API/affected native JSDoc checks in fresh .dev/fission-mapping/attempt-* HOME/TEMP/cache/profile/logs only; original dependencies/compiler read-only. No worker/.NET build/codec/media/HTTP listener/Docker/cloud/vendor/models/GUI/install/network. Capture exact exit+close/source snapshots and resource inverses; no skips called fullgreen.",
+    "Freeze final4 raw/canonical+diff/REDGREEN/actual process/type/import evidence and unresolved-tail/authority limits for nonauthor SPEC/QUALITY before parent freshN5a/serial integration. No author commit/push. If a fifth product source is truly necessary, stop that branch and give one exact forward reason; no scope creep."
+  ],
+  "acceptance": {
+    "componentOnly": true,
+    "readyWhen": [
+      "shared timing helper is actually used by original nativeOps AND mapper, not two implementations",
+      "actual native prepare sample maps per original output without running worker or minting authority",
+      "full-context audio/still0/hold/CountN/knownFX preserved or explicit pending; no silent weakening",
+      "strict-tail fixture remains explicit recoverable pending without mutating SQL/native facts",
+      "all allowed gates exact, independently reviewed; full business producer still future"
+    ],
+    "fullTaskAccepted": false,
+    "fullPilotAccepted": false
+  },
+  "protectedSources": [
+    "apps/api/src/server.ts",
+    "apps/api/src/supabase.ts",
+    "apps/api/sql/business.sql",
+    "pnpm-lock.yaml",
+    "apps/api/tsconfig.json",
+    "all original C# source/test and other worktrees"
+  ],
+  "productModelCallsAllowed": 0,
+  "branch": "codex/fission-native-plan-mapping",
+  "dependencyCommits": [
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "10bee30a58f4a296a1c09fad99f3f13abc6740d5",
+    "7deb60310e017449c666f6c294ac5c6671991e4d",
+    "239376a615599601a331d687b31d11c340d49df7"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [],
+    "activeCards": [
+      {
+        "path": "docs/execution/material-producer-assignment.json",
+        "sha256": "f7182f0af9fbd5ae3a705c73bd077adb589b87ef5d11301e4fa7c1868c9b28c1",
+        "assignmentRevision": 1
+      }
+    ],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T06.prepare",
+        "commit": "10bee30a58f4a296a1c09fad99f3f13abc6740d5",
+        "authorAgent": "/root/fission_studio_integration",
+        "source": [
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionPreparedDecisions.cs",
+            "sha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8",
+            "gitBlobSha256": "8e1f275e9713eca1e03ea41743f5339c7e9ee4fad8cbc2d5b4d0d309c4a12fd8"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+            "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+            "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+            "sha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625",
+            "gitBlobSha256": "d6baa0054b91a8e91e9eff5f08292bc58325864a0086333d320fd55a911d5625"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+            "sha256": "0d434b2d8232d48786e1e092470d1c52877e42d5684b9e92955c07f96d3b9326",
+            "gitBlobSha256": "0d434b2d8232d48786e1e092470d1c52877e42d5684b9e92955c07f96d3b9326"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Media/FFmpegProvider.cs",
+            "sha256": "77005cfe5dc26b8e9573525452d3dd9e987f8e9b8f8c83f9c7edd50cbb841b62",
+            "gitBlobSha256": "77005cfe5dc26b8e9573525452d3dd9e987f8e9b8f8c83f9c7edd50cbb841b62"
+          },
+          {
+            "path": "workers/fission/src/Fission.Providers/Media/CommandBuilders.cs",
+            "sha256": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0",
+            "gitBlobSha256": "982ff89cb0e942017e68ee5481e5dcf992e055e03290092ecc7850117ef47db0"
+          },
+          {
+            "path": "workers/fission/src/Fission.Core/Pipeline/SubtitlePlanner.cs",
+            "sha256": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91",
+            "gitBlobSha256": "913ad05f4ab2eb4e6af9314e26f91e980dd3584bb26090baba6432415133ed91"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+            "sha256": "466137f62b02881979f1e3ec9900723870c5aff22a4329311a31499cae01685a",
+            "gitBlobSha256": "466137f62b02881979f1e3ec9900723870c5aff22a4329311a31499cae01685a"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fission-import.test.mjs",
+            "sha256": "d293e0eff9f538e7272d041428fb9eeff4027f9e733b1c3cbba9877640419204",
+            "gitBlobSha256": "d293e0eff9f538e7272d041428fb9eeff4027f9e733b1c3cbba9877640419204"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-mapping-input-review.json",
+          "sha256": "6166dbdc4fa0bd686db7815f9df66b969b6b7b636ffd9a061f3c7ef84f628214",
+          "gitBlobSha256": "6166dbdc4fa0bd686db7815f9df66b969b6b7b636ffd9a061f3c7ef84f628214"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "10bee30a58f4a296a1c09fad99f3f13abc6740d5",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/fission-import.mjs",
+        "sha256": "aa7fcf75e212aaf68611269c2f5235186cf3239edcb0e54ab5237ebee0a25415",
+        "gitBlobSha256": "aa7fcf75e212aaf68611269c2f5235186cf3239edcb0e54ab5237ebee0a25415"
+      },
+      {
+        "path": "apps/api/src/admission.ts",
+        "sha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54",
+        "gitBlobSha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54"
+      }
+    ],
+    "newFiles": [
+      "packages/openfilm/src/fission-timing.mjs",
+      "apps/api/src/fission-mapping.test.ts"
+    ],
+    "priorQualifiedApiReview": "docs/execution/material-producer-T02-review.json",
+    "noInputReadWriteOverlap": "editable admission/importer excluded from immutable dependency writeguard, baseline exact and Root independently reviewed; originalauthority/encoder must not change"
+  },
+  "scopeReview": {
+    "path": "docs/execution/fission-mapping-input-review.json",
+    "sha256": "6166dbdc4fa0bd686db7815f9df66b969b6b7b636ffd9a061f3c7ef84f628214",
+    "scopeReviewedDraftSha256": "d0f5fa3ed47931bd255940c53c2bee5897c8d91300589912bcc850f5c701b4ae"
+  },
+  "runtime": {
+    "directory": "E:/CodexData/worktrees/orange-t05-paths/orange",
+    "exclusive": true,
+    "cpu": "nonexclusive bounded pure Node/type checks",
+    "ports": [],
+    "network": false,
+    "modelCalls": 0,
+    "workerOrCodecAllowed": false,
+    "files": "fresh .dev/fission-mapping/attempt-* only; original byteexact synthetic sample copy adapters only",
+    "limits": "60sec child/20MiB logs; actualexitclose; noHTTP/worker/codec/docker/gui/model/network",
+    "originalImporterAdapter": "only exact family to fission-mapping and resourcepath/importURL inverse substitutions, original25 assertions unchanged; profile ports merely unused metadata, no listen",
+    "tooling": "existing local original compiler/dependency links read-only; no extra symlinks/install"
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.c/T06 source mapping",
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

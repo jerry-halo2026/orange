@@ -456,6 +456,18 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/material-producer-assignment.json"
+    },
+    {
+      "id": "T06.mapping",
+      "parentTask": "T06",
+      "status": "in_progress",
+      "scope": "Actual original prepare per-output -> existing business plan/content fingerprint; shared native timing extraction; not newTimeline/grant/delivery",
+      "dependsOn": [
+        "T01",
+        "T06.prepare"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-mapping-assignment.json"
     }
   ],
   "umbrella": [

@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "projectId": "原生_nonUUID-project",
+  "filmRev": "0123456789abcdef",
+  "job": {
+    "VideoDir": "assets/video",
+    "AudioDir": "assets/voice",
+    "BgmDir": "assets/music",
+    "Count": 1,
+    "Threads": 1,
+    "OutWidth": 1080,
+    "OutHeight": 1920,
+    "OutFps": 30,
+    "VoiceVolume": 1,
+    "BgmVolume": 0.35,
+    "RandomHFlip": false,
+    "TransitionSec": 0,
+    "SubtitleEnabled": false
+  },
+  "durationSec": 5,
+  "aspect": [
+    9,
+    16
+  ],
+  "fps": 30,
+  "materials": [
+    {
+      "versionId": "10000000-0000-4000-8000-000000000001",
+      "contentSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "video",
+      "durationSec": 30
+    },
+    {
+      "versionId": "10000000-0000-4000-8000-000000000002",
+      "contentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "kind": "sound",
+      "durationSec": 5
+    },
+    {
+      "versionId": "10000000-0000-4000-8000-000000000003",
+      "contentSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "kind": "sound",
+      "durationSec": 3
+    }
+  ],
+  "scenes": [
+    {
+      "ordinal": 1,
+      "name": "1开场",
+      "clips": [
+        {
+          "versionId": "10000000-0000-4000-8000-000000000001",
+          "fromSec": 20,
+          "toSec": 25,
+          "atSec": 0,
+          "speed": 1,
+          "hflip": false,
+          "framing": "cover-center"
+        }
+      ]
+    }
+  ],
+  "audio": {
+    "voice": {
+      "versionId": "10000000-0000-4000-8000-000000000002",
+      "fromSec": 0,
+      "toSec": 5,
+      "volume": 1,
+      "loop": false
+    },
+    "music": {
+      "versionId": "10000000-0000-4000-8000-000000000003",
+      "fromSec": 0,
+      "toSec": 3,
+      "volume": 0.35,
+      "loop": true
+    },
+    "postmix": {
+      "kind": "loudnorm",
+      "integratedLUFS": -14,
+      "truePeakDBTP": -1.5,
+      "loudnessRangeLU": 11
+    }
+  },
+  "captions": null,
+  "transition": null
+}

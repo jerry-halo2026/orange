@@ -1,0 +1,11 @@
+{
+  "reviewerAgent": "/root/integration_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "898eab4af4dc2a24c27f4cdae325281d3f56ccf2fe04bb196780a4087058bc43",
+  "inputProofSHA256": "581c1da79ee059fe1f682e3ff5e0019258582817d8387afeec7da3daf1d8267b",
+  "scope": "same2 original files; exact validated isolated home/.orange-coordination; ordinaryOSdefault unchanged; explicit/lazy/boundroot/safeRED only",
+  "conditions": "managed freshdev then reviewedFF; actual E3 raw inputs + fresh24 N5a; real OS.home writes refused before side effects; old tests prefix and old candidate/resource deviations preserved; current liveE4 untouched; no framework/media/cloud/CI/lock/main/dev/push"
+}

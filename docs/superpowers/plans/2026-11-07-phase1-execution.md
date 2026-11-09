@@ -500,3 +500,13 @@ ReviewedSource33c87 onlyWorkerfileflag600000 alignedoriginalnative, aggregate180
 - [ ] 精确静态31模块+host读取资源+Core/原类型/fixture与安全导入冻结；不启动服务/默认协调/浏览器/媒体/模型。
 - [ ] 全部6项有限合成特征、完整原film-doc与isolation测试分进程执行，源/证据/真实close可恢复；首次GREEN如实标为characterization，不伪造RED。
 - [ ] 非作者规格/质量、实际结果/边界复核后本地提交；不push或签收T07功能/真实ASR/ownerN1/PG。
+
+## 2026-11-09 C22 native entered editor HTTP request consumer
+
+Spec: docs/superpowers/specs/2026-11-09-native-entered-request-drain-design.md. Native-extension under T02.a; not whole ownerN1/PG. Root author, two-file shared server/newtest scope, no UI/IO/CLI format change.
+- [ ] Independently review exact card/input/registry current-reference snapshot/spec and this HEAD-derived appendix; immutable metadata, native-managed fresh-dev branch with oldignored preservation, trusted N5a BEFORE source/test writer.
+- [ ] Actual native empty-project HTTP/real fixture keep IO + original film replacement RED for premature close; stable identity/new admission refusal. Existing configure provider only, no new production seam or actual Git/media.
+- [ ] Minimal private per-instance entered request registry; register completion before route callbacks; fence/snapshot before external stops, original stops still initiated, await all requests/error bookkeeping.
+- [ ] Error and null reentrant working callback RED/GREEN; expected HttpError503 compatibility, native quit self-close no deadlock; no new public getters/protocol/Worker-global stop.
+- [ ] Full newfile/oldserver-auto+watch regressions, originalserver noEmit0; source/fixtures/Core/tools/oldignored/ports and fresh N5a after. Unknown retirement stops further phases.
+- [ ] Non-author source/result SPECQUALITY before localsource commit; then separate sharedCI pin+Fetchjob source task and affectedE2E before serialdevgate; fullowner/Auth/UI/media/install/Mac/PG stillpending.

@@ -1,0 +1,388 @@
+{
+  "taskId": "T02.a",
+  "assignmentRevision": 22,
+  "authorAgent": "/root",
+  "actualModelAndEffort": "current primary runtime not exposed/attested",
+  "backendAttested": false,
+  "classification": "native-extension/original-entered-editor-HTTP-request-retirement-consumer",
+  "scope": "ONLY original startStudio per-instance entered route Promise retirement + new real HTTP/nativeFS consumer tests; no new production seam/type/protocol or whole-owner claim",
+  "workingBaselineCommit": "982eed7562564cc21c115648f97c55ece17b96ee",
+  "dependencyCommits": [
+    "982eed7562564cc21c115648f97c55ece17b96ee",
+    "d70ff3567f1693787c12ad0b75bc1bda8d549dac",
+    "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-t05-paths/orange",
+  "branch": "codex/server-request-drain",
+  "status": "active",
+  "dispatchState": "PROPOSED no author/source/test writes/runtime until independent card/input/spec/plan/registry review, immutable exact snapshots, native managed materialization/oldpreservation, actualsource/tools/resources and freshtrusted22 N5a",
+  "writeAllowlist": [
+    "packages/openfilm/studio/server/server.mjs",
+    "packages/openfilm/studio/server/server-request-drain.test.mjs"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t05-paths/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18475,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18476,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18483,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18484,
+      "exclusive": true
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/native-request-consumer-prep",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "packages/openfilm/studio/server/server.mjs"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "982eed7562564cc21c115648f97c55ece17b96ee",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t01-native-request-consumer-input-review.json",
+          "sha256": "d94618dec2da5cdbb517b463f92c922e2440aea398446c171ce1984833e049de",
+          "gitBlobSha256": "d94618dec2da5cdbb517b463f92c922e2440aea398446c171ce1984833e049de"
+        }
+      },
+      {
+        "taskId": "T02.a",
+        "commit": "982eed7562564cc21c115648f97c55ece17b96ee",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54",
+            "gitBlobSha256": "8aba0b914fbc4da13c55e510cf02e6a04426f52b7e538d74ee01b62c8810ba54"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+            "sha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c",
+            "gitBlobSha256": "ae64f900ee1895d3a6d39b92bed3e279ef20e98c0576f8bcef4862063444525c"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-access.mjs",
+            "sha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71",
+            "gitBlobSha256": "345efe1dafce55c09e9dfdcc965272509b0454d205c59dca51ad85ad06368a71"
+          },
+          {
+            "path": "packages/openfilm/studio/server/film.mjs",
+            "sha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29",
+            "gitBlobSha256": "6deb0c817e90ba6bb7caa73febc458b51b35dc601feca5d18ef0d3e475e8db29"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-edits.mjs",
+            "sha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863",
+            "gitBlobSha256": "27c6a36f470b6fcef535a4ee2a1f01a23693a6fb22c749ae27649efc83dc3863"
+          },
+          {
+            "path": "packages/openfilm/studio/server/person-merge.mjs",
+            "sha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f",
+            "gitBlobSha256": "6369b3aa2c5e67257833de8dde5bd836aa4b54186d97d99053452cb445662e3f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/atomic.mjs",
+            "sha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f",
+            "gitBlobSha256": "61374e50c67d76e03d70d73e05ed307378d866d579847c316c4203fbc9cde94f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/history.mjs",
+            "sha256": "2fa9cfa10579518574520341bd8217853f3a7e11cb973f280766c7ad944ff620",
+            "gitBlobSha256": "2fa9cfa10579518574520341bd8217853f3a7e11cb973f280766c7ad944ff620"
+          },
+          {
+            "path": "packages/openfilm/studio/server/http.mjs",
+            "sha256": "357da4dad30c36ca14d7bde8fd02587b58653e915bddb36c220ba02d10c70524",
+            "gitBlobSha256": "357da4dad30c36ca14d7bde8fd02587b58653e915bddb36c220ba02d10c70524"
+          },
+          {
+            "path": "packages/openfilm/studio/server/pages.mjs",
+            "sha256": "f4f5552c647498f35babdd8c816ba262af9ef6268330116a189b8cec223d3968",
+            "gitBlobSha256": "f4f5552c647498f35babdd8c816ba262af9ef6268330116a189b8cec223d3968"
+          },
+          {
+            "path": "packages/openfilm/studio/server/auto-versions.mjs",
+            "sha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad",
+            "gitBlobSha256": "3c064ac4a66d9495a0cfc8da333d1432839d4a19bb49e2477218251b29dd4cad"
+          },
+          {
+            "path": "packages/openfilm/studio/server/watch.mjs",
+            "sha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211",
+            "gitBlobSha256": "192a6d2de4e8bc1fb004aed8d1590b22b12184afa4165530a5161b7a8adfb211"
+          },
+          {
+            "path": "packages/openfilm/studio/server/exports.mjs",
+            "sha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696",
+            "gitBlobSha256": "6bb76fc2d35b911207e88c1cf8559e697f425a25cae678cc769923ad9d5f7696"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fetch-repo.mjs",
+            "sha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2",
+            "gitBlobSha256": "9e58e209c53f066eefd62379469f549c6b4c5868c77d088d74deeedd26fcb6c2"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fetch-github.mjs",
+            "sha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1",
+            "gitBlobSha256": "380d5a0fd85ea78077e5d07a48f412571568fc11e282ada322d2a154f2227eb1"
+          },
+          {
+            "path": "packages/openfilm/studio/server/fetch-error.mjs",
+            "sha256": "687c3ee0e0ec64a2c7d987dd1c0d58a693b45211d85eb9d919572c942c82f5ad",
+            "gitBlobSha256": "687c3ee0e0ec64a2c7d987dd1c0d58a693b45211d85eb9d919572c942c82f5ad"
+          },
+          {
+            "path": "packages/openfilm/studio/server/get.mjs",
+            "sha256": "b86dcfa2db7b1927a7f3693033bb827aef8e997ec0b51abe6b36b95aa61965aa",
+            "gitBlobSha256": "b86dcfa2db7b1927a7f3693033bb827aef8e997ec0b51abe6b36b95aa61965aa"
+          },
+          {
+            "path": "packages/openfilm/src/film-doc.mjs",
+            "sha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af",
+            "gitBlobSha256": "eed7f32e3f4753dd623da1ff774301584d824cb71a10f0ec9835598963ea97af"
+          },
+          {
+            "path": "packages/openfilm/src/skills.mjs",
+            "sha256": "5e2e5c24524829655e22e2296d72b021a6bfcd30fdd2ecc52ac5f186e32b43d1",
+            "gitBlobSha256": "5e2e5c24524829655e22e2296d72b021a6bfcd30fdd2ecc52ac5f186e32b43d1"
+          },
+          {
+            "path": "packages/openfilm/src/host.mjs",
+            "sha256": "bdeae4141305ff55c45f635f232bbdeb974a69b0f3892752664b8c531340c643",
+            "gitBlobSha256": "bdeae4141305ff55c45f635f232bbdeb974a69b0f3892752664b8c531340c643"
+          },
+          {
+            "path": "packages/openfilm/studio/server/tsconfig.json",
+            "sha256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65",
+            "gitBlobSha256": "d92dc7e4a57d456ff013351c33250bb21b9d79b72f1af08468a18c5c78605a65"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+            "sha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc",
+            "gitBlobSha256": "93f69303a3cc37f6a0ca75a25aebdb6e279b973b645c32bdaef878ffda9c07dc"
+          },
+          {
+            "path": "packages/openfilm/studio/server/server-watch-drain.test.mjs",
+            "sha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c",
+            "gitBlobSha256": "64601c80a80f232663d56ff623076eb25e352024461cfe0af0539d1fdaa8f49c"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects-control.test.mjs",
+            "sha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388",
+            "gitBlobSha256": "f1dcbbc8d7ebb467ee4810d1035eeb002b140caf2cf41dd102f52bd730a5a388"
+          },
+          {
+            "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+            "sha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62",
+            "gitBlobSha256": "cb77f17415bba41f4fc8b990ed37d9dd722511b8d20468c965fe7eeb1b6a6f62"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/t02-native-request-consumer-input-review.json",
+          "sha256": "4ba285a21df9e056f6cd9f6c580a9ed37c466b62391fa341c5837d492e21f21a",
+          "gitBlobSha256": "4ba285a21df9e056f6cd9f6c580a9ed37c466b62391fa341c5837d492e21f21a"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "commit": "9079c513d163441dc639fff5fc282c38a8bd7c94",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "982eed7562564cc21c115648f97c55ece17b96ee",
+    "files": [
+      {
+        "path": "packages/openfilm/studio/server/server.mjs",
+        "sha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2",
+        "gitBlobSha256": "34d0e29bee3801a8e5cc4dbff52f4f69faf45181c80fda07981bcb80b77256b2"
+      }
+    ],
+    "newTestPath": "packages/openfilm/studio/server/server-request-drain.test.mjs",
+    "newTestAbsent": true
+  },
+  "spec": {
+    "path": "docs/superpowers/specs/2026-11-09-native-entered-request-drain-design.md",
+    "sha256": "092cf2051a64aea08d09320d26bd4f9d6d48861f4921dae3d31e002cfde6560e"
+  },
+  "plan": {
+    "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+    "approvedGitSnapshotSHA256": "ed03b41b3db7b79c03966462809cef5ff37c0224a7fb98f44ac3a67da1d4fe62",
+    "onlyAppendOriginalPrefixByteIdentical": true,
+    "appendBytes": 1531,
+    "workingWIPPrefixPreserved": true
+  },
+  "registry": {
+    "path": "docs/execution/project-tasks.json",
+    "approvedGitSnapshotSHA256": "5b355302ad4c592839d0620b7e050dc4bd04a1dd126e9339d57da2c8cc50a997",
+    "scope": "only current T01/T02 evidence/delivery refs/remaining requestconsumer state; status/dependencies/gates/other tasks unchanged; working WIP retained separately"
+  },
+  "materialization": {
+    "existingHead": "8db7aec35d788899dd97a46cf9c6a84a360d65d2",
+    "existingBranch": "codex/fetch-latest-integration",
+    "oldBranchRetained": true,
+    "nativeInventoryRequired": true,
+    "fromFreshActualPrimaryDev": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+    "method": "existing managed E3 new codex/server-request-drain from actual latest dev then FF independently reviewed metadata; no-overwrite-ignore, no reset/stash/clean/manual worktree fallback"
+  },
+  "tooling": {
+    "existingCoreDirectory106Version": "1.61.1",
+    "originalTypescript": "5.9.3",
+    "NodeTypes": "22.20.5",
+    "preservePrior43Junctions1311PinsAndZod840": true,
+    "newInstallOrLinkAllowed": false
+  },
+  "contract": {
+    "nativeInterfacesUnchanged": [
+      "startStudio options and returned origin/filmOrigin/port/key/close",
+      "native HTTP status/JSON/IO/CLI/film format/IDs/timeunits"
+    ],
+    "privateRequestCompletionRegisteredBeforeAnyRouteCallback": true,
+    "closeFenceAndSnapshotBeforeExternalStops": true,
+    "allOriginalStopsStillInitiatedBeforeAwait": true,
+    "ordinaryExplicitHttpErrorsAndKnown4xxNotRetirementFailures": true,
+    "unexpectedNonHttpError500OrErrorHandlerFailureVisibleAfterAllSettled": true,
+    "falseyRejectedReasonsNotLost": true,
+    "noUncaughtOrUnhandledReject": true,
+    "requestStatePerStudioClosureNotGlobal": true,
+    "noNewGlobalWorkerStop": true,
+    "existingNativeKeepTestProviderOnly": true,
+    "keepTestWritesRealNativeBytesButNotGitHistory": true,
+    "zeroClipEmptyFilmsOnlyNoPosterMedia": true
+  },
+  "validation": {
+    "newTests": "server-request-drain.test.mjs only, test-isolation=none/concurrency1/180000ms/output20MiB, before/after2source snapshots every RED/GREEN",
+    "oldConsumerTests": [
+      "packages/openfilm/studio/server/server-auto-versions.test.mjs",
+      "packages/openfilm/studio/server/server-watch-drain.test.mjs"
+    ],
+    "oldRegression": "original files unchanged, default per-file process isolation/concurrency1/nativefile600000/overall240000/output30MiB, record actual TAP no skips",
+    "serverTypes": "original server tsconfig/noEmit no overrides,180000ms/output20MiB",
+    "environment": "child entry clean system PATH/Git only and seven HOME/temp equal same fresh scratch before native import; newconsumer applies ONLY original OPENFILM_* profile mappings so equality retained; original immutable regressions may apply original own-profile env mappings internally, not falsely claimed equal thereafter",
+    "forbiddenRuntime": "no native Git history/Git process/Worker/browser/download/ffmpeg/ffprobe/media/ASR/provider/account/.NET/Fission/production/privateData",
+    "resources": "new18483/84 and originalregression18475/76 double-stack bind-close before/after; direct captured test Node only, known exit/close, no globalprocess claim; preserve all old files/dirs/links nofollow",
+    "after": "rawGit/immutableinputs/oldignored/Core/TS/NodeTypes/Zod/linktargets/config/ports/freshN5a; actual nonauthor source/result review before sourcecommit"
+  },
+  "forbidden": [
+    "source beyond2/sharedCI/package/lock/typeconfig/07/entrypoint edits",
+    "fake route/clone/project/merge success/globalbuiltin monkeypatch/eval/publictestgetter/newprotocol",
+    "start/stop production mergeWorker or claimmultiStudioWorkerownership",
+    "realGit history/media/browser/Fission/.NET/model/cloudaccount or production operations",
+    "unknown retired resources hidden/foreignPIDscan or kill/oldfileoverwrite/cleanup",
+    "push/dev/main/tag/release/fullownerN1/fullpilot claim"
+  ],
+  "nextIntegrationDependency": "new server producer changes Native CI pin; sharedCI update and newFetch exactNode22 stage must follow actual reviewed producerfreeze, not oldpin green reused",
+  "productModelCallsAllowed": 0,
+  "fullServerRetirement": false,
+  "ownerN1": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "runtimeNamespaces": {
+    "newConsumer": {
+      "parent": ".dev/studio-request-drain",
+      "profiles": ".dev/studio-request-drain/profiles",
+      "runs": ".dev/studio-request-drain/runs",
+      "attemptRule": "ONLY fresh attempt-<timestamp>-<pid> or native unique attempt IDs; scratch/log/report/evidence/input/output/cache/project paths inside this exact family; assert absent before creation"
+    },
+    "originalRegressions": [
+      {
+        "parent": ".dev/studio-auto-close/profiles",
+        "rule": "original immutable tests ONLY fresh native attempt IDs"
+      },
+      {
+        "parent": ".dev/studio-watch-close/profiles",
+        "rule": "original immutable tests ONLY fresh native attempt IDs"
+      }
+    ],
+    "originalAdmission": {
+      "parent": ".dev",
+      "basenamePrefix": "t01-profile-",
+      "rule": "ONLY original frozen CPU test fresh mkdtemp, no blanket.dev permission",
+      "runnerTemp": ".dev/admission-fixtures/runner-temp",
+      "runnerTempRule": "trustedchecker original namespace, reject aliases, preserve every preexisting entry"
+    },
+    "coordinatorArtifacts": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/native-request-consumer-prep",
+    "preservation": "full before/after old directories/files/link literal targets, no follow; never overwrite/delete old evidence or files"
+  }
+}

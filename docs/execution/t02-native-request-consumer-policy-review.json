@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-09",
+  "taskId": "T02.a",
+  "assignmentRevision": 22,
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/projects_admission_source_review",
+  "backendAttested": false,
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "d7ef54a7152705bb70a2ba83cae589ea714d08315410d7e6e6daa3314f1b4902",
+  "specSHA256": "092cf2051a64aea08d09320d26bd4f9d6d48861f4921dae3d31e002cfde6560e",
+  "planSnapshotSHA256": "ed03b41b3db7b79c03966462809cef5ff37c0224a7fb98f44ac3a67da1d4fe62",
+  "registrySnapshotSHA256": "5b355302ad4c592839d0620b7e050dc4bd04a1dd126e9339d57da2c8cc50a997",
+  "inputProofs": [
+    {
+      "path": "docs/execution/t01-native-request-consumer-input-review.json",
+      "sha256": "d94618dec2da5cdbb517b463f92c922e2440aea398446c171ce1984833e049de"
+    },
+    {
+      "path": "docs/execution/t02-native-request-consumer-input-review.json",
+      "sha256": "4ba285a21df9e056f6cd9f6c580a9ed37c466b62391fa341c5837d492e21f21a"
+    }
+  ],
+  "verified": {
+    "immutableInputsActualRawAndGit": 31,
+    "editableServerExcludedFromImmutableInputs": true,
+    "newTestAbsent": true,
+    "planOriginalPrefixExact": true,
+    "planAppendBytes": 1531,
+    "workingPlanPrefixAndAppendPreserved": true,
+    "registryOnlyT01T02CurrentReferenceChanges": 10,
+    "statusesDependenciesGatesAndOtherTasksUnchanged": true
+  },
+  "scope": "Only per-instance entered editor HTTP route Promise retirement in original startStudio. Not detached work, streaming tails, WS/pages, render descendants, desktop parent, shared Worker ownership or owner N1.",
+  "proofActivation": "Only status/spec/quality to approved and P1/P2 to 0; all other proof bytes unchanged.",
+  "conditions": [
+    "Local metadata commit only card, spec, two proofs, canonical plan snapshot, canonical registry snapshot and this policy. Stage only reviewed snapshot bytes for plan/registry, never whole unrelated working WIP; preserve all existing WIP.",
+    "Before any source/test write or runtime: immutable metadata, native managed fresh-dev branch and exact FF, old-branch/full ignored preservation, actual inputs/editable baseline/tools/leased resources, fresh trusted revision 22 N5a admitted.",
+    "Root alone may modify server.mjs and the new server-request-drain.test.mjs. No new production seam, public fields/protocol, global Worker stop, UI/config/CI changes or fake route/merge/project success.",
+    "Use real zero-clip native projects, native stage merge, existing configure keep provider writing actual bytes, and original final replacement. No Git history, Worker, poster/browser/media/provider calls. Restore original keep reference and retire owned fixture work in finally.",
+    "Register request completion before route callbacks; publish close fence/snapshot before external stops, initiate all original stops before waiting, preserve HTTP mappings and falsey errors, await error bookkeeping, and verify native quit does not wait on itself.",
+    "Use only exact card runtimeNamespaces and fresh attempts; new ports 18483/18484, original regressions 18475/18476. Preserve old files/directories/link targets. New test and frozen regressions run separately with the declared environment distinction.",
+    "Require actual behavioral RED/GREEN with before/after source snapshots, unchanged original regressions, original server noEmit0, tool/input/resource/post-N5a checks and independent source/result review before source commit. Unknown retirement stops subsequent phases.",
+    "Current CI server pin becomes stale after source change; separate reviewed CI update and affected integration remain required. No push/dev/main/tag, model calls, full server retirement or pilot acceptance."
+  ],
+  "metadataCommitCreated": false,
+  "sourceOrTestsWritten": false,
+  "N5aAdmitted": false,
+  "runtimeExecuted": false,
+  "fullServerRetirement": false,
+  "ownerN1": false,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

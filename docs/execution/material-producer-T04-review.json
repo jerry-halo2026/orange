@@ -1,0 +1,77 @@
+{
+  "taskId": "T04.local",
+  "commit": "7deb60310e017449c666f6c294ac5c6671991e4d",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "packages/openfilm/studio/server/derived.mjs",
+      "sha256": "9d0dfb38ba3f7ebfe5da2545bd963bd9cb89a25258baf6d213bc62bef51dfd3f",
+      "gitBlobSha256": "9d0dfb38ba3f7ebfe5da2545bd963bd9cb89a25258baf6d213bc62bef51dfd3f"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.mjs",
+      "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+      "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+    },
+    {
+      "path": "packages/openfilm/studio/server/projects.mjs",
+      "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+      "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "packages/openfilm/studio/server/derived.test.mjs",
+      "sha256": "cafb15dff8d0e188528329ba101cb07a2ec0b5407dfa9c87d674e0e7c90489dc",
+      "gitBlobSha256": "cafb15dff8d0e188528329ba101cb07a2ec0b5407dfa9c87d674e0e7c90489dc"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.test.mjs",
+      "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+      "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+    }
+  ],
+  "scope": "original derived.probe(root,rel) seconds/no-duration still and private .film/cache reuse only, not another project/library",
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "evidence": {
+    "reviewKind": "independent read-only input/8-file scope review, not implementation or remote rights approval",
+    "assignmentSHA256": "3807016fb144ce352b0bc7f89a932cf4b59966f3b8c65f3129fa47ddd181b668",
+    "actualHead": "7deb60310e017449c666f6c294ac5c6671991e4d",
+    "actualBranch": "codex/material-version-producer",
+    "actualWorktree": "E:/CodexData/worktrees/orange-business-admission/orange",
+    "gitClean": true,
+    "consumedRawAndReferencedGitMatches": 13,
+    "existingEditableBaselineRawAndGitMatches": 6,
+    "newFilesAbsentBeforeAuthor": true,
+    "immutableWriteIntersection": [],
+    "sourceScope": "2 new material module/tests +6 exact existing backend/SQL/PGtest/pkg/lock, no native probe/IO/desktop/worker write",
+    "nativeProbe": {
+      "signature": "async derived.probe(root,rel), relative readable(root,rel), returns parsed metadata with duration seconds or absent for a still; no content SHA256",
+      "cache": "Original .film/cache/probe/<sha1(relative path,size,rounded mtime)>.4.json cache key is NOT a content-version hash. Stage each immutable actual byte version under fresh backend-private ordinary root, own cache only; no film.html/.film/id/project creation.",
+      "kindDuration": "Service must validate genuine probe metadata; absent duration alone cannot classify arbitrary unknown/truncated video/audio as still duration0. Unknown/nonfinite/missing required metadata denies; original still intrinsic0 only with genuine still evidence, never client kind/extension authority.",
+      "probeDrain": "Original probe has no AbortSignal or native timeout and internally waits queued slot/execFile callback. Abort/timeout may deny caller but cannot mean probe stopped or release FD/entered-work; actual underlying promise and body/consumer drain must complete or remain explicitly unconfirmed.",
+      "imports": "Original package exposes openfilm/package.json but no derived subpath export; resolve the existing workspace package root via this approved export, then load its original derived.mjs physical module. No native package export edit/copy or liveE4 alias needed."
+    },
+    "authorityAndLease": "Use existing branded isVerifiedSession/admission.resolve and fresh SQL rights/conditional review BEFORE locator/FD use. UUID/hash/name is not ownership; actual private FD/version/identity/nlink/hash/byte/probe-revision/env/subject bindings rechecked, no raw absolute path/FD/internal locator overHTTP. A Node FD alone is not proof of immutability or rollback; immutable service storage and before-use/actual-consumer integrity/drain remain obligations.",
+    "registration": "Actor+key+exact payload persistent/transactional idempotency; response loss/restart preserves uncertain registered files and original result, no reprobe/reroll/delete-to-green. Defaults no license/review; required review trusted policy only, local positive seeds synthetic.",
+    "tooling": {
+      "manifestSHA256": "e9d7ab9ac17fc60639254fbddf70d178db8627ea6ed39542e85f2acfea8f8e10",
+      "onlyNewLink": "apps/api/node_modules/openfilm -> E5/packages/openfilm",
+      "targetPackageNameVersionHashMatch": true,
+      "keepOriginal45": true,
+      "noInstallOrExternalDeps": true,
+      "pkgLockOnlyWorkspaceImporter": true
+    },
+    "runtime": "Root must first transfer exact stopped owned PG17 container874f16/image73bed with networknone/0ports/CPU1/768MiB, verify actual pin, materialize exact link and fresh N5a. This review did not run Docker or inspect/modify any DB. Only own tiny probe fixture after admission, no cloud/vendor/user media/model/worker/GUI/Edge; inherited browser metadata is not runtime permission.",
+    "priorProofs": "T01 3956cb1e and Root nonauthor T02 d57da51e selected resolve/input scope match; not new full cloud/rights qualification",
+    "reviewerTestsBuildNetworkModelCalls": 0,
+    "reviewerSourceChanges": 0,
+    "executionHeldUntil": "Root resource handoff/tool/metadata/freshN5a, then TDD; final implementation/actual freshDDL/FD-drain/permissions evidence need nonauthor review",
+    "priorPendingReviewSHA256": "e5b1f1f4b3fd42fc609d8ab26e542633b8589167095cee1b34aba5e04bcf1055"
+  }
+}

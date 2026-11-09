@@ -1,0 +1,32 @@
+{
+  "taskId": "T02.business",
+  "commit": "7deb60310e017449c666f6c294ac5c6671991e4d",
+  "authorAgent": "/root/desktop_login_integration",
+  "reviewerAgent": "/root",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/api/src/admission.ts",
+      "sha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54",
+      "gitBlobSha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/api/src/business.test.ts",
+      "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+      "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+    }
+  ],
+  "scope": "existing createAdmission.resolve/context entitlement behavior only; no material registration/locator implementation approval",
+  "evidence": {
+    "original13": "f5b0ea000dbdf5f8fd3d6d69a219629ec46b41a7",
+    "sourceReview": "6de5096829d65fa88d74ee0b7fd19911624036919e5adcbc667b5040380cd4d2",
+    "latestSelectedActualOriginalStudioBackendHttp": "458 selected originalHTTP passed onRoot, synthetic transports only",
+    "unchangedThrough7deb": true
+  },
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false
+}

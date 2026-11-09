@@ -1,0 +1,331 @@
+{
+  "taskId": "T04.material",
+  "parentTask": "T04.a",
+  "assignmentRevision": 1,
+  "status": "active",
+  "authorAgent": "/root/desktop_login_integration",
+  "actualModelAndEffort": "inherited runtime unexposed/unattested; no override",
+  "classification": "business-addition authoritative necessary version registration/owned FD locator, native-reuse probe and existing rights service; no new library/editor/schema replacing native types",
+  "workingBaselineCommit": "41b15daf57b966c919bf8113d1dcdcd7aedcb7cf",
+  "dependencyCommits": [
+    "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+    "7deb60310e017449c666f6c294ac5c6671991e4d"
+  ],
+  "worktreePath": "E:/CodexData/worktrees/orange-business-admission/orange",
+  "branch": "codex/material-version-producer",
+  "scope": "Actual bounded authenticated local byte ingestion -> native probe/hash -> immutable assets/version persistent registration and permission-first exact FD lease; default no license/human review creation. Immediate consumer real Fission stage/prepare and original Studio import. Cloud binding/real rights producer still separate pending, not fullchain completion.",
+  "writeAllowlist": [
+    "apps/api/src/materials.ts",
+    "apps/api/src/materials.test.ts",
+    "apps/api/src/server.ts",
+    "apps/api/src/supabase.ts",
+    "apps/api/sql/business.sql",
+    "apps/api/tests/postgres17.test.mjs",
+    "apps/api/package.json",
+    "pnpm-lock.yaml"
+  ],
+  "resourceLeases": [
+    {
+      "kind": "cpu",
+      "exclusive": false
+    },
+    {
+      "kind": "directory",
+      "value": "E:/CodexData/worktrees/orange-business-admission/orange",
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18571,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18572,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18581,
+      "exclusive": true
+    },
+    {
+      "kind": "port",
+      "value": 18582,
+      "exclusive": true
+    },
+    {
+      "kind": "database",
+      "value": "orange-material-local-tests-only-owned-container874f16-postgres17",
+      "exclusive": true
+    }
+  ],
+  "admission": {
+    "sharedWriteGrants": [
+      "pnpm-lock.yaml"
+    ],
+    "activeCards": [],
+    "dependencies": [
+      {
+        "taskId": "T01",
+        "commit": "ddaa459aa64a21e4f3d3b4eee4b9f22b8cda2946",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "scripts/phase1-isolation.mjs",
+            "sha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334",
+            "gitBlobSha256": "16772f2af82d3c1d23ae0d37f44338062764559678514707dc6d8353ea1c9334"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.mjs",
+            "sha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8",
+            "gitBlobSha256": "847db36ff9f20fd2ca628837809a02f787d7150c66efb5da6d91044e43d9ffd8"
+          },
+          {
+            "path": "apps/desktop/src/flavor.mjs",
+            "sha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8",
+            "gitBlobSha256": "d81f97c52c38c1f27b07e9a75e410a9a81a77c24fac32180d4c3bf5388004ff8"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "scripts/phase1-isolation.test.mjs",
+            "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+            "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07"
+          },
+          {
+            "path": "packages/openfilm/src/development-isolation.test.mjs",
+            "sha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89",
+            "gitBlobSha256": "806b22cfce97f5585d00996b45cd6e3daec119970073e513d86d3eb4c14aea89"
+          },
+          {
+            "path": "apps/desktop/src/flavor.test.mjs",
+            "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+            "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/fission-prepare-T01-review.json",
+          "sha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f",
+          "gitBlobSha256": "3956cb1e1adbafef6b2b8c4af0aad526ec88c419d7b5fcbe45353e311146878f"
+        }
+      },
+      {
+        "taskId": "T02.business",
+        "commit": "7deb60310e017449c666f6c294ac5c6671991e4d",
+        "authorAgent": "/root/desktop_login_integration",
+        "source": [
+          {
+            "path": "apps/api/src/admission.ts",
+            "sha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54",
+            "gitBlobSha256": "774161bae8c8ff5b0406ca120b7a453ce66632f8b6d4430ecd0670848fa39e54"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "apps/api/src/business.test.ts",
+            "sha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85",
+            "gitBlobSha256": "1186b2cfea5e1990a4eac1910ac697221fb14a67955c487ca4cf3af54fe83b85"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/material-producer-T02-review.json",
+          "sha256": "d57da51ee656d495c7f8317d5946cbe60f3c0fae6b48c46d612ba04728956509",
+          "gitBlobSha256": "d57da51ee656d495c7f8317d5946cbe60f3c0fae6b48c46d612ba04728956509"
+        }
+      },
+      {
+        "taskId": "T04.local",
+        "commit": "7deb60310e017449c666f6c294ac5c6671991e4d",
+        "authorAgent": "/root",
+        "source": [
+          {
+            "path": "packages/openfilm/studio/server/derived.mjs",
+            "sha256": "9d0dfb38ba3f7ebfe5da2545bd963bd9cb89a25258baf6d213bc62bef51dfd3f",
+            "gitBlobSha256": "9d0dfb38ba3f7ebfe5da2545bd963bd9cb89a25258baf6d213bc62bef51dfd3f"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.mjs",
+            "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+            "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+          },
+          {
+            "path": "packages/openfilm/studio/server/projects.mjs",
+            "sha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2",
+            "gitBlobSha256": "5081a22a7273eaac0e562b5260aeb8d801bb97215f1bf2a30fbe7384021c8ed2"
+          }
+        ],
+        "fixtures": [
+          {
+            "path": "packages/openfilm/studio/server/derived.test.mjs",
+            "sha256": "cafb15dff8d0e188528329ba101cb07a2ec0b5407dfa9c87d674e0e7c90489dc",
+            "gitBlobSha256": "cafb15dff8d0e188528329ba101cb07a2ec0b5407dfa9c87d674e0e7c90489dc"
+          },
+          {
+            "path": "packages/openfilm/studio/server/files.test.mjs",
+            "sha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700",
+            "gitBlobSha256": "e070fd86ff887e5622b19668beefe4bba596d38f54f0c6f3ef990b46f1582700"
+          }
+        ],
+        "review": {
+          "path": "docs/execution/material-producer-T04-review.json",
+          "sha256": "95fb3a80397bcdbbcc532edef5aec9f04b4b91dd70f874c9578fdc026895dcb0",
+          "gitBlobSha256": "95fb3a80397bcdbbcc532edef5aec9f04b4b91dd70f874c9578fdc026895dcb0"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "path": "scripts/phase1-isolation.test.mjs",
+        "sha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "gitBlobSha256": "c6ef87ad5be39b6ea52ecbca5ebfdf47296249d20a8ae9c3b2788fa6925dba07",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "derives every writable location under the explicit instance/task/attempt without creating it",
+          "rejects absent profile rather than falling back to the official home"
+        ]
+      },
+      {
+        "path": "apps/desktop/src/flavor.test.mjs",
+        "sha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "gitBlobSha256": "8dd2c4c2f6f97014478bda41fbad47fc5d3c153b1d101e1498e1cbad39cfc4a0",
+        "commit": "9fe83253bf058f1d1d167e19e55c11b2bafa1975",
+        "requiredNames": [
+          "which app this is: packaged, the release unless built as the preview; from source, dev when asked",
+          "the preview shares nothing with an installed OpenFilm or the dev app",
+          "every app makes its projects in the person's one library"
+        ]
+      }
+    ]
+  },
+  "nativeEditableBaseline": {
+    "commit": "7deb60310e017449c666f6c294ac5c6671991e4d",
+    "files": [
+      {
+        "path": "apps/api/src/server.ts",
+        "sha256": "d21b4bd66f19671a3f1164b451488032125d1c7a815003ff2d5362d835a57624",
+        "gitBlobSha256": "d21b4bd66f19671a3f1164b451488032125d1c7a815003ff2d5362d835a57624"
+      },
+      {
+        "path": "apps/api/src/supabase.ts",
+        "sha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44",
+        "gitBlobSha256": "b4c56d8d0d5d26aa5b45dfc7548e6e434ad4038eba6e4fab297079258672cf44"
+      },
+      {
+        "path": "apps/api/sql/business.sql",
+        "sha256": "d18c5132d002044cc7f97692d8a95fffa6e4b8c02b6d1d0dffd68530509e11c5",
+        "gitBlobSha256": "d18c5132d002044cc7f97692d8a95fffa6e4b8c02b6d1d0dffd68530509e11c5"
+      },
+      {
+        "path": "apps/api/tests/postgres17.test.mjs",
+        "sha256": "a69acd1a31e12365ddf957a08cd2038459c48fa71ce7c9dddf0445d078f33c15",
+        "gitBlobSha256": "a69acd1a31e12365ddf957a08cd2038459c48fa71ce7c9dddf0445d078f33c15"
+      },
+      {
+        "path": "apps/api/package.json",
+        "sha256": "7c64cea42d61cd16d277b83a9d2389d2dc88437bb5ef042dc39d9a71a0f735cb",
+        "gitBlobSha256": "7c64cea42d61cd16d277b83a9d2389d2dc88437bb5ef042dc39d9a71a0f735cb"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "sha256": "c1de5f2de4f49ef6bbd6304b6c729ad036cec15cd45d4548453e6d4ed3b3c19a",
+        "gitBlobSha256": "c1de5f2de4f49ef6bbd6304b6c729ad036cec15cd45d4548453e6d4ed3b3c19a"
+      }
+    ],
+    "newFiles": [
+      "apps/api/src/materials.ts",
+      "apps/api/src/materials.test.ts"
+    ],
+    "preservation": "original API/admission and signed-source/permissions/default configuration compatible; no edits to immutable native probe/IO/worker/desktop"
+  },
+  "requirements": [
+    "Concrete original Node API material service in materials.ts with matching tests, no framework/provider registry/newUI. Reuse native derived.mjs::probe(root,rel) through existing OpenFilm workspace dependency; no copy of probe/parser/media types. Seconds stay seconds, still intrinsic duration0 only from genuine still probe evidence, unknown/truncated metadata must not be invented as0. Native probe .film/cache remains under own private staging roots, never create film.html/.film/id/project/editor for the store.",
+    "Accept bounded local upload bytes, not an arbitrary server path or client kind/SHA/duration/owner/approved/UUID as authority. Auth principal solely branded current online context. Server exclusively stages actual bytes in private ordinary no-alias/singlelink files, hashes/probes, server-generates asset/version identities; API source existing own asset update (if exposed) must verify owner/exact base version. Immutable prior version/rights never silently transferred.",
+    "Physical root explicitly configured ordinary absolute backend-private materialRoot, no normal profile/legacy/default D/E fallback, no unrelated existing file takeover. Namespace environment+current subject+opaque version/locator; do not cross-subject hash deduplicate or infer ownership from filename/hash/picker. Validate file and ancestor identity before each actual write/open; generated private .film/cache only native probe cache, not second library/protocol.",
+    "Persist registration in existing orange_business assets/asset_versions and only minimum material-specific idempotency/locator evidence needed. New service-only SECURITY INVOKER RPCs/least privilege/defaultdeny RLS; real session/actor checks. Same actor/key+same actual payload returns exact original asset/version/locator; changed content/base/name/payload conflicts. Real concurrent SQL/response-loss/restart test; no new version/reprobe/reroll on uncertain committed result. Preserve possible registered files on ambiguity, no deletion of unknown state.",
+    "Registration defaults to no license and no material_review. Review-required decision comes only trusted service policy, never client flag; do not forge human/creator/legal approvals or reuse company API success for permission. Exact existing admission.resolve and SQL material rights/conditional review/current binding must authorize EACH use before exposing a locator/FD. Real cloud/rights grant remains pending; positive local tests use clearly synthetic isolated PG records, not claimed real human acceptance.",
+    "Private locator/version evidence binds versionID, actual stored file identity/nlink/hash/byte/probe revision/environment+subject. Unknown/missing/changed/replaced/samehash alias/foreign version/old binding/revoked license denies before consumer. Return actual private lease/FD only to trusted Node consumer, no absolute path/fd/secret/locator internals over HTTP. Hold descriptors and track operations until the actual consumer/probe/network body settles; timeout/abort is not rollback or safe release. Default stop seals new entry and drains real entered work, no fake active-count success.",
+    "Use original HTTP server entry, same verify/knowncodes/loopback only. Optional explicit material configuration extends old fivefields compatibly; absent config only material unavailable, not firstparty/logout. Wire createApiServer composition and existing Supabase RPC map, never renderer rolekey or HTTP dependency injection. Old claim/status/cancel and health truth remain; no stock rights/owner UUID accepted from client.",
+    "Only workspace dependency openfilm:workspace:* and matching apps/api lock importer may change; no old dependency/version/integrity changes. Root may create only missing apps/api/node_modules/openfilm to E5 local workspace from reviewed exact tools manifest; original45 pins retained. No install/network/newexternalpackage, probe binary from approved standard9 PATH in isolated child/server test environment, never modify system PATH/security policy.",
+    "TDD original API tests plus new materials.test, existing PG tests: meaningful missing feature RED -> actual video/WAV/PNG own bytes native probe -> real PG17 registration/atomic samekey+changedpayload/concurrent/restart/uncertain outcome; unlicensed deny; fresh exact license permits sameversion Studio/Fission; required humanreview absent/rejected/changed denies; oldbinding/crosssubject/samehash/file replace/parent alias/abort&true drain refuses. Do not weaken old examples. Final full current DDL applied once to fresh own test DB before qualification, no iterative patches passed as fresh; previous failures retained.",
+    "No real supplier, Supabase business writes, user/private media, model/ASR/TTS, worker/Electron/Edge/GUI or release in author runtime. Only existing official owned PG17 container 874f16ba79e58d1b115f3f896b647106566a0ea15277f4db0d519abb15c3f145 networknone/0ports/CPU1/768MiB, verified image73bedc9eaa0121b92b9b26bb52e5141b3f6f37479c7ef913c0160455763ca80a. Root must transfer stopped container lease/current exact inspect first; do not touch other containers/prune/normal Docker credentials.",
+    "All own helpers under fresh .dev/material-producer/attempt-* (test script may add exact new family compatibility, no currentpointer outside). Before container stop/reboot dump own new DB and source/evidence, no deletion/restoring old unknown data. Freeze current8 raw/canonical/results/process exit+close and nonauthor SPECQUALITY/freshN5a before Root exact commit/serial integration. No grant of new remote DDL: current live11tables8RPC untouched until separate audited approval."
+  ],
+  "tooling": {
+    "path": "docs/execution/material-producer-local-tools.json",
+    "sha256": "e9d7ab9ac17fc60639254fbddf70d178db8627ea6ed39542e85f2acfea8f8e10",
+    "allow": "Root missing ordinary parents+one exact workspace directoryjunction only; no source overwrite or oldlink target changes"
+  },
+  "runtime": {
+    "files": "fresh .dev/material-producer/attempt-* HOME/TMP/cache/owned input/store/probe cache/log only",
+    "network": "ownedloopback18571/72/18581/82 plus own Docker networknone exec only; no real cloud/vendor/model",
+    "media": "only own generated/copied tiny video4sec/audio4sec/PNG actual standardFFmpeg9+native probe; no privateengine/worker/GPU/Edge",
+    "database": "exact existing official container only after Root transfer, own orange_test/fresh extra qualification DB only; no normal dockerconfig/imagepull",
+    "limits": "60sec test child/180sec own media generation cap20MiB logs; no timeout fabricated as success/no normal filesystem fallback"
+  },
+  "readOnlyRuntime": {
+    "root": "E:/CodexData/worktrees/orange-t01-isolation/orange/.dev/standard-ffmpeg/attempt-1794214847925-55072",
+    "archiveSHA256": "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba",
+    "receiptSHA256": "309260db9561dbea0e494273212d9f781b5ebbb83ed8fdcd1863505a62b3fadf",
+    "files": [
+      {
+        "name": "LICENSE",
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+      },
+      {
+        "name": "README",
+        "bytes": 41577,
+        "sha256": "0342de6bb39dd421cbec2c00d89ad274b640d75ad3f2cab09ffd647ce2d8f949"
+      },
+      {
+        "name": "SOURCE",
+        "bytes": 172,
+        "sha256": "65c7c447033b65a736080fd09586843a8786b358d6fe99092db870f852a06a8f"
+      },
+      {
+        "name": "ffmpeg.exe",
+        "bytes": 105423872,
+        "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+      },
+      {
+        "name": "ffprobe.exe",
+        "bytes": 105221120,
+        "sha256": "f0d36ecbbdd3bcfac3efa078c96c7271c2e68b3810595552ac3b7f17e9a65c52"
+      }
+    ],
+    "executableAllowlist": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+    ],
+    "licenseAndSourceRetained": true,
+    "noPrivateFfmpeg6OrAssets": true,
+    "browser": {
+      "path": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "fileVersion": "157.0.4341.42",
+      "sha256": "d258e512aa24947cfbef0c0033d8c3cd56ecb40f7b2ad59802fa75c4e4f3324d",
+      "ordinaryFile": true,
+      "stat": {
+        "size": "5073736",
+        "mtimeNs": "1793863739177326100",
+        "ctimeNs": "1794223674759698700",
+        "ino": "38562071809663512",
+        "dev": "2251735175",
+        "nlink": "1"
+      },
+      "startupRevalidationRequired": true,
+      "onChange": "Stop only renderer branch and bind new exact version/hash before execution; do not download, downgrade or reuse historical156 evidence."
+    }
+  },
+  "plan": "docs/superpowers/plans/2026-11-07-phase1-execution.md T02.b/T04.a authoritative asset/version/permission source",
+  "productModelCallsAllowed": 0,
+  "fullTaskAccepted": false,
+  "fullPilotAccepted": false,
+  "dispatchState": "HELD native probe/input scope independentreview+workspace link+ownedDockerlease+metadata+actualN5a; E5 base7deb clean no sourcewriter",
+  "inputScopeReview": {
+    "path": "docs/execution/material-producer-T04-review.json",
+    "sha256": "95fb3a80397bcdbbcc532edef5aec9f04b4b91dd70f874c9578fdc026895dcb0",
+    "scopeReviewedCardSha256": "3807016fb144ce352b0bc7f89a932cf4b59966f3b8c65f3129fa47ddd181b668",
+    "bindingOnlyAfterReview": true
+  }
+}

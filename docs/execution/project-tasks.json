@@ -443,6 +443,19 @@
       ],
       "externalGates": [],
       "currentAssignment": "docs/execution/zhishang-readonly-assignment.json"
+    },
+    {
+      "id": "T04.material",
+      "parentTask": "T04.a",
+      "status": "in_progress",
+      "scope": "Actual bounded authenticated local byte ingestion -> native probe/hash -> immutable assets/version persistent registration and permission-first exact FD lease; default no license/human review creation. Immediate consumer real Fission stage/prepare and original Studio import. Cloud binding/real rights producer still separate pending, not fullchain completion.",
+      "dependsOn": [
+        "T01",
+        "T02.business",
+        "T04.local"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/material-producer-assignment.json"
     }
   ],
   "umbrella": [

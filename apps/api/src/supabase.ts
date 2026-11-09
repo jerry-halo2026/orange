@@ -2,7 +2,7 @@ import { open, lstat, realpath } from 'node:fs/promises';
 import { dirname, isAbsolute, normalize, parse } from 'node:path';
 
 export type VerifiedSession = Readonly<{subjectId:string;sessionId:string;expiresAtMs:number;environmentId:string}>;
-export type ApiConfiguration = Readonly<{environmentId:string;supabaseOrigin:string;publishableKey:string;credentialFile:string;port:number}>;
+export type ApiConfiguration = Readonly<{environmentId:string;supabaseOrigin:string;publishableKey:string;credentialFile:string;port:number;materialRoot?:string}>;
 const verified = new WeakSet<object>();
 const error = (code:string,status=403) => Object.assign(new Error(code),{code,status});
 const uuid = (v:unknown): v is string => typeof v==='string'&&/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(v);
@@ -19,7 +19,7 @@ export async function readConfiguration(file:unknown):Promise<ApiConfiguration> 
   try {
     if(typeof file!=='string')throw error('configuration-required',503);
     const c=await safeJson(file);
-    if(!plain(c)||Object.keys(c).sort().join()!=='credentialFile,environmentId,port,publishableKey,supabaseOrigin'||typeof c.environmentId!=='string'||!c.environmentId||typeof c.publishableKey!=='string'||!c.publishableKey||/[\r\n]/.test(c.publishableKey)||c.publishableKey.startsWith('sb_secret_')||typeof c.credentialFile!=='string'||!isAbsolute(c.credentialFile)||typeof c.supabaseOrigin!=='string'||!Number.isSafeInteger(c.port)||Number(c.port)<1||Number(c.port)>65535)throw error('configuration-required',503);
+    if(!plain(c)||!['credentialFile,environmentId,port,publishableKey,supabaseOrigin','credentialFile,environmentId,materialRoot,port,publishableKey,supabaseOrigin'].includes(Object.keys(c).sort().join())||c.materialRoot!==undefined&&(typeof c.materialRoot!=='string'||!isAbsolute(c.materialRoot))||typeof c.environmentId!=='string'||!c.environmentId||typeof c.publishableKey!=='string'||!c.publishableKey||/[\r\n]/.test(c.publishableKey)||c.publishableKey.startsWith('sb_secret_')||typeof c.credentialFile!=='string'||!isAbsolute(c.credentialFile)||typeof c.supabaseOrigin!=='string'||!Number.isSafeInteger(c.port)||Number(c.port)<1||Number(c.port)>65535)throw error('configuration-required',503);
     if(c.publishableKey.split('.').length===3){try{if(JSON.parse(Buffer.from(c.publishableKey.split('.')[1],'base64url').toString()).role==='service_role')throw error('configuration-required',503);}catch(e){if((e as any).code)throw e;}}
     return Object.freeze({...c,supabaseOrigin:origin(c.supabaseOrigin)}) as ApiConfiguration;
   }catch{throw error('configuration-required',503);}
@@ -42,9 +42,10 @@ export async function verifyBearer(config:Pick<ApiConfiguration,'environmentId'|
   const context=Object.freeze({subjectId:claims.sub,sessionId:claims.session_id,expiresAtMs:claims.exp*1000,environmentId:config.environmentId});verified.add(context);return context;
 }
 
-const RPC:Record<string,string>={resolve_materials:'orange_resolve_materials',preflight:'orange_preflight',freeze_claim:'orange_freeze_claim',claim_status:'orange_claim_status',start_attempt:'orange_start_attempt',cancel_claim:'orange_cancel_claim',mark_unknown:'orange_mark_unknown',record_delivery:'orange_record_delivery'};
+const RPC:Record<string,string>={resolve_materials:'orange_resolve_materials',preflight:'orange_preflight',freeze_claim:'orange_freeze_claim',claim_status:'orange_claim_status',start_attempt:'orange_start_attempt',cancel_claim:'orange_cancel_claim',mark_unknown:'orange_mark_unknown',record_delivery:'orange_record_delivery',begin_material:'orange_begin_material',finish_material:'orange_finish_material',locate_material:'orange_locate_material'};
 function rpcResult(operation:string,value:unknown):any {
   const invalid=()=>{throw error('result-unknown',503);};
+  if(['begin_material','finish_material','locate_material'].includes(operation)){if(!plain(value)||!uuid(value.assetId)||!uuid(value.versionId)||!uuid(value.locatorId)||!['preparing','registered'].includes(String(value.status))||typeof value.environmentId!=='string'||!uuid(value.subjectId))return invalid();return value;}
   if(operation==='resolve_materials'){
     if(!Array.isArray(value))return invalid();
     for(const m of value){if(!plain(m)||!uuid(m.versionId)||typeof m.contentSha256!=='string'||!/^[a-f0-9]{64}$/.test(m.contentSha256)||!['video','still','sound'].includes(String(m.kind))||typeof m.durationSec!=='number'||!Number.isFinite(m.durationSec)||m.durationSec<0||!Number.isSafeInteger(m.probeRevision))return invalid();}

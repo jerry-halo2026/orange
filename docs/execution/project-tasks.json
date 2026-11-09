@@ -361,6 +361,21 @@
       "externalGates": [],
       "currentAssignment": "docs/execution/desktop-retirement-assignment.json",
       "oldRecoveryNotAuthorized": true
+    },
+    {
+      "id": "T06.native",
+      "parentTask": "T06",
+      "status": "in_progress",
+      "scope": "One original Studio/Fission actual editable handoff, faithful baseline audio/export qualification, hard unsupported-effect gates and real cancellation package. This does NOT make missing shared admission/asset license/real cloud ready, does not narrow full pilot FX/preview/business goals, and must not be presented as completed real business/demo chain.",
+      "dependsOn": [
+        "T01",
+        "T05.a",
+        "T04.local"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-native-chain-assignment.json",
+      "ordinaryBusinessAdmissionReady": false,
+      "fullParentAndAllEffectsTargetsRetained": true
     }
   ],
   "umbrella": [

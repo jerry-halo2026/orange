@@ -1,0 +1,49 @@
+{
+  "taskId": "T04.local",
+  "commit": "ffbaee9ff336ce290cdd5108e3680aa8886397ed",
+  "authorAgent": "/root",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "apps/desktop/src/desktop-auth.mjs",
+      "sha256": "f61313ee2d4b43f949062a325cd5462e4ca27bb499f47f1f352dff4d1975f697",
+      "gitBlobSha256": "f61313ee2d4b43f949062a325cd5462e4ca27bb499f47f1f352dff4d1975f697"
+    },
+    {
+      "path": "packages/openfilm/studio/server/files.mjs",
+      "sha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803",
+      "gitBlobSha256": "ad3cd3d8ae86430a46752b3259b82895253c0f40d369ad8a0ecedcf0f54d0803"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.mjs",
+      "sha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f",
+      "gitBlobSha256": "94f9fd1d34cd3d6d02f8befbbf7ccba4363fa945b563db37a2f9ebac01d4c82f"
+    },
+    {
+      "path": "packages/openfilm/src/media-links.mjs",
+      "sha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580",
+      "gitBlobSha256": "7d55ad0d76c24b8443cf284b8c7262fca66f367755dda499b653a984bbeac580"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "apps/desktop/src/desktop-auth.test.mjs",
+      "sha256": "8da1603a509505131e4412ccf222d4c3d4a04785200fc88be54af5dc86a4f84a",
+      "gitBlobSha256": "8da1603a509505131e4412ccf222d4c3d4a04785200fc88be54af5dc86a4f84a"
+    },
+    {
+      "path": "packages/openfilm/studio/server/native-source-import.test.mjs",
+      "sha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85",
+      "gitBlobSha256": "83508901c92c20d8fdc088a69be61cdf62a79299569858b96c6dd28553a37b85"
+    },
+    {
+      "path": "packages/openfilm/studio/server/project-control-guard.test.mjs",
+      "sha256": "a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32",
+      "gitBlobSha256": "a081ecb5e673fa6afa16658653585ce58895208f9f737042d5fe42b6a1fa6e32"
+    }
+  ],
+  "scope": "Only actual native worker/media/render consumer subset, not all business/parent/pilot"
+}

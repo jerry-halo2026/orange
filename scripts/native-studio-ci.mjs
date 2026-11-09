@@ -68,6 +68,8 @@ const diagnosticFailures = new WeakMap();
 // supply observation; one tracker may consume it, and only its wrappers emit it.
 const workerAssessments = new WeakMap();
 const diagnosticWorkerEvidence = new WeakMap();
+const nativeAssessments = new WeakMap();
+const diagnosticNativeEvidence = new WeakMap();
 function ownedFailure(code) {
  const safe=FAILURE_CODES.has(code)?code:'UNEXPECTED';
  const error=new Error(safe);ownedFailureCodes.set(error,safe);return error;
@@ -79,10 +81,21 @@ export function formatNativeStudioFailure(phase,error) {
 }
 export function createNativeStudioDiagnostics() {
  let phase='unknown',first=null,firstError,observation=null,postCheck='unknown',postCheckDone=false;
+ let nativeObservation=null,nativePostCheck='unknown',nativePostCheckDone=false;
  const tracker=Object.freeze({
   enter(next){phase=FAILURE_PHASES.has(next)?next:'unknown';},
   capture(error){if(first===null){firstError=error;first=formatNativeStudioFailure(phase,error);}return first;},
   summary(){return first;},
+  observeNative(assessment){
+   if(phase!=='tests'||first!==null||nativeObservation!==null)return;
+   const record=nativeAssessments.get(assessment);
+   if(!record||record.claimed)return;
+   record.claimed=true;nativeObservation=record;
+  },
+  nativePostCheck(){
+   if(phase!=='post-check'||!nativeObservation||nativePostCheckDone)return;
+   nativePostCheckDone=true;nativePostCheck=arguments.length===0?'passed':'failed';
+  },
   observeWorker(assessment){
    if(phase!=='worker-tests'||first!==null||observation!==null)return;
    const record=workerAssessments.get(assessment);
@@ -97,21 +110,26 @@ export function createNativeStudioDiagnostics() {
    if(first===null)tracker.capture(undefined);
    const matches=observation&&(!observation.failed||observation.failure===firstError);
    const evidence=matches?Object.freeze({...observation.evidence,postCheck}):null;
-   return diagnosticFailure(first,evidence);
+   const nativeMatches=nativeObservation&&['tests','post-check'].includes(first.phase)&&(!nativeObservation.failed||nativeObservation.failure===firstError);
+   const nativeEvidence=nativeMatches?Object.freeze({...nativeObservation.evidence,postCheck:nativePostCheck}):null;
+   return diagnosticFailure(first,evidence,nativeEvidence);
   },
  });
  return tracker;
 }
-function diagnosticFailure(summary,evidence=null) {
+function diagnosticFailure(summary,evidence=null,nativeEvidence=null) {
  const error=new Error('NATIVE_STUDIO_CI_FAILED');diagnosticFailures.set(error,summary);
  if(evidence)diagnosticWorkerEvidence.set(error,evidence);
+ if(nativeEvidence)diagnosticNativeEvidence.set(error,nativeEvidence);
  return error;
 }
 // The old formatter remains exactly three fields. The CLI adds only this
 // separately tagged, closed record, associated with this wrapper's identity.
 export function formatNativeStudioCliFailure(error) {
  const diagnostic=formatNativeStudioFailure('unknown',error), evidence=diagnosticWorkerEvidence.get(error);
- return evidence?Object.freeze({...diagnostic,workerEvidence:evidence}):diagnostic;
+ const nativeEvidence=diagnosticNativeEvidence.get(error);
+ if(evidence)return Object.freeze({...diagnostic,workerEvidence:evidence});
+ return nativeEvidence?Object.freeze({...diagnostic,nativeEvidence}):diagnostic;
 }
 function need(condition, code) { if (!condition) throw ownedFailure(code); }
 function utf8(bytes) {
@@ -416,12 +434,19 @@ async function assertPortsFree() {
 // receipt can be persisted. The driver still treats every failed assessment
 // as failure after post-check; no caller can replace any real CI step.
 export function assessNativeStudioProcess(result) {
+ let snapshot,evidence,assessment;
  try {
-  need(!result.error && !result.signal,'TEST_PROCESS');
-  return Object.freeze({ok:true,counts:verifyNativeStudioTap(utf8(result.stdout),result.status)});
+  snapshot=workerProcessSnapshot(result,'TEST_PROCESS');snapshot.stdout=workerOutput(snapshot.stdout);snapshot.stderr=workerOutput(snapshot.stderr);
+  evidence=Object.freeze({kind:'native-studio-failure-evidence',node:/^v[1-9][0-9]{0,2}\.[0-9]{1,3}\.[0-9]{1,3}$/.test(process.version)?process.version:null,
+   exitCode:Number.isInteger(snapshot.status)&&snapshot.status>=-2147483648&&snapshot.status<=2147483647?snapshot.status:null,
+   processError:Boolean(snapshot.error),signal:Boolean(snapshot.signal),stdoutSha256:snapshot.stdout===null?null:hash(snapshot.stdout),stderrSha256:snapshot.stderr===null?null:hash(snapshot.stderr),tap:observedWorkerTap(snapshot.stdout,true)});
+  need(!snapshot.error && !snapshot.signal,'TEST_PROCESS');
+  assessment=Object.freeze({ok:true,counts:verifyNativeStudioTap(utf8(snapshot.stdout),snapshot.status)});
  } catch(failure) {
-  return Object.freeze({ok:false,failure});
+  assessment=Object.freeze({ok:false,failure});
  }
+ if(evidence)nativeAssessments.set(assessment,{evidence,claimed:false,failed:!assessment.ok,failure:assessment.failure});
+ return assessment;
 }
 export async function runNativeStudioCI() {
  const diagnostics=createNativeStudioDiagnostics();
@@ -472,13 +497,14 @@ export async function runNativeStudioCI() {
   result=child(process.execPath,['--test','--test-reporter=tap','--test-concurrency=1',...TESTS],context.workspace,env,300_000);
   privateFile(owned('logs/native.tap'),result.stdout??Buffer.alloc(0));privateFile(owned('logs/native.stderr'),result.stderr??Buffer.alloc(0));
   const assessment=assessNativeStudioProcess(result);
+  diagnostics.observeNative(assessment);
   if(assessment.ok)counts=assessment.counts;else diagnostics.capture(assessment.failure);
  } catch(error) {
   diagnostics.capture(error);
  } finally {
   diagnostics.enter('post-check');
-  try {ports=await assertPortsFree();assertSame(before,snapshot(context,gitExe,env));}
-  catch(error){diagnostics.capture(error);throw error;}
+  try {ports=await assertPortsFree();assertSame(before,snapshot(context,gitExe,env));diagnostics.nativePostCheck();}
+  catch(error){diagnostics.nativePostCheck(error);diagnostics.capture(error);throw error;}
  }
  diagnostics.enter('result');
  // A returned process result remains auditable even for failed TAP/exit.
@@ -515,7 +541,7 @@ export async function runNativeStudioCI() {
  diagnostics.enter('result');
  const nativeSummary={testFiles:TESTS,...counts,exitCode:result.status,tapSha256:hash(result.stdout),stderrSha256:hash(result.stderr)};
  const workerSummary={testFiles:WORKER_TESTS,...workerCounts,exitCode:workerResult.status,tapSha256:hash(workerResult.stdout),stderrSha256:hash(workerResult.stderr)};
- const summary={commit:context.commit,node:process.version,testFiles:TESTS.concat(WORKER_TESTS),total:161,passed:161,failed:0,skipped:0,cancelled:0,todo:0,native:nativeSummary,worker:workerSummary,exitCode:0,ports,source:before,package:packageInfo,tarSha256:tarExe.sha256};
+ const summary={commit:context.commit,node:process.version,testFiles:TESTS.concat(WORKER_TESTS),total:counts.total+workerCounts.total,passed:counts.passed+workerCounts.passed,failed:0,skipped:0,cancelled:0,todo:0,native:nativeSummary,worker:workerSummary,exitCode:0,ports,source:before,package:packageInfo,tarSha256:tarExe.sha256};
  privateFile(owned('results/summary.json'),JSON.stringify(summary,null,2)+'\n');
  return summary;
  } catch(error) {
@@ -563,12 +589,12 @@ export function deriveMergeWorkerEnvironment(facts,systemRoot) {
 }
 // Snapshot only data properties, not error messages, stacks, coercions or
 // accessors. Proxy detection itself does not invoke user traps (even revoked).
-function workerProcessSnapshot(result) {
- need(result!==null&&typeof result==='object'&&!types.isProxy(result),'WORKER_PROCESS');
+function workerProcessSnapshot(result,code='WORKER_PROCESS') {
+ need(result!==null&&typeof result==='object'&&!types.isProxy(result),code);
  const out=Object.create(null);
  for(const key of ['status','error','signal','stdout','stderr']) {
   const descriptor=Object.getOwnPropertyDescriptor(result,key);
-  need(!descriptor||Object.hasOwn(descriptor,'value'),'WORKER_PROCESS');
+  need(!descriptor||Object.hasOwn(descriptor,'value'),code);
   out[key]=descriptor?.value;
  }
  return out;
@@ -581,7 +607,7 @@ function workerOutput(bytes) {
  const copy=Buffer.alloc(length);Uint8Array.prototype.set.call(copy,bytes);return copy;
 }
 const OBSERVED_COUNTERS=Object.freeze(['tests','suites','pass','fail','cancelled','skipped','todo']);
-function observedWorkerTap(bytes) {
+function observedWorkerTap(bytes,native=false) {
  const empty=()=>Object.freeze({plan:null,...Object.fromEntries(OBSERVED_COUNTERS.map(k=>[k,null])),firstFailingOrdinal:null,errorCode:null,failureType:null,location:null});
  if(bytes===null)return empty();
  let text;try{text=utf8(bytes);}catch{return empty();}
@@ -610,8 +636,9 @@ function observedWorkerTap(bytes) {
   if(failure.length===1)failureType=/^  failureType: '(testCodeFailure|testTimeoutFailure|cancelledByParent|subtestsFailed|hookFailed|callbackAndPromisePresent)'$/.exec(failure[0])?.[1]??null;
   const locations=block.filter(l=>/^\s*location:/.test(l));
   if(locations.length===1) {
-   const m=/^  location: '(?:[^'\r\n]*[\\/])?(person-merge\.test\.mjs|person-edits-worker-lifecycle\.test\.mjs):([1-9][0-9]{0,5}):([1-9][0-9]{0,5})'$/.exec(locations[0]);
-   if(m)location=Object.freeze({file:m[1],line:Number(m[2]),column:Number(m[3])});
+   const pattern=native?/^  location: '(?:[^'\r\n]*[\\/])?([^\\/'\r\n]+):([1-9][0-9]{0,5}):([1-9][0-9]{0,5})'$/:/^  location: '(?:[^'\r\n]*[\\/])?(person-merge\.test\.mjs|person-edits-worker-lifecycle\.test\.mjs):([1-9][0-9]{0,5}):([1-9][0-9]{0,5})'$/;
+   const m=pattern.exec(locations[0]);
+   if(m&&(!native||TESTS.some(file=>path.posix.basename(file)===m[1])))location=Object.freeze({file:m[1],line:Number(m[2]),column:Number(m[3])});
   }
  }
  return Object.freeze({...counts,firstFailingOrdinal:first,errorCode,failureType,location});

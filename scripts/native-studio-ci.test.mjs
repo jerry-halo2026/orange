@@ -431,3 +431,53 @@ test('current CI guard cases receive a fresh original-family bound root before n
  assert(text.indexOf('guardRoot.length<=140')<text.indexOf('for(const q of [owned('));
  assert(text.indexOf('ORANGE_GUARD_TEST_ROOT:guardRoot')<text.indexOf("...TESTS],context.workspace,env"));
 });
+
+// Native CI must disclose bounded actual-process facts, never raw TAP or errors.
+const nativeFailureTap=()=>failureTap().replaceAll('person-merge.test.mjs','project-control-guard.test.mjs').replaceAll('1..51','1..117').replaceAll('# tests 51','# tests 117').replaceAll('# pass 50','# pass 116');
+function nativeObservedFailure(result=observedResult({stdout:Buffer.from(nativeFailureTap())}),postCheck='unknown') {
+ const assessment=assessNativeStudioProcess(result),d=createNativeStudioDiagnostics();
+ d.enter('tests');d.observeNative?.(assessment);if(!assessment.ok)d.capture(assessment.failure);
+ if(postCheck!=='unknown'){d.enter('post-check');if(postCheck==='passed')d.nativePostCheck?.();else {const e=thrownBy(()=>validateNativeStudioSources([]));d.nativePostCheck?.(e);d.capture(e);}}
+ return {assessment,d,error:d.failure()};
+}
+test('Native failure observation retains only bounded actual process facts',()=>{
+ const {error}=nativeObservedFailure(),out=cli(error),e=out.nativeEvidence;
+ assert.equal(e?.exitCode,1,'actual Native failure observation must reach CLI');
+ assert.deepEqual(Object.keys(out),['status','phase','code','nativeEvidence']);
+ assert.deepEqual(Object.keys(formatNativeStudioFailure('unknown',error)),['status','phase','code']);
+ assert.equal(e.kind,'native-studio-failure-evidence');assert.equal(e.tap.tests,117);assert.equal(e.tap.fail,1);assert.equal(e.tap.firstFailingOrdinal,3);
+ assert.deepEqual(e.tap.location,{file:'project-control-guard.test.mjs',line:517,column:9});assert.equal(e.tap.failureType,'testCodeFailure');assert.equal(e.tap.errorCode,'ERR_TEST_FAILURE');
+ assert.equal(e.stdoutSha256,createHash('sha256').update(Buffer.from(nativeFailureTap())).digest('hex'));assert.equal(JSON.stringify(out).includes('PRIVATE_SENTINEL'),false);
+});
+test('Native failure observation cannot inspect result accessors proxies or thrown objects',()=>{
+ let touches=0;const bad=()=>{touches++;throw Error('PRIVATE_SENTINEL');};const revoked=Proxy.revocable({},{});revoked.revoke();
+ for(const result of [new Proxy({}, {get:bad,getOwnPropertyDescriptor:bad}),revoked.proxy,...['status','stdout','stderr','error','signal'].map(k=>Object.defineProperty(observedResult(),k,{get:bad}))]){const {assessment,error}=nativeObservedFailure(result);assert.equal(assessment.ok,false);assert.equal(Object.hasOwn(cli(error),'nativeEvidence'),false);}
+ assert.equal(touches,0);
+ const foreign=new Proxy({}, {get:bad});const {error}=nativeObservedFailure(observedResult({stdout:Buffer.from(nativeFailureTap()),error:foreign,signal:foreign}));assert.equal(cli(error).nativeEvidence.processError,true);assert.equal(cli(error).nativeEvidence.signal,true);assert.equal(touches,0);assert.equal(JSON.stringify(cli(error)).includes('PRIVATE_SENTINEL'),false);
+});
+test('Native failure observation is private to its assessor phase and one tracker',()=>{
+ const a=assessNativeStudioProcess(observedResult({stdout:Buffer.from(nativeFailureTap())}));const worker=assessMergeWorkerProcess(observedResult());
+ for(const x of [{...a},worker,null,undefined]){const d=createNativeStudioDiagnostics();d.enter('tests');d.observeNative?.(x);d.capture(a.failure);assert.equal(Object.hasOwn(cli(d.failure()),'nativeEvidence'),false);}
+ const wrong=createNativeStudioDiagnostics();wrong.enter('worker-tests');wrong.observeNative?.(a);wrong.capture(a.failure);assert.equal(Object.hasOwn(cli(wrong.failure()),'nativeEvidence'),false);
+ const d=createNativeStudioDiagnostics();d.enter('tests');d.observeNative?.(a);d.capture(a.failure);assert.equal(cli(d.failure()).nativeEvidence?.exitCode,1);
+ const other=createNativeStudioDiagnostics();other.enter('tests');other.observeNative?.(a);other.capture(a.failure);assert.equal(Object.hasOwn(cli(other.failure()),'nativeEvidence'),false);assert.equal(Object.hasOwn(cli(a.failure),'nativeEvidence'),false);
+});
+test('Native failure observation is immutable and rejects ambiguous counts and nonnative locations',()=>{
+ const result=observedResult({stdout:Buffer.from(nativeFailureTap()+'# fail 1\n')}),{error}=nativeObservedFailure(result);result.status=0;result.stdout.fill(65);
+ const e=cli(error).nativeEvidence;assert.equal(e?.exitCode,1);assert.equal(e.tap.fail,null);assert.equal(e.tap.tests,117);
+ for(const file of ['person-merge.test.mjs','PRIVATE_SENTINEL.test.mjs']){const t=cli(nativeObservedFailure(observedResult({stdout:Buffer.from(nativeFailureTap().replaceAll('project-control-guard.test.mjs',file))})).error).nativeEvidence.tap;assert.equal(t.location,null);}
+ assert.equal(JSON.stringify(cli(error)).includes('PRIVATE_SENTINEL'),false);
+});
+test('Native failure observation preserves primary failure and actual postcheck state',()=>{
+ for(const post of ['unknown','passed','failed']){const out=cli(nativeObservedFailure(undefined,post).error);assert.equal(out.phase,'tests');assert.equal(out.code,'TAP_INVALID');assert.equal(out.nativeEvidence?.postCheck,post);assert.equal(Object.hasOwn(out,'workerEvidence'),false);}
+ const a=assessNativeStudioProcess(observedResult({stdout:Buffer.from(nativeFailureTap())})),d=createNativeStudioDiagnostics();d.enter('tests');d.observeNative?.(a);d.capture(new Error('PRIVATE_SENTINEL'));assert.equal(Object.hasOwn(cli(d.failure()),'nativeEvidence'),false);
+});
+test('Native diagnostic real driver binds assessment and postcheck before CLI refusal',()=>{
+ const text=readFileSync(new URL('./native-studio-ci.mjs',import.meta.url),'utf8');const begin=text.indexOf("diagnostics.enter('tests');",text.indexOf('export async function runNativeStudioCI'));const end=text.indexOf("diagnostics.enter('worker-directory');",begin);const native=text.slice(begin,end);
+ assert.match(native,/diagnostics\.observeNative\(assessment\)/);assert.match(native,/diagnostics\.nativePostCheck\(\)/);assert.match(native,/diagnostics\.nativePostCheck\(error\)/);
+});
+test('Native actual cohort aggregate binds real117 and real51 without stale161',()=>{
+ assert.equal(verifyNativeStudioTap(tap(),0).total+verifyMergeWorkerTap(workerTap(),0).total,168);
+ const text=readFileSync(new URL('./native-studio-ci.mjs',import.meta.url),'utf8');const summary=text.slice(text.indexOf('const summary={commit:context.commit'),text.indexOf("privateFile(owned('results/summary.json')"));
+ assert.match(summary,/total:counts\.total\+workerCounts\.total/);assert.match(summary,/passed:counts\.passed\+workerCounts\.passed/);
+});

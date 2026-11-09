@@ -36,14 +36,14 @@ public static class Program
             return 2;
         }
 
-        var controlledRun = string.Equals(args[0], "run", StringComparison.OrdinalIgnoreCase);
+        var controlledRun = args[0].ToLowerInvariant() is "run" or "prepare" or "execute-prepared";
         using var parentCancelled = new CancellationTokenSource();
         using var parentReaderStopped = new CancellationTokenSource();
         try
         {
             if (controlledRun)
             {
-                var configuration = EngineRunConfiguration.Load(args);
+                var configuration = EngineRunConfiguration.LoadCommand(args);
                 if (Environment.GetEnvironmentVariable("FISSION_PARENT_STDIN_EOF") == "1")
                 {
                     // Opt-in trusted parent pipe only; normal standalone CLI is unchanged.
@@ -202,10 +202,26 @@ public static class Program
     {
         var paths = configuration.Policy.Paths;
         var job = configuration.Job;
+        var runtimeOwner = new FissionEngine(configuration.Policy, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), false);
+        using var runtimePins = configuration.Mode == "run" ? null
+            : await runtimeOwner.HoldPreparedRuntimeAsync(job, configuration.Prepared, ct).ConfigureAwait(false);
         var hw = new HardwareDetector(paths, pool);
-        var hwInfo = await hw.DetectAsync(ct).ConfigureAwait(false);
-        var engine = new FissionEngine(configuration.Policy, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), hwInfo.HasNvencH264 && job.UseNvenc);
-        var report = await engine.RunAsync(job, ct).ConfigureAwait(false);
+        var hasNvenc = false;
+        if (configuration.Mode == "run" || job.UseNvenc) hasNvenc = (await hw.DetectAsync(ct).ConfigureAwait(false)).HasNvencH264;
+        var engine = new FissionEngine(configuration.Policy, new FFmpegProvider(pool), new FFprobeProvider(paths, pool), hasNvenc && job.UseNvenc);
+        if (configuration.Mode == "prepare")
+        {
+            var prepared = await engine.PrepareAsync(job, ct).ConfigureAwait(false);
+            var files = new EngineJobFiles(configuration.Policy); var snapshot = files.ValidateNewOutput(configuration.SnapshotPath!);
+            await using (var stream = new FileStream(snapshot, FileMode.CreateNew, FileAccess.Write, FileShare.None, 81920, FileOptions.Asynchronous))
+                await stream.WriteAsync(System.Text.Encoding.UTF8.GetBytes(prepared.ToJson()), ct).ConfigureAwait(false);
+            files.ValidateOwnedFile(snapshot);
+            Console.WriteLine(JsonSerializer.Serialize(new { preparedPath = snapshot, digest = prepared.Digest, authorizesBusiness = false, measuredAssemblyClock = false }));
+            return 0;
+        }
+        var report = configuration.Mode == "execute-prepared"
+            ? await engine.ExecutePreparedAsync(job, configuration.Prepared!, ct).ConfigureAwait(false)
+            : await engine.RunAsync(job, ct).ConfigureAwait(false);
 
         Console.WriteLine($"═══ 任务完成 ═══");
         Console.WriteLine($"成功 {report.Succeeded} / 失败 {report.Failed} / 停止原因 {report.StopReason} / 总耗时 {report.TotalWallMs / 1000.0:F1}s");
@@ -415,6 +431,9 @@ public static class Program
 
     private static void PrintUsage()
     {
+        Console.WriteLine("  prepare: same five explicit isolation/job options; produces native non-authorizing decisions only.");
+        Console.WriteLine("  execute-prepared: same options plus --prepared <owned snapshot> --digest <native digest>; caller still needs business admission.");
+
         Console.WriteLine("""
             Fission CLI
               fission run --paths <只读引擎配置.json> --workspace <隔离根目录> --task <任务ID> --attempt <尝试ID> --job <任务.json>

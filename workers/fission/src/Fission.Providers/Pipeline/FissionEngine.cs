@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 using Fission.Core.Abstractions;
 using Fission.Core.Engine;
 using Fission.Core.Errors;
@@ -89,7 +91,132 @@ public sealed class FissionEngine
     }
 
     /// <summary>运行整个裂变任务直至终止条件。</summary>
-    public async Task<JobReport> RunAsync(FissionJob job, CancellationToken ct = default)
+    public Task<JobReport> RunAsync(FissionJob job, CancellationToken ct = default) => RunCoreAsync(job, null, ct);
+
+    private sealed record PreparedWork(PreparedOutput Facts, MaterialItem Audio, IReadOnlyList<MaterialItem> Videos, Reservation Reservation);
+    private sealed class PreparationCapture
+    {
+        public ConcurrentBag<PreparedOutput> Outputs { get; } = [];
+        public IReadOnlyList<PreparedSourceVersion> Versions { get; set; } = [];
+    }
+    public async Task<FissionPreparedDecisions> PrepareAsync(FissionJob job, CancellationToken ct = default)
+    {
+        if (_policy is null || _files is null) throw new ConfigException("CFG_PREPARED_POLICY", "Preparation requires the explicit controlled native policy.");
+        var capture = new PreparationCapture();
+        var report = await RunCoreAsync(job, capture, ct).ConfigureAwait(false);
+        ct.ThrowIfCancellationRequested();
+        if (report.Failed != 0 || capture.Outputs.IsEmpty) throw new EngineException("ENC_PREPARE_FAILED", "Native preparation did not produce complete decisions.");
+        return FissionPreparedDecisions.Create(job, report.JobId, _paths.WorkRoot, _paths.OutRoot, _policy.CacheRoot, _paths, capture.Outputs, capture.Versions);
+    }
+    /// <summary>Pin the exact native tools before even hardware detection. No media selection or business authorization.</summary>
+    public async Task<IDisposable> HoldPreparedRuntimeAsync(FissionJob job, FissionPreparedDecisions? prepared, CancellationToken ct = default)
+    {
+        if (_policy is null || _files is null) throw new ConfigException("CFG_PREPARED_POLICY", "Native preparation requires the controlled policy.");
+        var versions = new RunSourceVersions(_policy, _files, true);
+        try
+        {
+            _policy.ValidateJob(job); _files.ValidateJobInputs(job); ct.ThrowIfCancellationRequested();
+            if (prepared is not null)
+            {
+                prepared.Validate();
+                if (prepared.JobSha256 != FissionPreparedDecisions.HashJob(job) || prepared.RuntimeSha256 != FissionPreparedDecisions.HashRuntime(_paths)
+                    || prepared.WorkRoot != _paths.WorkRoot || prepared.OutRoot != _paths.OutRoot || prepared.CacheRoot != _policy.CacheRoot)
+                    throw new ConfigException("CFG_PREPARED_BINDING", "Prepared runtime does not bind this exact native job and attempt.");
+            }
+            foreach (var executable in new[] { _paths.FFmpeg, _paths.FFprobe, _paths.FFmpeg6 })
+            {
+                var hash = await versions.PinAsync(executable, ct).ConfigureAwait(false);
+                if (prepared is not null && !prepared.Versions.Any(v => v.Path == executable && !v.Owned && v.Sha256 == hash && v.Identity == versions.Identity(executable)))
+                    throw new ConfigException("CFG_PREPARED_RUNTIME", "A prepared native runtime version changed.");
+            }
+            return versions;
+        }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException)
+        { versions.Dispose(); throw new ConfigException("CFG_PREPARED_RUNTIME", "Prepared native runtime is missing, changed or unavailable."); }
+        catch { versions.Dispose(); throw; }
+    }
+    /// <summary>Consume frozen native facts; no selector, RNG or recipe replay is reachable here.</summary>
+    public async Task<JobReport> ExecutePreparedAsync(FissionJob job, FissionPreparedDecisions prepared, CancellationToken ct = default)
+    {
+        if (_policy is null || _files is null) throw new ConfigException("CFG_PREPARED_POLICY", "Prepared execution requires the explicit controlled native policy.");
+        prepared.Validate();
+        var outRoot = _policy.ValidateJob(job);
+        if (prepared.JobSha256 != FissionPreparedDecisions.HashJob(job) || prepared.WorkRoot != _paths.WorkRoot
+            || prepared.RuntimeSha256 != FissionPreparedDecisions.HashRuntime(_paths) || prepared.OutRoot != _paths.OutRoot || prepared.CacheRoot != _policy.CacheRoot || outRoot != prepared.OutRoot)
+            throw new ConfigException("CFG_PREPARED_BINDING", "Prepared decisions do not bind this exact original job and task-attempt.");
+        _files.ValidateJobInputs(job); ct.ThrowIfCancellationRequested();
+        using var versions = new RunSourceVersions(_policy, _files, true);
+        // All original/analysis/text/shader versions are checked and held before any final codec, selection or new copy.
+        var runtime = new List<(PreparedOutput Facts, MaterialItem Audio)>();
+        var voiceCopies = new Dictionary<string, string>(StringComparer.Ordinal);
+        try
+        {
+        foreach (var executable in new[] { _paths.FFmpeg, _paths.FFprobe, _paths.FFmpeg6 })
+            if (!prepared.Versions.Any(v => v.Path == executable && !v.Owned))
+                throw new ConfigException("CFG_PREPARED_RUNTIME", "Prepared native runtime version is missing.");
+        foreach (var version in prepared.Versions)
+        {
+            var owned = version.Path.StartsWith(_paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal);
+            if (owned != version.Owned || await versions.PinAsync(version.Path, ct).ConfigureAwait(false) != version.Sha256
+                || versions.Identity(version.Path) != version.Identity)
+                throw new ConfigException("CFG_PREPARED_SOURCE_CHANGED", "A prepared native source version or filesystem binding changed.");
+        }
+        foreach (var output in prepared.Outputs)
+        {
+            _files.ValidateOwnedFile(output.VoicePath);
+            foreach (var cut in output.Cuts)
+                if (!prepared.Versions.Any(v => v.Path == cut.Normalization.Path && v.Sha256 == cut.Normalization.Sha256 && v.Owned))
+                    throw new ConfigException("CFG_PREPARED_ANALYSIS", "A prepared normalization is not bound to its verified version.");
+            var source = output.Sources[output.Audio.Voice.Source].Path;
+            string voice;
+            if (source.StartsWith(_paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal))
+            {
+                _files.AdoptPreparedGeneratedAudio(prepared, output, versions.Held(source)); voice = source;
+            }
+            else if (voiceCopies.TryGetValue(source, out var sharedVoice)) voice = sharedVoice;
+            else
+            {
+                var directory = Path.Combine(_paths.WorkRoot, prepared.JobId, "execute-voice-" + output.Index);
+                _files.CreateDirectory(directory);
+                voice = await _files.CopyAudioAsync(source, directory, ct).ConfigureAwait(false);
+                voiceCopies.Add(source, voice);
+                if (await versions.PinAsync(voice, ct).ConfigureAwait(false) != output.Sources[output.Audio.Voice.Source].Sha256)
+                    throw new ConfigException("CFG_PREPARED_SOURCE_CHANGED", "The derived execution voice copy changed.");
+            }
+            runtime.Add((output, output.AudioItem with { Path = voice }));
+        }
+        }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or ArgumentException or JsonException or FormatException)
+        { throw new ConfigException("CFG_PREPARED_SOURCE_CHANGED", "A prepared native source or origin is missing, changed or unavailable."); }
+        var items = runtime.SelectMany(r => r.Facts.SelectedVideos).Concat(runtime.Select(r => r.Audio)).DistinctBy(x => x.Path);
+        using var pool = new MaterialPool(items, NewOutput(Path.Combine(_policy.CacheRoot, "多场景素材缓存.ini")));
+        foreach (var row in runtime.DistinctBy(r => r.Audio.Path)) pool.SetAudioUses(row.Audio.Path, job.AudioUses);
+        using var nvencGate = new SemaphoreSlim(job.UseNvenc && _hasNvenc ? Math.Max(job.NvencGate, 1) : int.MaxValue);
+        var outputs = new List<OutputResult>(); var watch = Stopwatch.StartNew();
+        try
+        {
+            foreach (var row in runtime.OrderBy(r => r.Facts.Index))
+            {
+                ct.ThrowIfCancellationRequested();
+                var reusable = new HashSet<string>((job.SceneGroups ?? []).Where(g => g.AllowReuse).Select(g => g.Name), StringComparer.OrdinalIgnoreCase);
+                var exactReusable = new HashSet<string>(row.Facts.SelectedVideos.Where(v => reusable.Contains(v.Group)).Select(v => v.Path), StringComparer.OrdinalIgnoreCase);
+                // Exact reservation only: on conflict fail, never Pick/retry/reselect.
+                var reservation = pool.Reserve(row.Audio, job.AllowVideoReuse ? [] : row.Facts.SelectedVideos, 1, exactReusable);
+                if (job.AllowVideoReuse) reservation = reservation with { Videos = row.Facts.SelectedVideos };
+                var work = new PreparedWork(row.Facts, row.Audio, row.Facts.SelectedVideos, reservation);
+                var output = await ExecuteOneCoreAsync(job, prepared.JobId, work, pool, nvencGate,
+                    Math.Clamp((int)Math.Ceiling(16.0 / Math.Max(job.Threads, 1)), 1, 8), Path.Combine(_paths.WorkRoot, prepared.JobId, "temp"),
+                    outRoot, new Dictionary<string, string>(), versions, true, ct).ConfigureAwait(false);
+                if (output is not null) outputs.Add(output);
+            }
+        }
+        finally { pool.ReleaseAll(); }
+        var report = new JobReport(prepared.JobId, outputs.Count, 0, outputs.AsReadOnly(), Array.Empty<FailureRecord>(), "countReached", watch.ElapsedMilliseconds, pool.Log);
+        await File.WriteAllTextAsync(NewOutput(Path.Combine(outRoot, prepared.JobId, "report.json")), report.ToJson(), ct).ConfigureAwait(false);
+        return report;
+    }
+
+    private async Task<JobReport> RunCoreAsync(FissionJob job, PreparationCapture? preparation, CancellationToken ct)
     {
         // Policy/input checks precede original validation and every mkdir/probe.
         var controlledOut = _policy?.ValidateJob(job);
@@ -114,7 +241,10 @@ public sealed class FissionEngine
 
         // ── 素材入池（损坏跳过，契约文案）──
         var voiceSources = new Dictionary<string, string>(StringComparer.Ordinal);
-        using var versions = new RunSourceVersions(_policy, _files);
+        using var versions = new RunSourceVersions(_policy, _files, preparation is not null);
+        if (preparation is not null)
+            foreach (var executable in new[] { _paths.FFmpeg, _paths.FFprobe, _paths.FFmpeg6 })
+                await versions.PinAsync(executable, ct).ConfigureAwait(false);
         var pool = await BuildPoolAsync(job, voiceDir, voiceSources, versions, ct).ConfigureAwait(false);
         var videoByGroup = pool.VideosByGroup();
         var audios = pool.AudioList();
@@ -164,11 +294,20 @@ public sealed class FissionEngine
             {
                 try
                 {
+                    if (preparation is not null)
+                    {
+                        var selected = await PrepareOneCoreAsync(job, jobId, index, pool, videoByGroup, sel, normCache, normSeq, nvencGate, encThreads,
+                            tmpDir, coverDir, outRoot, voiceSources, versions, () => Interlocked.Increment(ref audioCursor), ct, true).ConfigureAwait(false);
+                        preparation.Outputs.Add(selected.Facts);
+                    }
+                    else
+                    {
                     var produced = await ProduceOneAsync(job, jobId, index, pool, videoByGroup, sel, normCache, normSeq, nvencGate, encThreads,
                         tmpDir, coverDir, outRoot, voiceSources, versions, () => Interlocked.Increment(ref audioCursor), ct).ConfigureAwait(false);
                     if (produced is not null)
                     {
                         outputs.Add(produced);
+                    }
                     }
                 }
                 catch (OperationCanceledException)
@@ -203,6 +342,11 @@ public sealed class FissionEngine
         swTotal.Stop();
 
         var report = new JobReport(jobId, outputs.Count, failures.Count, outputs.OrderBy(o => o.Index).ToList(), failures.OrderBy(f => f.Index).ToList(), stopReason, swTotal.ElapsedMilliseconds, pool.Log);
+        if (preparation is not null)
+        {
+            preparation.Versions = await versions.SnapshotAsync(ct).ConfigureAwait(false);
+            return report;
+        }
         await File.WriteAllTextAsync(NewOutput(Path.Combine(outRoot, jobId, "report.json")), report.ToJson(), CancellationToken.None).ConfigureAwait(false);
         Emit(jobId, -1, JobStage.Done, 1, $"所有任务全部执行完毕：成功 {outputs.Count} / 失败 {failures.Count} / 停止原因 {stopReason} / 总耗时 {swTotal.ElapsedMilliseconds / 1000.0:F1}s");
         return report;
@@ -213,7 +357,15 @@ public sealed class FissionEngine
         ConcurrentDictionary<string, Lazy<Task<string>>> normCache, StrongBox<int> normSeq, SemaphoreSlim nvencGate, int encThreads,
         string tmpDir, string coverDir, string outRoot, IReadOnlyDictionary<string, string> voiceSources, RunSourceVersions versions, Func<int> nextAudioCursor, CancellationToken ct)
     {
-        var sw = Stopwatch.StartNew();
+        var prepared = await PrepareOneCoreAsync(job, jobId, index, pool, videoByGroup, sel, normCache, normSeq, nvencGate, encThreads, tmpDir, coverDir, outRoot, voiceSources, versions, nextAudioCursor, ct).ConfigureAwait(false);
+        return await ExecuteOneCoreAsync(job, jobId, prepared, pool, nvencGate, encThreads, tmpDir, outRoot, voiceSources, versions, false, ct).ConfigureAwait(false);
+    }
+
+    private async Task<PreparedWork> PrepareOneCoreAsync(
+        FissionJob job, string jobId, int index, MaterialPool pool, ILookup<string, MaterialItem> videoByGroup, GroupSelection sel,
+        ConcurrentDictionary<string, Lazy<Task<string>>> normCache, StrongBox<int> normSeq, SemaphoreSlim nvencGate, int encThreads,
+        string tmpDir, string coverDir, string outRoot, IReadOnlyDictionary<string, string> voiceSources, RunSourceVersions versions, Func<int> nextAudioCursor, CancellationToken ct, bool preparing = false)
+    {
         var workDir = Path.Combine(tmpDir, $"o{index}");
         CreateOwnedDirectory(workDir);
         var rng = new SeededRandom(jobId.GetHashCode() ^ (index * 7919));
@@ -273,7 +425,7 @@ public sealed class FissionEngine
         Emit(jobId, index, JobStage.Selecting, null, $"开始选取第 {index + 1} 批（配音 {Path.GetFileName(audio.Path)} · 画面 {videos.Count} 段 · 目标 {targetSec:F1}s）");
 
         // NORMALIZE / IMG2VID（视频走跨成片缓存；图片按区间随机时长现场转视频——原版「图片转视频持续时长随机」）
-        var normFiles = new List<(MaterialItem Src, string Norm, int Source)>(videos.Count);
+        var normFiles = new List<(MaterialItem Src, string Norm, int Source, double? Hold)>(videos.Count);
         var imgSeq = 0;
         foreach (var v in videos)
         {
@@ -283,12 +435,12 @@ public sealed class FissionEngine
                 var hi = Math.Max(job.ImageDurMinSec, job.ImageDurMaxSec);
                 var dur = Math.Abs(hi - lo) < 0.001 ? lo : rng.Between(lo, hi); // 同数=固定时长
                 Emit(jobId, index, JobStage.Normalizing, null, $"图片转视频持续时长随机：{dur:F1}s（{Path.GetFileName(v.Path)}）");
-                var source = await captured.SourceAsync(v.Path, "still", dur, ct).ConfigureAwait(false);
+                var source = await captured.SourceAsync(v.Path, "still", 0, ct).ConfigureAwait(false);
                 var imgClip = NewOutput(Path.Combine(workDir, $"img{imgSeq++}.mp4"));
                 await RunEncodeGuardedAsync(
                     nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.ImageToVideo(v.Path, imgClip, dur, job.OutWidth, job.OutHeight, job.OutFps, nvenc && job.UseNvenc, encThreads), dur), job.UseNvenc && nvenc),
                     nvencGate, jobId, index, ct).ConfigureAwait(false);
-                normFiles.Add((v, imgClip, source));
+                normFiles.Add((v, imgClip, source, dur));
                 continue;
             }
 
@@ -301,14 +453,15 @@ public sealed class FissionEngine
                     nvencGate, jobId, index, ct).ConfigureAwait(false);
                 return dst;
             }).ConfigureAwait(false);
-            normFiles.Add((v, norm, sourceIndex));
+            normFiles.Add((v, norm, sourceIndex, null));
         }
 
         // SPLIT → 切段（hflip 差异化随切做，省一遍编码）
         Emit(jobId, index, JobStage.Splitting, null, $"开始分割（{job.SplitMode}）");
         var cutFiles = new List<string>();
+        var preparedCuts = new List<PreparedCut>();
         var detector = new SceneDetector(_paths, _engine);
-        foreach (var (src, norm, sourceIndex) in normFiles)
+        foreach (var (src, norm, sourceIndex, hold) in normFiles)
         {
             // 组变速（原版网格列；下限 0.5——低于即舍弃该文件，原版报错原文）
             var speed = sel.Configs.TryGetValue(src.Group, out var cfg) ? cfg.Speed : 1.0;
@@ -318,7 +471,9 @@ public sealed class FissionEngine
                 continue;
             }
 
+            var normHash = await versions.PinAsync(norm, ct).ConfigureAwait(false);
             var normInfo = await _probe.ProbeAsync(norm, ct).ConfigureAwait(false);
+            var normalized = new PreparedNormalization(sourceIndex, norm, normHash, normInfo.DurationSec, hold);
             var cuts = job.SplitMode switch
             {
                 SplitMode.Scene => src.IsImage
@@ -333,14 +488,11 @@ public sealed class FissionEngine
 
             foreach (var cut in cuts)
             {
-                var dst = NewOutput(Path.Combine(workDir, $"c{cutFiles.Count:D3}.mp4"));
                 var flip = job.RandomHFlip && rng.CoinFlip(0.35);
                 var decision = new VisualDecision(sourceIndex, "main", src.Group, cut.StartSec, cut.DurationSec, speed, flip);
                 captured.Visuals.Add(decision);
-                await RunEncodeGuardedAsync(
-                    nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.Cut(norm, dst, new CutSpan(decision.StartSec, decision.DurationSec), decision.Hflip, nvenc && job.UseNvenc, encThreads, decision.Speed), decision.DurationSec / decision.Speed), job.UseNvenc && nvenc),
-                    nvencGate, jobId, index, ct).ConfigureAwait(false);
-                cutFiles.Add(dst);
+                preparedCuts.Add(new PreparedCut(decision, normalized));
+                cutFiles.Add(norm);
             }
         }
 
@@ -351,23 +503,83 @@ public sealed class FissionEngine
         }
 
         // 片头/片尾（FR-5.5：随机剪取开头区间 2.5–4s 拼入首/尾；音轨在 AV_MERGE 阶段整体替换=「音频覆盖片头片尾」语义）
-        await AttachIntroOutroAsync(job, jobId, workDir, cutFiles, normCache, normSeq, nvencGate, rng, captured, ct).ConfigureAwait(false);
+        await PrepareIntroOutroAsync(job, jobId, cutFiles, preparedCuts, normCache, normSeq, nvencGate, rng, captured, versions, ct).ConfigureAwait(false);
 
         Emit(jobId, index, JobStage.Splitting, 1, $"分析得出总镜头数：{cutFiles.Count}，个镜头片段");
 
-        // ASSEMBLE：转场链（ffmpeg6 gltransition·66 GLSL）或统一规格 concat copy
-        var transition = new TransitionDecision(job.TransitionName, job.TransitionSec, null, null, "none");
-        var assembled = NewOutput(Path.Combine(workDir, "assembled.mp4"));
-        if (job.TransitionSec > 0 && cutFiles.Count >= 2)
+        var transition = new TransitionDecision(job.TransitionName, job.TransitionSec, null, null, "prepared-intent");
+        if (job.TransitionSec > 0 && preparedCuts.Count >= 2)
         {
-            var (glsl, tname, fellBack) = TransitionCatalog.Resolve(_paths.TransitionsDir, job.TransitionName, rng);
-            if (fellBack)
+            var (glsl, name, _) = TransitionCatalog.Resolve(_paths.TransitionsDir, job.TransitionName, rng);
+            transition = transition with { SelectedName = name, Shader = await captured.ShaderAsync(glsl, ct).ConfigureAwait(false) };
+        }
+        // Keep PickBgm after every original RNG-consuming choice; intervening old codec/align stages consumed no RNG.
+        var bgm = PickBgm(job, rng);
+        var voiceSource = await captured.SourceAsync(audio!.Path, "sound", audio.DurationSec, ct).ConfigureAwait(false);
+        await versions.PinAsync(audio.Path, ct).ConfigureAwait(false);
+        var musicSource = -1;
+        if (bgm is not null)
+        {
+            await captured.PinAsync(bgm, ct).ConfigureAwait(false);
+            var musicInfo = await _probe.ProbeAsync(bgm, ct).ConfigureAwait(false);
+            musicSource = await captured.SourceAsync(bgm, "sound", musicInfo.DurationSec, ct).ConfigureAwait(false);
+        }
+        var audioDecision = new AudioDecision(new AudioTrackDecision(voiceSource, job.VoiceVolume),
+            bgm is null ? null : new AudioTrackDecision(musicSource, job.BgmVolume, true), new LoudnormDecision());
+        var subtitle = new SubtitleDecision(job.SubtitleEnabled, job.SubtitleEnabled ? "missing-text" : "disabled", "sentence-weighted-approximation", Array.Empty<SubtitleCue>(), null);
+        if (job.SubtitleEnabled)
+        {
+            if (job.AudioDir is not null)
             {
-                Emit(jobId, index, JobStage.Assembling, null, $"转场 [{job.TransitionName}] 不存在，回落 {tname}");
+                var textFile = Path.Combine(Directory.GetParent(job.AudioDir.TrimEnd(Path.DirectorySeparatorChar))!.FullName, "meta.json");
+                _files?.ValidateOptionalReadOnlyFile(textFile);
+                if (File.Exists(textFile)) await versions.PinAsync(textFile, ct).ConfigureAwait(false);
             }
+            var text = FindScriptText(job, audio);
+            if (text is not null) subtitle = new SubtitleDecision(true, "prepared-intent", "sentence-weighted-approximation", SubtitlePlanner.BuildCues(text, targetSec),
+                new SubtitleStyleDecision(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, SubtitlePlanner.StyleLine(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize)));
+        }
+        // An expected effective frame clock, not a fictitious probe of an unrendered assembly.
+        var expectedSec = preparedCuts.Sum(c => c.Decision.DurationSec / c.Decision.Speed);
+        var align = AlignPlanner.Plan((int)job.Align, expectedSec, targetSec);
+        var alignment = new AlignmentDecision(align.Action.ToString().ToLowerInvariant(), expectedSec, align.OutDurationSec, align.Tempo, align.Loops);
+        var consume = videos.Where(v => sel.Configs.TryGetValue(v.Group, out var c) && c is { UseThenDelete: true, AllowReuse: false }).Select(v => v.Path).ToArray();
+        PreparedGeneratedAudio? generatedVoice = null;
+        if (preparing && job.AudioDir is null && _files is not null)
+        {
+            generatedVoice = _files.SealPreparedGeneratedAudio(audio.Path, jobId, versions.Held(audio.Path));
+            await versions.PinAsync(generatedVoice.ProofPath, ct).ConfigureAwait(false);
+        }
+        var facts = new PreparedOutput(index, title, audio.Path, bgm, targetSec, audioDecision, audio, Array.AsReadOnly(videos.ToArray()),
+            Array.AsReadOnly(captured.Sources.ToArray()), Array.AsReadOnly(preparedCuts.ToArray()), alignment, transition, subtitle, Array.AsReadOnly(consume), generatedVoice);
+        return new PreparedWork(facts, audio, videos, res);
+    }
 
-            transition = new TransitionDecision(job.TransitionName, job.TransitionSec, tname,
-                await captured.ShaderAsync(glsl, ct).ConfigureAwait(false), "applied");
+    private async Task<OutputResult?> ExecuteOneCoreAsync(FissionJob job, string jobId, PreparedWork work, MaterialPool pool, SemaphoreSlim nvencGate,
+        int encThreads, string tmpDir, string outRoot, IReadOnlyDictionary<string, string> voiceSources, RunSourceVersions versions, bool strict, CancellationToken ct)
+    {
+        var facts = work.Facts; var index = facts.Index; var title = facts.Title; var targetSec = facts.TargetSec;
+        var audio = work.Audio; var res = work.Reservation;
+        var sw = Stopwatch.StartNew(); var workDir = Path.Combine(tmpDir, $"o{index}"); CreateOwnedDirectory(workDir);
+        var receiptSources = facts.Sources.Select((source, sourceIndex) => source.Kind == "still"
+            ? source with { DurationSec = facts.Cuts.Where(c => c.Decision.Source == sourceIndex).Max(c => c.Normalization.ImageHoldSec ?? c.Normalization.DurationSec) } : source).ToList();
+        var cutFiles = new List<string>();
+        foreach (var cut in facts.Cuts)
+        {
+            ct.ThrowIfCancellationRequested();
+            var decision = cut.Decision; var dst = NewOutput(Path.Combine(workDir, $"c{cutFiles.Count:D3}.mp4"));
+            await RunEncodeGuardedAsync(nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.Cut(cut.Normalization.Path, dst,
+                new CutSpan(decision.StartSec, decision.DurationSec), decision.Hflip, nvenc && job.UseNvenc, decision.Role == "main" ? encThreads : 2, decision.Speed), decision.DurationSec / decision.Speed), job.UseNvenc && nvenc),
+                nvencGate, jobId, index, ct).ConfigureAwait(false);
+            cutFiles.Add(dst);
+        }
+        // ASSEMBLE：转场链（ffmpeg6 gltransition·66 GLSL）或统一规格 concat copy
+        var transition = facts.TransitionIntent with { Outcome = facts.TransitionIntent.Shader is null ? "none" : "applied" };
+        var assembled = NewOutput(Path.Combine(workDir, "assembled.mp4"));
+        if (transition.Shader is not null && cutFiles.Count >= 2)
+        {
+            var glsl = transition.Shader.Path;
+            var tname = transition.SelectedName;
             Emit(jobId, index, JobStage.Assembling, null, $"开始加转场合成所有片段（{tname} {transition.DurationSec:0.##}s × {cutFiles.Count - 1} 处）");
             try
             {
@@ -385,7 +597,7 @@ public sealed class FissionEngine
 
                 await _engine.RunAsync(new VideoEngineRequest(_paths.FFmpeg, BuildConcat(segs, assembled)), ct: ct).ConfigureAwait(false);
             }
-            catch (EngineException)
+            catch (EngineException) when (!strict)
             {
                 transition = transition with { Outcome = "fallback-no-transition" };
                 Emit(jobId, index, JobStage.Assembling, null, ErrorMessageSource.Get("RUN_TRANSITION_FALLBACK"));
@@ -404,7 +616,11 @@ public sealed class FissionEngine
 
         // ALLOCATE：八策略对齐
         Emit(jobId, index, JobStage.Allocating, null, $"时长对齐：画面 {assembledInfo.DurationSec:F1}s → 目标 {targetSec:F1}s（策略 {(int)job.Align}）");
-        var plan = AlignPlanner.Plan((int)job.Align, assembledInfo.DurationSec, targetSec);
+        if (strict && Math.Abs(assembledInfo.DurationSec - facts.AlignmentIntent.InputDurationSec) > AlignPlanner.FrameToleranceSec(job.OutFps))
+            throw new EngineException("ENC_PREPARED_CLOCK_DEVIATION", "Actual assembly clock differs from the prepared expectation.");
+        var plan = strict
+            ? new AlignPlan(Enum.Parse<AlignAction>(facts.AlignmentIntent.Action, true), facts.AlignmentIntent.OutputDurationSec, facts.AlignmentIntent.Tempo, string.Empty, facts.AlignmentIntent.Loops)
+            : AlignPlanner.Plan((int)job.Align, assembledInfo.DurationSec, targetSec);
         var alignment = new AlignmentDecision(plan.Action.ToString().ToLowerInvariant(), assembledInfo.DurationSec,
             plan.OutDurationSec, plan.Tempo, plan.Loops);
         plan = plan with { OutDurationSec = alignment.OutputDurationSec, Tempo = alignment.Tempo, Loops = alignment.Loops };
@@ -422,38 +638,17 @@ public sealed class FissionEngine
 
         // AV_MERGE：配音 + 可选 BGM
         Emit(jobId, index, JobStage.AvMerging, null, "音频正在合成");
-        var bgm = PickBgm(job, rng);
-        var voiceSource = await captured.SourceAsync(audio!.Path, "sound", audio.DurationSec, ct).ConfigureAwait(false);
-        var musicSource = -1;
-        if (bgm is not null && _files is not null)
-        {
-            await captured.PinAsync(bgm, ct).ConfigureAwait(false);
-            var musicInfo = await _probe.ProbeAsync(bgm, ct).ConfigureAwait(false);
-            musicSource = await captured.SourceAsync(bgm, "sound", musicInfo.DurationSec, ct).ConfigureAwait(false);
-        }
-        var audioDecision = new AudioDecision(new AudioTrackDecision(voiceSource, job.VoiceVolume),
-            bgm is null ? null : new AudioTrackDecision(musicSource, job.BgmVolume, true), new LoudnormDecision());
+        var bgm = facts.MusicPath;
+        var audioDecision = facts.Audio;
         var mixJob = new FissionJob { VoiceVolume = audioDecision.Voice.Volume, BgmVolume = audioDecision.Music?.Volume ?? 0 };
         var finalName = FileNameSanitizer.Sanitize(title) + ".mp4";
         var finalTmp = NewOutput(Path.Combine(workDir, finalName));
         await _engine.RunAsync(new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.AvMerge(aligned, audio!.Path, bgm, finalTmp, mixJob), targetSec), ct: ct).ConfigureAwait(false);
 
         // SUBTITLE：口播文案烧录（文本取配音目录 meta.json 的 items[].text——AIGC 链自带）
-        var subtitle = new SubtitleDecision(job.SubtitleEnabled, job.SubtitleEnabled ? "missing-text" : "disabled",
-            "sentence-weighted-approximation", Array.Empty<SubtitleCue>(), null);
-        if (job.SubtitleEnabled)
+        var subtitle = facts.SubtitleIntent;
+        if (subtitle.Outcome == "prepared-intent" && subtitle.Style is not null)
         {
-            var scriptText = FindScriptText(job, audio);
-            if (scriptText is null)
-            {
-                Emit(jobId, index, JobStage.AvMerging, null, "未找到文案文本（配音目录无 meta.json），本条跳过字幕");
-            }
-            else
-            {
-                Emit(jobId, index, JobStage.AvMerging, null, "正在添加字幕");
-                subtitle = new SubtitleDecision(true, "applied", "sentence-weighted-approximation",
-                    SubtitlePlanner.BuildCues(scriptText, targetSec), new SubtitleStyleDecision(job.SubtitleStyle,
-                        job.SubtitlePos, job.SubtitleFontSize, SubtitlePlanner.StyleLine(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize)));
                 var ass = NewOutput(Path.Combine(workDir, "sub.ass"));
                 await File.WriteAllTextAsync(ass, SubtitlePlanner.BuildAss(subtitle.Cues, subtitle.Style!.Preset, subtitle.Style.Position, subtitle.Style.FontSize), new System.Text.UTF8Encoding(false), ct).ConfigureAwait(false);
                 var subTmp = NewOutput(Path.Combine(workDir, "subbed.mp4"));
@@ -461,10 +656,17 @@ public sealed class FissionEngine
                     nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.BurnSubtitle(finalTmp, subTmp, ass, nvenc && job.UseNvenc, encThreads, Environment.GetFolderPath(Environment.SpecialFolder.Fonts)), targetSec), job.UseNvenc && nvenc),
                     nvencGate, jobId, index, ct).ConfigureAwait(false);
                 finalTmp = subTmp;
+                subtitle = subtitle with { Outcome = "applied" };
                 Emit(jobId, index, JobStage.AvMerging, 1, "字幕添加完毕");
-            }
         }
 
+        MediaInfo? qualifiedFinal = null;
+        if (strict)
+        {
+            qualifiedFinal = await _probe.ProbeAsync(finalTmp, ct).ConfigureAwait(false);
+            if (Math.Abs(qualifiedFinal.DurationSec - facts.AlignmentIntent.OutputDurationSec) > AlignPlanner.FrameToleranceSec(job.OutFps))
+                throw new EngineException("ENC_PREPARED_FINAL_CLOCK_DEVIATION", "Actual final clock differs from the prepared expectation; no output was confirmed.");
+        }
         // EXPORT：移动到输出目录（Uniquify 防重名）
         var outPath = FileNameSanitizer.Uniquify(Path.Combine(outRoot, jobId, finalName));
         _files?.ValidateOwnedFile(finalTmp);
@@ -484,16 +686,8 @@ public sealed class FissionEngine
         }
 
         // CONSUME：确认消耗（计次/删；「用过是否删除=是」且未开重复抽取的组 → 视频转 Consumed 落跨批次缓存）
-        var finalInfo = await _probe.ProbeAsync(outPath, ct).ConfigureAwait(false);
-        var consumeVideos = new List<string>();
-        foreach (var v in videos)
-        {
-            if (sel.Configs.TryGetValue(v.Group, out var cfg) && cfg is { UseThenDelete: true, AllowReuse: false })
-            {
-                consumeVideos.Add(v.Path);
-            }
-        }
-
+        var finalInfo = qualifiedFinal ?? await _probe.ProbeAsync(outPath, ct).ConfigureAwait(false);
+        var consumeVideos = facts.ConsumeVideoPaths.ToList();
         pool.Confirm(res, Path.GetFileName(outPath), consumeVideos);
         if (consumeVideos.Count > 0)
         {
@@ -505,8 +699,9 @@ public sealed class FissionEngine
             Emit(jobId, index, JobStage.Consuming, null, "用过的音频正在删除");
             if (_files is not null)
             {
+                versions.ReleaseOwned(audio.Path);
                 var archived = _files.ArchiveAudio(audio.Path);
-                captured.ArchivedGenerated(audio.Path, archived);
+                for (var i = 0; i < receiptSources.Count; i++) if (receiptSources[i].Path == audio.Path && !voiceSources.ContainsKey(audio.Path)) receiptSources[i] = receiptSources[i] with { Path = archived };
             }
             else TryArchiveAudio(audio.Path);
         }
@@ -516,7 +711,7 @@ public sealed class FissionEngine
         if (_files is not null)
         {
             var editPlan = new FissionEditPlan(1, jobId, index, new FissionStage(job.OutWidth, job.OutHeight), job.OutFps,
-                finalInfo.DurationSec, captured.Sources.AsReadOnly(), captured.Visuals.AsReadOnly(), alignment,
+                finalInfo.DurationSec, receiptSources.AsReadOnly(), Array.AsReadOnly(facts.Cuts.Select(c => c.Decision).ToArray()), alignment,
                 audioDecision, transition, subtitle);
             editPlanPath = NewOutput(Path.ChangeExtension(outPath, ".edit-plan.json"));
             await File.WriteAllTextAsync(editPlanPath, editPlan.ToJson(), ct).ConfigureAwait(false);
@@ -527,9 +722,9 @@ public sealed class FissionEngine
     }
 
     /// <summary>片头/片尾拼装（FR-5.5）：目录有素材才启用；随机抽文件、随机剪取开头 2.5–4s，归一化走任务级缓存。</summary>
-    private async Task AttachIntroOutroAsync(
-        FissionJob job, string jobId, string workDir, List<string> cutFiles,
-        ConcurrentDictionary<string, Lazy<Task<string>>> normCache, StrongBox<int> normSeq, SemaphoreSlim nvencGate, SeededRandom rng, DecisionCapture captured, CancellationToken ct)
+    private async Task PrepareIntroOutroAsync(
+        FissionJob job, string jobId, List<string> cutFiles, List<PreparedCut> preparedCuts,
+        ConcurrentDictionary<string, Lazy<Task<string>>> normCache, StrongBox<int> normSeq, SemaphoreSlim nvencGate, SeededRandom rng, DecisionCapture captured, RunSourceVersions versions, CancellationToken ct)
     {
         foreach (var (dir, isIntro) in new[] { (job.IntroDir, true), (job.OutroDir, false) })
         {
@@ -560,18 +755,19 @@ public sealed class FissionEngine
             var take = Math.Min(rng.Between(2.5, 4.0), info.DurationSec);
             var sourceIndex = await captured.SourceAsync(pick, "video", info.DurationSec, ct).ConfigureAwait(false);
             var decision = new VisualDecision(sourceIndex, isIntro ? "intro" : "outro", "", 0, take, 1, false);
-            var dstCut = NewOutput(Path.Combine(workDir, isIntro ? "intro.mp4" : "outro.mp4"));
-            await RunEncodeGuardedAsync(
-                nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.Cut(norm, dstCut, new CutSpan(decision.StartSec, decision.DurationSec), decision.Hflip, nvenc && job.UseNvenc, 2, decision.Speed), decision.DurationSec), job.UseNvenc && nvenc),
-                nvencGate, jobId, 0, ct).ConfigureAwait(false);
+            var normalizedHash = await versions.PinAsync(norm, ct).ConfigureAwait(false);
+            var normalizedInfo = await _probe.ProbeAsync(norm, ct).ConfigureAwait(false);
+            var prepared = new PreparedCut(decision, new PreparedNormalization(sourceIndex, norm, normalizedHash, normalizedInfo.DurationSec, null));
             if (isIntro)
             {
-                cutFiles.Insert(0, dstCut);
+                cutFiles.Insert(0, norm);
+                preparedCuts.Insert(0, prepared);
                 captured.Visuals.Insert(0, decision);
             }
             else
             {
-                cutFiles.Add(dstCut);
+                cutFiles.Add(norm);
+                preparedCuts.Add(prepared);
                 captured.Visuals.Add(decision);
             }
         }
@@ -643,6 +839,7 @@ public sealed class FissionEngine
                 await versions.PinAsync(f, ct).ConfigureAwait(false);
                 var staged = _files is null ? f : await _files.CopyAudioAsync(f, voiceDir, ct).ConfigureAwait(false);
                 voiceSources.Add(staged, f);
+                await versions.PinAsync(staged, ct).ConfigureAwait(false);
                 var info = await _probe.ProbeAsync(staged, ct).ConfigureAwait(false);
                 audioItems.Add(new MaterialItem(staged, string.Empty, info.DurationSec));
             }
@@ -853,10 +1050,12 @@ public sealed class FissionEngine
     // Pin before the first actual probe/copy/normalize. The existing per-run norm
     // cache and every output then refer to the SAME held original version, rather
     // than rehashing a changed path after a private copy or cached normalization.
-    private sealed class RunSourceVersions(EnginePathPolicy? policy, EngineJobFiles? files) : IDisposable
+    private sealed class RunSourceVersions(EnginePathPolicy? policy, EngineJobFiles? files, bool stableOwned = false) : IDisposable
     {
         private readonly ConcurrentDictionary<string, Lazy<Task<string>>> versions = new(StringComparer.Ordinal);
         private readonly List<FileStream> handles = [];
+        private readonly Dictionary<string, SafeFileHandle> directoryLocks = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, string> identities = new(StringComparer.Ordinal);
         private readonly object gate = new();
         private bool stopped;
         public Task<string> PinAsync(string source, CancellationToken ct)
@@ -869,15 +1068,75 @@ public sealed class FissionEngine
         {
             var generated = source.StartsWith(policy!.Paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal);
             if (generated) files!.ValidateOwnedFile(source); else files!.ValidateReadOnlyFile(source);
+            HoldAncestors(source);
             var stream = new FileStream(source, FileMode.Open, FileAccess.Read,
-                generated ? FileShare.Read | FileShare.Delete : FileShare.Read, 81920, FileOptions.Asynchronous | FileOptions.SequentialScan);
+                generated && !stableOwned ? FileShare.Read | FileShare.Delete : FileShare.Read, 81920, FileOptions.Asynchronous | FileOptions.SequentialScan);
             lock (gate)
             {
                 if (stopped) { stream.Dispose(); throw new ObjectDisposedException(nameof(RunSourceVersions)); }
                 handles.Add(stream);
+                identities[source] = FileIdentity(stream.SafeFileHandle);
             }
-            return Convert.ToHexStringLower(await SHA256.HashDataAsync(stream, ct).ConfigureAwait(false));
+            if (generated) files!.ValidateOwnedFile(source); else files!.ValidateReadOnlyFile(source);
+            var hash = Convert.ToHexStringLower(await SHA256.HashDataAsync(stream, ct).ConfigureAwait(false));
+            if (generated) files!.ValidateOwnedFile(source); else files!.ValidateReadOnlyFile(source);
+            return hash;
         }
+        public FileStream Held(string path) { lock (gate) return handles.Single(h => h.Name == path); }
+        public string Identity(string path) { lock (gate) return identities[path]; }
+        public async Task<IReadOnlyList<PreparedSourceVersion>> SnapshotAsync(CancellationToken ct)
+        {
+            var values = new List<PreparedSourceVersion>();
+            foreach (var entry in versions.OrderBy(x => x.Key, StringComparer.Ordinal))
+            {
+                ct.ThrowIfCancellationRequested(); var hash = await entry.Value.Value.ConfigureAwait(false);
+                values.Add(new PreparedSourceVersion(entry.Key, hash, entry.Key.StartsWith(policy!.Paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal), Identity(entry.Key)));
+            }
+            return values.AsReadOnly();
+        }
+        public void ReleaseOwned(string path)
+        {
+            if (policy is null || !path.StartsWith(policy.Paths.WorkRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal)) return;
+            lock (gate) foreach (var stream in handles.Where(h => h.Name == path).ToArray()) { stream.Dispose(); handles.Remove(stream); }
+        }
+        private void HoldAncestors(string source)
+        {
+            if (!OperatingSystem.IsWindows()) return;
+            lock (gate)
+            {
+                for (var directory = Path.GetDirectoryName(source)!; ; directory = Path.GetDirectoryName(directory)!)
+                {
+                    if (!directoryLocks.ContainsKey(directory))
+                    {
+                        // Allow additions/writes, but hold the actual directory namespace against rename/delete.
+                        var handle = OpenDirectory(directory, 0x80, 3, IntPtr.Zero, 3, 0x02000000, IntPtr.Zero);
+                        if (handle.IsInvalid) { handle.Dispose(); throw new IOException("Cannot hold the native source namespace."); }
+                        directoryLocks.Add(directory, handle);
+                    }
+                    if (directory == Path.GetPathRoot(directory)) break;
+                }
+            }
+        }
+        private static string FileIdentity(SafeFileHandle handle)
+        {
+            if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException("Prepared filesystem version binding has only been qualified on Windows.");
+            if (!GetFileInformationByHandle(handle, out var info) || info.Links != 1) throw new IOException("Native source identity is not ordinary.");
+            return $"{info.Volume:x8}:{info.IndexHigh:x8}{info.IndexLow:x8}:{info.SizeHigh:x8}{info.SizeLow:x8}:{info.Write.dwHighDateTime:x8}{info.Write.dwLowDateTime:x8}";
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FileInformation
+        {
+            public uint Attributes;
+            public System.Runtime.InteropServices.ComTypes.FILETIME Created, Access, Write;
+            public uint Volume, SizeHigh, SizeLow, Links, IndexHigh, IndexLow;
+        }
+        [DllImport("kernel32.dll", EntryPoint = "CreateFileW", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = true)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        private static extern SafeFileHandle OpenDirectory(string path, uint access, uint share, IntPtr security, uint creation, uint flags, IntPtr template);
+        [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetFileInformationByHandle(SafeFileHandle handle, out FileInformation information);
         public void Dispose()
         {
             lock (gate)
@@ -885,6 +1144,7 @@ public sealed class FissionEngine
                 if (stopped) return;
                 stopped = true;
                 foreach (var handle in handles) handle.Dispose();
+                foreach (var handle in directoryLocks.Values) handle.Dispose();
             }
         }
     }

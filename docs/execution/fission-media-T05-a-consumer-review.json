@@ -1,0 +1,80 @@
+{
+  "taskId": "T05.a",
+  "commit": "48d5bcf7173e215e723e5f4b61ae67e9ea40d065",
+  "authorAgent": "/root",
+  "attribution": "qualified native assembled source; original source authors/commits retained",
+  "reviewerAgent": "/root/integration_review",
+  "status": "approved",
+  "spec": "approved",
+  "quality": "approved",
+  "source": [
+    {
+      "path": "workers/fission/src/Fission.Cli/Program.cs",
+      "sha256": "4ca8e4f3b764b191bd815844b6f2629337bab7b6af0ca84a41bc3b53162817f0",
+      "gitBlobSha256": "4ca8e4f3b764b191bd815844b6f2629337bab7b6af0ca84a41bc3b53162817f0"
+    },
+    {
+      "path": "workers/fission/src/Fission.Cli/EngineRunConfiguration.cs",
+      "sha256": "85f7b946377ba40d9dc46d9c62af1911fe1372d165326d119b98cb0c7cae4cde",
+      "gitBlobSha256": "85f7b946377ba40d9dc46d9c62af1911fe1372d165326d119b98cb0c7cae4cde"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePathPolicy.cs",
+      "sha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac",
+      "gitBlobSha256": "d8a49daab3d30260f2de29a4fb266bfd37fff501681aac55e232bf54b90107ac"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EnginePaths.cs",
+      "sha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff",
+      "gitBlobSha256": "7e09d8ba7e17a50eb6d66613b32f33a7ddd0823645442850b19e4458eeeb8eff"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Engine/EngineJobFiles.cs",
+      "sha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1",
+      "gitBlobSha256": "4414056306ed74a7f8577d90ea2e65d2a2b2354a3bfecc934b667b16d41883e1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Process/ProcessPool.cs",
+      "sha256": "13e7a79d029c413f96493c1841d8cdb58dfd2dcfda65fa52ca83bec67c2e58d1",
+      "gitBlobSha256": "13e7a79d029c413f96493c1841d8cdb58dfd2dcfda65fa52ca83bec67c2e58d1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Jobs/FissionJob.cs",
+      "sha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1",
+      "gitBlobSha256": "10320a745721a3f8e7ab2eddfd1af90973fa4eab082e47dc1e4d6c9df09927f1"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Pipeline/FissionEngine.cs",
+      "sha256": "690c20015ff0a4ca2e03491ae56df18c9a74f7371c90c508046f4c3da5c56696",
+      "gitBlobSha256": "690c20015ff0a4ca2e03491ae56df18c9a74f7371c90c508046f4c3da5c56696"
+    },
+    {
+      "path": "workers/fission/src/Fission.Core/Pipeline/FissionEditPlan.cs",
+      "sha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e",
+      "gitBlobSha256": "198719af487cfc7998e58cbe15556191960817a261ffec93c6f3203c6f01a68e"
+    },
+    {
+      "path": "workers/fission/src/Fission.Providers/Hardware/HardwareDetector.cs",
+      "sha256": "a1847ce58d51e8eca194745df353aaf9337ac04299b72cb7045967aee0949d6f",
+      "gitBlobSha256": "a1847ce58d51e8eca194745df353aaf9337ac04299b72cb7045967aee0949d6f"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/Fission.UnitTests.csproj",
+      "sha256": "c8697ca60bd22630c63640f9b8694107754588903811a6ad355c661b6994460d",
+      "gitBlobSha256": "dc0d303cb15c171cba74b9d52d394481d0d92f8bd9cc73cc662d3f3e7ad9bd95"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/EngineRunConfigurationTests.cs",
+      "sha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5",
+      "gitBlobSha256": "d977dc85c21c8f07367784e17fde2646a8ecdc2def623f728c7c09aaba482eb5"
+    },
+    {
+      "path": "workers/fission/tests/Fission.UnitTests/FissionEditPlanTests.cs",
+      "sha256": "5cd8ed34038bfa31d99b20ef9c8b566770669de3106448f54fecbfc113e0c77e",
+      "gitBlobSha256": "5cd8ed34038bfa31d99b20ef9c8b566770669de3106448f54fecbfc113e0c77e"
+    }
+  ],
+  "scope": "Only actual consumed controlled CLI/media test subset, not business group admission"
+}

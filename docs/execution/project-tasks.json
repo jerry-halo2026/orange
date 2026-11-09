@@ -320,6 +320,20 @@
       "externalGates": [],
       "currentAssignment": "docs/execution/fission-handoff-assignment.json",
       "fullParentDependenciesRetained": true
+    },
+    {
+      "id": "T05.media",
+      "parentTask": "T05.b",
+      "scope": "First actual original CLI CPU video with self-owned synthetic media and two objectively observed codec command regressions. Not a business/group-admitted batch, M1, all effects, or whole pilot.",
+      "status": "in_progress",
+      "dependsOn": [
+        "T01",
+        "T05.a"
+      ],
+      "externalGates": [],
+      "currentAssignment": "docs/execution/fission-media-assignment.json",
+      "notBusinessAdmission": true,
+      "parentBusinessDependenciesUnchanged": true
     }
   ],
   "umbrella": [

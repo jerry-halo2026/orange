@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-09",
+  "reviewerAgent": "/root/integration_review",
+  "spec": "approved",
+  "quality": "approved",
+  "P1": 0,
+  "P2": 0,
+  "cardSHA256": "0cabbd8fc6b84862f6fde0f9ecd61710222a787603fc589e520305896701f717",
+  "inputProofs": [
+    {
+      "path": "docs/execution/fission-media-T01-consumer-review.json",
+      "sha256": "e4df124a9d8e7e10e8480f3b8e0dadf30d363d5caf24f0eed4a670f6914db65e",
+      "gitBlobSha256": "e4df124a9d8e7e10e8480f3b8e0dadf30d363d5caf24f0eed4a670f6914db65e"
+    },
+    {
+      "path": "docs/execution/fission-media-T05-a-consumer-review.json",
+      "sha256": "477f0906a84d1083644e8da06fa574aa02d8fa8a40e51ad4ce798e846b6a62b2",
+      "gitBlobSha256": "477f0906a84d1083644e8da06fa574aa02d8fa8a40e51ad4ce798e846b6a62b2"
+    }
+  ],
+  "registrySnapshotSHA256": "9000500fea2d8189abc1fe43b87b07fa8e9f41d21b1fbb3ef2ee31d191ed562f",
+  "scope": "Actual original controlled CLI Count1 own synthetic4s/Speed2s CPU media and probe/decode, original bounded readonlyhardware calls; actual RED before only2files fixes; not business admission/media-fullscope/PG",
+  "runtimeReceipt": "pinned original Gyan9.0.2 standard109MB ZIP60f467, original5runtime/license/source files verified; no privateengine",
+  "conditions": "fresh managed latestdev branch/reviewedmetadataFF/actual N5a before source/runtime, absolute ownnamespace writes only, no raw model/private media/network/prod/defaults/deletion, actual owned children exits and nonauthor source/result before commit"
+}

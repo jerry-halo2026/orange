@@ -1,0 +1,166 @@
+{
+  "schema": "evidence/1",
+  "task": "unify-surface (P1-P5 + L0-A/B/C)",
+  "base": "cb7053d",
+  "head": "f646c6c",
+  "gates": [
+    {
+      "id": "G01.typecheck.api",
+      "ok": true,
+      "cmd": "cd apps/api && node ../desktop/node_modules/typescript/bin/tsc -p tsconfig.json"
+    },
+    {
+      "id": "G01.typecheck.ui",
+      "ok": true,
+      "cmd": "tsc -p studio/ui (reported by the UI task)"
+    },
+    {
+      "id": "G03.test.api",
+      "ok": true,
+      "cmd": "cd apps/api && node --test \"src/**/*.test.ts\" => 222/222"
+    },
+    {
+      "id": "G03.test.desktop",
+      "ok": true,
+      "cmd": "node --test apps/desktop/src/*.test.mjs => 671 pass / 0 fail / 4 skipped"
+    },
+    {
+      "id": "G03.test.openfilm-subset",
+      "ok": true,
+      "cmd": "i18n keys + ui/lib + skills + analyze-command => 27/27"
+    },
+    {
+      "id": "G04.test-coverage",
+      "ok": true,
+      "cmd": "node scripts/gate-test-coverage.mjs => uncovered 0, exempt 13 (each names a runnable command)"
+    },
+    {
+      "id": "G06.verify-db",
+      "ok": true,
+      "cmd": "node infra/verify.mjs => 9/9 (vector branch is now a hard check)"
+    },
+    {
+      "id": "G12.contract-drift",
+      "ok": true,
+      "cmd": "node infra/migrate.mjs --contract => 16 RPC + 9 internal + 14 tables, anon effective privileges 0"
+    },
+    {
+      "id": "G14.migrate-check",
+      "ok": true,
+      "cmd": "node infra/migrate.mjs --check => 12 files match; one byte changed => exit 1"
+    },
+    {
+      "id": "G19.no-tenant-is-loud",
+      "ok": true,
+      "cmd": "verify ⑧/⑤ assertions: 42501 tenant-context-required for read and write"
+    },
+    {
+      "id": "G20.anon-has-nothing",
+      "ok": true,
+      "cmd": "has_table_privilege('anon',...) false; --contract reports 0 effective function privileges"
+    },
+    {
+      "id": "G14.post-apply-guard",
+      "ok": true,
+      "cmd": "apply path runs the guard before writeLedger, fails closed when psql errors, and requires p.prokind=%27f%27; guard SQL returns 0 rows"
+    },
+    {
+      "id": "P5.packaging-resolves",
+      "ok": true,
+      "cmd": "import openfilm/index-client from apps/desktop resolves; npm pack lists src/index-client.{mjs,d.mts}"
+    },
+    {
+      "id": "G07.verify-json",
+      "ok": true,
+      "cmd": "verify --json --target local => single-line verify/1, 9 checks, ok true"
+    },
+    {
+      "id": "G08.cloud-fail-closed",
+      "ok": true,
+      "cmd": "--target cloud without SUPABASE_DB_URL => 2; URL with 6543/pooler => 2"
+    },
+    {
+      "id": "G09.compare-mechanism",
+      "ok": true,
+      "cmd": "gate-compare: identical => 0, one flipped verdict => 1, empty checks => 2"
+    },
+    {
+      "id": "G22.writeback-roundtrip",
+      "ok": true,
+      "cmd": "upsert_wiki_source + upsert_wiki_summary (768d) then search_materials returns the row under its own tenant; rows deleted afterwards"
+    }
+  ],
+  "diff": {
+    "stat": "31 files changed, +2680/-520 (see diff.txt for the name-status list)",
+    "files": [
+      "packages/openfilm/src/index-client.mjs",
+      "packages/openfilm/src/index-client.d.mts",
+      "apps/api/src/index/client.ts",
+      "apps/api/src/index/client.test.ts",
+      "apps/api/src/sync/store.ts",
+      "apps/api/src/sync/catalog.ts",
+      "apps/api/src/sync/catalog.test.ts",
+      "apps/desktop/src/index-rpc.mjs",
+      "apps/desktop/src/analyze-service.mjs",
+      "apps/desktop/src/derived-frames.mjs",
+      "apps/desktop/src/analyze-write-back.test.mjs",
+      "apps/desktop/src/derived-frames.test.mjs",
+      "apps/desktop/src/w5-wire.test.mjs",
+      "apps/desktop/src/w3-python-packaging.test.mjs",
+      "packages/openfilm/src/analyze-runner.mjs",
+      "packages/openfilm/src/analyze-command.mjs",
+      "packages/openfilm/bin/openfilm.mjs",
+      "packages/openfilm/package.json",
+      "packages/openfilm/studio/server/skill-catalog.mjs",
+      "packages/openfilm/studio/server/examples.mjs",
+      "packages/openfilm/studio/server/skill-catalog.test.mjs",
+      "packages/openfilm/studio/server/open-sources.test.mjs",
+      "packages/openfilm/studio/server/examples.test.mjs",
+      "packages/openfilm/studio/ui/src/components/**",
+      "packages/openfilm/studio/ui/src/i18n/**",
+      "packages/openfilm/studio/ui/src/lib/**",
+      "apps/desktop/chat/src/**",
+      "apps/desktop/build/icon*",
+      "docs/sql/006_rpc.sql",
+      "docs/sql/007_embedding_and_wiki.sql",
+      "docs/sql/008_unify_surface.sql",
+      "docs/sql/009_orange_claim.sql",
+      "docs/sql/010_tenant_strict.sql",
+      "docs/sql/contract.json",
+      "docs/sql/embedding.json",
+      "docs/sql/README.md",
+      "infra/migrate.mjs",
+      "infra/jwt.mjs",
+      "infra/verify.mjs",
+      "scripts/gate-test-coverage.mjs",
+      "scripts/gate-compare.mjs",
+      "scripts/gate-evidence.mjs",
+      "package.json",
+      "apps/desktop/package.json"
+    ]
+  },
+  "unavailable": [
+    "G07/G08/G09 (verify --json, --target cloud, local/cloud compare): infra/verify.mjs still has no --json or --target; the cloud half is unimplemented, not merely unrun",
+    "G15 gitleaks: the binary is not installed on this machine",
+    "G16 audit-public: exits 1 at baseline (11479 findings: cjk 11464, private 15, secret 0) in files this branch does not touch",
+    "G05 bench tests: not run in this pass (12 Electron bench files, exempt with a runnable command)"
+  ],
+  "postSignOff": [
+    {
+      "head": "9bdf065",
+      "what": "P5 packaging",
+      "reviewed": true
+    },
+    {
+      "head": "f646c6c",
+      "what": "verify --target/--json + gate-compare",
+      "reviewed": true
+    }
+  ],
+  "red": [
+    {
+      "id": "G05.bench",
+      "detail": "9/12 sequential. media-menu + conversation-agent: POST /api/open returns 403 authentication-required (\"Sign in is required.\") from studio/server/server.mjs:318 desktopAuth.assertActive. Without the key the same route answers 401, so the advertised key is accepted and the login gate is what refuses. That gate landed 2026-11-10/11 (5e6dd2b, 2b14aed, d5ffd7f), all ancestors of cb7053d; this branch has no diff under studio/server auth. The bench harness never signs in: pre-existing gap, not a regression from unify-surface."
+    }
+  ]
+}

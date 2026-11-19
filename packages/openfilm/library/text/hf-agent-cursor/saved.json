@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-agent-cursor.html",
+    "time": [
+      0,
+      4
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Label\",\"type\":\"text\",\"at\":\".cur-label\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--cu-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--cu-font\"}]"
+    }
+  },
+  "durationMs": 4000,
+  "w": 900,
+  "h": 520
+}

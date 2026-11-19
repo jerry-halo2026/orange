@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-aurora.html",
+    "time": [
+      0,
+      8
+    ]
+  },
+  "durationMs": 8000,
+  "w": 1920,
+  "h": 1080
+}

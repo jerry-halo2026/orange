@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-spotify-card.html",
+    "time": [
+      0,
+      5
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Track\",\"type\":\"text\",\"at\":\".s-track\"},{\"name\":\"Artist\",\"type\":\"text\",\"at\":\".s-artist\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--s-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--s-font\"}]"
+    }
+  },
+  "durationMs": 5000,
+  "w": 660,
+  "h": 200
+}

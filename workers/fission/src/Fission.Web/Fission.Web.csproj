@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fission.Core\Fission.Core.csproj" />
+    <ProjectReference Include="..\Fission.Steps\Fission.Steps.csproj" />
+    <ProjectReference Include="..\Fission.Providers\Fission.Providers.csproj" />
+    <ProjectReference Include="..\Fission.AI\Fission.AI.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- 显式控制 wwwroot 拷贝（隐式包含在本工程不落 bin，原因未明；关默认内容项避免 NETSDK1022 重复） -->
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

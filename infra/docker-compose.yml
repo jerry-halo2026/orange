@@ -1,0 +1,33 @@
+# 本地开发用 Postgres + pgvector。
+#
+# 只为本机开发/验证：端口只绑回环（127.0.0.1），并用 trust 认证，因此**没有任何密码**。
+# 这**不是**生产配置：上云必须换独立登录角色 + 强口令 + TLS + 限制来源网段，
+# 并把 `app.company_key` 的注入方式改成受信任的来源（见 docs/sql/README.md「上云必须复验」）。
+#
+# 用法：docker compose -f .dev/infra/docker-compose.yml up -d
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: orange-w1-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: orange
+      # 仅本机回环 + trust；不设置任何口令，避免把凭据写进仓库。
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - orange-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d orange"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+    restart: unless-stopped
+
+volumes:
+  # 命名 volume：容器删了数据还在；`docker compose down -v` 才会清空。
+  orange-pgdata:
+    name: orange-w1-pgdata

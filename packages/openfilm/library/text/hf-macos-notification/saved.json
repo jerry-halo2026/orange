@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-macos-notification.html",
+    "time": [
+      0,
+      4
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Title\",\"type\":\"text\",\"at\":\".n-title\"},{\"name\":\"Body\",\"type\":\"text\",\"at\":\".n-body\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--n-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--n-font\"}]"
+    }
+  },
+  "durationMs": 4000,
+  "w": 720,
+  "h": 150
+}

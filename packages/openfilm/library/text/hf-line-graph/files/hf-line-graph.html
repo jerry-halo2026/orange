@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1000, height=420" />
+    <title>Line graph</title>
+    <!--
+      A data card, after HyperFrames' `line-graph`.
+      OpenFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1000px; height: 420px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --g-accent: #7cffb2; --g-ink: #ffffff; --g-grid: rgba(255,255,255,.10); --g-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+      .g-title { font-size: 25px; font-weight: 700; color: var(--g-ink); }
+      svg { width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div class="g-title">Everything ships faster</div>
+      <svg viewBox="0 0 960 320" preserveAspectRatio="none">
+        <g stroke="rgba(255,255,255,.10)" stroke-width="1">
+          <line x1="0" y1="80" x2="960" y2="80"/><line x1="0" y1="160" x2="960" y2="160"/>
+          <line x1="0" y1="240" x2="960" y2="240"/>
+        </g>
+        <path id="line" d="M20 280 L180 240 L340 250 L500 170 L660 120 L820 70 L940 40"
+              fill="none" stroke="#7cffb2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"
+              stroke-dasharray="1200" stroke-dashoffset="1200"/>
+        <circle id="dot" cx="20" cy="280" r="11" fill="#7cffb2" opacity="0"/>
+      </svg>
+    </div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const line = document.getElementById('line');
+      const dot = document.getElementById('dot');
+      const LEN = 1200;
+      const points = [[20,280],[180,240],[340,250],[500,170],[660,120],[820,70],[940,40]];
+      function draw(t) {
+        const k = out3(at(t, 0.2, 2.6));
+        line.setAttribute('stroke-dashoffset', String((LEN * (1 - k)).toFixed(1)));
+        const seg = k * (points.length - 1);
+        const i = Math.min(points.length - 2, Math.floor(seg));
+        const f = seg - i;
+        dot.setAttribute('cx', String(lerp(points[i][0], points[i + 1][0], f)));
+        dot.setAttribute('cy', String(lerp(points[i][1], points[i + 1][1], f)));
+        dot.setAttribute('opacity', String(out2(at(t, 0.2, 0.3)) * (t < 3.6 ? 1 : 0.9)));
+      }
+      const DURATION = 4.5;
+
+      window.film = {
+        duration: DURATION,
+        width: 1000,
+        height: 420,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=700, height=380" />
+    <title>Cursor, click</title>
+    <!--
+      A cursor card, after HyperFrames' `cursor-click`.
+      OpenFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 700px; height: 380px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --cu-accent: #ff6b6b; --cu-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; }
+      #cursor { position: absolute; left: 0; top: 0; will-change: transform; }
+      .cur-arrow { width: 0; height: 0; border-left: 16px solid var(--cu-accent);
+                   border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+                   transform: rotate(-28deg); filter: drop-shadow(0 4px 10px rgba(0,0,0,.5)); }
+      .ring { position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%;
+              border: 3px solid var(--cu-accent); opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="r1" class="ring"></div><div id="r2" class="ring"></div>
+      <div id="cursor"><div class="cur-arrow"></div></div>
+    </div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const cur = document.getElementById('cursor');
+      const wrap = document.getElementById('cursor-wrap');
+      const PATH = [[80, 300], [260, 180], [352, 176]];
+      function place(el, x, y) { el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`; }
+      function pathAt(k) {
+        const n = PATH.length - 1;
+        const i = Math.min(n - 1, Math.floor(k * n));
+        const f = k * n - i;
+        const a = PATH[i], b = PATH[i + 1];
+        return [lerp(a[0], b[0], f), lerp(a[1], b[1], f)];
+      }
+      const rings = [document.getElementById('r1'), document.getElementById('r2')];
+      function draw(t) {
+        const k = out3(at(t, 0.1, 0.9));
+        const [x, y] = pathAt(k);
+        place(cur, x, y);
+        rings.forEach((ring, i) => {
+          const start = 1.0 + i * 0.18;
+          const p = at(t, start, 0.9);
+          place(ring, x, y);
+          const size = 30 + 150 * p;
+          ring.style.width = ring.style.height = `${size.toFixed(1)}px`;
+          ring.style.margin = `${-size / 2}px 0 0 ${-size / 2}px`;
+          ring.style.opacity = String((1 - p) * (t >= start ? 1 : 0));
+        });
+      }
+      const DURATION = 3;
+
+      window.film = {
+        duration: DURATION,
+        width: 700,
+        height: 380,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

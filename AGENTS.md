@@ -1,0 +1,23 @@
+# orangeflim workspace instructions
+
+PROPRIETARY — READ THIS FIRST. This repository is proprietary and confidential (LICENSE). Who may change it: the
+owner (Ethan), and an automated agent the owner has expressly authorized for the work at hand. Who may not: any other
+person or agent — no modification, refactor, patch, build-script change, dependency change, commit or redistribution
+without the owner's written permission. An agent that is not authorized for a change must treat the repository as
+read-only, stop, and ask the owner; the absence of a technical restriction is not permission. Copyright headers in the
+source files state the same rule, and `pnpm audit:public` fails a file that loses its header.
+
+Operator: Ethan. Read docs/README.md and docs/discovery/14_新会话启动与开发交付流程.md before work. Authority/read order is exclusively docs/README.md and 14: 00 decisions/authorization, PRD business, 06 topology, 13 physical, 16 native source index, 07 business additions, 09 collaboration, 10 task index, 11 verification, 17 completion.
+Use the original OpenFilm desktop/Studio v0.3.0 base. Do not create another shell, demonstration website, editor, project format or mutable timeline. The repository is proprietary: the LICENSE is ours, third-party dependencies keep their own licenses and are not relicensed by it.
+The existing .NET Fission source is in workers/fission. It is imported, not runtime-validated: original paths can still write to the old repository. Do not start Web/doctor/stress/Bench/media before explicit path isolation and relevant approval.
+Follow first principles: facts before assumptions; clarify only missing decisions that materially change the design; choose the shortest reversible validation path; investigate root causes; report only decision-relevant information.
+Keep docs/ as the maintained development source; docs/history is non-executable evidence. D:/dev/orange is now the canonical primary checkout on dev. The previous primary files/index were fully backed up and archived with Ethan approval; do not alter that recovery archive or unrelated worktrees.
+dev starts at the approved native OpenFilm baseline 8b8ef162708033dd3ed06c81dc0afffc95e8b950 and is the permanent development/integration line. New feature branches start from verified dev; review/test before integrating back. main requires a PR and Ethan confirmation; no direct push, force-push or release. Legacy code is archived, not merged into active native code.
+Use approved identity. Each change needs bounded scope, dependency/contract references, isolated resources, actual tests and non-author review. C89 permits dynamic ready-task concurrency, not overlapping writers or unlimited agents; reviews take the next available slot and integration is serial.
+Cloud commits are allowed only for audited source and sanitized docs to the verified Orange repo. They do not authorize publishing secrets/data or deleting worktrees. Archive recoverable work before cleanup with native tools.
+Zhishang is the business material source. Read-only connectivity and paid model testing up to CNY50 are allowed under the documented scope; do not widen account filters, upload private media/transcripts, or assume an installed Harness is ready. No unverifiable spending.
+Never print or commit credentials, the private API text, raw account tokens, user media, runtime configuration or outputs. No production changes, cloud business writes, model installation or release without specific approval.
+
+Native-first handoff: read docs/discovery/16_OpenFilm原生接口与平台对齐.md, 17_小范围试用交付与Goal验收.md and 18_Goal新会话交接包.md. Native source/types/tests own OpenFilm IO/API/CLI/IDs/time units; 07 owns only necessary Orange business additions/mappings. Do not scaffold a parallel contract/application/editor layer. Classify each task native-reuse, native-extension or business-addition.
+Product targets: Windows first release; macOS Apple Silicon arm64 planned/preserved, separately tested. No Intel Mac/Linux client/Universal promise. D/E paths are local development choices, not portable product defaults.
+Do not automatically resume the cleared historical goal. A new explicitly requested goal binds its own approved scope and 17 gates. T01-T10 is only phase one, not whole-pilot completion. No evidence/permission/real hardware means pending or blocked, not passed; continue unaffected ready work.

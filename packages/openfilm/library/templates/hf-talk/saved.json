@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "kind": "group",
+  "clips": [
+    {
+      "track": 0,
+      "at": 0,
+      "clip": {
+        "src": "background.html",
+        "time": [
+          0,
+          8
+        ]
+      }
+    },
+    {
+      "track": 1,
+      "at": 1,
+      "clip": {
+        "src": "lower.html",
+        "time": [
+          0,
+          4.8
+        ],
+        "size": {
+          "w": 760,
+          "h": 160
+        },
+        "style": "left: 120px; top: 760px; width: 760px; height: 160px"
+      }
+    },
+    {
+      "track": 2,
+      "at": 0,
+      "clip": {
+        "src": "captions.html",
+        "time": [
+          0,
+          8
+        ],
+        "size": {
+          "w": 1720,
+          "h": 130
+        },
+        "style": "left: 100px; top: 880px; width: 1720px; height: 130px"
+      }
+    }
+  ],
+  "durationMs": 8000
+}

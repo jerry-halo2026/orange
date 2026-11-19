@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-lt-dark-card.html",
+    "time": [
+      0,
+      4.8
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Name\",\"type\":\"text\",\"at\":\".lt-name\"},{\"name\":\"Role\",\"type\":\"text\",\"at\":\".lt-role\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--lt-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--lt-font\"}]"
+    }
+  },
+  "durationMs": 4800,
+  "w": 800,
+  "h": 176
+}

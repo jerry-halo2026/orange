@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-yt-comment-card.html",
+    "time": [
+      0,
+      4.5
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Name\",\"type\":\"text\",\"at\":\".c-name\"},{\"name\":\"Words\",\"type\":\"text\",\"at\":\".c-text\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--c-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--c-font\"}]"
+    }
+  },
+  "durationMs": 4500,
+  "w": 780,
+  "h": 220
+}

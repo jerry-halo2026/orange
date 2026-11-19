@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-progress-ring.html",
+    "time": [
+      0,
+      4
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Label\",\"type\":\"text\",\"at\":\".r-label\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--r-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--r-font\"}]"
+    }
+  },
+  "durationMs": 4000,
+  "w": 480,
+  "h": 480
+}

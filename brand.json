@@ -1,0 +1,24 @@
+{
+  "schema": "orange/brand/1",
+  "productName": "OrangeFilm",
+  "companyName": "Orange",
+  "appId": "com.orange.studio",
+  "windowTitle": "橙子创作中心",
+  "logo": {
+    "mark": "assets/brand-mark.png",
+    "wordmark": ""
+  },
+  "installerName": "OrangeFilm",
+  "updaterChannel": "orange-latest",
+  "about": {
+    "copyright": "© 2026 OrangeFilm"
+  },
+  "links": {
+    "docs": "https://github.com/jerry-halo2026/orange-film-skill#readme",
+    "github": "https://github.com/jerry-halo2026/orange-plan",
+    "issues": "https://github.com/jerry-halo2026/orange-plan/issues/new/choose",
+    "discussions": "https://github.com/jerry-halo2026/orange-plan/discussions",
+    "skills": "https://github.com/jerry-halo2026/orange-film-skill",
+    "community": ""
+  }
+}

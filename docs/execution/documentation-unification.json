@@ -1,0 +1,39 @@
+{
+  "docset": "U1",
+  "date": "2026-11-07",
+  "baseCommit": "70ed6107ad99d6a852c798d57840488946391f4c",
+  "history": "docs/history/2026-11-07-before-unification",
+  "scope": "active documentation consolidation, not product implementation",
+  "authority": "docs/README.md",
+  "facts": "docs/execution/status.json",
+  "historicalCRecordsPreserved": 89,
+  "FRPreserved": 11,
+  "VPreserved": 61,
+  "historyFiles": 26,
+  "productSourceChanged": false,
+  "newGoalCreated": false,
+  "currentEActionApproved": false,
+  "review": {
+    "preMetadataContentBindingSHA256": "142573e0c987100dbcbd305b2b6f91b6a3792b4cc4bd93818ab7735c516a3aac",
+    "P2": 0,
+    "quality": "PASS",
+    "requestedEffort": "high",
+    "scope": "document consistency only; no product acceptance",
+    "agent": "/root/unified_docs_final_review",
+    "bindingMethod": "PS7 zh-CN Sort-Object; path SPACE lowercase file SHA256; LF without trailing LF; UTF8 no BOM",
+    "spec": "PASS",
+    "preReviewFileCount": 32,
+    "P1": 0,
+    "requestedModel": "gpt-6-astra"
+  },
+  "validation": {
+    "tasks": 23,
+    "taskGraph": "acyclic/no missing dependencies",
+    "FR": 11,
+    "C": 89,
+    "productTestsRun": false,
+    "productCodeChanged": false,
+    "V": 61,
+    "historyFilesByteVerified": 26
+  }
+}

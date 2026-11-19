@@ -1,0 +1,52 @@
+{
+  "reviewer": "sign-off-2",
+  "verdict": "approve",
+  "boundHead": "f646c6c",
+  "note": "双提交 stat 符合描述，打包子路径与 tarball 实件一致，verify/1 单行 9 项报告、cloud 两条 exit 2、comparator 0/1/2 全部命中，仓库与日志无凭据，api 222/222 全绿。",
+  "history": [
+    {
+      "boundHead": "57c41e8",
+      "verdict": "changes",
+      "items": 3,
+      "fixedIn": "1a88128"
+    },
+    {
+      "boundHead": "b241ca1",
+      "verdict": "changes",
+      "items": 5,
+      "fixedIn": "ead8ed1"
+    },
+    {
+      "boundHead": "ed909a0",
+      "verdict": "changes",
+      "items": 3,
+      "fixedIn": "21fa0df"
+    },
+    {
+      "boundHead": "21fa0df",
+      "verdict": "changes",
+      "items": 6,
+      "fixedIn": "5509be9"
+    },
+    {
+      "boundHead": "9bdf065",
+      "verdict": "approve",
+      "items": 0,
+      "fixedIn": null
+    },
+    {
+      "boundHead": "f646c6c",
+      "verdict": "approve",
+      "items": 0,
+      "fixedIn": null
+    }
+  ],
+  "previous": {
+    "5509be9": {
+      "boundHead": "21fa0df",
+      "verdict": "changes",
+      "items": 6,
+      "fixedIn": "5509be9"
+    }
+  }
+}

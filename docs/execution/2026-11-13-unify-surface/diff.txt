@@ -1,0 +1,147 @@
+﻿ apps/api/src/index/client.test.ts                  | 221 +++++--
+ apps/api/src/index/client.ts                       | 162 +----
+ apps/api/src/sync/catalog.test.ts                  |   2 +-
+ apps/api/src/sync/catalog.ts                       |   1 +
+ apps/api/src/sync/store.ts                         |  58 +-
+ apps/desktop/build/icon-dev.icns                   | Bin 140991 -> 54439 bytes
+ apps/desktop/build/icon-dev.png                    | Bin 7181 -> 16129 bytes
+ apps/desktop/build/icon.icns                       | Bin 121079 -> 88995 bytes
+ apps/desktop/build/icon.ico                        | Bin 24170 -> 22944 bytes
+ apps/desktop/build/icon.png                        | Bin 5813 -> 31636 bytes
+ apps/desktop/build/logo-1024.png                   | Bin 34248 -> 22861 bytes
+ apps/desktop/chat/src/components/AddSkill.tsx      |   2 +-
+ apps/desktop/chat/src/i18n/locales/en-US.ts        |   2 +-
+ apps/desktop/chat/src/i18n/locales/es.ts           |   2 +-
+ apps/desktop/chat/src/i18n/locales/ja.ts           |   2 +-
+ apps/desktop/chat/src/i18n/locales/ko.ts           |   2 +-
+ apps/desktop/chat/src/i18n/locales/zh-CN.ts        |   2 +-
+ apps/desktop/package.json                          |   1 +
+ apps/desktop/src/analyze-service.mjs               | 186 +++++-
+ apps/desktop/src/analyze-write-back.test.mjs       | 235 +++++++
+ apps/desktop/src/derived-frames.mjs                | 201 ++++++
+ apps/desktop/src/derived-frames.test.mjs           | 207 ++++++
+ apps/desktop/src/index-rpc.mjs                     | 150 +++--
+ apps/desktop/src/w3-python-packaging.test.mjs      |   4 +-
+ apps/desktop/src/w5-wire.test.mjs                  |  79 ++-
+ .../2026-11-13-unify-surface/commands.json         |  68 ++
+ docs/execution/2026-11-13-unify-surface/diff.txt   | 147 +++++
+ docs/execution/2026-11-13-unify-surface/gates.json | 130 ++++
+ docs/execution/2026-11-13-unify-surface/output.txt |  29 +
+ .../execution/2026-11-13-unify-surface/review.json |  12 +
+ docs/sql/007_embedding_and_wiki.sql                | 646 ++++++++++++++++++
+ docs/sql/008_unify_surface.sql                     | 559 ++++++++++++++++
+ docs/sql/009_orange_claim.sql                      | 711 ++++++++++++++++++++
+ docs/sql/010_tenant_strict.sql                     | 486 ++++++++++++++
+ docs/sql/011_delivery_content_key.sql              |  28 +
+ docs/sql/README.md                                 | 229 ++++++-
+ docs/sql/contract.json                             |  81 +++
+ docs/sql/embedding.json                            |  15 +
+ infra/jwt.mjs                                      | 168 +++++
+ infra/migrate.mjs                                  | 734 +++++++++++++++++++++
+ infra/verify.mjs                                   | 167 ++++-
+ package.json                                       |   3 +-
+ packages/openfilm/bin/openfilm.mjs                 |   8 +-
+ packages/openfilm/package.json                     |   4 +-
+ packages/openfilm/src/analyze-command.mjs          |  15 +-
+ packages/openfilm/src/analyze-runner.mjs           |  48 +-
+ packages/openfilm/src/index-client.d.mts           |  59 ++
+ packages/openfilm/src/index-client.mjs             | 201 ++++++
+ packages/openfilm/studio/server/examples.mjs       |  14 +-
+ packages/openfilm/studio/server/examples.test.mjs  |   3 +-
+ .../openfilm/studio/server/open-sources.test.mjs   |  17 +
+ packages/openfilm/studio/server/skill-catalog.mjs  |  16 +-
+ .../openfilm/studio/server/skill-catalog.test.mjs  |  23 +
+ .../studio/ui/src/components/ProjectSources.tsx    | 112 +---
+ .../studio/ui/src/components/ProjectsLibrary.tsx   |  27 +-
+ .../studio/ui/src/components/ProjectsView.tsx      |  27 +-
+ .../studio/ui/src/components/SkillPage.tsx         |  24 +-
+ .../openfilm/studio/ui/src/components/WhatsNew.tsx |   9 +-
+ .../src/components/settings/ProvidersSection.tsx   |   6 -
+ .../ui/src/components/settings/SettingsModal.tsx   |  16 +-
+ packages/openfilm/studio/ui/src/i18n/en.ts         |  30 +-
+ packages/openfilm/studio/ui/src/i18n/es.ts         |  28 +-
+ packages/openfilm/studio/ui/src/i18n/ja.ts         |  28 +-
+ packages/openfilm/studio/ui/src/i18n/keys.test.ts  | 212 ++++++
+ packages/openfilm/studio/ui/src/i18n/ko.ts         |  27 +-
+ packages/openfilm/studio/ui/src/i18n/zh-CN.ts      |  30 +-
+ .../openfilm/studio/ui/src/lib/layer-paste.test.ts |   4 +-
+ .../studio/ui/src/lib/project-sources.test.ts      |  11 +-
+ .../openfilm/studio/ui/src/lib/project-sources.ts  |   7 +-
+ packages/openfilm/studio/ui/src/lib/providers.ts   |   2 +-
+ scripts/gate-compare.mjs                           |  63 ++
+ scripts/gate-evidence.mjs                          | 101 +++
+ scripts/gate-test-coverage.mjs                     | 127 ++++
+ 73 files changed, 6336 insertions(+), 695 deletions(-)
+M	apps/api/src/index/client.test.ts
+M	apps/api/src/index/client.ts
+M	apps/api/src/sync/catalog.test.ts
+M	apps/api/src/sync/catalog.ts
+M	apps/api/src/sync/store.ts
+M	apps/desktop/build/icon-dev.icns
+M	apps/desktop/build/icon-dev.png
+M	apps/desktop/build/icon.icns
+M	apps/desktop/build/icon.ico
+M	apps/desktop/build/icon.png
+M	apps/desktop/build/logo-1024.png
+M	apps/desktop/chat/src/components/AddSkill.tsx
+M	apps/desktop/chat/src/i18n/locales/en-US.ts
+M	apps/desktop/chat/src/i18n/locales/es.ts
+M	apps/desktop/chat/src/i18n/locales/ja.ts
+M	apps/desktop/chat/src/i18n/locales/ko.ts
+M	apps/desktop/chat/src/i18n/locales/zh-CN.ts
+M	apps/desktop/package.json
+M	apps/desktop/src/analyze-service.mjs
+A	apps/desktop/src/analyze-write-back.test.mjs
+A	apps/desktop/src/derived-frames.mjs
+A	apps/desktop/src/derived-frames.test.mjs
+M	apps/desktop/src/index-rpc.mjs
+M	apps/desktop/src/w3-python-packaging.test.mjs
+M	apps/desktop/src/w5-wire.test.mjs
+A	docs/execution/2026-11-13-unify-surface/commands.json
+A	docs/execution/2026-11-13-unify-surface/diff.txt
+A	docs/execution/2026-11-13-unify-surface/gates.json
+A	docs/execution/2026-11-13-unify-surface/output.txt
+A	docs/execution/2026-11-13-unify-surface/review.json
+A	docs/sql/007_embedding_and_wiki.sql
+A	docs/sql/008_unify_surface.sql
+A	docs/sql/009_orange_claim.sql
+A	docs/sql/010_tenant_strict.sql
+A	docs/sql/011_delivery_content_key.sql
+M	docs/sql/README.md
+A	docs/sql/contract.json
+A	docs/sql/embedding.json
+A	infra/jwt.mjs
+A	infra/migrate.mjs
+M	infra/verify.mjs
+M	package.json
+M	packages/openfilm/bin/openfilm.mjs
+M	packages/openfilm/package.json
+M	packages/openfilm/src/analyze-command.mjs
+M	packages/openfilm/src/analyze-runner.mjs
+A	packages/openfilm/src/index-client.d.mts
+A	packages/openfilm/src/index-client.mjs
+M	packages/openfilm/studio/server/examples.mjs
+M	packages/openfilm/studio/server/examples.test.mjs
+M	packages/openfilm/studio/server/open-sources.test.mjs
+M	packages/openfilm/studio/server/skill-catalog.mjs
+M	packages/openfilm/studio/server/skill-catalog.test.mjs
+M	packages/openfilm/studio/ui/src/components/ProjectSources.tsx
+M	packages/openfilm/studio/ui/src/components/ProjectsLibrary.tsx
+M	packages/openfilm/studio/ui/src/components/ProjectsView.tsx
+M	packages/openfilm/studio/ui/src/components/SkillPage.tsx
+M	packages/openfilm/studio/ui/src/components/WhatsNew.tsx
+M	packages/openfilm/studio/ui/src/components/settings/ProvidersSection.tsx
+M	packages/openfilm/studio/ui/src/components/settings/SettingsModal.tsx
+M	packages/openfilm/studio/ui/src/i18n/en.ts
+M	packages/openfilm/studio/ui/src/i18n/es.ts
+M	packages/openfilm/studio/ui/src/i18n/ja.ts
+A	packages/openfilm/studio/ui/src/i18n/keys.test.ts
+M	packages/openfilm/studio/ui/src/i18n/ko.ts
+M	packages/openfilm/studio/ui/src/i18n/zh-CN.ts
+M	packages/openfilm/studio/ui/src/lib/layer-paste.test.ts
+M	packages/openfilm/studio/ui/src/lib/project-sources.test.ts
+M	packages/openfilm/studio/ui/src/lib/project-sources.ts
+M	packages/openfilm/studio/ui/src/lib/providers.ts
+A	scripts/gate-compare.mjs
+A	scripts/gate-evidence.mjs
+A	scripts/gate-test-coverage.mjs

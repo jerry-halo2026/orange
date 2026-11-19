@@ -1,0 +1,15 @@
+# Fission 行尾规范（PRD §8.1）
+* text=auto eol=lf
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.slnx text eol=crlf
+*.props text eol=crlf
+*.targets text eol=crlf
+
+# 二进制
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.mp3 binary
+*.wav binary
+*.glsl text eol=lf

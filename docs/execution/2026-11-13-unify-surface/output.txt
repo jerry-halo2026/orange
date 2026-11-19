@@ -1,0 +1,31 @@
+apps/api             tests 222  pass 222  fail 0     (+6 over baseline 216)
+apps/api typecheck   exit 0
+apps/desktop src     tests 675  pass 671  fail 0  skipped 4
+  write-back          8/8   (flat mapping, 767/769 refused, source before summary)
+  derived-frames     12/12   (outside-project refused, <=cap, injected = no ffmpeg)
+openfilm subset      tests 27   pass 27   (i18n keys 4, ui/lib 5, skills 8, analyze-command 10)
+openfilm runner      tests 13   pass 13   (studioFrames default, ffmpegFrames kept as fallback)
+verify               9/9      vector branch is a hard check now: 768 dims reach the RPC,
+                              hnsw.iterative_scan=strict_order inside the transaction
+migrate --check      12/12 files match the ledger; one byte changed -> exit 1
+migrate --contract   16 RPC + 9 internal + 14 tables; anon effective privileges 0;
+                     claimEnvelope: executionReady=false, frozenPlan.version=1, historyCount 0|1,
+                     status in reserved|running|unknown|cancel-requested|succeeded
+replay               001..010 twice on an empty volume: 10/10 exit 0, ERROR=0 (each round)
+tenant                no context -> 42501 tenant-context-required for read and write;
+                     claim outranks GUC (set app.company_key as authenticated no longer switches);
+                     mismatch still returns the empty set (anti-probing, 006's rule kept)
+orange_*             resolve_materials returns versionId/contentSha256/kind/durationSec/probeRevision;
+                     preflight prepare-required and duplicate are single-key; claim keeps status claim
+
+Known red, stated rather than hidden:
+  stage.test.mjs 4 failing assertions in the openfilm suite are sub-pixel font metrics on this
+  machine; the failing test does not import anything this branch touched and fails standalone.
+  bench/*.test.mjs (12) are exempt from the default gate and run by `pnpm --filter @openfilm/desktop test:bench`.
+  gitleaks is not installed: G15 cannot be claimed.
+  The cloud half of the gates is pending credentials (.dev/supabase.local.env does not exist).
+review.json is absent on purpose: the non-author sign-off had not returned when this evidence was written. G17 (gate-evidence) therefore fails; do not cite this slice as reviewed until that file exists.
+
+P5 (9bdf065) landed after the sign-off: the desktop now imports openfilm/index-client and the tarball carries it; that commit has not been re-reviewed, so it is listed under gates.json.postSignOff rather than counted as signed.
+
+G05 bench (sequential): 12 files, 9 pass, 3 fail. media-menu expects 200 and got 403 from the Studio route; not yet attributed to this branch (the bench suite was never part of a gate, and the failing assertion is server-side, while this branch changed clients, SQL and UI text, not Studio routing). Left red rather than exempted.

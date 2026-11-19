@@ -1,0 +1,163 @@
+// © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
+// No modification or redistribution without the owner’s written permission.
+
+/**
+ * Runs Studio for the window (src/studio-process.mjs, in a utility process) and keeps it running.
+ *
+ * One Studio per machine: when `openfilm open` already started one, it is asked to stop (`POST /api/quit`, after it
+ * has written its history) and the app's takes its place, on the same port, so the address agents and bookmarks
+ * know keeps working. When the port is held by something else, Studio takes any free one.
+ *
+ * Asked to stop only once nothing is being exported or made (`whenIdle`): either cut off is lost. While one runs, that
+ * Studio says no; the window does not wait for it (an export can take many minutes) but starts its own on another
+ * port, and the other one is asked again every few seconds until it has stopped. Its pages lose their Studio then;
+ * the window, agents' `openfilm` commands and run.json are the app's from the start.
+ */
+import { readIsolationProfile } from './isolation.mjs';
+import { brandProductName } from './brand.mjs';
+const PRODUCT = brandProductName();
+import { lstatSync, readFileSync } from 'node:fs';
+import { isAbsolute, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ENTRY = fileURLToPath(new URL('./studio-process.mjs', import.meta.url));
+const QUIT_WAIT_MS = 10_000;
+const START_WAIT_MS = 30_000;
+const EXPORT_RETRY_MS = 5_000;
+
+/** Source-only isolated launcher may consume a reviewed build without replacing the original dist. */
+export function windowEditorDirectory({packaged,isolated,explicit,bundled}) {
+  if (packaged || !isolated || explicit === undefined) return bundled;
+  if (typeof explicit !== 'string' || !isAbsolute(explicit) || !lstatSync(join(explicit,'index.html'),{throwIfNoEntry:false})?.isFile()) throw new Error('An explicit built shell directory is required.');
+  return explicit;
+}
+
+/** The Studio `openfilm open` started, if it answers. */
+async function advertised(home) {
+  let run;
+  try { run = JSON.parse(readFileSync(join(home, 'run.json'), 'utf8')); } catch { return null; }
+  try {
+    const health = await (await fetch(`${run.origin}/api/health`, { signal: AbortSignal.timeout(1500) })).json();
+    return health.product === 'openfilm-studio' ? run : null;
+  } catch { return null; }
+}
+
+/** Ask a Studio to stop once it is idle: 'exporting' when it says not now, else 'asked'. */
+async function askToQuit(run) {
+  const res = await fetch(`${run.origin}/api/quit`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-studio-key': run.key },
+    body: JSON.stringify({ whenIdle: true }),
+    signal: AbortSignal.timeout(3000),
+  }).catch(() => null);
+  return res?.status === 409 ? 'exporting' : 'asked';
+}
+
+/** Ask the machine's other Studio to stop, and wait until it has; while it exports, ask again later and go on. */
+async function takeOver(home, log) {
+  const run = await advertised(home);
+  if (!run) return;
+  if (await askToQuit(run) === 'exporting') {
+    log(`the Studio at ${run.origin} is exporting: it is asked to stop once that is done; this one takes another port\n`);
+    const again = () => setTimeout(async () => { if (await askToQuit(run) === 'exporting') again(); }, EXPORT_RETRY_MS);
+    again();
+    return;
+  }
+  const deadline = Date.now() + QUIT_WAIT_MS;
+  while (Date.now() < deadline) {
+    try { await fetch(`${run.origin}/api/health`, { signal: AbortSignal.timeout(500) }); } catch { return; }
+    await new Promise((done) => setTimeout(done, 150));
+  }
+}
+
+/**
+ * @param {{ home: string, port: number, env: Record<string, string>, onOpen: (url: string) => void,
+ *           onBrowser: (state: { state: string, message?: string }) => void, onAsk?: AskHandler, log: (line: string) => void }} options
+ * @returns {Promise<{ origin: string, filmOrigin: string, key: string, child: Electron.UtilityProcess }>}
+ */
+async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire, onAuthRetired, log }) {
+  const { utilityProcess } = await import('electron');
+  return new Promise((resolve, reject) => {
+    const child = utilityProcess.fork(ENTRY, [], {
+      serviceName: `${PRODUCT} Studio`,
+      env: { ...env, OPENFILM_STUDIO_PORT: String(port) },
+      stdio: 'pipe',
+    });
+    child.stdout?.on('data', (d) => log(String(d)));
+    child.stderr?.on('data', (d) => log(String(d)));
+    const timer = setTimeout(() => { child.kill(); reject(new Error('Studio did not start in time')); }, START_WAIT_MS);
+    let settled = false;
+    child.on('message', (message) => {
+      if (message?.type === 'ready' && !settled) {
+        settled = true;
+        clearTimeout(timer);
+        resolve({ origin: message.origin, filmOrigin: message.filmOrigin, key: message.key, child });
+      } else if (message?.type === 'failed' && !settled) {
+        settled = true;
+        clearTimeout(timer);
+        reject(Object.assign(new Error(message.message), { code: message.code }));
+      } else if (message?.type === 'open') onOpen(message.url);
+      else if (message?.type === 'browser' || message?.type === 'ffmpeg') onBrowser(message);
+      else if (message?.type === 'ask' || message?.type === 'ask-cancel') onAsk?.(message, (answer) => child.postMessage(answer));
+      else if (message?.type === 'auth') onAuth?.(message.state, message.scope);
+      else if (message?.type === 'auth-retire') {
+        void Promise.resolve().then(()=>onAuthRetire?.()).then(ok=>child.postMessage({type:'auth-parent-retired',id:message.id,ok:ok===true}),()=>child.postMessage({type:'auth-parent-retired',id:message.id,ok:false}));
+      } else if (message?.type === 'auth-retired') onAuthRetired?.();
+    });
+    child.once('exit', (code) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      reject(new Error(`Studio stopped as it started (${code})`));
+    });
+  });
+}
+
+/**
+ * A question Studio asks the person's agent (`{ type: 'ask', id, text }`, or `{ type: 'ask-cancel', id }` to stop
+ * it), and how its answer goes back: `{ type: 'answer', id, text }` or `{ type: 'answer', id, error, code? }`.
+ * @typedef {(message: { type: 'ask' | 'ask-cancel', id: string, text?: string }, reply: (answer: Record<string, unknown>) => void) => void} AskHandler
+ */
+
+/**
+ * Start the window's Studio. `onExit` hears when it stops after it had started (a crash): `restart()` starts it again.
+ * `onAsk` answers Studio's questions for the person's agent (studio-process.mjs askAgent).
+ * @param {{ home: string, port: number, env: Record<string, string>, onOpen: (url: string) => void,
+ *           onBrowser: (state: { state: string, message?: string }) => void, onExit: (code: number) => void,
+ *           onAsk?: AskHandler, onAuth?: (state: {kind:string,reason:string|null}, scope?:string|null)=>void, onAuthRetire?:()=>Promise<boolean>, onAuthRetired?:()=>void, log: (line: string) => void }} options
+ */
+export async function startWindowStudio(options, {takeover=takeOver,forkStudio=fork} = {}) {
+  const isolation = readIsolationProfile(options.env);
+  if (isolation) {
+    if (options.home !== isolation.paths.home || options.port !== isolation.ports.studio) throw new Error('Studio options do not match the isolated profile.');
+    if (lstatSync(join(options.home,'run.json'),{throwIfNoEntry:false})) throw Object.assign(new Error('An isolated run record already exists; takeover is disabled.'), { code: 'ISOLATED_RUN_EXISTS' });
+  } else await takeover(options.home, options.log);
+  let studio;
+  try {
+    studio = await forkStudio(options);
+  } catch (e) {
+    if (isolation) throw e;
+    if (e.code !== 'EADDRINUSE' && e.code !== 'EACCES') throw e;
+    options.log(`port ${options.port} is taken; Studio takes another\n`);
+    studio = await forkStudio({ ...options, port: 0 });
+  }
+  let quitting = false;
+  let exited = false, exitCode;
+  studio.child.once('exit', (code) => { exited = true; exitCode = code; if (!quitting) options.onExit(code); });
+  let quitPromise;
+  return {
+    ...studio,
+    /** Stop Studio: it writes its history first. */
+    quit() {
+      if (quitPromise) return quitPromise;
+      quitting = true;
+      return quitPromise = new Promise((done,reject) => {
+        if (exited) return exitCode === 0 ? done(undefined) : reject(new Error('Studio exit did not confirm preservation.'));
+        let forced = false;
+        const timer = setTimeout(() => { forced = true; studio.child.kill(); }, QUIT_WAIT_MS);
+        studio.child.once('exit', (code) => { clearTimeout(timer); if (forced || code !== 0) reject(new Error('Studio could not retire with preservation confirmed.')); else done(undefined); });
+        studio.child.postMessage({ type: 'quit' });
+      });
+    },
+  };
+}

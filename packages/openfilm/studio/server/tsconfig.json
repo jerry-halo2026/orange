@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    /* Our server sources are plain `.mjs` with `// @ts-check`: they are checked for the errors that matter (a wrong
+       property, a value that can be undefined, a call that cannot type) but not for annotation style. `strict` keeps
+       every real check on; these two only stop `tsc` demanding JSDoc on parameters and turning `catch (error)` into
+       `unknown` in files that have no types to give it. TypeScript sources in this package stay fully strict. */
+    "noImplicitAny": false,
+    "useUnknownInCatchVariables": false
+  },
+  "include": ["*.mjs", "providers/*.mjs", "../client.mjs"],
+  "exclude": ["*.test.mjs", "providers/*.test.mjs"]
+}

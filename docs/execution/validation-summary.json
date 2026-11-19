@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-07",
+  "upstreamSelectedChecks": {
+    "builds": 2,
+    "typecheckScopes": 5,
+    "tests": 52,
+    "scope": "unmodified OpenFilm pin only; not product integration"
+  },
+  "zhishang": {
+    "scope": "one company authentication request only",
+    "httpStatus": 200,
+    "code": 1,
+    "success": true,
+    "tokenPresent": true,
+    "elapsedMs": 206,
+    "accountKeyObtained": false,
+    "accountOrMediaQueries": 0,
+    "individualMaterialConnectivityVerified": false,
+    "secretsPersisted": false
+  },
+  "deepseekHarness": {
+    "installedVersion": "0.2.1-rc.5",
+    "originalAdapter": "dsh --profile acp",
+    "versionAndHelpTested": true,
+    "acpStarted": false,
+    "accountReadyVerified": false,
+    "actualModelCalls": 0,
+    "budgetCNY": 50,
+    "costControlVerified": false,
+    "reason": "ACP max-output/cost/tool boundaries not confirmed; stopped before initialization"
+  },
+  "fission": {
+    "sourceSnapshotVerified": true,
+    "buildOrMediaRun": false
+  },
+  "notVerified": [
+    "full-product-CI",
+    "new-auth-object-authorization",
+    "speech-cut",
+    "Fission-runtime-and-editable-handoff",
+    "Windows-Jianying",
+    "resource-cloud-distribution"
+  ]
+}

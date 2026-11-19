@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-07",
+  "reviewedCommit": "42119e82d2ab086cdc38707ee87fe5d7065164e4",
+  "reviewedTree": "52851820cb98daa399fac4b5403881dcd9ef6fc1",
+  "baseCommit": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73",
+  "scope": "121-file documentation realignment and fixed Fission source import; work branch publication only",
+  "reviews": [
+    {
+      "agent": "/root/docs_realign_commit_review",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "spec": "passed",
+      "quality": "no P1/P2 blockers",
+      "method": "read-only full change-list and targeted document/source verification; no execution"
+    },
+    {
+      "agent": "/root/publication_source_review",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "spec": "no P1/P2",
+      "securityQuality": "no publication blockers",
+      "method": "read-only candidate/scan/hash/source review; no execution"
+    }
+  ],
+  "verified": {
+    "fissionOriginalGitBlobs": 70,
+    "nestedGitOrMediaImported": false,
+    "defaultGitleaksVersion": "8.30.1",
+    "gitleaksFindings": 0,
+    "newDocumentLinksBroken": 0,
+    "privateSuppliedConfigExactMatches": 0,
+    "authoredWhitespaceCheck": "passed"
+  },
+  "preservedFormattingWarning": {
+    "fullDiffCheckExit": 2,
+    "items": [
+      "historical Markdown hard-break trailing spaces",
+      "original Fission CoreLogicTests.cs extra EOF blank line"
+    ],
+    "reason": "preserve original source/history; nonblocking only for this backup/review branch; full format NOT claimed passing"
+  },
+  "notApproved": [
+    "dev or main integration",
+    "tag or release",
+    "Fission runtime or media validation",
+    "third-party media redistribution",
+    "business feature completion"
+  ],
+  "recordNature": "automated non-author agent review, not human release sign-off"
+}

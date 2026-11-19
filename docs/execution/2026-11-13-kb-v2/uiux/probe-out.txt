@@ -1,0 +1,82 @@
+CONSOLE debug [vite] connecting...
+CONSOLE info %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+CONSOLE warning Failed to decode downloaded font: http://127.0.0.1:61267/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
+CONSOLE warning OTS parsing error: invalid sfntVersion: 1008821359
+PAGEERROR Cannot read properties of undefined (reading 'filter')
+LIST RESPONSE 200 {"authorization":{"layer":"public","reason":"demo"},"providerScope":"company","pageNo":1,"pageSize":20,"items":[{"videoId":{"value":"90001","sourceType":1,"source":"demo"},"observation":{"name":"城市夜景航拍 4K","coverUrl":"/covers/0.png","downloadCount":"120","collectCount":"20","accountName":"橙子影像","accountKey":"acct-1","createTime":"2026-11-10 18:21:00","duration":12,"fileSize":180000000,"oneLevelVideoType":{"id":10,"name":"城市"},"twoLevelVideoType":{"id":101,"name":"夜景"},"videoLabels":[{"id":1,"name":"4K"}],"videoState":{"id":1,"name":"已审核","frontColor":"#fff","backgroundColor":"#2f9e44"},"videoType":1}}],"total":1,"providerTotal":1,"totalIsProviderTotal":true,"filtered":{"inspected":1,"dropped":0},"grants":false}
+CONSOLE error WebSocket connection to 'ws://127.0.0.1:24678/?token=saBRL9dRQkbA' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+CONSOLE error [vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+PAGEERROR WebSocket closed without opened.
+TEXT
+已绑定账号：orange-demo
+解绑
+公司素材（全部）
+我的素材（我上传的）
+云管家素材
+城市
+夜景
+素材中心
+重试
+
+只读素材列表：封面与计数来自供应商；使用/下载会把文件真实下载一次到本地。 只读取元数据与封面，不请求任何原片。
+
+使用/下载会把文件真实下载一次到本地；完成后素材出现在「素材库」里。
+
+已绑定云管家账号：orange-demo（已认领）
+解绑
+
+来源
+全部
+云端
+素材库
+当前工程
+搜索
+应用
+主类目
+成片
+素材
+第三方
+图片
+文案
+一级分类
+全部
+城市
+二级分类
+全部
+夜景
+状态
+全部状态
+时长
+全部时长
+1 分钟以内
+1–5 分钟
+5–20 分钟
+20 分钟以上
+作者
+我的素材（我上传的）
+公司素材（全部）
+排序
+最新发布
+下载最多
+收藏最多
+标题升序
+公共标签
+云端读取失败：云端筛选已灰显，本地素材仍可用。
+4K
+选中本页
+过滤无权限
+已选 0 条
+云端 0 · 素材库 0 · 当前工程 0
+实体
+卡片
+列表
+
+素材服务已接通，但本次响应不可用；结果不作数。重试
+
+云端没有匹配的素材。
+
+正在读取素材…
+
+上一页
+第 1 页
+下一页

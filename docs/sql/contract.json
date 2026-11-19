@@ -1,0 +1,452 @@
+{
+  "schema": "contract/1",
+  "$comment": "数据面契约：迁移（docs/sql/007..010）与客户端（apps/api/src/supabase.ts）共同的唯一形状来源。`infra/migrate.mjs --contract` 把它与 pg_proc/information_schema 逐项双向比对：契约里的对象要匹配，库里多出来的函数/表也要报 DRIFT（G12）。",
+  "embedding": {
+    "from": "embedding.json",
+    "dims": 768
+  },
+  "roles": {
+    "anon": {
+      "powers": [],
+      "note": "无任何权限；漏 token 时必须 42501，不许静默 0 行"
+    },
+    "authenticated": {
+      "powers": [
+        "select",
+        "insert",
+        "update",
+        "delete",
+        "execute"
+      ],
+      "note": "RLS 生效，租户来自 JWT/成员表"
+    },
+    "service_role": {
+      "powers": [
+        "bypassrls"
+      ],
+      "note": "仅同步与分析写回；语句里仍显式过滤 company_key"
+    }
+  },
+  "tenant": {
+    "resolution": [
+      "jwt:app_metadata.company_key",
+      "guc:app.company_key (仅受信调用身份)",
+      "table:ops.tenant_member"
+    ],
+    "resolutionNote": "010 起 JWT claim 优先；GUC 只在 current_setting('role')（未设角色时回落 session_user）∈ {postgres, orange_app, service_role, supabase_admin} 时采信。",
+    "missing": {
+      "client": {
+        "code": "tenant-context-required",
+        "status": 401,
+        "note": "the client refuses to send a request whose token names no tenant"
+      },
+      "reads": {
+        "sqlstate": "42501",
+        "message": "tenant-context-required",
+        "note": "010 起 RLS 策略用严格判据 tenant_key_required()：没有租户上下文就报错（fail closed），不是静默 0 行"
+      },
+      "writes": {
+        "sqlstate": "42501",
+        "message": "tenant-context-required"
+      }
+    },
+    "mismatch": {
+      "behavior": "empty-set",
+      "note": "防探测，保持 006 原意"
+    }
+  },
+  "tables": {
+    "material": {
+      "pk": [
+        "company_key",
+        "env_id",
+        "video_id"
+      ],
+      "tenant": "company_key",
+      "soft_delete": "deleted_at"
+    },
+    "sync_state": {
+      "pk": [
+        "company_key",
+        "env_id",
+        "mode",
+        "account_key"
+      ],
+      "tenant": "company_key"
+    },
+    "wiki_source": {
+      "pk": [
+        "company_key",
+        "video_id",
+        "analyzer_ver"
+      ],
+      "tenant": "company_key"
+    },
+    "wiki_summary": {
+      "pk": [
+        "company_key",
+        "video_id"
+      ],
+      "tenant": "company_key",
+      "vector": "embedding"
+    },
+    "wiki_entity": {
+      "pk": [
+        "company_key",
+        "entity_id"
+      ],
+      "unique": [
+        [
+          "company_key",
+          "kind",
+          "slug"
+        ]
+      ],
+      "tenant": "company_key"
+    },
+    "wiki_edge": {
+      "pk": [
+        "company_key",
+        "edge_id"
+      ],
+      "tenant": "company_key"
+    },
+    "wiki_event": {
+      "pk": [
+        "company_key",
+        "event_id"
+      ],
+      "tenant": "company_key"
+    },
+    "media_doc": {
+      "pk": [
+        "company_key",
+        "media_key",
+        "analyzer_ver",
+        "shot_index"
+      ],
+      "tenant": "company_key",
+      "vector": "embedding",
+      "vectors": [
+        "embedding",
+        "embedding_4096"
+      ],
+      "version_columns": [
+        "embedding_ver",
+        "embedding_ver_4096"
+      ],
+      "note": "012 建表 + 013 把 shot_index 并入主键 + 014 加第二条向量列 + 015 给 4096 列自己的版本列：统一检索的派生索引层，gran=asset|shot 同表，同一素材同一版本的每个镜头各占一行（asset 行 shot_index 恒 0，故 asset 与第 0 帧 shot 必须用不同 analyzer_ver）；两条向量列并存（embedding 768 nomic / embedding_4096 4096 qwen3-embedding-8b），谁给了写谁，两条向量各带自己的模型版本（embedding_ver / embedding_ver_4096 —— 共用一列会让 768 的标签被 4096 的模型改写）；不放本地可用性（字节在哪台机器上，库不知道）"
+    },
+    "ops.schema_migrations": {
+      "pk": [
+        "version",
+        "target"
+      ],
+      "tenant": null
+    },
+    "ops.tenant_member": {
+      "pk": [
+        "user_id"
+      ],
+      "tenant": null
+    },
+    "orange_material_grant": {
+      "pk": [
+        "company_key",
+        "subject_id",
+        "account_key"
+      ],
+      "tenant": "company_key"
+    },
+    "orange_material_version": {
+      "pk": [
+        "company_key",
+        "version_id"
+      ],
+      "tenant": "company_key"
+    },
+    "orange_plan": {
+      "pk": [
+        "company_key",
+        "plan_id"
+      ],
+      "tenant": "company_key"
+    },
+    "orange_claim": {
+      "pk": [
+        "company_key",
+        "claim_id"
+      ],
+      "unique": [
+        [
+          "company_key",
+          "plan_id"
+        ]
+      ],
+      "tenant": "company_key"
+    },
+    "orange_delivery": {
+      "pk": [
+        "company_key",
+        "claim_id",
+        "delivery_id"
+      ],
+      "tenant": "company_key"
+    }
+  },
+  "rpc": {
+    "search_materials": {
+      "args": [
+        "p_company_key text",
+        "p_query text",
+        "p_filters jsonb",
+        "p_limit integer"
+      ],
+      "returns": "table",
+      "volatility": "stable",
+      "security": "invoker"
+    },
+    "upsert_wiki_summary": {
+      "args": [
+        "p_company_key text",
+        "p_row jsonb"
+      ],
+      "returns": "void",
+      "security": "invoker"
+    },
+    "upsert_wiki_source": {
+      "args": [
+        "p_company_key text",
+        "p_row jsonb"
+      ],
+      "returns": "void",
+      "security": "invoker"
+    },
+    "upsert_wiki_entity": {
+      "args": [
+        "p_company_key text",
+        "p_row jsonb"
+      ],
+      "returns": "void",
+      "security": "invoker"
+    },
+    "record_wiki_event": {
+      "args": [
+        "p_company_key text",
+        "p_row jsonb"
+      ],
+      "returns": "void",
+      "security": "invoker"
+    },
+    "wiki_video": {
+      "args": [
+        "p_company_key text",
+        "p_video_id text"
+      ],
+      "returns": "jsonb",
+      "budget": "card only"
+    },
+    "wiki_timeline": {
+      "args": [
+        "p_company_key text",
+        "p_video_id text",
+        "p_from numeric",
+        "p_to numeric"
+      ],
+      "returns": "jsonb",
+      "budget": "<=20 rows"
+    },
+    "wiki_shot": {
+      "args": [
+        "p_company_key text",
+        "p_video_id text",
+        "p_index integer"
+      ],
+      "returns": "jsonb",
+      "budget": "<=200 tokens"
+    },
+    "upsert_media_doc": {
+      "args": [
+        "p_row jsonb"
+      ],
+      "returns": "jsonb",
+      "security": "invoker",
+      "required": [
+        "media_key",
+        "gran",
+        "text"
+      ],
+      "conflict": [
+        "company_key",
+        "media_key",
+        "analyzer_ver",
+        "shot_index"
+      ],
+      "tenant": "session（tenant_key_required；p_row 里的 company_key 一律不看）",
+      "idempotent": "text 未变、调用方没给新版本、两条向量都没从空变非空 → 整行不动，updated_at 不刷新（015 起版本比较带「调用方给了才比」前缀：coexist 写只带 embedding_ver_4096，不该因为没带 embedding_ver 每轮都算一次写）",
+      "supersede": "同一 media_key + 同一 gran 内有更新的 analyzer_ver 落地 → 更旧行 embedding / embedding_4096 置空 + superseded_at（版本列不清：它记的是「这行曾经是哪条模型的答案」；按 created_at 判新旧，不比版本字符串）",
+      "notes": "粒度形状：gran='shot' 需要 shot_index>=0，gran='asset' 时 shot_index 必须为 0（缺省即 0，显式非 0 → 22023；表上 CHECK 兜底）。冲突目标是主键四列，同版本不同 shot_index 各占一行、互不覆盖。asset 行 shot_index 恒 0，因此 asset 文档与第 0 帧 shot 文档共用同一 analyzer_ver 时会撞主键，函数用 23505 明确拒绝。给了 embedding 就必须带 embedding_ver，给了 embedding_4096 就必须带 embedding_ver_4096（015 起各管各的列；缺了都是 23514），维度分别断言 768 / 4096；两条向量列并存，谁给了写谁，取代旧版本时两条向量一起清空。全量 4096 走 coexist（同 analyzer_ver、同一行两列并存）不会取代 768 —— 取代只在「新 analyzer_ver 落地」时发生"
+    },
+    "media_search": {
+      "args": [
+        "p_company_key text",
+        "p_query text",
+        "p_filters jsonb",
+        "p_embedding vector",
+        "p_limit integer"
+      ],
+      "returns": "table",
+      "volatility": "stable",
+      "security": "invoker",
+      "columns": [
+        "media_key",
+        "gran",
+        "video_id",
+        "shot_index",
+        "name",
+        "batch",
+        "product",
+        "gname",
+        "duration_ms",
+        "score",
+        "match_kind"
+      ],
+      "match_kind": [
+        "vector",
+        "ilike",
+        "trigram"
+      ],
+      "filters": [
+        "batch",
+        "product",
+        "gname",
+        "durationMaxMs",
+        "sourceKind"
+      ],
+      "tokenize": "p_query 按空白切词（regexp_split_to_array(btrim(p_query), '\\s+')），词法两路要求每个 token 都命中：ilike=每个 token 子串命中（text/name ILIKE，或 batch/product/gname 等于该 token），trigram=每个 token 至少一档（子串或 token <% text 的 word-trigram）；词法分数=命中 token 数/总数（全命中故恒 1.0）；单 token 时与 014 版本逐字等价（谓词与 similarity 分数都不变）；空/纯空白查询不加词法条件（只回向量路）",
+      "notes": "p_embedding 为 null 时只走词法（match_kind 如实标 ilike/trigram，不许伪装成语义）；按 media_key 去重（shot 优先，同 gran 取最高分，同分时 vector > ilike > trigram —— 确定性子串命中排在相似度估计前面；末位键 shot_index 做稳定 tiebreak —— 同一素材有 N 个镜头行时仍只回 1 行）；返回列不含本地可用性"
+    },
+    "orange_resolve_materials": {
+      "args": [
+        "p_company_key text",
+        "p_video_ids text[]"
+      ],
+      "returns": "table",
+      "columns": [
+        "versionId",
+        "contentSha256",
+        "kind",
+        "durationSec",
+        "probeRevision"
+      ],
+      "client_checks": [
+        "versionId uuid",
+        "contentSha256 64hex",
+        "kind video|still|sound",
+        "durationSec finite>=0",
+        "probeRevision int"
+      ]
+    },
+    "orange_preflight": {
+      "args": [
+        "p_company_key text",
+        "p_plan_id uuid",
+        "p_content_key text"
+      ],
+      "returns": "jsonb",
+      "client_checks": [
+        "prepare-required|duplicate: 恰好 1 个键 {status}",
+        "claim: 完整 claimEnvelope（status ∈ 五态，不是 'claim'）"
+      ]
+    },
+    "orange_freeze_claim": {
+      "args": [
+        "p_company_key text",
+        "p_plan_id uuid",
+        "p_content_key text",
+        "p_history_count integer"
+      ],
+      "returns": "jsonb"
+    },
+    "orange_claim_status": {
+      "args": [
+        "p_company_key text",
+        "p_claim_id uuid"
+      ],
+      "returns": "jsonb"
+    },
+    "orange_start_attempt": {
+      "args": [
+        "p_company_key text",
+        "p_claim_id uuid"
+      ],
+      "returns": "jsonb"
+    },
+    "orange_cancel_claim": {
+      "args": [
+        "p_company_key text",
+        "p_claim_id uuid"
+      ],
+      "returns": "jsonb"
+    },
+    "orange_mark_unknown": {
+      "args": [
+        "p_company_key text",
+        "p_claim_id uuid"
+      ],
+      "returns": "jsonb"
+    },
+    "orange_record_delivery": {
+      "args": [
+        "p_company_key text",
+        "p_claim_id uuid",
+        "p_delivery_id uuid"
+      ],
+      "returns": "jsonb"
+    }
+  },
+  "$internalComment": "public 下这些函数不是 RPC 面，但必须存在；--contract 会把库里任何未出现在 rpc 或 internal 的函数判成 DRIFT（反向比对），并断言 internal 清单一个不少。",
+  "internal": [
+    "upsert_summary",
+    "upsert_entity",
+    "record_event",
+    "app_uid",
+    "app_tenant_key",
+    "app_company_key",
+    "tenant_key_required",
+    "claim_envelope",
+    "claim_require_tenant"
+  ],
+  "claimEnvelope": {
+    "required": [
+      "claimId",
+      "planId",
+      "status",
+      "contentKey",
+      "historyCount",
+      "executionReady",
+      "frozenPlan"
+    ],
+    "status": [
+      "reserved",
+      "running",
+      "unknown",
+      "cancel-requested",
+      "succeeded"
+    ],
+    "executionReady": false,
+    "frozenPlan.version": 1,
+    "errorMessage": "^orange:[a-z-]+$",
+    "idempotencyConflict": 409
+  },
+  "budgets": {
+    "search_materials": "limit<=100, 20 default; 20x50 tokens max",
+    "wiki_video": "card only",
+    "wiki_timeline": "<=20 rows",
+    "wiki_shot": "<=200 tokens",
+    "wiki_entity": "<=800 tokens",
+    "media_search": "limit<=100（默认 20）；每路候选 k=least(4*limit,200)，按 media_key 去重后再取 limit",
+    "media_search_4096": "同 media_search（limit<=100，默认 20，每路 k=least(4*limit,200)）；向量候选来自 4000 维 halfvec 前缀的部分 HNSW，分数按完整 4096 维算",
+    "media_doc": "text 是向量化的原文（可重算）；embedding / embedding_4096 都是导数，可被 superseded 置空"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-cursor-click.html",
+    "time": [
+      0,
+      3
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--cu-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--cu-font\"}]"
+    }
+  },
+  "durationMs": 3000,
+  "w": 700,
+  "h": 380
+}

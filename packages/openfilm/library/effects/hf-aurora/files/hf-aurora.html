@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Aurora</title>
+    <!--
+      An aurora background over a night sky, after the family of HyperFrames' background blocks
+      (github.com/heygen-com/hyperframes, Apache-2.0, pinned v0.9.60). Their WebGPU blocks need a GPU adapter our
+      host has not (probe: navigator.gpu -> "no adapter"), so this one is our own WebGL2 shader; it keeps
+      preserveDrawingBuffer so the host's capture sees the frame, and it draws only in frame(t).
+    -->
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #04060c; }
+      canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+    </style>
+  </head>
+  <body>
+    <canvas id="c" width="1920" height="1080"></canvas>
+    <script>
+      const canvas = document.getElementById('c');
+      const gl = canvas.getContext('webgl2', { preserveDrawingBuffer: true, antialias: false, alpha: false });
+      const VS = `#version 300 es
+        in vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
+      const FS = `#version 300 es
+        precision highp float;
+        uniform vec2 uRes; uniform float uT;
+        out vec4 outColor;
+        float hash(vec2 v) { return fract(sin(dot(v, vec2(127.1, 311.7))) * 43758.5453); }
+        float noise(vec2 v) {
+          vec2 i = floor(v), f = fract(v);
+          float a = hash(i), b = hash(i + vec2(1, 0)), c = hash(i + vec2(0, 1)), d = hash(i + vec2(1, 1));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+        }
+        float fbm(vec2 v) {
+          float s = 0.0, a = 0.5;
+          for (int i = 0; i < 5; i++) { s += a * noise(v); v *= 2.02; a *= 0.5; }
+          return s;
+        }
+        void main() {
+          vec2 uv = gl_FragCoord.xy / uRes;
+          vec2 p = vec2(uv.x * 1.8, uv.y);
+          /* night sky: a soft vertical gradient with faint stars */
+          vec3 col = mix(vec3(0.015, 0.03, 0.075), vec3(0.02, 0.05, 0.11), uv.y);
+          vec2 g = floor(uv * vec2(900.0, 520.0));
+          float star = step(0.9965, hash(g));
+          col += star * vec3(0.7, 0.82, 1.0) * (0.55 + 0.45 * sin(uT * 2.0 + hash(g) * 30.0));
+          /* aurora bands, drifting sideways */
+          float w = fbm(vec2(p.x * 1.4 + uT * 0.08, p.y * 2.6 - uT * 0.12));
+          float band = smoothstep(0.42, 0.72, w) * smoothstep(1.0, 0.25, uv.y);
+          float ribbon = smoothstep(0.35, 0.85, fbm(vec2(p.x * 0.9 - uT * 0.05, p.y * 1.4 + 3.0)));
+          vec3 green = vec3(0.16, 0.95, 0.62), violet = vec3(0.55, 0.35, 1.0);
+          col += mix(green, violet, ribbon) * band * 0.9;
+          /* a horizon glow */
+          col += vec3(0.10, 0.25, 0.35) * smoothstep(0.28, 0.0, uv.y) * 0.6;
+          outColor = vec4(col, 1.0);
+        }`;
+      let uRes, uT, program, vao;
+      if (gl) {
+        const compile = (type, src) => {
+          const sh = gl.createShader(type);
+          gl.shaderSource(sh, src); gl.compileShader(sh);
+          if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh) || 'shader');
+          return sh;
+        };
+        program = gl.createProgram();
+        gl.attachShader(program, compile(gl.VERTEX_SHADER, VS));
+        gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FS));
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || 'link');
+        gl.useProgram(program);
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+        const loc = gl.getAttribLocation(program, 'p');
+        vao = gl.createVertexArray();
+        gl.bindVertexArray(vao);
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        uRes = gl.getUniformLocation(program, 'uRes');
+        uT = gl.getUniformLocation(program, 'uT');
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      function draw(t) {
+        if (!gl) { document.body.style.background = '#04060c'; return; }
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uT, Math.max(0, t));
+        gl.bindVertexArray(vao);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }
+      window.film = {
+        duration: 8, width: 1920, height: 1080, ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

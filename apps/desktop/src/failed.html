@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>OrangeFilm</title>
+<style>
+  :root { color-scheme: light dark; }
+  html, body { height: 100%; margin: 0; }
+  body { display: grid; place-items: center; background: #e9e9eb; color: #161619; font: 14px/1.6 -apple-system, system-ui, sans-serif; -webkit-app-region: drag; }
+  @media (prefers-color-scheme: dark) { body { background: #111114; color: #ebebed; } }
+  main { max-width: 460px; padding: 24px; }
+  h1 { font-size: 16px; margin: 0 0 8px; }
+  p { margin: 0 0 8px; opacity: .8; }
+  code { font: 12px/1.5 ui-monospace, monospace; word-break: break-word; }
+</style>
+</head>
+<body>
+<!-- Studio did not start, so there is no page to show: what went wrong, and where the log is (src/main.mjs) -->
+<main>
+  <h1>OrangeFilm could not start its editor</h1>
+  <p><code id="message"></code></p>
+  <p id="guidance">Quit OrangeFilm and open it again. If it happens again, the details are in the app's logs folder (studio.log).</p>
+</main>
+<script>const query = new URLSearchParams(location.search); document.getElementById('message').textContent = query.get('message') || ''; if (query.get('code') === 'ISOLATED_RUN_EXISTS') document.getElementById('guidance').textContent = '请先关闭同一测试会话的其他 Orange 窗口。若仍无法启动，请联系测试负责人使用新的隔离测试会话和端口；保留原会话、运行记录和工程，不要删除。';</script>
+</body>
+</html>

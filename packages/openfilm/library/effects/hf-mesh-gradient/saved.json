@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-mesh-gradient.html",
+    "time": [
+      0,
+      8
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"First\",\"type\":\"var\",\"var\":\"--g1\"},{\"name\":\"Second\",\"type\":\"var\",\"var\":\"--g2\"},{\"name\":\"Third\",\"type\":\"var\",\"var\":\"--g3\"},{\"name\":\"Ground\",\"type\":\"var\",\"var\":\"--base\"}]"
+    }
+  },
+  "durationMs": 8000,
+  "w": 1920,
+  "h": 1080
+}

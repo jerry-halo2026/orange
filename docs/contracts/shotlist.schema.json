@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "orange/shotlist/1",
+  "$comment": "镜头清单：分析产物的事实层。单位一律毫秒；index 从 0 连续；字段只增不改（变更即新版本 orange/shotlist/2）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "videoId", "dictionaryVersion", "shots"],
+  "properties": {
+    "schema": { "const": "orange/shotlist/1" },
+    "videoId": { "type": "string", "minLength": 1 },
+    "dictionaryVersion": { "type": "integer", "minimum": 1 },
+    "shots": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["index", "startMs", "endMs", "description", "evidence"],
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "startMs": { "type": "integer", "minimum": 0 },
+          "endMs": { "type": "integer", "minimum": 0 },
+          "shotSize": { "enum": ["close", "medium-close", "medium", "wide", "extreme-wide", "unknown"] },
+          "scene": { "type": "array", "items": { "$ref": "#/$defs/tagRef" } },
+          "sellingPoints": { "type": "array", "items": { "$ref": "#/$defs/tagRef" } },
+          "rhythm": { "enum": ["slow", "medium", "fast", "unknown"] },
+          "description": { "type": "string", "maxLength": 500 },
+          "evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["frames"],
+            "properties": {
+              "frames": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "minItems": 1, "maxItems": 12 },
+              "transcriptRangeMs": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "minItems": 2, "maxItems": 2 }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "tagRef": { "type": "string", "pattern": "^(cloud:[A-Za-z0-9_-]+|local:[a-z0-9-]+(:[a-z0-9-]+)?)$" }
+  }
+}

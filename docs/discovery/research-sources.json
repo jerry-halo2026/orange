@@ -1,0 +1,88 @@
+{
+  "recordedAt": "2026-11-04T08:11:29.973Z",
+  "purpose": "Discovery sources and preservation record, not implementation approval",
+  "referenceRepositories": [
+    {
+      "name": "openfilm",
+      "url": "https://github.com/openfilm/openfilm.git",
+      "path": "D:\\dev\\orange\\.research\\upstream\\openfilm",
+      "commit": "2e18a4bdf54647b2ece3c0975a6f9573720c7821",
+      "clean": true,
+      "shallow": true,
+      "originMatches": true,
+      "licenseFiles": [
+        "LICENSE",
+        "THIRD_PARTY_NOTICES.md",
+        "TRADEMARK.md"
+      ]
+    },
+    {
+      "name": "capcut-mate",
+      "url": "https://github.com/Hommy-master/capcut-mate.git",
+      "path": "D:\\dev\\orange\\.research\\upstream\\capcut-mate",
+      "commit": "a20b54af0a2eab946a7a773b003f642a3534003b",
+      "clean": true,
+      "shallow": true,
+      "originMatches": true,
+      "licenseFiles": [
+        "LICENSE",
+        "NOTICE"
+      ]
+    },
+    {
+      "name": "jevclip",
+      "url": "https://github.com/cclank/jevclip.git",
+      "path": "D:\\dev\\orange\\.research\\upstream\\jevclip",
+      "commit": "3d4b13f6ecbb7f56cf212c5040b4b4e19d83967a",
+      "clean": true,
+      "shallow": true,
+      "originMatches": true,
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    }
+  ],
+  "legacyArchive": {
+    "path": "D:/dev/orange/_archive/legacy-demo-2026-11-04",
+    "fileCount": 131,
+    "manifestPath": "D:\\dev\\orange\\_archive\\legacy-demo-2026-11-04\\manifest.json",
+    "snapshotOnly": true,
+    "offDeviceBackup": false
+  },
+  "gitBaseline": {
+    "branch": "main",
+    "commits": 0,
+    "indexedEntries": 282,
+    "indexedIgnoredEntries": 151,
+    "indexUntouched": true,
+    "remoteConfigured": false
+  },
+  "supabase": {
+    "pluginInstalled": true,
+    "pluginEnabled": true,
+    "projectConnectionVerified": true,
+    "verifiedProject": {
+      "name": "orange",
+      "region": "ap-northeast-2",
+      "status": "ACTIVE_HEALTHY",
+      "postgresMajorVersion": 17
+    },
+    "readOnlyCheck": "list_projects succeeded after tools became available",
+    "cloudMutationsPerformed": false,
+    "publicSchemaTableCount": 0,
+    "securityAdvisors": {
+      "warningCount": 2,
+      "affectedFunction": "public.rls_auto_enable()",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "issue": "SEC-001",
+      "exploitabilityVerified": false,
+      "changesApplied": false
+    }
+  },
+  "productCodeModified": false,
+  "dependenciesInstalled": false,
+  "githubRemoteForksCreated": false
+}

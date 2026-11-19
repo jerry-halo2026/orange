@@ -1,0 +1,15 @@
+{
+  "schema": "embedding/1",
+  "$comment": "向量维度的唯一来源：迁移 007 由本文件生成，migrate --check 三方比对（库列 typmod / 本文件 / 模型清单）。换模型即改本文件并出新的迁移，不就地改旧迁移。",
+  "model": "text-embedding-nomic-embed-text-v1.5",
+  "dims": 768,
+  "endpoint": "http://127.0.0.1:1235/v1/embeddings",
+  "native": {
+    "available": false,
+    "model": "multilingual-e5-small",
+    "dims": 384,
+    "$comment": "packages/openfilm/library/models 当前为空；models.json 声明的 118MB onnx 不在 git。安装获批后在 010 迁移切到 384。"
+  },
+  "vectorColumn": "wiki_summary.embedding",
+  "index": { "kind": "hnsw", "opclass": "vector_cosine_ops", "m": 16, "ef_construction": 64 }
+}

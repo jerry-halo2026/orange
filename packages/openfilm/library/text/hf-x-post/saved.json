@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-x-post.html",
+    "time": [
+      0,
+      5
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Name\",\"type\":\"text\",\"at\":\".x-name\"},{\"name\":\"Handle\",\"type\":\"text\",\"at\":\".x-handle\"},{\"name\":\"Words\",\"type\":\"text\",\"at\":\".x-text\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--x-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--x-font\"}]"
+    }
+  },
+  "durationMs": 5000,
+  "w": 760,
+  "h": 320
+}

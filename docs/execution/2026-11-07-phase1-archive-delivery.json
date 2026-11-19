@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-07",
+  "state": "plan-proposed-and-reviewed; archive-pushed; local-ref-cleanup-partial",
+  "sourceBaseline": "e6ed48764320c537778f052b3083a1f935125771",
+  "plan": {
+    "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+    "sha256": "598c0ccd707f0222a19d6ea2412da8996915124fffcea121fb2bdad37ab768f9",
+    "reviewer": "/root/phase1_plan_review",
+    "spec": "passed",
+    "executability": "passed after closing original P1 in plan",
+    "closedP1": "all original film/caption writers, Undo and committed-closure readers coordinated; external writes and crash recovery conflict-safe; implementation still unverified",
+    "EthanApproval": "pending",
+    "implementationStarted": false
+  },
+  "archive": {
+    "remote": "https://github.com/jerry-halo2026/orange",
+    "branch": "codex/archive-consolidated-20261107",
+    "commit": "1e98dc69757859ab10b0333dd04242fb9c1c4c54",
+    "tree": "ddadeab8888811aa12ddf2cc0ddba88f2e93f1c0",
+    "remoteReadbackMatched": true,
+    "soleParent": "e6ed48764320c537778f052b3083a1f935125771",
+    "legacyCommitAncestryPublished": false,
+    "snapshots": 5,
+    "sourceRefCoverageAtAudit": 36,
+    "legacyUniqueCommitsBackedUpPrivately": 78,
+    "redactions": "4 legacy snapshots x 4 documents x 17 URL instances per snapshot; all other source bytes preserved",
+    "reviewer": "/root/archive_publication_review",
+    "spec": "passed; read-only source collection, not product integration",
+    "security": "passed after private URL removal and false-positive review"
+  },
+  "verification": {
+    "archiveTreeEntries": 3080,
+    "uniqueArchiveBlobs": 2876,
+    "privateConfigurationExactValueHits": 0,
+    "privateVendorDocumentationURLs": 0,
+    "defaultGitleaksVersion": "8.30.1",
+    "defaultFullReachableHistoryScanExit": 1,
+    "defaultScanFindings": 30,
+    "findingsDisposition": "all 30 independently reviewed nonsecret fixtures/hash or dictionary IDs; identical positions to existing public baseline; NOT a zero-findings claim",
+    "sourceLegacyOnlyScan": "8 findings independently reviewed as commit/hash pins; original old ancestry still NOT published due private links",
+    "planOnlyDefaultScanExit": 0,
+    "documentLinksChecked": 37,
+    "brokenLinks": 0,
+    "authoredDiffWhitespace": "passed",
+    "snapshotDiffs": "current tree exact; each legacy tree differs only at 4 declared redacted Markdown paths",
+    "verifierCorrections": "private verifier syntax and Git Unicode-quoted path comparison fixed; NUL-path comparison and batch recheck passed; source candidate unchanged",
+    "productTestsRunThisTurn": false
+  },
+  "privateRecovery": {
+    "location": "E:/CodexData/archives/orange-20261107",
+    "bundle": "all-local-branches.bundle",
+    "bundleSHA256": "bbacaa7a4a5a24858929e091d7574839de7550201a1dee24ecda568edb51e4b4",
+    "bundleBytes": 56165820,
+    "bundleVerify": "passed; complete with no prerequisites",
+    "independentRestoreRefs": 36,
+    "restoreFsckExit": 0,
+    "WIPFilesCopiedAndSHA256Verified": 4,
+    "ignoredDataBackedUp": false,
+    "privateArtifactsUploaded": false
+  },
+  "cleanup": {
+    "deletedUnoccupiedLocalRefs": [
+      {"ref":"codex/orange-baseline","originalCommit":"405b45f322e29e097dca57efef6c0be90e95f699"},
+      {"ref":"codex/orange-c-auth-g1","originalCommit":"285cd55513acf819a2790e28c82481a845433395"},
+      {"ref":"codex/orange-g2-source","originalCommit":"c5f9d91a17dd30576d8a22873508d5bd825eea62"}
+    ],
+    "guards": "remote archive matched, source ref expected-OID compare-and-delete, no worktree occupancy, each exact ref restored and readable in private restore repository",
+    "remainingLocalBranches": 34,
+    "remainingWorktrees": 39,
+    "worktreesArchived": 0,
+    "diskSpaceReclaimed": "not claimed",
+    "nativeToolBlocker": "list_artifacts returned Transport closed; managed identity unavailable; no manual deletion/prune bypass",
+    "otherHolds": ["W36 uncommitted work preserved but not reviewed", "W19-W22 index metadata change cause unproven", "necessary ignored data requires classification/private preservation"],
+    "devUnchanged": "dcb44a28d895dd3a59e9429644116ae90b125fd2",
+    "OpenFilmBaselineUnchanged": "7713d38c8ddc860e1b8e517bb8b0f180988f8f73",
+    "originalMainHeadSHA256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
+    "originalIndexSHA256": "c8150ffb1e42a8d78675d7ce00345596746ea7257235f8956bcf4c84aaf534d7"
+  },
+  "next": "Ethan confirms phase-one plan; then bounded continuous execution. Missing personal binding pauses only T04.b. No new shell/UI, no main/tag/release or production write."
+}

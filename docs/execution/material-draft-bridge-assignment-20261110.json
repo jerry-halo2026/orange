@@ -1,0 +1,36 @@
+{
+  "taskId": "material-draft-bridge",
+  "date": "2026-11-10",
+  "classification": "native-extension",
+  "status": "local-commit-pending-review",
+  "objective": "Share untrusted material selection intent across native desktop tabs within one verified account session; never grant material access.",
+  "devBaseline": "28f00e81b23a38851bc0772a602487c63c08e7cc",
+  "workingBaseline": "ab200746acc7a92b68557c6a762eb161595754db",
+  "writer": "/root",
+  "model": "gpt-6.1-terra",
+  "effort": "not-reported",
+  "interfaces": [
+    "openfilmNative.materialDraft.read({generation})",
+    "openfilmNative.materialDraft.change({generation,lease,baseRevision,operation})",
+    "desktop:material-draft event {generation,revision,items}; no lease in event"
+  ],
+  "boundaries": [
+    "Only current native main-frame pages while Auth active; generation and short-lived session lease must match.",
+    "Verified scope and generation bind the session; temporary lock seals while preserving intent, confirmed retirement clears intent and rotates lease.",
+    "Only validated local project-relative asset references or cloud IDs are stored; no URL, credentials, media bytes or grant.",
+    "Concurrent edits use revision conflict; broadcast failure cannot silently overwrite."
+  ],
+  "tests": {
+    "command": "node --test --test-concurrency=1 auth-generation/material-draft-store/material-draft-ipc/material-draft-main-lifecycle/desktop-auth suites",
+    "result": "74 passed, 0 failed, 0 skipped; synthetic accounts, actual extracted native main callbacks and isolated owned fixtures",
+    "receiptSha256": "bd8600e42f86e7a55abb9439336d8fa18941206422ec2b538b8cdf26e7899988",
+    "typecheck": "all workspace typechecks passed",
+    "build": "Electron shell build passed"
+  },
+  "limitations": [
+    "Requires integration with the independently developed UI adapter and exact-commit non-author review.",
+    "Real Windows Electron cross-tab A/B, revocation and delayed IPC delivery remain unverified.",
+    "The draft is not a verified asset version, material permission, file locator capability or Fission input."
+  ],
+  "integration": "not integrated to dev"
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=780, height=220" />
+    <title>Comment card</title>
+    <!--
+      A social card, after HyperFrames' `yt-comment-card`.
+      OpenFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 780px; height: 220px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --c-accent: #ff0033; --c-ink: #f1f1f1; --c-card: #212121; --c-muted: #aaaaaa; --c-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; display: flex; align-items: center; }
+      .c-card { width: 760px; background: var(--c-card); border-radius: 14px; padding: 18px 22px;
+                display: flex; gap: 14px; box-shadow: 0 18px 44px rgba(0,0,0,.5); will-change: transform, opacity; }
+      .c-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--c-accent); }
+      .c-main { display: flex; flex-direction: column; gap: 6px; }
+      .c-name { font-size: 18px; font-weight: 600; color: var(--c-ink); }
+      .c-name span { color: var(--c-muted); font-weight: 400; font-size: 16px; }
+      .c-text { font-size: 20px; line-height: 1.35; color: var(--c-ink); }
+      .c-foot { font-size: 15px; color: var(--c-muted); }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="card" class="c-card">
+      <div class="c-avatar"></div>
+      <div class="c-main">
+        <div class="c-name">Ada Lovelace <span>· 2 hours ago</span></div>
+        <div class="c-text">This changed how I cut every video.</div>
+        <div class="c-foot">1.2K likes · Reply</div>
+      </div>
+    </div></div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const card = document.getElementById('card');
+      function draw(t) {
+        const p = out3(at(t, 0.1, 0.55));
+        card.style.transform = `translateY(${(20 * (1 - p)).toFixed(2)}px)`;
+        card.style.opacity = String(p);
+      }
+      const DURATION = 4.5;
+
+      window.film = {
+        duration: DURATION,
+        width: 780,
+        height: 220,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

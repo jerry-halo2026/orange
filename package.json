@@ -1,0 +1,39 @@
+{
+  "name": "openfilm-monorepo",
+  "private": true,
+  "description": "OrangeFilm: proprietary video production workspace. The `openfilm` package (the format, the CLI and Studio), the desktop app, and what the clients share with the OrangeFilm service.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "pnpm --filter openfilm dev",
+    "dev:desktop": "node scripts/dev-desktop.mjs",
+    "dev:all": "node scripts/dev-all.mjs",
+    "material:index": "node packages/openfilm/scripts/material-index-bootstrap.mjs --status",
+    "prepare": "node scripts/brand-codegen.mjs",
+    "brand": "node scripts/brand-codegen.mjs",
+    "brand:check": "node scripts/brand-codegen.mjs --check",
+    "build": "node scripts/brand-codegen.mjs && pnpm --filter openfilm build:ui && pnpm --filter @openfilm/desktop build:shell",
+    "test": "node scripts/test-workspace.mjs && node scripts/gate-test-coverage.mjs",
+    "test:scripts": "node --test scripts/*.test.mjs",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "audit:public": "node scripts/audit-public.mjs",
+    "license:header": "node scripts/license-header.mjs --write",
+    "check:pack": "node scripts/check-pack.mjs",
+    "changeset": "changeset",
+    "examples:sync": "node scripts/sync-examples.mjs"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "0.5.2",
+    "@changesets/cli": "2.31.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "zod@>=4 <4.6.6": "^4.6.6",
+      "undici@>=8 <8.12.2": "^8.12.2"
+    }
+  }
+}

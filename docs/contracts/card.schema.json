@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "orange/card/1",
+  "$comment": "素材纪要卡。facets 是 tag.schema.json 的数组；status 只能由人推进（reviewed_by 在库层校验），模型产出只能是 candidate。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "videoId", "oneLine", "status", "confidence", "facets"],
+  "properties": {
+    "schema": { "const": "orange/card/1" },
+    "videoId": { "type": "string", "minLength": 1 },
+    "oneLine": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "bestClip": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startMs", "endMs"],
+      "properties": {
+        "startMs": { "type": "integer", "minimum": 0 },
+        "endMs": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "status": { "enum": ["candidate", "trusted", "disputed"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "facets": { "type": "array", "maxItems": 40, "items": { "$ref": "tag.schema.json" } }
+  }
+}

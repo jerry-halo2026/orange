@@ -1,0 +1,36 @@
+{
+  "taskId": "standalone-auth-boundary",
+  "assignmentRevision": 1,
+  "date": "2026-11-10",
+  "classification": "native-extension",
+  "objective": "Preserve UI state during temporary auth lock and prevent previous account editor/chat state from appearing after confirmed account retirement.",
+  "devBaseline": "28f00e81b23a38851bc0772a602487c63c08e7cc",
+  "workingBaseline": "1ba6b14d7257bae3bcfd36ff9874efe062fbc0ba",
+  "dependency": "Original desktop Auth retirement and native host/preload interfaces from committed candidate c859d17; source pin in discovery/16.",
+  "author": "/root; inherited prior root WIP verified against local preservation snapshot",
+  "model": "gpt-6.1-terra",
+  "effort": "not-reported",
+  "writeSet": [
+    "apps/desktop/chat/src/mount.tsx",
+    "apps/desktop/shell/Login.tsx",
+    "apps/desktop/shell/main.tsx",
+    "apps/desktop/shell/auth-generation.ts",
+    "apps/desktop/src/main.mjs",
+    "apps/desktop/src/preload.cjs",
+    "apps/desktop/src/auth-generation.test.mjs"
+  ],
+  "tests": {
+    "command": "node --test --test-concurrency=1 auth-generation/auth-service/desktop-auth/environment/isolation suites",
+    "result": "225 tests: 224 passed, 0 failed, 1 skipped (platform-specific PATH case)",
+    "receiptSha256": "79225b11728d0142d1176f1daa9250cfc51f1e8169c50b9aacc66f76cd0049a3",
+    "typecheck": "all workspace typechecks passed",
+    "build": "original Studio UI and Electron shell build passed"
+  },
+  "review": "pending non-author review of exact commit",
+  "limitations": [
+    "Windows real A/B, revocation and actual React/IPC reordering remain unverified",
+    "does not enable independent Fission batch or cloud/local rights"
+  ],
+  "resources": "Synthetic accounts and isolated owned test directory; no cloud business writes, model calls, or media upload.",
+  "integration": "not integrated to dev"
+}

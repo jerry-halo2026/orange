@@ -1,0 +1,20 @@
+{
+  "name": "rea-video",
+  "title": "分析组件（rea-video）",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "source": "https://github.com/madebyollin/rea-video",
+  "requires": {
+    "python": ">=3.10"
+  },
+  "entry": "rea_video/__main__.py",
+  "invoke": ["-m", "rea_video"],
+  "install": {
+    "into": "services/rea-video",
+    "sizeMB": 180,
+    "onDemand": true,
+    "note": "首次使用分析功能时按需安装到应用数据目录，不随安装包分发。"
+  },
+  "provides": ["analyze"],
+  "readOnly": true
+}

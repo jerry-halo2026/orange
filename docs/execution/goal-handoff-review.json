@@ -1,0 +1,167 @@
+{
+  "date": "2026-11-07",
+  "scope": "documentation-only native-first platform and pilot-goal handoff",
+  "baselineCommit": "3a29a38ea35e488f4769927d816721e19e238076",
+  "reviewedFiles": 27,
+  "fileListSHA256": "6db0c75099221bd725b190e1173e31c5587db925a00f29a171e3c115c6fe26d0",
+  "bindingFormat": "PowerShell Sort-Object path; path SPACE UPPERCASE_SHA256; joined LF without trailing LF",
+  "reviewer": "/root/handoff_package_review",
+  "model": "gpt-6-astra",
+  "reasoningEffort": "high",
+  "spec": "PASS",
+  "quality": "PASS",
+  "closedFindings": [
+    "PG12 pre-release candidate; N7 only after separate publication approval",
+    "historical HIST-T versus current T/U and E-case mapping",
+    "Word endSec optional; actual transcripts source"
+  ],
+  "validation": {
+    "defaultGitleaksVersion": "8.30.1",
+    "relativeLinks": 219,
+    "productTestsExecuted": false,
+    "newGoalCreated": false,
+    "brokenLinks": 0,
+    "PG": 12,
+    "V": 61,
+    "productCodeChanged": false,
+    "documentSnapshotScanExit": 0,
+    "diffCheckExit": 0,
+    "jsonParsed": 3,
+    "historicalCRecordsUnchanged": 89,
+    "speechChecks": 8,
+    "FR": 11
+  },
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "8df50d5a322ab1d2418a3c3d42b4a20c937a746faaa936d5a2d21284da27bbb1"
+    },
+    {
+      "path": "docs/06_橙子生产级重构PRD.md",
+      "sha256": "f0f8086fd5a46cc6ca26356283a3bea6b22831efba6122a94911c941609c38b6"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "8673ba35440a6c4aef3b6560d55db82e815c24392570f94ae6565e534700f840"
+    },
+    {
+      "path": "docs/architecture/overall-design.md",
+      "sha256": "697ff4ea5eca00fe1792b62f0aba066d05de42190db0d92fa3cbd71f6feb4be2"
+    },
+    {
+      "path": "docs/discovery/00_讨论基线与决策台账.md",
+      "sha256": "961aea7c57b8bf4f42e8dc5fce78c40da31e3544c2fc7d82c7be15539323bdec"
+    },
+    {
+      "path": "docs/discovery/01_工程治理与证伪框架.md",
+      "sha256": "41b5393baeb86f5f7ce679eeccc23e99c213a0824f88befd17d9d9f439523405"
+    },
+    {
+      "path": "docs/discovery/02_历史组合去重与容量评估.md",
+      "sha256": "19882aaab21e98e183b6e8a72c664572b4a682a622d3a8f436c3666508a45575"
+    },
+    {
+      "path": "docs/discovery/03_交接业务复核与账号映射.md",
+      "sha256": "1a3fdf8a9dce417490b7713b12a28e92decd46460a5ca0401515e737defa90c9"
+    },
+    {
+      "path": "docs/discovery/04_智尚接口能力与系统协同.md",
+      "sha256": "1ca6434b12f03d2c2861e02a040bb57b47837071421184c0587bf366bb1282c9"
+    },
+    {
+      "path": "docs/discovery/05_智尚只读验证与身份边界.md",
+      "sha256": "001862a1dae215b52b0919582a7faeac458ea9b29d0b4b685b82d406bc508eaf"
+    },
+    {
+      "path": "docs/discovery/06_整体架构与业务闭环.md",
+      "sha256": "5ef5dc845cdcd2cfff4acc59a2e28a3bbd20616b13ffe65f8257a4d1b61e4346"
+    },
+    {
+      "path": "docs/discovery/07_统一数据契约草案.md",
+      "sha256": "8912ed209d06ccdfe55fb640bbf20fb09fd64fa60ae735f43df0891f2a6b600b"
+    },
+    {
+      "path": "docs/discovery/08_整体方案审视与缺口清单.md",
+      "sha256": "3285ecafcaf464a5ada88655ca93e770824f8e99408730ad877c288dffc76327"
+    },
+    {
+      "path": "docs/discovery/09_文档权威与多Agent开发协作规范.md",
+      "sha256": "7ba840ccc7dcd9fdf7595710ed20a38aae6e180c539045f025717e3117549b1f"
+    },
+    {
+      "path": "docs/discovery/10_首条最小业务闭环与任务拆分.md",
+      "sha256": "2b24de3951dab095e25e0a30eacee2ef9bf7f8882d37b8f491dad481de9e07da"
+    },
+    {
+      "path": "docs/discovery/11_测试验收与问题定位规范.md",
+      "sha256": "33078144c9d746b4f3016b3b9b19e904a986b6331a3e9d3e94ac8ed16a6441d5"
+    },
+    {
+      "path": "docs/discovery/12_前端视觉延续与交互标准.md",
+      "sha256": "7e1b77334f7e82bf1424b10114f42dccb6dc19e43d561385a2f0f4cbe8b2fd34"
+    },
+    {
+      "path": "docs/discovery/13_技术架构与目录依赖基线.md",
+      "sha256": "a0cfb95fbd75385a8dacd148b54f405d5a62ba8db878aab784bc5dbe334b7b4f"
+    },
+    {
+      "path": "docs/discovery/14_新会话启动与开发交付流程.md",
+      "sha256": "78b3a88fbec63e39cccf79e4d8b8db02949ec13c0d188bcb4c2479e2fb4efd5a"
+    },
+    {
+      "path": "docs/discovery/15_OpenFilm资源来源与分发边界.md",
+      "sha256": "0647e1d69376944dc9d993985da006da56ee87700c81af910517c870609405ac"
+    },
+    {
+      "path": "docs/execution/phase1-plan-status.json",
+      "sha256": "fc2897d8e7d9771b552b2b8e0ce4e41d2a0efdcdb02b593d65edae39da9a5fad"
+    },
+    {
+      "path": "docs/execution/status.json",
+      "sha256": "39913dcc5608b94538a604702e42f337b5030f286f821cf1d0115d8e3acf743c"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-phase1-execution.md",
+      "sha256": "7fec49bbad9cf6b3fb1f1b5be78e400f13d7a22404a799da57f608483852282f"
+    },
+    {
+      "path": "docs/discovery/16_OpenFilm原生接口与平台对齐.md",
+      "sha256": "cd7bda625e179d3891bb69518cdd3e44322a0c5cc0451c047f9013b9961a0ff5"
+    },
+    {
+      "path": "docs/discovery/17_小范围试用交付与Goal验收.md",
+      "sha256": "681302c85f361482fd00b51ea6a3d1e2c515e1684f1c611f6df6bd1edeab2f45"
+    },
+    {
+      "path": "docs/discovery/18_Goal新会话交接包.md",
+      "sha256": "3f2cafb3d46e424e52fa2587306247a3cefbd8ee0d236eda362fad665203c637"
+    },
+    {
+      "path": "docs/execution/pilot-readiness.json",
+      "sha256": "5930f8a2e1b0b0f613734768fb4d0997b52539ed687225432d051086a78d08cd"
+    }
+  ],
+  "research": [
+    {
+      "agent": "/root/native_contract_catalog",
+      "scope": "native source and build read-only inventory",
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    {
+      "agent": "/root/goal_handoff_drift_audit",
+      "scope": "authority, drift and pilot coverage audit",
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    }
+  ],
+  "notApproved": [
+    "product acceptance",
+    "new goal created in this chat",
+    "production or cloud business writes",
+    "private media external sending",
+    "main/tag/release",
+    "Mac runtime acceptance"
+  ],
+  "next": "Use docs/discovery/18_Goal新会话交接包.md in an explicitly requested new goal; reverify Git/tools and bind scope"
+}

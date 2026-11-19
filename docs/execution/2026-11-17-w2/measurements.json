@@ -1,0 +1,74 @@
+{
+  "step1": {
+    "rail": [
+      {
+        "step": "materials",
+        "state": "todo"
+      },
+      {
+        "step": "rules",
+        "state": "locked"
+      },
+      {
+        "step": "export",
+        "state": "locked"
+      }
+    ],
+    "nextDisabled": true,
+    "reason": "先选择至少 1 个素材",
+    "stepOnScreen": "materials"
+  },
+  "afterPick": {
+    "rail": [
+      {
+        "step": "materials",
+        "state": "ok"
+      },
+      {
+        "step": "rules",
+        "state": "ok"
+      },
+      {
+        "step": "export",
+        "state": "ok"
+      }
+    ],
+    "nextDisabled": false,
+    "reasonsShown": 0
+  },
+  "step2": {
+    "summaryBottom": 103,
+    "headingTop": 182,
+    "covered": false,
+    "onScreen": "rules"
+  },
+  "step3": {
+    "summaryBottom": 103,
+    "headingTop": 182,
+    "covered": false,
+    "onScreen": "export"
+  },
+  "foldedAt1100": {
+    "full": "none",
+    "folded": "flex"
+  },
+  "drawer268": {
+    "contentWidth": 292,
+    "bar": {
+      "x": 41,
+      "width": 242
+    },
+    "search": {
+      "x": 41,
+      "width": 192,
+      "right": 233
+    },
+    "author": {
+      "x": 41,
+      "width": 242,
+      "top": 222
+    },
+    "authorOnOwnLine": true,
+    "typed": "风景"
+  }
+}

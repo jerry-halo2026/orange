@@ -1,0 +1,26 @@
+<Project>
+  <!-- Fission 全局编译属性（PRD §8.1 代码风格唯一事实源）。修改需过 PR 审查并同步 PRD。 -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- 本机 Windows 19044 未打 CET 补丁：产物不要求 CET，避免运行时 FailFast（R8） -->
+    <CETCompat>false</CETCompat>
+    <!-- R8：SDK Roslyn apphost 在本机 CET FailFast，编译走 dotnet exec 转发壳（tools/csc-shim/csc.bat）。
+         这个规避只对 Windows 有意义：macOS / Linux 上没有 CET 问题，也没有 csc.bat 可执行，
+         无条件挂上去会直接 "Permission denied" —— 所以按平台条件化。 -->
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <UseSharedCompilation>false</UseSharedCompilation>
+    <CscToolPath>$(MSBuildThisFileDirectory)tools\csc-shim</CscToolPath>
+    <CscToolExe>csc.bat</CscToolExe>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- 暂缓规则白名单：每项必须带 issue 编号与解除条件（PRD §8.1）。当前为空。 -->
+    <NoWarn>$(NoWarn)</NoWarn>
+  </PropertyGroup>
+</Project>

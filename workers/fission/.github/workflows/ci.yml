@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build (zero warnings as errors)
+        run: dotnet build -c Release
+
+      - name: Unit tests
+        run: dotnet test tests\Fission.UnitTests -c Release --no-build
+
+      - name: Contract tests
+        run: dotnet test tests\Fission.IntegrationTests -c Release --no-build

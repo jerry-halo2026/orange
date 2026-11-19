@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "orange/media-doc/4",
+  "$comment": "统一检索的派生索引层（docs/sql/012_media_doc.sql 建表 + 013_media_doc_shot_key.sql 把 shot_index 并入主键 + 014_media_doc_4096.sql 加第二条向量列 + 015_media_doc_tokens_emb_ver.sql 给 4096 列自己的版本列）：$defs.row 是 upsert_media_doc 的 p_row，$defs.searchRow 是 media_search / media_search_4096 的返回行。两条不变量写在这里而不是只写在 SQL 注释里：① 粒度是行属性（asset=整条素材的卡片文本，shot=某个镜头），两种粒度同表共存、互不取代；同一素材同一版本的每个镜头各占一行（主键含 shot_index）；② **不放本地可用性** —— 字节在哪台机器上，库不知道（内容库有 LRU 淘汰），可用性由客户端按 md5+contentStore 在返回前补。向量维度不在本文件出现：docs/sql/embedding.json 是 768 那一列的唯一来源，4096 那列来自 014 的列定义（两条向量列并存，谁给了写谁）。**3 → 4 的唯一差异**：$defs.row 多一个可选的 embedding_ver_4096 —— 两条向量各带自己的模型版本（共用 embedding_ver 会让 coexist 写把 768 的标签改写成 8B 的串；给了 embedding_4096 就必须给 embedding_ver_4096，否则 23514）。再改别的列请出 orange/media-doc/5，不就地改本文件。",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["media_key", "gran", "text"],
+      "properties": {
+        "media_key": { "type": "string", "minLength": 1, "description": "稳定身份：云素材=供应商 videoId；工程视频=sha256:<hex>（没有云 id）" },
+        "gran": { "enum": ["asset", "shot"], "description": "可检索单元粒度（行属性，不是表属性）" },
+        "analyzer_ver": { "type": "string", "minLength": 1, "description": "产出这批文档的管线/模型版本，进主键；缺省 v0。换版本不覆盖旧答案" },
+        "video_id": { "type": ["string", "null"], "description": "云素材的供应商 id；工程视频为 null" },
+        "shot_index": { "type": "integer", "minimum": 0, "default": 0, "description": "镜头序号。gran=shot 必填（>=0，按时间顺序）；gran=asset 必须缺省或为 0（缺省即落库 0，显式非 0 → 22023；列上 NOT NULL DEFAULT 0 + media_doc_gran_shape 兜底）。主键含这一列：同一 media_key 同一 analyzer_ver 的每个镜头各占一行" },
+        "name": { "type": ["string", "null"], "description": "素材名（云素材=供应商名称；工程视频=文件名）" },
+        "batch": { "type": ["string", "null"], "description": "批次（名称解析第一层）" },
+        "product": { "type": ["string", "null"], "description": "产品（名称解析第二层）" },
+        "gname": { "type": ["string", "null"], "description": "分组（名称解析第三层）" },
+        "labels": { "type": "array", "items": { "type": "string" }, "description": "供应商标签/自建标签；缺省 []" },
+        "duration_ms": { "type": ["integer", "null"], "minimum": 0, "description": "素材时长（毫秒）；供应商给的是秒，落库前换算" },
+        "author": { "type": ["string", "null"], "description": "云素材的账号名；工程视频为 null" },
+        "source_kind": { "enum": ["cloud", "project"], "description": "语料来源；缺省按 video_id 推断（有云 id = cloud）" },
+        "text": { "type": "string", "minLength": 1, "description": "被向量化的原文 —— 可重算向量的唯一依据，正文变了就必须重算向量" },
+        "embedding_ver": { "type": ["string", "null"], "description": "**768 那一列的**嵌入模型+版本（如 nomic-embed-text-v1.5）；给了 embedding 就必须给这个（不是管线版本）。4096 列用自己的 embedding_ver_4096，不要写到这里" },
+        "embedding": { "type": ["string", "null"], "pattern": "^\\s*\\[.*\\]\\s*$", "description": "768 维向量文本（'[0.1,0.2,...]'），维度由 docs/sql/embedding.json 决定" },
+        "embedding_4096": {
+          "type": ["array", "string", "null"],
+          "description": "4096 维向量（qwen3-embedding-8b），014 起与 embedding 并存：谁给了写谁。两种写法都吃 —— 数组（数字数组，SQL 侧拼成向量文本）或 '[a,b,…]' 文本；维度由 SQL 断言 4096，给这一列就必须给 embedding_ver_4096（不是 embedding_ver）"
+        },
+        "embedding_ver_4096": { "type": ["string", "null"], "description": "**4096 那一列的**嵌入模型版本（如 qwen3-embedding-8b，015）。给了 embedding_4096 就必须给这个（缺了 23514）；与 embedding_ver 各说各的列 —— 同一行两条向量属于两个模型，一个标签说不清两条向量" }
+      }
+    },
+    "searchRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["media_key", "gran", "score", "match_kind"],
+      "properties": {
+        "media_key": { "type": "string", "minLength": 1 },
+        "gran": { "enum": ["asset", "shot"] },
+        "video_id": { "type": ["string", "null"] },
+        "shot_index": { "type": "integer", "minimum": 0, "description": "镜头号。013 起表上 shot_index 是 NOT NULL，返回行恒有值（asset 行为 0）；SQL 的 OUT 列名义可空，实际不会出现 null" },
+        "name": { "type": ["string", "null"] },
+        "batch": { "type": ["string", "null"] },
+        "product": { "type": ["string", "null"] },
+        "gname": { "type": ["string", "null"] },
+        "duration_ms": { "type": ["integer", "null"] },
+        "score": { "type": "number", "description": "按 match_kind 各自口径（vector=1-余弦距离；ilike=1.0 确定性命中；trigram=similarity），**不可跨 kind 解释**" },
+        "match_kind": { "enum": ["vector", "ilike", "trigram"], "description": "这条是怎么命中的；p_embedding 为 null 时只会出现 ilike/trigram（不许把词法结果伪装成语义）" }
+      }
+    }
+  }
+}

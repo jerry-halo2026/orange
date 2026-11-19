@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-bar-chart-race.html",
+    "time": [
+      0,
+      5
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Title\",\"type\":\"text\",\"at\":\".b-title\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--b-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--b-font\"}]"
+    }
+  },
+  "durationMs": 5000,
+  "w": 1000,
+  "h": 460
+}

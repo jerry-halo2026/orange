@@ -1,0 +1,68 @@
+[
+  {
+    "cmd": "cd apps/api && node --test \"src/**/*.test.ts\"",
+    "exit": 0,
+    "at": "2026-11-13T16:25:00+08:00",
+    "note": "tests 222 / pass 222 / fail 0 (baseline 216, +6)"
+  },
+  {
+    "cmd": "cd apps/api && node ../desktop/node_modules/typescript/bin/tsc -p tsconfig.json",
+    "exit": 0,
+    "at": "2026-11-13T16:25:00+08:00",
+    "note": "clean after the sync store change"
+  },
+  {
+    "cmd": "node --test apps/desktop/src/*.test.mjs",
+    "exit": 0,
+    "at": "2026-11-13T16:10:00+08:00",
+    "note": "tests 675 / pass 671 / fail 0 / skipped 4"
+  },
+  {
+    "cmd": "node --test apps/desktop/src/analyze-write-back.test.mjs apps/desktop/src/derived-frames.test.mjs",
+    "exit": 0,
+    "at": "2026-11-13T16:10:00+08:00",
+    "note": "write-back 8 + derived-frames 12, all pass"
+  },
+  {
+    "cmd": "node --test packages/openfilm/studio/ui/src/i18n/keys.test.ts packages/openfilm/studio/ui/src/lib/*.test.mjs packages/openfilm/studio/server/{skill-catalog,open-sources,examples}.test.mjs packages/openfilm/src/analyze-command.test.mjs",
+    "exit": 0,
+    "at": "2026-11-13T16:12:00+08:00",
+    "note": "tests 27 / pass 27"
+  },
+  {
+    "cmd": "node scripts/gate-test-coverage.mjs",
+    "exit": 0,
+    "at": "2026-11-13T16:12:00+08:00",
+    "note": "tracked 420, covered 410, uncovered 0, exempt 13 (bench 12 + login test, each with a runnable command)"
+  },
+  {
+    "cmd": "node infra/migrate.mjs --check",
+    "exit": 0,
+    "at": "2026-11-13T16:20:00+08:00",
+    "note": "11 files match the ledger; one-byte edit flips it to exit 1 (verified, then restored)"
+  },
+  {
+    "cmd": "node infra/migrate.mjs --contract",
+    "exit": 0,
+    "at": "2026-11-13T16:20:00+08:00",
+    "note": "16 RPC + 9 internal + 14 tables, anon effective privileges 0, claimEnvelope invariants"
+  },
+  {
+    "cmd": "node infra/verify.mjs",
+    "exit": 0,
+    "at": "2026-11-13T16:20:00+08:00",
+    "note": "9/9 — the vector branch is now a hard check (768 dims reach the RPC, hnsw GUC accepted)"
+  },
+  {
+    "cmd": "node --test packages/openfilm/src/analyze-runner.test.mjs",
+    "exit": 0,
+    "at": "2026-11-13T16:00:00+08:00",
+    "note": "tests 13 / pass 13 with studioFrames as the default extractor"
+  },
+  {
+    "cmd": "Select-String (git ls-files) -Pattern x-company-key (non-comment)",
+    "exit": 0,
+    "at": "2026-11-13T16:26:00+08:00",
+    "note": "0 matches"
+  }
+]

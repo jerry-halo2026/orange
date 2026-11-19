@@ -1,0 +1,15 @@
+{
+  "repo": "https://github.com/openfilm/examples",
+  "branch": "main",
+  "about": "The examples this checkout offers: the film beside this index, read from this computer, and the two that come with OpenFilm (their posters are the bundled ones; their films are fetched from GitHub).",
+  "examples": [
+    {
+      "folder": "talk-lowerthird-captions",
+      "title": "Talk: name card and captions",
+      "description": "A 12-second talking-head layout: a stand-in for the footage, a clean name card from 1s, and word-by-word captions along the foot. Made from the library's HyperFrames set.",
+      "poster": "talk-lowerthird-captions/poster.jpg",
+      "duration": "0:12",
+      "category": "explainer"
+    }
+  ]
+}

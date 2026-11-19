@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "kind": "clip",
+  "clip": {
+    "src": "hf-line-graph.html",
+    "time": [
+      0,
+      4.5
+    ],
+    "attrs": {
+      "data-props": "[{\"name\":\"Title\",\"type\":\"text\",\"at\":\".g-title\"},{\"name\":\"Accent\",\"type\":\"var\",\"var\":\"--g-accent\"},{\"name\":\"Font\",\"type\":\"var\",\"var\":\"--g-font\"}]"
+    }
+  },
+  "durationMs": 4500,
+  "w": 1000,
+  "h": 420
+}

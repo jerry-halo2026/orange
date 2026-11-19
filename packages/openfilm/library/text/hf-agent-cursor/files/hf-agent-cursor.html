@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=900, height=520" />
+    <title>Cursor, agent</title>
+    <!--
+      A cursor card, after HyperFrames' `agent-cursor`.
+      OpenFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 900px; height: 520px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --cu-accent: #62d0ff; --cu-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; }
+      #cursor-wrap { position: absolute; inset: 0; }
+      #cursor { position: absolute; left: 0; top: 0; will-change: transform; }
+      .cur-dot { width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%;
+                 background: var(--cu-accent); box-shadow: 0 0 0 5px rgba(98,208,255,.22), 0 6px 18px rgba(0,0,0,.45); }
+      #ring { position: absolute; left: 0; top: 0; width: 26px; height: 26px; margin: -13px 0 0 -13px;
+              border-radius: 50%; border: 3px solid var(--cu-accent); opacity: 0; }
+      .cur-label { position: absolute; left: 18px; top: 14px; padding: 6px 12px; border-radius: 999px;
+                   background: var(--cu-accent); color: #08222c; font-size: 15px; font-weight: 700; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="cursor-wrap">
+      <div id="cursor"><div class="cur-dot"></div><div class="cur-label">agent</div></div>
+      <div id="ring"></div>
+    </div></div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const cur = document.getElementById('cursor');
+      const wrap = document.getElementById('cursor-wrap');
+      const PATH = [[120, 380], [300, 300], [430, 250], [470, 250]];
+      function place(el, x, y) { el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`; }
+      function pathAt(k) {
+        const n = PATH.length - 1;
+        const i = Math.min(n - 1, Math.floor(k * n));
+        const f = k * n - i;
+        const a = PATH[i], b = PATH[i + 1];
+        return [lerp(a[0], b[0], f), lerp(a[1], b[1], f)];
+      }
+      const ring = document.getElementById('ring');
+      function draw(t) {
+        const k = out3(at(t, 0.15, 1.5));
+        const [x, y] = pathAt(k);
+        place(cur, x, y);
+        const click = at(t, 1.9, 0.12) * (1 - at(t, 2.02, 0.6));
+        place(ring, x, y);
+        ring.style.opacity = String(click);
+        ring.style.width = ring.style.height = `${(26 + 90 * at(t, 1.9, 0.6)).toFixed(1)}px`;
+        ring.style.margin = `${-(13 + 45 * at(t, 1.9, 0.6)).toFixed(1)}px 0 0 ${-(13 + 45 * at(t, 1.9, 0.6)).toFixed(1)}px`;
+      }
+      const DURATION = 4;
+
+      window.film = {
+        duration: DURATION,
+        width: 900,
+        height: 520,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

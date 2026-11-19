@@ -1,5 +1,24 @@
 # P4 执行单：切换到干净提交历史（2026-11-19）
 
+## 执行结果（2026-11-19 20:40）
+
+| 步骤 | 结果 |
+| --- | --- |
+| 安全网 | `.dev/private-archive/orange-history-pre-orphan-20261119.bundle` — 715 提交、50 refs、79 MB，`bundle verify` 通过 |
+| 证据移出 | 8 条路径移入 `.dev/private-archive/evidence-20261119/`（`docs/history`、`overlay`、`scripts/vendor`、上游 CHANGELOG、`skill-catalog-seed.{json,mjs}`、示例 CREDITS、library LICENSE.md）；新建 `packages/openfilm/CHANGELOG.md` 从 `## 0.1.0` 开始 |
+| 单提交 | `a0578192 OrangeFilm v0.1.0`，作者只有 `Ethan <ethan@orange.local>`，提交信息零 upstream 字样 |
+| 分支 | `dev`、`main` 指向同一提交；`chore/vendor-0.3.2` 与 `archive/*` 已删（内容在 bundle 里） |
+| 工具 refs | 删掉 30+ 条 `refs/codex/**`、`refs/archive/**`、`refs/orangeflim/upstream/v0.3.0` |
+| 远端 | 只留 `origin/main`；`dev` 与 4 条 `codex/*` 已删；`upstream` 远端与 `upstream-v0.3.2` tag 已移除 |
+| 仓库可见性 | 由 public 改为 **private**（原本是公开仓库，与专有许可冲突） |
+| 体积 | `.git` 93 MB → 74 MB（剩下的都是单提交里的工作树内容） |
+| 归档 | `main` 与 `dev` 均为 `a057819`；随后一次提交 `f0637ef` 去掉钱包充值链接里的上游域名 |
+| tag / 流水线 | `v0.1.0` 已推；`desktop`（tag）与 `ci`（main）已触发 |
+
+回归检查：`pnpm typecheck` 0、`pnpm build` 通过、`audit:public` 0 发现（移动证据之后重跑）。
+
+## 原计划步骤（保留备查）
+
 前置（已完成）：
 
 - `.dev/private-archive/orange-history-pre-detach-20261119.bundle`（79 MB、242 refs，`git bundle verify` 通过）

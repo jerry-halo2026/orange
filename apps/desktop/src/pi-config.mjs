@@ -250,7 +250,6 @@ export function contextUsed(message, model) {
 
 /** Where each service the person's own key may be for is topped up, by its address. */
 const BILLING = [
-  { host: /(^|\.)openfilm\.dev$/, name: PRODUCT, url: 'https://openfilm.dev/account' },
   { host: /(^|\.)openai\.com$/, name: 'OpenAI', url: 'https://platform.openai.com/settings/organization/billing' },
   { host: /(^|\.)anthropic\.com$/, name: 'Anthropic', url: 'https://console.anthropic.com/settings/billing' },
   { host: /(^|\.)openrouter\.ai$/, name: 'OpenRouter', url: 'https://openrouter.ai/settings/credits' },

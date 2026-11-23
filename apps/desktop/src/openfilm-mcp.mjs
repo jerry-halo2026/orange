@@ -585,17 +585,25 @@ export function createOpenFilmMcpServer(deps = {}) {
                 url.searchParams.set('pageSize', String(Math.min(50, Math.max(1, Number(request.limit) || 20))));
                 const answer = await fetch(url, { headers: { 'x-studio-key': run.key, origin: run.origin } }).then((r) => r.json());
                 const rows = Array.isArray(answer?.items) ? answer.items : [];
-                const items = rows.map((row) => ({
-                  videoId: String(row?.videoId?.value ?? row?.videoId ?? ''),
-                  name: String(row?.observation?.name ?? row?.name ?? ''),
-                  product: String(row?.observation?.product ?? ''),
-                  productName: String(row?.observation?.productName ?? ''),
-                  gname: String(row?.observation?.gname ?? ''),
-                  accountKey: String(row?.observation?.accountKey ?? ''),
-                  videoType: Number(row?.observation?.videoType ?? row?.videoType ?? 0),
-                  score: 1,
-                  availability: { local: false },
-                })).filter((row) => row.videoId);
+                const valueOf = (value) => (value && typeof value === 'object' && 'source' in value ? value.source : value);
+                const items = rows.map((row) => {
+                  const observation = row?.observation ?? {};
+                  const videoType = Number(valueOf(observation.videoType ?? row?.videoType));
+                  const state = Number(valueOf(observation.state));
+                  return {
+                    videoId: String(valueOf(row?.videoId) ?? ''),
+                    name: String(observation.name ?? row?.name ?? ''),
+                    product: String(observation.product ?? ''),
+                    productName: String(observation.productName ?? ''),
+                    gname: String(observation.gname ?? ''),
+                    accountKey: String(observation.accountKey ?? ''),
+                    videoType: Number.isFinite(videoType) ? videoType : 0,
+                    downloadable: state === 2 && !observation.recycleTime && Boolean(observation.videoUrl),
+                    cover: typeof observation.coverUrl === 'string' ? observation.coverUrl : undefined,
+                    score: 1,
+                    availability: { local: false },
+                  };
+                }).filter((row) => row.videoId);
                 if (items.length) return { mode: 'company', query: String(request.query ?? ''), count: items.length, items };
               }
             } catch { /* Studio not running: local search */ }

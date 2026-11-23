@@ -226,6 +226,11 @@ The project is a film of this app: pages with window.film, cut together by film.
 project: you never need \`${run} open\` and never open Studio in a browser, and the person exports the film from it.
 Run \`${run} look\` after each change to see what you made. Reply in the language the person writes in.
 
+Cloud materials come first when the film needs footage from the company's 云管家: run
+\`${run} material search "<product or keyword>"\`, pick a row whose last column is not \`(not downloadable)\`,
+then \`${run} material take <videoId> --project .\` — it prints the path under \`assets/materials/\` to put in film.html.
+Do not invent a cloud path or a videoId; if no row matches, say so and use the project's own files.
+
 ${STUDIO_REFERENCES}`;
 }
 

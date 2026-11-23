@@ -346,6 +346,28 @@ mkdirSync(environmentDir, { recursive: true });
 /* 3. the app */
 const builder = require('electron-builder');
 const electronVersion = require('electron/package.json').version;
+
+/**
+ * A copy of this platform's Electron distribution whose `electron.exe` already carries the product
+ * icon. electron-builder renames it to OrangeFilm.exe; the icon is then in the base it starts from,
+ * even when its own resource editor or the asar-integrity step rewrites the PE later.
+ */
+async function prepareWindowsElectron(target) {
+  const source = dirname(require('electron'));
+  rmSync(target, { recursive: true, force: true });
+  cpSync(source, target, { recursive: true });
+  const ResEdit = await import('resedit');
+  const PE = await import('pe-library');
+  const file = join(target, 'electron.exe');
+  const exe = PE.NtExecutable.from(readFileSync(file), { ignoreCert: true });
+  const res = PE.NtExecutableResource.from(exe);
+  const icon = ResEdit.Data.IconFile.from(readFileSync(join(desktop, 'build/icon.ico')));
+  ResEdit.Resource.IconGroupEntry.replaceIconsForResource(res.entries, 1, 1033, icon.icons.map((item) => item.data));
+  res.outputResource(exe);
+  writeFileSync(file, Buffer.from(exe.generate()));
+  return target;
+}
+const electronDist = win ? await prepareWindowsElectron(join(work, 'electron-dist')) : undefined;
 const env = unsigned || win ? { CSC_IDENTITY_AUTO_DISCOVERY: 'false' } : { APPLE_KEYCHAIN_PROFILE: NOTARY_PROFILE, APPLE_TEAM_ID: TEAM_ID };
 Object.assign(process.env, env);
 await builder.build({
@@ -392,6 +414,7 @@ await builder.build({
     productName: NAME,
     copyright: `Copyright ${COPYRIGHT}`,
     electronVersion,
+    ...(electronDist ? { electronDist } : {}),
     asar: true,
     /* run by Electron as Node from outside the archive: the CLI the agents run, the agents' adapters, and the
        material service's source (a plain node child cannot read an asar archive) */

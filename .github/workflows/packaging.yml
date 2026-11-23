@@ -4,6 +4,8 @@ name: packaging-check
 # Nothing is published, signed or uploaded to a release. Temporary public visibility exists only to use
 # standard runners; the repository is made private again when the validation is done.
 on:
+  push:
+    branches: [dsh-68d45102-2b0a]
   workflow_dispatch:
     inputs:
       target:

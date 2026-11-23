@@ -355,15 +355,16 @@ await builder.build({
   [arch]: true,
   config: {
     afterPack: win ? (context) => windowsResources(context).catch((error) => { console.warn(`windows resources skipped: ${error?.message ?? error}`); }) : undefined,
-    /* afterPack runs before electron-builder's executable edit; this runs after it and before the installer. */
-    artifactBuildStarted: win ? (context) => windowsResources({ appOutDir: context.packager.appOutDir }).catch((error) => { console.warn(`windows resources skipped at artifact: ${error?.message ?? error}`); }) : undefined,
+    /* the installer event runs after asar-integrity rewrote the PE and before NSIS reads it: the last point that
+       can put the icon into the app the installer carries. */
+    artifactBuildStarted: win ? (context) => windowsResources({ appOutDir: join(dirname(context.file), 'win-unpacked') }).catch((error) => { console.warn(`windows resources skipped at artifact: ${error?.message ?? error}`); }) : undefined,
     /* unsigned on a Mac: signed ad hoc, whole, before the .dmg and .zip are made. Electron's fuses are written into
        its framework after the linker signed it, and an Apple chip kills a program whose pages no longer match its
        signature ("Code Signature Invalid") the moment it starts */
     afterSign: !win && unsigned ? (context) => adHocSign(context) : undefined,
     win: {
       icon: join(desktop, 'build/icon.ico'),
-      /* electron-builder skips its own resource edit; afterPack writes the icon after packing, and fuses are off. */
+      /* electron-builder skips its own edit; the artifact hook writes the icon after asar integrity. */
       signAndEditExecutable: false,
       /* the installer's own file name: brand.json's `installerName` (OrangeFilm-Setup-<arch>.exe) */
       artifactName: `${INSTALLER.replace(' ', '-')}-Setup-\${arch}.\${ext}`,

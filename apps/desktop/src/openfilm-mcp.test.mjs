@@ -79,7 +79,7 @@ test('the handshake and the tool list are what an agent expects, before anything
   const server = createOpenFilmMcpServer({ cwd: tmpdir() });
   const hello = await server.handle({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', clientInfo: { name: 'test' } } });
   assert.equal(hello.result.protocolVersion, '2025-06-18');
-  assert.equal(hello.result.serverInfo.name, 'openfilm');
+  assert.equal(hello.result.serverInfo.name, 'orangefilm');
   assert.deepEqual(hello.result.capabilities.tools, { listChanged: false });
   assert.equal(await server.handle({ jsonrpc: '2.0', method: 'notifications/initialized' }), null, 'a notification has no answer');
 
@@ -193,7 +193,7 @@ test('the write gate is exactly the file it says: absent, malformed, unallowed a
 
 test('the agent is told to start the server with an absolute command and Electron as Node', () => {
   const config = openfilmMcpServerConfig({ command: process.execPath, script: '/abs/openfilm-mcp.mjs' });
-  assert.equal(config.name, 'openfilm');
+  assert.equal(config.name, 'orangefilm');
   assert.equal(config.command, process.execPath);
   assert.ok(config.command.startsWith('/') || /^[A-Za-z]:\\/.test(config.command), 'the command is an absolute path');
   assert.equal(config.args.at(-1), '/abs/openfilm-mcp.mjs');
@@ -220,7 +220,7 @@ test('the stdio transport answers line-delimited JSON-RPC and survives silence',
   await new Promise((resolve) => setTimeout(resolve, 50));
   served.close();
   const answers = chunks.join('').trim().split('\n').map((line) => JSON.parse(line));
-  assert.equal(answers[0].result.serverInfo.name, 'openfilm');
+  assert.equal(answers[0].result.serverInfo.name, 'orangefilm');
   assert.equal(answers[1].error.code, -32700, 'a line that is not JSON is a parse error, not a crash');
 });
 

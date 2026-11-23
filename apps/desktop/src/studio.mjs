@@ -38,7 +38,8 @@ async function advertised(home) {
   try { run = JSON.parse(readFileSync(join(home, 'run.json'), 'utf8')); } catch { return null; }
   try {
     const health = await (await fetch(`${run.origin}/api/health`, { signal: AbortSignal.timeout(1500) })).json();
-    return health.product === 'openfilm-studio' ? run : null;
+    return health.product === 'openfilm-studio' || health.product === 'orangefilm-studio'
+      || (Array.isArray(health.products) && health.products.includes('orangefilm-studio')) ? run : null;
   } catch { return null; }
 }
 

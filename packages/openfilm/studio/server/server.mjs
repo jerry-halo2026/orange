@@ -300,7 +300,7 @@ const savedAccess = createSavedAccess({
     /* which Studio this is: the CLI replaces an older one, and finds its own home's when run.json is gone. Asked
        without the key, so it says nothing of the machine: its home only as a digest (homeTag), no process id */
     /* `app`: the desktop app's Studio, which updates with the app (`openfilm update` says so instead) */
-    if (path === '/api/health') return json(res, 200, { product: 'openfilm-studio', version: VERSION, home: homeTag(), filmOrigin, ...(stays ? { app: true } : {}) });
+    if (path === '/api/health') return json(res, 200, { product: 'openfilm-studio', products: ['openfilm-studio', 'orangefilm-studio'], version: VERSION, home: homeTag(), filmOrigin, ...(stays ? { app: true } : {}) });
     const signIn = [`${COOKIE}=${key}; Path=/; HttpOnly; SameSite=Strict`, `${FRAMED}=${key}; Path=/; HttpOnly; Secure; SameSite=None; Partitioned`];
     /** A page's address with the key in it (the address bar is what a person copies). */
     const keyed = (/** @type {string} */ to) => {

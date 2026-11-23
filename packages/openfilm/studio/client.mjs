@@ -27,7 +27,8 @@ export const FROM_SOURCE = existsSync(new URL('./ui/src', import.meta.url));
 async function health(/** @type {string} */ origin, ms = 1500) {
   try {
     const said = await (await fetch(`${origin}/api/health`, { signal: AbortSignal.timeout(ms) })).json();
-    return said?.product === 'openfilm-studio' ? said : null;
+    return said?.product === 'openfilm-studio' || said?.product === 'orangefilm-studio'
+      || (Array.isArray(said?.products) && said.products.includes('orangefilm-studio')) ? said : null;
   } catch { return null; }
 }
 

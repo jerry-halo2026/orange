@@ -403,15 +403,24 @@ export async function materialCommand(argv, { json = false, project = process.cw
     return { code: 0, lines: [json ? JSON.stringify({ ok: true, assetPath: landed }, null, 2) : landed] };
   }
   const query = rest.join(' ').trim();
-  const response = await fetch(`${studio.origin}/api/materials/search`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin },
-    body: JSON.stringify({ query, limit: 20 }),
-  });
+  const url = new URL(`${studio.origin}/api/materials/list`);
+  url.searchParams.set('name', query);
+  url.searchParams.set('scope', 'company');
+  url.searchParams.set('pageSize', '20');
+  const response = await fetch(url, { headers: { 'x-studio-key': studio.key, origin: studio.origin } });
   const body = await response.json().catch(() => null);
   if (!response.ok) return { code: 1, lines: [`openfilm material: ${body?.message ?? `HTTP ${response.status}`}`] };
-  if (json) return { code: 0, lines: [JSON.stringify(body, null, 2)] };
-  const items = Array.isArray(body?.items) ? body.items : [];
+  const rows = Array.isArray(body?.items) ? body.items : [];
+  const valueOf = (value) => (value && typeof value === 'object' && 'source' in value ? value.source : value);
+  const items = rows.map((row) => {
+    const observation = row?.observation ?? {};
+    return {
+      videoId: String(valueOf(row?.videoId) ?? ''),
+      name: String(observation.name ?? ''),
+      downloadable: Number(valueOf(observation.state)) === 2 && !observation.recycleTime && Boolean(observation.videoUrl),
+    };
+  }).filter((item) => item.videoId);
+  if (json) return { code: 0, lines: [JSON.stringify({ mode: 'company', query, count: items.length, items }, null, 2)] };
   return { code: 0, lines: items.length
     ? items.map((item) => `${item.videoId}\t${item.name ?? ''}${item.downloadable === false ? '\t(not downloadable)' : ''}`)
     : [`No material matched “${query}”.`] };

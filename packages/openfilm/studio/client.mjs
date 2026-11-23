@@ -409,7 +409,7 @@ export async function materialCommand(argv, { json = false, project = process.cw
   url.searchParams.set('pageSize', '20');
   const response = await fetch(url, { headers: { 'x-studio-key': studio.key, origin: studio.origin } });
   const body = await response.json().catch(() => null);
-  if (!response.ok) return { code: 1, lines: [`openfilm material: ${body?.message ?? `HTTP ${response.status}`}`] };
+  if (!response.ok) return { code: 1, lines: [`openfilm material: ${body?.code === 'authentication-required' ? 'sign in to Studio first' : body?.message ?? `HTTP ${response.status}`}`] };
   const rows = Array.isArray(body?.items) ? body.items : [];
   const valueOf = (value) => (value && typeof value === 'object' && 'source' in value ? value.source : value);
   const items = rows.map((row) => {

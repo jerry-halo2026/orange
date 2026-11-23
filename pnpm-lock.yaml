@@ -45,6 +45,9 @@ importers:
         specifier: 6.8.9
         version: 6.8.9
       openfilm:
+        specifier: link:../../packages/orangefilm
+        version: link:../../packages/orangefilm
+      orangefilm:
         specifier: workspace:*
         version: link:../../packages/orangefilm
       undici:

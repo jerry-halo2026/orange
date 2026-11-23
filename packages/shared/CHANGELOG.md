@@ -1,4 +1,4 @@
-# @openfilm/shared
+# @orange/shared
 
 ## 0.3.2
 

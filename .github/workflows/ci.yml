@@ -37,7 +37,7 @@ jobs:
       # the editor's page and the window's shell are built before the tests: several Studio tests read what the build
       # produces (studio/ui/dist), and without it they wait out their timeout instead of failing for a reason
       - run: pnpm build
-      - run: pnpm --filter openfilm exec playwright-core install chromium-headless-shell
+      - run: pnpm --filter orangefilm exec playwright-core install chromium-headless-shell
         timeout-minutes: 15
       - run: brew install ffmpeg
         if: runner.os == 'macOS'

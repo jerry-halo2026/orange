@@ -9,14 +9,14 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "dev": "pnpm --filter openfilm dev",
+    "dev": "pnpm --filter orangefilm dev",
     "dev:desktop": "node scripts/dev-desktop.mjs",
     "dev:all": "node scripts/dev-all.mjs",
     "material:index": "node packages/orangefilm/scripts/material-index-bootstrap.mjs --status",
     "prepare": "node scripts/brand-codegen.mjs",
     "brand": "node scripts/brand-codegen.mjs",
     "brand:check": "node scripts/brand-codegen.mjs --check",
-    "build": "node scripts/brand-codegen.mjs && pnpm --filter openfilm build:ui && pnpm --filter @orange/desktop build:shell",
+    "build": "node scripts/brand-codegen.mjs && pnpm --filter orangefilm build:ui && pnpm --filter @orange/desktop build:shell",
     "test": "node scripts/test-workspace.mjs && node scripts/gate-test-coverage.mjs",
     "test:scripts": "node --test scripts/*.test.mjs",
     "typecheck": "pnpm -r --if-present typecheck",

@@ -3,7 +3,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * `pnpm --filter openfilm test`: every test file of this package, less the ones that cannot run here.
+ * `pnpm --filter orangefilm test`: every test file of this package, less the ones that cannot run here.
  *
  * Why not a glob in package.json: a glob cannot say "not this one, and here is why". Five suites need a provisioned
  * integration environment (an approved isolation profile, a published Fission worker sidecar, a headless browser, a
@@ -62,7 +62,7 @@ const quarantined = new Map(QUARANTINE.map((entry) => [normalise(entry.file), en
 /**
  * The environment `scripts/test-workspace.mjs` provides for the whole workspace, provided here too.
  *
- * Why: `pnpm --filter openfilm test` is what everyone types, and running it directly used to mean no test roots and no
+ * Why: `pnpm --filter orangefilm test` is what everyone types, and running it directly used to mean no test roots and no
  * `ORANGE_TEST_FFMPEG` — so the same suite was green through `pnpm test` and red through the filter, for reasons that had
  * nothing to do with the code. A variable that is already set wins, so a caller can still point at its own roots.
  */
@@ -86,7 +86,7 @@ const run = includeQuarantined ? files : files.filter((file) => !quarantined.has
 if (skipped.length && !includeQuarantined) {
   console.log(`quarantined (needs a provisioned environment, not run here): ${skipped.length}`);
   for (const file of skipped) console.log(`  ${file} — ${quarantined.get(file)}`);
-  console.log('run them with: pnpm --filter openfilm test -- --include-quarantined\n');
+  console.log('run them with: pnpm --filter orangefilm test -- --include-quarantined\n');
 }
 
 const result = spawnSync(

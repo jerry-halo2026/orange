@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * Build the app people install: `pnpm --filter @openfilm/desktop release` (`--arch=x64` for Intel Macs, default this
+ * Build the app people install: `pnpm --filter @orange/desktop release` (`--arch=x64` for Intel Macs, default this
  * Mac's; `--unsigned` for a local try; `--platform=win --arch=x64|arm64` for the Windows installer, built here too;
  * `--dir` to stop at the unpacked app, no installer — the way to look inside a build, and the step that fails a build
  * short of a file (scripts/packaged-selfcheck.mjs); `--verify` with it to check the build already made, without making

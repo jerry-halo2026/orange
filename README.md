@@ -24,7 +24,7 @@ pnpm install
 pnpm build            # brand codegen, Studio's editor, the window's page
 pnpm typecheck
 pnpm test
-pnpm --filter @openfilm/desktop release --dir   # unpacked app, then the self check
+pnpm --filter @orange/desktop release --dir   # unpacked app, then the self check
 ```
 
 Platforms: Windows x64 is the first release target; macOS Apple Silicon (arm64) is supported and tested separately. No

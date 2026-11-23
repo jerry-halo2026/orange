@@ -23,7 +23,7 @@ pnpm install
 pnpm build
 pnpm typecheck
 pnpm test
-pnpm --filter @openfilm/desktop release --dir   # 未打包的应用 + 自检
+pnpm --filter @orange/desktop release --dir   # 未打包的应用 + 自检
 ```
 
 平台：Windows x64 为首发目标，macOS Apple Silicon（arm64）单独测试支持；不承诺 Intel Mac、Linux 客户端或 Universal 包。

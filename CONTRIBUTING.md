@@ -30,7 +30,7 @@ From the root:
 | `pnpm changeset` | adds a changeset to your pull request (below, Releases) |
 
 `pnpm --filter <package> <script>` runs one package's script; the packages are `openfilm`, `@openfilm/shared` and
-`@openfilm/desktop`.
+`@orange/desktop`.
 
 ## Layout
 
@@ -97,8 +97,8 @@ workspace reads its TypeScript in `src/` as it is, and the desktop app bundles i
 
 ```sh
 pnpm dev:desktop                              # builds the window's page, then runs the app as "OpenFilm Dev"
-pnpm --filter @openfilm/desktop test
-pnpm --filter @openfilm/desktop typecheck
+pnpm --filter @orange/desktop test
+pnpm --filter @orange/desktop typecheck
 ```
 
 Run from source, the app is its own "OpenFilm Dev": its own name, data folder, Studio home and port, so it never
@@ -107,7 +107,7 @@ Its renamed copy of Electron lives in `apps/desktop/.dev/` (git-ignored), signed
 certificate to run or change it. Its window's page imports Studio's editor
 from `packages/orangefilm` as source, so a change to Studio shows in the app at its next start.
 
-`pnpm --filter @openfilm/desktop release` builds an installable app into `apps/desktop/.release/` (git-ignored),
+`pnpm --filter @orange/desktop release` builds an installable app into `apps/desktop/.release/` (git-ignored),
 unsigned unless `OPENFILM_SIGN_IDENTITY` and `APPLE_TEAM_ID` are set. A build you make is yours to try; before you
 distribute one, read [TRADEMARK.md](TRADEMARK.md): a fork published as its own needs its own name and icon.
 
@@ -121,7 +121,7 @@ Settings → Services, or each service's variable in the environment (`ELEVENLAB
 ## Releases
 
 Every pull request that changes what a package's users get carries a **changeset**: run `pnpm changeset`, pick the
-packages it changes (`openfilm`, `@openfilm/desktop`, `@openfilm/shared`) and how much (`patch` for a fix, `minor`
+packages it changes (`openfilm`, `@orange/desktop`, `@openfilm/shared`) and how much (`patch` for a fix, `minor`
 for something new; `major` only by agreement), and write a line for the changelog, as a user would read it. Commit the
 file it writes in `.changeset/`. A change to tests, docs or CI alone needs none (`pnpm changeset --empty` says so).
 Each line in the changelog links its pull request and thanks its author.

@@ -11,7 +11,7 @@
  *   · preview — a packaged app built with `release --preview`, "<product> Preview", to try a build in: its own data
  *               folder, Studio home and port, so it never meets an installed app (its package says so:
  *               `openfilmFlavor`).
- *   · dev     — `pnpm --filter @openfilm/desktop start`: this repository's code, with its own Studio home.
+ *   · dev     — `pnpm --filter @orange/desktop start`: this repository's code, with its own Studio home.
  *   · bench   — `node bench/run.mjs`: this repository's code, everything (data, Studio home, projects) in the throwaway
  *               folder the benchmark names in OPENFILM_BENCH_DIR, so a run never touches a person's dev or installed app.
  *

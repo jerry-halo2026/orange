@@ -446,7 +446,7 @@ export function appendAudit({ home, tool, project, params, clipId, at = new Date
  * @param {{ resources?: string | undefined, env?: NodeJS.ProcessEnv, here?: string }} [options]
  */
 export function editorModulesDir({ resources = process.resourcesPath, env = process.env, here = fileURLToPath(import.meta.url) } = {}) {
-  const named = (env.OPENFILM_EDITOR_MODULES ?? '').trim();
+  const named = (env.ORANGE_EDITOR_MODULES ?? env.OPENFILM_EDITOR_MODULES ?? '').trim();
   if (named) return resolve(named);
   const packed = resources ? join(resources, 'openfilm') : '';
   if (packed && existsSync(join(packed, 'packages/openfilm/src/film-doc.mjs'))) return packed;
@@ -950,7 +950,7 @@ export function createOpenFilmMcpServer(deps = {}) {
         }
 
         const engine = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/studio/server/fission-engine-paths.mjs')).href);
-        const dataDir = String(process.env.OPENFILM_DATA_DIR ?? '').trim() || home;
+        const dataDir = String(process.env.ORANGE_DATA_DIR ?? process.env.OPENFILM_DATA_DIR ?? '').trim() || home;
         const resolved = engine.resolveEnginePaths({ dataDir, project: root });
         if (!resolved.ok) {
           return answer({ ok: false, code: 'engine-paths', tool, problems: resolved.problems,
@@ -1326,8 +1326,8 @@ export function openfilmMcpServerConfig({ command, script = fileURLToPath(import
     env: [
       { name: 'ELECTRON_RUN_AS_NODE', value: '1' },
       /* the material tenant lives in the app's account store; the MCP child searches the same company library. */
-      ...(typeof process.env.OPENFILM_MEDIA_TENANT === 'string' && process.env.OPENFILM_MEDIA_TENANT.trim()
-        ? [{ name: 'OPENFILM_MEDIA_TENANT', value: process.env.OPENFILM_MEDIA_TENANT.trim() }] : []),
+      ...((process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT)?.trim()
+        ? [{ name: process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'OPENFILM_MEDIA_TENANT', value: (process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT).trim() }] : []),
     ],
   };
 }
@@ -1353,7 +1353,7 @@ if (isEntryPoint) {
        not a surface is ignored, never a way to list nothing. `OPENFILM_MCP_SURFACE=compat` is the way back to the seven
        names this file used to list. */
     serveStdio({
-      handle: createOpenFilmMcpServer({ surface: process.env.OPENFILM_MCP_SURFACE }).handle,
+      handle: createOpenFilmMcpServer({ surface: process.env.ORANGE_MCP_SURFACE ?? process.env.OPENFILM_MCP_SURFACE }).handle,
       log: (line) => {
         try {
           process.stderr.write(line + '\n');

@@ -1347,7 +1347,12 @@ export class AgentSession {
     this.command = native ? [cli.path, ...this.spec.args] : null;
     /* who it is, as `openfilm canvas` marks what it puts on the board (OPENFILM_AGENT) */
     const extra = { ...agentDefaults(this.opts.agent, shell), ...this.opts.env, ...(native ? native.env : node.env), ...(cli && this.spec.env ? this.spec.env(cli.path) : {}), ...own, ...skills?.env, ...this.logging?.env,
-      ...(process.env.OPENFILM_MEDIA_TENANT ? { OPENFILM_MEDIA_TENANT: process.env.OPENFILM_MEDIA_TENANT } : process.env.OPENFILM_DESKTOP_FLAVOR === 'dev' ? { OPENFILM_MEDIA_TENANT: 'tenant-a' } : {}),
+      ...(() => {
+        const tenant = process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT
+          ?? (process.env.OPENFILM_DESKTOP_FLAVOR === 'dev' ? 'tenant-a' : null);
+        const key = process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'OPENFILM_MEDIA_TENANT';
+        return tenant ? { [key]: tenant } : {};
+      })(),
       ...(process.env.OPENFILM_EMBED_MODE ? { OPENFILM_EMBED_MODE: process.env.OPENFILM_EMBED_MODE } : {}),
       ...(process.env.OPENFILM_EMBED_ENDPOINT ? { OPENFILM_EMBED_ENDPOINT: process.env.OPENFILM_EMBED_ENDPOINT } : {}),
       OPENFILM_AGENT: this.spec.label };

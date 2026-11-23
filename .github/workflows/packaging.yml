@@ -16,8 +16,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: packaging-check-${{ github.run_id }}
-  cancel-in-progress: false
+  group: packaging-check-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   windows:
     if: ${{ github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'win-x64' }}

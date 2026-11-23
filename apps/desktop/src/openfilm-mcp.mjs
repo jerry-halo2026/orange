@@ -34,7 +34,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createInterface } from 'node:readline';
 
 export const PROTOCOL_VERSION = '2025-06-18';
-export const SERVER_NAME = 'openfilm';
+export const SERVER_NAME = (process.env.ORANGE_MCP_SERVER_NAME ?? process.env.OPENFILM_MCP_SERVER_NAME ?? '').trim() || 'openfilm';
 export const SERVER_VERSION = '0.3.0';
 
 /** The file that says whether this machine lets an agent write, and where. */

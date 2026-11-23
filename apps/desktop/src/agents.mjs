@@ -174,8 +174,8 @@ export const AGENTS = Object.freeze({
 export function withToolKind(update, toolKinds) {
   if (!toolKinds || update?.sessionUpdate !== 'tool_call' || (update.kind ?? 'other') !== 'other') return update;
   const title = String(update.title ?? '');
-  /* OpenFilm MCP tools arrive as mcp__openfilm__<name>_<hash>; their kind is in the name. */
-  if (title.startsWith('mcp__openfilm__')) {
+  /* OpenFilm MCP tools arrive as mcp__openfilm__<name>_<hash>, or mcp__orangefilm__… after the rename. */
+  if (title.startsWith('mcp__openfilm__') || title.startsWith('mcp__orangefilm__')) {
     if (/material|library/.test(title)) return { ...update, kind: 'search' };
     if (/plan|timeline|caption/.test(title)) return { ...update, kind: 'edit' };
     return update;

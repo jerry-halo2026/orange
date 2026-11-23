@@ -361,8 +361,8 @@ await builder.build({
     afterSign: !win && unsigned ? (context) => adHocSign(context) : undefined,
     win: {
       icon: join(desktop, 'build/icon.ico'),
-      /* resedit writes the icon and version (afterPack); rcedit would need wine on this Mac */
-      signAndEditExecutable: false,
+      /* electron-builder writes the icon and version into the exe; signing stays off, editing does not. */
+      signExecutable: false,
       /* the installer's own file name: brand.json's `installerName` (OrangeFilm-Setup-<arch>.exe) */
       artifactName: `${INSTALLER.replace(' ', '-')}-Setup-\${arch}.\${ext}`,
     },

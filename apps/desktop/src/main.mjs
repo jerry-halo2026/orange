@@ -727,7 +727,7 @@ async function start() {
   if (authRuntime.error) console.error(`[auth] ${authRuntime.code}: ${authRuntime.message}`);  const env = childEnvironment({
     shell: shellEnv,
     extra: {
-      OPENFILM_HOME: IDENTITY.studioHome ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm'),
+      OPENFILM_HOME: IDENTITY.studioHome ?? process.env.ORANGE_HOME ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm'),
       /* 素材索引的落点：Studio 的索引路由要读同一份（后台构建见 startMaterialIndexBootstrap）。 */
       OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR,
       ...(() => {

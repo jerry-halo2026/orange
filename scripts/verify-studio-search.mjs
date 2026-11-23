@@ -37,8 +37,8 @@ const query = arg('query', '小青柑 外包装');
 const limit = Number(arg('limit', '5'));
 const repeat = Number(arg('repeat', '1'));
 
-const { startStudio } = await import('../packages/openfilm/studio/server/server.mjs');
-const { DEFAULT_PACK_DIR, LOCAL_EMBED_MODEL } = await import('../packages/openfilm/src/material-search.mjs');
+const { startStudio } = await import('../packages/orangefilm/studio/server/server.mjs');
+const { DEFAULT_PACK_DIR, LOCAL_EMBED_MODEL } = await import('../packages/orangefilm/src/material-search.mjs');
 
 const key = 'verify-studio-search-key';
 /** 只在这条命令里存在的登录态：不碰账号、不发鉴权请求。 */

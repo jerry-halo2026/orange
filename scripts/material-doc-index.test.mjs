@@ -17,7 +17,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { DEFAULT_ANALYZER_VER, mediaDocText } from '../packages/openfilm/src/material-doc.mjs';
+import { DEFAULT_ANALYZER_VER, mediaDocText } from '../packages/orangefilm/src/material-doc.mjs';
 import {
   DEFAULT_BATCH,
   EMBED_DIMS,

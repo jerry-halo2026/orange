@@ -17,7 +17,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-/** 依次找体检模块：本目录（安装后的副本）→ 仓库 `packages/openfilm/src/`。 */
+/** 依次找体检模块：本目录（安装后的副本）→ 仓库 `packages/orangefilm/src/`。 */
 async function loadChecker() {
   const candidates = [
     join(here, 'claim-check.mjs'),
@@ -69,7 +69,7 @@ const wantRewrite = argv.includes('--rewrite');
 const sceneArg = arg('scene');
 const detailArg = arg('detail');
 
-/** 依次找改写模块：安装后的副本 → 仓库 packages/openfilm/src/。 */
+/** 依次找改写模块：安装后的副本 → 仓库 packages/orangefilm/src/。 */
 async function loadRewrite() {
   const candidates = [join(here, 'copy-rewrite.mjs'), join(here, '..', '..', 'packages', 'openfilm', 'src', 'copy-rewrite.mjs')];
   for (const file of candidates) {

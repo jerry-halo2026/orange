@@ -24,24 +24,24 @@
  * in `packaged-selfcheck.test.mjs` walks the imports and fails on one that is missing.
  */
 export const PACKED_MATERIAL_MODULES = Object.freeze([
-  'packages/openfilm/src/material-tools.mjs',
-  'packages/openfilm/src/material-index-build.mjs',
-  'packages/openfilm/src/material-index.mjs',
-  'packages/openfilm/src/material-search.mjs',
-  'packages/openfilm/src/material-pack.mjs',
-  'packages/openfilm/src/locations.mjs',
-  'packages/openfilm/src/development-isolation.mjs',
+  'packages/orangefilm/src/material-tools.mjs',
+  'packages/orangefilm/src/material-index-build.mjs',
+  'packages/orangefilm/src/material-index.mjs',
+  'packages/orangefilm/src/material-search.mjs',
+  'packages/orangefilm/src/material-pack.mjs',
+  'packages/orangefilm/src/locations.mjs',
+  'packages/orangefilm/src/development-isolation.mjs',
   /* the packaged app starts this detached to build the landed index; without it `/api/materials/index` is 404. */
-  'packages/openfilm/scripts/material-index-build.mjs',
+  'packages/orangefilm/scripts/material-index-build.mjs',
 ]);
 
 /** The modules, by their path in the repository (which is also their path under `resources/openfilm`). */
 export const PACKED_EDITOR_MODULES = Object.freeze([
-  'packages/openfilm/src/film-doc.mjs',
-  'packages/openfilm/src/clip-motion.mjs',
-  'packages/openfilm/studio/server/ops.mjs',
+  'packages/orangefilm/src/film-doc.mjs',
+  'packages/orangefilm/src/clip-motion.mjs',
+  'packages/orangefilm/studio/server/ops.mjs',
   /* the sign-in environment resolver: the window loads it at startup, so an install without it cannot start */
-  'packages/openfilm/src/auth-environment.mjs',
+  'packages/orangefilm/src/auth-environment.mjs',
   ...PACKED_MATERIAL_MODULES,
 ]);
 

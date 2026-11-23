@@ -13,6 +13,6 @@ import { PRODUCT_NAME } from './product-name.mjs';
 
 test('the native word is brand.json\'s productName', () => {
   const brand = JSON.parse(readFileSync(fileURLToPath(new URL('../../../brand.json', import.meta.url)), 'utf8'));
-  assert.equal(PRODUCT_NAME, brand.productName, 'packages/openfilm/src/product-name.mjs and brand.json name two things');
+  assert.equal(PRODUCT_NAME, brand.productName, 'packages/orangefilm/src/product-name.mjs and brand.json name two things');
   assert.equal(PRODUCT_NAME, 'OrangeFilm', 'the product this tree ships is OrangeFilm');
 });

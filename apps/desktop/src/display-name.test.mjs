@@ -23,8 +23,8 @@ test('login renders the creation center name and native account inputs',async()=
  assert.ok(html.includes(product));assert.match(html,/type="email"/);assert.match(html,/type="password"/);assert.doesNotMatch(html,/OpenFilm Studio|orangeflim/);
 });
 test('window, launcher and editor use the same display name without changing native identity',async()=>{
- const main=await read('./main.mjs'),shell=await read('../shell/index.html'),studioPage=await read('../../../packages/openfilm/studio/ui/index.html');
- const launcher=await read('../../../packages/openfilm/studio/ui/src/components/Launcher.tsx'),view=await read('../../../packages/openfilm/studio/ui/src/components/ProjectView.tsx'),workspace=await read('../../../packages/openfilm/studio/ui/src/components/StandaloneWorkspace.tsx');
+ const main=await read('./main.mjs'),shell=await read('../shell/index.html'),studioPage=await read('../../../packages/orangefilm/studio/ui/index.html');
+ const launcher=await read('../../../packages/orangefilm/studio/ui/src/components/Launcher.tsx'),view=await read('../../../packages/orangefilm/studio/ui/src/components/ProjectView.tsx'),workspace=await read('../../../packages/orangefilm/studio/ui/src/components/StandaloneWorkspace.tsx');
  /* the window's title is brand.json's own windowTitle (brand.mjs); the name they had is the fallback */
  assert.match(main,/const DISPLAY_NAME = brandWindowTitle\(\);/);assert.equal(brandWindowTitle({}),fallback);assert.equal(brandWindowTitle(),expected);
  assert.match(main,/title: DISPLAY_NAME/);assert.match(main,/productName: DISPLAY_NAME/);

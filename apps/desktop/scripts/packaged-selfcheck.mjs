@@ -11,7 +11,7 @@
  *
  * Each check below is one thing that was missing, named with the path it should be at, and each failure says what is
  * not there — an installer short of a file is a failed build, not a warning. The rule for the environment file is the
- * app's own (`environmentProblems()` from `packages/openfilm/src/auth-environment.mjs`), so the check and the reader
+ * app's own (`environmentProblems()` from `packages/orangefilm/src/auth-environment.mjs`), so the check and the reader
  * cannot disagree about what "the three keys" means.
  *
  * Run on its own to look at a build already made, without making it again:
@@ -20,7 +20,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { environmentProblems } from '../../../packages/openfilm/src/auth-environment.mjs';
+import { environmentProblems } from '../../../packages/orangefilm/src/auth-environment.mjs';
 import { PACKED_EDITOR_ROOT, PACKED_MATERIAL_MODULES } from './packed-editor-modules.mjs';
 
 /** The build's own description of the environment it signs into (`resolveEnvironment({ resourcesDir })` reads it). */

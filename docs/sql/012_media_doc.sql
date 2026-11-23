@@ -10,7 +10,7 @@
 -- 契约（同批更新，别只改这里）：
 --   * docs/sql/contract.json —— tables.media_doc（主键/租户列/向量列）与 rpc.upsert_media_doc / rpc.media_search；
 --   * docs/contracts/media-doc.schema.json —— 写入行与检索返回行的列约定；
---   * packages/openfilm/src/index-client.mjs —— RPC_NAMES（apps/api/src/index/client.test.ts 双向比对）；
+--   * packages/orangefilm/src/index-client.mjs —— RPC_NAMES（apps/api/src/index/client.test.ts 双向比对）；
 --   * docs/sql/README.md —— 迁移表。
 --
 -- 三件**不写进库**的事（写进来就是第二份真相）：

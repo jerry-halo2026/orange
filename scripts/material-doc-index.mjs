@@ -2,7 +2,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-// 素材索引 → `public.media_doc` 的回填器（零依赖：只用 node: 内置模块 + packages/openfilm 的纯函数）。
+// 素材索引 → `public.media_doc` 的回填器（零依赖：只用 node: 内置模块 + packages/orangefilm 的纯函数）。
 //
 // 用法（本机 Docker 库，租户走会话 GUC）：
 //   node scripts/material-doc-index.mjs --limit 50                 # 小样本（先验写入通道）
@@ -13,7 +13,7 @@
 //        --progress .dev/material-doc/progress-4096.json           # 8B/4096 那一列，按产品轮转取样
 //
 // 链路：`~/.openfilm-dev/material-index/index.json`
-//      → `mediaDocRow(entry)`（packages/openfilm/src/material-doc.mjs：14 个键，不含向量）
+//      → `mediaDocRow(entry)`（packages/orangefilm/src/material-doc.mjs：14 个键，不含向量）
 //      → `POST /v1/embeddings`（768 维，超时 20 s，并发 ≤ 4，失败重试 3 次带退避）
 //      → 每 `--batch` 条一个 psql 会话：`set app.company_key` → 逐条 `select public.upsert_media_doc($json$…$json$::jsonb)`
 //
@@ -61,8 +61,8 @@ import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { DEFAULT_ANALYZER_VER, mediaDocRow } from '../packages/openfilm/src/material-doc.mjs';
-import { entryMetaOf, parseMaterialName } from '../packages/openfilm/src/material-index.mjs';
+import { DEFAULT_ANALYZER_VER, mediaDocRow } from '../packages/orangefilm/src/material-doc.mjs';
+import { entryMetaOf, parseMaterialName } from '../packages/orangefilm/src/material-index.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = path.join(ROOT, 'infra', 'docker-compose.yml');
@@ -1081,7 +1081,7 @@ async function main() {
   };
 
   if (!options.dryRun && !existsSync(options.indexFile)) {
-    console.error(`索引不存在：${options.indexFile}（先跑 node packages/openfilm/scripts/material-index-bootstrap.mjs）`);
+    console.error(`索引不存在：${options.indexFile}（先跑 node packages/orangefilm/scripts/material-index-bootstrap.mjs）`);
     return 2;
   }
 

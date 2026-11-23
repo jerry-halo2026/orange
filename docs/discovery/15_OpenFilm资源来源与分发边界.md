@@ -6,9 +6,9 @@
 | 类别 | 实际来源/版本 | 当前行为 |
 | --- | --- | --- |
 | 完整示例项目 | https://github.com/openfilm/examples | 随包examples-index只含2项列表/海报；SOURCE=2e8f47866bc2d32305cd5d97adcffd7480df2297；默认运行时追main索引，下载时解析当时commit，不等于固定产品pin |
-| 核心技能 | packages/openfilm/manual下edit/media/canvas | 随软件版本固定提供给Agent，可关闭，不是Discover远端安装 |
+| 核心技能 | packages/orangefilm/manual下edit/media/canvas | 随软件版本固定提供给Agent，可关闭，不是Discover远端安装 |
 | Discover技能 | https://github.com/openfilm/skills 的main/index.json | 索引动态，各技能独立repo/semver/40位commit；刷新会主动缓存未缓存技能，不是只点击安装才下载 |
-| 通用库 | packages/openfilm/library目录及https://openfilm.dev/library | 目录/部分bundle随包，audio/voices/emoji/models/产品模板预览等按需远程取；URL不全带版本 |
+| 通用库 | packages/orangefilm/library目录及https://openfilm.dev/library | 目录/部分bundle随包，audio/voices/emoji/models/产品模板预览等按需远程取；URL不全带版本 |
 | 模板 | Saved v2 group bundle、files、音乐依赖 | 本pin统计14组模板，复用原film/轨道/插槽，不是第二项目格式 |
 | 用户Saved/项目 | 本机个人Saved、Projects/项目skills | 用户内容不自动回传或成为公共资源；取用有项目副本 |
 | 其他媒体/生成 | 已配置Provider如Pexels/Pixabay/生成服务 | 非OpenFilm自有库存，来源记录不等于可镜像/转售授权 |
@@ -44,8 +44,8 @@ Skill全文进入Agent上下文，且可附脚本；安装/收录/下载不等�
 尚未创建自有云端资源仓、上传模型或镜像任何资源。
 
 ## 6 固定源码证据
-- packages/openfilm/examples-index/SOURCE、studio/server/examples.mjs、fetch-repo.mjs、fetch-github.mjs、scripts/sync-examples.mjs。
-- packages/openfilm/src/skills.mjs、studio/server/skill-catalog.mjs、apps/desktop/src/agent-skills.mjs。
-- packages/openfilm/studio/server/library.mjs:41–208、saved.mjs:309–361、src/locations.mjs:50–68。
-- packages/openfilm/library/LICENSE.md、local-models.json、THIRD_PARTY_NOTICES.md、src/library-semantic.mjs:71–89。
+- packages/orangefilm/examples-index/SOURCE、studio/server/examples.mjs、fetch-repo.mjs、fetch-github.mjs、scripts/sync-examples.mjs。
+- packages/orangefilm/src/skills.mjs、studio/server/skill-catalog.mjs、apps/desktop/src/agent-skills.mjs。
+- packages/orangefilm/studio/server/library.mjs:41–208、saved.mjs:309–361、src/locations.mjs:50–68。
+- packages/orangefilm/library/LICENSE.md、local-models.json、THIRD_PARTY_NOTICES.md、src/library-semantic.mjs:71–89。
 - 上游主来源：https://github.com/openfilm/examples 、https://github.com/openfilm/skills 、https://github.com/openfilm/skill-replicate ；代码/商标说明保留在仓库LICENSE/TRADEMARK.md。

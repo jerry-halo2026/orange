@@ -17,7 +17,7 @@ import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { EMBED_DIMS, embeddingOf, productionKind, runAnalyze, wikiRowsOf } from './analyze-service.mjs';
-import { ANALYZER_VER } from '../../../packages/openfilm/src/analyze-runner.mjs';
+import { ANALYZER_VER } from '../../../packages/orangefilm/src/analyze-runner.mjs';
 import { createIndexRpc } from './index-rpc.mjs';
 
 /** A vector of the declared width, as the embedding endpoint answers with one. */

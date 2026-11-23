@@ -6,10 +6,10 @@
 /**
  * Build the material index from a running dev Studio.
  *
- *   node packages/openfilm/scripts/material-index-build.mjs              # asks the Studio, writes the index
- *   node packages/openfilm/scripts/material-index-build.mjs --dry-run    # asks, prints, writes nothing
- *   node packages/openfilm/scripts/material-index-build.mjs --dir D:\\work\\idx --json
- *   node packages/openfilm/scripts/material-index-build.mjs --dry-run --video-types 2,4
+ *   node packages/orangefilm/scripts/material-index-build.mjs              # asks the Studio, writes the index
+ *   node packages/orangefilm/scripts/material-index-build.mjs --dry-run    # asks, prints, writes nothing
+ *   node packages/orangefilm/scripts/material-index-build.mjs --dir D:\\work\\idx --json
+ *   node packages/orangefilm/scripts/material-index-build.mjs --dry-run --video-types 2,4
  *
  * The dev Studio writes where it listens and its launch key to `~/.openfilm-dev/run.json` (`origin`, `key`); this reads
  * them, asks `/api/materials/list` once per page, and hands the pages to `buildMaterialIndexFromApi`.
@@ -203,7 +203,7 @@ if (isMain()) {
     const args = parseArgs(process.argv.slice(2));
     if (args.help) {
       console.log([
-        '用法: node packages/openfilm/scripts/material-index-build.mjs [--dry-run] [--dir DIR] [--page-size N]',
+        '用法: node packages/orangefilm/scripts/material-index-build.mjs [--dry-run] [--dir DIR] [--page-size N]',
         `      [--scope ${SCOPES.join('|')}] [--video-types ${MATERIAL_VIDEO_TYPES.join(',')}] [--json]`,
         '  --scope        默认 company（own 在本账号被供应商全量过滤）',
         '  --video-types  只扫其中几类，默认全部',

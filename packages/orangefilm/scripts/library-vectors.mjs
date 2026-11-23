@@ -5,8 +5,8 @@
 // 元素库的向量：把每件东西"是什么"（passageOf）用**本机那个模型**算成向量，写成 library/vectors.i8（int8）
 // 与 library/vectors.json（模型、维度、id 顺序、类别、每行的缩放）。
 //
-//   node packages/openfilm/scripts/library-vectors.mjs
-//   node packages/openfilm/scripts/library-vectors.mjs --model-dir <bge-base-zh-onnx 目录>
+//   node packages/orangefilm/scripts/library-vectors.mjs
+//   node packages/orangefilm/scripts/library-vectors.mjs --model-dir <bge-base-zh-onnx 目录>
 //
 // # 模型
 //

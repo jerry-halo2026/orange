@@ -12,7 +12,7 @@ this repository as read-only. Names and marks are covered separately by [TRADEMA
 | Path | What |
 | --- | --- |
 | `apps/desktop` | the desktop app: window shell, Studio in a utility process, the agent chat |
-| `packages/openfilm` | the format, the CLI, Studio's server and UI |
+| `packages/orangefilm` | the format, the CLI, Studio's server and UI |
 | `packages/shared` | what the app's renderer and Studio share |
 | `workers/fission` | the .NET batch mixer Studio starts |
 | `docs/` | the maintained development source; start at [docs/README.md](docs/README.md) |

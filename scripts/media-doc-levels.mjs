@@ -23,7 +23,7 @@ import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { indexEntries } from '../packages/openfilm/src/material-clean.mjs';
+import { indexEntries } from '../packages/orangefilm/src/material-clean.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = path.join(ROOT, 'infra', 'docker-compose.yml');

@@ -11,7 +11,7 @@ OrangeFilm 是自有的视频生产工作台：桌面应用（Electron）、Stud
 | 路径 | 内容 |
 | --- | --- |
 | `apps/desktop` | 桌面应用：窗口壳、utility 进程里的 Studio、agent 对话 |
-| `packages/openfilm` | 格式、CLI、Studio 的服务端与界面 |
+| `packages/orangefilm` | 格式、CLI、Studio 的服务端与界面 |
 | `packages/shared` | 渲染层与 Studio 共享的代码 |
 | `workers/fission` | Studio 启动的 .NET 批量混剪 |
 | `docs/` | 维护中的开发文档；入口 [docs/README.md](docs/README.md) |

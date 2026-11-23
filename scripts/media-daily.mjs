@@ -100,7 +100,7 @@ export function steps(options) {
       title: '索引（供应商 → 索引条目）',
       when: () => existsSync(options.indexFile),
       skipReason: `索引文件不存在：${options.indexFile}（先跑一次 material-index-bootstrap）`,
-      command: ['node', ['packages/openfilm/scripts/material-index-bootstrap.mjs']],
+      command: ['node', ['packages/orangefilm/scripts/material-index-bootstrap.mjs']],
       note: '按 videoId 合并，已有条目不动；这一条不会重算向量',
     },
     {
@@ -111,7 +111,7 @@ export function steps(options) {
       /* 换了模型之后，日常增量要走**客户端同一条 ONNX 管线**（同一个模型、CLS 池化、WordPiece 分词），
          否则库里是新行用新模型、老行用老模型 —— 那就是两个向量空间混在一列里。 */
       command: ['node', ['scripts/bench-onnx-model.mjs',
-        '--model-dir', 'packages/openfilm/library/models/bge-base-zh-onnx',
+        '--model-dir', 'packages/orangefilm/library/models/bge-base-zh-onnx',
         '--dims', '768', '--tokenizer', 'auto', '--pooling', 'cls',
         '--pending', '--write-column', 'embedding', '--ver-column', 'embedding_ver_768_bge_base',
         '--label', 'bge-base-zh-v1.5', '--corpus-limit', String(options.limit),

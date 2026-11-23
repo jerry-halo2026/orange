@@ -31,7 +31,7 @@
  *      Its FFmpeg is the one from 2b — the desktop's own resources/runtime/ffmpeg, not a second copy;
  *   2e. the environment the installed app signs into, as `resources/auth-environment.json`: the three fields
  *      `resolveEnvironment({ resourcesDir })` reads (environmentId, authOrigin, publishableKey —
- *      packages/openfilm/src/auth-environment.mjs), taken from `.dev/auth-runtime.json` (or the file
+ *      packages/orangefilm/src/auth-environment.mjs), taken from `.dev/auth-runtime.json` (or the file
  *      ORANGE_AUTH_CONFIG_FILE names, or the JSON in ORANGE_AUTH_ENV), written 0600 with those three keys and nothing
  *      else: a bench's credentials are never packaged. Without it the installed app cannot say which environment it
  *      belongs to, so a build with no source to take it from says so and `--dir` fails on the missing file;

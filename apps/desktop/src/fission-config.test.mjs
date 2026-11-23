@@ -112,7 +112,7 @@ test('a configuration left from an earlier start is replaced, and a crashed temp
 });
 
 test('Studio\'s own reader accepts the file this writes', async () => {
-  const { readLocalFissionConfiguration } = await import('../../../packages/openfilm/studio/server/fission-local.mjs');
+  const { readLocalFissionConfiguration } = await import('../../../packages/orangefilm/studio/server/fission-local.mjs');
   const resources = packaged();
   const data = temp('of-fission-data-');
   const path = writeFissionConfigFile({ resourcesPath: resources, dataDir: data, platform: 'win32' });

@@ -7,7 +7,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fetchFfmpeg, ffmpegIn, unzipEntry } from './ffmpeg-runtime.mjs';
-import { zipFiles } from '../../../packages/openfilm/studio/server/zip.mjs';
+import { zipFiles } from '../../../packages/orangefilm/studio/server/zip.mjs';
 
 /** A response whose body comes in one piece. */
 const answer = (bytes) => new Response(new ReadableStream({ start(c) { c.enqueue(bytes); c.close(); } }), { headers: { 'content-length': String(bytes.length) } });

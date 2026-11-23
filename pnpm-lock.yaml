@@ -46,7 +46,7 @@ importers:
         version: 6.8.9
       openfilm:
         specifier: workspace:*
-        version: link:../../packages/openfilm
+        version: link:../../packages/orangefilm
       undici:
         specifier: 8.12.2
         version: 8.12.2
@@ -115,7 +115,7 @@ importers:
         specifier: ^5.0.14
         version: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
 
-  packages/openfilm:
+  packages/orangefilm:
     dependencies:
       playwright-core:
         specifier: 1.61.1

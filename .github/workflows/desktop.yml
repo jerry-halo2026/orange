@@ -197,7 +197,7 @@ jobs:
           done
           ls -l upload
           # the changelog's entry for this version, if there is one
-          awk -v v="## $VERSION" '$0 == v { on = 1; next } /^## / { on = 0 } on' packages/openfilm/CHANGELOG.md > notes.md 2>/dev/null || true
+          awk -v v="## $VERSION" '$0 == v { on = 1; next } /^## / { on = 0 } on' packages/orangefilm/CHANGELOG.md > notes.md 2>/dev/null || true
           [ -s notes.md ] || echo "OrangeFilm $VERSION." > notes.md
           if gh release view "$TAG" > /dev/null 2>&1; then
             gh release upload "$TAG" upload/* --clobber

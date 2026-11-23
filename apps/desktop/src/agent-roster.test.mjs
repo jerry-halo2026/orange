@@ -7,8 +7,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRoster, keyAddress, probeRequest, readChoices } from './agent-roster.mjs';
-import { LANGUAGES as STUDIO_LANGUAGES } from '../../../packages/openfilm/studio/ui/src/i18n/index.ts';
-import { ownModelError } from '../../../packages/openfilm/studio/ui/src/lib/agent-row.ts';
+import { LANGUAGES as STUDIO_LANGUAGES } from '../../../packages/orangefilm/studio/ui/src/i18n/index.ts';
+import { ownModelError } from '../../../packages/orangefilm/studio/ui/src/lib/agent-row.ts';
 
 const roster = (dataDir, fetch, extra = {}) => createRoster({
   dataDir,

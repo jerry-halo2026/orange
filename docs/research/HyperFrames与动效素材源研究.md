@@ -15,7 +15,7 @@
 
 ## 1 结论
 
-1. HyperFrames 是**HTML 原生**的“网页→视频”框架，Apache-2.0，与本项目 [SPEC.md](../../packages/openfilm/SPEC.md) 的 Protocol 0.1 在**契约层高度同构**：都是“无头 Chrome 逐帧求值 + FFmpeg 编码，永不播放”，都要求“同一 t 同一帧”。`[仓库][文档]`
+1. HyperFrames 是**HTML 原生**的“网页→视频”框架，Apache-2.0，与本项目 [SPEC.md](../../packages/orangefilm/SPEC.md) 的 Protocol 0.1 在**契约层高度同构**：都是“无头 Chrome 逐帧求值 + FFmpeg 编码，永不播放”，都要求“同一 t 同一帧”。`[仓库][文档]`
 2. 它的**素材价值在 `registry/`**：实测 **457 条**（blocks 210 / components 238 / examples 9），其中 **231 条带 variables**（可参数化）；交付形态是**单文件 HTML 片段**，不是运行时依赖。`[仓库]`
 3. 它的**底座价值为零**：`@hyperframes/engine|producer|studio|cli` 是一整套渲染/编辑/发布体系，我们用 playwright + ffmpeg + Studio 已经覆盖，引入即第二套底座。`[仓库]`
 4. 两边有 **4 处真实差异**必须在搬运时改：`data-start/data-duration` → `at`；`data-track-index`（只是编辑器行，层叠靠 `z-index`）→ `<section>` 顺序；`window.__timelines[id]` → `window.film.frame(t)`；合成内 `<audio>` → 时间线声音 clip（**我们的页面无声**）。`[仓库][文档]`

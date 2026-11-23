@@ -7,7 +7,7 @@ import { EventEmitter } from 'node:events';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import * as launcher from './start.mjs';
-import { testRoot } from '../../../packages/openfilm/src/test-roots.mjs';
+import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
 test('invalid isolation is rejected before build, runtime lookup, directories or spawn', async () => {
     assert.equal(typeof launcher.startDevelopment, 'function', 'missing testable native launcher');
     let effects = 0;

@@ -126,7 +126,7 @@ const loadIndex = (readIndex, dir, home) => readIndex(dir ?? defaultIndexDir({ h
 
 const missing = (tool, dir) => answer({
   ok: false, code: 'index-missing', tool, dir,
-  message: `还没有素材索引：${dir}/index.json 不存在或无法解析。先跑 node packages/openfilm/scripts/material-index-build.mjs。`,
+  message: `还没有素材索引：${dir}/index.json 不存在或无法解析。先跑 node packages/orangefilm/scripts/material-index-build.mjs。`,
 });
 
 const indexFacts = (result) => ({

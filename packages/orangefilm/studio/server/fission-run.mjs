@@ -45,7 +45,7 @@ export function readConfiguredRuntime(file = process.env.ORANGE_FISSION_CONFIG_F
 export const FISSION_DLL = ['workers', 'fission', 'src', 'Fission.Cli', 'bin', 'Debug', 'net10.0', 'Fission.Cli.dll'];
 
 /**
- * 这个文件所在的**检出根**（`packages/openfilm/studio/server/` 往上四级）。
+ * 这个文件所在的**检出根**（`packages/orangefilm/studio/server/` 往上四级）。
  *
  * 不能从"工程目录"往上推算：工程在用户的项目里，和检出没有关系 —— 之前就是这么写错的，
  * 结果 spawn 出来一句"找不到指定的文件"，而那句话离真正的原因很远。

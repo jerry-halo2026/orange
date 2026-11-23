@@ -89,26 +89,26 @@ test('an environment file short of a key fails with that key named, and a blank 
 
 test('the material index modules are the closure of what the tools load, and one missing one is named', () => {
   assert.deepEqual(PACKED_MATERIAL_MODULES, [
-    'packages/openfilm/src/material-tools.mjs',
-    'packages/openfilm/src/material-index-build.mjs',
-    'packages/openfilm/src/material-index.mjs',
-    'packages/openfilm/src/material-search.mjs',
-    'packages/openfilm/src/material-pack.mjs',
-    'packages/openfilm/src/locations.mjs',
-    'packages/openfilm/src/development-isolation.mjs',
+    'packages/orangefilm/src/material-tools.mjs',
+    'packages/orangefilm/src/material-index-build.mjs',
+    'packages/orangefilm/src/material-index.mjs',
+    'packages/orangefilm/src/material-search.mjs',
+    'packages/orangefilm/src/material-pack.mjs',
+    'packages/orangefilm/src/locations.mjs',
+    'packages/orangefilm/src/development-isolation.mjs',
   ]);
   for (const relative of PACKED_MATERIAL_MODULES) {
     assert.ok(PACKED_EDITOR_MODULES.includes(relative), relative + ' is packed');
     /* material-tools imports material-index-build and material-search, which import the rest: the list is a closure,
        not a guess */
     const text = readFileSync(join(repo, relative), 'utf8');
-    const imports = [...text.matchAll(/from '\.\/([^']+\.mjs)'/g)].map((match) => `packages/openfilm/src/${match[1]}`);
+    const imports = [...text.matchAll(/from '\.\/([^']+\.mjs)'/g)].map((match) => `packages/orangefilm/src/${match[1]}`);
     for (const imported of imports) assert.ok(PACKED_MATERIAL_MODULES.includes(imported), imported + ' is packed too');
   }
   const complete = materialModulesCheck(deploymentOf().resources);
   assert.equal(complete.ok, true);
   assert.match(complete.detail, /material-tools\.mjs/);
-  const short = materialModulesCheck(deploymentOf({ modules: ['packages/openfilm/src/material-tools.mjs'] }).resources);
+  const short = materialModulesCheck(deploymentOf({ modules: ['packages/orangefilm/src/material-tools.mjs'] }).resources);
   assert.equal(short.ok, false);
   assert.match(short.detail, /material-index-build\.mjs/);
   assert.match(short.detail, /material-index\.mjs/);

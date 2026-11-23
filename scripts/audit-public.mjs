@@ -62,7 +62,7 @@ const HOME = /(?:\/Users\/|\/home\/|[A-Za-z]:\\{1,2}Users\\{1,2})(?!(?:me|you|so
  */
 const ALLOWED = [
   { file: 'apps/desktop/scripts/start.mjs', check: 'path', match: /resolve\(electron, '(\.\.\/){2}\.\.'\)/, why: 'up from the Electron binary to its .app, not from this file' },
-  { file: 'packages/openfilm/src/render.mjs', check: 'private', match: "C:\\\\Users\\\\O'Brien", why: 'a made-up Windows path with a quote in it' },
+  { file: 'packages/orangefilm/src/render.mjs', check: 'private', match: "C:\\\\Users\\\\O'Brien", why: 'a made-up Windows path with a quote in it' },
   /* the 8.3 short name is what these files *refuse*: it is the counter-example in a rule about canonical long paths,
      not a home folder anyone's data lives in */
   { file: /(^|\/)packages\/openfilm\/(src\/test-roots\.mjs|studio\/server\/fission-(engine-paths|run)\.mjs)$/, check: 'private', match: /ADMINI~1/, why: 'the short name these files reject, quoted as the reason' },

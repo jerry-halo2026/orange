@@ -8,7 +8,7 @@
  *
  * Two things, in this order, and the order is the whole point:
  *
- *  1. **the index** — `packages/openfilm/scripts/material-index-bootstrap.mjs --detach` is spawned detached, its output
+ *  1. **the index** — `packages/orangefilm/scripts/material-index-bootstrap.mjs --detach` is spawned detached, its output
  *     discarded, and it is never awaited. If the index is missing or past its 24 h window it sweeps in the background
  *     and writes its progress to `~/.openfilm-dev/material-index/status.json`; if it is fresh it does nothing at all.
  *     A launcher that cannot even start that child (no node, a locked spawn) prints one line and goes on.
@@ -16,7 +16,7 @@
  *     see. The exit code is the app's, and Ctrl+C reaches it.
  *
  * The index can therefore never stop the app from starting: it is a separate process with no way to fail back into this
- * one. What it *can* do is be seen — `node packages/openfilm/scripts/material-index-bootstrap.mjs --status` says
+ * one. What it *can* do is be seen — `node packages/orangefilm/scripts/material-index-bootstrap.mjs --status` says
  * `absent` / `building` / `landed` / `stale` / `failed` at any moment, with the reason when it failed.
  *
  * `OPENFILM_DESKTOP_START` replaces the command (used to verify this wiring without opening a window); it is not a

@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { filmHtml } from '../../../packages/openfilm/src/film-doc.mjs';
+import { filmHtml } from '../../../packages/orangefilm/src/film-doc.mjs';
 import { createOpenFilmMcpServer, toolCallLine } from './orangefilm-mcp.mjs';
 import { createIndexRpc, readIndexConfig } from './index-rpc.mjs';
 import { analysisWorkspace, runAnalyze } from './analyze-service.mjs';

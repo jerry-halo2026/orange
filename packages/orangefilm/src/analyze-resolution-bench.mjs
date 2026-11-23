@@ -5,7 +5,7 @@
  * Resolution against time, measured: the same 8 s testsrc2 clip, one frame at each long edge, described
  * by this machine's LM Studio (qwen2.5-vl-7b-instruct, port 1235). Run with
  *
- *   node packages/openfilm/src/analyze-resolution-bench.mjs [D:/path/to/ffmpeg.exe]
+ *   node packages/orangefilm/src/analyze-resolution-bench.mjs [D:/path/to/ffmpeg.exe]
  */
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';

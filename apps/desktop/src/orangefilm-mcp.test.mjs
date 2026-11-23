@@ -17,10 +17,10 @@ import {
   TOOL_DEFINITIONS, TOOL_SURFACES, WRITE_GATE_FILE, createOpenFilmMcpServer, openfilmMcpServerConfig, readWriteGate,
   serveStdio, surfaceArithmetic, writeFileAtomic,
 } from './orangefilm-mcp.mjs';
-import { MATERIAL_TOOL_CAPS, MATERIAL_TOOL_CAPS_CONTRACT, planMaterialToolSurface } from '../../../packages/openfilm/src/material-tools.mjs';
+import { MATERIAL_TOOL_CAPS, MATERIAL_TOOL_CAPS_CONTRACT, planMaterialToolSurface } from '../../../packages/orangefilm/src/material-tools.mjs';
 import { applicationMenuTemplate } from './menu.mjs';
 
-import { filmHtml } from '../../../packages/openfilm/src/film-doc.mjs';
+import { filmHtml } from '../../../packages/orangefilm/src/film-doc.mjs';
 
 /** A project whose film.html the editor itself wrote, so the fixture cannot drift from the format. */
 const project = () => {

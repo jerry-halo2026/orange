@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createServer } from 'node:net';
 import { chromium } from 'playwright-core';
-import { filmHtml } from '../../../packages/openfilm/src/film-doc.mjs';
+import { filmHtml } from '../../../packages/orangefilm/src/film-doc.mjs';
 import { launch, prepare, quit, waitForCdp } from './app.mjs';
 
 async function until(read, ms = 30_000) {

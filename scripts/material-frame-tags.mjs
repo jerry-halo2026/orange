@@ -30,7 +30,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 
-import { frameTimes, mergeFrameTags, parseTagAnswer, tagText, taggingPrompt, tagsDigest, VISUAL_VER } from '../packages/openfilm/src/visual-tags.mjs';
+import { frameTimes, mergeFrameTags, parseTagAnswer, tagText, taggingPrompt, tagsDigest, VISUAL_VER } from '../packages/orangefilm/src/visual-tags.mjs';
 
 const run = promisify(execFile);
 

@@ -5,7 +5,7 @@
  * 把一个 Saved bundle 收进内置模板库：复制到 `library/templates/<slug>/`，补 poster/preview（有 ffmpeg 时），
  * 并在 `library/catalogs/templates.json` 里追加条目。
  *
- *   node packages/openfilm/scripts/import-template.mjs \
+ *   node packages/orangefilm/scripts/import-template.mjs \
  *     --bundle "<Saved bundle 文件夹>" --slug talking-01 --group talking \
  *     --name "口播-开场自报家门" --name-en "Talking head opener" --tags "口播,开场"
  */
@@ -29,7 +29,7 @@ const tags = String(args.tags ?? '').split(',').map((tag) => tag.trim()).filter(
 if (!bundle || !slug || !group || !nameZh) throw new Error('--bundle --slug --group --name are required');
 if (!/^[a-z0-9][a-z0-9-]{1,60}$/.test(slug)) throw new Error('--slug must be lowercase letters, digits and dashes');
 
-const root = resolve('packages/openfilm/library');
+const root = resolve('packages/orangefilm/library');
 const target = join(root, 'templates', slug);
 const catalog = join(root, 'catalogs', 'templates.json');
 const savedPath = join(bundle, 'saved.json');

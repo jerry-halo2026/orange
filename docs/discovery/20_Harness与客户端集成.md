@@ -18,7 +18,7 @@
 | 8 | 写闸门文件 `~/.openfilm-dev/mcp-write.json`：`version:1` + `allowWrite:true` + 项目绝对路径白名单 | `[代码]` `openfilm-mcp.mjs:31`、`:128`、`:146` |
 | 9 | 编辑器模块打包 3 个文件到 `resources/openfilm`，路径常量单一来源 | `[代码]` `apps/desktop/scripts/packed-editor-modules.mjs:14-18`、`:24` |
 | 10 | 模块定位三级回退：env → 打包目录 → 仓库根 | `[代码]` `openfilm-mcp.mjs:184-190` |
-| 11 | Settings 的 Services / 本地模型改为**账号级 store**，不再依赖隔离 profile | `[代码]` `packages/openfilm/studio/server/server.mjs:319-324`、`:426-443` |
+| 11 | Settings 的 Services / 本地模型改为**账号级 store**，不再依赖隔离 profile | `[代码]` `packages/orangefilm/studio/server/server.mjs:319-324`、`:426-443` |
 | 12 | 无登录态时这两类接口 403/503，且**不创建**任何文件 | `[代码]` `server.mjs:318`（403）、`:433`/`:441`（503） |
 
 ## 2 ACP 侧事实
@@ -101,9 +101,9 @@ dsh 侧工具名会被拼成 `mcp__<server>__<tool>`，所以模型看到的是 
 ```js
 // apps/desktop/scripts/packed-editor-modules.mjs:14-18
 export const PACKED_EDITOR_MODULES = Object.freeze([
-  'packages/openfilm/src/film-doc.mjs',
-  'packages/openfilm/src/clip-motion.mjs',
-  'packages/openfilm/studio/server/ops.mjs',
+  'packages/orangefilm/src/film-doc.mjs',
+  'packages/orangefilm/src/clip-motion.mjs',
+  'packages/orangefilm/studio/server/ops.mjs',
 ]);
 export const PACKED_EDITOR_ROOT = 'openfilm';   // :24
 ```
@@ -116,7 +116,7 @@ export const PACKED_EDITOR_ROOT = 'openfilm';   // :24
 2. `<resources>/openfilm/...`（安装态）；
 3. 仓库根（开发态，`dirname(import.meta.url)` 上溯三级）。
 
-第 2 步用**具体文件存在性**（`packages/openfilm/src/film-doc.mjs`）判定，而不是只看目录存在——空目录不会被误认成有效打包。加载是懒的（`:193-198`），只在某个工具真正需要时才 `import`，保证启动便宜。
+第 2 步用**具体文件存在性**（`packages/orangefilm/src/film-doc.mjs`）判定，而不是只看目录存在——空目录不会被误认成有效打包。加载是懒的（`:193-198`），只在某个工具真正需要时才 `import`，保证启动便宜。
 
 ## 6 Settings 的账号级边界
 

@@ -4,7 +4,7 @@
 /**
  * The 批次 → 合集 → 子合集 tree, read from the names the cloud steward already gives its material.
  *
- * The data layer is `packages/openfilm/src/material-index.mjs` (one parser, one builder, one id lookup); this module
+ * The data layer is `packages/orangefilm/src/material-index.mjs` (one parser, one builder, one id lookup); this module
  * only types that answer for the UI and adds what a view needs on top of it — the crumb trail, the count invariant, the
  * tag path of one material, the derived layer the view draws under the real batches, and a reader that can be handed
  * rows instead of a network so a test can build a whole index without a request.

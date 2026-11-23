@@ -8,7 +8,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { testRoot } from '../../../packages/openfilm/src/test-roots.mjs';
+import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
 
 // The controller's home/projects roots must be an owned, absolute, canonical
 // directory: `testRoot()` returns the long form so `resolve(root) === root`.

@@ -8,7 +8,7 @@
  *
  * 七步，按依赖顺序，每一步都自己打印一行，失败就在那一步停下并**非零退出**（绝不半启动：窗口只在第 7 步才派生）：
  *
- *   1. 环境     解析 `.dev/auth-runtime.json`（缺省回落到 `packages/openfilm/src/auth-environment.mjs` 的
+ *   1. 环境     解析 `.dev/auth-runtime.json`（缺省回落到 `packages/orangefilm/src/auth-environment.mjs` 的
  *               `LOCAL_DOCKER`，并提示一句）；把 `ORANGE_AUTH_CONFIG_FILE` / `ORANGE_FISSION_CONFIG_FILE`
  *               导给后面所有子进程。publishableKey 永不打印。
  *   2. 依赖服务 本地 Postgres（compose 服务 `db`，容器 `orange-w1-db`，`127.0.0.1:55432`）：先探 `select 1`；
@@ -35,7 +35,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import net from 'node:net';
 
-import { LOCAL_DOCKER, environmentProblems } from '../packages/openfilm/src/auth-environment.mjs';
+import { LOCAL_DOCKER, environmentProblems } from '../packages/orangefilm/src/auth-environment.mjs';
 import { startMaterialIndexBootstrap } from './dev-desktop.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));

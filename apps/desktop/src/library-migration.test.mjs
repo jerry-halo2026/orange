@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { migrateProductFolder } from '../../../packages/openfilm/src/locations.mjs';
+import { migrateProductFolder } from '../../../packages/orangefilm/src/locations.mjs';
 import { migrateOwnerRoots } from './desktop-auth.mjs';
 
 const quiet = () => {};

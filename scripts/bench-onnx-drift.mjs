@@ -120,7 +120,7 @@ async function main() {
   if (!rows.length) { console.error('没有样本'); return 1; }
   console.log(`样本 ${rows.length} 条（库内 ${options.column} 是 LM Studio 的 bge-m3 GGUF 算的）`);
 
-  const { loadEmbedder } = await import('../packages/openfilm/src/sentence-model.mjs');
+  const { loadEmbedder } = await import('../packages/orangefilm/src/sentence-model.mjs');
   const files = {
     runtime: options.runtime,
     onnx: path.join(options.modelDir, 'model_quantized.onnx'),

@@ -10,7 +10,7 @@
  *   film's page and on the home card that opens 超级混剪.
  *
  * The route and the contract it is judged by: docs/execution/2026-11-19-mix-contract.md (recipe → staging → job →
- * `report.json`), `packages/openfilm/studio/server/fission-render-routes.mjs` (`POST /recipe`, dry-run unless
+ * `report.json`), `packages/orangefilm/studio/server/fission-render-routes.mjs` (`POST /recipe`, dry-run unless
  * `run: true`), `fission-recipe.mjs` (who becomes what field) and `fission-runner.mjs` (the only executor).
  *
  * Three things have to be on the machine, and each absence is a skip that names the piece — never a quiet pass:

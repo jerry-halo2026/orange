@@ -8,7 +8,7 @@
     "available": false,
     "model": "multilingual-e5-small",
     "dims": 384,
-    "$comment": "packages/openfilm/library/models 当前为空；models.json 声明的 118MB onnx 不在 git。安装获批后在 010 迁移切到 384。"
+    "$comment": "packages/orangefilm/library/models 当前为空；models.json 声明的 118MB onnx 不在 git。安装获批后在 010 迁移切到 384。"
   },
   "vectorColumn": "wiki_summary.embedding",
   "index": { "kind": "hnsw", "opclass": "vector_cosine_ops", "m": 16, "ef_construction": 64 }

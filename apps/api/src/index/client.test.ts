@@ -197,7 +197,7 @@ test('the SQL is not copied into the client: the implementation carries no DDL s
   const module=await import('./client.ts');
   assert.equal('INDEX_RPC_DDL' in module,false,'the DDL copy was removed, not renamed');
   // The re-export shell cannot prove this; the implementation is what a packaged app runs, so read that.
-  const implementation=readFileSync(join(here,'../../../../packages/openfilm/src/index-client.mjs'),'utf8');
+  const implementation=readFileSync(join(here,'../../../../packages/orangefilm/src/index-client.mjs'),'utf8');
   assert.doesNotMatch(implementation,/create\s+or\s+replace\s+function/i,
     'docs/sql/contract.json is the shape; a SQL string is not kept in the client');
   assert.doesNotMatch(implementation,/from\s+material\s|join\s+wiki_summary|vector\(\d+\)/i,

@@ -38,8 +38,8 @@ import {
   splitIdentity,
   summarizeClean,
   trailingNameRule,
-} from '../packages/openfilm/src/material-clean.mjs';
-import { classifyUnparsedName } from '../packages/openfilm/src/material-index.mjs';
+} from '../packages/orangefilm/src/material-clean.mjs';
+import { classifyUnparsedName } from '../packages/orangefilm/src/material-index.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = path.join(ROOT, 'infra', 'docker-compose.yml');

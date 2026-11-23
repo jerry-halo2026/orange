@@ -66,7 +66,7 @@ async function serviceOf() {
   }
 }
 
-/** The component this needs: `rea-video`, installed on first use (packages/openfilm/src/analyze.mjs). */
+/** The component this needs: `rea-video`, installed on first use (packages/orangefilm/src/analyze.mjs). */
 async function component() {
   return import('./analyze.mjs');
 }

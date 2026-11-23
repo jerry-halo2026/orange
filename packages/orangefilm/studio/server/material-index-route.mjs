@@ -47,7 +47,7 @@ export function landedIndex({ dir = defaultIndexDir(), now = new Date(), read = 
          (absent / building / failed) beside `index-missing` instead of leaving the page to say "missing". */
       let buildState = { state: 'absent' };
       try { buildState = materialIndexStatus(dir, { now }); } catch { /* the status reader is optional */ }
-      throw new HttpError(404, `没有素材索引：${file} 不存在。先跑 node packages/openfilm/scripts/material-index-build.mjs。`, {
+      throw new HttpError(404, `没有素材索引：${file} 不存在。先跑 node packages/orangefilm/scripts/material-index-build.mjs。`, {
         code: 'index-missing', file, ...buildState,
       });
     }

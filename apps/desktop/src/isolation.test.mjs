@@ -6,7 +6,7 @@ import { after, before, test } from 'node:test';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { launcherEnvironment, childEnvironment } from './environment.mjs';
-import { testRoot } from '../../../packages/openfilm/src/test-roots.mjs';
+import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
 let api = {};
 try {
     api = await import('./isolation.mjs');

@@ -164,7 +164,7 @@ export async function runAnalyze({ project, media, workspace, videoId, options =
 
   const target = workspace ?? analysisWorkspace(project);
   /* the runner also owns the version stamped on both rows: one import, one source of truth */
-  const runnerModule = await import('../../../packages/openfilm/src/analyze-runner.mjs');
+  const runnerModule = await import('../../../packages/orangefilm/src/analyze-runner.mjs');
   const run = runner ?? runnerModule.runAnalysis;
   let analysis;
   try {

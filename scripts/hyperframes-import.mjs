@@ -24,7 +24,7 @@ import { join } from 'node:path';
 
 const REPO = 'https://raw.githubusercontent.com/heygen-com/hyperframes';
 const COMMIT = process.env.HYPERFRAMES_COMMIT || 'main';   // pin it: the log records which
-const LIB = 'packages/openfilm/library';
+const LIB = 'packages/orangefilm/library';
 
 /**
  * An upstream registry keyword, said as one of the library's own tags: the `tags` of an entry are the vocabulary of
@@ -204,4 +204,4 @@ for (const line of removed) console.log(`    ${line.slice(0, 120)}`);
 console.log(`  the source's timeline, ${timelines.length} calls to port into frame(t):`);
 for (const line of timelines.slice(0, 24)) console.log(`    ${line.slice(0, 140)}`);
 console.log(`\nnext: openfilm look ${join(out, 'files', `hf-${name}.html`)} 1`);
-console.log('      node scripts/library-previews.mjs (from packages/openfilm) then node scripts/library-search-index.mjs');
+console.log('      node scripts/library-previews.mjs (from packages/orangefilm) then node scripts/library-search-index.mjs');

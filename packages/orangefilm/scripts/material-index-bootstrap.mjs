@@ -6,11 +6,11 @@
 /**
  * The material index, started by whoever is launching Studio or the desktop app — not by a person remembering to.
  *
- *   node packages/openfilm/scripts/material-index-bootstrap.mjs --status     # what a reader would be shown
- *   node packages/openfilm/scripts/material-index-bootstrap.mjs --detach      # start a background sweep, return now
- *   node packages/openfilm/scripts/material-index-bootstrap.mjs --wait        # sweep in this process, print the outcome
- *   node packages/openfilm/scripts/material-index-bootstrap.mjs --wait --force
- *   node packages/openfilm/scripts/material-index-bootstrap.mjs --status --json --dir D:\\work\\idx
+ *   node packages/orangefilm/scripts/material-index-bootstrap.mjs --status     # what a reader would be shown
+ *   node packages/orangefilm/scripts/material-index-bootstrap.mjs --detach      # start a background sweep, return now
+ *   node packages/orangefilm/scripts/material-index-bootstrap.mjs --wait        # sweep in this process, print the outcome
+ *   node packages/orangefilm/scripts/material-index-bootstrap.mjs --wait --force
+ *   node packages/orangefilm/scripts/material-index-bootstrap.mjs --status --json --dir D:\\work\\idx
  *
  * `--detach` is the launcher's flag: it decides from the state alone (`materialIndexBootstrapPlan`), spawns a detached
  * child that runs `--wait`, and exits 0 immediately. Nothing the child does can stop the window from opening; the child
@@ -167,7 +167,7 @@ export async function runMaterialIndexBootstrap({
 
   if (args.help) {
     out([
-      '用法: node packages/openfilm/scripts/material-index-bootstrap.mjs [--status|--wait|--detach] [--force]',
+      '用法: node packages/orangefilm/scripts/material-index-bootstrap.mjs [--status|--wait|--detach] [--force]',
       '      [--dir DIR] [--json] [--quiet] [--studio-timeout MS] [--throttle-ms MS]',
       '  --status  只读状态：absent / building / landed / stale / failed（默认）',
       '  --wait    在本进程内把索引建好，失败时打印原因并以 1 退出',

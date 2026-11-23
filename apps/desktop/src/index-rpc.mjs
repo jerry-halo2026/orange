@@ -5,7 +5,7 @@
  * The retrieval side, as the desktop hands it to the agents: configuration in, `index-client` out, and nothing at all
  * when nothing is configured.
  *
- * There is no request shape here any more. Every call goes through `packages/openfilm/src/index-client.mjs` — the one
+ * There is no request shape here any more. Every call goes through `packages/orangefilm/src/index-client.mjs` — the one
  * client — so `/rest/v1/rpc/<fn>`, the `Bearer` token and `p_company_key` exist in exactly one file. What is left in
  * this module is the two things the desktop owns: **where the settings come from** (`OPENFILM_INDEX_URL`,
  * `OPENFILM_INDEX_SESSION`) and **how a failure is named** for the tools that show it.

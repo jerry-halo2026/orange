@@ -8,14 +8,14 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { NOT_INSTALLED_EXIT, componentDir, installed, manifest, missingReport, servicesRoot } from '../../../packages/openfilm/src/analyze.mjs';
+import { NOT_INSTALLED_EXIT, componentDir, installed, manifest, missingReport, servicesRoot } from '../../../packages/orangefilm/src/analyze.mjs';
 import { editorModulesDir } from './orangefilm-mcp.mjs';
 import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT } from '../scripts/packed-editor-modules.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const desktop = join(here, '..');
 const repo = join(desktop, '..', '..');
-const cli = join(repo, 'packages/openfilm/bin/openfilm.mjs');
+const cli = join(repo, 'packages/orangefilm/bin/openfilm.mjs');
 
 /** A services root of its own, so a test never touches the person's real one. */
 const servicesRootOf = () => mkdtempSync(join(tmpdir(), 'services-root-'));
@@ -102,9 +102,9 @@ test('the packaged app reaches the editor modules from resources, a source run f
 });
 
 test('the release packs exactly the modules the MCP server loads', () => {
-    assert.ok(PACKED_EDITOR_MODULES.includes('packages/openfilm/src/film-doc.mjs'));
-    assert.ok(PACKED_EDITOR_MODULES.includes('packages/openfilm/studio/server/ops.mjs'));
-    assert.ok(PACKED_EDITOR_MODULES.includes('packages/openfilm/src/clip-motion.mjs'), 'ops.mjs imports it');
+    assert.ok(PACKED_EDITOR_MODULES.includes('packages/orangefilm/src/film-doc.mjs'));
+    assert.ok(PACKED_EDITOR_MODULES.includes('packages/orangefilm/studio/server/ops.mjs'));
+    assert.ok(PACKED_EDITOR_MODULES.includes('packages/orangefilm/src/clip-motion.mjs'), 'ops.mjs imports it');
     // release.mjs runs its build when imported, so its packaging step is read as text.
     const text = readFileSync(join(desktop, 'scripts', 'release.mjs'), 'utf8');
     assert.match(text, /PACKED_EDITOR_MODULES/, 'the release copies the list, not a hand-written one');

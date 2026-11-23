@@ -26,7 +26,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ENVIRONMENT_FIELDS, environmentProblems } from '../../../packages/openfilm/src/auth-environment.mjs';
+import { ENVIRONMENT_FIELDS, environmentProblems } from '../../../packages/orangefilm/src/auth-environment.mjs';
 import { isPrivilegedKey } from '../src/auth-service.mjs';
 
 /** Where the committed description lives, relative to `apps/desktop`. */

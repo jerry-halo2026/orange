@@ -5,7 +5,7 @@
  * 把一个 Studio 工程（film.html + assets/）收进内置模板库：
  * 读 film.html 的 tracks/clips，复制被引用的素材，写 saved.json，并追加 catalog 条目。
  *
- *   node packages/openfilm/scripts/import-project-template.mjs --project "E:\剪辑\orangefilm\柑普茶" \
+ *   node packages/orangefilm/scripts/import-project-template.mjs --project "E:\剪辑\orangefilm\柑普茶" \
  *     --slug ganpu-talking --group talking --name "柑普茶" --name-en "Ganpu tea"
  */
 import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -32,7 +32,7 @@ if (!existsSync(filmPath)) throw new Error(`no film.html in ${project}`);
 const read = readFilmFile(readFileSync(filmPath, 'utf8'));
 if (!read.doc) throw new Error(`film.html problems: ${read.problems.join('; ')}`);
 
-const root = resolve('packages/openfilm/library');
+const root = resolve('packages/orangefilm/library');
 const target = join(root, 'templates', slug);
 const files = join(target, 'files');
 mkdirSync(files, { recursive: true });

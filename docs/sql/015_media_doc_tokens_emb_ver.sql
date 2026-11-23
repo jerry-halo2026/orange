@@ -23,7 +23,7 @@
 --   3. `media_search`（768 那条）：p_query 切词，**每个 token 都要命中**；
 --   4. `media_search_4096`：同一套切词，逐字对齐第 3 条；
 --   5. 契约同步：contract.json / docs/contracts/media-doc.schema.json / docs/sql/README.md
---      （RPC 名字与返回列都没变，`packages/openfilm/src/index-client.mjs` 的 RPC_NAMES 因此不动）。
+--      （RPC 名字与返回列都没变，`packages/orangefilm/src/index-client.mjs` 的 RPC_NAMES 因此不动）。
 --
 -- 分词的口径（三条，都能在下面的 SQL 里逐字对上）：
 --   * token 全集 = `regexp_split_to_array(btrim(p_query), '\s+')` 去掉空串；空查询/纯空白 → token 集为空

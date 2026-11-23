@@ -23,7 +23,7 @@ import { join } from 'node:path';
 
 const ROOT = join(import.meta.dirname, '..');
 const PACKAGES = [
-  { name: 'openfilm', dir: 'packages/openfilm' },
+  { name: 'openfilm', dir: 'packages/orangefilm' },
 ];
 
 /** What a published package never holds. */

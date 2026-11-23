@@ -5,10 +5,10 @@
 /**
  * `pnpm test`, with the fixture roots the integration suites require.
  *
- * Why: a dozen suites in `packages/openfilm` refuse to run without an explicit, canonical test root outside `C:`
+ * Why: a dozen suites in `packages/orangefilm` refuse to run without an explicit, canonical test root outside `C:`
  * (`providers-isolation`, `saved-library-ownership`, `installed-services-boundary`, `person-edits-worker-lifecycle`,
  * and the two Fission suites) — they assert it before their first line of setup, so a plain `pnpm test` was red on
- * every machine, which is how a red suite stops being read. `packages/openfilm/src/test-roots.mjs` already owns the
+ * every machine, which is how a red suite stops being read. `packages/orangefilm/src/test-roots.mjs` already owns the
  * rule for a root that satisfies them; this wrapper exports the same answers as environment variables, once, and then
  * runs the workspace's own test scripts unchanged.
  *
@@ -22,7 +22,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-import { repositoryRoot } from '../packages/openfilm/src/test-roots.mjs';
+import { repositoryRoot } from '../packages/orangefilm/src/test-roots.mjs';
 
 /** The roots the suites name, and the variable each reads. One directory per suite, all under the checkout's `.dev/`. */
 const ROOTS = {

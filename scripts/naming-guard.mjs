@@ -25,7 +25,7 @@ walk('apps/desktop/src', (file) => {
     failures.push(`${file}: desktop module still starts with openfilm-`);
   }
 });
-walk('packages/openfilm/studio/ui/src', (file) => {
+walk('packages/orangefilm/studio/ui/src', (file) => {
   if (!/\.(ts|tsx)$/.test(file)) return;
   const text = readFileSync(file, 'utf8');
   if (/\bOpenFilm\b/.test(text)) failures.push(`${file}: human text still says OpenFilm`);

@@ -5,7 +5,7 @@
 /**
  * The analyser's frames, taken from what Studio already works out from a media file: `derived.mjs`'s `probe`
  * (length and picture size) and `frame` (one JPEG at a moment, cached in the project's `.film/cache/`). The
- * pipeline in `packages/openfilm/src/analyze-runner.mjs` asks an extractor for `{ frames, scene }`, where a
+ * pipeline in `packages/orangefilm/src/analyze-runner.mjs` asks an extractor for `{ frames, scene }`, where a
  * frame is `{ at (s), jpeg (Buffer), width, height }`; this module is that shape and nothing else.
  *
  * `derived.mjs` is not changed to make this work. It works on a **project root and a project-relative path**
@@ -134,7 +134,7 @@ function frameHeight(/** @type {Probe | null | undefined} */ info, /** @type {nu
 
 /** `derived.mjs` when a run needs it: imported here, so a test that injects its own never loads it. */
 async function studioTools() {
-  const module = await import('../../../packages/openfilm/studio/server/derived.mjs');
+  const module = await import('../../../packages/orangefilm/studio/server/derived.mjs');
   return { probe: module.probe, frame: module.frame };
 }
 

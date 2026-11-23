@@ -7,7 +7,7 @@ import { EventEmitter } from 'node:events';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { readIsolationProfile, isolationEnvironment } from 'openfilm/development-isolation';
-import { testRoot } from '../../../packages/openfilm/src/test-roots.mjs';
+import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
 let api = {};
 try {
     api = await import('./studio.mjs');

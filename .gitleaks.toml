@@ -8,13 +8,13 @@ useDefault = true
 [[allowlists]]
 description = "made-up provider keys Studio's tests set and read back, and RFC 6455's sample Sec-WebSocket-Key"
 condition = "AND"
-paths = ['''(^|/)packages/openfilm/studio/server/(providers/)?[\w-]+\.test\.mjs$''']
+paths = ['''(^|/)packages/orangefilm/studio/server/(providers/)?[\w-]+\.test\.mjs$''']
 regexTarget = "secret"
 regexes = ['''0123456789|12345678|123456|abcdef1234|ABCDEFGH9876''', '''^dGhlIHNhbXBsZSBub25jZQ==$''']
 
 [[allowlists]]
 description = "the library's ids in the order of its vectors, and numbers: nothing else is in the file (the emoji keycap-… reads as a key)"
-paths = ['''(^|/)packages/openfilm/library/vectors\.json$''']
+paths = ['''(^|/)packages/orangefilm/library/vectors\.json$''']
 
 # The environment every installer carries (scripts/release-environment.mjs, resources/auth-environment.json). Its
 # `publishableKey` is the client-side key Supabase hands to browsers: it is inside every installed app by design, and

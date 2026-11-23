@@ -18,16 +18,16 @@
 
 | 对象 | 已核源码事实 | 来源 |
 | --- | --- | --- |
-| 原工程 | 文件夹中的film.html和引用媒体/HTML/VTT/parts；.film放辅助状态 | [projects](../../packages/openfilm/studio/server/projects.mjs)、[film-doc](../../packages/openfilm/src/film-doc.mjs) |
+| 原工程 | 文件夹中的film.html和引用媒体/HTML/VTT/parts；.film放辅助状态 | [projects](../../packages/orangefilm/studio/server/projects.mjs)、[film-doc](../../packages/orangefilm/src/film-doc.mjs) |
 | project.id | .film/id，生成randomBytes(9).toString('base64url')，接受既有合法字符串，不是UUID | projects.mjs:114–142 |
 | Clip.id | string；可能由文件名派生、含中文/冲突后缀，不强制UUID | film-doc.mjs:281–313 |
-| FilmValue/Track/Clip/Op | 直接复用原定义；Op含set/move/insert/remove/split/props/stage/fields/track/reorder/captions/uncaptions/keyframes | [原类型](../../packages/openfilm/src/film-doc.d.mts)、[ops](../../packages/openfilm/studio/server/ops.mjs) |
-| rev | sha256(film文本).hex.slice(0,16)，字符串；不是正整数业务revision，也不覆盖VTT变化 | [film](../../packages/openfilm/studio/server/film.mjs):29–45 |
-| film at/time/fade，导出range/ranges | 秒（可有小数）；按原语义，不改成微秒 | film-doc.d.mts、[exports](../../packages/openfilm/studio/server/exports.mjs) |
-| SpokenLine.startMs/endMs、marks.startMs | 毫秒；marks仅起点，不能假设完整词结束时间 | [transcripts](../../packages/openfilm/studio/server/transcripts.mjs):18–35 |
-| provider Word.startSec/endSec | 秒；endSec可缺，不能伪造完整词末时刻；供应商到转写存在原生转换 | [transcripts](../../packages/openfilm/studio/server/transcripts.mjs) |
+| FilmValue/Track/Clip/Op | 直接复用原定义；Op含set/move/insert/remove/split/props/stage/fields/track/reorder/captions/uncaptions/keyframes | [原类型](../../packages/orangefilm/src/film-doc.d.mts)、[ops](../../packages/orangefilm/studio/server/ops.mjs) |
+| rev | sha256(film文本).hex.slice(0,16)，字符串；不是正整数业务revision，也不覆盖VTT变化 | [film](../../packages/orangefilm/studio/server/film.mjs):29–45 |
+| film at/time/fade，导出range/ranges | 秒（可有小数）；按原语义，不改成微秒 | film-doc.d.mts、[exports](../../packages/orangefilm/studio/server/exports.mjs) |
+| SpokenLine.startMs/endMs、marks.startMs | 毫秒；marks仅起点，不能假设完整词结束时间 | [transcripts](../../packages/orangefilm/studio/server/transcripts.mjs):18–35 |
+| provider Word.startSec/endSec | 秒；endSec可缺，不能伪造完整词末时刻；供应商到转写存在原生转换 | [transcripts](../../packages/orangefilm/studio/server/transcripts.mjs) |
 | VttCue.start/end | 秒，VTT序列化为毫秒精度；保留NOTE/REGION/STYLE/cue id/settings | captions.mjs及原字幕轨实现 |
-| WorkspaceResource.durationMs / etaMs等 | 明确各自毫秒字段，不能因都叫duration就直接传值 | [workspace-resources](../../packages/openfilm/studio/ui/src/lib/workspace-resources.ts)、exports.mjs |
+| WorkspaceResource.durationMs / etaMs等 | 明确各自毫秒字段，不能因都叫duration就直接传值 | [workspace-resources](../../packages/orangefilm/studio/ui/src/lib/workspace-resources.ts)、exports.mjs |
 
 07中的业务UUID、整数revision、整数微秒只是新业务交换候选：不得强加给上表。必要转换仅在明示边界发生，记录精度、舍入、有理帧率、半开区间和round-trip反例；原生ID与业务ID显式关联、不覆盖。同源多实例/裁剪/变速映射不靠“统一一个单位”解决。
 
@@ -37,23 +37,23 @@
 
 | 能力 | 原入口与关键IO | 原消费者/源码 | 必要增量而非重建 |
 | --- | --- | --- | --- |
-| 读工程 | GET `/api/projects/:id` → project/folder/text/rev/value/doc/problems，可能filmMissing/outer；不是`/film`端点 | [api.ts](../../packages/openfilm/studio/ui/src/api.ts)、[server](../../packages/openfilm/studio/server/server.mjs):716–725 | 本人访问/资源闭包版本，不能替换原返回字段 |
+| 读工程 | GET `/api/projects/:id` → project/folder/text/rev/value/doc/problems，可能filmMissing/outer；不是`/film`端点 | [api.ts](../../packages/orangefilm/studio/ui/src/api.ts)、[server](../../packages/orangefilm/studio/server/server.mjs):716–725 | 本人访问/资源闭包版本，不能替换原返回字段 |
 | 编辑 | POST `/api/projects/:id/edit`，`{base?,ops?,undo?}` → text/rev/value/doc/rebased；冲突409/非法422附当前rev/doc | server:859–869；film.editProjectFilm(root,base,ops,{undo}) | 剪口播严格前置条件要进原最终提交边界；保留旧原生rebase特征测试 |
 | 事件 | `/api/events`、`/api/projects/:id/events` | server/api.ts | 新业务事件关联原项目，不能重造第二条原状态权威 |
-| 源转写 | GET captions；PUT captions/line `{src,line,part?,text,language?}`，line为源毫秒起点；POST subtitles/transcribe `{srcs?}` → transcribed/failed | [server captions](../../packages/openfilm/studio/server/captions.mjs) | 词时基/分析版本/人选删除意图；改字不自动剪媒体 |
-| 字幕轨 | GET/PUT caption-tracks/file；POST from-subtitles/new/sync/translate；GET speech只算不写 | [caption-tracks](../../packages/openfilm/studio/server/caption-tracks.mjs):64–138 | 多文件协调/恢复/一次Undo；不把原逐文件writeAtomic视为跨资源事务 |
-| 项目文件 | `/api/projects/:id/files`及bring/relink/collect；路径为项目相对正斜线，上传有文件流 | [files](../../packages/openfilm/studio/server/files.mjs)、server | 绑定业务资产版本和授权解析，不把大媒体塞JSON或路径当所有权 |
-| Saved | GET `/api/saved/files`；项目POST saved和saved/take；原bundle内部VERSION=2、clip/group/page | [saved](../../packages/openfilm/studio/server/saved.mjs) | 原跨项目副本语义保持；业务归属/公司留存额外关联 |
-| Library | `/api/library`、voices/missing/fetch/favorites；openfilm/id内置资源，复制到工程 | [library](../../packages/openfilm/studio/server/library.mjs) | 智尚经业务适配接原素材UI，不塞内置只读Library当第二业务源 |
-| 素材视图 | WorkspaceResource是派生UI视图；MediaSources提供资源URL；不存在由本计划发明的`/api/sources` | workspace-resources、[project-sources](../../packages/openfilm/studio/ui/src/lib/project-sources.ts) | 只加必要provider适配，不复制浏览器/资产库 |
+| 源转写 | GET captions；PUT captions/line `{src,line,part?,text,language?}`，line为源毫秒起点；POST subtitles/transcribe `{srcs?}` → transcribed/failed | [server captions](../../packages/orangefilm/studio/server/captions.mjs) | 词时基/分析版本/人选删除意图；改字不自动剪媒体 |
+| 字幕轨 | GET/PUT caption-tracks/file；POST from-subtitles/new/sync/translate；GET speech只算不写 | [caption-tracks](../../packages/orangefilm/studio/server/caption-tracks.mjs):64–138 | 多文件协调/恢复/一次Undo；不把原逐文件writeAtomic视为跨资源事务 |
+| 项目文件 | `/api/projects/:id/files`及bring/relink/collect；路径为项目相对正斜线，上传有文件流 | [files](../../packages/orangefilm/studio/server/files.mjs)、server | 绑定业务资产版本和授权解析，不把大媒体塞JSON或路径当所有权 |
+| Saved | GET `/api/saved/files`；项目POST saved和saved/take；原bundle内部VERSION=2、clip/group/page | [saved](../../packages/orangefilm/studio/server/saved.mjs) | 原跨项目副本语义保持；业务归属/公司留存额外关联 |
+| Library | `/api/library`、voices/missing/fetch/favorites；openfilm/id内置资源，复制到工程 | [library](../../packages/orangefilm/studio/server/library.mjs) | 智尚经业务适配接原素材UI，不塞内置只读Library当第二业务源 |
+| 素材视图 | WorkspaceResource是派生UI视图；MediaSources提供资源URL；不存在由本计划发明的`/api/sources` | workspace-resources、[project-sources](../../packages/orangefilm/studio/ui/src/lib/project-sources.ts) | 只加必要provider适配，不复制浏览器/资产库 |
 | 导出 | ExportAsk原联合video/gif/audio/stills/poster/subtitles/slides/nle/project；nle含jianying/capcut；POST单ask→export或jobs→exports；DELETE job取消 | exports.mjs、server:1073–1104 | 原Job waiting/running/done/failed/cancelled保留；业务交付/计数状态另映射，不覆盖原枚举 |
-| desktop桥接 | openfilmNative→openfilmHost(version:1)/openfilmDesktop(bridgeVersion:'1')；原HOME view/项目view切换 | [preload](../../apps/desktop/src/preload.cjs)、[bridge](../../apps/desktop/shell/bridge.ts)、[host](../../packages/openfilm/studio/ui/src/lib/host.ts)、[main](../../apps/desktop/src/main.mjs) | 窄HOME/业务方法；保活原工程，不给任意shell/文件直通 |
+| desktop桥接 | openfilmNative→openfilmHost(version:1)/openfilmDesktop(bridgeVersion:'1')；原HOME view/项目view切换 | [preload](../../apps/desktop/src/preload.cjs)、[bridge](../../apps/desktop/shell/bridge.ts)、[host](../../packages/orangefilm/studio/ui/src/lib/host.ts)、[main](../../apps/desktop/src/main.mjs) | 窄HOME/业务方法；保活原工程，不给任意shell/文件直通 |
 
 原launch key/x-studio-key、Origin/Host校验保留，但不是Supabase对象授权。剪口播必须协调原film/caption写端、外部变化检测、Undo/Redo和读取/预览/导出的已提交闭包；只包新CLI会留下绕过入口。原base过旧而clip仍存在时可成功`rebased:true`，不能写后检查它就称旧计划被拒。
 
 ## 4. CLI与Skill
 
-真实入口[openfilm.mjs](../../packages/openfilm/bin/openfilm.mjs)：open/look/render/get/canvas/skills/skill/update/doctor；canvas apply是画布，不是剪时间线。退出码0完成、1命令/film失败、2错误命令/非工程。原look/render/get/canvas按当前目录定位工程；不要把文档中不存在的edit/剪口播命令当已实现。
+真实入口[openfilm.mjs](../../packages/orangefilm/bin/openfilm.mjs)：open/look/render/get/canvas/skills/skill/update/doctor；canvas apply是画布，不是剪时间线。退出码0完成、1命令/film失败、2错误命令/非工程。原look/render/get/canvas按当前目录定位工程；不要把文档中不存在的edit/剪口播命令当已实现。
 
 desktop通过[openfilm-command.mjs](../../apps/desktop/src/openfilm-command.mjs)生成自带版本命令，不能绕到全局最新版npx。确需剪口播CLI时扩此注册入口，绑定确切实例/工程和能力，复用原Op/编辑服务与同一权限/恢复边界；名称、输入/输出、错误/退出码、help、Skill文档与测试同一变更，不另造Orange CLI。未完成相应最小N1前只记能力缺口。
 

@@ -92,8 +92,8 @@ T05.a 的路径纯函数、T07 的合成样例/纯算法准备可先做，不消
 - 新业务优先在现有合适接缝增加小模块；`packages/orange-application/src/{identity,assets,fission,speech,project-commands}/`仅在确有消费/构建隔离需要时登记创建，不先建一层通用应用框架，不重写原编辑服务。
 - `apps/api/src/{identity,bindings,zhishang,claims}/`：既定 Node/TS 可信服务模块；公司密钥/绑定/共享准入；非每功能新建服务。先本机隔离实例，不改生产或部署配置。
 - 原 `apps/desktop/src` main/preload、`shell/bridge.ts`：受限实例桥接、进程生命周期；新增适配薄层，不复制应用规则。
-- 原 `packages/openfilm/studio/ui/src/components` / `lib`：复用首页、素材、字幕区域；新模块可用 `Home.tsx` / `SpeechCutPane.tsx` 等名，由相应作者单写。
-- 原 `packages/openfilm/studio/server` 和 CLI：只接已校验的原工程操作，必要 `.mjs` 桥接保留原模块风格，不全量改写上游。
+- 原 `packages/orangefilm/studio/ui/src/components` / `lib`：复用首页、素材、字幕区域；新模块可用 `Home.tsx` / `SpeechCutPane.tsx` 等名，由相应作者单写。
+- 原 `packages/orangefilm/studio/server` 和 CLI：只接已校验的原工程操作，必要 `.mjs` 桥接保留原模块风格，不全量改写上游。
 - `workers/fission/src` / `tests`：保留 .NET；路径、worker协议、实际方案记录、纯逻辑与真媒体测试分别交付。
 - `.dev/phase1/<task>/<attempt>/`（忽略）和 D 盘候选运行区：隔离数据/合成媒体/输出/证据；不把测试账号、真实字幕、URL或私有配置提交公开仓。
 

@@ -16,7 +16,7 @@
  *  - **Every write leaves one line.** `~/.openfilm-dev/mcp-audit.log` gets the tool, the project, a summary of the
  *    arguments and the clip id — never a whole media path.
  *  - **Five tools, one of them the search.** `docs/contracts/mcp-tools.schema.json` caps the surface at five names. The
- *    three read-only `material.*` tools (`packages/openfilm/src/material-tools.mjs`) are what an agent browses the cloud
+ *    three read-only `material.*` tools (`packages/orangefilm/src/material-tools.mjs`) are what an agent browses the cloud
  *    library with — `material.search` (the account's own documents, `material-search.mjs`) beside the index's
  *    `material.collections` / `material.items` — so two of the seven old names gave up their slots: `SURFACE_CHANGES`
  *    says which and why, and the `compat` surface still carries every one of them for a client that has not moved yet.
@@ -268,7 +268,7 @@ export const TOOL_DEFINITIONS = Object.freeze([
 
 /**
  * The material tools: the account's own search (`material-search.mjs`) and what an agent browses the landed index's
- * collections and items with (`packages/openfilm/src/material-tools.mjs`), landed in the same five-tool budget.
+ * collections and items with (`packages/orangefilm/src/material-tools.mjs`), landed in the same five-tool budget.
  */
 export const MATERIAL_TOOL_NAMES = Object.freeze(['material.search', 'material.collections', 'material.items']);
 
@@ -300,7 +300,7 @@ export const DEFAULT_SURFACE = 'materials';
 
 /**
  * Why each name left the five-tool surface, written down so a reviewer checks it instead of guessing. The matching
- * decision is `planMaterialToolSurface` in `packages/openfilm/src/material-tools.mjs` — same arithmetic, and these are
+ * decision is `planMaterialToolSurface` in `packages/orangefilm/src/material-tools.mjs` — same arithmetic, and these are
  * the sentences behind it. `mode` is `merged` (its work moved into another tool), `absorbed` (a cheaper tool already
  * answers it) or `retired` (it was never an agent's job). Nothing here is deleted from the code: every name stays
  * callable on the `compat` surface.
@@ -339,7 +339,7 @@ export const SURFACE_CHANGES = Object.freeze([
 /**
  * The arithmetic `SURFACE_CHANGES` describes, computed instead of asserted: what the seven-name surface loses, what it
  * keeps, what the five-slot surface adds, and whether the result is exactly `BUDGET_SURFACE`. `planMaterialToolSurface()`
- * in `packages/openfilm/src/material-tools.mjs` reaches the same five names from the same starting list — one of them
+ * in `packages/orangefilm/src/material-tools.mjs` reaches the same five names from the same starting list — one of them
  * writes prose about the plan, this one is what a test can compare `docs/contracts/mcp-tools.schema.json` against.
  * @param {{changes?: readonly {name: string, mode: string, into?: string}[], compat?: readonly string[], budget?: readonly string[]}} [options]
  */
@@ -449,17 +449,17 @@ export function editorModulesDir({ resources = process.resourcesPath, env = proc
   const named = (env.ORANGE_EDITOR_MODULES ?? env.OPENFILM_EDITOR_MODULES ?? '').trim();
   if (named) return resolve(named);
   const alias = resources ? join(resources, 'orangefilm') : '';
-  if (alias && existsSync(join(alias, 'packages/openfilm/src/film-doc.mjs'))) return alias;
+  if (alias && existsSync(join(alias, 'packages/orangefilm/src/film-doc.mjs'))) return alias;
   const packed = resources ? join(resources, 'openfilm') : '';
-  if (packed && existsSync(join(packed, 'packages/openfilm/src/film-doc.mjs'))) return packed;
+  if (packed && existsSync(join(packed, 'packages/orangefilm/src/film-doc.mjs'))) return packed;
   return resolve(dirname(here), '..', '..', '..');
 }
 
 /** The editor's own code, loaded once and only when a tool needs it (starting must stay cheap). */
 async function editorModules() {
   const root = editorModulesDir();
-  const filmDoc = await import(pathToFileURL(join(root, 'packages/openfilm/src/film-doc.mjs')).href);
-  const ops = await import(pathToFileURL(join(root, 'packages/openfilm/studio/server/ops.mjs')).href);
+  const filmDoc = await import(pathToFileURL(join(root, 'packages/orangefilm/src/film-doc.mjs')).href);
+  const ops = await import(pathToFileURL(join(root, 'packages/orangefilm/studio/server/ops.mjs')).href);
   return { readFilmFile: filmDoc.readFilmFile, parseFilm: filmDoc.parseFilm, filmHtml: filmDoc.filmHtml, clipTag: filmDoc.clipTag, applyOps: ops.applyOps };
 }
 
@@ -533,7 +533,7 @@ export function createOpenFilmMcpServer(deps = {}) {
   const editor = deps.editor ?? editorModules;
   const write = deps.write ?? writeFileAtomic;
 
-  /** The material index tools, loaded from the editor's own copy of `packages/openfilm/src` (a checkout or a packed
+  /** The material index tools, loaded from the editor's own copy of `packages/orangefilm/src` (a checkout or a packed
       install) and only when the surface or a call asks for one: starting must stay cheap. A module that is not there
       is `null`, which each tool answers as `not-configured` rather than a dead server. */
   let materialPromise = null;
@@ -541,7 +541,7 @@ export function createOpenFilmMcpServer(deps = {}) {
     if (deps.materialTools) return Promise.resolve(deps.materialTools);
     if (!materialPromise) {
       materialPromise = Promise.resolve()
-        .then(() => import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/material-tools.mjs')).href))
+        .then(() => import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/material-tools.mjs')).href))
         .catch((error) => {
           log(JSON.stringify({ event: 'material-tools-unavailable', message: String(error?.message ?? error) }));
           return null;
@@ -558,7 +558,7 @@ export function createOpenFilmMcpServer(deps = {}) {
   }
 
   /**
-   * The search the agent asks (`packages/openfilm/src/material-search.mjs`): the account's own documents through
+   * The search the agent asks (`packages/orangefilm/src/material-search.mjs`): the account's own documents through
    * `media_search`, or the landed index when the database cannot be asked. `deps.materialSearch` is the seam a test
    * (or an app that runs the search elsewhere, e.g. Studio's own route) hands in; otherwise the module builds it from
    * this machine's settings (`OPENFILM_MEDIA_TENANT`, `OPENFILM_EMBED_ENDPOINT`, `OPENFILM_EMBED_MODEL`) and answers
@@ -569,7 +569,7 @@ export function createOpenFilmMcpServer(deps = {}) {
     if (typeof deps.materialSearch === 'function') return Promise.resolve(deps.materialSearch);
     if (!searchPromise) {
       searchPromise = Promise.resolve()
-        .then(() => import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/material-search.mjs')).href))
+        .then(() => import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/material-search.mjs')).href))
         .then((module_) => {
           const service = module_.createMaterialSearchService({
             env: process.env,
@@ -624,7 +624,7 @@ export function createOpenFilmMcpServer(deps = {}) {
   async function materialCall(name, args, search = null) {
     const module_ = await materialModule();
     if (!module_ || typeof module_.callMaterialTool !== 'function') {
-      return notConfigured(name, 'The material index module (packages/openfilm/src/material-tools.mjs)');
+      return notConfigured(name, 'The material index module (packages/orangefilm/src/material-tools.mjs)');
     }
     const options = {
       home,
@@ -684,8 +684,8 @@ export function createOpenFilmMcpServer(deps = {}) {
       const gate = readWriteGate({ home, project: root, ...(deps.read ? { read: deps.read } : {}) });
       if (!gate.allowed) return refused(tool, gate.code, 'Writing a plan needs permission.', { gate: gate.file });
       try {
-        const tools = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-tools.mjs')).href);
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
+        const tools = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-tools.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
         const id = typeof args.id === 'string' && args.id.trim() ? args.id.trim() : `plan-${Date.now()}`;
         const made = tools.createPlanFromBrief({
           id,
@@ -705,7 +705,7 @@ export function createOpenFilmMcpServer(deps = {}) {
         });
         const paced = tools.paceToTarget(made.plan);
         const written = store.writePlan(root, paced.plan);
-        const report = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-schema.mjs')).href)
+        const report = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-schema.mjs')).href)
           .then((schema) => schema.validatePlan(written.plan));
         appendAudit({ home, tool, project: root, params: { id: written.id, lines: args.lines.length }, clipId: null, at: now() });
         return answer({
@@ -727,7 +727,7 @@ export function createOpenFilmMcpServer(deps = {}) {
       const gate = readWriteGate({ home, project: root, ...(deps.read ? { read: deps.read } : {}) });
       if (!gate.allowed) return refused(tool, gate.code, 'Laying a plan onto the timeline needs permission.', { gate: gate.file });
       try {
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
         const plan = store.readPlan(root, String(args?.planId ?? ''));
         if (!plan) return badArguments(tool, 'no such plan');
         const assetsDir = join(root, 'assets');
@@ -779,7 +779,7 @@ export function createOpenFilmMcpServer(deps = {}) {
       const gate = readWriteGate({ home, project: root, ...(deps.read ? { read: deps.read } : {}) });
       if (!gate.allowed) return refused(tool, gate.code, 'Writing captions needs permission.', { gate: gate.file });
       try {
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
         const plan = store.readPlan(root, String(args?.planId ?? ''));
         if (!plan) return badArguments(tool, 'no such plan');
         const cues = plan.cues.map((cue) => ({ startSec: cue.startSec, endSec: cue.endSec, text: cue.text }));
@@ -808,9 +808,9 @@ export function createOpenFilmMcpServer(deps = {}) {
       const root = projectOf(args, cwd);
       if (!root) return refused(tool, 'project-required', 'No project folder with a film.html was found.');
       try {
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
-        const schema = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-schema.mjs')).href);
-        const tools = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-tools.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
+        const schema = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-schema.mjs')).href);
+        const tools = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-tools.mjs')).href);
         const plan = store.readPlan(root, String(args?.planId ?? ''));
         if (!plan) return badArguments(tool, 'no such plan');
         const report = schema.validatePlan(plan);
@@ -835,11 +835,11 @@ export function createOpenFilmMcpServer(deps = {}) {
         const planset = args?.planset;
         if (!planset || typeof planset !== 'object') return badArguments(tool, 'planset is required');
         if (!Array.isArray(args?.candidates) || !args.candidates.length) return badArguments(tool, 'candidates is required');
-        const expander = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/planset.mjs')).href);
-        const tools = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-tools.mjs')).href);
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
-        const schema = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-schema.mjs')).href);
-        const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/dedupe-check.mjs')).href);
+        const expander = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/planset.mjs')).href);
+        const tools = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-tools.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
+        const schema = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-schema.mjs')).href);
+        const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/dedupe-check.mjs')).href);
 
         const { variants, report } = expander.expandPlans(planset);
         const candidates = args.candidates.map((candidate) => ({
@@ -909,8 +909,8 @@ export function createOpenFilmMcpServer(deps = {}) {
       if (!root) return refused(tool, 'project-required', 'No project folder with a film.html was found.');
       const action = args?.action === 'status' || args?.action === 'retry' ? args.action : 'start';
       try {
-        const jobs = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/studio/server/fission-batch-jobs.mjs')).href);
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
+        const jobs = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/studio/server/fission-batch-jobs.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
 
         if (action === 'status') {
           const batch = jobs.readBatch(root, String(args?.batchId ?? ''));
@@ -931,7 +931,7 @@ export function createOpenFilmMcpServer(deps = {}) {
         /* 渲染前的闸门排在最前面：它不需要 ffmpeg、不需要引擎配置，纯粹看计划本身。
            放在引擎检查之后就变成"配置不全时连重复都报不出来"，而重复是要改内容的事。 */
         if (action === 'start' && args?.force !== true) {
-          const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/dedupe-check.mjs')).href);
+          const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/dedupe-check.mjs')).href);
           const precheck = dedupe.planSimilarity(plans.map((plan) => ({
             id: plan.id,
             lines: plan.segments.filter((segment) => segment.kind === 'speech').map((segment) => segment.text),
@@ -951,7 +951,7 @@ export function createOpenFilmMcpServer(deps = {}) {
           }
         }
 
-        const engine = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/studio/server/fission-engine-paths.mjs')).href);
+        const engine = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/studio/server/fission-engine-paths.mjs')).href);
         const dataDir = String(process.env.ORANGE_DATA_DIR ?? process.env.OPENFILM_DATA_DIR ?? '').trim() || home;
         const resolved = engine.resolveEnginePaths({ dataDir, project: root });
         if (!resolved.ok) {
@@ -970,7 +970,7 @@ export function createOpenFilmMcpServer(deps = {}) {
 
         /* 渲染前的闸门：输入完全相同的两条必然出同一份字节。花两小时渲完再发现重复，纯浪费 ——
            所以在这里拦下，除非调用方明确 force。 */
-        const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/dedupe-check.mjs')).href);
+        const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/dedupe-check.mjs')).href);
         const precheck = dedupe.planSimilarity(plans.map((plan) => ({
           id: plan.id,
           lines: plan.segments.filter((segment) => segment.kind === 'speech').map((segment) => segment.text),
@@ -1007,8 +1007,8 @@ export function createOpenFilmMcpServer(deps = {}) {
       const root = projectOf(args, cwd);
       if (!root) return refused(tool, 'project-required', 'No project folder with a film.html was found.');
       try {
-        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/plan-store.mjs')).href);
-        const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/dedupe-check.mjs')).href);
+        const store = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/plan-store.mjs')).href);
+        const dedupe = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/dedupe-check.mjs')).href);
         const ids = Array.isArray(args?.planIds) && args.planIds.length
           ? args.planIds.map(String)
           : store.listPlans(root).map((entry) => entry.id);
@@ -1041,7 +1041,7 @@ export function createOpenFilmMcpServer(deps = {}) {
       if (typeof args?.query !== 'string' || !args.query.trim()) return badArguments('library.search', 'query is required');
       const limit = Number.isFinite(args?.limit) ? Math.max(1, Math.min(20, Math.trunc(Number(args.limit)))) : 8;
       try {
-        const module_ = await import(pathToFileURL(join(editorModulesDir(), 'packages/openfilm/src/library-search.mjs')).href);
+        const module_ = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/src/library-search.mjs')).href);
         if (!Object.values(module_.KINDS).includes(kind)) {
           return badArguments('library.search', `kind is one of ${Object.values(module_.KINDS).join(', ')}`);
         }
@@ -1102,7 +1102,7 @@ export function createOpenFilmMcpServer(deps = {}) {
           const taken = await deps.takeMaterial(videoId, root);
           if (taken?.placed) placed = taken.placed;
           else if (taken?.source) {
-            const { importFile } = await import('../../../packages/openfilm/studio/server/files.mjs');
+            const { importFile } = await import('../../../packages/orangefilm/studio/server/files.mjs');
             const { createReadStream } = await import('node:fs');
             const name = taken.name ?? basename(taken.source);
             const imported = await importFile(root, 'assets/' + name, createReadStream(taken.source));
@@ -1138,7 +1138,7 @@ export function createOpenFilmMcpServer(deps = {}) {
           }
           if (!placed) {
             /* the editor's own path: an item of this project's Saved library, taken as Studio takes it */
-            const { takeSaved } = await import('../../../packages/openfilm/studio/server/saved.mjs');
+            const { takeSaved } = await import('../../../packages/orangefilm/studio/server/saved.mjs');
             const taken = await takeSaved(root, videoId);
             if (taken && typeof taken.path === 'string') placed = taken.path;
             else if (taken && taken.clip && typeof taken.clip.src === 'string') placed = taken.clip.src;

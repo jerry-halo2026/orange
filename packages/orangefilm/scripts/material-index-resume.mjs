@@ -7,7 +7,7 @@
  *
  * 用法（dev）：
  *   STUDIO_ORIGIN=http://127.0.0.1:4757 STUDIO_KEY=... INDEX_DIR=... \
- *     node packages/openfilm/scripts/material-index-resume.mjs [--max-pages N] [--no-partition]
+ *     node packages/orangefilm/scripts/material-index-resume.mjs [--max-pages N] [--no-partition]
  */
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';

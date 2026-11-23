@@ -4,7 +4,7 @@
 /** Settings and the real model picker share a native bridge fixture; no inference is sent. */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { AgentsSection } from '../../../packages/openfilm/studio/ui/src/components/settings/AgentsSection';
+import { AgentsSection } from '../../../packages/orangefilm/studio/ui/src/components/settings/AgentsSection';
 import { ModelPopover } from '../chat/src/components/ModelPopover';
 import { setLanguage } from '../chat/src/i18n';
 import '../shell/shell.css';

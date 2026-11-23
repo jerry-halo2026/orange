@@ -26,7 +26,7 @@ test('02 configuration: rejects insecure origin before any transport use', () =>
     message: 'invalid-configuration',
   });
 });
-import { createProjectAccessPolicy } from '../../../packages/openfilm/studio/server/project-access.mjs';
+import { createProjectAccessPolicy } from '../../../packages/orangefilm/studio/server/project-access.mjs';
 const { createAuthService } = module;
 const A = '00000000-0000-4000-8000-000000000001';
 const B = '00000000-0000-4000-8000-000000000002';

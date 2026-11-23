@@ -7,7 +7,7 @@
  * self-contained for win-x64 and shipped under the app's `resources/fission`.
  *
  * Why a host. Studio starts the CLI the way a framework-dependent .NET program starts —
- * `spawn(runtime.dotnet, [runtime.cli, 'run', …])` (packages/openfilm/studio/server/fission-local.mjs) — and a
+ * `spawn(runtime.dotnet, [runtime.cli, 'run', …])` (packages/orangefilm/studio/server/fission-local.mjs) — and a
  * self-contained publish has no `dotnet.exe`: its apphost takes `run` as its first argument. So the shipped
  * configuration names the host as `dotnet` and the published program as `cli`; the host drops the `cli` argument,
  * starts the program beside it with the rest, shares stdio (Studio reads the CLI's `[Fission:…]` markers from its

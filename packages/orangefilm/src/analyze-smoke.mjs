@@ -8,7 +8,7 @@
  * (ffmpeg is not on this box's PATH). It exists to print genuine timings — the cold warm-up and the
  * warm frames apart — and it is not part of `node --test`: run it with
  *
- *   node packages/openfilm/src/analyze-smoke.mjs [<image.jpg>]
+ *   node packages/orangefilm/src/analyze-smoke.mjs [<image.jpg>]
  */
 import { readFileSync } from 'node:fs';
 import { mkdtempSync } from 'node:fs';

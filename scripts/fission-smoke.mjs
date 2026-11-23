@@ -16,10 +16,10 @@ import { homedir, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { resolveEnginePaths } from '../packages/openfilm/studio/server/fission-engine-paths.mjs';
-import { buildBatch, runBatch, batchVerdict } from '../packages/openfilm/studio/server/fission-batch.mjs';
-import { runFission } from '../packages/openfilm/studio/server/fission-run.mjs';
-import { writePlan } from '../packages/openfilm/src/plan-store.mjs';
+import { resolveEnginePaths } from '../packages/orangefilm/studio/server/fission-engine-paths.mjs';
+import { buildBatch, runBatch, batchVerdict } from '../packages/orangefilm/studio/server/fission-batch.mjs';
+import { runFission } from '../packages/orangefilm/studio/server/fission-run.mjs';
+import { writePlan } from '../packages/orangefilm/src/plan-store.mjs';
 
 const args = process.argv.slice(2);
 const keep = args.includes('--keep');

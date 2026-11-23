@@ -237,7 +237,7 @@ export async function updateOpenfilm(say = () => {}) {
     });
     if (r.error) return { ok: false, lines: [`Could not run npx (it comes with Node.js): ${r.error.message}`] };
     /* an `openfilm` installed with npm -g is not npx's: it stays as it is until npm updates it */
-    const installed = process.env.npm_command !== 'exec' && !process.env.OPENFILM_RUN;
+    const installed = process.env.npm_command !== 'exec' && !(process.env.ORANGE_RUN || process.env.OPENFILM_RUN);
     return { ok: r.status === 0, lines: installed && r.status === 0 ? [`The \`openfilm\` command installed here is still ${VERSION}: \`npm install -g openfilm@latest\` updates it.`] : [] };
   }
   if (!found) return { ok: true, lines: [`openfilm ${VERSION} is the newest. Studio starts on it the next time it opens.`] };

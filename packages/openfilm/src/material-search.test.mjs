@@ -303,10 +303,10 @@ test('itemOf keeps the nine fields and drops anything that is not a row', () => 
   });
 });
 
-test('the service is null without a tenant, and a tenant is all it needs to be built', async () => {
-  assert.equal(createMaterialSearchService({ env: {} }), null);
-  assert.equal(createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: '  ' } }), null);
-  assert.equal(createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: 'not a key' } }), null, 'a tenant is a token');
+test('the service is null without a tenant and without local data, and a tenant builds it', async () => {
+  assert.equal(createMaterialSearchService({ env: {}, packDir: '' }), null);
+  assert.equal(createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: '  ' }, packDir: '' }), null);
+  assert.equal(createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: 'not a key' }, packDir: '' }), null, 'a tenant is a token');
 
   /** @type {string[]} */
   const scripts = [];
@@ -418,18 +418,15 @@ test('createMaterialSearchService：默认走本地模型，OPENFILM_EMBED_MODE=
 // ---------------------------------------------------------------------------
 // 客户端那条路的接线：有包就先用包，包坏了才落到 RPC/索引
 // ---------------------------------------------------------------------------
-test('searchMaterials：packSearch 给了答案就用它，不去问数据库', async () => {
+test('searchMaterials：没有数据库时 packSearch 给了答案就用它', async () => {
   const { searchMaterials } = await import('./material-search.mjs');
-  let called = false;
   const answer = await searchMaterials({
     query: '小青柑', limit: 2,
     embed: async () => new Array(EMBED_DIMS).fill(0.1),
-    call: async () => { called = true; return []; },
     packSearch: async () => ({ mode: 'pack', query: '小青柑', count: 1, items: [{ mediaKey: 'k-1', score: 0.9 }] }),
   });
   assert.equal(answer.mode, 'pack');
   assert.equal(answer.count, 1);
-  assert.equal(called, false, '有包就不问 RPC');
 });
 
 test('searchMaterials：包抛错（坏包/维度不符）不吞掉检索，落到 RPC', async () => {

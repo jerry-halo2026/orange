@@ -660,11 +660,14 @@ export function defaultIndexLoader({ dir = defaultIndexDir() } = {}) {
  */
 export function createMaterialSearchService({
   env = process.env, fetchImpl, psql, index = null, indexDir = null,
-  tenant = env?.OPENFILM_MEDIA_TENANT, endpoint = env?.OPENFILM_EMBED_ENDPOINT, model = env?.OPENFILM_EMBED_MODEL,
-  composeFile = env?.OPENFILM_MEDIA_COMPOSE, timeoutMs,
+  tenant = env?.ORANGE_MEDIA_TENANT ?? env?.OPENFILM_MEDIA_TENANT,
+  endpoint = env?.ORANGE_EMBED_ENDPOINT ?? env?.OPENFILM_EMBED_ENDPOINT,
+  model = env?.ORANGE_EMBED_MODEL ?? env?.OPENFILM_EMBED_MODEL,
+  composeFile = env?.ORANGE_MEDIA_COMPOSE ?? env?.OPENFILM_MEDIA_COMPOSE, timeoutMs,
   /* `local` 用随应用分发的 ONNX 模型（离线可用）；`service` 是 LM Studio 那类 HTTP 端点（开发期/回退）。 */
-  embedder = env?.OPENFILM_EMBED_MODE === 'service' ? 'service' : 'local',
-  modelDir = env?.OPENFILM_EMBED_MODEL_DIR, packDir = env?.OPENFILM_MATERIAL_PACK ?? DEFAULT_PACK_DIR(),
+  embedder = (env?.ORANGE_EMBED_MODE ?? env?.OPENFILM_EMBED_MODE) === 'service' ? 'service' : 'local',
+  modelDir = env?.ORANGE_EMBED_MODEL_DIR ?? env?.OPENFILM_EMBED_MODEL_DIR,
+  packDir = env?.ORANGE_MATERIAL_PACK ?? env?.OPENFILM_MATERIAL_PACK ?? DEFAULT_PACK_DIR(),
 } = {}) {
   const key = typeof tenant === 'string' ? tenant.trim() : '';
   const named = typeof indexDir === 'string' && indexDir ? indexDir : null;

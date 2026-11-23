@@ -19,16 +19,17 @@ import { homedir } from 'node:os';
 import { readIsolationProfile, assertIsolationPath } from './development-isolation.mjs';
 import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 
-/** Studio's own home (its settings and keys, not the person's work): OPENFILM_HOME, else ~/.openfilm. */
+/** Studio's own home (its settings and keys, not the person's work): ORANGE_HOME, else the legacy OPENFILM_HOME, else ~/.openfilm. */
 /** @param {string} key @param {()=>string} fallback */
 const isolatedLocation = (key, fallback) => { const p = readIsolationProfile(); return p ? assertIsolationPath(p,p.paths[key],key) : fallback(); };
-export const studioHomeDir = () => isolatedLocation('home', () => process.env.OPENFILM_HOME || join(homedir(), '.openfilm'));
+const envText = (name) => process.env[`ORANGE_${name}`] ?? process.env[`OPENFILM_${name}`];
+export const studioHomeDir = () => isolatedLocation('home', () => envText('HOME') || join(homedir(), '.openfilm'));
 
 /**
  * The Studio home whose prefs.json holds what every OpenFilm on this computer shares (where the library is, the skills
  * turned off): OPENFILM_SHARED_HOME, else Studio's own.
  */
-export const sharedHome = () => isolatedLocation('sharedHome', () => process.env.OPENFILM_SHARED_HOME || studioHomeDir());
+export const sharedHome = () => isolatedLocation('sharedHome', () => envText('SHARED_HOME') || studioHomeDir());
 
 /** One value of the shared prefs.json (`home`: the home that holds it), or undefined. @param {string} key */
 export function sharedPref(key, home = sharedHome()) {
@@ -64,7 +65,7 @@ export const productFolder = () => join(homedir(), process.platform === 'darwin'
 export const legacyProductFolder = () => join(homedir(), process.platform === 'darwin' ? 'Movies' : 'Videos', LEGACY_PRODUCT_FOLDER);
 
 /** Where new projects go unless the person chose: OPENFILM_LIBRARY, else ~/Movies/OrangeFilm/Projects on macOS, ~/Videos/OrangeFilm/Projects elsewhere. */
-export const libraryDefault = () => isolatedLocation('projects', () => process.env.OPENFILM_LIBRARY
+export const libraryDefault = () => isolatedLocation('projects', () => envText('LIBRARY')
   || join(productFolder(), 'Projects'));
 
 /**
@@ -72,8 +73,8 @@ export const libraryDefault = () => isolatedLocation('projects', () => process.e
  * that is set (a Studio kept apart, for work on OpenFilm itself, leaves nothing in the person's own folder), else the
  * Desktop.
  */
-export const exportsDefault = () => isolatedLocation('exports', () => process.env.OPENFILM_EXPORTS
-  || (process.env.OPENFILM_HOME ? join(process.env.OPENFILM_HOME, 'exports') : '')
+export const exportsDefault = () => isolatedLocation('exports', () => envText('EXPORTS')
+  || (envText('HOME') ? join(envText('HOME'), 'exports') : '')
   || join(homedir(), 'Desktop'));
 
 /**
@@ -81,7 +82,7 @@ export const exportsDefault = () => isolatedLocation('exports', () => process.en
  * the projects' default folder, `Saved` (~/Movies/OrangeFilm/Saved on macOS), else OPENFILM_SAVED. Not moved with the
  * projects folder: what was saved stays where it was found.
  */
-export const savedRoot = () => isolatedLocation('saved', () => process.env.OPENFILM_SAVED || join(dirname(libraryDefault()), 'Saved'));
+export const savedRoot = () => isolatedLocation('saved', () => envText('SAVED') || join(dirname(libraryDefault()), 'Saved'));
 
 /**
  * The product's folder under its new name, moving the one it had before (`…/Videos/OpenFilm` → `…/Videos/OrangeFilm`),

@@ -1072,11 +1072,36 @@ export function createOpenFilmMcpServer(deps = {}) {
             placed = imported.path;
           }
         } else {
-          /* the editor's own path: an item of this project's Saved library, taken as Studio takes it */
-          const { takeSaved } = await import('../../../packages/openfilm/studio/server/saved.mjs');
-          const taken = await takeSaved(root, videoId);
-          if (taken && typeof taken.path === 'string') placed = taken.path;
-          else if (taken && taken.clip && typeof taken.clip.src === 'string') placed = taken.clip.src;
+          /* 云端 videoId：先经 Studio 的 raw 落到本地，再 bring 进项目 assets；Saved 路径仍走 takeSaved。 */
+          if (!videoId.startsWith('saved/')) {
+            try {
+              /* the MCP child's home is the person's, not Studio's; run.json in the app's dev home names the Studio. */
+              const run = JSON.parse(readFileSync(join(home, '.openfilm-dev', 'run.json'), 'utf8'));
+              const studio = run?.origin && run?.key ? run : null;
+              if (studio) {
+                const headers = { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin };
+                const raw = await fetch(`${studio.origin}/api/materials/raw`, { method: 'POST', headers, body: JSON.stringify({ videoId }) }).then((r) => r.json());
+                if (raw?.path) {
+                  const projects = await fetch(`${studio.origin}/api/projects`, { headers }).then((r) => r.json());
+                  const project = (projects.projects ?? []).find((p) => resolve(p.path).toLowerCase() === resolve(root).toLowerCase());
+                  if (project?.id) {
+                    const brought = await fetch(`${studio.origin}/api/projects/${encodeURIComponent(project.id)}/files/bring`, {
+                      method: 'POST', headers, body: JSON.stringify({ paths: [raw.path], into: 'assets/materials', mode: 'copy' }),
+                    }).then((r) => r.json());
+                    const landed = Array.isArray(brought?.landed) ? brought.landed[0] : brought?.landed;
+                    if (typeof landed === 'string') placed = landed;
+                  }
+                }
+              }
+            } catch { /* fall through to Saved */ }
+          }
+          if (!placed) {
+            /* the editor's own path: an item of this project's Saved library, taken as Studio takes it */
+            const { takeSaved } = await import('../../../packages/openfilm/studio/server/saved.mjs');
+            const taken = await takeSaved(root, videoId);
+            if (taken && typeof taken.path === 'string') placed = taken.path;
+            else if (taken && taken.clip && typeof taken.clip.src === 'string') placed = taken.clip.src;
+          }
         }
       } catch (error) {
         if (error?.code === 'not-configured') return notConfigured(tool, 'Taking this material');

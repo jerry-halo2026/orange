@@ -61,7 +61,7 @@ import { chmodSync, cpSync, existsSync, mkdirSync, readFileSync, readdirSync, re
 import { createRequire } from 'node:module';
 import { createHash } from 'node:crypto';
 import { basename, delimiter, dirname, join, resolve } from 'node:path';
-import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT } from './packed-editor-modules.mjs';
+import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT, PACKED_EDITOR_ROOT_ALIAS } from './packed-editor-modules.mjs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { lockedOverrides, versionsOffLock } from './locked-versions.mjs';
 import { fissionCliName, fissionHostName, fissionRid, publishFission } from './fission-publish.mjs';
@@ -321,10 +321,14 @@ if (!fission) console.warn(`Fission is not published for ${win ? 'win32' : 'darw
    (src/openfilm-mcp.mjs reads resources/openfilm/... in an installed app; the checkout has no such
    folder, which is why they are copied rather than reached by relative path) */
 const openfilmModules = join(work, PACKED_EDITOR_ROOT);
+const orangefilmModules = join(work, PACKED_EDITOR_ROOT_ALIAS);
 for (const relative of PACKED_EDITOR_MODULES) {
   const to = join(openfilmModules, relative);
   mkdirSync(dirname(to), { recursive: true });
   cpSync(join(desktop, '..', '..', relative), to);
+  const alias = join(orangefilmModules, relative);
+  mkdirSync(dirname(alias), { recursive: true });
+  cpSync(join(desktop, '..', '..', relative), alias);
 }
 
 /* 2e. the environment the installed app signs into: `resources/auth-environment.json`, exactly the three fields
@@ -426,6 +430,7 @@ await builder.build({
       { from: runtime, to: 'runtime' },
       ...(fission ? [{ from: fission.dir, to: 'fission' }] : []),
       { from: openfilmModules, to: PACKED_EDITOR_ROOT },
+      { from: orangefilmModules, to: PACKED_EDITOR_ROOT_ALIAS },
       /* the environment the app signs into (2e), at the root of resources where resolveEnvironment() reads it:
          `to: '.'` is a folder's contents into the resources folder itself, not a folder of its own */
       { from: environmentDir, to: '.' },

@@ -50,3 +50,5 @@ export const PACKED_EDITOR_MODULES = Object.freeze([
  * same path; both read this constant so they cannot drift.
  */
 export const PACKED_EDITOR_ROOT = 'openfilm';
+/** The same modules under the new product name; the MCP server prefers it and falls back to openfilm. */
+export const PACKED_EDITOR_ROOT_ALIAS = 'orangefilm';

@@ -448,6 +448,8 @@ export function appendAudit({ home, tool, project, params, clipId, at = new Date
 export function editorModulesDir({ resources = process.resourcesPath, env = process.env, here = fileURLToPath(import.meta.url) } = {}) {
   const named = (env.ORANGE_EDITOR_MODULES ?? env.OPENFILM_EDITOR_MODULES ?? '').trim();
   if (named) return resolve(named);
+  const alias = resources ? join(resources, 'orangefilm') : '';
+  if (alias && existsSync(join(alias, 'packages/openfilm/src/film-doc.mjs'))) return alias;
   const packed = resources ? join(resources, 'openfilm') : '';
   if (packed && existsSync(join(packed, 'packages/openfilm/src/film-doc.mjs'))) return packed;
   return resolve(dirname(here), '..', '..', '..');

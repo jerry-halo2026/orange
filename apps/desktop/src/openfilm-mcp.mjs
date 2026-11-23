@@ -1115,7 +1115,11 @@ export function createOpenFilmMcpServer(deps = {}) {
               const studio = run?.origin && run?.key ? run : null;
               if (studio) {
                 const headers = { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin };
-                const raw = await fetch(`${studio.origin}/api/materials/raw`, { method: 'POST', headers, body: JSON.stringify({ videoId }) }).then((r) => r.json());
+                const raw = await fetch(`${studio.origin}/api/materials/raw`, { method: 'POST', headers, body: JSON.stringify({
+                  videoId,
+                  ...(Number.isInteger(args?.videoType) && args.videoType >= 0 && args.videoType <= 4 ? { videoType: args.videoType } : {}),
+                  ...(typeof args?.scope === 'string' && args.scope ? { scope: args.scope } : {}),
+                }) }).then((r) => r.json());
                 if (raw?.path) {
                   const projects = await fetch(`${studio.origin}/api/projects`, { headers }).then((r) => r.json());
                   const project = (projects.projects ?? []).find((p) => resolve(p.path).toLowerCase() === resolve(root).toLowerCase());

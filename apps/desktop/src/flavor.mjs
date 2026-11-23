@@ -34,20 +34,20 @@ const packaged = Boolean(process.versions.electron) && !process.defaultApp;
 const NAME = brandProductName();
 
 export const FLAVORS = Object.freeze({
-  release: { productName: NAME, bundleId: 'dev.openfilm.desktop', studioPort: 4747, studioHome: null, library: null, sharedHome: null },
+  release: { productName: NAME, bundleId: 'com.orange.studio', studioPort: 4747, studioHome: null, library: null, sharedHome: null },
   preview: {
-    productName: `${NAME} Preview`, bundleId: 'dev.openfilm.desktop.preview', studioPort: 4777,
+    productName: `${NAME} Preview`, bundleId: 'com.orange.studio.preview', studioPort: 4777,
     studioHome: join(homedir(), '.openfilm-preview'), library: null, sharedHome: join(homedir(), '.openfilm'),
   },
   dev: {
-    productName: `${NAME} Dev`, bundleId: 'dev.openfilm.desktop.dev', studioPort: 4757,
+    productName: `${NAME} Dev`, bundleId: 'com.orange.studio.dev', studioPort: 4757,
     studioHome: join(homedir(), '.openfilm-dev'), library: null, sharedHome: join(homedir(), '.openfilm'),
   },
 });
 
 const benchDir = process.env.OPENFILM_BENCH_DIR ?? '';
 const BENCH = Object.freeze({
-  productName: `${NAME} Bench`, bundleId: 'dev.openfilm.desktop.bench', studioPort: 4767,
+  productName: `${NAME} Bench`, bundleId: 'com.orange.studio.bench', studioPort: 4767,
   studioHome: join(benchDir, 'home'), library: join(benchDir, 'projects'), sharedHome: null, userData: join(benchDir, 'data'),
 });
 

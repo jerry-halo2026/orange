@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { chromium } from 'playwright-core';
 import shellConfig from '../shell/vite.config.ts';
-import { OPENFILM_MODELS } from '../src/openfilm-models.mjs';
+import { OPENFILM_MODELS } from '../src/orangefilm-models.mjs';
 
 test('OpenFilm follows Claude under Your agents, shares account actions and never offers CLI setup', { timeout: 60_000 }, async () => {
   const server = await createServer({ ...shellConfig, configFile: false,

@@ -4,7 +4,7 @@
 /**
  * The editor's own modules the installed app needs at run time.
  *
- * `src/openfilm-mcp.mjs` runs the editor's code for its tools (`film-doc.mjs` reads and writes
+ * `src/orangefilm-mcp.mjs` runs the editor's code for its tools (`film-doc.mjs` reads and writes
  * film.html, `ops.mjs` applies an edit, `clip-motion.mjs` is what `ops.mjs` imports). In the checkout
  * it reaches them by relative path; in an installed app there is no checkout, so `scripts/release.mjs`
  * copies exactly these files to `resources/openfilm` and the MCP server loads them from there.
@@ -14,7 +14,7 @@
  */
 
 /**
- * The material index, which is what the three `material.*` tools are: `openfilm-mcp.mjs` loads
+ * The material index, which is what the three `material.*` tools are: `orangefilm-mcp.mjs` loads
  * `material-tools.mjs` by name, and the closure of what it imports by relative path is the list:
  * `material-index-build.mjs` and `material-index.mjs` for the index itself, `material-search.mjs` for the
  * filters and search caps, and `material-pack.mjs`, `locations.mjs` and `development-isolation.mjs` that

@@ -14,7 +14,7 @@
  */
 import { create } from 'zustand';
 import { isAgentId as isAgent } from '../../../src/agent-definitions.mjs';
-import { orderedModels } from '../../../src/openfilm-models.mjs';
+import { orderedModels } from '../../../src/orangefilm-models.mjs';
 import {
   desktopBridge,
   type LocalAgentId,

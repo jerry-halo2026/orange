@@ -36,7 +36,7 @@
  *      else: a bench's credentials are never packaged. Without it the installed app cannot say which environment it
  *      belongs to, so a build with no source to take it from says so and `--dir` fails on the missing file;
  *   2f. the editor's own modules, material index included (scripts/packed-editor-modules.mjs), as
- *      resources/openfilm: `openfilm-mcp.mjs` loads `material-tools.mjs` from there, and an install that lacked it
+ *      resources/openfilm: `orangefilm-mcp.mjs` loads `material-tools.mjs` from there, and an install that lacked it
  *      answered every `material.*` call with `not-configured`;
  *   3. electron-builder makes the .dmg (to download) and the .zip (for updates), signed with the Developer ID
  *      OPENFILM_SIGN_IDENTITY ("Name (TEAMID)") and notarized (APPLE_TEAM_ID, the `openfilm-notary` keychain profile or
@@ -318,7 +318,7 @@ const fission = fissionRid(targetPlatform, arch)
 if (!fission) console.warn(`Fission is not published for ${win ? 'win32' : 'darwin'}-${arch}: this build carries none.`);
 
 /* 2c. the editor's own modules, beside the archive: the MCP tools load them by name
-   (src/openfilm-mcp.mjs reads resources/openfilm/... in an installed app; the checkout has no such
+   (src/orangefilm-mcp.mjs reads resources/openfilm/... in an installed app; the checkout has no such
    folder, which is why they are copied rather than reached by relative path) */
 const openfilmModules = join(work, PACKED_EDITOR_ROOT);
 const orangefilmModules = join(work, PACKED_EDITOR_ROOT_ALIAS);

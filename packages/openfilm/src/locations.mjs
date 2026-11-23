@@ -23,7 +23,13 @@ import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 /** @param {string} key @param {()=>string} fallback */
 const isolatedLocation = (key, fallback) => { const p = readIsolationProfile(); return p ? assertIsolationPath(p,p.paths[key],key) : fallback(); };
 const envText = (name) => process.env[`ORANGE_${name}`] ?? process.env[`OPENFILM_${name}`];
-export const studioHomeDir = () => isolatedLocation('home', () => envText('HOME') || join(homedir(), '.openfilm'));
+/** A new install starts at ~/.orangefilm; an existing ~/.openfilm keeps working until it is migrated. */
+const defaultStudioHome = () => {
+  const next = join(homedir(), '.orangefilm');
+  const old = join(homedir(), '.openfilm');
+  return existsSync(next) || !existsSync(old) ? next : old;
+};
+export const studioHomeDir = () => isolatedLocation('home', () => envText('HOME') || defaultStudioHome());
 
 /**
  * The Studio home whose prefs.json holds what every OpenFilm on this computer shares (where the library is, the skills

@@ -9,7 +9,7 @@
  *
  * No React here, so the tests can import it.
  */
-import type { PromptDisplay, PromptReference, TurnAttachment } from '@openfilm/shared';
+import type { PromptDisplay, PromptReference, TurnAttachment } from '@orange/shared';
 
 /** What a pill needs of a file brought in (DesktopAttachment has all of it). */
 export interface AttachmentRecord {

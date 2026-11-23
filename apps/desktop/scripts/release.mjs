@@ -14,7 +14,7 @@
  * (the update feed under its `desktop.updates`).
  *
  *   1. the window's page (shell/: Studio's editor with the chat beside it) and Studio's editor on its own (the
- *      `openfilm` package's UI) are built (the chat's `@openfilm/shared` is bundled into the page);
+ *      `openfilm` package's UI) are built (the chat's `@orange/shared` is bundled into the page);
  *   2. a stage folder gets the app's own files and a plain npm install of what it needs at run time: the `openfilm`
  *      package as `npm pack` makes it (what npm would publish), the agents' ACP adapters
  *      and the updater. Optional dependencies are left out: the adapters would bring the makers' own Claude Code and

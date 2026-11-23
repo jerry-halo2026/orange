@@ -12,7 +12,7 @@
  *
  * This layer has no filtering and should not: tool names, inputs, command lines and reasoning are
  * already left out of the events on the server (see agent-activity and public-stream in
- * @openfilm/shared). Filtering again on the client would leave the raw fields in the network panel:
+ * @orange/shared). Filtering again on the client would leave the raw fields in the network panel:
  * hidden, not absent.
  */
 import {
@@ -25,7 +25,7 @@ import {
   type PublicGenerationEvent,
   type PublicProgressSnapshot,
   type PublicTimelineStep,
-} from '@openfilm/shared';
+} from '@orange/shared';
 import type { AgentActivityItem } from '@/components/AgentActivityRow';
 
 export interface TranscriptItem {

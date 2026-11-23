@@ -10,7 +10,7 @@
  */
 import React from 'react';
 import { ArrowDown, Coins, CornerDownLeft, LibraryBig, Loader2, Plus, Square } from 'lucide-react';
-import { buildPromptDisplay, type Turn } from '@openfilm/shared';
+import { buildPromptDisplay, type Turn } from '@orange/shared';
 import { useT, useUiLocale } from '@/i18n';
 import { ConversationBar } from '@/components/ConversationSessionBar';
 import { ProjectConversation, TurnUndoContext, primeStoredTranscript } from '@/components/ProjectConversation';

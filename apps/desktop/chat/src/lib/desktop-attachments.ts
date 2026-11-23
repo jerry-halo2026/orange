@@ -10,7 +10,7 @@
  * is, to an agent that takes pictures (attachedPictures), in the order of their pills.
  */
 import React from 'react';
-import type { TurnAttachment } from '@openfilm/shared';
+import type { TurnAttachment } from '@orange/shared';
 import { isImageAttachment, isVideoAttachment, makeAttachmentThumb, readFileDataUrl, videoFrameDataUrl } from '@/lib/composer-attachments';
 import { app } from '../app-bridge';
 import type { PromptImage } from '@/lib/desktop-bridge';

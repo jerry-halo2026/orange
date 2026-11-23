@@ -13,7 +13,7 @@
  */
 import React from 'react';
 import { ArrowUp, MessageCircleQuestion } from 'lucide-react';
-import type { AgentAsk } from '@openfilm/shared';
+import type { AgentAsk } from '@orange/shared';
 import type { LocalAgentAnswer, LocalAgentQuestion } from '@/lib/desktop-bridge';
 import { ChoiceRow, ComposerCard, useNumberKeys } from './ComposerCard';
 import { useT } from '@/i18n';

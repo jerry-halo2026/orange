@@ -1,7 +1,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-import type { AgentActAsset } from '@openfilm/shared';
+import type { AgentActAsset } from '@orange/shared';
 
 /**
  * How a turn's activity is laid out in rows.

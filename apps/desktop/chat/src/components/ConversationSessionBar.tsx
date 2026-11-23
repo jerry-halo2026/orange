@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Archive, ArchiveRestore, ChevronDown, ChevronRight, MessageCircle, Pencil, Pin, PinOff, Plus, Search } from 'lucide-react';
-import { limitTitleWidth, SESSION_TITLE_MAX_WIDTH } from '@openfilm/shared';
+import { limitTitleWidth, SESSION_TITLE_MAX_WIDTH } from '@orange/shared';
 import { Popover, keepFocus } from './Popover';
 import { Tooltip } from './Tooltip';
 import { useT } from '@/i18n';

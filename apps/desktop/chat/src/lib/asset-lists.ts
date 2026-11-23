@@ -9,7 +9,7 @@
  * A server snapshot and local optimistic entries live side by side; every view must merge them the same way, or
  * a just-created item shows in one place and vanishes in another.
  */
-import type { Turn } from '@openfilm/shared';
+import type { Turn } from '@orange/shared';
 import { shareListById } from '@/lib/structural-share';
 
 /** Merges the server list with optimistic local entries, so a refresh doesn't wipe a just-created turn. */

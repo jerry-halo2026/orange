@@ -75,7 +75,7 @@ function guardAccountFile(file,scope=accountProviders.getStore()) {
 export const providersFile = () => accountProviders.getStore()?.file ?? join(studioHome(), 'providers.json');
 
 /** Other names a provider's key goes by in the wild (Google's own tools read either). */
-const ALSO = /** @type {Record<string, string[]>} */ ({ GEMINI_API_KEY: ['GOOGLE_API_KEY'] });
+const ALSO = /** @type {Record<string, string[]>} */ ({ GEMINI_API_KEY: ['GOOGLE_API_KEY'], OPENFILM_API_KEY: ['ORANGE_API_KEY'] });
 
 const plain = (/** @type {unknown} */ v) => v && typeof v === 'object' && !Array.isArray(v) ? /** @type {Record<string, unknown>} */ (v) : {};
 const strings = (/** @type {unknown} */ v) => /** @type {Record<string, string>} */ (Object.fromEntries(Object.entries(plain(v)).filter(([, s]) => typeof s === 'string')));

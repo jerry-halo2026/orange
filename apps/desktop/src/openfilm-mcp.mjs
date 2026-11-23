@@ -573,7 +573,34 @@ export function createOpenFilmMcpServer(deps = {}) {
             env: process.env,
             ...(deps.materialIndexDir ? { indexDir: deps.materialIndexDir } : {}),
           });
-          return service ? service.search : null;
+          const local = service ? service.search : null;
+          return async (request = {}) => {
+            /* 公司可见性只有供应商 list 知道：MCP 先问 Studio 的公司列表，再退回本地检索。 */
+            try {
+              const run = JSON.parse(readFileSync(join(home, '.openfilm-dev', 'run.json'), 'utf8'));
+              if (run?.origin && run?.key) {
+                const url = new URL(`${run.origin}/api/materials/list`);
+                url.searchParams.set('name', String(request.query ?? ''));
+                url.searchParams.set('scope', 'company');
+                url.searchParams.set('pageSize', String(Math.min(50, Math.max(1, Number(request.limit) || 20))));
+                const answer = await fetch(url, { headers: { 'x-studio-key': run.key, origin: run.origin } }).then((r) => r.json());
+                const rows = Array.isArray(answer?.items) ? answer.items : [];
+                const items = rows.map((row) => ({
+                  videoId: String(row?.videoId?.value ?? row?.videoId ?? ''),
+                  name: String(row?.observation?.name ?? row?.name ?? ''),
+                  product: String(row?.observation?.product ?? ''),
+                  productName: String(row?.observation?.productName ?? ''),
+                  gname: String(row?.observation?.gname ?? ''),
+                  accountKey: String(row?.observation?.accountKey ?? ''),
+                  videoType: Number(row?.observation?.videoType ?? row?.videoType ?? 0),
+                  score: 1,
+                  availability: { local: false },
+                })).filter((row) => row.videoId);
+                if (items.length) return { mode: 'company', query: String(request.query ?? ''), count: items.length, items };
+              }
+            } catch { /* Studio not running: local search */ }
+            return local ? local(request) : null;
+          };
         })
         .catch((error) => {
           log(JSON.stringify({ event: 'material-search-unavailable', message: String(error?.message ?? error) }));
@@ -1284,7 +1311,12 @@ export function openfilmMcpServerConfig({ command, script = fileURLToPath(import
     name: SERVER_NAME,
     command: String(command),
     args: [...nodeArgs, String(script)],
-    env: [{ name: 'ELECTRON_RUN_AS_NODE', value: '1' }],
+    env: [
+      { name: 'ELECTRON_RUN_AS_NODE', value: '1' },
+      /* the material tenant lives in the app's account store; the MCP child searches the same company library. */
+      ...(typeof process.env.OPENFILM_MEDIA_TENANT === 'string' && process.env.OPENFILM_MEDIA_TENANT.trim()
+        ? [{ name: 'OPENFILM_MEDIA_TENANT', value: process.env.OPENFILM_MEDIA_TENANT.trim() }] : []),
+    ],
   };
 }
 

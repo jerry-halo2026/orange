@@ -6,3 +6,5 @@
 *.mp3 binary
 *.mp4 binary
 *.woff2 binary
+packages/openfilm/library/models/** filter=lfs diff=lfs merge=lfs -text
+packages/openfilm/library/project-templates/** filter=lfs diff=lfs merge=lfs -text

@@ -3,7 +3,7 @@
 
 /**
  * The canvas's material libraries: styles a picture is made in, and effects (camera moves, ways of shooting) a clip is
- * made with. Each is OpenFilm's own words, in English as every model reads it, put on the board as a text node wired
+ * made with. Each is OrangeFilm's own words, in English as every model reads it, put on the board as a text node wired
  * into the picture or clip it is for. Their names and what they say are the interface's (canvas.styles, canvas.effects).
  * What the person liked and used last is kept in this browser.
  */

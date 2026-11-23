@@ -110,7 +110,7 @@ export interface StudioPrefs {
   keys?: unknown;
   /** whether open projects save versions on their own (studio/server/auto-versions.mjs) */
   autoVersions?: boolean;
-  /** the library drawer's categories as arranged in Settings › Advanced (lib/library-categories), null: OpenFilm's */
+  /** the library drawer's categories as arranged in Settings › Advanced (lib/library-categories), null: OrangeFilm's */
   libraryCategories?: { order: string[]; off: string[] } | null;
 }
 /** Where the projects library is (src/locations.mjs): the folder, its default, whether the person chose it, the free space on its disk, how many projects are in it. */

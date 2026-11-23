@@ -5,7 +5,7 @@
  * The editor's keys, in one table: every action has an id, a tab in Settings › Keyboard shortcuts, and its default
  * keys. The key handlers (`actionOf`), Settings' list and the hints in menus and tooltips (`hintOf`) all read it.
  *
- * A scheme gives the actions their keys: OpenFilm's own (the defaults), Premiere Pro's and Final Cut Pro X's (from each
+ * A scheme gives the actions their keys: OrangeFilm's own (the defaults), Premiere Pro's and Final Cut Pro X's (from each
  * app's default keyboard shortcuts, mapped onto the actions Studio has), or one of three custom ones. A built-in scheme
  * is read-only; a custom one starts as a copy of a scheme and can change any key.
  *
@@ -362,7 +362,7 @@ function layered(base: (id: ActionId) => readonly string[], own: Partial<Record<
 const DEFAULTS = Object.fromEntries(ACTIONS.map((a) => [a.id, a.keys])) as unknown as Keymap;
 
 /**
- * A built-in scheme's keys on this platform. Actions the scheme's app has take its keys; the rest keep OpenFilm's,
+ * A built-in scheme's keys on this platform. Actions the scheme's app has take its keys; the rest keep OrangeFilm's,
  * unless the app uses that key for another of Studio's actions.
  */
 export function schemeKeymap(id: BuiltInScheme, mac: boolean): Keymap {
@@ -459,7 +459,7 @@ export function hintOf(keymap: Keymap, id: ActionId, mac: boolean): string | und
 export interface KeyPrefs { scheme: SchemeId; custom: Partial<Record<CustomSlot, CustomScheme>> }
 export const DEFAULT_KEY_PREFS: KeyPrefs = { scheme: 'openfilm', custom: {} };
 
-/** What is kept, each part checked: an unknown scheme is OpenFilm's; unknown actions and keys that are none are left out. */
+/** What is kept, each part checked: an unknown scheme is OrangeFilm's; unknown actions and keys that are none are left out. */
 export function keyPrefsOf(raw: unknown): KeyPrefs {
   const p = raw && typeof raw === 'object' ? raw as { scheme?: unknown; custom?: unknown } : {};
   const custom: KeyPrefs['custom'] = {};
@@ -480,7 +480,7 @@ export function keyPrefsOf(raw: unknown): KeyPrefs {
   return { scheme: isBuiltIn(scheme) || custom[scheme] ? scheme : 'openfilm', custom };
 }
 
-/** The keys of a scheme (an empty custom slot: OpenFilm's). */
+/** The keys of a scheme (an empty custom slot: OrangeFilm's). */
 export function keymapFor(prefs: KeyPrefs, id: SchemeId, mac: boolean): Keymap {
   if (isBuiltIn(id)) return schemeKeymap(id, mac);
   const custom = prefs.custom[id];

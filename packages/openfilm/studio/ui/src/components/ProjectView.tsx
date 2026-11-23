@@ -1834,7 +1834,7 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
       setLibraryTrial(null);
       const before = new Set(blocksRef.current.flatMap((b) => (b.clipId ? [b.clipId] : [])));
       const picked = (failed: string | null) => { if (!failed) pickNewClip(before); return failed; };
-      /* a transition of OpenFilm's library (lib/library): its middle on the cut it was put near, never pushing or
+      /* a transition of OrangeFilm's library (lib/library): its middle on the cut it was put near, never pushing or
          cutting what is under it */
       if (builtInItem(file.saved)?.place === 'cut') {
         const at = onCut(plan.at, durMs, cutsOf(timelineTracks));
@@ -1919,7 +1919,7 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
     else if (pickedMedia) void addMedia(pickedMedia, { mode, range, atPlayhead: true, follow: true });
   }, [addMedia, placeSaved, pickedMedia, pickedSaved]);
   /*
-   * OpenFilm's library in the assets drawer (components/library/LibraryDrawer, lib/library). A click tries a thing in
+   * OrangeFilm's library in the assets drawer (components/library/LibraryDrawer, lib/library). A click tries a thing in
    * the viewer, nothing written (components/library/LibraryTrial; a look through the stage's look preview, on the clip
    * it would go on). A double click, Enter or "+" puts it in: a page or a sound taken into the project and put at the
    * playhead (a sound as a file of the project goes, a page on a new track at the top, a transition's middle on the

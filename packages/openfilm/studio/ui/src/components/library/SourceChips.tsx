@@ -2,9 +2,9 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * Where the library's things come from, wherever they are listed: OpenFilm's own (official), the community's (sent to
+ * Where the library's things come from, wherever they are listed: OrangeFilm's own (official), the community's (sent to
  * the library by others, each with who sent it), and the person's own (mine). A list that mixes them has a row of
- * chips under its search, All and each source it has; a thing not OpenFilm's own wears its source on its corner.
+ * chips under its search, All and each source it has; a thing not OrangeFilm's own wears its source on its corner.
  */
 import { useT } from '@/i18n';
 
@@ -32,7 +32,7 @@ export function SourceChips({ sources, value, onChange }: { sources: Source[]; v
   );
 }
 
-/** A thing's source on its corner (none for OpenFilm's own): its source's name, or who made it (`by`). */
+/** A thing's source on its corner (none for OrangeFilm's own): its source's name, or who made it (`by`). */
 export function SourceBadge({ source, by }: { source: Source; by?: string }) {
   const t = useT();
   if (source === 'official') return null;

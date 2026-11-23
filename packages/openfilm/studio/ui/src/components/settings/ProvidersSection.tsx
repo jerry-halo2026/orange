@@ -11,7 +11,7 @@
  * Connect is the same for every service:
  * ElevenLabs, OpenAI, Google, Microsoft Azure, fal.ai, OpenRouter, Groq, Pexels, Pixabay, Brave Search and Tavily then
  * take the person's own key, which pays that service directly (a key in the environment shows as such and stays
- * there); OpenFilm signs in to the person's OpenFilm account in their browser; Keenable connects at once and takes a
+ * there); OrangeFilm signs in to the person's OrangeFilm account in their browser; Keenable connects at once and takes a
  * key afterwards, for higher limits.
  * Each links its own pricing page; what is free and what is paid is the service's to say.
  */
@@ -40,14 +40,14 @@ export const KIND_ICON: Partial<Record<ProviderVerb, React.ComponentType<{ size?
 const chipClass = 'inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-[14px] transition hover:border-[var(--border-strong)] hover:text-[var(--text)]';
 
 /**
- * Every service as a chip: OpenFilm's own first, then the connected ones (with a dot), the recommended ones, and the
+ * Every service as a chip: OrangeFilm's own first, then the connected ones (with a dot), the recommended ones, and the
  * rest behind "N more", each part in the default order (lib/providers providerOrder); last `local` (Local services),
  * just before adding one. A chip opens the service's card (`onOpen` with its id, or 'add').
  */
 export function ServicesBar({ hook, onOpen, local }: { hook: ProvidersHook; onOpen: (id: string) => void; local?: React.ReactNode }) {
   const t = useT();
   const rows = hook.state?.providers ?? [];
-  /* OpenFilm's own first, then the others */
+  /* OrangeFilm's own first, then the others */
   const own = rows.find((p) => p.id === 'openfilm');
   /* Local services has its own chip (`local`) */
   const order = providerOrder(rows.filter((p) => p !== own && p.id !== 'local'));
@@ -185,7 +185,7 @@ export function ProviderDialog({ provider, hook, onClose }: { provider: OwnProvi
 
 /**
  * How a provider is connected, and connecting it: `header` lays out its status beside the name and its action; under
- * it, the key's field while one is being pasted, and why the last try failed. Connect signs in (OpenFilm), connects at
+ * it, the key's field while one is being pasted, and why the last try failed. Connect signs in (OrangeFilm), connects at
  * once (a keyless one), or asks for the key; Microsoft Azure's key comes with its region (`<region>:<key>`).
  */
 function Connection({ provider, hook, header }: {

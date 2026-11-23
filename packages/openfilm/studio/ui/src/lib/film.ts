@@ -19,7 +19,7 @@ export const FILM_DEFAULT_STAGE = DEFAULT_STAGE;
 
 export const filmSrcIsStill: (src: string) => boolean = isStill;
 /**
- * A thing of OpenFilm's library taken into the project (`saved/openfilm/…`: a sticker, a text, an effect): a page with
+ * A thing of OrangeFilm's library taken into the project (`saved/openfilm/…`: a sticker, a text, an effect): a page with
  * no source of its own to trim into. As a still's, its left edge changes its length (its way in stays at its start).
  */
 export const filmSrcIsLibrary = (src: string | undefined): boolean => Boolean(src?.split('#')[0]?.startsWith('saved/openfilm/'));

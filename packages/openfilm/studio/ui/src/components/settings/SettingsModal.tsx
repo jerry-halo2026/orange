@@ -37,7 +37,7 @@ import { arrangedCategories, FIRST_CATEGORY } from '@/lib/library-categories';
 
 export type SettingsSection = 'general' | 'agents' | 'models' | 'cloud' | 'developer' | 'shortcuts' | 'advanced';
 
-/* the nav, in groups: what OpenFilm does (beside the model services, the cloud-steward account the material library is
+/* the nav, in groups: what OrangeFilm does (beside the model services, the cloud-steward account the material library is
    scoped to), then help (Agents only inside an app with a chat: lib/host.ts `agents`; Advanced for what is already set
    for the best experience; Developer always, for its diagnostics) */
 const NAV: Array<{ group: 'settings' | 'help'; sections: SettingsSection[] }> = [

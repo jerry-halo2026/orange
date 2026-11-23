@@ -14,7 +14,7 @@ const provider = (id: string, source: 'file' | null, tts: string[]) => ({
   id, name: id, verbs: [], models: { tts: tts.map((m) => ({ id: m, name: m })) }, keysUrl: '', env: '', source, envKey: false, last4: null, signIn: false, account: null,
 });
 
-test('a service is spoken through OpenFilm first when it offers that service\'s models, else with its own key', () => {
+test('a service is spoken through OrangeFilm first when it offers that service\'s models, else with its own key', () => {
   const state = { providers: [
     provider('elevenlabs', 'file', ['eleven_v4', 'eleven_v4_turbo', 'eleven_multilingual_v2']),
     provider('openfilm', 'file', ['elevenlabs/eleven_v4', 'cartesia/sonic-3.6']),
@@ -24,7 +24,7 @@ test('a service is spoken through OpenFilm first when it offers that service\'s 
     elevenlabs: { via: 'openfilm', models: ['elevenlabs/eleven_v4'] },
     cartesia: { via: 'openfilm', models: ['cartesia/sonic-3.6'] },
   });
-  /* not signed in to OpenFilm: the service's own key */
+  /* not signed in to OrangeFilm: the service's own key */
   assert.deepEqual(voiceAccess(services, { providers: state.providers.filter((p) => p.id !== 'openfilm') }), {
     elevenlabs: { via: 'elevenlabs', models: ['eleven_v4', 'eleven_v4_turbo'] },
   });

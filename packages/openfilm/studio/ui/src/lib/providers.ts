@@ -31,7 +31,7 @@ export interface OwnProvider {
   /** the environment has a key for it, connected or not: connecting can use that one */
   envKey: boolean;
   last4: string | null;
-  /** connected by signing in on its website instead of pasting a key (OpenFilm) */
+  /** connected by signing in on its website instead of pasting a key (OrangeFilm) */
   signIn: boolean;
   /** signed in: the account's email */
   account: string | null;
@@ -64,11 +64,11 @@ export interface ProvidersState {
   model: Record<string, string | null>;
   /** a sign-in waiting for the person's browser (`provider`), and why the last one failed */
   signingIn: { provider: string | null; error: string | null; errorFor: string | null };
-  /** who searches the library by meaning: OpenFilm's service ('openfilm', the default), or none (its words alone) */
+  /** who searches the library by meaning: OrangeFilm's service ('openfilm', the default), or none (its words alone) */
   librarySearch: string | null;
 }
 
-/** The providers Settings › Services shows first, in this order: OpenFilm's own, then the large media services. */
+/** The providers Settings › Services shows first, in this order: OrangeFilm's own, then the large media services. */
 export const RECOMMENDED_PROVIDERS = ['openfilm', 'openai', 'google', 'azure', 'elevenlabs', 'openrouter'];
 
 /**
@@ -90,7 +90,7 @@ export function providerOrder<P extends Pick<OwnProvider, 'id' | 'name' | 'sourc
 
 /**
  * Microsoft Azure's services, each set up with its own key and its resource's region (they are not one key, as
- * Google's are): Azure AI Speech makes the voice-over. More go here as OpenFilm uses them.
+ * Google's are): Azure AI Speech makes the voice-over. More go here as OrangeFilm uses them.
  */
 export const AZURE_SERVICES = [{ id: 'speech', name: 'Azure AI Speech', verbs: ['tts'] as ProviderVerb[] }];
 
@@ -146,7 +146,7 @@ export interface ProvidersHook {
   cancelSignIn: (id: string) => Promise<void>;
   /** who makes that kind of media: a provider id with its model, or '' (none) */
   choose: (verb: ProviderVerb, provider: string, pick?: { model?: string }) => Promise<void>;
-  /** the library searched by meaning at OpenFilm's service, or by its words alone */
+  /** the library searched by meaning at OrangeFilm's service, or by its words alone */
   setLibrarySearch: (on: boolean) => Promise<void>;
   /** the state asked again (what Local services makes changed) */
   reload: () => Promise<void>;

@@ -11,7 +11,7 @@ import { useLanguage, useT } from '@/i18n';
 import { languageOf, sampleUrl, voiceLook, type LibraryVoice, type LibraryVoices } from '@/lib/library-voices';
 import type { Choice } from './board';
 
-/** The service a voice-over model is at: OpenFilm names its models `<service>/<model>`. */
+/** The service a voice-over model is at: OrangeFilm names its models `<service>/<model>`. */
 export const serviceOf = (choice: Pick<Choice, 'via' | 'model'> | null | undefined): string | null =>
   !choice ? null : choice.via === 'openfilm' ? choice.model?.split('/')[0] ?? null : choice.via;
 

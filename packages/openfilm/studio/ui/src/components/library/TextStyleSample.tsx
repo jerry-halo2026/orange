@@ -13,7 +13,7 @@ import { TEXT_DEFAULTS } from '@/lib/text-look';
 /* the display fonts the text component comes with (library/text/text/files/fonts), on Studio's page under names of
    their own, so that no font menu here takes them for fonts this computer has */
 const FONTS = [['Smiley Sans', 'SmileySans.woff2', 'woff2'], ['ZCOOL KuaiLe', 'ZCOOLKuaiLe.ttf', 'truetype']] as const;
-const OWN = 'OpenFilm Text ';
+const OWN = 'OrangeFilm Text ';
 let fontsIn = false;
 function putFontsIn(): void {
   if (fontsIn || typeof document === 'undefined') return;

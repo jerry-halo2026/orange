@@ -3,7 +3,7 @@
 
 /**
  * Settings › Keyboard shortcuts: the editor's actions (lib/keymap) in tabs (Timeline, Player, Basic, Other), two
- * columns of an action and its keys, and the scheme they come from: OpenFilm, Premiere Pro, Final Cut Pro X, or one of
+ * columns of an action and its keys, and the scheme they come from: OrangeFilm, Premiere Pro, Final Cut Pro X, or one of
  * three custom ones.
  *
  * A built-in scheme is read-only: clicking a key there copies the scheme into a free custom slot first, and says so.

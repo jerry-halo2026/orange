@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * OpenFilm's library as the assets drawer shows it (studio/server/library.mjs): its index, read once, and what each
+ * OrangeFilm's library as the assets drawer shows it (studio/server/library.mjs): its index, read once, and what each
  * thing of it is on the timeline. Pages and sounds go in as things of Saved go (a drag or "+": lib/saved, the server's
  * `saved/take` with an `openfilm/` path); a look is written into the picked clips' style; a fade is one of the
  * timeline's transitions (lib/transitions), put on a cut.
@@ -14,7 +14,7 @@ import type { TransitionKind } from './transitions';
 import { declared, withDeclarations } from './clip-look.ts';
 import { gradeFilter, gradeOf, withGrade, type Grade } from './grade.ts';
 
-/** What a path names OpenFilm's library by, as `saved/` names Saved. */
+/** What a path names OrangeFilm's library by, as `saved/` names Saved. */
 export const BUILT_IN = 'openfilm';
 
 export type LibraryCategory = 'transition' | 'effect' | 'filter' | 'text' | 'sticker' | 'sound' | 'music' | 'template';
@@ -48,7 +48,7 @@ export interface LibraryItem {
   still?: boolean;
   /** Words it is found by, besides its name. */
   tags?: string[];
-  /** Who sent it to the library (their GitHub name): a community thing; none: OpenFilm's own. */
+  /** Who sent it to the library (their GitHub name): a community thing; none: OrangeFilm's own. */
   by?: string;
   /** A piece of music's cover, by its place in the library (none: one drawn, coverLook). */
   cover?: string;
@@ -274,7 +274,7 @@ let favorites: readonly string[] | null = null;
 const starred = new Set<() => void>();
 const tellStarred = () => { for (const fn of starred) fn(); };
 
-/** The things the person starred (their ids), kept for every OpenFilm on this computer; empty until read. */
+/** The things the person starred (their ids), kept for every OrangeFilm on this computer; empty until read. */
 export function useLibraryFavorites(): readonly string[] {
   const seen = React.useSyncExternalStore(
     (fn) => { starred.add(fn); return () => { starred.delete(fn); }; },

@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The examples (films made with OpenFilm), to start from or to learn from: the projects window's "Examples" (also
+ * The examples (films made with OrangeFilm), to start from or to learn from: the projects window's "Examples" (also
  * opened by the app's chat, lib/host.ts `show-examples`). One is copied into a new project to change, or, over a film,
  * it or a part of it (a segment, or a stretch dragged on its strip) is pointed at in its chat for the agent to follow
  * (`onReference`), its canvas laid down on the film's, or how it was made asked.

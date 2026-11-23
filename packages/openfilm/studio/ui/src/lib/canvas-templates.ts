@@ -3,12 +3,12 @@
 
 /**
  * Canvas templates: parts of a board kept to be laid down again (studio/server/canvas-templates.mjs keeps the person's
- * own), and the ones OpenFilm comes with, ways of working to start from. A template's board starts at 0, 0; laid down,
+ * own), and the ones OrangeFilm comes with, ways of working to start from. A template's board starts at 0, 0; laid down,
  * every node is new (copyOf).
  */
 import { CARD_H, CUT_W, MAKE_W, NOTE_W, cardWidth, type CanvasDoc } from './canvas.ts';
 
-/** `about`: what laying it down gets, in a line; `flow`: what it is made of, in order, as its card draws it (OpenFilm's own) */
+/** `about`: what laying it down gets, in a line; `flow`: what it is made of, in order, as its card draws it (OrangeFilm's own) */
 export interface CanvasTemplate { id: string; name: string; nodes: number; builtIn?: boolean; about?: string; flow?: Array<'note' | 'image' | 'video' | 'cut' | 'source' | 'voice' | 'subtitle' | 'mix'> }
 
 /** where a group's nodes start in it, and the room between them */
@@ -19,7 +19,7 @@ const GAP = 60;
 const MAKE_H = CARD_H;
 
 /**
- * The templates OpenFilm comes with, in the person's words (`say`: a canvas.templates string), each a way of working
+ * The templates OrangeFilm comes with, in the person's words (`say`: a canvas.templates string), each a way of working
  * whose words are left for the person to write (each note says what, from what it feeds):
  *   · picture to clip: a shot's idea → its picture → the clip made from it
  *   · character: who they are → their portrait → their front, side and back from it, to keep them the same in every shot

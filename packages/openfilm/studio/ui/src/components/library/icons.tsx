@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The assets drawer's category icons, drawn for OpenFilm: a 24 px grid, 1.6 px round strokes. The one shown (`on`) is
+ * The assets drawer's category icons, drawn for OrangeFilm: a 24 px grid, 1.6 px round strokes. The one shown (`on`) is
  * solid: its main shape filled in its own color, the marks inside it cut out of it in the panel's color (an open
  * shape, the sound's burst and the text's letter, is drawn bolder instead), so the shown category reads at a glance
  * without a box behind it.

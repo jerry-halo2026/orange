@@ -19,7 +19,7 @@ test('a kind is offered when any provider makes it, connected or not', () => {
 
 test('the providers in order: the connected first, each part in the recommended order, then the rest by name', () => {
   const p = (id: string, name: string, source: 'file' | 'env' | null = null) => ({ id, name, source });
-  const all = [p('pexels', 'Pexels'), p('elevenlabs', 'ElevenLabs', 'file'), p('azure', 'Microsoft Azure'), p('brave', 'Brave Search', 'env'), p('openai', 'OpenAI'), p('google', 'Google'), p('openfilm', 'OpenFilm', 'file'), p('openrouter', 'OpenRouter'), p('groq', 'Groq')];
+  const all = [p('pexels', 'Pexels'), p('elevenlabs', 'ElevenLabs', 'file'), p('azure', 'Microsoft Azure'), p('brave', 'Brave Search', 'env'), p('openai', 'OpenAI'), p('google', 'Google'), p('openfilm', 'OrangeFilm', 'file'), p('openrouter', 'OpenRouter'), p('groq', 'Groq')];
   const order = providerOrder(all);
   assert.deepEqual(order.connected.map((x) => x.id), ['openfilm', 'elevenlabs', 'brave']);
   assert.deepEqual(order.recommended.map((x) => x.id), ['openai', 'google', 'azure', 'openrouter']);

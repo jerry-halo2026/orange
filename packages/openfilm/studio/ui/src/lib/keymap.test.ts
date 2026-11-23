@@ -48,7 +48,7 @@ test('every action is named in the five languages', () => {
   }
 });
 
-test('OpenFilm\'s keys are the keys Studio had', () => {
+test('OrangeFilm\'s keys are the keys Studio had', () => {
   assert.equal(mac(' '), 'play-pause');
   assert.equal(mac(' ', { shiftKey: true }), 'play-range');
   assert.equal(mac('j'), 'shuttle-back');
@@ -171,7 +171,7 @@ test('hints and key caps follow the platform', () => {
   assert.equal(hintOf({ ...OPENFILM_MAC, split: [] }, 'split', true), undefined, 'no key, no hint');
 });
 
-test('the built-in schemes: each app\'s keys where Studio has the action, OpenFilm\'s for the rest, no key twice', () => {
+test('the built-in schemes: each app\'s keys where Studio has the action, OrangeFilm\'s for the rest, no key twice', () => {
   for (const id of BUILT_IN_SCHEMES) for (const isMac of [true, false]) {
     const keymap = schemeKeymap(id, isMac);
     assert.deepEqual(twice(keymap, isMac), [], `${id} on ${isMac ? 'a Mac' : 'Windows'}`);
@@ -182,7 +182,7 @@ test('the built-in schemes: each app\'s keys where Studio has the action, OpenFi
   assert.deepEqual(premiere['split-all'], ['mod+shift+k']);
   assert.deepEqual(premiere['split-mode'], ['c'], 'the Razor tool');
   assert.deepEqual(premiere['toggle-snap'], ['s']);
-  assert.deepEqual(premiere['toggle-magnet'], ['p', 'shift+n'], 'what the app has no key for keeps OpenFilm\'s');
+  assert.deepEqual(premiere['toggle-magnet'], ['p', 'shift+n'], 'what the app has no key for keeps OrangeFilm\'s');
   assert.deepEqual(premiere.refer, ['mod+l']);
   assert.deepEqual(premiere['nudge-back'], ['mod+ArrowLeft'], 'macOS');
   assert.deepEqual(schemeKeymap('premiere', false)['nudge-back'], ['alt+ArrowLeft'], 'Windows');
@@ -264,7 +264,7 @@ test('what is kept: the scheme and the custom ones, checked when read', () => {
     custom: { custom1: { base: 'someday', keys: { split: ['mod+e', 'Mod+E', 7], 'beam-me-up': ['x'] } }, custom9: { base: 'openfilm', keys: {} } },
   });
   assert.equal(odd.scheme, 'custom1');
-  assert.equal(odd.custom.custom1?.base, 'openfilm', 'an unknown base is OpenFilm');
+  assert.equal(odd.custom.custom1?.base, 'openfilm', 'an unknown base is OrangeFilm');
   assert.deepEqual(odd.custom.custom1?.keys, { split: ['mod+e'] }, 'unknown actions and keys that are none are left out');
   assert.deepEqual(Object.keys(odd.custom), ['custom1']);
   assert.deepEqual(keymapOf(odd, true).split, ['mod+e']);

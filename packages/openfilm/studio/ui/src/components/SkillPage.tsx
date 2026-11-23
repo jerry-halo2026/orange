@@ -7,7 +7,7 @@
  * where it came from (the skills index it is kept in, a folder on this computer, or made here), what it does, and what
  * to do with it: Try now (a new conversation with the skill named in its
  * message; installed or not, the skill is given to that conversation only), Install, or uninstalling it (an official
- * one) or moving it to the trash (the person's own, a project's); OpenFilm's system skills are only turned off. Back
+ * one) or moving it to the trash (the person's own, a project's); OrangeFilm's system skills are only turned off. Back
  * returns to the list. Also here: a skill's words
  * in the language shown, and its cover.
  */
@@ -21,7 +21,7 @@ import { communityOf, displayUid, makerOf, sourcesApi, type SkillEntry } from '@
 import { ConfirmDialog } from './ConfirmDialog';
 import { SettingsSwitch } from './settings/ui';
 
-/** OpenFilm's own by their order, then the community's as Discover's index lists them (an author's own order is not theirs to set). */
+/** OrangeFilm's own by their order, then the community's as Discover's index lists them (an author's own order is not theirs to set). */
 export const byOrder = (a: SkillEntry, b: SkillEntry) => {
   const ca = communityOf(a), cb = communityOf(b);
   if (ca !== cb) return ca ? 1 : -1;
@@ -148,7 +148,7 @@ export function SkillPage({ skill, setSkills, projectId, onBack, onTry }: {
       {skill.off ? <p className="mt-1.5 text-[12px] text-[var(--text-muted)]">{t('gallery.skillOff')}</p> : null}
       {skill.retired ? <p className="mt-1.5 text-[12px] text-[var(--text-muted)]">{t('gallery.retired')}</p> : null}
       <div className="mt-2 flex items-center gap-2 text-[12px] text-[var(--text-muted)]">
-        {/* the community's: whose it is, by name; OpenFilm's own: its kind */}
+        {/* the community's: whose it is, by name; OrangeFilm's own: its kind */}
         {communityOf(skill) ? (
           <span>{t('gallery.byCommunity').replace('{owner}', makerOf(skill))}</span>
         ) : <span>{t(group)}</span>}
@@ -158,7 +158,7 @@ export function SkillPage({ skill, setSkills, projectId, onBack, onTry }: {
       </div>
       <Origin skill={skill} />
       {words.summary ? <p className="mt-4 text-[13px] leading-[20px] text-[var(--text)]">{words.summary}</p> : null}
-      {/* the computers it runs on, when this one is not among them; what it needs beyond OpenFilm */}
+      {/* the computers it runs on, when this one is not among them; what it needs beyond OrangeFilm */}
       {skill.elsewhere && skill.platforms ? (
         <p role="note" className="mt-2.5 text-[12.5px] leading-[20px] text-[var(--warn)]">
           {t('gallery.onlyOn').replace('{where}', skill.platforms.map((p) => t(`gallery.platform_${p}`)).join(' / '))}</p>
@@ -182,7 +182,7 @@ export function SkillPage({ skill, setSkills, projectId, onBack, onTry }: {
           <button type="button" onClick={() => onTry(skill)} disabled={skill.off} title={skill.off ? t('gallery.tryOff') : undefined}
             className="flex h-10 w-full items-center justify-center gap-1.5 rounded-[10px] bg-[var(--primary)] text-[13px] font-medium text-[var(--on-primary)] transition hover:bg-[var(--primary-hover)] disabled:opacity-40"><MessageSquarePlus size={15} />{t('gallery.tryNow')}</button>
         ) : null}
-        {/* OpenFilm's system skills are only turned off */}
+        {/* OrangeFilm's system skills are only turned off */}
         {skill.update && installed ? (
           <button type="button" onClick={update} disabled={working !== null}
             className="flex h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[var(--border-strong)] text-[13px] font-medium text-[var(--text)] transition hover:bg-[var(--bg-hover)] disabled:opacity-50">
@@ -243,7 +243,7 @@ function Origin({ skill }: { skill: SkillEntry }) {
   return (
     <>
       <div title={o.from === 'folder' ? o.address : undefined} className="mt-2 flex min-w-0 items-center gap-1.5 text-[11.5px] text-[var(--text-faint)]">{icon}<span className="truncate">{text}</span></div>
-      {/* added from an address, not from Discover: OpenFilm has not looked at it */}
+      {/* added from an address, not from Discover: OrangeFilm has not looked at it */}
       {o.from === 'link' ? <p className="mt-1 text-[11.5px] leading-[17px] text-[var(--text-muted)]">{t('gallery.unlisted')}</p> : null}
     </>
   );

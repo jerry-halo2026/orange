@@ -4,7 +4,7 @@
 /**
  * The library drawer's categories as the person arranges them in Settings › Advanced (Studio's prefs,
  * `libraryCategories`): their order and which are shown. The media always comes first and is always shown; a category
- * the arrangement does not name (one added since) takes its place in OpenFilm's order. Kept and read by
+ * the arrangement does not name (one added since) takes its place in OrangeFilm's order. Kept and read by
  * components/library/arrangement (Studio's prefs).
  */
 
@@ -15,8 +15,8 @@ export type LibraryArrangement = { order: string[]; off: string[] };
 export const FIRST_CATEGORY = 'media';
 
 /**
- * Every category in the person's order (`all`: OpenFilm's), with whether it is shown: the media first; then the ones
- * the arrangement names, in its order; then the rest where OpenFilm has them.
+ * Every category in the person's order (`all`: OrangeFilm's), with whether it is shown: the media first; then the ones
+ * the arrangement names, in its order; then the rest where OrangeFilm has them.
  */
 export function arrangedCategories<C extends string>(all: readonly C[], arranged: LibraryArrangement | null | undefined): { id: C; on: boolean }[] {
   const rest = all.filter((c) => c !== FIRST_CATEGORY);
@@ -24,7 +24,7 @@ export function arrangedCategories<C extends string>(all: readonly C[], arranged
   const order = [...named];
   for (const c of rest) {
     if (order.includes(c)) continue;
-    /* one not named: after the one before it in OpenFilm's order, else first */
+    /* one not named: after the one before it in OrangeFilm's order, else first */
     const before = rest.slice(0, rest.indexOf(c)).reverse().find((b) => order.includes(b));
     order.splice(before ? order.indexOf(before) + 1 : 0, 0, c);
   }

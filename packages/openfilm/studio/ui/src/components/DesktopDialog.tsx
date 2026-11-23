@@ -82,7 +82,7 @@ export function DesktopDialog({ open, onClose }: { open: boolean; onClose: () =>
   const close = React.useRef(onClose);
   close.current = onClose;
   const system = desktopSystem();
-  /* the version: Studio's, which the app shares (one version for all of OpenFilm) */
+  /* the version: Studio's, which the app shares (one version for all of OrangeFilm) */
   const [version, setVersion] = React.useState<string | null>(null);
   React.useEffect(() => {
     if (!open || version) return;

@@ -5,7 +5,7 @@
  * Ways to ask for a picture that come with the canvas ("presets"): each a set of words put before the node's own (a
  * character's turnaround, a 2×2 of what happens next, the same moment from nine cameras…), the shape and quality it
  * is best made at, and whether it is made from a picture wired in. Picked in a picture node's panel, it shows as a tag
- * before its words and names the node. Their words are OpenFilm's own, in English: every picture model reads it.
+ * before its words and names the node. Their words are OrangeFilm's own, in English: every picture model reads it.
  */
 /** `character`: the pictures a new character is made of (canvas libraries), not offered in the presets' list */
 export type PresetGroup = 'story' | 'texture' | 'camera' | 'design' | 'character';

@@ -3,11 +3,11 @@
 
 /**
  * The library's skills, in the drawer: what an agent takes up when making a film. The side bar picks the installed
- * ones or OpenFilm's still to install (Discover).
+ * ones or OrangeFilm's still to install (Discover).
  *
  * Installed, each skill is a line: its mark (its cover, else its icon), its title, what it is for under it, and its
  * switch: on, agents take it up when it fits; off, no agent gets it. A click opens its page (SkillPage), which has its
- * uid. They are in parts, each headed with its count: the person's own first (theirs, and this project's), OpenFilm's
+ * uid. They are in parts, each headed with its count: the person's own first (theirs, and this project's), OrangeFilm's
  * system skills (how a film is made, its media, its canvas, in the order agents are given them), the community's
  * installed, then each agent's own under that agent's name (off until let in). The person's own and the community's
  * are there with none too, as an invitation: Import, and Browse community (Discover). Import is beside the search too
@@ -42,7 +42,7 @@ const starOf = (skill: SkillEntry) => `skill:${skill.uid}`;
 /* the parts folded, kept while Studio is open */
 const FOLDED = new Set<string>();
 
-/** One of an agent's own skills, and whether OpenFilm lets it in. */
+/** One of an agent's own skills, and whether OrangeFilm lets it in. */
 type AgentSkill = { name: string; description: string; allowed: boolean };
 type AgentGroup = { id: HostAgentId; name: string; skills: AgentSkill[] };
 
@@ -90,15 +90,15 @@ export function SkillsPane({ line, query, projectId, opened, onOpen, onDiscover 
   const found = skills
     .filter((k) => !q || [words(k).title, words(k).summary, k.name, k.uid].some((w) => w?.toLowerCase().includes(q)))
     .sort(byOrder);
-  /* OpenFilm's own in the order agents are given them, as the API lists them */
+  /* OrangeFilm's own in the order agents are given them, as the API lists them */
   const system = installed ? skills.filter((k) => k.core && found.includes(k)) : [];
-  /* Discover's installed: OpenFilm's own, then the community's (each made by someone else, under their name) */
+  /* Discover's installed: OrangeFilm's own, then the community's (each made by someone else, under their name) */
   const listed = installed ? found.filter((k) => !k.core && k.source === 'official' && installedOf(k)) : [];
   const official = listed.filter((k) => !communityOf(k));
   const community = listed.filter(communityOf);
   const mine = installed ? found.filter((k) => k.source !== 'official') : [];
   const offered = line === 'discover' ? found.filter((k) => k.source === 'official' && !installedOf(k)) : [];
-  /* Discover by whose: OpenFilm's own, the community's, or all (chips only when both are there) */
+  /* Discover by whose: OrangeFilm's own, the community's, or all (chips only when both are there) */
   const [whose, setWhose] = React.useState<Source | ''>('');
   const sourceOf = (k: SkillEntry): Source => (communityOf(k) ? 'community' : 'official');
   const whoseThere = sourcesIn(offered.map(sourceOf));

@@ -48,7 +48,7 @@ const PRODUCT = brandProductName();
 import { afterFirstReading, firstWindowsApps, refreshWindowsApps } from './windows-apps.mjs';
 import { mergeConfig, sessionSkills } from './agent-skills.mjs';
 import { nodeBinary } from './node-runtime.mjs';
-import { openfilmMcpServerConfig } from './openfilm-mcp.mjs';
+import { openfilmMcpServerConfig } from './orangefilm-mcp.mjs';
 import { openfilmCommand } from './openfilm-command.mjs';
 import { outOfBalance } from './pi-config.mjs';
 import { AGENT_DEFINITIONS } from './agent-definitions.mjs';
@@ -403,7 +403,7 @@ const AS_NODE = fileURLToPath(new URL('./as-node.mjs', import.meta.url));
 const asNode = (/** @type {string} */ script) => ['--import', pathToFileURL(AS_NODE).href, script];
 
 /** This app's MCP server, as an agent is told to start it: an absolute command and script, and Electron read as Node. */
-const OPENFILM_MCP_SCRIPT = fileURLToPath(new URL('./openfilm-mcp.mjs', import.meta.url));
+const OPENFILM_MCP_SCRIPT = fileURLToPath(new URL('./orangefilm-mcp.mjs', import.meta.url));
 const openfilmMcpServer = () => openfilmMcpServerConfig({ command: nodeBinary(), script: OPENFILM_MCP_SCRIPT, nodeArgs: asNode('').slice(0, -1) });
 
 /**

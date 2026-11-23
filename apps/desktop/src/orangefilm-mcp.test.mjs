@@ -16,7 +16,7 @@ import {
   AUDIT_FILE, BUDGET_SURFACE, COMPAT_SURFACE, DEFAULT_SURFACE, MATERIAL_TOOL_NAMES, SURFACE_CHANGES, TOOL_BUDGET,
   TOOL_DEFINITIONS, TOOL_SURFACES, WRITE_GATE_FILE, createOpenFilmMcpServer, openfilmMcpServerConfig, readWriteGate,
   serveStdio, surfaceArithmetic, writeFileAtomic,
-} from './openfilm-mcp.mjs';
+} from './orangefilm-mcp.mjs';
 import { MATERIAL_TOOL_CAPS, MATERIAL_TOOL_CAPS_CONTRACT, planMaterialToolSurface } from '../../../packages/openfilm/src/material-tools.mjs';
 import { applicationMenuTemplate } from './menu.mjs';
 
@@ -192,11 +192,11 @@ test('the write gate is exactly the file it says: absent, malformed, unallowed a
 });
 
 test('the agent is told to start the server with an absolute command and Electron as Node', () => {
-  const config = openfilmMcpServerConfig({ command: process.execPath, script: '/abs/openfilm-mcp.mjs' });
+  const config = openfilmMcpServerConfig({ command: process.execPath, script: '/abs/orangefilm-mcp.mjs' });
   assert.equal(config.name, 'orangefilm');
   assert.equal(config.command, process.execPath);
   assert.ok(config.command.startsWith('/') || /^[A-Za-z]:\\/.test(config.command), 'the command is an absolute path');
-  assert.equal(config.args.at(-1), '/abs/openfilm-mcp.mjs');
+  assert.equal(config.args.at(-1), '/abs/orangefilm-mcp.mjs');
   assert.deepEqual(config.env, [{ name: 'ELECTRON_RUN_AS_NODE', value: '1' }]);
   assert.throws(() => openfilmMcpServerConfig({ command: 'node', script: '/abs/x.mjs' }), /absolute/);
 

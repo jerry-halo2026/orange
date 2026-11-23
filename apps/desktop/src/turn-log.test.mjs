@@ -59,10 +59,10 @@ test('the turn log has what the agent was started with and each message as it go
     /* the window's own MCP server travels with the session: an absolute command and script, and Electron as Node */
     assert.equal(opened.session.params.mcpServers.length, 1);
     const [mcp] = opened.session.params.mcpServers;
-    assert.equal(mcp.name, 'openfilm');
+    assert.equal(mcp.name, 'orangefilm');
     assert.match(mcp.command, /^(?:\/|[A-Za-z]:\\)/, 'the command is an absolute path');
-    assert.match(mcp.args.at(-1), /openfilm-mcp\.mjs$/);
-    assert.ok(mcp.args.slice(0, -1).every((arg) => !arg.endsWith('openfilm-mcp.mjs')), 'the script is the last argument');
+    assert.match(mcp.args.at(-1), /orangefilm-mcp\.mjs$/);
+    assert.ok(mcp.args.slice(0, -1).every((arg) => !arg.includes('orangefilm-mcp.mjs')), 'the script is the last argument');
     assert.deepEqual(mcp.env, [{ name: 'ELECTRON_RUN_AS_NODE', value: '1' }]);
     assert.equal(opened.initialize.response.agentInfo.name, 'fake');
 

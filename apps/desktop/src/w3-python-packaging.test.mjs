@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { NOT_INSTALLED_EXIT, componentDir, installed, manifest, missingReport, servicesRoot } from '../../../packages/openfilm/src/analyze.mjs';
-import { editorModulesDir } from './openfilm-mcp.mjs';
+import { editorModulesDir } from './orangefilm-mcp.mjs';
 import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT } from '../scripts/packed-editor-modules.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));

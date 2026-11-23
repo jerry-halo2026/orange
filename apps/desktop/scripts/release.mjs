@@ -247,7 +247,7 @@ run(process.execPath, [vite, 'build', '--config', 'studio/ui/vite.config.ts', '-
 /* 2. the stage */
 rmSync(work, { recursive: true, force: true });
 mkdirSync(stage, { recursive: true });
-cpSync(join(desktop, 'src'), join(stage, 'src'), { recursive: true, filter: (from) => !from.endsWith('.test.mjs') });
+cpSync(join(desktop, 'src'), join(stage, 'src'), { recursive: true, filter: (from) => !from.endsWith('.test.mjs') && !from.split(/[\\/]/).includes('node_modules') });
 cpSync(join(desktop, 'shell/dist'), join(stage, 'shell/dist'), { recursive: true });
 /* the material service (apps/api): its source only — the child is `node …/apps/api/src/main.ts` and installs nothing.
    The tests and any node_modules are not shipped: they are not part of the program. */
@@ -280,11 +280,21 @@ cpSync(productFile, join(stage, 'node_modules/openfilm/product.json'));
 
 /* 2b. ffmpeg and the headless browser, for the platform and chip built for */
 const runtime = join(work, 'runtime');
-if (ffmpegDownloadable(platform, arch)) await fetchFfmpeg(join(runtime, 'ffmpeg'), { platform, arch, license: true });
-else console.warn(`No ffmpeg build for ${platform}-${arch}: this app downloads none either; people install their own.`);
-run(process.execPath, [join(stage, 'node_modules/playwright-core/cli.js'), 'install', 'chromium-headless-shell'], {
-  env: { ...process.env, PLAYWRIGHT_BROWSERS_PATH: join(runtime, 'ms-playwright'), PLAYWRIGHT_HOST_PLATFORM_OVERRIDE: win ? 'win64' : arch === 'arm64' ? 'mac15-arm64' : 'mac15' },
-});
+if (ffmpegDownloadable(platform, arch)) {
+  /* 离线/慢网：用已下载好的同一版本 ffmpeg 目录，跳过发布时的再下载（内容与 pin 一致，license 也带）。 */
+  const cachedFfmpeg = String(process.env.OPENFILM_FFMPEG_CACHE ?? '').trim();
+  if (cachedFfmpeg && existsSync(join(cachedFfmpeg, 'ffmpeg'))) cpSync(cachedFfmpeg, join(runtime, 'ffmpeg'), { recursive: true });
+  else await fetchFfmpeg(join(runtime, 'ffmpeg'), { platform, arch, license: true });
+} else console.warn(`No ffmpeg build for ${platform}-${arch}: this app downloads none either; people install their own.`);
+/* 同理：已装好的 Playwright 浏览器目录直接复制，安装器在目录已存在时不再联网。 */
+const cachedBrowsers = String(process.env.OPENFILM_PLAYWRIGHT_CACHE ?? '').trim();
+if (cachedBrowsers && existsSync(cachedBrowsers)) {
+  cpSync(cachedBrowsers, join(runtime, 'ms-playwright'), { recursive: true });
+} else {
+  run(process.execPath, [join(stage, 'node_modules/playwright-core/cli.js'), 'install', 'chromium-headless-shell'], {
+    env: { ...process.env, PLAYWRIGHT_BROWSERS_PATH: join(runtime, 'ms-playwright'), PLAYWRIGHT_HOST_PLATFORM_OVERRIDE: win ? 'win64' : arch === 'arm64' ? 'mac15-arm64' : 'mac15' },
+  });
+}
 
 /* 2d. Fission, for Windows x64: the batch mixer Studio's own pane starts. It is a .NET program and the computer
    has no .NET, so it is published self-contained, with the host that takes the shape Studio starts `dotnet` in,
@@ -333,7 +343,7 @@ await builder.build({
   ...(unpacked ? { dir: true } : win ? { win: ['nsis'] } : { mac: ['dmg', 'zip'] }),
   [arch]: true,
   config: {
-    afterPack: win ? (context) => windowsResources(context) : undefined,
+    afterPack: win ? (context) => windowsResources(context).catch((error) => { console.warn(`windows resources skipped: ${error?.message ?? error}`); }) : undefined,
     /* unsigned on a Mac: signed ad hoc, whole, before the .dmg and .zip are made. Electron's fuses are written into
        its framework after the linker signed it, and an Apple chip kills a program whose pages no longer match its
        signature ("Code Signature Invalid") the moment it starts */
@@ -493,6 +503,5 @@ async function windowsResources(context) {
   });
   info.outputToResourceEntries(res.entries);
   res.outputResource(exe);
-  writeFileSync(file, Buffer.from(exe.generate()));
 }
 

@@ -1,0 +1,90 @@
+name: packaging-check
+# Manual packaging validation only: build the Windows NSIS and macOS arm64 app on native GitHub runners,
+# in a clean checkout, and upload whatever the build made (or the logs that say why it did not).
+# Nothing is published, signed or uploaded to a release. Temporary public visibility exists only to use
+# standard runners; the repository is made private again when the validation is done.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: What to build
+        type: choice
+        options: [both, win-x64, mac-arm64]
+        default: both
+permissions:
+  contents: read
+concurrency:
+  group: packaging-check
+  cancel-in-progress: false
+jobs:
+  windows:
+    if: ${{ inputs.target == 'both' || inputs.target == 'win-x64' }}
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Unpacked app (resedit + fuses only)
+        continue-on-error: true
+        run: pnpm --filter @openfilm/desktop release -- --platform=win --arch=x64 --dir
+      - name: Windows installer (NSIS)
+        continue-on-error: true
+        run: pnpm --filter @openfilm/desktop release -- --platform=win --arch=x64
+      - name: Collect logs
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path packaging-logs | Out-Null
+          Get-ChildItem "$env:TEMP" -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match 'electron-builder|builder-debug|release' -and $_.Length -lt 20MB } |
+            Select-Object -First 40 |
+            ForEach-Object { Copy-Item $_.FullName "packaging-logs/$($_.Name)" -ErrorAction SilentlyContinue }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-packaging
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            apps/desktop/.release/win-x64/out/**
+            apps/desktop/.release/win-x64/**/*.log
+            packaging-logs/**
+
+  macos:
+    if: ${{ inputs.target == 'both' || inputs.target == 'mac-arm64' }}
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Unpacked app (ad-hoc, no signing)
+        continue-on-error: true
+        run: pnpm --filter @openfilm/desktop release -- --arch=arm64 --unsigned --dir
+      - name: macOS app and dmg (unsigned)
+        continue-on-error: true
+        run: pnpm --filter @openfilm/desktop release -- --arch=arm64 --unsigned
+      - name: Collect logs
+        if: always()
+        run: |
+          mkdir -p packaging-logs
+          find "$RUNNER_TEMP" -maxdepth 4 -type f \( -iname '*electron-builder*' -o -iname '*builder-debug*' -o -iname '*.log' \) -size -20M -exec cp {} packaging-logs/ \; 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macos-packaging
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            apps/desktop/.release/arm64/out/**
+            apps/desktop/.release/arm64/**/*.log
+            packaging-logs/**

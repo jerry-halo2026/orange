@@ -667,10 +667,11 @@ export function createMaterialSearchService({
   modelDir = env?.OPENFILM_EMBED_MODEL_DIR, packDir = env?.OPENFILM_MATERIAL_PACK ?? DEFAULT_PACK_DIR(),
 } = {}) {
   const key = typeof tenant === 'string' ? tenant.trim() : '';
-  /* No tenant, no search: `media_search` refuses an empty key (012:430), and a default invented here would be a
-     search of somebody else's library. The caller says `not-configured` and names this key. */
-  if (!isTenantKey(key)) return null;
   const named = typeof indexDir === 'string' && indexDir ? indexDir : null;
+  const packDirNamed = typeof packDir === 'string' && packDir.trim() ? packDir.trim() : '';
+  /* 无 tenant 时仍可本地检索：向量包/落地索引不需要数据库；两者都没有才真的没有搜索。 */
+  const localOnly = !isTenantKey(key);
+  if (localOnly && !packDirNamed && !named && typeof index !== 'function') return null;
   const embed = embedder === 'local'
     ? createLocalEmbedder({ ...(typeof modelDir === 'string' && modelDir ? { modelDir } : {}) })
     : createEmbedder({
@@ -679,7 +680,7 @@ export function createMaterialSearchService({
       ...(fetchImpl ? { fetchImpl } : {}),
       ...(Number.isFinite(timeoutMs) ? { timeoutMs: Number(timeoutMs) } : {}),
     });
-  const call = createMediaSearchCall({
+  const call = localOnly ? null : createMediaSearchCall({
     tenant: key,
     composeFile: typeof composeFile === 'string' && composeFile.trim() ? composeFile.trim() : DEFAULT_COMPOSE_FILE,
     ...(typeof psql === 'function' ? { psql } : {}),
@@ -687,10 +688,10 @@ export function createMaterialSearchService({
   });
   const landed = typeof index === 'function' ? index : defaultIndexLoader(named ? { dir: named } : {});
   /* 向量包：客户端装好之后它就是语义检索的全部（没有数据库可问）。没有包 → null，走 RPC 与索引。 */
-  const packDirNamed = typeof packDir === 'string' && packDir.trim() ? packDir.trim() : '';
   const packSearch = packDirNamed ? createPackSearch({ dir: packDirNamed, embed }) : null;
   return {
-    tenant: key,
+    tenant: key || null,
+    local: localOnly,
     embed,
     call,
     packSearch,

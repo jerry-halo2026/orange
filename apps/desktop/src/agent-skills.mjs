@@ -33,7 +33,7 @@
  * A session's OpenFilm skills are a folder of the app's, links to each skill's own folder (agent-skills/<id>/skills),
  * as each agent reads a plugin or a skills folder. Reads no Electron module, so `node --test` can use it.
  */
-import { copyFileSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { createRequire } from 'node:module';
@@ -362,6 +362,16 @@ export async function sessionSkills(agent, { cwd, env = {}, dataDir, mine, prefs
       };
     case 'openfilm': case 'byok':
       return { piSkills: { paths: [join(dir, 'skills')], names }, log };
+    case 'deepseek': {
+      /* DSH scans <project>/.agents/skills (and $DSH_HOME/skills): link OpenFilm's folder into this project so the
+         session sees the same skills as the other agents, without writing the person's own skill dirs. */
+      const target = join(cwd, '.agents', 'skills');
+      try {
+        mkdirSync(join(cwd, '.agents'), { recursive: true });
+        if (!existsSync(target)) symlinkSync(join(dir, 'skills'), target, process.platform === 'win32' ? 'junction' : 'dir');
+      } catch { /* a project on a filesystem that cannot link keeps the first-message skills only */ }
+      return { log: { ...log, folder: target } };
+    }
     default:
       return { log };
   }

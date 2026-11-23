@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { commandScript, commandScriptWindows, installOpenfilmCommand, openfilmCommand } from './openfilm-command.mjs';
+import { commandScript, commandScriptWindows, installOpenfilmCommand, openfilmCommand } from './orangefilm-command.mjs';
 import { testRoot } from '../../../packages/openfilm/src/test-roots.mjs';
 
 test("the openfilm command alone has the app's ffmpeg first and its browser; the agent's PATH is left as it is", () => {

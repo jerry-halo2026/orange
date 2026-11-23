@@ -6,9 +6,9 @@ import assert from 'node:assert/strict';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { agentOffer, createOpenFilmAgent } from './openfilm-agent.mjs';
+import { agentOffer, createOpenFilmAgent } from './orangefilm-agent.mjs';
 import { createRoster } from './agent-roster.mjs';
-import { OPENFILM_MODELS } from './openfilm-models.mjs';
+import { OPENFILM_MODELS } from './orangefilm-models.mjs';
 
 const deepseek = 'deepseek/deepseek-v4.1-flash-1017';
 const catalog = { default: deepseek, data: [

@@ -3,7 +3,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { OPENFILM_MODELS, modelPreferences, orderedModels } from './openfilm-models.mjs';
+import { OPENFILM_MODELS, modelPreferences, orderedModels } from './orangefilm-models.mjs';
 
 test('OpenFilm offers the seven requested models in their default order, including when a server sends an old catalog', () => {
   const ids = OPENFILM_MODELS.map((m) => m.id);

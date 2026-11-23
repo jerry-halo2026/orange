@@ -10,7 +10,7 @@ import { crc32, deflateSync } from 'node:zlib';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { AgentSession } from './agents.mjs';
-import { agentOffer } from './openfilm-agent.mjs';
+import { agentOffer } from './orangefilm-agent.mjs';
 
 /** A service on the Chat Completions API that answers "ok" and notes the model each request named (and each request, and its key). */
 async function service({ broke = false, fails = null, busyOnce = false, largest = Infinity } = {}) {

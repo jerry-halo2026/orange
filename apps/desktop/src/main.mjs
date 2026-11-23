@@ -34,7 +34,7 @@ import { registerSkillsIpc } from './skills-ipc.mjs';
 import { createRoster } from './agent-roster.mjs';
 import { checkAgentProgram, closeEverySession, sealAgentAdmission, resumeAgentAdmission, diagnoseAgent, forgetAgentStatus, listAgents, localAgent, openAgentInstaller, openAgentSignIn, setChosenPaths, signOutAgent } from './agents.mjs';
 import { agentUsage, forgetAgentUsage } from './agent-usage.mjs';
-import { installOpenfilmCommand } from './openfilm-command.mjs';
+import { installOpenfilmCommand } from './orangefilm-command.mjs';
 import { startUpdates } from './updates.mjs';
 import { stepAside } from './update-launch.mjs';
 import { ensureFfmpeg, ffmpegDir, ffmpegDownloadable, ffmpegIn, ffmpegOnPath } from './ffmpeg-runtime.mjs';

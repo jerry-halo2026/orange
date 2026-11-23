@@ -5,7 +5,7 @@
 import { join } from 'node:path';
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { contextLength, effortLevels } from './pi-config.mjs';
-import { OPENFILM_MODELS, modelPreferences, orderedModels } from './openfilm-models.mjs';
+import { OPENFILM_MODELS, modelPreferences, orderedModels } from './orangefilm-models.mjs';
 import { brandProductName } from './brand.mjs';
 const PRODUCT = brandProductName();
 

@@ -234,7 +234,7 @@ export async function probeModel({ format, baseUrl, key, model, fetch: fetchImpl
  *   resetAgent?: (id: string) => void,
  *   seal: (text: string) => Buffer, unseal: (data: Buffer) => string,
  *   onChange: (list: any[]) => void,
- *   openfilm?: ReturnType<typeof import('./openfilm-agent.mjs').createOpenFilmAgent>,
+ *   openfilm?: ReturnType<typeof import('./orangefilm-agent.mjs').createOpenFilmAgent>,
  *   fetch?: typeof fetch,
  *   signInWait?: { ms: number, pollMs: number },
  * }} deps

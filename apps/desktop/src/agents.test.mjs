@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { AgentSession, CLIENT_CAPABILITIES, INSTRUCTIONS, agentDefaults, agentInstructions, closeEverySession, planProblem, probeFolder, CODEX_UTF8_CMD, agentShell, allowOption, codexDeveloperInstructions, codexLaunchEnv, codexSessionConfig, distinctOptions, errorCause, legacyOptions, optionsForModel, powerShellScript, powerShellLine, powerShellWindowLaunch, terminalScript, checkAgentProgram, readAgentStatus, setChosenPaths, signInScript, turnError, signInError, codexTooOld, AGENTS, ownSignIn, codexServiceError, codexRefusal, codexNotice, explainFailure, stderrReason, withToolKind, OWN_GROUP, stopTree, winArg, CLAUDE_TESTED, claudeOutdated } from './agents.mjs';
 import { spawn } from 'node:child_process';
 import { acpSignedIn, signOutAgent } from './agents.mjs';
-import { openfilmCommand } from './openfilm-command.mjs';
+import { openfilmCommand } from './orangefilm-command.mjs';
 
 test('a fresh sign-in check bypasses a cached signed-out result and shares the pending probe', async () => {
   const { mkdtempSync, readFileSync, writeFileSync, rmSync } = await import('node:fs');

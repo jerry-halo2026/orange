@@ -49,7 +49,7 @@ import { afterFirstReading, firstWindowsApps, refreshWindowsApps } from './windo
 import { mergeConfig, sessionSkills } from './agent-skills.mjs';
 import { nodeBinary } from './node-runtime.mjs';
 import { openfilmMcpServerConfig } from './orangefilm-mcp.mjs';
-import { openfilmCommand } from './openfilm-command.mjs';
+import { openfilmCommand } from './orangefilm-command.mjs';
 import { outOfBalance } from './pi-config.mjs';
 import { AGENT_DEFINITIONS } from './agent-definitions.mjs';
 
@@ -193,7 +193,7 @@ export function agentDefaults(id, shell = {}) {
 
 /**
  * The two agents that run Pi (pi-agent.mjs) instead of a program of their own: the product's own, on the shared
- * account (`openfilm-agent.mjs`), and the person's own key (`agent-roster.mjs`). Each is started with the `harness`
+ * account (`orangefilm-agent.mjs`), and the person's own key (`agent-roster.mjs`). Each is started with the `harness`
  * its roster hands out, so neither is looked up in AGENTS and neither has a launcher to be discovered.
  */
 export const HARNESS_AGENTS = Object.freeze(['openfilm', 'byok']);

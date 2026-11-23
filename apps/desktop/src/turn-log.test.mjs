@@ -7,7 +7,7 @@ import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { AgentSession, agentInstructions, setChosenPaths } from './agents.mjs';
-import { openfilmCommand } from './openfilm-command.mjs';
+import { openfilmCommand } from './orangefilm-command.mjs';
 import { loggedBlocks, readLog, writeModelLog } from './chat-store.mjs';
 
 /** An agent speaking ACP that keeps every prompt it is sent in `out`, one JSON line each. */

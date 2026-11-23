@@ -277,6 +277,17 @@ if (offLock.length) {
 }
 /* the build's product file */
 cpSync(productFile, join(stage, 'node_modules/openfilm/product.json'));
+/* models and project templates are excluded from npm pack (`files`), but the installed app needs them:
+   BGE for local material search, Whisper for subtitles, and the project templates the canvas offers. */
+for (const part of ['models', 'project-templates']) {
+  const from = join(protocol, 'library', part);
+  if (existsSync(from)) {
+    cpSync(from, join(stage, 'node_modules/openfilm/library', part), { recursive: true });
+    console.log(`library/${part}: copied into the installed package`);
+  } else {
+    console.warn(`library/${part}: not in this checkout — the installed app will miss it`);
+  }
+}
 
 /* 2b. ffmpeg and the headless browser, for the platform and chip built for */
 const runtime = join(work, 'runtime');

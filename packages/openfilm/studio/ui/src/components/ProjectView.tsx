@@ -1768,7 +1768,17 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
         videoId: material.videoId,
         ...(material.videoType === undefined ? {} : {videoType: material.videoType}),
       });
-      const into = await api.takeSaved(projectId, taken.landed);
+      let into;
+      try {
+        into = await api.takeSaved(projectId, taken.landed);
+      } catch (error) {
+        if ((error as {code?: string}).code !== 'saved-access-denied') throw error;
+        const ownership = await api.savedOwnership();
+        const ref = ownership.refs.find((record) => !record.current)?.ref;
+        if (!ref || !window.confirm('这个素材库属于另一个账号。把当前账号加入这个素材库后重试？')) throw error;
+        await api.claimSaved(ref);
+        into = await api.takeSaved(projectId, taken.landed);
+      }
       if (!('path' in into)) throw new Error(t('timeline.downloadNotAFile'));
       landed = into.path;
     } catch (error) {

@@ -39,6 +39,8 @@ export type MaterialCard = {
   readonly videoLabels: readonly CardLabel[];
   readonly videoState: CardState | null;
   readonly videoType: VideoType | null;
+  /** The supplier can serve the original: transcoded, not recycled, with a playable url. */
+  readonly downloadable: boolean;
 };
 
 /** The supplier's `yyyy-MM-dd HH:mm:ss` (local, as the supplier reports it), as a timestamp; `null` otherwise. */
@@ -112,6 +114,7 @@ export function decodeCard(item: WireItem): MaterialCard | null {
     videoLabels: labelsOf(row.videoLabels),
     videoState: stateOf(row.videoState),
     videoType: videoTypeOf(row.videoType),
+    downloadable: wireInt(row.state) === 2 && !wireText(row.recycleTime) && Boolean(wireText(row.videoUrl)),
   };
 }
 

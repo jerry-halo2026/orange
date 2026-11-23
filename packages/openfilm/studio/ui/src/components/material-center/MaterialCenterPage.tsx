@@ -216,7 +216,7 @@ export function MaterialCenterPage({
     hovered: hovered === entry.id,
     usePending: entry.source === 'cloud' ? state.usePending === entry.card?.videoId : false,
     canSelect: draftReady && entry.draft !== null && !pendingDraft.has(entry.id),
-    canUse: entry.source === 'cloud' ? cloudBound && entry.card !== null && !deniedNow.has(entry.card.videoId) : false,
+    canUse: entry.source === 'cloud' ? cloudBound && entry.card !== null && entry.card.downloadable !== false && !deniedNow.has(entry.card.videoId) : false,
     useLabel: entry.source === 'cloud'
       ? (!cloudBound ? copy.bindToDownload : entry.card && deniedNow.has(entry.card.videoId) ? useFailureCopy(copy, 'forbidden', deniedDownloads.codeOf(entry.card.videoId) ?? undefined) : copy.download)
       : copy.download,
@@ -348,7 +348,7 @@ export function MaterialCenterPage({
     {detail && <MaterialDetail entry={detail} copy={copy} now={at}
       selected={draftSelected(draft, detail)}
       canSelect={draftReady && detail.draft !== null && !pendingDraft.has(detail.id)}
-      canUse={detail.card !== null && !deniedNow.has(detail.card.videoId)}
+      canUse={detail.card !== null && detail.card.downloadable !== false && !deniedNow.has(detail.card.videoId)}
       useLabel={detail.card && deniedNow.has(detail.card.videoId) ? useFailureCopy(copy, 'forbidden', deniedDownloads.codeOf(detail.card.videoId) ?? undefined) : copy.download}
       usePending={state.usePending === detail.card?.videoId}
       tagPath={tagPathOf(detail.name)}

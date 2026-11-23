@@ -23,12 +23,12 @@ test('the supplier status table is frozen to the transcript and unknown codes st
     '20014':'provider-credential-rejected',
     '20015':'provider-signature-rejected',
     '20020':'account-not-found',
-    '20022':'authorization-denied',
+    '20022':'provider-permission-denied',
   });
   assert.equal(Object.isFrozen(supplierStatus),true);
   for(const unknown of [1,7,99,501,20021,20023,-1,1.5,undefined,null,'20020',NaN,Infinity])assert.equal(supplierFailure(unknown),'provider-unconfirmed',String(unknown));
   assert.equal(supplierFailure(20000),'provider-response-unconfirmed','a supplier parameter rejection is our bug, not a caller mistake');
-  assert.equal(supplierFailure(20022),'authorization-denied');
+  assert.equal(supplierFailure(20022),'provider-permission-denied');
 });
 
 test('the HTTP mapping is fixed for every code this package can throw',()=>{

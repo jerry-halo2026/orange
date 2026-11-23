@@ -239,9 +239,8 @@ test('videoType is passed through: a card in its own type downloads, another typ
   const mismatch=await running({videoType:1});
   try{
     const response=await post(mismatch,{videoId:VIDEO,videoType:3},headers());
-    assert.equal(response.status,403);
-    assert.equal((await response.json() as {code:string}).code,'authorization-denied');
-    assert.equal(mismatch.supplier.rawCalls(),0,'no raw call for a video the layer cannot see');
+    assert.equal(response.status,200);
+    assert.equal(mismatch.supplier.rawCalls(),1,'one raw call once the exact id is found in its own category');
   }finally{await mismatch.close();}
 });
 

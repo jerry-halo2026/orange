@@ -146,7 +146,7 @@ export const supplierStatus: Readonly<Record<string, string>> = Object.freeze({
   '20014': 'provider-credential-rejected',
   '20015': 'provider-signature-rejected',
   '20020': 'account-not-found',
-  '20022': 'authorization-denied',
+  '20022': 'provider-permission-denied',
 });
 
 export function supplierFailure(code: unknown): string {
@@ -172,7 +172,7 @@ export const fail = (code: string, status?: number): never => {
   throw new SupplierError(code, status);
 };
 
-export type PublicError = Readonly<{ code: string; status: number; message: string }>;
+export type PublicError = Readonly<{ code: string; status: number; message: string; reason?: string }>;
 
 /**
  * The only shape an HTTP layer may return for a failure. A registered code is preserved even when
@@ -185,7 +185,8 @@ export function toPublicError(error: unknown): PublicError {
   const code=error instanceof SupplierError?error.code:typeof raised==='string'&&Object.hasOwn(STATUS,raised)?raised:'provider-unconfirmed';
   const candidate=error&&typeof error==='object'?(error as {status?:unknown}).status:undefined;
   const status=Number.isInteger(candidate)&&(candidate as number)>=400&&(candidate as number)<=599?candidate as number:statusOf(code);
-  return Object.freeze({code,status,message:MESSAGES[code]??'请求失败'});
+  const reason=error&&typeof error==='object'?(error as {authorization?:{reason?:unknown}}).authorization?.reason:undefined;
+  return Object.freeze({code,status,message:MESSAGES[code]??'请求失败',...(typeof reason==='string'&&reason?{reason}:{})});
 }
 
 export function messageOf(code: string): string {

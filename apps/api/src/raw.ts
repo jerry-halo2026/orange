@@ -200,7 +200,16 @@ export function createRawService(dependencies:RawDependencies):RawService {
       // Author check first: one bounded list call filtered by the exact id. It does not touch the
       // download counter; `query/raw` is still called exactly once below.
       const listing=await transport.listMaterialsAs(context,decision.accountKey,{videoIds:videoId,pageSize:1,videoType:type as number});
-      const row=listing.items.find(item=>item.videoId.value===videoId)??listing.items[0];
+      let row=listing.items.find(item=>item.videoId.value===videoId);
+      /* The caller's category may be wrong (a film, a picture, a third-party clip): look in each
+         category, but only accept the exact id. Never fall back to the first row of another id. */
+      if(!row){
+        for(const candidate of [0,1,2,3,4].filter((value)=>value!==type)){
+          const found=await transport.listMaterialsAs(context,decision.accountKey,{videoIds:videoId,pageSize:1,videoType:candidate});
+          row=found.items.find(item=>item.videoId.value===videoId);
+          if(row)break;
+        }
+      }
       if(!row)denial('video-not-visible');
       const author=typeof row.observation.accountKey==='string'?row.observation.accountKey:null;
       if(!visible(author,decision.authorization.layer,view))denial('video-author-not-visible');

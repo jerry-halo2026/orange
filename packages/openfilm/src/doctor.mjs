@@ -189,6 +189,20 @@ export async function doctor({ run = 'openfilm', env = process.env, studio = nul
 
   if (studio) {
     checks.push({ label: 'Studio', text: `${studio.version} at ${studio.origin}${studio.app ? ' (the desktop app\'s)' : ''}` });
+    if (network) {
+      const binding = await fetch(`${studio.origin}/api/materials/binding`, { signal: AbortSignal.timeout(3000) })
+        .then(async (r) => ({ ok: r.ok, status: r.status, body: await r.json().catch(() => null) }))
+        .catch(() => null);
+      const bound = binding?.body?.binding?.account;
+      if (bound) checks.push({ label: 'Materials', text: `cloud steward bound: ${bound}` });
+      else if (binding?.status === 401 || binding?.status === 403) {
+        checks.push({ label: 'Materials', text: 'not signed in', problem: 'sign in to Studio, then bind the cloud steward account' });
+      } else if (binding) {
+        checks.push({ label: 'Materials', text: `not bound (HTTP ${binding.status})`, problem: 'bind the cloud steward account in Settings → 云管家' });
+      } else {
+        checks.push({ label: 'Materials', text: 'not reachable', problem: 'the material service did not answer: restart OrangeFilm' });
+      }
+    }
   } else {
     const { running } = await import('../studio/client.mjs');
     const up = await running().catch(() => null);

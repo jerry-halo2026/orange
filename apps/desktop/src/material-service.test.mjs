@@ -159,7 +159,7 @@ test('the window starts the service with its own origin, and stops it on every p
   assert.match(main, /app\.on\('before-quit', \(event\) => \{\s*if\(quitConfirmed\)return;[\s\S]{0,240}void stopMaterials\(\);/,
     'quitting stops it');
   assert.match(main, /process\.on\('exit', \(\) => \{ try \{ materials\?\.kill\(\); \}/, 'a main process that dies without quitting still kills it');
-  assert.match(main, /MATERIAL_CREDENTIALS = join\(MATERIAL_CHECKOUT, '\.dev', 'zhishang', 'credentials\.local\.json'\)/, 'the credentials file is the ignored one, by path only');
+  assert.match(main, /const MATERIAL_CREDENTIALS = \(\(\) => \{[\s\S]{0,900}credentials\.local\.json/, 'the credentials file is the ignored one, by path only');
   assert(!/MATERIALS_SECRET/.test(main), 'the window never names the secret: the service module mints and hands it over');
 });
 

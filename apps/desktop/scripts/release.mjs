@@ -253,7 +253,7 @@ cpSync(join(desktop, 'shell/dist'), join(stage, 'shell/dist'), { recursive: true
    The tests and any node_modules are not shipped: they are not part of the program. */
 cpSync(api, join(stage, 'apps', 'api'), { recursive: true, filter: (from) => !from.includes('node_modules') && !from.endsWith('.test.ts') });
 const pack = (dir) => runNpm(['pack', '--ignore-scripts', '--pack-destination', work, '--silent'], { cwd: dir, encoding: 'utf8', stdio: 'pipe' }).trim().split('\n').pop();
-const dependencies = { ...pkg.dependencies, openfilm: `file:../${pack(protocol)}` };
+const dependencies = { ...pkg.dependencies, openfilm: `file:../${pack(protocol)}`, orangefilm: `file:../${pack(protocol)}` };
 /* npm takes the versions pnpm's lockfile has (locked-versions.mjs): what the tests ran with, not the latest */
 const lockedTree = JSON.parse(runPnpm(['list', '--prod', '--depth', 'Infinity', '--json'], { cwd: desktop, encoding: 'utf8', stdio: 'pipe', maxBuffer: 256 * 1024 * 1024 }))[0];
 writeFileSync(join(stage, 'package.json'), `${JSON.stringify({

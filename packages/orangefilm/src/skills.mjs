@@ -166,7 +166,7 @@ export function skillOwner(source, origin) {
   /* an installed one is its repository's account's (OpenFilm's own, openfilm); OpenFilm's own skills, openfilm */
   if (source === 'official') {
     const account = origin?.address ? /^https:\/\/github\.com\/([\w.-]+)\//.exec(`${origin.address}/`)?.[1] : null;
-    return account ? accountSpace(uidPart(account)) : 'openfilm';
+    return account ? accountSpace(uidPart(account)) : 'orangefilm';
   }
   if (source === 'project') return 'project';
   if (origin?.from === 'link') {
@@ -360,7 +360,9 @@ const namesIn = (/** @type {unknown} */ value) => (Array.isArray(value) ? [...ne
  * Whether a list of prefs.json holds a skill: by its uid, or by its name alone as kept before uids.
  * @param {Set<string>} kept @param {{ uid: string, name: string }} skill
  */
-export const keeps = (kept, skill) => kept.has(skill.uid) || kept.has(skill.name);
+export const keeps = (kept, skill) => kept.has(skill.uid)
+  || (skill.uid.startsWith('orangefilm/') && kept.has(`openfilm/${skill.uid.slice('orangefilm/'.length)}`))
+  || kept.has(skill.name);
 
 /** The skills the person turned off, by uid (by name, as kept before). @param {string} [home] @returns {string[]} */
 export function skillsOff(home) {
@@ -410,9 +412,23 @@ export function skillsNamed(key, where) {
   const had = [...coreSkills(), ...listSkills(where)];
   const all = [...had, ...discoverSkills().filter((d) => !had.some((s) => s.uid === d.uid || s.name.toLowerCase() === d.name.toLowerCase()))];
   const full = /^[a-z0-9-]+[/:][a-z0-9-]+$/.test(k) ? k.replace(':', '/') : null;
-  if (full) return all.filter((s) => s.uid === full).slice(0, 1);
+  if (full) {
+    const exact = all.filter((s) => s.uid === full).slice(0, 1);
+    if (exact.length) return exact;
+    /* uids written before the rename: `openfilm/edit` is the official one's `orangefilm/edit` */
+    if (full.startsWith('openfilm/')) {
+      const renamed = `orangefilm/${full.slice('openfilm/'.length)}`;
+      return all.filter((s) => s.uid === renamed).slice(0, 1);
+    }
+    return [];
+  }
   const asGiven = all.filter((s) => agentName(s) === k);
   if (asGiven.length) return asGiven.slice(0, 1);
+  if (k.startsWith('openfilm-')) {
+    const renamed = `orangefilm-${k.slice('openfilm-'.length)}`;
+    const before = all.filter((s) => agentName(s) === renamed);
+    if (before.length) return before.slice(0, 1);
+  }
   /* a skill's name is read as written in its SKILL.md; the key is lowercased, so both sides are compared as such */
   return all.filter((s) => s.name.toLowerCase() === k);
 }

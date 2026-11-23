@@ -122,17 +122,17 @@ test('skills are listed from the project, yours and the official ones, each by i
   mkdirSync(join(mine, 'not-a-skill'), { recursive: true });
   const all = listSkills({ project, mine, official });
   assert.deepEqual(all.map((s) => [s.uid, s.source, s.description]), [
-    ['project/brand', 'project', 'This film\'s brand'], ['local/brand', 'mine', 'My brand'], ['openfilm/brand', 'official', 'Official brand'],
-    ['openfilm/kinetic', 'mine', 'Kinetic from OpenFilm'], ['local/lyric-pv', 'mine', 'Lyric videos'],
+    ['project/brand', 'project', 'This film\'s brand'], ['local/brand', 'mine', 'My brand'], ['orangefilm/brand', 'official', 'Official brand'],
+    ['openfilm/kinetic', 'mine', 'Kinetic from OpenFilm'], ['orangefilm/kinetic', 'official', 'Official kinetic'], ['local/lyric-pv', 'mine', 'Lyric videos'],
   ]);
-  assert.deepEqual(all[3].over, ['official']);
-  const lyric = all[4];
+  assert.deepEqual(all[3].over, undefined);
+  const lyric = all[5];
   assert.deepEqual(lyric.scripts, ['lib/engine.js', 'scripts/build.sh'], 'what an agent could run, for the person to see');
   /* by its name alone, two owners have one: none chosen, both named */
   assert.equal(findSkill('brand', { mine, official }), null, 'two of the name: none chosen for the agent');
-  assert.deepEqual(skillsNamed('brand', { mine, official }).map((s) => s.uid).sort(), ['local/brand', 'openfilm/brand']);
+  assert.deepEqual(skillsNamed('brand', { mine, official }).map((s) => s.uid).sort(), ['local/brand', 'orangefilm/brand']);
   assert.equal(findSkill('local-brand', { mine, official }).uid, 'local/brand', 'as an agent is given it');
-  assert.equal(findSkill('openfilm:brand', { mine, official }).uid, 'openfilm/brand', 'as Claude Code names it in a plugin');
+  assert.equal(findSkill('openfilm:brand', { mine, official }).uid, 'orangefilm/brand', 'as Claude Code names it in a plugin');
   assert.equal(findSkill('openfilm/brand', { mine, official }).description, 'Official brand', 'by uid: that one');
   assert.equal(findSkill('nothing', { mine, official }), null);
   const text = skillText(lyric);
@@ -143,11 +143,11 @@ test('skills are listed from the project, yours and the official ones, each by i
 test('openfilm.json says what a skill needs and the computers it runs on; anything else there is left out', () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-needs-'));
   const folder = skill(join(root, 'demo'), 'app-demo', 'Films a program', 'Steps', { 'openfilm.json': JSON.stringify({
-    needs: { en: 'Windows 10 or 11, FFmpeg 8', 'zh-CN': 'Windows 10 或 11，FFmpeg 8', 'x y': 'not a language' },
+    needs: { en: 'Windows 10 or 11, FFmpeg 8', 'zh-CN': 'Windows 10 �?11，FFmpeg 8', 'x y': 'not a language' },
     platforms: ['windows', 'amiga'],
   }) });
   const read = readSkill(folder, 'mine');
-  assert.deepEqual(read.needs, { en: 'Windows 10 or 11, FFmpeg 8', 'zh-CN': 'Windows 10 或 11，FFmpeg 8' });
+  assert.deepEqual(read.needs, { en: 'Windows 10 or 11, FFmpeg 8', 'zh-CN': 'Windows 10 �?11，FFmpeg 8' });
   assert.deepEqual(read.platforms, ['windows']);
   const plain = readSkill(skill(join(root, 'plain'), 'plain', 'Plain', 'Steps', { 'openfilm.json': JSON.stringify({ platforms: ['amiga'], needs: 7 }) }), 'mine');
   assert.equal(plain.platforms, undefined, 'no computer it names is one: none said, so every one');
@@ -378,7 +378,7 @@ test("a cover's format is what its bytes are, and a cover chosen before goes whe
 test("OpenFilm's own skills: in order, each named by the manual, printed with the command as run here, never in the library", async () => {
   const manual = readFileSync(new URL('../MANUAL.md', import.meta.url), 'utf8');
   const core = coreSkills();
-  assert.deepEqual(core.map((s) => s.uid), ['openfilm/edit', 'openfilm/media', 'openfilm/canvas', 'openfilm/replicate'], 'in the order agents are given them');
+  assert.deepEqual(core.map((s) => s.uid), ['orangefilm/edit', 'orangefilm/media', 'orangefilm/canvas', 'orangefilm/replicate'], 'in the order agents are given them');
   for (const s of core) {
     assert.ok(s.shown?.title['zh-CN'] && s.shown.summary.en, `${s.name} has a title and a summary for people`);
     assert.ok(manual.includes(`\`${s.name}\``), `the manual names ${s.name}`);
@@ -397,13 +397,13 @@ test("OpenFilm's own skills: in order, each named by the manual, printed with th
   const printed = await skillCommand(['openfilm/edit'], 'npx -y openfilm@latest', { cwd: tmpdir() });
   assert.ok(printed.ok);
   assert.ok(printed.lines[0].includes('`npx -y openfilm@latest look`') && !/npx openfilm /.test(printed.lines[0]));
-  assert.equal(findSkill('openfilm-media')?.uid, 'openfilm/media', 'as an agent is given it');
-  assert.equal(agentName(core[0]), 'openfilm-edit');
+  assert.equal(findSkill('openfilm-media')?.uid, 'orangefilm/media', 'as an agent is given it');
+  assert.equal(agentName(core[0]), 'orangefilm-edit');
   assert.ok(!listSkills().some((s) => core.some((c) => c.name === s.name)), 'in no library');
 });
 
 test("a skill's uid, owner/name: whose it is read from where it came from, never from what it says of itself", () => {
-  assert.equal(skillUid('official', 'keynote'), 'openfilm/keynote');
+  assert.equal(skillUid('official', 'keynote'), 'orangefilm/keynote');
   assert.equal(skillUid('mine', 'tdd', { from: 'link', address: 'github.com/MattPocock/skills' }), 'mattpocock/tdd');
   assert.equal(skillUid('mine', 'cut', { from: 'link', address: 'https://gitlab.com/group/sub/repo/-/tree/main/cut' }), 'gitlab-group/cut');
   assert.equal(skillUid('mine', 'look', { from: 'folder', address: '/tmp/look' }), 'local/look');
@@ -424,7 +424,7 @@ test('two skills of a name are both had, each by its uid; an agent is given the 
   await addSkills(join(root, 'from-river', 'keynote'), { mine, origin: { from: 'link', address: 'https://github.com/river/film-skills' } });
   await addSkills(join(root, 'from-ana', 'keynote'), { mine, origin: { from: 'link', address: 'https://github.com/ana/skills' } });
   const listed = listSkills({ project, mine, official });
-  assert.deepEqual(listed.map((s) => s.uid), ['project/keynote', 'ana/keynote', 'river/keynote', 'openfilm/keynote'], 'the project\'s, the person\'s, the official one');
+  assert.deepEqual(listed.map((s) => s.uid), ['project/keynote', 'ana/keynote', 'river/keynote', 'orangefilm/keynote'], 'the project\'s, the person\'s, the official one');
   assert.notEqual(listed.find((s) => s.uid === 'ana/keynote').folder, listed.find((s) => s.uid === 'river/keynote').folder, 'each in a folder of its own');
   /* the same skill again replaces it */
   write(join(root, 'from-river', 'keynote'), 'keynote', 'River, again');
@@ -433,7 +433,7 @@ test('two skills of a name are both had, each by its uid; an agent is given the 
   assert.equal(again.length, 1);
   assert.equal(again[0].description, 'River, again');
   assert.equal(findSkill('ana/keynote', { project, mine, official }).description, 'Ana');
-  assert.deepEqual(agentNames(listed).map((s) => s.as), ['project-keynote', 'ana-keynote', 'river-keynote', 'openfilm-keynote'], 'every one by whose it is, not only the second');
+  assert.deepEqual(agentNames(listed).map((s) => s.as), ['project-keynote', 'ana-keynote', 'river-keynote', 'orangefilm-keynote'], 'every one by whose it is, not only the second');
   rmSync(root, { recursive: true, force: true });
 });
 
@@ -486,3 +486,6 @@ test('a skill named with capitals is found by its name alone', () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+
+

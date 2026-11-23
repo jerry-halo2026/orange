@@ -76,10 +76,14 @@ export function installOpenfilmCommand(dir, { node = nodeBinary(), platform = pr
   mkdirSync(bin, { recursive: true });
   if (platform === 'win32') {
     writeFileSync(join(bin, 'openfilm.cmd'), commandScriptWindows(node, openfilmCli(), { ffmpeg, env }));
+    writeFileSync(join(bin, 'orangefilm.cmd'), commandScriptWindows(node, openfilmCli(), { ffmpeg, env }));
     return bin;
   }
   const file = join(bin, 'openfilm');
   writeFileSync(file, commandScript(node, openfilmCli(), { ffmpeg, env: { ...env, OPENFILM_RUN: openfilmCommand(bin, platform) } }));
   chmodSync(file, 0o755);
+  const alias = join(bin, 'orangefilm');
+  writeFileSync(alias, commandScript(node, openfilmCli(), { ffmpeg, env: { ...env, OPENFILM_RUN: openfilmCommand(bin, platform) } }));
+  chmodSync(alias, 0o755);
   return bin;
 }

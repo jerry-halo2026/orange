@@ -24,7 +24,8 @@
   ],
   "type": "module",
   "bin": {
-    "openfilm": "bin/openfilm.mjs"
+    "openfilm": "bin/openfilm.mjs",
+    "orangefilm": "bin/openfilm.mjs"
   },
   "exports": {
     "./development-isolation": "./src/development-isolation.mjs",

@@ -12,6 +12,7 @@ const USAGE = `openfilm — a film is a function of time: given t, it draws that
   openfilm render  [a-b]               the MP4, saved beside film.html
   openfilm get     [what] [--options]  media: free from OrangeFilm's library (music, sounds, transitions…), else a connected service
   openfilm canvas  [apply <steps>]     the canvas beside the edit: read it, or lay out notes, files and what to make on it
+  openfilm material search <query>    the company's cloud materials: id, name and whether it can be downloaded
   openfilm analyze <media>             analyse a clip: frames, a description, OCR, speech, a card, a vector (exit 4: component missing)
   openfilm skills                      the skills this film can be made with; \`openfilm skill <name>\` prints one
   openfilm update                      the newest OrangeFilm; Studio starts again on it
@@ -65,6 +66,10 @@ openfilm skill remove <name>
   projects folders, how much the projects' .film folders hold, npm, and the last errors in Studio's log. Paths under
   your home folder read ~; no keys, accounts or projects are in it. Exit status 1 when something needs fixing; the
   report says what.`,
+  material: `openfilm material search <query>
+
+  Searches the company's cloud materials through a running Studio and prints one line per hit:
+  videoId, name, and (not downloadable) when the supplier says it cannot be fetched.`,
   analyze: `openfilm analyze <media> [--video-id <id>] [--project <dir>] [--frames 6] [--long-edge 512] [--json]
 
 media        a video or sound to analyse (frames, a description, OCR, speech, a card, a vector)
@@ -239,6 +244,7 @@ if (RAW[0] === 'get') {
       }));
     },
     canvas: () => import('../studio/client.mjs').then((m) => m.canvasCommand(args, (line) => console.error(line))),
+    material: () => import('../studio/client.mjs').then((m) => m.materialCommand(args, { json: o.json })),
     update: () => import('../studio/client.mjs').then((m) => m.updateOpenfilm((line) => console.error(line))),
     skills: () => import('../src/skills-cli.mjs').then((m) => m.skillsCommand(RUN)),
     skill: () => import('../src/skills-cli.mjs').then((m) => m.skillCommand(args, RUN)),

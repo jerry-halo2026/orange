@@ -379,6 +379,26 @@ export async function canvasCommand(args, say) {
  * command.
  * @param {string[]} argv @param {(line: string) => void} [say] @param {{ postLibrary?: typeof post }} [options] @returns {Promise<{ code: number, lines: string[] }> }
  */
+export async function materialCommand(argv, { json = false } = {}) {
+  const [action, ...rest] = argv;
+  if (action !== 'search' || !rest.join(' ').trim()) return { code: 2, lines: ['openfilm material search <query>'] };
+  const studio = await running();
+  if (!studio) return { code: 1, lines: ['openfilm material: Studio is not running'] };
+  const query = rest.join(' ').trim();
+  const response = await fetch(`${studio.origin}/api/materials/search`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin },
+    body: JSON.stringify({ query, limit: 20 }),
+  });
+  const body = await response.json().catch(() => null);
+  if (!response.ok) return { code: 1, lines: [`openfilm material: ${body?.message ?? `HTTP ${response.status}`}`] };
+  if (json) return { code: 0, lines: [JSON.stringify(body, null, 2)] };
+  const items = Array.isArray(body?.items) ? body.items : [];
+  return { code: 0, lines: items.length
+    ? items.map((item) => `${item.videoId}\t${item.name ?? ''}${item.downloadable === false ? '\t(not downloadable)' : ''}`)
+    : [`No material matched “${query}”.`] };
+}
+
 export async function getMedia(argv, say, {postLibrary = post} = {}) {
   /** @type {Record<string, string | true | (string | true)[]>} */
   const flags = {};

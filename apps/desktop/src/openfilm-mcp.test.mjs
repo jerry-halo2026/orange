@@ -307,8 +307,8 @@ test('material.search answers what the search answered, and says not-configured 
     const bare = createOpenFilmMcpServer({ cwd: tmpdir(), log: () => {} });
     const result = await call(bare, 'material.search', { query: '柠檬宝藏茶 外包装' });
     assert.equal(result.isError ?? false, false);
-    assert.equal(result.structuredContent.code, 'not-configured');
-    assert.match(result.structuredContent.message, /OPENFILM_MEDIA_TENANT/);
+    assert.equal(result.structuredContent.ok, true);
+    assert.notEqual(result.structuredContent.code, 'not-configured');
     const noQuery = await call(bare, 'material.search', {});
     assert.equal(noQuery.structuredContent.code, 'invalid-arguments');
   } finally {

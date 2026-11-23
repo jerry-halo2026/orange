@@ -311,7 +311,7 @@ export async function searchMaterials({ query, filters = {}, limit, embed = null
   /* ①′ 客户端那条：带在身边的向量包。没有数据库、没有服务时它是唯一的语义检索 —— 排在 RPC 之前，
      因为"装完就能用"的形态里 RPC 根本不存在（`packSearch` 为 null 时才往下走）。
      包里只有 media_key 与分数：目录细节由调用方（Studio 的落地索引）补，这里绝不编 videoId。 */
-  if (typeof packSearch === 'function' && vector) {
+  if (typeof packSearch === 'function' && vector && typeof call !== 'function') {
     try {
       const packed = await packSearch(text, { limit: wanted });
       if (packed) {

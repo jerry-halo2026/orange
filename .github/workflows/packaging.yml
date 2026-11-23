@@ -16,7 +16,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: packaging-check
+  group: packaging-check-${{ github.run_id }}
   cancel-in-progress: false
 jobs:
   windows:

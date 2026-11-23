@@ -244,7 +244,7 @@ if (RAW[0] === 'get') {
       }));
     },
     canvas: () => import('../studio/client.mjs').then((m) => m.canvasCommand(args, (line) => console.error(line))),
-    material: () => import('../studio/client.mjs').then((m) => m.materialCommand(args, { json: o.json })),
+    material: () => import('../studio/client.mjs').then((m) => m.materialCommand(args, { json: o.json, project: o.project ?? process.cwd() })),
     update: () => import('../studio/client.mjs').then((m) => m.updateOpenfilm((line) => console.error(line))),
     skills: () => import('../src/skills-cli.mjs').then((m) => m.skillsCommand(RUN)),
     skill: () => import('../src/skills-cli.mjs').then((m) => m.skillCommand(args, RUN)),

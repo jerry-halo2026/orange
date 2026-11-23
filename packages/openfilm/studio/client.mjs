@@ -379,11 +379,29 @@ export async function canvasCommand(args, say) {
  * command.
  * @param {string[]} argv @param {(line: string) => void} [say] @param {{ postLibrary?: typeof post }} [options] @returns {Promise<{ code: number, lines: string[] }> }
  */
-export async function materialCommand(argv, { json = false } = {}) {
+export async function materialCommand(argv, { json = false, project = process.cwd() } = {}) {
   const [action, ...rest] = argv;
-  if (action !== 'search' || !rest.join(' ').trim()) return { code: 2, lines: ['openfilm material search <query>'] };
+  if (action !== 'search' && action !== 'take') return { code: 2, lines: ['openfilm material search <query> | openfilm material take <videoId>'] };
+  if (action === 'search' && !rest.join(' ').trim()) return { code: 2, lines: ['openfilm material search <query>'] };
+  if (action === 'take' && !rest[0]?.trim()) return { code: 2, lines: ['openfilm material take <videoId>'] };
   const studio = await running();
   if (!studio) return { code: 1, lines: ['openfilm material: Studio is not running'] };
+  const headers = { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin };
+  if (action === 'take') {
+    const videoId = rest[0].trim();
+    const raw = await fetch(`${studio.origin}/api/materials/raw`, { method: 'POST', headers, body: JSON.stringify({ videoId }) }).then((r) => r.json()).catch(() => null);
+    if (!raw?.path) return { code: 1, lines: [`openfilm material: ${raw?.message ?? 'the raw file could not be fetched'}`] };
+    const projects = await fetch(`${studio.origin}/api/projects`, { headers }).then((r) => r.json()).catch(() => null);
+    const root = resolve(project);
+    const found = (projects?.projects ?? []).find((entry) => resolve(entry.path).toLowerCase() === root.toLowerCase());
+    if (!found?.id) return { code: 1, lines: [`openfilm material: ${root} is not a project Studio knows`] };
+    const brought = await fetch(`${studio.origin}/api/projects/${encodeURIComponent(found.id)}/files/bring`, {
+      method: 'POST', headers, body: JSON.stringify({ paths: [raw.path], into: 'assets/materials', mode: 'copy' }),
+    }).then((r) => r.json()).catch(() => null);
+    const landed = Array.isArray(brought?.landed) ? brought.landed[0] : brought?.landed;
+    if (typeof landed !== 'string') return { code: 1, lines: ['openfilm material: the file was fetched but not brought into the project'] };
+    return { code: 0, lines: [json ? JSON.stringify({ ok: true, assetPath: landed }, null, 2) : landed] };
+  }
   const query = rest.join(' ').trim();
   const response = await fetch(`${studio.origin}/api/materials/search`, {
     method: 'POST',

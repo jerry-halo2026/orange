@@ -27,12 +27,14 @@ export const PACKED_MATERIAL_MODULES = Object.freeze([
   'packages/orangefilm/src/material-tools.mjs',
   'packages/orangefilm/src/material-index-build.mjs',
   'packages/orangefilm/src/material-index.mjs',
+  'packages/orangefilm/src/material-index-bootstrap.mjs',
   'packages/orangefilm/src/material-search.mjs',
   'packages/orangefilm/src/material-pack.mjs',
   'packages/orangefilm/src/locations.mjs',
   'packages/orangefilm/src/development-isolation.mjs',
   /* the packaged app starts this detached to build the landed index; without it `/api/materials/index` is 404. */
   'packages/orangefilm/scripts/material-index-build.mjs',
+  'packages/orangefilm/scripts/material-index-bootstrap.mjs',
 ]);
 
 /** The modules, by their path in the repository (which is also their path under `resources/openfilm`). */

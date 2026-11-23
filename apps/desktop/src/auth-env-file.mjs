@@ -27,7 +27,13 @@ let loaded = null;
 async function environmentModule(resourcesDir) {
   if (loaded) return loaded;
   const candidates = [];
-  if (resourcesDir) candidates.push(new URL(`file://${join(resourcesDir, 'openfilm', 'packages', 'openfilm', 'src', 'auth-environment.mjs')}`).href);
+  if (resourcesDir) {
+    for (const root of ['orangefilm', 'openfilm']) {
+      for (const pkg of ['orangefilm', 'openfilm']) {
+        candidates.push(new URL(`file://${join(resourcesDir, root, 'packages', pkg, 'src', 'auth-environment.mjs')}`).href);
+      }
+    }
+  }
   candidates.push(new URL('../../../packages/orangefilm/src/auth-environment.mjs', import.meta.url).href);
   /** @type {string[]} */
   const tried = [];

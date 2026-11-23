@@ -166,7 +166,7 @@ const MATERIAL_INDEX_DIR = String(process.env.OPENFILM_MATERIAL_INDEX_DIR ?? '')
  * 与 Studio 的索引路由同一个目录。
  */
 function startMaterialIndexBootstrap() {
-  const script = join(MATERIAL_CHECKOUT, 'packages', 'openfilm', 'scripts', 'material-index-bootstrap.mjs');
+  const script = join(MATERIAL_CHECKOUT, 'packages', 'orangefilm', 'scripts', 'material-index-bootstrap.mjs');
   if (!existsSync(script)) return;
   const home = IDENTITY.studioHome ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm');
   try {

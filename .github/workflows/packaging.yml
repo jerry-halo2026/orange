@@ -1,4 +1,4 @@
-name: packaging-check
+﻿name: packaging-check
 # Manual packaging validation only: build the Windows NSIS and macOS arm64 app on native GitHub runners,
 # in a clean checkout, and upload whatever the build made (or the logs that say why it did not).
 # Nothing is published, signed or uploaded to a release. Temporary public visibility exists only to use
@@ -61,7 +61,7 @@ jobs:
 
   macos:
     if: ${{ github.event_name == 'push' || inputs.target == 'both' || inputs.target == 'mac-arm64' }}
-    runs-on: macos-15
+    runs-on: macos-14
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4

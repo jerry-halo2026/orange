@@ -4,6 +4,9 @@
 
 import { setPriority } from 'node:os';
 import { parseArgs } from 'node:util';
+import { bridgeOrangeEnv } from '../src/orange-env.mjs';
+
+bridgeOrangeEnv();
 
 const USAGE = `openfilm — a film is a function of time: given t, it draws that moment
 

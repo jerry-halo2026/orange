@@ -51,6 +51,10 @@ import { startMaterialService, startStudioBesideMaterials, packagedMaterialRoot,
 import { isDevToolsShortcut, toggleDevTools } from './dev-tools.mjs';
 import { registerOrangeIpc } from './orange-ipc.mjs';
 import { brandWindowTitle } from './brand.mjs';
+import { bridgeOrangeEnv } from 'openfilm/orange-env';
+
+/* ORANGE_* wins over the legacy OPENFILM_* for every setting read below. */
+bridgeOrangeEnv();
 
 const isolation = prepareDesktopIsolation(app,process.env);
 /* macOS 未签名构建：Chromium 自己的 cookie 加密也访问钥匙串（"Chromium Safe Storage"），启动会弹窗并卡住主进程。

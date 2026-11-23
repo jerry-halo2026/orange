@@ -10,12 +10,13 @@ import React from 'react';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
-const KEY = 'openfilm.theme';
+const KEY = 'orangefilm.theme';
+const LEGACY_KEY = 'openfilm.theme';
 const dark = () => window.matchMedia('(prefers-color-scheme: dark)');
 
 function saved(): ThemeMode {
   try {
-    const value = localStorage.getItem(KEY);
+    const value = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
     return value === 'light' || value === 'system' ? value : 'dark';
   } catch { return 'dark'; }
 }

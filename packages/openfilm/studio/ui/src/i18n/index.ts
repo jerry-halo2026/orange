@@ -35,7 +35,8 @@ const EN = LANGUAGES[0].words;
 export type Language = (typeof LANGUAGES)[number]['code'];
 export type LanguageChoice = Language | 'system';
 
-const KEY = 'openfilm.language';
+const KEY = 'orangefilm.language';
+const LEGACY_KEY = 'openfilm.language';
 
 function node(table: unknown, path: string): unknown {
   let cur = table;
@@ -80,7 +81,7 @@ export function languageFor(asked: readonly string[]): Language {
 
 function savedChoice(): LanguageChoice {
   try {
-    const value = localStorage.getItem(KEY);
+    const value = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
     return LANGUAGES.some((l) => l.code === value) ? value as Language : 'system';
   } catch { return 'system'; }
 }
@@ -120,7 +121,7 @@ if (typeof window !== 'undefined') {
 
 export function setLanguageChoice(choice: LanguageChoice) {
   try {
-    if (choice === 'system') localStorage.removeItem(KEY);
+    if (choice === 'system') { localStorage.removeItem(KEY); localStorage.removeItem(LEGACY_KEY); }
     else localStorage.setItem(KEY, choice);
   } catch { /* not kept past this page */ }
   apply();

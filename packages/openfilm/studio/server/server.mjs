@@ -664,7 +664,9 @@ const savedAccess = createSavedAccess({
     if (parts[0] === 'project-templates' && parts.length === 3 && parts[2] === 'start' && req.method === 'POST') {
       const slug = decodeURIComponent(parts[1]);
       if (!/^[\w.-]{1,80}$/.test(slug)) throw new HttpError(422, 'A project template name.', { code: 'invalid-query' });
-      const folder = fileURLToPath(new URL(`../../library/project-templates/${slug}/`, import.meta.url));
+      const bundled = fileURLToPath(new URL(`../../library/project-templates/${slug}/`, import.meta.url));
+      /* the library is unpacked beside app.asar (a plain file copy), so the archive path would be empty. */
+      const folder = bundled.replace(/([\\/])app\.asar([\\/])/, '$1app.asar.unpacked$2');
       if (!existsSync(folder)) throw new HttpError(404, 'No such project template.', { code: 'template-missing' });
       const project = await createProject(slug);
       cpSync(folder, project.path, { recursive: true });

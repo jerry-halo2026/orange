@@ -29,7 +29,7 @@
  */
 import { createHash, randomBytes } from 'node:crypto';
 import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
 import { HttpError } from './http.mjs';
 
 export const SAVED_OWNERS_FILE = 'orange-saved-owners.json';
@@ -63,18 +63,68 @@ export function createSavedAccess({ home = null, desktopAuth = null, file = null
   const scopeOf = () => (typeof desktopAuth?.windowScope === 'function' ? desktopAuth.windowScope() : null);
 
   /** The claims recorded for this library; [] when the file is simply not there. */
-  function owners() {
-    if (!path) return [];
-    if (!existsSync(path)) return [];
+  function records() {
+    if (!path) return { list: [], invalid: false };
+    if (!existsSync(path)) return { list: [], invalid: false };
     const info = lstatSync(path);
     if (!info.isFile() || info.isSymbolicLink() || info.nlink !== 1 || info.size > 1024 * 1024) foreign();
     /** @type {any} */
     let raw;
     try { raw = JSON.parse(readFileSync(path, 'utf8')); } catch { foreign(); }
     if (!raw || raw.version !== 1 || Object.keys(raw).sort().join() !== 'saved,version' || !Array.isArray(raw.saved)) foreign();
-    return raw.saved.filter((/** @type {any} */ item) => item
+    const valid = raw.saved.filter((/** @type {any} */ item) => item
       && Object.keys(item).sort().join() === 'claimedAt,environmentId,subjectId,windowScope'
       && text(item.environmentId) && text(item.subjectId) && text(item.windowScope) && text(item.claimedAt));
+    return { list: valid, invalid: valid.length !== raw.saved.length };
+  }
+
+  function owners() {
+    return records().list;
+  }
+
+  /** A stable, non-secret reference for one owner record. */
+  function refOf(/** @type {any} */ record) {
+    return createHash('sha256').update(`${record.environmentId}\0${record.subjectId}`).digest('hex').slice(0, 8);
+  }
+
+  /** What a person can be shown about this library's ownership, without any subjectId. */
+  function ownership() {
+    const active = session();
+    if (!active) return { mine: false, holds: false, refs: [] };
+    const { list, invalid } = records();
+    const scope = scopeOf();
+    return {
+      mine: !list.length || list.some((record) => matches(record, active, scope)),
+      holds: !isEmpty(),
+      refs: list.map((record) => ({ ref: refOf(record), claimedAt: record.claimedAt, current: matches(record, active, scope) })),
+      ...(invalid ? { invalid: true } : {}),
+    };
+  }
+
+  /**
+   * Add this session as an owner without removing anyone: what the explicit claim does when the
+   * library already belongs to another account. `supersedes` must be one of the refs ownership()
+   * showed, so taking over is never a blind write.
+   */
+  function adopt({ supersedes } = /** @type {{supersedes?: unknown}} */ ({})) {
+    const active = session();
+    if (!active) unauthenticated();
+    if (!path) unowned();
+    const { list, invalid } = records();
+    if (invalid) throw new HttpError(409, 'This library ownership file has records this version cannot read.', { code: 'saved-owners-unreadable' });
+    if (typeof supersedes !== 'string' || !list.some((record) => refOf(record) === supersedes)) {
+      throw new HttpError(400, 'Claiming another account’s library needs the owner reference it showed.', { code: 'saved-claim-owner-mismatch' });
+    }
+    const scope = scopeOf() ?? createHash('sha256').update(`${active.environmentId}\0${active.subjectId}`).digest('hex');
+    const record = { environmentId: active.environmentId, subjectId: active.subjectId, windowScope: scope, claimedAt: new Date().toISOString() };
+    const next = list.some((item) => item.environmentId === record.environmentId && item.subjectId === record.subjectId)
+      ? list
+      : [...list, record];
+    mkdirSync(/** @type {string} */ (dirname(path)), { recursive: true });
+    const temp = `${path}.${randomBytes(6).toString('hex')}.tmp`;
+    writeFileSync(temp, JSON.stringify({ version: 1, saved: next }) + '\n', { flag: 'wx', mode: 0o600 });
+    renameSync(temp, path);
+    return { added: true };
   }
 
   /** Both keys this library accepts for one session. */
@@ -129,7 +179,7 @@ export function createSavedAccess({ home = null, desktopAuth = null, file = null
     const list = owners();
     const record = { environmentId: active.environmentId, subjectId: active.subjectId, windowScope: scope, claimedAt: new Date().toISOString() };
     const next = [...list.filter((/** @type {any} */ item) => !(item.environmentId === record.environmentId && item.subjectId === record.subjectId)), record];
-    mkdirSync(/** @type {string} */ (home), { recursive: true });
+    mkdirSync(/** @type {string} */ (dirname(path)), { recursive: true });
     const temp = `${path}.${randomBytes(6).toString('hex')}.tmp`;
     try {
       writeFileSync(temp, JSON.stringify({ version: 1, saved: next }) + '\n', { flag: 'wx', mode: 0o600 });
@@ -163,6 +213,8 @@ export function createSavedAccess({ home = null, desktopAuth = null, file = null
     path,
     session,
     owners,
+    ownership,
+    adopt,
     isEmpty,
     mine,
     claim,

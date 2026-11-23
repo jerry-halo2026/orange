@@ -288,7 +288,7 @@ export type DownloadLanding = {
   readonly status: 'taken' | 'refused' | 'unavailable' | 'failed';
   /** The `assets/…` path the take answered with, when it named one; `null` when it did not. */
   readonly path: string | null;
-  readonly reason?: ProjectGateReason | 'no-landing' | 'take-failed';
+  readonly reason?: ProjectGateReason | 'no-landing' | 'take-failed' | 'claim';
 };
 
 /** The `assets/…` place a take answered with (the native `saved/take` route answers `{path}` for a file). */
@@ -312,6 +312,8 @@ export async function landDownloadInProject(landed: string | null | undefined, o
   readonly gate?: ProjectGate;
   /** The native take: one Saved path in, its `assets/…` place (or anything) out. */
   readonly take?: ((path: string) => unknown) | null;
+  /** Add this account to a library another account claimed; resolves false when the person says no. */
+  readonly claim?: (() => Promise<boolean>) | null;
   /** The project listing read again, so the merged list shows the new file without a reload. */
   readonly relist?: (() => void | Promise<void>) | null;
 }): Promise<DownloadLanding> {
@@ -325,9 +327,15 @@ export async function landDownloadInProject(landed: string | null | undefined, o
   let answer: unknown;
   try {
     answer = await take(landed);
-  } catch {
-    /* The download landed; only this project's copy failed, and the person can still press "加到当前工程" by hand. */
-    return {status: 'failed', path: null, reason: 'take-failed'};
+  } catch (error) {
+    const code = (error as {code?: unknown} | null)?.code;
+    if ((code === 'saved-access-denied' || code === 'saved-claim-takeover-required') && options.claim) {
+      if (!await options.claim()) return {status: 'refused', path: null, reason: 'claim'};
+      try { answer = await take(landed); }
+      catch { return {status: 'failed', path: null, reason: 'take-failed'}; }
+    } else {
+      return {status: 'failed', path: null, reason: code === 'saved-access-denied' ? 'claim' : 'take-failed'};
+    }
   }
   if (options.relist) {
     try {

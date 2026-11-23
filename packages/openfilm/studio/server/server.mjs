@@ -521,15 +521,23 @@ const savedAccess = createSavedAccess({
       const sub = parts.slice(1).join('/');
       /* The one route that runs before the gate: an unclaimed library with media in it is claimed
          here, deliberately, with an explicit confirmation — not by merely reading it. */
+      if (sub === 'ownership' && req.method === 'GET') {
+        return json(res, 200, savedAccess.ownership());
+      }
       if (sub === 'claim') {
         if (req.method !== 'POST') throw new HttpError(405, 'The claim is POST only.', { code: 'method-not-allowed' });
-        savedAccess.assertMine();
-        const body = /** @type {{ confirm?: unknown }} */ (await readJson(req, 4096) ?? {});
+        const body = /** @type {{ confirm?: unknown, owner?: unknown }} */ (await readJson(req, 4096) ?? {});
+        if (!savedAccess.mine()) {
+          if (body.confirm !== 'add-this-account') {
+            throw new HttpError(409, 'This library belongs to another account; confirm adding this account.', { code: 'saved-claim-takeover-required' });
+          }
+          return json(res, 200, savedAccess.adopt({ supersedes: body.owner }));
+        }
         if (!savedAccess.isEmpty() && body.confirm !== 'claim-existing-library') {
           throw new HttpError(400, 'Claiming a library that already holds media needs an explicit confirmation.', { code: 'saved-claim-confirmation-required' });
         }
         const record = savedAccess.claim();
-        return json(res, 200, { claimed: true, environmentId: record.environmentId, subjectId: record.subjectId });
+        return json(res, 200, { claimed: true, environmentId: record.environmentId });
       }
       // (1) the segment's first line of defence: a session alone does not own a library
       savedAccess.assertOwned();
@@ -1235,10 +1243,11 @@ const savedAccess = createSavedAccess({
       return json(res, 200, { paths });
     }
     if (rest === 'saved/take' && req.method === 'POST') {
-      // (3) taking a thing out of the library reads the owner's files
-      savedAccess.assertOwned();
       const { path: from } = /** @type {{ path?: unknown }} */ (await readJson(req) ?? {});
-      const takeFence = savedAccess.fence();
+      /* built-in material is read from the packaged library, not the person's Saved: ownership does not apply. */
+      const builtIn = typeof from === 'string' && /^openfilm[\\/]/.test(from);
+      if (!builtIn) savedAccess.assertOwned();
+      const takeFence = builtIn ? () => {} : savedAccess.fence();
       const taken = await savedCall(() => takeSaved(project.path, from));
       takeFence();
       return json(res, 200, taken);

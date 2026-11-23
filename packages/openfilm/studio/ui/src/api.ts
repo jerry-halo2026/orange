@@ -269,6 +269,10 @@ export const api = {
   /** the person's Saved library as the media pane lists a project's media (studio/server/saved.mjs `listLibrary`):
       files and folders by their `saved/` paths. Read-only: the material library shows it, it does not own it. */
   savedFiles: (signal?: AbortSignal) => call<SavedListing>('saved/files', { signal }),
+  /** who owns the Saved library, without exposing a subject id */
+  savedOwnership: () => call<{ mine: boolean; holds: boolean; refs: Array<{ ref: string; claimedAt: string; current: boolean }> }>('saved/ownership'),
+  /** add this account to a library that already belongs to another, after an explicit confirmation */
+  claimSaved: (owner: string) => call<{ added: boolean }>('saved/claim', { method: 'POST', json: { confirm: 'add-this-account', owner } }),
   /** a page of the project as text, with its rev (studio/server/page-text.mjs) */
   readPage: (id: string, path: string) => call<{ text: string; rev: string }>(`${p(id)}/page?path=${encodeURIComponent(path)}`),
   /** a page written (text null: taken away) when it is still the page of rev `expect` (null: none there yet); its new

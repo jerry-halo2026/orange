@@ -104,6 +104,14 @@ export function MaterialCenter({draft,draftReady,draftReason,onDraftOperation,on
     const landing=await landDownloadInProject(typeof result?.landed==='string'?result.landed:null,{
       projectId:selectedProject||null,
       take:selectedProject?async(path:string)=>api.takeSaved(selectedProject,path):null,
+      claim:selectedProject?async()=>{
+        const ownership=await api.savedOwnership();
+        const ref=ownership.refs.find((record)=>!record.current)?.ref;
+        if(!ref)return false;
+        if(!window.confirm('这个素材库属于另一个账号。把当前账号加入这个素材库后重试？'))return false;
+        await api.claimSaved(ref);
+        return true;
+      }:null,
     });
     /* A subtitle is a 字幕轨's input, not material: it is in the track now, and it is not a card in any material list. */
     if(isSubtitleName(card.title))return {notice:t('materials.subtitleAdded')};

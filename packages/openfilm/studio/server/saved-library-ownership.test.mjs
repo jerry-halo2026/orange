@@ -153,7 +153,16 @@ test('claiming a library that already holds media needs the explicit confirmatio
         assert.equal(listed.status, 200, 'after the claim the library opens');
         site.state.actor = B;
         const foreign = await call(site, '/api/saved/claim', 'POST', { confirm: 'claim-existing-library' });
-        assert.equal(foreign.status, 403, 'one account cannot claim another’s library, confirmation or not');
-        assert.equal(foreign.value.code, 'saved-access-denied');
+        assert.equal(foreign.status, 409, 'another account needs the explicit takeover confirmation');
+        assert.equal(foreign.value.code, 'saved-claim-takeover-required');
+        const ownership = await call(site, '/api/saved/ownership');
+        assert.equal(ownership.status, 200);
+        assert.equal(ownership.value.mine, false);
+        const ref = ownership.value.refs[0].ref;
+        const adopted = await call(site, '/api/saved/claim', 'POST', { confirm: 'add-this-account', owner: ref });
+        assert.equal(adopted.status, 200);
+        assert.equal(adopted.value.added, true);
+        const after = JSON.parse(await readFile(site.ownersFile, 'utf8'));
+        assert.equal(after.saved.length, 2, 'the old owner is kept and the new one is added');
     } finally { await site.server.close(); }
 });

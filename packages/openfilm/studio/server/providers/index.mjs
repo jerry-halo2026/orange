@@ -74,7 +74,7 @@ export async function freshProviders(/** @type {{ force?: boolean }} */ options 
  * @param {string} id @param {Verb} verb @param {ProviderSettings} settings @param {boolean} strict
  */
 async function named(id, verb, settings, strict) {
-  const provider = OWN.find((p) => p.id === id);
+  const provider = OWN.find((p) => p.id === (id === 'orangefilm' ? 'openfilm' : id));
   const fail = (/** @type {string} */ why) => { if (strict) throw new Error(why); return null; };
   if (!provider) return fail(`There is no provider "${id}": use ${OWN.map((p) => p.id).join(', ')}.`);
   if (provider.ready && !provider.verbs.includes(verb)) {
@@ -309,13 +309,13 @@ export async function providersRoute(req, res, parts, { openBrowser, isolated = 
     return json(res, 200, await state());
   }
   if (parts.length === 2 && parts[1] === 'billing' && req.method === 'POST') {
-    const provider = OWN.find((p) => p.id === parts[0]);
+    const provider = OWN.find((p) => p.id === (parts[0] === 'orangefilm' ? 'openfilm' : parts[0]));
     if (!provider) throw new HttpError(404, 'no such provider');
     openBrowser(provider.billingUrl);
     return json(res, 200, {});
   }
   if (parts[1] === 'sign-in' && req.method === 'POST' && parts.length <= 3) {
-    const provider = OWN.find((p) => p.id === parts[0]);
+    const provider = OWN.find((p) => p.id === (parts[0] === 'orangefilm' ? 'openfilm' : parts[0]));
     if (!provider?.signIn) throw new HttpError(404, 'no such provider to sign in to');
     if (parts[2] === 'cancel') cancelSignIn();
     else if (parts.length === 2) {

@@ -3,73 +3,24 @@
  "groups": {
   "template": [
    {
-    "id": "vlog",
+    "id": "talking",
     "name": {
-     "en": "Vlog",
-     "zh-CN": "Vlog",
-     "ja": "Vlog",
-     "ko": "브이로그",
-     "es": "Vlog"
+     "en": "Talking head",
+     "zh-CN": "口播"
     }
    },
    {
-    "id": "intro",
+    "id": "koc",
     "name": {
-     "en": "Openers",
-     "zh-CN": "片头",
-     "ja": "オープニング",
-     "ko": "오프닝",
-     "es": "Aperturas"
+     "en": "KOC",
+     "zh-CN": "KOC"
     }
    },
    {
-    "id": "beat",
+    "id": "live",
     "name": {
-     "en": "On the beat",
-     "zh-CN": "卡点",
-     "ja": "ビート合わせ",
-     "ko": "비트",
-     "es": "Al ritmo"
-    }
-   },
-   {
-    "id": "promo",
-    "name": {
-     "en": "Shop",
-     "zh-CN": "电商",
-     "ja": "ショップ",
-     "ko": "쇼핑",
-     "es": "Tienda"
-    }
-   },
-   {
-    "id": "memory",
-    "name": {
-     "en": "Memories",
-     "zh-CN": "回忆",
-     "ja": "思い出",
-     "ko": "추억",
-     "es": "Recuerdos"
-    }
-   },
-   {
-    "id": "holiday",
-    "name": {
-     "en": "Holidays",
-     "zh-CN": "节日",
-     "ja": "イベント",
-     "ko": "기념일",
-     "es": "Fiestas"
-    }
-   },
-   {
-    "id": "knowledge",
-    "name": {
-     "en": "Explainers",
-     "zh-CN": "知识",
-     "ja": "解説",
-     "ko": "지식",
-     "es": "Explicativos"
+     "en": "Live",
+     "zh-CN": "直播"
     }
    }
   ]
@@ -409,6 +360,40 @@
     "tense",
     "documentary",
     "focused"
+   ]
+  },
+  {
+   "id": "project-templates/citrus-pu",
+   "cat": "template",
+   "group": "talking",
+   "kind": "project",
+   "folder": "project-templates/citrus-pu",
+   "name": {
+    "en": "Ganpu tea",
+    "zh-CN": "柑普茶"
+   },
+   "durationMs": 0,
+   "slots": 0,
+   "about": "完整工程模板，可播放、可编辑",
+   "tags": [
+    "口播"
+   ]
+  },
+  {
+   "id": "project-templates/youqi-oolong",
+   "cat": "template",
+   "group": "talking",
+   "kind": "project",
+   "folder": "project-templates/youqi-oolong",
+   "name": {
+    "en": "Youqi oolong tea",
+    "zh-CN": "油弃乌龙茶"
+   },
+   "durationMs": 0,
+   "slots": 0,
+   "about": "完整工程模板，可播放、可编辑",
+   "tags": [
+    "口播"
    ]
   }
  ]

@@ -52,6 +52,8 @@ const NAMED = /^(\d{8})-(.+?)-([^-/]+?)\s*\((\d+)\)$/;
  * between the date and the last group segment.
  * @param {string} name
  */
+import { productOf } from './material-product.mjs';
+
 export function parseMaterialName(name) {
   const text = typeof name === 'string' ? name.trim() : '';
   const found = NAMED.exec(text);
@@ -264,12 +266,21 @@ export function entryMetaOf(row) {
  * @param {Date} [now]
  * @param {IndexReach | null} [reach]
  */
+/** 这一期是哪天：优先 createTime（YYYY-MM-DD…），其次名字开头的 8 位日期；都没有就留空。 */
+function materialDateOf(createTime, name) {
+  const timestamp = typeof createTime === 'string' ? /^(\d{4})-(\d{2})-(\d{2})/.exec(createTime) : null;
+  if (timestamp) return `${timestamp[1]}${timestamp[2]}${timestamp[3]}`;
+  const dated = typeof name === 'string' ? /^(\d{8})/.exec(name) : null;
+  return dated ? dated[1] : '';
+}
+
 export function buildMaterialIndex(rows, now = new Date(), reach = null) {
   const batches = new Map();
   const derivedBatches = new Map();
   const unfiled = new Map();
   const unclassified = [];
   const seen = new Set();
+  const productGroups = new Map();
   let unassigned = 0;
 
   for (const row of Array.isArray(rows) ? rows : []) {
@@ -279,6 +290,27 @@ export function buildMaterialIndex(rows, now = new Date(), reach = null) {
     seen.add(videoId);
     const md5 = md5Of(row);
     const meta = entryMetaOf(row);
+    const productName = meta.twoLevel || productOf(name) || '';
+    if (productName) {
+      const oneLevel = meta.oneLevel || '';
+      const key = `${oneLevel}|${productName}`;
+      let group = productGroups.get(key);
+      if (!group) { group = { id: `product:${key}`, oneLevel, name: productName, count: 0, videoIds: [], entries: [], dates: new Map(), labelGroups: new Map() }; productGroups.set(key, group); }
+      group.count += 1;
+      group.videoIds.push(videoId);
+      group.entries.push({ videoId, videoType: Number(row?.videoType) || 0 });
+      const date = materialDateOf(typeof row?.createTime === 'string' ? row.createTime : '', name);
+      const dateGroup = group.dates.get(date) ?? { date, count: 0 };
+      dateGroup.count += 1;
+      group.dates.set(date, dateGroup);
+      for (const label of meta.labels ?? []) {
+        let labelGroup = group.labelGroups.get(label);
+        if (!labelGroup) { labelGroup = { name: label, count: 0, videoIds: [], entries: [] }; group.labelGroups.set(label, labelGroup); }
+        labelGroup.count += 1;
+        labelGroup.videoIds.push(videoId);
+        labelGroup.entries.push({ videoId, videoType: Number(row?.videoType) || 0 });
+      }
+    }
     const parsed = parseMaterialName(name);
     if (!parsed) {
       unclassified.push({ videoId, name, md5, ...meta });
@@ -343,6 +375,17 @@ export function buildMaterialIndex(rows, now = new Date(), reach = null) {
       })),
     })),
     unclassified,
+    /* 产品层：跨日期按「日期 + 供应商二级分类（产品）」聚合，子分组用视频标签（规格/配料/包装…）。 */
+    products: [...productGroups.values()].sort(byCountThenName).slice(0, 2000).map((group) => ({
+      id: group.id,
+      oneLevel: group.oneLevel,
+      name: group.name,
+      count: group.count,
+      videoIds: group.videoIds,
+      entries: group.entries,
+      dates: [...group.dates.values()].sort((a, b) => b.date.localeCompare(a.date)),
+      labels: [...group.labelGroups.values()].sort(byCountThenName).map((label) => ({ name: label.name, count: label.count, videoIds: label.videoIds, entries: label.entries })),
+    })),
     /* The second layer: what the names still said, with `count` as the sum of the three buckets (see `derivedTotals`). */
     derived: {
       count: unclassified.length,

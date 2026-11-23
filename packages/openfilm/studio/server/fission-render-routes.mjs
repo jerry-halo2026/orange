@@ -19,8 +19,19 @@
  *   POST /api/fission-render/start                   { project, planIds?, concurrency? }
  *   GET  /api/fission-render/status?project=<id>&batchId=<id>
  *   POST /api/fission-render/retry                   { project, batchId }
+ *   POST /api/fission-render/recipe                  { project, recipe, voices?, run?, batchId? }
+ *
+ * `recipe` 是画布混剪那条路（`fission-recipe.mjs` → `fission-runner.mjs`）：默认 dry-run，只摆目录、算 job、
+ * 把逐项问题回给面板；`run: true` 才真的跑一次引擎。渲染失败也是一种结果（`ok: false` + 结构化摘要），
+ * 不当成 500 抛出去 —— 面板要能显示"哪一条、为什么"。
  */
+import { join, isAbsolute } from 'node:path';
+import { existsSync, readdirSync, statSync, mkdirSync, copyFileSync } from 'node:fs';
+
 import { HttpError, json, readJson } from './http.mjs';
+import { normalizeRecipe, prepareRecipeRun } from './fission-recipe.mjs';
+import { transcribeVoice } from './voice-transcribe.mjs';
+import { freshAttempt, runFissionJob } from './fission-runner.mjs';
 
 /** @param {unknown} value */
 const isId = (value) => typeof value === 'string' && /^[a-z0-9][a-z0-9._-]{0,63}$/i.test(value);
@@ -38,6 +49,8 @@ const isId = (value) => typeof value === 'string' && /^[a-z0-9][a-z0-9._-]{0,63}
  *   readBatch: (project: string, batchId: string) => any,
  *   listBatches: (project: string) => any[],
  *   progress: (batch: any) => string,
+ *   runJob?: (options: any) => Promise<any>,
+ *   newAttempt?: (label?: string) => string,
  *   auth?: any,
  *   dataDir?: string,
  * }} deps
@@ -47,6 +60,9 @@ export function createRenderBatchRoutes(deps) {
     projectById, plansOf, readPlanFile, resolveEnginePaths,
     startBatch, retryBatch, readBatch, listBatches, progress, auth, dataDir = '',
     checkPlans, expandPlanset,
+    /* 真跑引擎的那一步：默认就是 `fission-runner.mjs`；测试注入假实现，绝不碰 dotnet。 */
+    runJob = runFissionJob,
+    newAttempt = freshAttempt,
   } = deps;
 
   const owner = () => {
@@ -117,7 +133,7 @@ export function createRenderBatchRoutes(deps) {
         const id = String(/** @type {any} */ (body).project ?? '');
         if (!isId(id)) throw new HttpError(400, 'A project id is required.', { code: 'project-required' });
         const project = await root(id);
-        const engine = resolveEnginePaths({ dataDir: dataDir || project, project });
+        const engine = resolveEnginePaths({ dataDir: dataDir || '', project });
         if (!engine.ok) {
           json(res, 503, { ok: false, code: 'engine-paths', message: `渲染器还差配置：${engine.problems.slice(0, 2).join('；')}`, problems: engine.problems });
           return true;
@@ -140,7 +156,7 @@ export function createRenderBatchRoutes(deps) {
         const batchId = String(/** @type {any} */ (body)?.batchId ?? '');
         if (!isId(id) || !isId(batchId)) throw new HttpError(400, 'A batch id is required.', { code: 'batch-required' });
         const project = await root(id);
-        const engine = resolveEnginePaths({ dataDir: dataDir || project, project });
+        const engine = resolveEnginePaths({ dataDir: dataDir || '', project });
         if (!engine.ok) throw new HttpError(503, `渲染器还差配置：${engine.problems.slice(0, 2).join('；')}`, { code: 'engine-paths' });
         const plans = plansOf(project).map((entry) => readPlanFile(project, entry.id)).filter(Boolean);
         const retried = retryBatch({
@@ -158,6 +174,172 @@ export function createRenderBatchRoutes(deps) {
         const project = await root(id);
         const report = checkPlans(project);
         json(res, 200, { project: id, ...report });
+        return true;
+      }
+
+      /* 素材目录扫描：一级子目录=场景组，给面板显示组名与视频/图片数（不改任何文件）。 */
+    if (parts.length === 2 && parts[1] === 'scan-folder' && req.method === 'POST') {
+      owner();
+      const body = /** @type {{ path?: unknown }} */ (await readJson(req) ?? {});
+      const at = typeof body.path === 'string' ? body.path.trim() : '';
+      if (!at || !isAbsolute(at) || !existsSync(at) || !statSync(at).isDirectory()) {
+        throw new HttpError(422, 'A folder path is required.', { code: 'invalid-query' });
+      }
+      const video = /\.(mp4|mov|m4v|mkv|avi|webm|flv|wmv)$/i;
+      const image = /\.(jpe?g|png|webp|gif|bmp)$/i;
+      const groups = [];
+      let rootFiles = 0;
+      for (const entry of readdirSync(at, { withFileTypes: true })) {
+        if (entry.name.startsWith('.')) continue;
+        const path = join(at, entry.name);
+        if (entry.isDirectory()) {
+          let videos = 0; let images = 0;
+          for (const file of readdirSync(path, { withFileTypes: true })) {
+            if (!file.isFile()) continue;
+            if (video.test(file.name)) videos += 1;
+            else if (image.test(file.name)) images += 1;
+          }
+          groups.push({ name: entry.name, videos, images });
+        } else if (entry.isFile() && (video.test(entry.name) || image.test(entry.name))) rootFiles += 1;
+      }
+      groups.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN', { numeric: true }));
+      return json(res, 200, { ok: true, path: at, groups, rootFiles });
+    }
+
+    if (parts.length === 2 && parts[1] === 'recipe' && req.method === 'POST') {
+        const body = await readJson(req, 256 * 1024);
+        if (!body || typeof body !== 'object' || Array.isArray(body)) throw new HttpError(400, 'Invalid request.');
+        const payload = /** @type {any} */ (body);
+        const id = String(payload.project ?? '');
+        if (!isId(id)) throw new HttpError(400, 'A project id is required.', { code: 'project-required' });
+        const project = await root(id);
+        /* batchId 会逐字成为目录名：只收 `stageRecipe` 认的那套字符，给了不合规的就直说，不悄悄改 */
+        if (payload.batchId !== undefined && !/^[a-z0-9-]{1,40}$/.test(String(payload.batchId))) {
+          throw new HttpError(400, 'A batch id is lowercase letters, digits and hyphens (at most 40).', { code: 'batch-invalid' });
+        }
+        const batchId = payload.batchId === undefined ? newAttempt('mix') : String(payload.batchId);
+        /* 粗预览：1 条、前 5 秒、单线程；不改变正式配方。 */
+        const preview = payload.preview === true;
+        const askedRecipe = preview && payload.recipe && typeof payload.recipe === 'object'
+          ? { ...payload.recipe, params: { ...(payload.recipe.params ?? {}), count: 1, targetSec: 5, threads: 1, preview: true } }
+          : payload.recipe;
+        const normalized = normalizeRecipe(askedRecipe);
+        if (!normalized.recipe) {
+          json(res, 400, { ok: false, code: 'recipe-invalid', problems: normalized.problems, notes: [], job: null, staged: null });
+          return true;
+        }
+        const voices = (Array.isArray(payload.voices) ? payload.voices : [])
+          .filter((/** @type {any} */ voice) => voice && typeof voice.file === 'string' && voice.file)
+          .map((/** @type {any} */ voice) => ({ file: isAbsolute(String(voice.file)) ? String(voice.file) : join(project, String(voice.file)), text: String(voice.text ?? ''), cues: Array.isArray(voice.cues) ? voice.cues : [] }));
+        /* 配音放在 recipe.voiceFiles 里时（画布上传），同样送进 staging。 */
+        if (!voices.length && Array.isArray(normalized.recipe.voiceFiles)) {
+          for (const row of normalized.recipe.voiceFiles) {
+            const file = isAbsolute(row.path) ? row.path : join(project, row.path);
+            voices.push({ file, text: String(row.text ?? ''), cues: Array.isArray(row.cues) ? row.cues : [] });
+          }
+        }
+
+        const engine = resolveEnginePaths({ dataDir: dataDir || '', project });
+        /* 上传的配音没有文案/时间戳时，用本地 Whisper 生成逐句时间戳，字幕不再按句长猜。 */
+        if (engine.paths?.FFmpeg) {
+          for (const voice of voices) {
+            if (voice.cues?.length || String(voice.text ?? '').trim()) continue;
+            try {
+              const heard = await transcribeVoice(voice.file, engine.paths.FFmpeg);
+              voice.text = heard.text;
+              voice.cues = heard.cues;
+            } catch { /* 识别失败就不带字幕，不阻断出片 */ }
+          }
+        }
+        const workRoot = engine.paths?.WorkRoot || join(project, '.film', 'fission', 'work');
+        /** @type {{ staged: any, job: any, problems: string[], notes: string[] }} */
+        let prepared;
+        try {
+          prepared = prepareRecipeRun({ recipe: normalized.recipe, project, workRoot, batchId, voices });
+        } catch (error) {
+          /* 摆目录只会在输入本身不合规时抛（batchId / 路径策略）：当成逐项问题回，不变成 500 */
+          json(res, 400, {
+            ok: false, code: 'recipe-invalid', notes: [], job: null, staged: null,
+            problems: [...normalized.problems, String(/** @type {any} */ (error)?.message ?? error)],
+          });
+          return true;
+        }
+        const problems = [...normalized.problems, ...prepared.problems];
+        if (!engine.ok) problems.push(...engine.problems.map((line) => `engine-paths: ${line}`));
+        const summary = {
+          batchId,
+          problems,
+          notes: prepared.notes,
+          job: prepared.job,
+          staged: {
+            videoDir: prepared.staged.videoDir,
+            audioDir: prepared.staged.audioDir,
+            meta: { file: join(prepared.staged.root, 'meta.json'), items: prepared.staged.items },
+          },
+        };
+
+        /* 默认 dry-run：目录摆了、job 算了、进程没起。面板先看这个再决定要不要真跑。 */
+        if (payload.run !== true) {
+          json(res, 200, { ok: problems.length === 0, ...summary });
+          return true;
+        }
+
+        if (!engine.ok) {
+          json(res, 503, {
+            ok: false, code: 'engine-paths', ...summary,
+            message: `渲染器还差配置：${engine.problems.slice(0, 2).join('；')}`,
+          });
+          return true;
+        }
+
+        const attempt = newAttempt(batchId);
+        /* 每次渲染一个全新的 attempt（引擎要求 work/out/cache 全空），放工程的 `.film/fission/run/` 下 */
+        const runRoot = join(project, '.film', 'fission', 'run');
+        /** @type {any} */
+        let result;
+        try {
+          result = await runJob({ job: prepared.job, enginePaths: engine.paths, root: runRoot, task: 't1', attempt });
+        } catch (error) {
+          /* 前置检查（attempt-not-fresh / engine-paths / identity）也是结果：结构化回，不 500 */
+          result = {
+            attempt, code: -1, timedOut: false, outDir: null, stdout: '', stderr: '', report: null,
+            errorCode: /** @type {any} */ (error)?.code ?? null,
+            message: String(/** @type {any} */ (error)?.message ?? error),
+          };
+        }
+        const rendered = result.code === 0 && Number(result.report?.succeeded ?? 0) > 0;
+        const report = result.report;
+        /* 预览片复制进工程 assets/previews，页面用普通媒体地址播放。 */
+        let previewPath = null;
+        const firstPath = report?.outputs?.[0]?.path ?? report?.outputs?.[0]?.Path;
+        if (preview && rendered && firstPath && existsSync(firstPath)) {
+          const into = join(project, 'assets', 'previews');
+          mkdirSync(into, { recursive: true });
+          const name = `preview-${batchId}.mp4`;
+          copyFileSync(firstPath, join(into, name));
+          previewPath = `assets/previews/${name}`;
+        }
+        json(res, 200, {
+          ok: rendered && problems.length === 0,
+          ...summary,
+          ...(previewPath ? { previewPath } : {}),
+          render: {
+            attempt: result.attempt ?? attempt,
+            code: result.code,
+            timedOut: result.timedOut === true,
+            outDir: result.outDir ?? null,
+            message: result.message,
+            ...(result.errorCode ? { errorCode: result.errorCode } : {}),
+            report: report ? {
+              jobDir: report.jobDir,
+              succeeded: report.succeeded,
+              failed: report.failed,
+              stopReason: report.stopReason,
+              outputs: report.outputs,
+              failures: report.failures,
+            } : null,
+          },
+        });
         return true;
       }
 

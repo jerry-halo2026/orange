@@ -12,7 +12,7 @@
  */
 import { execFileSync, spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launcherEnvironment, loginShellEnvironment } from '../src/environment.mjs';
@@ -27,6 +27,16 @@ export async function startDevelopment({ source = process.env, argv = process.ar
     const identity = FLAVORS.dev;
     const require = createRequire(import.meta.url);
     const desktop = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+    /* dev 自配置：.dev/bench-auth.env（登录环境、Fission 配置、测试账号）存在就注入，
+       与安装包读 resources/auth-environment.json 的行为对齐，避免“尚未配置登录连接”。 */
+    for (const candidate of [join(desktop, '.dev', 'bench-auth.env'), join(desktop, '..', '..', '.dev', 'bench-auth.env')]) {
+        if (!existsSync(candidate)) continue;
+        for (const line of readFileSync(candidate, 'utf8').split(/\r?\n/)) {
+            const match = /^([A-Z_][A-Z0-9_]*)=(.*)$/.exec(line.trim());
+            if (match && !(match[1] in env)) env[match[1]] = match[2];
+        }
+        break;
+    }
     const args = argv.filter((a) => a !== '--no-build');
     if (!argv.includes('--no-build')) {
         if (adapters.build)

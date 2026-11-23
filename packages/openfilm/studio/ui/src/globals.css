@@ -678,3 +678,11 @@ html[data-file-drag] iframe { pointer-events: none; }
 .openfilm-canvas .react-flow__node-frame .cv-group-head,
 .openfilm-canvas .react-flow__node-frame .react-flow__resize-control { pointer-events: auto; }
 .openfilm-canvas .react-flow__edge-textbg { rx: 6; }
+/* 原生下拉的 option 跟随主题：Windows/Chromium 的弹层默认是系统白底黑字，与页面控件不一致 */
+select { color-scheme: dark; }
+select option {
+  background-color: var(--bg-panel, #1b1b1f);
+  color: var(--text, #f2f2f3);
+}
+html[data-theme='light'] select { color-scheme: light; }
+html[data-theme='light'] select option { background-color: #fff; color: #1b1b1f; }

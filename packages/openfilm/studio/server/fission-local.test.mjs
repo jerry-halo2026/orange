@@ -45,6 +45,16 @@ test('configured Studio media tools resolve to the same binaries used by Fission
  const config={dotnet:other,cli,paths:{FFmpeg:ff,FFprobe:probe,FFmpeg6:other,TransitionsDir:root,AssetsRoot:root,LocalAssetsRoot:root}},file=path.join(root,'config.json');
  await writeFile(file,JSON.stringify(config));assert.equal((await readLocalFissionConfiguration(file)).paths.FFprobe,probe);
  await writeFile(file,JSON.stringify({...config,paths:{...config.paths,FFprobe:other}}));await assert.rejects(readLocalFissionConfiguration(file),e=>e.code==='fission-configuration-invalid');
+ /* FontsDir 是可选字体目录：可以缺席（目录还没随包落下），存在时必须是普通目录，相对路径一律拒。 */
+ const missingFonts=path.join(root,'fonts-not-yet');
+ await writeFile(file,JSON.stringify({...config,paths:{...config.paths,FontsDir:missingFonts}}));
+ assert.equal((await readLocalFissionConfiguration(file)).paths.FontsDir,missingFonts,'缺目录也接受');
+ await writeFile(file,JSON.stringify({...config,paths:{...config.paths,FontsDir:root}}));
+ assert.equal((await readLocalFissionConfiguration(file)).paths.FontsDir,root,'已存在的目录接受');
+ await writeFile(file,JSON.stringify({...config,paths:{...config.paths,FontsDir:'fonts'}}));
+ await assert.rejects(readLocalFissionConfiguration(file),e=>e.code==='fission-configuration-invalid','相对路径拒绝');
+ await writeFile(file,JSON.stringify({...config,paths:{...config.paths,FontsDir:other}}));
+ await assert.rejects(readLocalFissionConfiguration(file),e=>e.code==='fission-configuration-invalid','文件不是字体目录');
 });
 test('two results from selected local folders keep originals and create no Studio project',async()=>{
  const f=await fixture(),other=createLocalFission(f.options);try{const v=await f.service.select(f.owner,'video'),a=await f.service.select(f.owner,'audio');assert.deepEqual(v.groups,[{name:'1',count:1}]);assert.equal(JSON.stringify(v).includes(f.video),false);

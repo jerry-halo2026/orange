@@ -31,10 +31,12 @@ const GPL3 = (version) => `https://raw.githubusercontent.com/FFmpeg/FFmpeg/n${ve
  */
 const BUILDS = Object.freeze({
   'darwin-arm64': {
-    version: '8.1.2',
-    by: `the Shaka project's static build n8.1.2-1 (${SHAKA}), made by its scripts at https://github.com/shaka-project/static-ffmpeg-binaries`,
-    ffmpeg: { url: `${SHAKA}/ffmpeg-osx-arm64`, sha256: 'e7b9fcd97f95f333512d6e8b8ac24d9dbc08f189f36047695499bd7b57214b22' },
-    ffprobe: { url: `${SHAKA}/ffprobe-osx-arm64`, sha256: 'ded4c698b8ff38d0bc1fd30fcc5e768dc46f58bc15a8dfd61f98615ba49cde5c' },
+    /* osxexperts' 9.0.2 arm64 static build: same FFmpeg version as the Windows pin, and — unlike the Shaka build
+       it replaces — it carries libass/fontconfig/freetype, so burned-in subtitles work on the Mac. */
+    version: '9.0.2',
+    by: `osxexperts.net's static arm64 build 9.0.2 (https://www.osxexperts.net/), GPLv3 configuration with libass, fontconfig and freetype`,
+    ffmpeg: { url: 'https://www.osxexperts.net/ffmpeg902arm.zip', zipSha256: '4597f0f3a397cc0027bfd03dc4dd9c3066be15943cc788370846b4305d178bcb', entry: 'ffmpeg', sha256: '6deb2860c3dc0c08e0f96bab119196c024103046fa3cc7ef72e3a77797d8553c' },
+    ffprobe: { url: 'https://www.osxexperts.net/ffprobe902arm.zip', zipSha256: 'c765d316eb210f3c98de6f9688df784552f3f8f586090e2a8cb871be9003164e', entry: 'ffprobe', sha256: '8d56278ec2ba80f35138e7dceccb1a72eff951156691d8c733066ebd7628d3f2' },
   },
   'darwin-x64': {
     version: '8.1.2',
@@ -125,7 +127,22 @@ export async function fetchFfmpeg(dir, { platform = process.platform, arch = pro
       for (const name of missing) place(name, unzipEntry(zip, `${build.zip.folder}/bin/${exe(name, platform)}`));
     }
   } else {
-    await Promise.all(missing.map(async (name) => place(name, await pinned(build[name], name))));
+    /** A program of this build: its own pinned file, or an entry of its own pinned archive (osxexperts ships one per
+        program, with the program at the archive's root). */
+    const program = async (/** @type {string} */ name) => {
+      const from = build[name];
+      if (!from) throw new Error(`The ${key} build has no ${name}.`);
+      if ('zipSha256' in from) {
+        const archive = await pinned({ url: from.url, sha256: from.zipSha256 }, `${name} archive`);
+        const bytes = unzipEntry(archive, from.entry ?? name);
+        if (createHash('sha256').update(bytes).digest('hex') !== from.sha256) {
+          throw new Error(`The ${name} inside its archive did not match its checksum; nothing was kept.`);
+        }
+        return bytes;
+      }
+      return pinned(from, name);
+    };
+    await Promise.all(missing.map(async (name) => place(name, await program(name))));
   }
   if (license) {
     if (zip) {

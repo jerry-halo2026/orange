@@ -176,6 +176,7 @@ export function MaterialCenter({draft,draftReady,draftReason,onDraftOperation,on
       copy={copy}
       compact={compact}
       dense={cloudTab}
+      hideToggle={cloudTab}
       index={indexState}
       list={studioClient.list}
       wiki={wiki}

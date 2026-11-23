@@ -394,6 +394,35 @@ public class SubtitlePlannerTests
         var parts = SubtitlePlanner.Split("你好。世界！\n继续？");
         Assert.Equal(["你好。", "世界！", "继续？"], parts);
     }
+
+    [Fact]
+    public void BuildAss_CustomFontFamily_IsTheAssFontname_AndTheDefaultStaysWindowsCompatible()
+    {
+        // 契约 §2：字体族来自参数（macOS 随包 Noto Sans SC 必须显式给出）。
+        var ass = SubtitlePlanner.BuildAss("一。", 5, "white-outline", "bottom", 64, "Noto Sans SC");
+        Assert.Contains("Style: Default,Noto Sans SC,64,", ass);
+        Assert.DoesNotContain("Microsoft YaHei", ass);
+        Assert.StartsWith("Style: Default,Noto Sans SC,64,&H00FFFFFF", SubtitlePlanner.StyleLine("white-outline", "bottom", 64, "Noto Sans SC"));
+
+        // 未给字体族 / 显式 null（recipe 的 subtitleFontFamily 允许 null）/ 空白 → 仍是 Microsoft YaHei。
+        Assert.Equal("Microsoft YaHei", SubtitlePlanner.DefaultFontFamily);
+        foreach (var family in new string?[] { null, "", "  " })
+        {
+            Assert.StartsWith("Style: Default,Microsoft YaHei,64,", SubtitlePlanner.StyleLine("white-outline", "bottom", 64, family));
+            Assert.Contains("Style: Default,Microsoft YaHei,64,", SubtitlePlanner.BuildAss("一。", 5, "white-outline", "bottom", 64, family));
+        }
+    }
+
+    [Fact]
+    public void FissionJob_DefaultsToMicrosoftYaHei_AndKeepsAnExplicitFamily()
+    {
+        // 契约 §2：缺省 Microsoft YaHei（Windows 现有行为），显式给值即生效。
+        var job = new Fission.Core.Jobs.FissionJob();
+        Assert.Equal("Microsoft YaHei", job.SubtitleFontFamily);
+        Assert.Equal(SubtitlePlanner.DefaultFontFamily, job.SubtitleFontFamily);
+        job.SubtitleFontFamily = "PingFang SC";
+        Assert.Contains("Style: Default,PingFang SC,", SubtitlePlanner.StyleLine(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, job.SubtitleFontFamily));
+    }
 }
 
 /// <summary>命名 sanitize（PRD FR-8.5）。</summary>

@@ -12,7 +12,7 @@ import { useMaterialDraft } from './lib/use-material-draft';
 import { studioHost } from './lib/host';
 import { WhatsNew } from './components/WhatsNew';
 import { sourcesApi } from './lib/project-sources';
-import { homePresentation, homeEntryForProject, type HomeEntry, type HomeEntryRequest } from './lib/projects-page';
+import { homePresentation, homeEntryForProject, type HomeEntryRequest } from './lib/projects-page';
 
 /**
  * `to` with this page's key in its address (the server puts it there): the address bar is what a person copies, and
@@ -66,7 +66,8 @@ export function App({authGeneration}:{authGeneration?:number} = {}) {
   const id=keptProject;
   const presentation=homePresentation(id,homeOpen || !projectIn(path));
   const resume=()=>{if(id){setWorkspace(null);setHomeOpen(false);if(!projectIn(path))go('/projects/'+id);}};
-  const enter=(entry:HomeEntry)=>{if(entry!=='studio'){setHomeOpen(true);setWorkspace(entry);}};
+ const enter=(entry:'fission'|'catalog')=>{setHomeOpen(true);setWorkspace(entry);};
+  
   return <>
     {presentation.mounted && <div hidden={!presentation.foreground} inert={!presentation.foreground} aria-hidden={!presentation.foreground}>
       <ProjectView key={id!} projectId={id!} onProject={open} onLeave={leave} foreground={presentation.foreground} onResume={resume} onHome={()=>go('/')} homeEntry={homeEntryForProject(id,entryRequest)}

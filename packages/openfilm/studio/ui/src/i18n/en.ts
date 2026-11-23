@@ -1126,6 +1126,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
     binding: {
       title: 'Cloud-steward binding',
       unboundBody: 'Claim the cloud-steward account this Studio uses and its collections and material open here: the collections, the search box, and the category / label / length / account filters.',
+      publicHint: 'Without a claim the supplier\'s company view still lists material; a claim narrows it to your own account.',
       action: 'Claim an account',
       accountLabel: 'Cloud-steward account',
       accountHint: 'The cloud-steward account name (no cloud-steward sign-in needed)',
@@ -1672,6 +1673,15 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
   },
   canvas: {
     title: 'Canvas',
+    mix: {
+      title: 'Batch mix', idle: 'Not run yet', running: 'Rendering…', done: 'Rendered', failed: 'Render failed',
+      batch: 'Batch', groups: 'Scene groups', refs: '{n} clips', noRecipe: 'No recipe yet: add a folder, a line and a voice, then run.',
+      line: 'Voice-over', noLine: 'Not written', count: 'Count', ratio: 'Aspect', duration: 'Target length', voice: 'Voice',
+      run: 'Run mix', stopReason: 'Stopped because', addGroup: 'Add folder', removeGroup: 'Remove',
+      lines: 'Lines (one per output)', linesHint: 'Each line is one output’s voice-over; empty means nothing to render.',
+      provider: 'Voice service', targetSec: 'Target length (s)', aspect: 'Aspect', subtitle: 'Burn in subtitles',
+      bgm: 'BGM', bgmAdd: 'Upload BGM', bgmNone: 'No BGM yet', bgmRemove: 'Remove BGM',
+    },
     toEdit: 'Switch to the edit',
     toCanvas: 'Switch to the canvas',
     editTitle: 'Edit',
@@ -2339,6 +2349,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
     close: 'Close',
   },
   settings: {
+    account: { group: 'Account', signOut: 'Sign out', signOutHint: 'Your projects stay on this computer.' },
     servicesLoading:'Loading service settings…', servicesUnavailable:'Service settings are temporarily unavailable.', servicesRetry:'Retry', servicesLimited:'This isolated environment supports local configuration only; media generation, online authorization and model installation are not enabled yet.',
     title: 'Settings',
     done: 'Done',
@@ -2644,7 +2655,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
       changes: 'Show what each turn changed',
       changesHint: 'Under each reply, the files the turn added, deleted or changed, with the lines added and removed. Click a file to see its changed lines.',
       logs: 'Show each turn’s log',
-      logsHint: 'In the chat, every turn gets a Log button: the prompt and the session it ran in, each tool call with its input and output, every question and answer, and how it ended, as the agent sent them.',
+      devtools: 'Developer tools', devtoolsHint: 'F12 and the View menu open the tools.', logsHint: 'In the chat, every turn gets a Log button: the prompt and the session it ran in, each tool call with its input and output, every question and answer, and how it ended, as the agent sent them.',
       where: 'Every turn is logged whether or not this is on, in the project’s .film/logs folder, on this computer only.',
     },
     shortcuts: {

@@ -73,8 +73,12 @@ test('jobFromPlan：不切、按序、裁到音频长度，尺寸与时长来自
   const enginePaths = { TransitionsDir: join(project, 'transitions'), OutRoot: join(project, 'out') };
   const { job, notes } = jobFromPlan(plan, staged, { enginePaths });
   assert.equal(job.SplitMode, 'None');
-  assert.equal(job.PickRule, 'Sequential');
-  assert.equal(job.AlignStrategy, 'TrimLonger');
+  assert.equal(job.Pick, 'Sequential');
+  assert.equal(job.Align, 'TrimLonger');
+  assert.equal(job.Naming, 'Sequence');
+  assert.equal('PickRule' in job, false, 'FissionJob 没有 PickRule：写错会被静默忽略');
+  assert.equal('AlignStrategy' in job, false);
+  assert.equal('NamingRule' in job, false);
   assert.equal(job.Count, 1);
   assert.equal(job.OutWidth, 1080);
   assert.equal(job.OutHeight, 1920);

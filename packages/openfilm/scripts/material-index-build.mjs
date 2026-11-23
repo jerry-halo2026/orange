@@ -62,8 +62,9 @@ export function readRunFile({ home, read = readFileSync } = /** @type {any} */ (
  */
 export function fetchPageFromStudio({ origin, key, scope = 'company', fetchImpl = fetch, timeoutMs = 30_000 }) {
   const base = String(origin).replace(/\/+$/, '');
-  return async ({ videoType, pageNo, pageSize }) => {
+  return async ({ videoType, pageNo, pageSize, extra }) => {
     const query = new URLSearchParams({ scope, pageNo: String(pageNo), pageSize: String(pageSize), videoType: String(videoType) });
+    for (const [name, value] of Object.entries(extra ?? {})) query.set(name, String(value));
     const url = `${base}/api/materials/list?${query}`;
     const response = await fetchImpl(url, {
       method: 'GET',

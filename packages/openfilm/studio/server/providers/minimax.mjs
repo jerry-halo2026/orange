@@ -15,7 +15,7 @@
  * When the service says so, the run stops with a sentence a person can act on — it does not retry, and it never lands
  * an empty file as if it had worked.
  */
-import { billedBy, needed, noBalance, serviceUrl } from './common.mjs';
+import { billedBy, landing, needed, noBalance, serviceUrl } from './common.mjs';
 
 const NAME = 'MiniMax';
 const DEFAULT_URL = 'https://api.minimaxi.com';
@@ -125,6 +125,7 @@ export default {
     const isMusic = verb === 'music';
     /* tts 说的是 	ext（朗读脚本），music 说的是 prompt（描述）：同一个位置，两个名字 */
     const prompt = needed(args, isMusic ? 'prompt' : 'text');
+    const voice = typeof args.voice === 'string' && args.voice.trim() ? args.voice.trim() : 'female-shaonv';
     const seconds = typeof args.sec === 'number' ? Math.min(300, Math.max(10, Math.round(args.sec))) : 30;
     let response;
     try {
@@ -136,7 +137,7 @@ export default {
           ? { model: ctx.model ?? MUSIC_MODEL, prompt, audio_setting: { format: 'mp3', sample_rate: 44100 } }
           : {
             model: ctx.model ?? TTS_MODEL, text: prompt, stream: false,
-            voice_setting: { voice_id: typeof args.voice === 'string' && args.voice.trim() ? args.voice.trim() : 'female-shaonv' },
+            voice_setting: { voice_id: voice },
             audio_setting: { format: 'mp3', sample_rate: 32000, bitrate: 128000 },
           }),
       });
@@ -157,13 +158,15 @@ export default {
       bytes = new Uint8Array(await file.arrayBuffer());
     }
     if (!bytes.length) throw new Error(`MiniMax returned an empty ${isMusic ? 'music' : 'voice'} file.`);
-    const out = typeof args.out === 'string' && args.out.trim()
-      ? args.out.trim()
-      : `assets/${isMusic ? 'music' : 'voice'}-${Date.now()}.mp3`;
+    /* `--out` 是名字不是路径（get.mjs 只收纯名）：配音落 `assets/audio/vo/`，音乐落 `assets/audio/music/`；
+       直接把 out 当路径会让文件被跳过、`src` 指向项目外。 */
+    const path = isMusic
+      ? landing('audio/music', args.out, 'mp3')
+      : landing('audio/vo', args.out, 'mp3');
     return {
-      files: [{ path: out, bytes }],
-      index: [/** @type {any} */ ({ src: out, kind: 'sound', ...(isMusic ? {} : { voice: args.voice ?? 'female-shaonv' }) })],
-      receipt: { model: ctx.model ?? (isMusic ? MUSIC_MODEL : TTS_MODEL), seconds },
+      files: [{ path, bytes }],
+      index: [/** @type {any} */ ({ src: path, kind: 'sound', ...(isMusic ? {} : { voice }) })],
+      receipt: { model: ctx.model ?? (isMusic ? MUSIC_MODEL : TTS_MODEL), ...(isMusic ? {} : { voice }), seconds },
       cost: billedBy(NAME),
     };
   },

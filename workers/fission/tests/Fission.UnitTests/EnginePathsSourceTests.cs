@@ -36,6 +36,18 @@ public sealed class EnginePathsSourceTests
     }
 
     [Fact]
+    public void Load_OptionalFontsDir_IsParsedInsteadOfDropped()
+    {
+        /* macOS 的随包字体目录：OptionalKeys 里已经有了，Parse 必须真的映射进 EnginePaths，否则"接受但静默丢弃"。 */
+        var fake = FakeEnginePaths.Create("paths-fontsdir");
+        var values = System.Text.Json.Nodes.JsonNode.Parse(fake.ToConfigJson(includeHostWriteRoots: true))!.AsObject();
+        values["FontsDir"] = fake.Read;
+        var paths = EnginePathsSource.Load(fake.WriteConfig(values.ToJsonString()));
+        Assert.True(paths.HasFontsDir);
+        Assert.Equal(fake.Read, paths.FontsDir);
+    }
+
+    [Fact]
     public void Load_MissingHostWriteRoots_RejectsNamingTheRequiredKey()
     {
         var fake = FakeEnginePaths.Create("paths-nowriteroots");

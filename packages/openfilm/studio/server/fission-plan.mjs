@@ -154,15 +154,17 @@ export function jobFromPlan(plan, staged, { enginePaths }) {
       Threads: 2,
       /* 不切、按序、把画面裁到声音长度 —— 这三条就是"音画对得上"在渲染端的全部 */
       SplitMode: 'None',
-      PickRule: 'Sequential',
-      AlignStrategy: 'TrimLonger',
+      /* FissionJob 的真名是 Pick / Align / Naming —— 写成 PickRule/AlignStrategy/NamingRule 会被
+         反序列化静默忽略，job 退回默认值（实测：整批按随机选材、命名按音频名）。 */
+      Pick: 'Sequential',
+      Align: 'TrimLonger',
       TargetDurationSec: Number(totalSec.toFixed(3)),
       OutWidth: Number(plan.spec?.width ?? 1080),
       OutHeight: Number(plan.spec?.height ?? 1920),
       OutFps: Number(plan.spec?.fps ?? 30),
       VoiceVolume: 1.0,
       BgmVolume: Number(plan.bgm?.volume ?? 0.35),
-      NamingRule: 'Sequence',
+      Naming: 'Sequence',
     },
     notes,
   };

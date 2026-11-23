@@ -19,10 +19,27 @@
  */
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { existsSync, mkdirSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { explainFissionFailure } from './fission-plan.mjs';
+
+/** 应用启动时写下的随包运行时（`ORANGE_FISSION_CONFIG_FILE`）：`{dotnet, cli}`；读不出就是空串。 */
+export function readConfiguredRuntime(file = process.env.ORANGE_FISSION_CONFIG_FILE) {
+  /* dev 没把 env 带进 Studio 进程时，退回到检出里的 .dev/fission-config.json（安装版仍由 env 指定）。 */
+  const devFile = join(REPO_ROOT, '.dev', 'fission-config.json');
+  const source = String(file ?? '').trim() || (existsSync(devFile) ? devFile : '');
+  if (!source) return { dotnet: '', cli: '' };
+  try {
+    const parsed = JSON.parse(readFileSync(source, 'utf8'));
+    return {
+      dotnet: typeof parsed?.dotnet === 'string' ? parsed.dotnet : '',
+      cli: typeof parsed?.cli === 'string' ? parsed.cli : '',
+    };
+  } catch {
+    return { dotnet: '', cli: '' };
+  }
+}
 
 /** Fission CLI 的 dll（检出里 build 出来的那份）。 */
 export const FISSION_DLL = ['workers', 'fission', 'src', 'Fission.Cli', 'bin', 'Debug', 'net10.0', 'Fission.Cli.dll'];
@@ -84,7 +101,7 @@ export function pathsFileJson(paths) {
  *   onLine?: (line: string) => void, timeoutMs?: number }} options
  * @returns {Promise<{ code: number, outDir: string, files: string[], message: string, stderr: string }>}
  */
-export function runFission({ job, enginePaths, root, dotnet = 'dotnet', dll, onLine = () => {}, timeoutMs = 30 * 60_000 }) {
+export function runFission({ job, enginePaths, root, dotnet, dll, onLine = () => {}, timeoutMs = 30 * 60_000 }) {
   mkdirSync(root, { recursive: true });
   /* Fission 拒收 8.3 短名（C:\Users\ADMINI~1\...）：跑之前把 root 规范成长名 */
   const canonicalRoot = (() => { try { return realpathSync.native(root); } catch { return root; } })();
@@ -96,10 +113,13 @@ export function runFission({ job, enginePaths, root, dotnet = 'dotnet', dll, onL
   writeFileSync(pathsFile, pathsFileJson(enginePaths), 'utf8');
   writeFileSync(jobFile, JSON.stringify(job, null, 1), 'utf8');
   /* 打包后的应用里，dotnet 是随包的 atom 启动器、dll 是随包的 CLI（见 fission-publish.mjs 的 host 说明） */
-  const cliDll = dll?.trim() || process.env.FISSION_CLI_DLL?.trim() || join(REPO_ROOT, ...FISSION_DLL);
+  /* 打包后的应用把 host/CLI 的对应关系写在 `ORANGE_FISSION_CONFIG_FILE` 里；没有它才退回开发检出。 */
+  const configured = readConfiguredRuntime();
+  const dotnetExe = String(dotnet ?? '').trim() || configured.dotnet || 'dotnet';
+  const cliDll = String(dll ?? '').trim() || process.env.FISSION_CLI_DLL?.trim() || configured.cli || join(REPO_ROOT, ...FISSION_DLL);
 
   return new Promise((resolve) => {
-    const child = spawn(dotnet, [cliDll, ...runArgs({ pathsFile, workspace, task, attempt, jobFile })], {
+    const child = spawn(dotnetExe, [cliDll, ...runArgs({ pathsFile, workspace, task, attempt, jobFile })], {
       windowsHide: true,
       env: { ...process.env, FISSION_ENGINE_PATHS: pathsFile },
     });

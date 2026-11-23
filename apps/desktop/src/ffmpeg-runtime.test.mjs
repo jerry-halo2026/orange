@@ -14,9 +14,12 @@ const answer = (bytes) => new Response(new ReadableStream({ start(c) { c.enqueue
 
 test('a build whose checksum is not the pinned one is not kept', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'of-ffmpeg-'));
-  const fetch = async () => answer(Buffer.from('not ffmpeg'));
+  const asked = [];
+  const fetch = async (url) => { asked.push(url); return answer(Buffer.from('not ffmpeg')); };
   await assert.rejects(fetchFfmpeg(dir, { platform: 'darwin', arch: 'arm64', fetch }), /did not match its checksum/);
   assert.equal(ffmpegIn(dir, 'darwin'), false);
+  /* macOS arm64 的 ffmpeg/ffprobe 各是一个自己的 zip（osxexperts 9.0.2，带 libass） */
+  assert.deepEqual([...new Set(asked)].sort(), ['https://www.osxexperts.net/ffmpeg902arm.zip', 'https://www.osxexperts.net/ffprobe902arm.zip'].sort());
 });
 
 test('no build for a platform says so', async () => {
@@ -52,9 +55,9 @@ test('the installer\'s copy has FFmpeg\'s license and where its source is', asyn
   const asked = [];
   const fetch = async (url) => { asked.push(url); return answer(Buffer.from('GPL v3 text')); };
   await fetchFfmpeg(dir, { platform: 'darwin', arch: 'arm64', license: true, fetch });
-  assert.deepEqual(asked, ['https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/COPYING.GPLv3'], 'the license of the version it is, nothing else');
+  assert.deepEqual(asked, ['https://raw.githubusercontent.com/FFmpeg/FFmpeg/n9.0.2/COPYING.GPLv3'], 'the license of the version it is, nothing else');
   assert.equal(readFileSync(join(dir, 'LICENSE'), 'utf8'), 'GPL v3 text');
-  assert.match(readFileSync(join(dir, 'SOURCE'), 'utf8'), /^FFmpeg 8\.1\.2,[^]*ffmpeg-8\.1\.2\.tar\.xz/);
+  assert.match(readFileSync(join(dir, 'SOURCE'), 'utf8'), /^FFmpeg 9\.0\.2,[^]*ffmpeg-9\.0\.2\.tar\.xz/);
 });
 
 test('a program comes out of a zip as it went in', async () => {

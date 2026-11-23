@@ -17,7 +17,8 @@
  *   LocalAssetsRoot   ← 这台机器的内容库（`<dataDir>/material-cache/content`）
  *   WorkRoot / OutRoot ← 项目 `.film/fission/`（跟着项目走，不污染用户目录）
  */
-import { existsSync, mkdirSync, readdirSync, realpathSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, realpathSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { join } from 'node:path';
 
 const isWin = process.platform === 'win32';
@@ -57,7 +58,7 @@ export function ffmpegRuntimeDir(dataDir) {
 export function resolveEnginePaths({ dataDir, project, env = process.env, mkdirs = true }) {
   /** @type {string[]} */
   const problems = [];
-  const runtime = ffmpegRuntimeDir(String(env.OPENFILM_FFMPEG_DIR ?? '').trim() || dataDir);
+  const runtime = ffmpegRuntimeDir(String(env.OPENFILM_FFMPEG_DIR ?? '').trim() || dataDir || join(homedir(), '.openfilm'));
   if (!runtime) {
     problems.push('找不到 app 自带的 ffmpeg（<dataDir>/runtime/ffmpeg-<version>/）：先让 `ffmpeg-runtime` 把它下下来');
   }
@@ -99,6 +100,50 @@ export function resolveEnginePaths({ dataDir, project, env = process.env, mkdirs
 
   const paths = { FFmpeg: ffmpeg, FFprobe: ffprobe, ...dirs };
   return { paths, json: JSON.stringify(paths), problems, ok: problems.length === 0 };
+}
+
+/**
+ * 安装后的应用自己写的那份配置（`ORANGE_FISSION_CONFIG_FILE`）：直接用它的绝对路径，不再去
+ * `<dataDir>/runtime/ffmpeg-<ver>` 猜。缺少必需键或读不出就返回 null，让调用方退回推导。
+ *
+ * WorkRoot/OutRoot 仍由工程派生（配置里不该出现写根）。
+ *
+ * @param {{ file?: string, project: string, env?: Record<string, string | undefined> }} options
+ * @returns {{ ok: boolean, paths: Record<string, string>, problems: string[], source: 'config' } | null}
+ */
+export function resolveEnginePathsFromConfig({ file, project, env = process.env }) {
+  const source = String(file ?? env.ORANGE_FISSION_CONFIG_FILE ?? '').trim();
+  if (!source) return null;
+  /** @type {string[]} */
+  const problems = [];
+  let parsed;
+  try { parsed = JSON.parse(readFileSync(source, 'utf8')); }
+  catch { return null; }
+  const pathsIn = parsed?.paths ?? {};
+  const required = ['FFmpeg', 'FFprobe', 'TransitionsDir', 'AssetsRoot', 'LocalAssetsRoot'];
+  for (const key of required) {
+    if (typeof pathsIn[key] !== 'string' || !pathsIn[key]) problems.push(`${source}: 缺少 ${key}`);
+  }
+  if (problems.length) return { ok: false, paths: {}, problems, source: 'config' };
+  const canonical = (/** @type {string} */ dir) => {
+    try { return realpathSync.native(dir); } catch { return dir; }
+  };
+  const work = join(project, '.film', 'fission', 'work');
+  const out = join(project, '.film', 'fission', 'out');
+  mkdirSync(work, { recursive: true });
+  mkdirSync(out, { recursive: true });
+  const paths = {
+    FFmpeg: canonical(pathsIn.FFmpeg),
+    FFprobe: canonical(pathsIn.FFprobe),
+    TransitionsDir: canonical(pathsIn.TransitionsDir),
+    AssetsRoot: canonical(pathsIn.AssetsRoot),
+    LocalAssetsRoot: canonical(pathsIn.LocalAssetsRoot),
+    ...(typeof pathsIn.FontsDir === 'string' && pathsIn.FontsDir ? { FontsDir: pathsIn.FontsDir } : {}),
+    WorkRoot: canonical(work),
+    OutRoot: canonical(out),
+  };
+  for (const key of required) if (!existsSync(paths[key])) problems.push(`目录不可用：${key}=${paths[key]}`);
+  return { ok: problems.length === 0, paths, problems, source: 'config' };
 }
 
 /**

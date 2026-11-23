@@ -9,7 +9,7 @@
 import React from 'react';
 import type { Edge, Node } from '@xyflow/react';
 import { api } from '@/api';
-import { CARD_H, CUT_W, FILE_W, MAKE_MEDIA, NOTE_H, NOTE_W, makeSize, readCanvasDoc, withVersion, type CanvasDoc, type CanvasNode, type GroupColor, type MakeKind, type MediaOf, type ModelSpec, makeRequest } from '@/lib/canvas';
+import { CARD_H, CUT_W, FILE_W, MAKE_MEDIA, MIX_H, MIX_W, NOTE_H, NOTE_W, makeSize, readCanvasDoc, withVersion, type CanvasDoc, type CanvasNode, type GroupColor, type MakeKind, type MediaOf, type MixRecipe, type ModelSpec, makeRequest } from '@/lib/canvas';
 import type { ProvidersState } from '@/lib/providers';
 import type { MediaSources, WorkspaceResource } from '@/lib/workspace-resources';
 
@@ -18,12 +18,21 @@ export type NoteData = { text: string; by?: CanvasNode['by'] };
 export type FrameData = { label: string; color: GroupColor };
 export type MakeData = Pick<CanvasNode, 'prompt' | 'via' | 'model' | 'opts' | 'preset' | 'versions' | 'path' | 'made' | 'by'> & { make: MakeKind };
 export type CutData = { by?: CanvasNode['by'] };
+/** a mix: its recipe, the recipe file it came from, the batch it was run in (nothing of a run's progress) */
+export type MixData = { mix: true; recipe: MixRecipe; recipeId?: string; batchId?: string; by?: CanvasNode['by'] };
+export type SourceData = { source: true; path: string; groups?: Array<{ name: string; videos: number; images: number; take?: number; rule?: 'random' | 'sequential'; speed?: number; useThenDelete?: boolean; allowReuse?: boolean }>; settings?: CanvasNode['settings']; by?: CanvasNode['by'] };
+export type VoiceData = { voice: true; path?: string; files?: Array<{ path: string; text?: string; mode?: 'recognize' | 'srt' | 'none' }>; mode?: 'none' | 'upload' | 'tts'; by?: CanvasNode['by'] };
+export type SubtitleData = { subtitle: true; mode?: 'none' | 'recognize' | 'upload'; path?: string; by?: CanvasNode['by'] };
 export type FileNode = Node<FileData, 'file'>;
 export type NoteNode = Node<NoteData, 'note'>;
 export type FrameNode = Node<FrameData, 'frame'>;
 export type MakeNode = Node<MakeData, 'make'>;
 export type CutNode = Node<CutData, 'cut'>;
-export type BoardNode = FileNode | NoteNode | FrameNode | MakeNode | CutNode;
+export type MixNode = Node<MixData, 'mix'>;
+export type SourceNode = Node<SourceData, 'source'>;
+export type VoiceNode = Node<VoiceData, 'voice'>;
+export type SubtitleNode = Node<SubtitleData, 'subtitle'>;
+export type BoardNode = FileNode | NoteNode | FrameNode | MakeNode | CutNode | MixNode | SourceNode | VoiceNode | SubtitleNode;
 export type MakingNode = CanvasNode & { make: MakeKind };
 
 /** The board as React Flow draws it: groups before what is in them, as it needs them. */
@@ -41,6 +50,17 @@ export function toFlow(doc: CanvasDoc): { nodes: BoardNode[]; edges: Edge[] } {
         return { ...base, type: 'make', width: size.w, height: size.h, data: { ...data, make: n.make } };
       }
       if (n.cut) return { ...base, type: 'cut', width: n.w ?? CUT_W, height: n.h ?? CARD_H, data: { ...by } };
+      if (n.source) return { ...base, type: 'source', width: n.w ?? FILE_W, height: n.h ?? CARD_H,
+        data: { source: true, path: n.path ?? '', ...(n.folderGroups ? { groups: n.folderGroups } : {}), ...(n.settings ? { settings: n.settings } : {}), ...by } };
+      if (n.voice) return { ...base, type: 'voice', width: n.w ?? FILE_W, height: n.h ?? CARD_H,
+        data: { voice: true, ...(n.path ? { path: n.path } : {}), ...(n.files ? { files: n.files } : {}), ...(n.voiceMode ? { mode: n.voiceMode } : {}), ...by } };
+      if (n.subtitle) return { ...base, type: 'subtitle', width: n.w ?? FILE_W, height: n.h ?? CARD_H,
+        data: { subtitle: true, ...(n.subtitleMode ? { mode: n.subtitleMode } : {}), ...(n.path ? { path: n.path } : {}), ...by } };
+      /* a mix, before a file: it has no path of its own */
+      if (n.mix) {
+        return { ...base, type: 'mix', width: n.w ?? MIX_W, height: n.h ?? MIX_H,
+          data: { mix: true, recipe: n.recipe ?? {}, ...(n.recipeId ? { recipeId: n.recipeId } : {}), ...(n.batchId ? { batchId: n.batchId } : {}), ...by } };
+      }
       /* a file is as its picture draws it until resized */
       if (n.path != null) return { ...base, type: 'file', ...(n.w != null && n.h != null ? { width: n.w, height: n.h } : {}), data: { path: n.path, ...by } };
       return { ...base, type: 'note', width: n.w ?? NOTE_W, height: n.h ?? NOTE_H, data: { text: n.text ?? '', ...by } };
@@ -53,12 +73,20 @@ export function fromFlow(nodes: readonly BoardNode[], edges: readonly Edge[]): C
   return {
     nodes: nodes.map((n) => {
       const box = { id: n.id, x: Math.round(n.position.x), y: Math.round(n.position.y), ...(n.parentId ? { parent: n.parentId } : {}) };
-      const w = Math.round(n.width ?? n.measured?.width ?? (n.type === 'note' ? NOTE_W : n.type === 'cut' ? CUT_W : FILE_W));
-      const h = () => Math.round(n.height ?? n.measured?.height ?? (n.type === 'note' ? NOTE_H : CARD_H));
+      const w = Math.round(n.width ?? n.measured?.width ?? (n.type === 'note' ? NOTE_W : n.type === 'cut' ? CUT_W : n.type === 'mix' ? MIX_W : FILE_W));
+      const h = () => Math.round(n.height ?? n.measured?.height ?? (n.type === 'note' ? NOTE_H : n.type === 'mix' ? MIX_H : CARD_H));
       const by = 'by' in n.data && n.data.by ? { by: n.data.by } : {};
       if (n.type === 'file') return { ...box, ...by, ...(n.width != null && n.height != null ? { w, h: h() } : {}), path: n.data.path };
       if (n.type === 'make') return { ...box, w, h: h(), ...n.data };
       if (n.type === 'cut') return { ...box, ...by, w, h: h(), cut: true as const };
+      if (n.type === 'source') return { ...box, ...by, w, h: h(), source: true as const, path: n.data.path,
+        ...(n.data.groups ? { folderGroups: n.data.groups } : {}), ...(n.data.settings ? { settings: n.data.settings } : {}) };
+      if (n.type === 'voice') return { ...box, ...by, w, h: h(), voice: true as const,
+        ...(n.data.path ? { path: n.data.path } : {}), ...(n.data.files ? { files: n.data.files } : {}), ...(n.data.mode ? { voiceMode: n.data.mode } : {}) };
+      if (n.type === 'subtitle') return { ...box, ...by, w, h: h(), subtitle: true as const,
+        ...(n.data.mode ? { subtitleMode: n.data.mode } : {}), ...(n.data.path ? { path: n.data.path } : {}) };
+      if (n.type === 'mix') return { ...box, ...by, w, h: h(), mix: true as const, recipe: n.data.recipe ?? {},
+        ...(n.data.recipeId ? { recipeId: n.data.recipeId } : {}), ...(n.data.batchId ? { batchId: n.data.batchId } : {}) };
       if (n.type === 'frame') return { id: n.id, x: box.x, y: box.y, w, h: h(), group: n.data.label, color: n.data.color };
       return { ...box, ...by, w, h: h(), text: n.data.text };
     }),
@@ -282,6 +310,78 @@ export async function startRun(project: string, folder: string, node: string, re
   }
 }
 
+/* ── a mix being run ── */
+
+/**
+ * A mix's last run, as its card and its panel say it: what `POST /api/fission-render/recipe` answered (its batch, the
+ * `render.message` and `stopReason` it came back with). Nothing of it is written to the board: progress is the server's
+ * (its batch registry), and the board keeps only the `batchId` it was sent to.
+ */
+export interface MixRun {
+  running: boolean;
+  started: number;
+  /** what it came to: run, and whether the engine made anything */
+  status: 'running' | 'ok' | 'failed';
+  batchId?: string;
+  /** what the route said: the render's own message, else its problems */
+  message?: string;
+  stopReason?: string | null;
+  /** how many videos it made, as its report says */
+  made?: number;
+}
+/** by `project/node` */
+export const mixRuns = new Map<string, MixRun>();
+let mixVersion = 0;
+const mixWatchers = new Set<() => void>();
+export const mixChanged = () => { mixVersion += 1; for (const watch of mixWatchers) watch(); };
+/** redrawn as a mix starts and as it comes back */
+export const useMixRuns = () => React.useSyncExternalStore((watch) => { mixWatchers.add(watch); return () => { mixWatchers.delete(watch); }; }, () => mixVersion);
+
+/** What the recipe route answers, as this reads it (fission-render-routes.mjs). */
+interface RecipeAnswer {
+  ok?: boolean; batchId?: string; message?: string; problems?: string[]; code?: string;
+  render?: { message?: string; stopReason?: string | null; code?: number; errorCode?: string | null; report?: { succeeded?: number; stopReason?: string | null; failures?: unknown[] } | null } | null;
+}
+
+/**
+ * Runs a mix node's recipe once (`run: true`): the recipe as the node keeps it, no voices of its own yet, the project it
+ * belongs to. Its answer is kept in `mixRuns`, where the node and its panel read it; the batch it was given is returned
+ * (null when it did not get one), for the board to keep on the node once.
+ */
+export async function startMix(project: string, node: string, recipe: MixRecipe, say: { failed: string }): Promise<string | null> {
+  const id = `${project}/${node}`;
+  if (mixRuns.get(id)?.running) return null;
+  mixRuns.set(id, { running: true, started: Date.now(), status: 'running' });
+  mixChanged();
+  /** what the route answered (null: nothing, or not JSON) */
+  let answer: RecipeAnswer | null = null;
+  let failure = '';
+  try {
+    const response = await fetch('/api/fission-render/recipe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ project, recipe, voices: [], run: true }),
+    });
+    answer = (await response.json().catch(() => null)) as RecipeAnswer | null;
+    if (!response.ok && !answer) failure = `${response.status} ${response.statusText}`;
+  } catch (e) {
+    failure = e instanceof Error ? e.message : String(e);
+  }
+  const render = answer?.render ?? null;
+  /* what it said, in the order it is worth reading: the render's own message, its stop reason, the per-item problems */
+  const message = render?.message || answer?.message || failure || (answer?.problems?.length ? answer.problems.join('；') : '') || (answer?.code ? answer.code : say.failed);
+  const stopReason = render?.stopReason ?? render?.report?.stopReason ?? null;
+  const made = Number(render?.report?.succeeded ?? 0);
+  const done = Boolean(answer?.ok) && !failure;
+  const batchId = answer?.batchId;
+  mixRuns.set(id, {
+    running: false, started: Date.now(), status: done ? 'ok' : 'failed',
+    ...(batchId ? { batchId } : {}), message, stopReason, ...(Number.isFinite(made) ? { made } : {}),
+  });
+  mixChanged();
+  return batchId ?? null;
+}
+
 /* ── what the nodes need of the board around them ── */
 
 /** What is wired into a node, in its order, as its panel shows it. */
@@ -297,12 +397,14 @@ export function inputViews(nodes: readonly BoardNode[], edges: readonly Edge[], 
     if (n.type === 'note') return [{ edge: e.id, from: n.id, text: n.data.text.trim() }];
     if (n.type === 'file') { const media = mediaOf(n.data.path); return [{ edge: e.id, from: n.id, path: n.data.path, ...(media ? { media } : {}) }]; }
     if (n.type === 'make') return [{ edge: e.id, from: n.id, ...(n.data.path ? { path: n.data.path, media: MAKE_MEDIA[n.data.make] } : {}) }];
+    /* a mix gives nothing: what it makes is a batch of videos on disk, not a file the board draws */
+    if (n.type === 'mix') return [];
     return [];
   });
 }
 
 /** what can be made next to a node, or put on the board: a node of a kind, or a file of the project */
-export type SpawnKind = 'note' | MakeKind | 'cut';
+export type SpawnKind = 'note' | MakeKind | 'cut' | 'mix' | 'source' | 'voice' | 'subtitle';
 /** which side of a node something is added at: right, made from it; left, going into it */
 export type Side = 'source' | 'target';
 
@@ -312,13 +414,15 @@ export interface Board {
   fileOf: (path: string) => WorkspaceResource | null;
   sources: MediaSources;
   addToFilm: (file: WorkspaceResource) => void;
-  setData: (id: string, data: Partial<FileData & NoteData & FrameData & MakeData>) => void;
+  setData: (id: string, data: Partial<FileData & NoteData & FrameData & MakeData & MixData>) => void;
   /** a node's card drawn this big */
   resize: (id: string, size: { w: number; h: number }) => void;
   /** a node of a kind made from this one: beside it on the right, wired from it (with what it starts with) */
   spawn: (id: string, kind: SpawnKind, data?: Partial<MakeData>) => void;
   /** files made from a node on this computer (its picture's cells, a frame of its clip): into the project, beside it */
   bring: (id: string, files: File[]) => void;
+  /** files from this computer into the project (their paths, project-relative): the panel's BGM upload */
+  importFiles: (files: File[]) => Promise<string[]>;
   /** a picture's background taken out by the person's service: a new picture beside it */
   cutout: (id: string, path: string) => void;
   remove: (ids: string[]) => void;
@@ -342,6 +446,9 @@ export interface Board {
   unused: ReadonlyMap<string, number>;
   make: (id: string) => void;
   stop: (id: string) => void;
+  /** a mix run with the recipe it keeps (`POST /api/fission-render/recipe`, run: true); what it came to, `mix` */
+  runMix: (id: string) => void;
+  mix: (id: string) => MixRun | undefined;
   /** what is wired into a node, in order; a wire taken out */
   inputs: (id: string) => InputView[];
   unwire: (edge: string) => void;

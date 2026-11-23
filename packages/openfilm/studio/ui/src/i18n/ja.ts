@@ -1100,6 +1100,7 @@ export const ja: Words = {
     binding: {
       title: 'クラウドスチュワードの連携',
       unboundBody: 'この Studio が使うクラウドスチュワードのアカウントを連携すると、ここにそのコレクションと素材が表示されます（コレクション、検索欄、分類／タグ／長さ／アカウントの絞り込み）。',
+      publicHint: '未連携でも会社の公開素材は一覧できます。連携すると自分のアカウントに絞られます。',
       action: 'アカウントを連携',
       accountLabel: 'クラウドスチュワードのアカウント',
       accountHint: 'クラウドスチュワードのアカウント名（クラウドスチュワードへのログインは不要）',
@@ -1646,6 +1647,15 @@ export const ja: Words = {
   },
   canvas: {
     title: 'キャンバス',
+    mix: {
+      title: 'バッチミックス', idle: '未実行', running: 'レンダリング中…', done: '書き出し済み', failed: 'レンダリング失敗',
+      batch: 'バッチ', groups: 'シーングループ', refs: '{n} 本', noRecipe: 'レシピがありません：フォルダー・セリフ・音声を入れて実行します。',
+      line: 'ナレーション', noLine: '未入力', count: '本数', ratio: '比率', duration: '長さ', voice: '音声',
+      run: 'ミックス開始', stopReason: '停止理由', addGroup: 'フォルダー追加', removeGroup: '削除',
+      lines: 'セリフ（1行＝1本）', linesHint: '1行ごとに1本のナレーションになります。空なら書き出しません。',
+      provider: '音声サービス', targetSec: '長さ（秒）', aspect: '比率', subtitle: '字幕を焼き込む',
+      bgm: 'BGM', bgmAdd: 'BGM をアップロード', bgmNone: 'BGM はまだありません', bgmRemove: 'BGM を削除',
+    },
     toEdit: '編集に切り替え',
     toCanvas: 'キャンバスに切り替え',
     editTitle: '編集',
@@ -2313,6 +2323,7 @@ export const ja: Words = {
     close: '閉じる',
   },
   settings: {
+    account: { group: 'アカウント', signOut: 'ログアウト', signOutHint: 'プロジェクトはこのコンピューターに残ります。' },
     title: '設定',
     done: '完了',
     search: '検索',
@@ -2617,7 +2628,7 @@ export const ja: Words = {
       changes: '各ターンの変更を表示',
       changesHint: '各返信の下に、そのターンで追加・削除・変更されたファイルと、増減した行数を表示します。ファイルをクリックすると変更された行を確認できます。',
       logs: '各ターンのログを表示',
-      logsHint: 'チャットの各ターンに「ログ」ボタンが付きます。プロンプトと実行したセッション、各ツール呼び出しの入力と出力、すべての質問と回答、終わり方を、エージェントが送ったとおりに確認できます。',
+      devtools: '開発者ツール', devtoolsHint: 'F12 と「表示」メニューで開けます。', logsHint: 'チャットの各ターンに「ログ」ボタンが付きます。プロンプトと実行したセッション、各ツール呼び出しの入力と出力、すべての質問と回答、終わり方を、エージェントが送ったとおりに確認できます。',
       where: 'この設定に関係なく、すべてのターンはプロジェクトの .film/logs フォルダに記録されます（このコンピュータ内のみ）。',
     },
     shortcuts: {

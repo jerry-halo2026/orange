@@ -10,7 +10,7 @@
  */
 import { projectById, listProjects } from './projects.mjs';
 import { listPlans, readPlan, writePlan } from '../../src/plan-store.mjs';
-import { resolveEnginePaths } from './fission-engine-paths.mjs';
+import { resolveEnginePaths, resolveEnginePathsFromConfig } from './fission-engine-paths.mjs';
 import { batchProgress, listBatches, readBatch, retryBatch, startBatch } from './fission-batch-jobs.mjs';
 import { studioHomeDir } from '../../src/locations.mjs';
 import { expandPlans, variantToBrief } from '../../src/planset.mjs';
@@ -78,20 +78,31 @@ export function createPlanStoreBridge(project) {
 
 /**
  * 路由要的全部依赖。
- * @param {{ auth?: any, home?: () => string, dataDir?: string }} [options]
+ *
+ * 工程读取必须跑在桌面的 native 授权上下文里（`desktopAuth.runNative`）：`projects.mjs` 的
+ * `projectById/listProjects` 在没有授权上下文时抛 `control-required`，而这里的 catch 会把它吞成
+ * “没有这个工程”，于是 `/api/fission-render/*` 在安装后的应用里永远是 404（批量出片页也永远空）。
+ *
+ * @param {{ auth?: any, home?: () => string, dataDir?: string, projects?: { projectById: Function, listProjects: Function } }} [options]
  */
-export function createRenderBatchBridge({ auth = null, home = studioHomeDir, dataDir = '' } = {}) {
+export function createRenderBatchBridge({
+  auth = null, home = studioHomeDir, dataDir = '',
+  projects = { projectById, listProjects },
+} = {}) {
+  /** 在授权上下文里跑；没有 runNative（单测/无桌面宿主）时原样执行。 */
+  const native = (/** @type {() => Promise<any>} */ work) =>
+    typeof auth?.runNative === 'function' ? auth.runNative(work) : work();
   return {
     auth,
     dataDir: dataDir || process.env.OPENFILM_DATA_DIR || '',
     projectById: async (/** @type {string} */ id) => {
       /* 依次尝试：按 id 取（Studio 自己的项目库）→ 直接当成目录（桌面端把工程目录传进来时的形态） */
       try {
-        const found = await projectById(id);
+        const found = await native(() => projects.projectById(id));
         if (found?.path) return found;
       } catch { /* 落到下面 */ }
       try {
-        const all = await listProjects();
+        const all = await native(() => projects.listProjects());
         const hit = all?.find((entry) => entry?.id === id || entry?.name === id);
         if (hit?.path) return hit;
       } catch { /* 落到下面 */ }
@@ -99,10 +110,11 @@ export function createRenderBatchBridge({ auth = null, home = studioHomeDir, dat
     },
     plansOf: (/** @type {string} */ project) => listPlans(project).map((entry) => ({ id: entry.id })),
     readPlanFile: (/** @type {string} */ project, /** @type {string} */ id) => readPlan(project, id),
-    resolveEnginePaths: (/** @type {{ dataDir: string, project: string }} */ options) => resolveEnginePaths({
-      dataDir: options.dataDir || home(),
-      project: options.project,
-    }),
+    /* 安装后的应用把随包的 ffmpeg/fission 路径写在 `ORANGE_FISSION_CONFIG_FILE` 指向的配置里：
+       先用它，缺了再退回 `<dataDir>/runtime/ffmpeg-<ver>` 的推导（开发检出）。 */
+    resolveEnginePaths: (/** @type {{ dataDir: string, project: string }} */ options) =>
+      resolveEnginePathsFromConfig({ project: options.project })
+      ?? resolveEnginePaths({ dataDir: options.dataDir || home(), project: options.project }),
     checkPlans,
     expandPlanset,
     startBatch,

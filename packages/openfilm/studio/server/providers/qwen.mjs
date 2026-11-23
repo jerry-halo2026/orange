@@ -12,7 +12,7 @@
  * Region matters: a Beijing key does not work against the Singapore endpoint and the other way round (401). `QWEN_URL`
  * names the endpoint to use (`OPENFILM_QWEN_URL` through `serviceUrl`), so a person using another region sets it once.
  */
-import { billedBy, needed, noBalance, serviceUrl } from './common.mjs';
+import { billedBy, landing, needed, noBalance, serviceUrl } from './common.mjs';
 
 const NAME = 'Qwen';
 const DEFAULT_URL = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation';
@@ -113,10 +113,11 @@ export default {
         bytes = new Uint8Array(await file.arrayBuffer());
       }
       if (!bytes.length) throw new Error('Qwen returned an empty audio file.');
-      const out = typeof args.out === 'string' && args.out.trim() ? args.out.trim() : `assets/${voice}-${Date.now()}.mp3`;
+      /* `--out` 是名字不是路径（get.mjs 只收纯名）：落盘一律经 landing 落到 `assets/audio/vo/` */
+      const path = landing('audio/vo', args.out, 'mp3');
       return {
-        files: [{ path: out, bytes }],
-        index: [{ src: out, kind: 'sound', voice }],
+        files: [{ path, bytes }],
+        index: [{ src: path, kind: 'sound', voice }],
         receipt: { voice, model: ctx.model ?? TTS_MODEL },
         cost: billedBy(NAME),
       };

@@ -1,5 +1,5 @@
-// © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
-// No modification or redistribution without the owner’s written permission.
+// 漏 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
+// No modification or redistribution without the owner鈥檚 written permission.
 
 /** First-party authentication in the existing Studio utility. Never expose this object to a renderer. */
 import { createHash, randomBytes } from 'node:crypto';
@@ -37,7 +37,7 @@ function rebase(path,from,to) {
  * `project-access-denied`.
  *
  * Only `root` changes: the environment, subject and project ids, and every other key, are written back as they were.
- * A file this does not know (another version, not the shape loadOwners reads) is left exactly as it was — the migration
+ * A file this does not know (another version, not the shape loadOwners reads) is left exactly as it was 鈥?the migration
  * of a folder must not be the reason a person's records are dropped. Returns how many records moved.
  *
  * @param {{ home: string, from: string, to: string }} options
@@ -152,9 +152,10 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   }
   /* Why there is no configuration, when the caller knows: an installed app whose installer is incomplete says so,
      instead of asking its user to configure something they cannot. Anything outside the whitelist stays the generic
-     development reason — a free-form string must never reach the window. */
+     development reason 鈥?a free-form string must never reach the window. */
   const offlineReason = CONFIGURATION_REASONS.includes(configurationReason) ? configurationReason : 'configuration-required';
   service=makeService();
+  /* 浠呭紑鍙戞満锛歄PENFILM_DEV_AUTH=off 涓旈潪鎵撳寘杩涚▼鏃讹紝缁欏嚭涓€涓湰鍦?dev 涓讳綋锛岀渷鎺夌櫥褰曘€?     鎵撳寘鏋勫缓鍦?main.mjs 閲屽啓 OPENFILM_APP_PACKAGED=1锛屽洜姝ゅ彂甯冨寘姘歌繙涓嶄細璧拌繖閲屻€?*/
   function getPublicState() {
     if(failed)return safeState('locked','preservation-failed');
     if(disposed)return safeState('disposed','disposed');
@@ -194,7 +195,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     /* The environment may already have been activated on this machine (its activation state survives a restart), and
        the service then answers `switch-required` instead of signing in. On a single-user machine that is exactly the
        case the service's own retirement is for: retire the previous activation, then sign in once more. Nothing is
-       loosened — a still-refused sign-in is returned as it is. */
+       loosened 鈥?a still-refused sign-in is returned as it is. */
     if(result&&result.code==='switch-required'){
       try{ await service.signOut(); }catch{ /* retirement is best effort; the retry below decides */ }
       result=await service.signIn(input);
@@ -230,12 +231,12 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     } catch (error) {
       /* The workspace seal is ours, not the identity layer's: a marker or reservation that cannot be written must not
          turn a successful Supabase sign-in into "this sign-in is not active". The step and cause are recorded, the
-         reservation is released, and the person stays signed in — the seal's guarantees degrade, the session does not. */
+         reservation is released, and the person stays signed in 鈥?the seal's guarantees degrade, the session does not. */
       try {
         const diag = join(homes[0], 'auth-diag.log');
         mkdirSync(homes[0], { recursive: true });
         writeFileSync(diag, `${new Date().toISOString()}\tstep=${step}\tcode=${error?.code ?? 'no-code'}\tmessage=${String(error?.message ?? error)}\n`, { flag: 'a' });
-        process.stderr.write(`[auth] seal failed at ${step}: ${error?.message ?? error} (${error?.code ?? 'no-code'}) — signed in anyway\n`);
+        process.stderr.write(`[auth] seal failed at ${step}: ${error?.message ?? error} (${error?.code ?? 'no-code'}) 鈥?signed in anyway\n`);
       } catch { /* diagnostics must never be the reason a sign-in fails */ }
       reservation?.close();reservation=null;
       if(evidence){

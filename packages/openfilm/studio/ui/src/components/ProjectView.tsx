@@ -1709,6 +1709,20 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
     const film = applyOps({ stage: { ...(stageRef.current ?? { w: 1920, h: 1080 }) }, tracks: [] } as unknown as FilmValue, groupInsertOps(clips, 0, 0, []) as never) as FilmValue;
     return { film, name, length: filmLength(film.tracks as never) };
   }, [projectId, templateClips, toast]);
+  /* 完整工程模板：复制成新工程并打开（不是片段组插入）。 */
+  const startProjectTemplate = React.useCallback(async (item: LibraryItem) => {
+    const folder = String((item as unknown as { folder?: string }).folder ?? '');
+    if (!folder) { toast.show(t('timeline.editFail')); return; }
+    try {
+      const response = await fetch(`/api/project-templates/${encodeURIComponent(folder.split('/').pop() ?? '')}/start`, { method: 'POST' });
+      const body = await response.json().catch(() => null) as { project?: { id?: string } } | null;
+      if (!response.ok || !body?.project?.id) throw new Error((body as { error?: string })?.error ?? `HTTP ${response.status}`);
+      const key = new URL(window.location.href).searchParams.get('key');
+      window.location.assign(`/projects/${encodeURIComponent(body.project.id)}${key ? `?key=${encodeURIComponent(key)}` : ''}`);
+    } catch (error) {
+      toast.show(error instanceof Error ? error.message : String(error));
+    }
+  }, [toast, t]);
   const insertTemplate = React.useCallback(async (item: LibraryItem, at: number, track: Parameters<typeof groupInsertAt>[0]) => {
     const made = await buildTemplateFilm(item);
     if (!made) return;
@@ -2089,6 +2103,7 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
         else if (item.kind === 'fade') fade(item, cutHere()?.cut ?? null);
         else if (item.kind === 'motion') motion(item);
         else if (item.kind === 'group') void insertTemplate(item, snapToFrame(timeRef.current) / 1000, { insert: 0 });
+        else if ((item as unknown as { kind?: string }).kind === 'project') void startProjectTemplate(item);
         else if (item.kind === 'textstyle') textLine(item);
         else if (item.kind === 'textmotion') textLook(item);
         else void place(item);
@@ -2200,9 +2215,10 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
    * higher so the two languages read one over the other: one undo step. Null, or why not.
    */
   const addTranslation = React.useCallback(async (from: string | null, src: string, language: string): Promise<string | null> => {
+    if (!src) return null;
     const at = Math.max(0, from ? film.film?.tracks.findIndex((tr) => tr.captions?.src === from) ?? 0 : 0);
     /* alone (no track of the words said under it): where its captions were made to sit */
-    const got = from ? await fetch(`/api/projects/${encodeURIComponent(projectId)}/caption-tracks/file?src=${encodeURIComponent(src)}`).then((r) => r.json(), () => null) as { text?: string } | null : null;
+    const got = from && src ? await fetch(`/api/projects/${encodeURIComponent(projectId)}/caption-tracks/file?src=${encodeURIComponent(src)}`).then((r) => r.json(), () => null) as { text?: string } | null : null;
     if (typeof got?.text === 'string') {
       const above = writeVtt(placeCues(withIds(readVtt(got.text)), null, 0, -TRANSLATION_LIFT_PCT));
       await fetch(`/api/projects/${encodeURIComponent(projectId)}/caption-tracks/file`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ src, text: above }) }).catch(() => null);

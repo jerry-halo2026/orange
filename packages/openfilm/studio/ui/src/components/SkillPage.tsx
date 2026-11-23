@@ -17,7 +17,7 @@ import {
   PictureInPicture2, Plus, Presentation, RefreshCw, Scissors, Shapes, Sparkles, Trash2, Wand2, type LucideIcon,
 } from 'lucide-react';
 import { useLanguage, useT } from '@/i18n';
-import { communityOf, makerOf, sourcesApi, type SkillEntry } from '@/lib/project-sources';
+import { communityOf, displayUid, makerOf, sourcesApi, type SkillEntry } from '@/lib/project-sources';
 import { ConfirmDialog } from './ConfirmDialog';
 import { SettingsSwitch } from './settings/ui';
 
@@ -153,7 +153,7 @@ export function SkillPage({ skill, setSkills, projectId, onBack, onTry }: {
           <span>{t('gallery.byCommunity').replace('{owner}', makerOf(skill))}</span>
         ) : <span>{t(group)}</span>}
         {/* its uid, owner/name: how it is told apart, shared and searched */}
-        <span className="min-w-0 truncate font-mono text-[11px] text-[var(--text-faint)]" title={skill.uid}>{skill.uid}</span>
+        <span className="min-w-0 truncate font-mono text-[11px] text-[var(--text-faint)]" title={skill.uid}>{displayUid(skill.uid)}</span>
         {skill.version ? <span className="rounded-[5px] border border-[var(--border)] px-1.5 py-[1px] font-mono text-[10.5px] text-[var(--text-muted)]">v{skill.version}</span> : null}
       </div>
       <Origin skill={skill} />

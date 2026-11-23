@@ -10,15 +10,17 @@
 import React from 'react';
 import { NodeToolbar, Position } from '@xyflow/react';
 import {
-  AlignLeft, ArrowUp, AudioLines, Brush, Camera, Palette, UserRound, Eraser, Film, Grid2x2, LayoutDashboard, Orbit, Check, ChevronDown, Clapperboard, Download, FolderSearch, Images, LayoutGrid, Maximize2, Mic, Minimize2, Music, Plus, Search, Sparkles, Square, Video, X,
+  AlignLeft, ArrowUp, AudioLines, Brush, Camera, Palette, UserRound, Eraser, Film, FolderOpen, Grid2x2, Layers, LayoutDashboard, Orbit, Check, ChevronDown, Clapperboard, Download, FolderSearch, Images, LayoutGrid, Loader2, Maximize2, Mic, Minimize2, Music, Play, Plus, Search, Sparkles, Square, Subtitles, Video, X,
 } from 'lucide-react';
 import { useLanguage, useT } from '@/i18n';
-import { GIF_FRAMES, GIF_FRAME_MS, IMAGE_RATIOS, MAKE_COUNTS, MAKE_MEDIA, VIDEO_MODES, VIDEO_RATIOS, frameRatio, lengthOf, lengthRange, modeOf, modesFor, ratioOf, type ModelSpec, type VideoMode } from '@/lib/canvas';
+import { api } from '@/api';
+import { readResourceDragData, RESOURCE_DRAG_TYPE } from '@/lib/resource-drag';
+import { GIF_FRAMES, GIF_FRAME_MS, IMAGE_RATIOS, MAKE_COUNTS, MAKE_MEDIA, VIDEO_MODES, VIDEO_RATIOS, frameRatio, lengthOf, lengthRange, mixSummary, modeOf, modesFor, ratioOf, type ModelSpec, type VideoMode } from '@/lib/canvas';
 import { PRESETS, PRESET_GROUPS, presetOf, type CanvasPreset } from '@/lib/canvas-presets';
 import type { WorkspaceResource } from '@/lib/workspace-resources';
 import { Popover } from '../Popover';
 import { Tooltip } from '../Tooltip';
-import { modelTime, timeLabel, useBoard, type Choice, type MakeData } from './board';
+import { modelTime, timeLabel, useBoard, useMixRuns, type Choice, type MakeData, type MixData, type SourceData, type SubtitleData, type VoiceData } from './board';
 import { frameOf, splitGrid } from './pixels';
 import { ProviderMark } from '../settings/ProviderMark';
 import { studioHost } from '@/lib/host';
@@ -665,6 +667,385 @@ export function NotePanel({ id }: { id: string }) {
           </Tooltip>
         </div>
         {error ? <div className="mt-2 select-text text-[12px] leading-snug text-red-500">{error}</div> : null}
+      </div>
+    </NodeToolbar>
+  );
+}
+
+/**
+ * A mix's panel, under it while it is the one selected: what its recipe draws from (its groups, by name and how much is
+ * in each), the line it speaks, how many videos it makes, their shape and length, its voice — as the recipe says them
+ * (M1 reads it; the batch page and the agents write it), and the button that runs it. What the render route answered is
+ * said here and on the node's card: the board keeps no progress of its own.
+ */
+export function SourcePanel({ id, data }: { id: string; data: SourceData }) {
+  const board = useBoard();
+  const shown = board.single === id && !board.readOnly;
+  const settings = data.settings ?? { take: 1, rule: 'random', speed: 1, useThenDelete: false, allowReuse: false };
+  const patch = (next: Partial<SourceData>) => { board.willChange(); board.setData(id, next); };
+  const scan = async (path: string) => {
+    const answer = await fetch('/api/fission-render/scan-folder', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ path }) }).then((r) => r.json()).catch(() => null) as { groups?: Array<{ name: string; videos: number; images: number }> } | null;
+    patch({ path, groups: (answer?.groups ?? []).filter((group) => group.videos + group.images > 0) });
+  };
+  return (
+    <NodeToolbar nodeId={id} isVisible={shown} position={Position.Bottom} offset={14}>
+      <div className="w-[420px] rounded-[12px] border border-[var(--cv-line)] bg-[var(--cv-card)] p-3 text-[12.5px] text-[var(--cv-ink-2)] shadow-lg">
+        <div className="mb-2 flex items-center gap-2">
+          <FolderOpen size={14} /><span className="font-medium text-[var(--cv-ink)]">素材文件夹</span>
+          <span className="flex-1" />
+          <button type="button" className="rounded-[8px] border border-[var(--cv-line)] px-2 py-1" onClick={() => { void api.pickFolder('素材文件夹').then((path) => { if (path) void scan(path); }); }}>选择文件夹</button>
+        </div>
+        <div className="mb-2 truncate text-[11.5px] text-[var(--cv-ink-3)]">{data.path}</div>
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="flex items-center gap-1">每次抽取
+            <input type="number" min={1} max={20} value={settings.take} onChange={(event) => patch({ settings: { ...settings, take: Math.max(1, Number(event.target.value) || 1) } })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none" />
+          </label>
+          <select value={settings.rule} onChange={(event) => patch({ settings: { ...settings, rule: event.target.value === 'sequential' ? 'sequential' : 'random' } })} className="h-7 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none">
+            <option value="random">随机</option><option value="sequential">顺序</option>
+          </select>
+          <label className="flex items-center gap-1">变速
+            <input type="number" min={0.5} max={4} step={0.1} value={settings.speed} onChange={(event) => patch({ settings: { ...settings, speed: Math.min(4, Math.max(0.5, Number(event.target.value) || 1)) } })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none" />
+          </label>
+          <label className="flex items-center gap-1"><input type="checkbox" checked={settings.useThenDelete} onChange={(event) => patch({ settings: { ...settings, useThenDelete: event.target.checked } })} />用后删除</label>
+          <label className="flex items-center gap-1"><input type="checkbox" checked={settings.allowReuse} onChange={(event) => patch({ settings: { ...settings, allowReuse: event.target.checked } })} />重复抽取</label>
+        </div>
+        <div className="mt-2 max-h-48 space-y-1 overflow-auto text-[11.5px] text-[var(--cv-ink-3)]">
+          {(data.groups ?? []).map((group, at) => (
+            <div key={group.name} className="flex items-center gap-1.5">
+              <span className="w-20 truncate">{group.name}</span>
+              <span className="w-8 text-right tabular-nums">{group.videos + group.images}</span>
+              <input type="number" min={1} max={20} value={group.take ?? settings.take}
+                onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, take: Math.max(1, Number(event.target.value) || 1) }; patch({ groups }); }}
+                className="h-6 w-12 rounded-[6px] bg-[var(--cv-chip)] px-1 outline-none" title="该组每次抽取" />
+              <select value={group.rule ?? settings.rule}
+                onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, rule: event.target.value === 'sequential' ? 'sequential' : 'random' }; patch({ groups }); }}
+                className="h-6 rounded-[6px] bg-[var(--cv-chip)] px-1 outline-none">
+                <option value="random">随机</option><option value="sequential">顺序</option>
+              </select>
+              <label className="flex items-center gap-1"><input type="checkbox" checked={group.useThenDelete ?? settings.useThenDelete}
+                onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, useThenDelete: event.target.checked }; patch({ groups }); }} />删</label>
+              <label className="flex items-center gap-1"><input type="checkbox" checked={group.allowReuse ?? settings.allowReuse}
+                onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, allowReuse: event.target.checked }; patch({ groups }); }} />重复</label>
+            </div>
+          ))}
+        </div>
+      </div>
+    </NodeToolbar>
+  );
+}
+
+export function VoicePanel({ id, data }: { id: string; data: VoiceData }) {
+  const board = useBoard();
+  const shown = board.single === id && !board.readOnly;
+  const files = data.files ?? [];
+  const patch = (next: Partial<VoiceData>) => { board.willChange(); board.setData(id, next as never); };
+  const add = async (list: File[]) => {
+    if (!list.length) return;
+    const paths = await board.importFiles(list);
+    if (paths.length) patch({ files: [...files, ...paths.map((path) => ({ path, mode: 'recognize' as const }))] });
+  };
+  return (
+    <NodeToolbar nodeId={id} isVisible={shown} position={Position.Bottom} offset={14}>
+      <div className="w-[420px] rounded-[12px] border border-[var(--cv-line)] bg-[var(--cv-card)] p-3 text-[12.5px] text-[var(--cv-ink-2)] shadow-lg">
+        <div className="mb-2 flex items-center gap-2"><Mic size={14} /><span className="font-medium text-[var(--cv-ink)]">配音</span><span className="flex-1" />
+          <select value={data.mode ?? 'upload'} onChange={(event) => patch({ mode: event.target.value as VoiceData['mode'] })} className="h-7 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none">
+            <option value="upload">上传音频</option><option value="none">不配音</option><option value="tts">TTS</option>
+          </select>
+        </div>
+        {files.map((file) => <div key={file.path} className="flex items-center gap-2 py-0.5"><span className="flex-1 truncate">{file.path.split(/[\\/]/).pop()}</span>
+          <button type="button" onClick={() => patch({ files: files.filter((row) => row.path !== file.path) })}><X size={11} /></button></div>)}
+        <label className="mt-1 flex h-7 cursor-pointer items-center justify-center rounded-[8px] border border-[var(--cv-line)]">
+          <Plus size={12} /> 上传配音
+          <input type="file" accept="audio/*" multiple className="hidden" onChange={(event) => { void add([...(event.currentTarget.files ?? [])]); event.currentTarget.value = ''; }} />
+        </label>
+      </div>
+    </NodeToolbar>
+  );
+}
+
+export function SubtitlePanel({ id, data }: { id: string; data: SubtitleData }) {
+  const board = useBoard();
+  const shown = board.single === id && !board.readOnly;
+  return (
+    <NodeToolbar nodeId={id} isVisible={shown} position={Position.Bottom} offset={14}>
+      <div className="w-[320px] rounded-[12px] border border-[var(--cv-line)] bg-[var(--cv-card)] p-3 text-[12.5px] text-[var(--cv-ink-2)] shadow-lg">
+        <div className="mb-2 flex items-center gap-2"><Subtitles size={14} /><span className="font-medium text-[var(--cv-ink)]">字幕</span></div>
+        <div className="flex gap-1">
+          {(['recognize', 'upload', 'none'] as const).map((mode) => (
+            <button key={mode} type="button" onClick={() => { board.willChange(); board.setData(id, { mode } as never); }}
+              className={`h-7 rounded-[8px] px-2 ${data.mode === mode ? 'bg-[var(--primary)] text-[var(--on-primary)]' : 'bg-[var(--cv-chip)]'}`}>
+              {mode === 'recognize' ? '自动识别' : mode === 'upload' ? '上传' : '无'}
+            </button>
+          ))}
+        </div>
+      </div>
+    </NodeToolbar>
+  );
+}
+
+export function MixPanel({ id, data }: { id: string; data: MixData }) {
+  const t = useT();
+  const board = useBoard();
+  useMixRuns();
+  const shown = board.single === id && !board.readOnly;
+  const run = board.mix(id);
+  const summary = mixSummary(data.recipe);
+  const library = useLibraryVoices();
+  const [voiceOpen, setVoiceOpen] = React.useState(false);
+  const [previewPath, setPreviewPath] = React.useState<string | null>(null);
+  const [previewing, setPreviewing] = React.useState(false);
+  const [previewError, setPreviewError] = React.useState('');
+  const projectId = typeof window === 'undefined' ? '' : (window.location.pathname.match(/\/projects\/([^/?]+)/)?.[1] ?? '');
+  const preview = async () => {
+    if (!projectId || previewing) return;
+    setPreviewing(true);
+    setPreviewError('');
+    try {
+      const response = await fetch('/api/fission-render/recipe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ project: projectId, recipe, voices: [], run: true, preview: true }) });
+      const answer = await response.json().catch(() => null) as { previewPath?: string; problems?: string[]; message?: string } | null;
+      if (answer?.previewPath) setPreviewPath(answer.previewPath);
+      else setPreviewError(answer?.problems?.join('；') || answer?.message || '预览失败');
+    } catch (error) { setPreviewError(error instanceof Error ? error.message : String(error)); }
+    finally { setPreviewing(false); }
+  };
+  /* the recipe, written here: groups (folders), the spoken lines, the voice, and the run's numbers */
+  const recipe = (data.recipe ?? {}) as {
+    groups?: Array<{ name?: string; refs?: unknown[] }>;
+    script?: { provider?: string; voice?: string; lines?: string[] };
+    voiceFiles?: Array<{ path: string; text?: string; subtitleMode?: string }>;
+    params?: { count?: number; aspect?: string; targetSec?: number; subtitle?: boolean; subtitleFontSize?: number; subtitlePosPct?: number; bgmMode?: string; threads?: number };
+  };
+  const groups = Array.isArray(recipe.groups) ? recipe.groups : [];
+  const script = recipe.script ?? {};
+  const params = recipe.params ?? {};
+  const patch = (part: Record<string, unknown>) => { board.willChange(); board.setData(id, { recipe: { ...data.recipe, ...part } }); };
+  const setGroups = (next: Array<{ name?: string; refs?: unknown[] }>) => patch({ groups: next });
+  /* 从素材中心/素材面板拖进来的东西：云端卡片 → cloud ref；项目文件 → asset；收藏 → saved。 */
+  const dropResource = (event: React.DragEvent) => {
+    if (!event.dataTransfer.types.includes(RESOURCE_DRAG_TYPE)) return;
+    const item = readResourceDragData(event.dataTransfer);
+    if (!item) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const material = (item as { material?: { videoId?: string; videoType?: number } }).material;
+    const saved = (item as { saved?: string }).saved;
+    const name = (item.name ?? material?.videoId ?? item.path ?? '素材').replace(/\.[^.]+$/, '').slice(0, 60);
+    if (material?.videoId) {
+      /* 云管家素材：先落到本地（raw → 工程 assets），再用本地路径进 recipe，引擎不需要云端解析。 */
+      void (async () => {
+        const project = window.location.pathname.match(/\/projects\/([^/?]+)/)?.[1] ?? '';
+        try {
+          const raw = await fetch('/api/materials/raw', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ videoId: material.videoId, videoType: material.videoType }) }).then((r) => r.json());
+          const brought = raw?.path ? await fetch(`/api/projects/${encodeURIComponent(project)}/files/bring`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: [raw.path], into: 'assets/materials', mode: 'copy' }) }).then((r) => r.json()) : null;
+          const landed = Array.isArray(brought?.landed) ? brought.landed[0] : brought?.landed;
+          setGroups([...groups, { name, refs: [{ kind: 'asset', path: landed ?? raw?.landed ?? '' }] }]);
+        } catch {
+          setGroups([...groups, { name, refs: [{ kind: 'cloud', videoId: material.videoId }] }]);
+        }
+      })();
+      return;
+    }
+    const ref = saved ? { kind: 'saved', path: saved }
+      : item.path ? { kind: 'asset', path: item.path } : null;
+    if (!ref) return;
+    setGroups([...groups, { name, refs: [ref] }]);
+  };
+  const setScript = (next: Record<string, unknown>) => patch({ script: { ...script, ...next } });
+  const voiceFiles = Array.isArray(recipe.voiceFiles) ? recipe.voiceFiles : [];
+  const addVoiceFiles = async (list: File[]) => {
+    if (!list.length) return;
+    const paths = await board.importFiles(list);
+    if (!paths.length) return;
+    patch({ voiceFiles: [...voiceFiles, ...paths.map((path) => ({ path, text: '', subtitleMode: 'recognize' }))] });
+  };
+  const setParams = (next: Record<string, unknown>) => patch({ params: { ...params, ...next } });
+  const services = (library?.providers ?? []).filter((service) => ['minimax', 'qwen', 'elevenlabs', 'inworld', 'cartesia'].includes(service.id));
+  const provider = script.provider ?? services[0]?.id ?? 'minimax';
+  const voices = voicesOf(library, provider);
+  const voice = script.voice && voices.some((v) => v.id === script.voice) ? script.voice : '';
+  const voiceLabel = voices.find((v) => v.id === voice)?.name ?? '';
+  const lines = Array.isArray(script.lines) ? script.lines : [];
+  const bgm = Array.isArray((recipe as { bgm?: Array<{ kind?: string; path?: string }> }).bgm) ? (recipe as { bgm?: Array<{ kind?: string; path?: string }> }).bgm! : [];
+  const addBgm = async (list: File[]) => {
+    if (!list.length) return;
+    const paths = await board.importFiles(list);
+    if (!paths.length) return;
+    patch({ bgm: [...bgm, ...paths.map((path) => ({ kind: 'asset', path }))] });
+  };
+  const ready = groups.length > 0 && lines.some((line) => line.trim()) && Boolean(provider) && Boolean(voice);
+  const said = run?.status === 'running' ? t('canvas.mix.running') : run?.status === 'ok' ? t('canvas.mix.done') : run?.status === 'failed' ? t('canvas.mix.failed') : null;
+  const field = (label: string, value: string) => (
+    <span className="flex min-w-0 items-center gap-1.5 text-[12.5px] text-[var(--cv-ink-2)]">
+      <span className="shrink-0 text-[11.5px] text-[var(--cv-ink-3)]">{label}</span>
+      <span className="max-w-[220px] truncate text-[var(--cv-ink)]">{value}</span>
+    </span>
+  );
+  return (
+    <NodeToolbar nodeId={id} isVisible={shown} position={Position.Bottom} offset={14}>
+      <div
+        className={`nodrag nopan nowheel w-[min(660px,86vw)] px-3 pb-2 pt-3 ${PANEL}`}
+        onKeyDown={(event) => event.stopPropagation()}
+        onDragOver={(event) => { if (event.dataTransfer.types.includes(RESOURCE_DRAG_TYPE)) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; } }}
+        onDrop={dropResource}
+      >
+        <div className="flex items-center gap-2 pr-1">
+          <Layers size={14} className="shrink-0 text-[var(--cv-ink-2)]" />
+          <span className="text-[13px] font-medium text-[var(--cv-ink)]">{t('canvas.mix.title')}</span>
+          {data.batchId ? <span className="truncate text-[11.5px] text-[var(--cv-ink-3)]">{t('canvas.mix.batch')} {data.batchId}</span> : null}
+          <span className="flex-1" />
+          {said ? <span className="shrink-0 text-[11.5px] text-[var(--cv-label)]">{said}</span> : null}
+        </div>
+        {/* what the recipe is made of, written here: folders, lines, voice, and the run's own numbers */}
+        <div className="mt-2.5 space-y-2">
+          <div className="flex items-center gap-2">
+            <span className={OPTION_TITLE}>{t('canvas.mix.groups')}</span>
+            <span className="flex-1" />
+            <button type="button" className={CHIP} onClick={() => { void (async () => {
+              const path = await api.pickFolder(t('canvas.mix.addGroup'));
+              if (!path) return;
+              const answer = await fetch('/api/fission-render/scan-folder', {
+                method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ path }),
+              }).then((r) => r.json()).catch(() => null) as { groups?: Array<{ name: string; videos: number; images: number }> } | null;
+              const found = (answer?.groups ?? []).filter((group) => group.videos + group.images > 0);
+              const base = path.split(/[\\/]/).filter(Boolean).pop() ?? 'group';
+              const made = found.length
+                ? found.map((group) => ({ name: group.name, refs: [{ kind: 'dir', dir: path, path: group.name }] }))
+                : [{ name: base, refs: [{ kind: 'dir', path }] }];
+              setGroups([...groups, ...made]);
+            })(); }}>
+              <Plus size={13} />{t('canvas.mix.addGroup')}
+            </button>
+          </div>
+          {groups.length ? (
+            <div className="flex flex-wrap gap-1.5">
+              {groups.map((group, i) => (
+                <span key={`${group?.name ?? 'g'}-${i}`} className="flex h-6 max-w-[240px] items-center gap-1.5 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink-2)]">
+                  <span className="truncate">{group?.name || '-'}</span>
+                  <span className="shrink-0 text-[11px] text-[var(--cv-ink-3)]">{t('canvas.mix.refs').replace('{n}', String(Array.isArray(group?.refs) ? group.refs.length : 0))}</span>
+                  <button type="button" aria-label={t('canvas.mix.removeGroup')} className="shrink-0 text-[var(--cv-ink-3)] hover:text-[var(--cv-ink)]" onClick={() => setGroups(groups.filter((_, j) => j !== i))}><X size={11} /></button>
+                </span>
+              ))}
+            </div>
+          ) : <div className="text-[12px] text-[var(--cv-ink-3)]">{t('canvas.mix.noRecipe')}</div>}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[11.5px] text-[var(--cv-ink-3)]">{t('canvas.mix.provider')}</span>
+            <select
+              value={provider} className="h-7 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none"
+              onChange={(event) => { const next = event.target.value; setScript({ provider: next, voice: voicesOf(library, next)[0]?.id ?? '' }); }}>
+              {services.map((service) => <option key={service.id} value={service.id}>{service.name}</option>)}
+            </select>
+            <Popover open={voiceOpen} onOpenChange={setVoiceOpen} placement="auto"
+              trigger={(
+                <button type="button" className={PICK} onClick={() => setVoiceOpen(!voiceOpen)}>
+                  <Mic size={14} /><span className="max-w-[160px] truncate">{voiceLabel || t('canvas.mix.voice')}</span><ChevronDown size={13} />
+                </button>
+              )}>
+              <VoicePicker voices={voices} picked={voice} onPick={(pickedVoice) => { setScript({ voice: pickedVoice }); setVoiceOpen(false); }} />
+            </Popover>
+          </div>
+          <div>
+            <div className={OPTION_TITLE}>{t('canvas.mix.lines')}</div>
+            <textarea
+              value={lines.join('\n')} rows={2} placeholder={t('canvas.mix.linesHint')}
+              onChange={(event) => setScript({ lines: event.target.value.split('\n') })}
+              className="w-full resize-none rounded-[8px] bg-[var(--cv-chip)] px-2 py-1.5 text-[12.5px] text-[var(--cv-ink)] outline-none placeholder:text-[var(--cv-ink-3)]" />
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-[11.5px] text-[var(--cv-ink-3)]">
+            <span className={OPTION_TITLE}>配音文件</span>
+            {voiceFiles.map((file) => (
+              <span key={file.path} className="flex h-6 items-center gap-1 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px]">
+                <span className="max-w-[180px] truncate">{file.path.split(/[\\/]/).pop()}</span>
+                <button type="button" aria-label="移除" onClick={() => patch({ voiceFiles: voiceFiles.filter((row) => row.path !== file.path) })}><X size={11} /></button>
+              </span>
+            ))}
+            <label className="flex h-6 cursor-pointer items-center gap-1 rounded-[8px] border border-[var(--cv-line)] px-2 text-[12px]">
+              <Plus size={12} />上传配音
+              <input type="file" accept="audio/*" multiple className="hidden" onChange={(event) => { void addVoiceFiles([...(event.currentTarget.files ?? [])]); event.currentTarget.value = ''; }} />
+            </label>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 text-[11.5px] text-[var(--cv-ink-3)]">
+            <label className="flex items-center gap-1">{t('canvas.mix.count')}
+              <input type="number" min={0} value={params.count ?? 0} onChange={(event) => setParams({ count: Number(event.target.value) })} className="h-7 w-16 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none" />
+            </label>
+            <label className="flex items-center gap-1">线程
+              <input type="number" min={1} max={64} value={params.threads ?? 4} onChange={(event) => setParams({ threads: Math.max(1, Math.min(64, Number(event.target.value) || 1)) })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none" />
+            </label>
+            <label className="flex items-center gap-1">{t('canvas.mix.targetSec')}
+              <input type="number" min={0} value={params.targetSec ?? 0} onChange={(event) => setParams({ targetSec: Number(event.target.value) })} className="h-7 w-16 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none" />
+            </label>
+            <label className="flex items-center gap-1">{t('canvas.mix.aspect')}
+              <select value={params.aspect ?? '9:16'} onChange={(event) => setParams({ aspect: event.target.value })} className="h-7 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none">
+                <option value="9:16">9:16</option><option value="16:9">16:9</option><option value="1:1">1:1</option>
+              </select>
+            </label>
+            <label className="flex items-center gap-1">字号
+              <input type="number" min={20} max={160} value={params.subtitleFontSize ?? 64} onChange={(event) => setParams({ subtitleFontSize: Number(event.target.value) })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none" />
+            </label>
+            <label className="flex items-center gap-1">字幕位置%
+              <input type="number" min={0} max={100} value={params.subtitlePosPct ?? 70} onChange={(event) => setParams({ subtitlePosPct: Number(event.target.value) })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink)] outline-none" />
+            </label>
+            <label className="flex items-center gap-1">
+              <input type="checkbox" checked={params.subtitle !== false} onChange={(event) => setParams({ subtitle: event.target.checked })} />{t('canvas.mix.subtitle')}
+            </label>
+          </div>
+        </div>
+        {/* its groups, as the recipe names them: read only here (the recipe is written by the batch page and agents) */}
+        <div className="mt-2.5">
+          <div className={OPTION_TITLE}>{t('canvas.mix.groups')}</div>
+          {summary.groups.length ? (
+            <div className="flex flex-wrap gap-1.5">
+              {summary.groups.map((group, i) => (
+                <span key={`${group.name}-${i}`} className="flex h-6 max-w-[220px] items-center gap-1.5 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink-2)]">
+                  <span className="truncate">{group.name || '—'}</span>
+                  <span className="shrink-0 text-[11px] text-[var(--cv-ink-3)]">{t('canvas.mix.refs').replace('{n}', String(group.refs))}</span>
+                </span>
+              ))}
+            </div>
+          ) : <div className="text-[12px] text-[var(--cv-ink-3)]">{t('canvas.mix.noRecipe')}</div>}
+        </div>
+        {/* BGM：本地文件上传（先导入工程），供应商音乐以后接 */}
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <span className={OPTION_TITLE}>{t('canvas.mix.bgm')}</span>
+          <select value={params.bgmMode ?? 'random'} onChange={(event) => setParams({ bgmMode: event.target.value })} className="h-6 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] outline-none">
+            <option value="random">随机</option><option value="sequence">顺序</option><option value="fixed">固定一首</option>
+          </select>
+          {bgm.map((ref, i) => (
+            <span key={`${ref.path ?? i}`} className="flex h-6 max-w-[240px] items-center gap-1.5 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink-2)]">
+              <span className="truncate">{String(ref.path ?? '').split('/').pop()}</span>
+              <button type="button" aria-label={t('canvas.mix.bgmRemove')} className="shrink-0 text-[var(--cv-ink-3)] hover:text-[var(--cv-ink)]" onClick={() => patch({ bgm: bgm.filter((_, j) => j !== i) })}><X size={11} /></button>
+            </span>
+          ))}
+          {!bgm.length ? <span className="text-[12px] text-[var(--cv-ink-3)]">{t('canvas.mix.bgmNone')}</span> : null}
+          <label className={`${CHIP} cursor-pointer`}>
+            {t('canvas.mix.bgmAdd')}
+            <input type="file" accept="audio/*" multiple className="hidden" onChange={(event) => { void addBgm([...(event.currentTarget.files ?? [])]); event.currentTarget.value = ''; }} />
+          </label>
+        </div>
+        {/* what it says, and makes of it */}
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          {field(t('canvas.mix.line'), summary.line || t('canvas.mix.noLine'))}
+          {field(t('canvas.mix.count'), summary.count === null ? '—' : String(summary.count))}
+          {field(t('canvas.mix.ratio'), summary.aspect || '—')}
+          {field(t('canvas.mix.duration'), summary.targetSec === null ? '—' : `${summary.targetSec}s`)}
+          {field(t('canvas.mix.voice'), summary.voice || '—')}
+        </div>
+        <div className="mt-2 flex min-w-0 items-center gap-2">
+          <span className="flex-1" />
+          {run?.status === 'running' ? <Loader2 size={14} className="shrink-0 animate-spin text-[var(--cv-ink-2)]" /> : null}
+          <button type="button" disabled={previewing} onClick={() => { void preview(); }}
+            className="flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-[var(--cv-line)] px-3 text-[12px] disabled:opacity-40">
+            <Play size={13} />{previewing ? '预览中…' : '预览 5 秒'}
+          </button>
+          <button type="button" disabled={run?.status === 'running' || !ready} onClick={() => board.runMix(id)}
+            className="flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 text-[13px] font-medium text-[var(--on-primary)] transition hover:bg-[var(--primary-hover)] disabled:opacity-30">
+            <Play size={14} />{t('canvas.mix.run')}
+          </button>
+        </div>
+        {/* what the render route said: its message, why it stopped, what it made */}
+        {run?.message ? <div className={`mt-2 select-text text-[12px] leading-snug ${run.status === 'failed' ? 'text-red-500' : 'text-[var(--cv-ink-2)]'}`}>{run.message}</div> : null}
+        {run?.stopReason ? <div className="mt-1 select-text text-[12px] leading-snug text-[var(--cv-label)]">{t('canvas.mix.stopReason')}: {run.stopReason}</div> : null}
+        {previewError ? <div className="mt-1 select-text text-[12px] leading-snug text-red-500">{previewError}</div> : null}
+        {previewPath ? <video controls src={`/api/projects/${encodeURIComponent(projectId)}/raw?path=${encodeURIComponent(previewPath)}`} className="mt-2 max-h-56 w-full rounded-[8px] bg-black" /> : null}
       </div>
     </NodeToolbar>
   );

@@ -111,7 +111,9 @@ export function createZhishangReadOnly(configuration:Configuration,dependencies:
  const scope=createHash('sha256').update('zhishang\0'+ORIGIN+'\0'+config.companyKey).digest('hex');
  let cache:{value:string;expiresAtMs:number}|null=null,flight:Promise<string>|null=null,generation=0,lastTime=-Infinity;
  const clear=()=>{cache=null;generation++;};
- const clock=()=>{let result:number;try{result=now();}catch{clear();return fail('provider-clock-unconfirmed');}if(!Number.isSafeInteger(result)||result<0||result<lastTime){clear();return fail('provider-clock-unconfirmed');}lastTime=result;return result;};
+ /* Small NTP steps must not brick the process: allow a bounded backward correction, and never move `lastTime` back. */
+ const CLOCK_SKEW_MS=5*60*1000;
+ const clock=()=>{let result:number;try{result=now();}catch{clear();return fail('provider-clock-unconfirmed');}if(!Number.isSafeInteger(result)||result<0||result<lastTime-CLOCK_SKEW_MS){clear();return fail('provider-clock-unconfirmed');}lastTime=Math.max(lastTime,result);return result;};
  /**
   * The session gate at the transport boundary.
   *

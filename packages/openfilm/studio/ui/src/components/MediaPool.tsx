@@ -52,7 +52,6 @@ import { useT } from '@/i18n';
 import { MaterialCenter } from './MaterialCenter';
 import { CloudMaterialsTab } from './material-center/CloudMaterialsTab';
 import { useSettings } from './settings/use-settings';
-import { queryAccountCatalog } from '@/lib/catalog-query-unavailable';
 import { createMaterialUse } from '@/lib/material-center/use-material';
 import { isSubtitleName } from '@/lib/material-center/media';
 import type { MaterialDraftOperation, MaterialDraftReference } from '@/lib/material-draft';
@@ -835,7 +834,7 @@ export function MediaPool({
 
   const [catalogOpen,setCatalogOpen]=React.useState(false);
   React.useEffect(()=>setCatalogOpen(false),[projectId,scope]);
-  const libraryProps={authGeneration,fixedProjectId:projectId,queryCloud:queryAccountCatalog,
+  const libraryProps={authGeneration,fixedProjectId:projectId,
     onUseMaterial:useMaterial,
     draft:batchDraft??[],draftReady:batchDraftReady??false,draftReason:batchDraftReason??'unavailable',
     onDraftOperation:onBatchDraftOperation??(async()=>false),onDraftRetry:onBatchDraftRetry??(async()=>false),

@@ -73,6 +73,7 @@ export function landedIndex({ dir = defaultIndexDir(), now = new Date(), read = 
     totals: tree.totals,
     batches: tree.batches,
     derived: tree.derived ?? null,
+    products: tree.products ?? null,
     stale: isIndexStale(parsed, { now }),
   };
 }

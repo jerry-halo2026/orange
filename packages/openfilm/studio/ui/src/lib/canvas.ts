@@ -26,6 +26,26 @@ export interface CanvasNode {
   parent?: string;
   /** a cut: what is wired into it, in its order, goes onto the timeline */
   cut?: true;
+  /**
+   * a mix: a batch of videos made from `recipe` (the frozen `orange/mix-recipe/1` shape,
+   * docs/execution/2026-11-19-mix-contract.md), the recipe file it came from (`recipeId`) and the batch it was last run
+   * in (`batchId`, written once). What a run is doing is the server's: nothing of it is kept on the board
+   */
+  mix?: true;
+  recipe?: MixRecipe;
+  recipeId?: string;
+  batchId?: string;
+  /** 拓扑输入：素材文件夹（绝对路径），内部子文件夹=场景组 */
+  source?: true;
+  folderGroups?: Array<{ name: string; videos: number; images: number; take?: number; rule?: 'random' | 'sequential'; speed?: number; useThenDelete?: boolean; allowReuse?: boolean }>;
+  settings?: { take: number; rule: 'random' | 'sequential'; speed: number; useThenDelete: boolean; allowReuse: boolean };
+  /** 拓扑输入：配音文件（绝对路径） */
+  voice?: true;
+  files?: Array<{ path: string; text?: string; mode?: 'recognize' | 'srt' | 'none' }>;
+  voiceMode?: 'none' | 'upload' | 'tts';
+  /** 拓扑输入：字幕策略 */
+  subtitle?: true;
+  subtitleMode?: 'none' | 'recognize' | 'upload';
   /** who put it here, when not the person: an agent, in which of its conversations */
   by?: { agent: string; session?: string };
   /**
@@ -104,6 +124,55 @@ export const MAKE_SECONDS: Partial<Record<MakeKind, { min: number; max: number; 
 export const GROUP_COLORS = ['gray', 'red', 'orange', 'yellow', 'green', 'blue', 'purple'] as const;
 export type GroupColor = typeof GROUP_COLORS[number];
 
+/**
+ * A mix node's recipe, as kept and sent (`POST /api/fission-render/recipe`): the frozen `orange/mix-recipe/1` shape,
+ * read here but not written by M1 (the panel shows it, the batch page and the agents make them).
+ */
+export type MixRecipe = { [key: string]: unknown };
+/** how big a recipe may be, as its JSON text: past this it is not a recipe but a mistake */
+export const RECIPE_MAX = 64 * 1024;
+
+function recipeSize(recipe: unknown): number {
+  try { return JSON.stringify(recipe)?.length ?? 0; } catch { return Infinity; }
+}
+
+/** Whether this is a recipe the board keeps: an object, of at most RECIPE_MAX. */
+export function isMixRecipe(recipe: unknown): recipe is MixRecipe {
+  return typeof recipe === 'object' && recipe !== null && !Array.isArray(recipe) && recipeSize(recipe) <= RECIPE_MAX;
+}
+
+/**
+ * What a recipe says, as far as M1 shows it: the groups a mix draws from (their names and how many refs each has), the
+ * first line spoken, its voice, and the params the panel reads. Anything missing or of another shape: nothing said.
+ */
+export interface MixSummary {
+  groups: Array<{ name: string; refs: number }>;
+  line: string;
+  voice: string;
+  count: number | null;
+  aspect: string;
+  targetSec: number | null;
+}
+
+export function mixSummary(recipe: MixRecipe | undefined): MixSummary {
+  const groups = (Array.isArray(recipe?.groups) ? recipe.groups : []).flatMap((g) => {
+    const group = g as { name?: unknown; refs?: unknown } | null;
+    if (!group || typeof group !== 'object') return [];
+    return [{ name: typeof group.name === 'string' ? group.name : '', refs: Array.isArray(group.refs) ? group.refs.length : 0 }];
+  });
+  const script = (recipe?.script ?? {}) as { voice?: unknown; lines?: unknown };
+  const params = (recipe?.params ?? {}) as { count?: unknown; aspect?: unknown; targetSec?: unknown };
+  const lines = Array.isArray(script.lines) ? script.lines.filter((l): l is string => typeof l === 'string' && l.trim().length > 0) : [];
+  return {
+    groups,
+    line: (lines[0] ?? '').trim(),
+    voice: typeof script.voice === 'string' ? script.voice : '',
+    count: typeof params.count === 'number' && Number.isFinite(params.count) ? params.count : null,
+    aspect: typeof params.aspect === 'string' ? params.aspect : '',
+    targetSec: typeof params.targetSec === 'number' && Number.isFinite(params.targetSec) ? params.targetSec : null,
+  };
+}
+
 /** `order`: where what it brings stands among what goes into `to` (lowest first; none: after those that have one) */
 export interface CanvasEdge { id: string; from: string; to: string; order?: number }
 
@@ -118,6 +187,9 @@ export const NOTE_W = 350;
 export const NOTE_H = 200;
 export const AUDIO_W = 320;
 export const CUT_W = 350;
+/** a mix card: a title, three thumbnails of what it made and its status, as wide as a picture card */
+export const MIX_W = 622;
+export const MIX_H = 200;
 export const MAKE_W = 622;
 export const FILE_W = MAKE_W;
 
@@ -150,6 +222,21 @@ export function readCanvasDoc(raw: unknown): CanvasDoc {
     const make = MAKE_KINDS.find((k) => k === n.make);
     if (make) nodes.push({ ...box, ...parent, ...readMake(n), make });
     else if (n.cut === true) nodes.push({ ...box, ...parent, cut: true });
+    else if (n.source === true && typeof n.path === 'string' && n.path) nodes.push({ ...box, ...parent, source: true, path: n.path,
+      ...(Array.isArray(n.groups) ? { folderGroups: n.groups as Array<{ name: string; videos: number; images: number }> } : {}),
+      ...(n.settings && typeof n.settings === 'object' ? { settings: n.settings as CanvasNode['settings'] } : {}) });
+    else if (n.voice === true) nodes.push({ ...box, ...parent, voice: true, ...(typeof n.path === 'string' && n.path ? { path: n.path } : {}),
+      ...(typeof n.mode === 'string' ? { voiceMode: n.mode as 'none' | 'upload' | 'tts' } : {}),
+      ...(Array.isArray(n.files) ? { files: n.files as Array<{ path: string; text?: string; mode?: 'recognize' | 'srt' | 'none' }> } : {}) });
+    else if (n.subtitle === true) nodes.push({ ...box, ...parent, subtitle: true,
+      ...(typeof n.mode === 'string' ? { subtitleMode: n.mode as 'none' | 'recognize' | 'upload' } : {}),
+      ...(typeof n.path === 'string' && n.path ? { path: n.path } : {}) });
+    /* a mix, before a file: a recipe that is not one leaves the node out, as the server does */
+    else if (n.mix === true) {
+      const mix = readMix(n);
+      if (!mix) continue;
+      nodes.push({ ...box, ...parent, ...mix });
+    }
     else if (typeof n.path === 'string' && n.path) nodes.push({ ...box, ...parent, path: n.path });
     else if (typeof n.text === 'string') nodes.push({ ...box, ...parent, text: n.text });
     else if (typeof n.group === 'string') {
@@ -163,6 +250,19 @@ export function readCanvasDoc(raw: unknown): CanvasDoc {
     .filter((e): e is { id: string; from: string; to: string; order?: unknown } => Boolean(e) && typeof e.id === 'string'
       && typeof e.from === 'string' && typeof e.to === 'string' && ids.has(e.from) && ids.has(e.to));
   return { nodes, edges: edges.map((e) => ({ id: e.id, from: e.from, to: e.to, ...(num(e.order) ? { order: e.order } : {}) })) };
+}
+
+/** A mix node's own fields, as sent; null when there is no recipe to keep it by. */
+function readMix(n: Record<string, unknown>): Pick<CanvasNode, 'mix' | 'recipe' | 'recipeId' | 'batchId'> | null {
+  if (!isMixRecipe(n.recipe)) return null;
+  const str = (v: unknown) => (typeof v === 'string' && v.length > 0 && v.length <= 120 ? v : undefined);
+  return {
+    mix: true,
+    recipe: n.recipe,
+    ...(str(n.recipeId) ? { recipeId: n.recipeId as string } : {}),
+    /* the batch a run was made in: as the render route takes it (it becomes a directory name) */
+    ...(typeof n.batchId === 'string' && /^[a-z0-9-]{1,40}$/.test(n.batchId) ? { batchId: n.batchId } : {}),
+  };
 }
 
 /** A making node's own fields, as sent (its kind aside). */
@@ -247,8 +347,8 @@ export function copyOf(doc: CanvasDoc, ids: ReadonlySet<string>, offset: { x: nu
   for (const id of taken) fresh.set(id, canvasId('n'));
   const nodes = doc.nodes.filter((n) => taken.has(n.id)).map((n) => {
     const inCopiedGroup = n.parent != null && taken.has(n.parent);
-    /* a copy is the person's, whoever put the first one there */
-    const { parent: _parent, by: _by, ...rest } = n;
+    /* a copy is the person's, whoever put the first one there; a copied mix has not been run, so no batch of its own */
+    const { parent: _parent, by: _by, batchId: _batchId, ...rest } = n;
     return {
       ...rest,
       id: fresh.get(n.id)!,

@@ -68,7 +68,8 @@
     "THIRD_PARTY_NOTICES.md",
     "product.json",
     "examples",
-    "!manual/**/scripts/**"
+    "!manual/**/scripts/**",
+    "scripts"
   ],
   "engines": {
     "node": ">=22.2"

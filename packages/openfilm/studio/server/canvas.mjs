@@ -12,8 +12,10 @@
  * `prompt`, `via` and `model`, its `opts`, the files it made, `versions`, the one shown `path`, and `made` what it was
  * asked when it last made one), at `x`, `y` on the board, `w` wide (and `h` high, for a note or a group). A node in a
  * group names it (`parent`), and its `x`, `y` are from the group's corner; one an agent put there names it (`by`). A
- * cut (`cut`) is the order what is wired into it goes onto the timeline in. An
- * edge goes from one node to another, `order` its place among those into that node.
+ * cut (`cut`) is the order what is wired into it goes onto the timeline in. A mix (`mix`) is a batch of videos made
+ * from a recipe (`recipe`, `.film/fission/recipe.json`, docs/execution/2026-11-19-mix-contract.md), the recipe it came
+ * from (`recipeId`) and the batch it was last run in (`batchId`, written once); its progress is the server's, never
+ * here. An edge goes from one node to another, `order` its place among those into that node.
  *
  *   GET canvas                    → { nodes, edges, name? }
  *   PUT canvas { nodes, edges }   → { nodes, edges, name? }: the whole board, as kept (the board in Studio writes it)
@@ -33,7 +35,7 @@
  *   POST /api/canvas { folder, ops?, by? } → { ok: true, canvas, added } or { ok: false, text }
  */
 import { mkdir, open, readFile, readdir, rename, stat } from 'node:fs/promises';
-import { basename, dirname, join, resolve } from 'node:path';
+import { basename, dirname, isAbsolute, join, resolve } from 'node:path';
 import { FILM_FILE } from '../../src/film-doc.mjs';
 import { WRITING_ATTACHMENT_LIMIT, writingAttachmentKind } from '../../src/canvas-attachments.mjs';
 import { writeAtomic } from './atomic.mjs';
@@ -67,8 +69,13 @@ const MAKE_KINDS = ['image', 'video', 'sfx', 'music', 'tts'];
 const VERSIONS_MAX = 50;
 const SHORT_MAX = 120;
 
+/** how big a mix node's recipe may be, as its JSON text (a recipe is a few hundred bytes; 64 KB is already wrong) */
+const RECIPE_MAX = 64 * 1024;
+/** a batch id, as `POST /api/fission-render/recipe` takes it (it becomes a directory name) */
+const BATCH_ID = /^[a-z0-9-]{1,40}$/;
+
 /**
- * @typedef {{ id: string, x: number, y: number, w?: number, h?: number, z?: number, parent?: string, by?: { agent: string, session?: string } } & ({ text: string } | { path: string, title?: string } | { group: string, color: string } | { make: string, title?: string } | { cut: true })} CanvasNode
+ * @typedef {{ id: string, x: number, y: number, w?: number, h?: number, z?: number, parent?: string, by?: { agent: string, session?: string } } & ({ text: string } | { path: string, title?: string } | { group: string, color: string } | { make: string, title?: string } | { cut: true } | { mix: true, recipe: Record<string, unknown>, recipeId?: string, batchId?: string })} CanvasNode
  * @typedef {{ id: string, from: string, to: string, order?: number }} CanvasEdge
  * @typedef {{ nodes: CanvasNode[], edges: CanvasEdge[], name?: string }} Canvas
  */
@@ -84,6 +91,9 @@ const size = (v) => (typeof v === 'number' && Number.isFinite(v) ? Math.round(Ma
 /** A project-relative path that stays in the project and out of Studio's own folder. @param {unknown} v */
 const projectPath = (v) => typeof v === 'string' && v.length > 0 && v.length <= 1024 && !v.startsWith('/') && !v.includes('\\')
   && !v.split('/').some((part) => part === '..' || part === '' || part === TOOL_DIR);
+
+/** 拓扑输入可以指向本机任意目录/文件（素材文件夹、配音），只限绝对路径与长度。 */
+const externalPath = (v) => typeof v === 'string' && v.length > 0 && v.length <= 1024 && isAbsolute(v);
 
 /** The canvas as kept: what is not a node or an edge is left out, and so is an edge to a node that is not there. @param {unknown} raw @returns {Canvas} */
 export function parseCanvas(raw) {
@@ -106,6 +116,37 @@ export function parseCanvas(raw) {
     const named = title ? { title } : {};
     if (MAKE_KINDS.includes(String(n.make))) out.nodes.push({ ...box, ...parent, ...named, ...readMake(n), make: String(n.make) });
     else if (n.cut === true) out.nodes.push({ ...box, ...parent, cut: true });
+    /* 拓扑输入：素材文件夹 / 配音 / 字幕，只存绝对路径与设置，不展开文件。 */
+    else if (n.source === true && externalPath(n.path)) {
+      out.nodes.push({ ...box, ...parent, ...named, source: true, path: String(n.path),
+        ...(Array.isArray(n.groups) ? { groups: n.groups.slice(0, 200).filter((g) => isRecord(g) && typeof g.name === 'string' && g.name.trim())
+          .map((g) => ({ name: String(g.name).trim().slice(0, NAME_MAX), videos: Number.isInteger(g.videos) ? g.videos : 0, images: Number.isInteger(g.images) ? g.images : 0,
+            take: Number.isInteger(g.take) && g.take > 0 && g.take <= 100 ? g.take : undefined,
+            rule: g.rule === 'sequential' ? 'sequential' : g.rule === 'random' ? 'random' : undefined,
+            speed: typeof g.speed === 'number' && g.speed >= 0.5 && g.speed <= 4 ? g.speed : undefined,
+            useThenDelete: typeof g.useThenDelete === 'boolean' ? g.useThenDelete : undefined,
+            allowReuse: typeof g.allowReuse === 'boolean' ? g.allowReuse : undefined })) } : {}),
+        ...(isRecord(n.settings) ? { settings: {
+          take: Number.isInteger(n.settings.take) && n.settings.take > 0 && n.settings.take <= 100 ? n.settings.take : 1,
+          rule: n.settings.rule === 'sequential' ? 'sequential' : 'random',
+          speed: typeof n.settings.speed === 'number' && n.settings.speed >= 0.5 && n.settings.speed <= 4 ? n.settings.speed : 1,
+          useThenDelete: n.settings.useThenDelete === true, allowReuse: n.settings.allowReuse === true,
+        } } : {}) });
+    } else if (n.voice === true) {
+      out.nodes.push({ ...box, ...parent, ...named, voice: true, ...(externalPath(n.path) ? { path: String(n.path) } : {}),
+        mode: n.mode === 'tts' ? 'tts' : n.mode === 'none' ? 'none' : 'upload',
+        files: Array.isArray(n.files) ? n.files.slice(0, 200).filter((f) => isRecord(f) && externalPath(f.path))
+          .map((f) => ({ path: String(f.path), ...(typeof f.text === 'string' ? { text: f.text.slice(0, 4000) } : {}), mode: f.mode === 'srt' ? 'srt' : f.mode === 'none' ? 'none' : 'recognize' })) : [] });
+    } else if (n.subtitle === true) {
+      out.nodes.push({ ...box, ...parent, ...named, subtitle: true, mode: n.mode === 'upload' ? 'upload' : n.mode === 'recognize' ? 'recognize' : 'none',
+        ...(externalPath(n.path) ? { path: String(n.path) } : {}) });
+    }
+    /* a mix, before a file: it has no `path` of its own, and a recipe that is not one leaves the node out */
+    else if (n.mix === true) {
+      const mix = readMix(n);
+      if (!mix) continue;
+      out.nodes.push({ ...box, ...parent, ...mix });
+    }
     else if (projectPath(n.path)) out.nodes.push({ ...box, ...parent, ...named, path: /** @type {string} */ (n.path) });
     else if (typeof n.text === 'string') out.nodes.push({ ...box, ...parent, text: n.text.slice(0, TEXT_MAX) });
     else if (typeof n.group === 'string') {
@@ -137,6 +178,32 @@ function readBy(by) {
   const short = (v) => (typeof v === 'string' && v.length > 0 && v.length <= SHORT_MAX ? v : undefined);
   if (!isRecord(by) || !short(by.agent)) return {};
   return { by: { agent: /** @type {string} */ (by.agent), ...(short(by.session) ? { session: /** @type {string} */ (by.session) } : {}) } };
+}
+
+/** A recipe as its JSON text is big: how many characters it takes (what is kept out, and what is refused). @param {unknown} recipe */
+const recipeSize = (recipe) => {
+  try { return JSON.stringify(recipe)?.length ?? 0; } catch { return Infinity; }
+};
+
+/** Whether a recipe is one a mix node keeps: an object, of at most RECIPE_MAX. @param {unknown} recipe */
+export const isMixRecipe = (recipe) => isRecord(recipe) && recipeSize(recipe) <= RECIPE_MAX;
+
+/**
+ * A mix node's own fields, as kept: its recipe (the frozen `orange/mix-recipe/1` shape, kept as it is given), the recipe
+ * file it came from and the batch it was last run in. Nothing of a run's progress: that is the server's. Null when there
+ * is no recipe to keep the node by.
+ * @param {Record<string, unknown>} n
+ */
+function readMix(n) {
+  if (!isMixRecipe(n.recipe)) return null;
+  /** @param {unknown} v */
+  const short = (v) => (typeof v === 'string' && v.length > 0 && v.length <= SHORT_MAX ? v : undefined);
+  return {
+    mix: /** @type {true} */ (true),
+    recipe: /** @type {Record<string, unknown>} */ (n.recipe),
+    ...(short(n.recipeId) ? { recipeId: /** @type {string} */ (n.recipeId) } : {}),
+    ...(typeof n.batchId === 'string' && BATCH_ID.test(n.batchId) ? { batchId: n.batchId } : {}),
+  };
 }
 
 /** A making node's own fields, as kept (its kind aside). @param {Record<string, unknown>} n */
@@ -187,6 +254,13 @@ export async function readCanvas(root, board = MAIN_BOARD) {
 /** The board kept; written without a name, it keeps the one it has. @param {string} root @param {unknown} canvas @param {string} [board] @returns {Promise<Canvas>} */
 export async function writeCanvas(root, canvas, board = MAIN_BOARD) {
   if (!isRecord(canvas) || !Array.isArray(canvas.nodes)) throw new HttpError(400, 'canvas: { nodes: [{ id, x, y, text | path }], edges: [{ id, from, to }] }');
+  /* a mix node's recipe is said before anything is written: a board written with one that is not would come back
+     without that node (parseCanvas leaves it out), which is the one thing worse than refusing the write */
+  for (const n of canvas.nodes) {
+    if (!isRecord(n) || n.mix !== true) continue;
+    if (!isRecord(n.recipe)) throw new HttpError(400, 'canvas: a mix node\'s recipe is an object, e.g. {"schema":"orange/mix-recipe/1"}');
+    if (recipeSize(n.recipe) > RECIPE_MAX) throw new HttpError(400, `canvas: a mix node's recipe is at most ${RECIPE_MAX / 1024} KB of JSON`);
+  }
   const kept = parseCanvas(canvas);
   if (!('name' in canvas)) {
     const { name } = await readCanvas(root, board);
@@ -354,6 +428,8 @@ export async function canvasWriteRoute(req, res, rest, askAgent, root = '') {
 const MAKE_W = 320;
 const KIND_SIZE = /** @type {Record<string, { w: number, h: number }>} */ ({
   note: { w: 240, h: 140 }, file: { w: 280, h: 160 }, group: { w: 480, h: 320 }, make: { w: MAKE_W, h: 320 },
+  /* a mix card is as wide as a picture card and a band high: a title, three thumbnails and its status (ui lib/canvas MIX_W, MIX_H) */
+  mix: { w: 622, h: 200 },
 });
 /** the room left between what an agent adds and what is there */
 const GAP = 80;
@@ -369,16 +445,16 @@ const GROUP_HEAD = 20;
 export class CanvasOpError extends Error {}
 
 /** what kind of node, as its size is guessed: @param {CanvasNode} n */
-const kindOf = (n) => ('group' in n ? 'group' : 'make' in n || 'cut' in n ? 'make' : 'path' in n ? 'file' : 'note');
+const kindOf = (n) => ('group' in n ? 'group' : 'mix' in n ? 'mix' : 'make' in n || 'cut' in n ? 'make' : 'path' in n ? 'file' : 'note');
 /** a node's box on the board (in a group: the group's corner added) @param {CanvasNode} n @param {Map<string, CanvasNode>} byId */
 function boxOf(n, byId) {
   /* as the board draws a card until it is resized: 350 high, as wide as its shape (a sound 320, a note or a cut 350
-     square); its name row above it */
+     square, a mix 622 × 200); its name row above it */
   const kind = kindOf(n);
   const m = /** @type {{ make?: string, opts?: { ratio?: string } }} */ (n);
   const shaped = (/** @type {string | undefined} */ ratio) => { const [a, b] = String(ratio ?? '16:9').split(':').map(Number); return a && b ? Math.round(CARD_H * a / b) : 622; };
-  const w = n.w ?? (kind === 'make' ? (m.make === 'sfx' || m.make === 'music' || m.make === 'tts' ? 320 : shaped(m.opts?.ratio)) : kind === 'file' ? 622 : kind === 'group' ? KIND_SIZE.group.w : CARD_H);
-  const h = n.h ?? (kind === 'group' ? KIND_SIZE.group.h : CARD_H);
+  const w = n.w ?? (kind === 'make' ? (m.make === 'sfx' || m.make === 'music' || m.make === 'tts' ? 320 : shaped(m.opts?.ratio)) : kind === 'file' ? 622 : kind === 'mix' ? KIND_SIZE.mix.w : kind === 'group' ? KIND_SIZE.group.w : CARD_H);
+  const h = n.h ?? (kind === 'group' ? KIND_SIZE.group.h : kind === 'mix' ? KIND_SIZE.mix.h : CARD_H);
   const parent = n.parent ? byId.get(n.parent) : undefined;
   return { x: n.x + (parent?.x ?? 0), y: n.y + (parent?.y ?? 0), w, h };
 }
@@ -386,11 +462,12 @@ function boxOf(n, byId) {
 /**
  * The board after an agent's steps, each checked: all are taken or none (a CanvasOpError says which step and why).
  * A step is one of
- *   { op: 'add', kind: note|file|image|video|sfx|music|group, id?, text?, path?, prompt?, via?, model?, opts?, name?,
- *     color?, x?, y?, w?, h?, group?, inputs?: [id…], around?: [id…] }
+ *   { op: 'add', kind: note|file|image|video|sfx|music|tts|cut|mix|group, id?, text?, path?, prompt?, via?, model?, opts?,
+ *     recipe?, recipeId?, batchId?, name?, color?, x?, y?, w?, h?, group?, inputs?: [id…], around?: [id…] }
  *       a new node (`id` names it for later steps; else one is made). Where it goes, unless `x`, `y` say (on the
  *       board, also in a group): right of its `inputs`, which are wired into it in that order, else below the rest.
- *       `group`: the group it goes in; a group made `around` nodes holds them.
+ *       `group`: the group it goes in; a group made `around` nodes holds them. A mix is made of its `recipe` (an
+ *       object, at most 64 KB; none: an empty one), and keeps the `recipeId` and `batchId` it is given.
  *   { op: 'set', id, …the fields above that the node has }   { op: 'remove', id }   (a group's nodes go with it)
  *   { op: 'wire', from, to, order? }   { op: 'unwire', from, to }
  *   { op: 'version', id, path }   a file of the project as the newest version of a node that makes something
@@ -406,6 +483,24 @@ export async function applyCanvasOps(canvas, ops, { by, exists }) {
   const added = /** @type {string[]} */ ([]);
   const who = readBy(by);
   let fresh = 0;
+  /** A recipe an agent gives a mix node: an object, of at most RECIPE_MAX. @param {string} step @param {unknown} recipe */
+  const mixRecipe = (step, recipe) => {
+    if (!isRecord(recipe)) throw new CanvasOpError(`${step}: a mix node's recipe is an object, e.g. {"schema":"orange/mix-recipe/1"}`);
+    if (recipeSize(recipe) > RECIPE_MAX) throw new CanvasOpError(`${step}: a mix node's recipe is at most ${RECIPE_MAX / 1024} KB of JSON`);
+    return recipe;
+  };
+  /** A batch id as the render route takes it (it becomes a directory name). @param {string} step @param {unknown} id */
+  const mixBatch = (step, id) => {
+    if (id === undefined) return undefined;
+    if (typeof id !== 'string' || !BATCH_ID.test(id)) throw new CanvasOpError(`${step}: a batchId is lowercase letters, digits and hyphens (at most 40)`);
+    return id;
+  };
+  /** A short name a mix node keeps as given. @param {string} step @param {string} what @param {unknown} v */
+  const mixName = (step, what, v) => {
+    if (v === undefined) return undefined;
+    if (typeof v !== 'string' || !v || v.length > SHORT_MAX) throw new CanvasOpError(`${step}: ${what} is a short name, up to ${SHORT_MAX} characters`);
+    return v;
+  };
   const newId = (/** @type {string} */ prefix) => {
     for (;;) { const id = `${prefix}${Date.now().toString(36)}${(fresh++).toString(36)}`; if (!nodes.some((n) => n.id === id)) return id; }
   };
@@ -443,10 +538,17 @@ export async function applyCanvasOps(canvas, ops, { by, exists }) {
       else if (kind === 'file') fields = { path: await file(op.path, 'path') };
       else if (kind === 'group') fields = { group: typeof op.name === 'string' ? op.name : 'Group', color: op.color };
       else if (kind === 'cut') fields = { cut: true };
+      else if (kind === 'mix') {
+        fields = {
+          mix: true, recipe: mixRecipe(step, op.recipe === undefined ? {} : op.recipe),
+          ...(op.recipeId === undefined ? {} : { recipeId: mixName(step, 'recipeId', op.recipeId) }),
+          ...(op.batchId === undefined ? {} : { batchId: mixBatch(step, op.batchId) }),
+        };
+      }
       else if (MAKE_KINDS.includes(kind)) {
         const path = op.path === undefined ? undefined : await file(op.path, 'path');
         fields = { make: kind, prompt: op.prompt, via: op.via, model: op.model, preset: op.preset, opts: op.opts, ...(path ? { versions: [path], path } : {}) };
-      } else throw new CanvasOpError(`${step}: kind is one of note, file, image, video, sfx, music, tts, cut, group`);
+      } else throw new CanvasOpError(`${step}: kind is one of note, file, image, video, sfx, music, tts, cut, mix, group`);
       const inputs = Array.isArray(op.inputs) ? op.inputs.map((input) => node(input).id) : [];
       const around = kind === 'group' && Array.isArray(op.around) ? op.around.map((a) => node(a)) : [];
       const group = op.group === undefined ? undefined : node(op.group);
@@ -492,12 +594,18 @@ export async function applyCanvasOps(canvas, ops, { by, exists }) {
         if (!(/** @type {{ versions?: string[] }} */ (n).versions ?? []).includes(change.path)) throw new CanvasOpError(`${step}: path names one of its versions; a new one is added with op version`);
       }
       if ('group' in n && change.name !== undefined) { change.group = change.name; delete change.name; }
+      /* a mix is set to another recipe, the recipe file it came from, or the batch it was run in */
+      if ('mix' in n) {
+        if ('recipe' in change) change.recipe = mixRecipe(step, change.recipe);
+        if ('recipeId' in change) change.recipeId = mixName(step, 'recipeId', change.recipeId);
+        if ('batchId' in change) change.batchId = mixBatch(step, change.batchId);
+      }
       /* where it goes is said on the board, as for a new node: in a group, from the group's corner */
       const parent = n.parent ? byId().get(n.parent) : undefined;
       if (parent && Number.isFinite(change.x)) change.x -= parent.x;
       if (parent && Number.isFinite(change.y)) change.y -= parent.y;
       const allowed = new Set(['x', 'y', 'w', 'h', ...('text' in n ? ['text'] : []), ...('make' in n ? ['prompt', 'via', 'model', 'preset', 'opts', 'path'] : []),
-        ...('group' in n ? ['group', 'color'] : []), ...('path' in n && !('make' in n) ? ['path'] : [])]);
+        ...('group' in n ? ['group', 'color'] : []), ...('path' in n && !('make' in n) ? ['path'] : []), ...('mix' in n ? ['recipe', 'recipeId', 'batchId'] : [])]);
       const odd = Object.keys(change).filter((k) => !allowed.has(k));
       if (odd.length) throw new CanvasOpError(`${step}: a ${kindOf(n)} node has no ${odd.join(', ')}; it has ${[...allowed].join(', ')}`);
       const [kept] = parseCanvas({ nodes: [{ ...n, ...change }], edges: [] }).nodes;

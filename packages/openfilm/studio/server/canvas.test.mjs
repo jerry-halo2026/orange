@@ -130,6 +130,101 @@ test('a cut keeps only that it is one, with its place', () => {
   assert.deepEqual(parseCanvas({ nodes: [{ id: 'c', x: 1, y: 2, w: 320, cut: true, text: 'ignored' }], edges: [] }).nodes, [{ id: 'c', x: 1, y: 2, w: 320, cut: true }]);
 });
 
+/* ── a mix (docs/execution/2026-11-19-mix-contract.md) ── */
+
+/** @type {Record<string, unknown>} */
+const MIX_RECIPE = {
+  schema: 'orange/mix-recipe/1',
+  groups: [{ name: '01-open', enabled: true, refs: [{ kind: 'dir', path: 'assets/video/open' }] }],
+  script: { provider: 'minimax', voice: 'female-shaonv', lines: ['第一条口播'] },
+  params: { count: 2, aspect: '9:16' },
+};
+
+test('a mix keeps its recipe, the recipe file it came from and its batch, and nothing of a run', () => {
+  const kept = parseCanvas({
+    nodes: [
+      /* its recipe first: a mix is not a file, whatever else it is given */
+      { id: 'm', x: 1, y: 2, w: 622, h: 200, mix: true, recipe: MIX_RECIPE, recipeId: 'r1', batchId: 'mix-abc',
+        progress: 0.4, status: 'running', outputs: ['out/1.mp4'], path: 'assets/video/a.mp4' },
+      { id: 'n', x: 0, y: 0, text: 'brief' },
+    ],
+    edges: [{ id: 'e', from: 'n', to: 'm' }],
+  });
+  assert.deepEqual(kept.nodes, [
+    { id: 'm', x: 1, y: 2, w: 622, h: 200, mix: true, recipe: MIX_RECIPE, recipeId: 'r1', batchId: 'mix-abc' },
+    { id: 'n', x: 0, y: 0, text: 'brief' },
+  ], 'a run’s progress is the server’s: it is never kept on the board');
+  assert.deepEqual(kept.edges, [{ id: 'e', from: 'n', to: 'm' }]);
+  /* read back and written again: the same fields, none lost */
+  const again = parseCanvas(JSON.parse(JSON.stringify(kept)));
+  assert.deepEqual(again, kept);
+});
+
+test('a mix with no recipe, or one that is no object or too big, is not a node at all', () => {
+  const board = (/** @type {unknown} */ recipe) => parseCanvas({
+    nodes: [{ id: 'm', x: 0, y: 0, mix: true, ...(recipe === undefined ? {} : { recipe }) }, { id: 'n', x: 0, y: 0, text: 'there' }],
+    edges: [{ id: 'e', from: 'n', to: 'm' }],
+  });
+  for (const recipe of [undefined, null, 'orange/mix-recipe/1', 3, [MIX_RECIPE], { groups: 'x'.repeat(64 * 1024) }]) {
+    assert.deepEqual(board(recipe), { nodes: [{ id: 'n', x: 0, y: 0, text: 'there' }], edges: [] }, `${JSON.stringify(recipe)?.slice(0, 40)} is no recipe`);
+  }
+  assert.deepEqual(board({}), { nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: {} }, { id: 'n', x: 0, y: 0, text: 'there' }], edges: [{ id: 'e', from: 'n', to: 'm' }] }, 'an empty one is one');
+  /* a batch id the render route would refuse, and a recipe id too long, are left out rather than kept wrong */
+  assert.deepEqual(parseCanvas({ nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: {}, batchId: 'Mix/Bad Id', recipeId: 'r'.repeat(121) }], edges: [] }).nodes,
+    [{ id: 'm', x: 0, y: 0, mix: true, recipe: {} }]);
+});
+
+test('writing a board with a mix whose recipe is not one says so, rather than losing the node', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'of-mix-'));
+  try {
+    await writeCanvas(root, { nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: MIX_RECIPE }], edges: [] });
+    assert.deepEqual((await readCanvas(root)).nodes, [{ id: 'm', x: 0, y: 0, mix: true, recipe: MIX_RECIPE }]);
+    await assert.rejects(writeCanvas(root, { nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: 'nope' }], edges: [] }), /a mix node's recipe is an object/);
+    await assert.rejects(writeCanvas(root, { nodes: [{ id: 'm', x: 0, y: 0, mix: true }], edges: [] }), /a mix node's recipe is an object/);
+    await assert.rejects(writeCanvas(root, { nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: { groups: 'x'.repeat(64 * 1024) } }], edges: [] }), /at most 64 KB/);
+    assert.deepEqual((await readCanvas(root)).nodes[0].recipe, MIX_RECIPE, 'the board it had is still the board it has');
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("an agent's steps: a mix added, set to another recipe and to its batch, and the fields it has not are refused", async () => {
+  const exists = async () => false;
+  const { canvas, added } = await applyCanvasOps({ nodes: [], edges: [] }, [
+    { op: 'add', kind: 'mix', id: 'm', recipe: MIX_RECIPE },
+    { op: 'add', kind: 'mix', id: 'empty' },
+    { op: 'add', kind: 'note', id: 'brief', text: 'cold open' },
+    { op: 'set', id: 'm', batchId: 'mix-one', recipeId: 'recipe-2' },
+    { op: 'set', id: 'm', recipe: { ...MIX_RECIPE, params: { count: 1 } } },
+  ], { exists });
+  assert.deepEqual(added, ['m', 'empty', 'brief']);
+  const by = (/** @type {string} */ id) => /** @type {any} */ (canvas.nodes.find((n) => n.id === id));
+  assert.deepEqual({ ...by('m'), x: undefined, y: undefined }, { id: 'm', x: undefined, y: undefined, mix: true, recipe: { ...MIX_RECIPE, params: { count: 1 } }, recipeId: 'recipe-2', batchId: 'mix-one' });
+  assert.deepEqual({ ...by('empty'), x: undefined, y: undefined }, { id: 'empty', x: undefined, y: undefined, mix: true, recipe: {} }, 'a mix made by an agent with no recipe has an empty one');
+  await assert.rejects(applyCanvasOps({ nodes: /** @type {any} */ (canvas.nodes), edges: [] }, [{ op: 'set', id: 'm', prompt: 'x' }], { exists }),
+    (e) => e instanceof CanvasOpError && /a mix node has no prompt; it has .*recipe/.test(e.message));
+  await assert.rejects(applyCanvasOps({ nodes: /** @type {any} */ (canvas.nodes), edges: [] }, [{ op: 'add', kind: 'mix', recipe: [1] }], { exists }),
+    (e) => e instanceof CanvasOpError && /step 1: a mix node's recipe is an object/.test(e.message));
+  await assert.rejects(applyCanvasOps({ nodes: /** @type {any} */ (canvas.nodes), edges: [] }, [{ op: 'add', kind: 'mix', recipe: { a: 'x'.repeat(64 * 1024) } }], { exists }),
+    (e) => e instanceof CanvasOpError && /at most 64 KB/.test(e.message));
+  await assert.rejects(applyCanvasOps({ nodes: /** @type {any} */ (canvas.nodes), edges: [] }, [{ op: 'set', id: 'm', batchId: 'Not A Batch' }], { exists }),
+    (e) => e instanceof CanvasOpError && /a batchId is lowercase letters, digits and hyphens/.test(e.message));
+});
+
+test('a board from before mixes reads as it did: no node of it is a mix', () => {
+  const before = {
+    nodes: [
+      { id: 'a', x: 0, y: 0, text: 'Opening' },
+      { id: 'b', x: 300, y: 0, path: 'assets/video/a.mp4' },
+      { id: 'c', x: 900, y: 0, make: 'video', prompt: 'a slow push in', versions: ['assets/video/b.mp4'], path: 'assets/video/b.mp4' },
+      { id: 'd', x: 0, y: 400, cut: true },
+      { id: 'g', x: 0, y: 800, group: 'Shots', color: 'blue' },
+    ],
+    edges: [{ id: 'e1', from: 'b', to: 'c' }, { id: 'e2', from: 'c', to: 'd' }],
+  };
+  assert.deepEqual(parseCanvas(before), before, 'no mix node appeared, and nothing of a mix was added to one');
+});
+
 test("a text node's words are written by the person's agent, from what they ask and what is wired in", async () => {
   const post = (body) => Object.assign(Readable.from([Buffer.from(JSON.stringify(body))]), { method: 'POST' });
   const answer = () => { const res = { status: 0, body: '', writeHead(s) { res.status = s; }, end(b) { res.body = b; } }; return res; };

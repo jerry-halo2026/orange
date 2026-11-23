@@ -27,10 +27,10 @@ export const TRANSFORMERS = 'models/transformers-4.3.2/transformers.min.js';
  * The runtime's folder, as its threads find its files: a path with forward slashes (a file: URL is fetched, which
  * Node cannot do from a worker).
  */
-export const runtimeFolder = () => `${dirname(modelFile(RUNTIME)).split(sep).join('/')}/`;
+export const runtimeFolder = () => pathToFileURL(`${dirname(modelFile(RUNTIME)).split(sep).join('/')}/`).href;
 
 /** How many threads the runtime takes: most of the computer, not all of it. */
-export const threads = () => Math.max(1, Math.min(4, availableParallelism() - 1));
+export const threads = () => 1;
 
 /**
  * transformers.js on the library's runtime. It is its browser build (the Node build needs a native runtime): told to
@@ -64,12 +64,12 @@ async function transformers() {
  * @param {string} id @param {Float32Array} audio
  * @returns {Promise<{ text: string, words: Word[], language: string }>}
  */
-export async function transcribe(id, audio) {
+export async function transcribe(id, audio, { language: languageHint } = {}) {
   const { pipeline, env } = await transformers();
   /* models/<id>/config.json: the folder above the model's is where transformers.js looks for it by name */
   env.localModelPath = `${dirname(dirname(modelFile(`models/${id}/config.json`)))}/`;
   const asr = await pipeline('automatic-speech-recognition', id, { dtype: { encoder_model: 'q8', decoder_model_merged: 'q8' }, device: 'auto' });
-  const language = await languageOf(asr, audio);
+  const language = languageHint || await languageOf(asr, audio);
   const out = await asr(audio, { return_timestamps: 'word', chunk_length_s: 30, stride_length_s: 5, language, task: 'transcribe' });
   return { ...timedWords(out.chunks ?? [], audio.length / 16000), language };
 }

@@ -36,7 +36,7 @@ test('statusOf：2 完成、1 未完成，其它一律当失败（不能当成"�
   assert.throws(() => statusOf({ data: { status: 9 } }), /status 9/);
 });
 
-test('tts：hex 解码落盘，groupId 走 header', async () => {
+test('tts：hex 解码落盘，groupId 走 header，文件落在 assets/audio/vo/', async () => {
   let seen = /** @type {any} */ (null);
   const saved = globalThis.fetch;
   globalThis.fetch = /** @type {any} */ (async (url, init) => {
@@ -44,11 +44,31 @@ test('tts：hex 解码落盘，groupId 走 header', async () => {
     return { ok: true, status: 200, json: async () => ({ data: { audio: '0011ff', status: 2 } }) };
   });
   try {
-    const result = await minimax.run('tts', { text: '三十秒口播', out: 'assets/v.mp3' }, ctx());
+    const result = await minimax.run('tts', { text: '三十秒口播', voice: 'female-shaonv', out: 'v' }, ctx());
     assert.match(seen.url, /\/v1\/t2a_v2$/);
     assert.equal(seen.headers['group-id'], 'group-1', '老账号的 groupId 必须带上');
     assert.equal(seen.headers.authorization, 'Bearer abcdefghijklmnopqrstuvwxyz', '密钥不该含 groupId 前缀');
+    assert.equal(seen.body.voice_setting.voice_id, 'female-shaonv');
     assert.deepEqual([...result.files[0].bytes], [0x00, 0x11, 0xff], 'hex 解码，不是 base64');
+    assert.equal(result.files[0].path, 'assets/audio/vo/v.mp3', '--out 是名字，落盘由 landing 决定');
+    assert.equal(result.index[0].src, 'assets/audio/vo/v.mp3', 'src 指项目内，不指项目外');
+    assert.ok(result.index[0].src.startsWith('assets/audio/vo/'));
+    assert.equal(result.index[0].voice, 'female-shaonv');
+    assert.deepEqual(
+      { model: result.receipt.model, voice: result.receipt.voice, seconds: result.receipt.seconds },
+      { model: 'speech-2.8-hd', voice: 'female-shaonv', seconds: 30 },
+      '回执保留 model/voice/seconds',
+    );
+  } finally {
+    globalThis.fetch = saved;
+  }
+});
+
+test('tts：--out 给成路径时当场说清（不静默写到项目外）', async () => {
+  const saved = globalThis.fetch;
+  globalThis.fetch = /** @type {any} */ (async () => ({ ok: true, status: 200, json: async () => ({ data: { audio: '0011', status: 2 } }) }));
+  try {
+    await assert.rejects(() => minimax.run('tts', { text: 'x', voice: 'female-shaonv', out: 'assets/v.mp3' }, ctx()), /--out is a name/);
   } finally {
     globalThis.fetch = saved;
   }
@@ -77,6 +97,19 @@ test('音乐：服务端用 200 说"已退役"时，报出它自己的话，不�
   }));
   try {
     await assert.rejects(() => minimax.run('music', { prompt: '温柔的钢琴', sec: 30 }, ctx()), /retired for new accounts.*Not retried/s);
+  } finally {
+    globalThis.fetch = saved;
+  }
+});
+
+test('音乐：hex 也经 landing 落到 assets/audio/music/，src 不指项目外', async () => {
+  const saved = globalThis.fetch;
+  globalThis.fetch = /** @type {any} */ (async () => ({ ok: true, status: 200, json: async () => ({ data: { audio: '00ff', status: 2 } }) }));
+  try {
+    const result = await minimax.run('music', { prompt: '温柔的钢琴', sec: 30, out: 'bed' }, ctx());
+    assert.equal(result.files[0].path, 'assets/audio/music/bed.mp3');
+    assert.equal(result.index[0].src, 'assets/audio/music/bed.mp3');
+    assert.equal(result.receipt.model, 'music-3.0');
   } finally {
     globalThis.fetch = saved;
   }

@@ -52,6 +52,7 @@ export function landedIndexOf(body: unknown): LandedIndexTree {
       unclassified: whole(totals.unclassified),
     },
     batches: batches as readonly IndexBatch[],
+    ...(Array.isArray(body.products) ? {products: body.products as unknown as readonly import('./index-tree').IndexProduct[]} : {}),
     /* The flattened rows are not drawn, and 78 484 of them are not worth holding: the counts above are the truth. */
     unclassified: [],
     ...(derived ? {derived: derived as unknown as IndexDerived} : {}),

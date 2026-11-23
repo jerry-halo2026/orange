@@ -41,7 +41,7 @@ export type SettingsSection = 'general' | 'agents' | 'models' | 'cloud' | 'devel
    scoped to), then help (Agents only inside an app with a chat: lib/host.ts `agents`; Advanced for what is already set
    for the best experience; Developer always, for its diagnostics) */
 const NAV: Array<{ group: 'settings' | 'help'; sections: SettingsSection[] }> = [
-  { group: 'settings', sections: ['general', ...(studioHost?.agents ? ['agents' as const] : []), 'models', 'cloud'] },
+  { group: 'settings', sections: ['general', ...(studioHost?.agents ? ['agents' as const] : []), 'models'] },
   { group: 'help', sections: ['shortcuts', 'advanced', 'developer'] },
 ];
 
@@ -186,7 +186,7 @@ export function SettingsModal({ open, onClose, section: opening }: SettingsModal
           <div key={showing ?? 'none'} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-10 pb-12 pt-9">
             <div className="mx-auto w-full max-w-[920px]">
             {showing ? <h2 id="settings-title" className="mb-7 text-[22px] font-semibold tracking-[-0.015em] text-[var(--text)]">{t(`settings.sections.${showing}`)}</h2> : null}
-            {showing === 'general' && <GeneralSection />}
+            {showing === 'general' && <><GeneralSection /><CloudSection /></>}
             {showing === 'agents' && <AgentsSection />}
             {showing === 'models' && <ModelsSection />}
             {showing === 'cloud' && <CloudSection />}
@@ -257,6 +257,18 @@ function GeneralSection() {
         />
       </SettingsGroup>
       <StorageGroup />
+      <SettingsGroup title={t('settings.account.group')}>
+        <SettingsItem
+          title={t('settings.account.signOut')}
+          description={t('settings.account.signOutHint')}
+          control={(
+            <button type="button" className="rounded border border-[var(--border)] px-3 py-1.5 text-[13px] hover:bg-[var(--bg-hover)]"
+              onClick={async () => { try { await fetch('/api/auth/sign-out', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }); } finally { window.location.reload(); } }}>
+              {t('settings.account.signOut')}
+            </button>
+          )}
+        />
+      </SettingsGroup>
       {studioHost?.update?.onState ? <AppAboutGroup /> : <AboutGroup />}
     </SettingsPage>
   );
@@ -571,6 +583,11 @@ function DeveloperSection() {
             title={t('settings.developer.logs')}
             description={t('settings.developer.logsHint')}
             control={prefs ? <SettingsSwitch checked={prefs.logs} label={t('settings.developer.logs')} onChange={(on) => change({ logs: on })} /> : null}
+          />
+          <SettingsItem
+            title={t('settings.developer.devtools')}
+            description={t('settings.developer.devtoolsHint')}
+            control={prefs ? <SettingsSwitch checked={prefs.devtools} label={t('settings.developer.devtools')} onChange={(on) => change({ devtools: on })} /> : null}
           />
         </SettingsGroup>
       ) : null}

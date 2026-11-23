@@ -1100,6 +1100,7 @@ export const es: Words = {
     binding: {
       title: 'Vinculación con Cloud steward',
       unboundBody: 'Vincula la cuenta de Cloud steward que usa este Studio y aquí se abrirán sus colecciones y su material: las colecciones, el buscador y los filtros de categoría / etiqueta / duración / cuenta.',
+      publicHint: 'Sin vincular, la vista pública de empresa sigue listando material; la vinculación la reduce a tu cuenta.',
       action: 'Vincular una cuenta',
       accountLabel: 'Cuenta de Cloud steward',
       accountHint: 'El nombre de la cuenta de Cloud steward (sin iniciar sesión en Cloud steward)',
@@ -1646,6 +1647,15 @@ export const es: Words = {
   },
   canvas: {
     title: 'Lienzo',
+    mix: {
+      title: 'Mezcla por lotes', idle: 'Sin ejecutar', running: 'Renderizando…', done: 'Renderizado', failed: 'Fallo de render',
+      batch: 'Lote', groups: 'Grupos de escena', refs: '{n} clips', noRecipe: 'Aún no hay receta: añade una carpeta, una línea y una voz, y ejecuta.',
+      line: 'Voz en off', noLine: 'Sin escribir', count: 'Cantidad', ratio: 'Relación', duration: 'Duración', voice: 'Voz',
+      run: 'Ejecutar mezcla', stopReason: 'Se detuvo por', addGroup: 'Añadir carpeta', removeGroup: 'Quitar',
+      lines: 'Líneas (una por salida)', linesHint: 'Cada línea es la voz de una salida; vacío no produce nada.',
+      provider: 'Servicio de voz', targetSec: 'Duración (s)', aspect: 'Relación', subtitle: 'Grabar subtítulos',
+      bgm: 'Música de fondo', bgmAdd: 'Subir música', bgmNone: 'Aún sin música', bgmRemove: 'Quitar música',
+    },
     toEdit: 'Cambiar a la edición',
     toCanvas: 'Cambiar al lienzo',
     editTitle: 'Edición',
@@ -2313,6 +2323,7 @@ export const es: Words = {
     close: 'Cerrar',
   },
   settings: {
+    account: { group: 'Cuenta', signOut: 'Cerrar sesión', signOutHint: 'Tus proyectos siguen en este ordenador.' },
     title: 'Configuración',
     done: 'Hecho',
     search: 'Buscar',
@@ -2617,7 +2628,7 @@ export const es: Words = {
       changes: 'Mostrar lo que cambió cada turno',
       changesHint: 'Bajo cada respuesta, los archivos que el turno añadió, eliminó o cambió, con las líneas añadidas y quitadas. Haz clic en un archivo para ver sus líneas cambiadas.',
       logs: 'Mostrar el registro de cada turno',
-      logsHint: 'En el chat, cada turno tiene un botón Registro: la petición y la sesión en que se ejecutó, cada herramienta con su entrada y su salida, cada pregunta y respuesta, y cómo terminó, tal como lo envió el agente.',
+      devtools: 'Herramientas de desarrollo', devtoolsHint: 'F12 y el menú Ver abren las herramientas.', logsHint: 'En el chat, cada turno tiene un botón Registro: la petición y la sesión en que se ejecutó, cada herramienta con su entrada y su salida, cada pregunta y respuesta, y cómo terminó, tal como lo envió el agente.',
       where: 'Cada turno se registra esté o no activado, en la carpeta .film/logs del proyecto, solo en este ordenador.',
     },
     shortcuts: {

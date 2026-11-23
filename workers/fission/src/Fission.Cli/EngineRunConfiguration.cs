@@ -18,6 +18,9 @@ public sealed class EngineRunConfiguration
         PropertyNameCaseInsensitive = true,
         ReadCommentHandling = JsonCommentHandling.Skip,
         Converters = { new JsonStringEnumConverter() },
+        /* 受控运行的 job 是调用方生成的：字段名拼错（例如把 Pick 写成 PickRule）会让该字段
+           静默退回默认值，出片结果与参数不符而没有任何提示。这里改成"不认识就拒绝"。 */
+        UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow,
     };
 
     private EngineRunConfiguration(EnginePathPolicy policy, FissionJob job)
@@ -128,11 +131,18 @@ public sealed class EngineRunConfiguration
         var fields = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         foreach (var property in json.RootElement.EnumerateObject())
         {
+            if (property.Value.ValueKind != JsonValueKind.String) throw InvalidConfiguration();
+            var value = property.Value.GetString() ?? string.Empty;
+            // FontsDir 是可选键（契约 §2）：出现即必须是字符串；空串等价于"未注入"，由引擎回落平台字体目录。
+            if (property.Name is "FontsDir")
+            {
+                if (!fields.TryAdd(property.Name, value)) throw InvalidConfiguration();
+                continue;
+            }
+
             if (property.Name is not ("FFmpeg" or "FFprobe" or "FFmpeg6" or "TransitionsDir" or "AssetsRoot" or "LocalAssetsRoot")
-                || property.Value.ValueKind != JsonValueKind.String)
+                || string.IsNullOrWhiteSpace(value) || !fields.TryAdd(property.Name, value))
                 throw InvalidConfiguration();
-            var value = property.Value.GetString();
-            if (string.IsNullOrWhiteSpace(value) || !fields.TryAdd(property.Name, value)) throw InvalidConfiguration();
         }
 
         // FFmpeg6 是可选能力（gltransition）：缺省即单引擎 9.x 路径，不算配置错误。
@@ -145,6 +155,7 @@ public sealed class EngineRunConfiguration
         {
             FFmpeg = fields["FFmpeg"], FFprobe = fields["FFprobe"], FFmpeg6 = fields.GetValueOrDefault("FFmpeg6", string.Empty),
             TransitionsDir = fields["TransitionsDir"], AssetsRoot = fields["AssetsRoot"], LocalAssetsRoot = fields["LocalAssetsRoot"],
+            FontsDir = fields.GetValueOrDefault("FontsDir", string.Empty),
             WorkRoot = string.Empty, OutRoot = string.Empty,
         };
     }

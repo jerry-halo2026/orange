@@ -14,12 +14,12 @@
  */
 import {useSyncExternalStore} from 'react';
 
-export type MaterialViewMode = 'videos' | 'collections';
+export type MaterialViewMode = 'videos' | 'collections' | 'products';
 
 export const MATERIAL_VIEW_KEY = 'openfilm.materialView';
 
 /** The two modes, in the order the toggle offers them. */
-export const MATERIAL_VIEW_MODES = Object.freeze(['videos', 'collections'] as const);
+export const MATERIAL_VIEW_MODES = Object.freeze(['videos', 'collections', 'products'] as const);
 
 type StorageLike = {getItem(key: string): string | null; setItem(key: string, value: string): void};
 
@@ -35,7 +35,7 @@ function storageOf(): StorageLike | null {
 
 /** The mode `raw` names, or `null` for anything else (a stored value from a future build does not decide a view). */
 export function parseViewMode(raw: unknown): MaterialViewMode | null {
-  return raw === 'videos' || raw === 'collections' ? raw : null;
+  return raw === 'videos' || raw === 'collections' || raw === 'products' ? raw : null;
 }
 
 export function readViewMode(storage: StorageLike | null = storageOf()): MaterialViewMode {

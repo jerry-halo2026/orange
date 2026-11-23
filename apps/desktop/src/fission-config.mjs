@@ -36,7 +36,7 @@ const exe = (name, platform) => (platform === 'win32' ? `${name}.exe` : name);
 export function fissionConfigFor(resourcesPath, { platform = process.platform } = {}) {
   const under = (...parts) => join(resourcesPath, ...parts);
   return {
-    cli: under('fission', 'Fission.Cli.dll'),
+    cli: under('fission', platform === 'win32' ? 'Fission.Cli.dll' : 'Fission.Cli'),
     dotnet: under('fission', exe('fission-host', platform)),
     paths: {
       FFmpeg: under('runtime', 'ffmpeg', exe('ffmpeg', platform)),
@@ -44,6 +44,8 @@ export function fissionConfigFor(resourcesPath, { platform = process.platform } 
       TransitionsDir: under('fission', 'transitions'),
       AssetsRoot: under('fission', 'assets'),
       LocalAssetsRoot: under('fission', 'local-assets'),
+      /* 随包字体目录：目录可以缺席（Windows 回落到系统字体），所以 readiness 不要求它存在。 */
+      FontsDir: under('fission', 'fonts'),
     },
   };
 }

@@ -188,12 +188,12 @@ test('the supplier\'s own row shape decodes: an id object, an observation, a wra
     videoId: { value: 'v1', sourceType: 1, source: 'v1' },
     observation: { name: '20261106-柠檬宝藏茶200g罐-外包装 (46)', rawMd5: 'b1946ac92492d2347c6235b4d2611184' },
   }), {
-    videoId: 'v1', name: '20261106-柠檬宝藏茶200g罐-外包装 (46)', md5: 'b1946ac92492d2347c6235b4d2611184', ...NO_CARD,
+    videoId: 'v1', name: '20261106-柠檬宝藏茶200g罐-外包装 (46)', md5: 'b1946ac92492d2347c6235b4d2611184', ...NO_CARD, createTime: null,
   });
   assert.equal(rowOf({ videoId: {} }), null);
   assert.equal(rowOf({ observation: { name: 'x' } }), null);
   assert.deepEqual(rowsFromPage([{ videoId: 'a', name: 'n' }, null, { name: 'no id' }]),
-    [{ videoId: 'a', name: 'n', md5: '', ...NO_CARD }]);
+    [{ videoId: 'a', name: 'n', md5: '', ...NO_CARD, createTime: null }]);
   assert.equal(rowOf({ videoId: 'a', observation: { name: 'n', rawMd5: '' } }).md5, '', 'an empty rawMd5 is left empty');
   assert.equal(rowOf({ videoId: 'a', observation: { name: 'n', rawMd5: { sourceType: 'string', source: 'c0ffee' } } }).md5,
     'c0ffee', 'a wrapped literal is unwrapped');
@@ -597,6 +597,7 @@ test('rowOf reads the supplier\'s labels / duration / author / cover / categorie
     coverUrl: 'https://example.test/c.png',
     oneLevel: '花草养生茶',
     twoLevel: '一根人参茶',
+    createTime: null,
   });
 
   /* The same row in this module's own plain shape: `durationMs` is already milliseconds and is not multiplied again. */

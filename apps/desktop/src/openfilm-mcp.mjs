@@ -214,7 +214,7 @@ export const TOOL_DEFINITIONS = Object.freeze([
   },
   {
     name: 'materials.take',
-    description: 'Take one material into the project\'s assets/ and say which clip tag uses it. Writes into the project.',
+    description: 'Take one material into the project\'s assets/ and say which clip tag uses it. Writes into the project. Returns path/assetPath for timeline.insert_clip. Needs a bound cloud-steward account for cloud materials.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -1085,7 +1085,7 @@ export function createOpenFilmMcpServer(deps = {}) {
       if (!placed) return notConfigured(tool, 'Taking a cloud material (its raw file is not available on this machine)');
       const { clipTag } = await editor();
       appendAudit({ home, tool, project: root, params: 'videoId=' + videoId + ',src=' + placed, clipId: basename(placed), at: now() });
-      return answer({ ok: true, tool, path: placed, clipTag: clipTag({ src: placed }) });
+      return answer({ ok: true, tool, path: placed, assetPath: placed, clipTag: clipTag({ src: placed }) });
     },
 
     async 'wiki.video'(args) {

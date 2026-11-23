@@ -32,7 +32,7 @@ import { useLanguage, useT } from '@/i18n';
 import { ApiError, api, projectEvents, type CanvasBoard, type CanvasCharacter } from '@/api';
 import { BoardSwitcher, boardName, nextBoardName } from './boards';
 import {
-  CARD_H, CUT_W, FILE_W, GROUP_COLORS, MAKE_MEDIA, MAKE_W, NOTE_H, NOTE_W, canvasId, cardWidth, makeSize, canvasKey, copyOf, emptyHistory, inputsChanged, inputsKey, inputsOf, isStale, makeName, makeRequest, modeOf, frameRatio, ratioOf,
+  CARD_H, CUT_W, FILE_W, GROUP_COLORS, MAKE_MEDIA, MAKE_W, MIX_H, MIX_W, NOTE_H, NOTE_W, canvasId, cardWidth, makeSize, canvasKey, copyOf, emptyHistory, inputsChanged, inputsKey, inputsOf, isStale, makeName, makeRequest, modeOf, frameRatio, ratioOf,
   nextOrder, readCanvasDoc, redo, remember, reorder, undo, withVersion,
   type CanvasDoc, type CanvasHistory, type MediaOf,
 } from '@/lib/canvas';
@@ -46,7 +46,7 @@ import { studioHost, type StudioRef } from '@/lib/host';
 import { useThemeChanges } from '@/lib/theme-changes';
 import { ContextMenu, type ContextMenuEntry } from '../ContextMenu';
 import {
-  BoardContext, allChoicesFor, boxOf, choiceOf, choicesFor, defaultChoice, GROUP_HELD, fitGroups, fromFlow, tidyGroup, unstack, inputViews, keepModelTime, runErrors, runs, runsChanged, shownBoards, startRun, toFlow, useRuns,
+  BoardContext, allChoicesFor, boxOf, choiceOf, choicesFor, defaultChoice, GROUP_HELD, fitGroups, fromFlow, tidyGroup, unstack, inputViews, keepModelTime, mixRuns, runErrors, runs, runsChanged, shownBoards, startMix, startRun, toFlow, useRuns,
   type Board, type BoardNode, type FrameData, type FrameNode, type MakeData, type MakingNode, type Side, type SpawnKind,
 } from './board';
 import { BetaTag, BottomToolbar, CornerBar, Dots, Outline, Viewer } from './chrome';
@@ -75,7 +75,7 @@ const LIT = 'var(--cv-edge-lit)';
 const MOD = typeof navigator !== 'undefined' && /mac/i.test(navigator.platform) ? '⌘' : 'Ctrl+';
 const SHIFT = MOD === '⌘' ? '⇧⌘' : 'Ctrl+Shift+';
 /** what each kind of node starts as, wide */
-const WIDE: Record<SpawnKind | 'file', number> = { note: NOTE_W, image: MAKE_W, video: MAKE_W, sfx: makeSize('sfx').w, music: makeSize('music').w, tts: makeSize('tts').w, cut: CUT_W, file: FILE_W };
+const WIDE: Record<SpawnKind | 'file', number> = { note: NOTE_W, image: MAKE_W, video: MAKE_W, sfx: makeSize('sfx').w, music: makeSize('music').w, tts: makeSize('tts').w, cut: CUT_W, mix: MIX_W, file: FILE_W, source: FILE_W, voice: FILE_W, subtitle: FILE_W };
 /** what the computer's file picker offers, by what it is for */
 const ACCEPT = { image: 'image/*', video: 'video/*', audio: 'audio/*', media: 'image/*,video/*,audio/*' } as const;
 
@@ -381,6 +381,13 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     }
   };
   const topLeft = (at: MenuAt['at'], corner: boolean | undefined, w: number, h: number) => (corner ? at : { x: at.x - w / 2, y: at.y - h / 2 });
+  const addSource = async (path: string, at: MenuAt['at'], from?: MenuAt['from'], corner?: boolean) => {
+    const id = canvasId('n');
+    const answer = await fetch('/api/fission-render/scan-folder', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ path }) }).then((r) => r.json()).catch(() => null) as { groups?: Array<{ name: string; videos: number; images: number }> } | null;
+    const groups = (answer?.groups ?? []).filter((group) => group.videos + group.images > 0);
+    place({ id, type: 'source', position: topLeft(at, corner, FILE_W, CARD_H), width: FILE_W, height: CARD_H,
+      data: { source: true, path, groups, settings: { take: 1, rule: 'random', speed: 1, useThenDelete: false, allowReuse: false } } }, from);
+  };
   const addKind = (kind: SpawnKind, at: MenuAt['at'], from?: MenuAt['from'], corner?: boolean) => {
     const id = canvasId('n');
     const w = WIDE[kind];
@@ -389,6 +396,20 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
       place({ id, type: 'note', position: topLeft(at, corner, w, CARD_H), width: w, height: CARD_H, data: { text: '' } }, from);
     } else if (kind === 'cut') {
       place({ id, type: 'cut', position: topLeft(at, corner, w, CARD_H), width: w, height: CARD_H, data: {} }, from);
+    } else if (kind === 'mix') {
+      /* a new mix: its band, and no recipe yet (the panel says so; the batch page and agents write them) */
+      place({ id, type: 'mix', position: topLeft(at, corner, w, MIX_H), width: w, height: MIX_H, data: { mix: true, recipe: {} } }, from);
+    } else if (kind === 'source') {
+      void api.pickFolder('素材文件夹').then((path) => { if (path) void addSource(path, at, from, corner); });
+    } else if (kind === 'voice') {
+      void pickFiles(ACCEPT.audio).then((paths) => {
+        if (!paths.length) return;
+        place({ id, type: 'voice', position: topLeft(at, corner, w, CARD_H), width: w, height: CARD_H,
+          data: { voice: true, mode: 'upload', files: paths.map((path) => ({ path, mode: 'recognize' })) } }, from);
+      });
+    } else if (kind === 'subtitle') {
+      place({ id, type: 'subtitle', position: topLeft(at, corner, w, CARD_H), width: w, height: CARD_H,
+        data: { subtitle: true, mode: 'recognize' } }, from);
     } else {
       const size = makeSize(kind);
       place({ id, type: 'make', position: topLeft(at, corner, size.w, size.h), width: size.w, height: size.h, data: { make: kind, prompt: '' } }, from);
@@ -741,7 +762,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
       /* its panel as drawn (a frame later), else as it is about to be */
       const drawn = rootRef.current?.querySelector('.react-flow__node-toolbar .nodrag')?.getBoundingClientRect();
       const panel = drawn && drawn.height > 40 ? { w: drawn.width, h: drawn.height }
-        : type === 'make' ? { w: Math.min(660, box.width * 0.86), h: 260 } : type === 'cut' ? { w: 420, h: 80 } : { w: 0, h: 0 };
+        : type === 'make' ? { w: Math.min(660, box.width * 0.86), h: 260 } : type === 'cut' ? { w: 420, h: 80 } : type === 'mix' ? { w: Math.min(660, box.width * 0.86), h: 240 } : { w: 0, h: 0 };
       const mid = node.left + node.width / 2;
       const left = Math.min(node.left, mid - panel.w / 2);
       const right = Math.max(node.right, mid + panel.w / 2);
@@ -784,6 +805,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
         paths.forEach((path, i) => addFile(path, { x: at.x + (i % 3) * (FILE_W / 2 + 24), y: at.y + Math.floor(i / 3) * (CARD_H / 2 + 48) }, i ? undefined : { node: id, side: 'source' }, true));
       }, (e: unknown) => onError(e instanceof Error ? e.message : String(e)));
     },
+    importFiles: (list) => onImportFiles(list),
     cutout: (id, path) => {
       if (!folder) return;
       onNotice(t('canvas.actions.cutting'));
@@ -807,6 +829,39 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     unused: making.unused,
     make: (id) => { void makeNow(id); },
     stop: (id) => runs.get(`${projectId}/${id}`)?.abort.abort(),
+    /* a mix is run from the recipe it keeps: one batch, one attempt (the route's own), its answer kept for the node */
+    runMix: (id) => {
+      const doc = docNow();
+      const node = doc.nodes.find((n) => n.id === id);
+      if (!node?.mix) return;
+      const incoming = new Set(doc.edges.filter((e) => e.to === id).map((e) => e.from));
+      const sources = doc.nodes.filter((n) => n.source && incoming.has(n.id));
+      const voices = doc.nodes.filter((n) => n.voice && incoming.has(n.id));
+      const subtitles = doc.nodes.filter((n) => n.subtitle && incoming.has(n.id));
+      const recipe = { ...(node.recipe ?? {}) } as Record<string, unknown>;
+      if (sources.length) {
+        recipe.groups = sources.flatMap((source) => {
+          const settings = source.settings ?? { take: 1, rule: 'random', speed: 1, useThenDelete: false, allowReuse: false };
+          const groups = source.folderGroups?.length ? source.folderGroups : [{ name: String(source.path ?? '').split(/[\\/]/).filter(Boolean).pop() ?? '素材', videos: 0, images: 0 }];
+          return groups.map((group) => ({ name: group.name, refs: [{ kind: 'dir', dir: source.path, path: group.name }],
+            take: group.take ?? settings.take, rule: group.rule ?? settings.rule, speed: group.speed ?? settings.speed,
+            useThenDelete: group.useThenDelete ?? settings.useThenDelete, allowReuse: group.allowReuse ?? settings.allowReuse }));
+        });
+      }
+      if (voices.length) {
+        recipe.voiceFiles = voices.flatMap((voice) => (voice.files ?? []).map((file) => ({ path: file.path, text: file.text ?? '', subtitleMode: file.mode ?? 'recognize' })));
+      }
+      if (subtitles.length) {
+        const mode = subtitles[0].subtitleMode ?? 'recognize';
+        recipe.params = { ...((recipe.params as Record<string, unknown>) ?? {}), subtitle: mode !== 'none' };
+      }
+      void startMix(projectId, id, recipe, { failed: t('canvas.mix.failed') }).then((batchId) => {
+        /* the batch it was sent to is kept on the node once (nothing else of a run is: that is the server's) */
+        if (!batchId || batchId === node.batchId) return;
+        setNodes((list) => list.map((n) => (n.id === id && n.type === 'mix' ? { ...n, data: { ...n.data, batchId } } : n)));
+      });
+    },
+    mix: (id) => mixRuns.get(`${projectId}/${id}`),
     inputs: (id) => inputViews(now.current.nodes, now.current.edges, id, mediaOf),
     unwire: (edge) => { willChange(); setEdges((list) => list.filter((e) => e.id !== edge)); },
     sideMenu: (id, side, screen) => {
@@ -857,6 +912,18 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     const at = flow.screenToFlowPosition({ x: event.clientX, y: event.clientY });
     const item = readResourceDragData(event.dataTransfer);
     if (item) { event.preventDefault(); addFile(item.path, at); return; }
+    /* 从系统拖进来的文件夹：直接生成 source 节点 */
+    const first = event.dataTransfer.items?.[0];
+    const entry = first?.webkitGetAsEntry?.();
+    if (entry?.isDirectory && event.dataTransfer.files.length) {
+      event.preventDefault();
+      event.stopPropagation();
+      const native = (window as unknown as { openfilmNative?: { pathForFile?: (file: File) => string } }).openfilmNative;
+      const path = native?.pathForFile?.(event.dataTransfer.files[0]) ?? '';
+      if (path) void addSource(path, at);
+      else void api.pickFolder('素材文件夹').then((picked) => { if (picked) void addSource(picked, at); });
+      return;
+    }
     /* files of this computer: brought into the project first (as the Assets bring them), then laid down side by side */
     if (isComputerFileDrag(event.dataTransfer) && event.dataTransfer.files.length) {
       event.preventDefault();
@@ -881,6 +948,10 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     if (n.type === 'note') return { kind: 'node', id: n.id, nodeKind: 'note', label: words(n.data.text, t('canvas.kinds.note')), text: n.data.text };
     if (n.type === 'frame') return { kind: 'node', id: n.id, nodeKind: 'group', label: n.data.label || t('canvas.group') };
     if (n.type === 'cut') return { kind: 'node', id: n.id, nodeKind: 'cut', label: t('canvas.kinds.cut') };
+    if (n.type === 'mix') return { kind: 'node', id: n.id, nodeKind: 'mix', label: t('canvas.mix.title') };
+    if (n.type === 'source') return { kind: 'node', id: n.id, nodeKind: 'source', label: n.data.path.split(/[\\/]/).filter(Boolean).pop() ?? '素材文件夹', path: n.data.path };
+    if (n.type === 'voice') return { kind: 'node', id: n.id, nodeKind: 'voice', label: '配音', ...(n.data.path ? { path: n.data.path } : {}) };
+    if (n.type === 'subtitle') return { kind: 'node', id: n.id, nodeKind: 'subtitle', label: '字幕' };
     if (n.type === 'file') {
       return { kind: 'node', id: n.id, nodeKind: 'file', label: byPath.get(n.data.path)?.name ?? n.data.path.split('/').pop() ?? n.data.path, path: n.data.path, ...picture(n.data.path) };
     }
@@ -987,7 +1058,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
 
   /* the wires: those into and out of the node selected lit; those into a node with more than one, numbered in their order */
   const drawn = React.useMemo(() => {
-    const takes = new Set(nodes.flatMap((n) => (n.type === 'make' || n.type === 'cut' ? [n.id] : [])));
+    const takes = new Set(nodes.flatMap((n) => (n.type === 'make' || n.type === 'cut' || n.type === 'mix' ? [n.id] : [])));
     const into = new Map<string, Edge[]>();
     for (const e of edges) if (takes.has(e.target)) into.set(e.target, [...(into.get(e.target) ?? []), e]);
     const place = new Map<string, number>();
@@ -1023,6 +1094,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
         : { id: 'make', label: node.data.versions?.length ? t('canvas.make.again') : t('canvas.make.run'), icon: <Sparkles size={15} />, shortcut: `${MOD}↵`,
           disabled: !board.choices(node.data.make).length, hint: t('canvas.make.noService'), onSelect: () => { void makeNow(node.id); } }] : []),
       ...(node.type === 'cut' ? [{ id: 'send', label: t('canvas.cut.send'), icon: <Clapperboard size={15} />, onSelect: () => board.sendToFilm(node.id) }] : []),
+      ...(node.type === 'mix' ? [{ id: 'runMix', label: t('canvas.mix.run'), icon: <Play size={15} />, onSelect: () => board.runMix(node.id) }] : []),
       ...(file && file.kind !== 'other' ? [{ id: 'film', label: t('canvas.addToFilm'), icon: <Clapperboard size={15} />, onSelect: () => onAddToFilm(file) }] : []),
       ...(file && onReveal ? [{ id: 'reveal', label: t('canvas.actions.reveal'), icon: <FolderSearch size={15} />, onSelect: () => onReveal(file.path) }] : []),
       ...(file ? [
@@ -1041,7 +1113,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
           onNotice(t('canvas.copiedPicture'));
         }).catch((e: unknown) => onError(e instanceof Error ? e.message : String(e)));
       } }] : []),
-      ...(node.type === 'make' || node.type === 'cut' || file ? [{ id: 's0', separator: true as const }] : []),
+      ...(node.type === 'make' || node.type === 'cut' || node.type === 'mix' || file ? [{ id: 's0', separator: true as const }] : []),
       ...(onRefer ? [{ id: 'refer', label: t('host.refer'), shortcut: `${MOD}L`, onSelect: () => { refer(); } }] : []),
       { id: 'copy', label: t('canvas.copy'), shortcut: `${MOD}C`, onSelect: () => { copy(); } },
       { id: 'duplicate', label: t('canvas.duplicate'), shortcut: `${MOD}D`, onSelect: duplicate },
@@ -1081,7 +1153,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
   const edgeMenu = (event: React.MouseEvent, edge: Edge) => {
     event.preventDefault();
     const target = now.current.nodes.find((n) => n.id === edge.target);
-    const into = (target?.type === 'make' || target?.type === 'cut') && now.current.edges.filter((e) => e.target === edge.target).length > 1;
+    const into = (target?.type === 'make' || target?.type === 'cut' || target?.type === 'mix') && now.current.edges.filter((e) => e.target === edge.target).length > 1;
     setContext({ x: event.clientX, y: event.clientY, items: [
       ...(into ? [{ id: 'first', label: t('canvas.make.first'), onSelect: () => {
         willChange();
@@ -1358,9 +1430,9 @@ function Preview({ doc, fileUrl }: { doc: CanvasDoc; fileUrl: (path: string) => 
       files: [...files.values()],
       fileOf: (path) => files.get(path) ?? null,
       sources: { file: (file) => fileUrl(file.path), wave: () => '' },
-      addToFilm: nothing, setData: nothing, resize: nothing, spawn: nothing, bring: nothing, cutout: nothing, remove: nothing, willChange: nothing, editing: null, edit: nothing, single: null,
+      addToFilm: nothing, setData: nothing, resize: nothing, spawn: nothing, bring: nothing, importFiles: async () => [], cutout: nothing, remove: nothing, willChange: nothing, editing: null, edit: nothing, single: null,
       choices: () => [], allChoices: () => [], fallback: () => null, run: () => undefined, error: () => undefined, stale: NOTHING, unused: NONE,
-      make: nothing, stop: nothing, inputs: (id) => inputViews(drawn.nodes, drawn.edges, id, mediaOf), unwire: nothing, sideMenu: nothing,
+      make: nothing, stop: nothing, runMix: nothing, mix: () => undefined, inputs: (id) => inputViews(drawn.nodes, drawn.edges, id, mediaOf), unwire: nothing, sideMenu: nothing,
       upload: nothing, wireIn: nothing, sendToFilm: nothing, view: nothing,
       makesIn: () => 0, busyIn: () => false, makeAll: nothing, ungroup: nothing, keepTemplate: nothing, keepCharacter: nothing, openLibrary: nothing, redraw: nothing, tidy: nothing, select: nothing, pick: nothing, openSettings: nothing, readOnly: true,
     };

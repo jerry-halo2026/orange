@@ -116,7 +116,7 @@ export function applicationMenuTemplate({ productName, packaged, language = 'en'
         { role: 'zoomOut', label: say('zoomOut') },
         { type: 'separator' },
         { role: 'togglefullscreen', label: say('toggleFullScreen') },
-        ...(packaged ? [] : [
+        ...([
           { type: 'separator' },
           { label: say('reload'), accelerator: 'CmdOrCtrl+Shift+R', click: reload },
           /* The item names its key in every language (`developerToolsWithKey`), and F12 is what the menu binds.

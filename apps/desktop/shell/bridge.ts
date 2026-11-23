@@ -238,15 +238,16 @@ const asks = signal<HostAsk[]>([]);
 let answerAsk: (id: string, allow: boolean) => void = () => {};
 
 /* ── Settings → Developer (kept by the app): Studio switches it, the chat shows each turn's log and changes by it ── */
-interface AppPrefs { developer: boolean; changes: boolean; notify?: boolean }
-const developerOf = (prefs: AppPrefs) => ({ logs: prefs.developer === true, changes: prefs.changes !== false });
+interface AppPrefs { developer: boolean; changes: boolean; notify?: boolean; devtools?: boolean }
+const developerOf = (prefs: AppPrefs) => ({ logs: prefs.developer === true, changes: prefs.changes !== false, devtools: prefs.devtools !== false });
 const developer = {
   get: async () => developerOf(await native.prefs.get()),
-  set: (next: { logs?: boolean; changes?: boolean }) => native.prefs.set({
+  set: (next: { logs?: boolean; changes?: boolean; devtools?: boolean }) => native.prefs.set({
     ...(typeof next.logs === 'boolean' ? { developer: next.logs } : {}),
     ...(typeof next.changes === 'boolean' ? { changes: next.changes } : {}),
+    ...(typeof next.devtools === 'boolean' ? { devtools: next.devtools } : {}),
   }),
-  onChange: (listener: Listener<{ logs: boolean; changes: boolean }>) => native.prefs.onChange((prefs) => listener(developerOf(prefs))),
+  onChange: (listener: Listener<{ logs: boolean; changes: boolean; devtools: boolean }>) => native.prefs.onChange((prefs) => listener(developerOf(prefs))),
 };
 
 /* ── Settings → Advanced (kept by the app): the system's notifications of a turn done, stopped or waiting ── */

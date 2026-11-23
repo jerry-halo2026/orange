@@ -32,6 +32,12 @@ public sealed record EnginePaths
     /// <summary>自建资产根（BGM 预设/自产库、配音库）。空 = 未注入。</summary>
     public string LocalAssetsRoot { get; init; } = string.Empty;
 
+    /// <summary>
+    /// 字幕字体目录（libass 的 fontsdir）。空 = 未注入，由引擎回落到平台字体目录
+    /// （Windows <see cref="Environment.SpecialFolder.Fonts"/>；macOS 该目录无效，必须显式给出）。
+    /// </summary>
+    public string FontsDir { get; init; } = string.Empty;
+
     /// <summary>工作目录根（受控运行由 EnginePathPolicy 按 task/attempt 派生）。空 = 未注入。</summary>
     public string WorkRoot { get; init; } = string.Empty;
 
@@ -41,11 +47,14 @@ public sealed record EnginePaths
     /// <summary>调用方是否注入可选 gltransition 引擎。</summary>
     public bool HasFFmpeg6 => !string.IsNullOrWhiteSpace(FFmpeg6);
 
+    /// <summary>调用方是否注入字体目录（空 = 由引擎回落平台字体目录）。</summary>
+    public bool HasFontsDir => !string.IsNullOrWhiteSpace(FontsDir);
+
     /// <summary>调用方必须注入的引擎/资产键（不含可选 FFmpeg6 与派生写根）。</summary>
     public static IReadOnlyList<string> RequiredKeys { get; } = ["FFmpeg", "FFprobe", "TransitionsDir", "AssetsRoot", "LocalAssetsRoot"];
 
     /// <summary>调用方可选注入的键；缺省即"未启用该能力"，不报配置错误。</summary>
-    public static IReadOnlyList<string> OptionalKeys { get; } = ["FFmpeg6"];
+    public static IReadOnlyList<string> OptionalKeys { get; } = ["FFmpeg6", "FontsDir"];
 
     /// <summary>非受控宿主（doctor/normalize/Web）额外必须注入的写根。</summary>
     public static IReadOnlyList<string> HostWriteRootKeys { get; } = ["WorkRoot", "OutRoot"];

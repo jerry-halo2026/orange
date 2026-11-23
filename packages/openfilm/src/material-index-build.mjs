@@ -42,7 +42,7 @@ import { chmod, mkdir, rename, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
-import { buildMaterialIndex, derivedTotals, entryMetaOf, md5Of } from './material-index.mjs';
+import { buildMaterialIndex, derivedTotals, entryMetaOf, md5Of, numberOf } from './material-index.mjs';
 
 /** The five material classes the supplier's `videoType` names (`contract.ts` VIDEO_TYPES). */
 export const MATERIAL_VIDEO_TYPES = Object.freeze([0, 1, 2, 3, 4]);
@@ -154,7 +154,8 @@ export function rowOf(item) {
     oneLevel: observation?.oneLevelVideoType ?? given.oneLevel ?? given.oneLevelVideoType,
     twoLevel: observation?.twoLevelVideoType ?? given.twoLevel ?? given.twoLevelVideoType,
   });
-  return { videoId, name, md5, ...meta };
+  const videoType = numberOf(observation?.videoType ?? given.videoType) ?? 0;
+  return { videoId, name, md5, ...meta, videoType, createTime: observation?.createTime ?? given.createTime ?? given.uploadTime ?? null };
 }
 
 /** The rows of one page, in the order the page returned them (a row without an id is dropped, not invented). */

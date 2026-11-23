@@ -16,6 +16,8 @@ import {materialDraftKey, type MaterialDraftOperation, type MaterialDraftReferen
 import {MaterialCardView} from './MaterialCard.tsx';
 import {MaterialDetail} from './MaterialDetail.tsx';
 import {CollectionsView} from './CollectionsView.tsx';
+import {ProductFolders} from './ProductFolders.tsx';
+import {MaterialSubNav} from './MaterialSubNav.tsx';
 import {WikiPanel} from './WikiPanel.tsx';
 import type {WikiCache} from '@/lib/material-center/wiki';
 import type {WikiCopy} from '@/lib/material-center/wiki-copy';
@@ -47,6 +49,8 @@ export type MaterialCenterPageProps = {
   /** The claimed cloud-steward account "my materials" is scoped to; `null` until one is claimed (in Settings). */
   readonly binding: MaterialBinding | null;
   /** Whether the claim has been read yet (nothing about "mine" is claimed or refused before that). */
+  readonly rail?: boolean;
+  readonly hideToggle?: boolean;
   readonly bindingKnown: boolean;
   /** The batch draft, the one selection model the sources share. */
   readonly draft: readonly MaterialDraftReference[];
@@ -87,7 +91,7 @@ const emptyWord = (copy: MaterialCopy, empty: LibraryView['empty']): string => e
 export function MaterialCenterPage({
   controller, copy, compact = false, dense = false, now = Date.now, title,
   studioRetrying = false, showFilters = true, onGroupCount, wiki, wikiCopy: wikiWords,
-  binding, bindingKnown, draft, draftReady, onDraftOperation, index = {state: 'pending'}, list,
+  binding, bindingKnown, draft, draftReady, onDraftOperation, index = {state: 'pending'}, list, rail = false, hideToggle = false,
 }: MaterialCenterPageProps) {
   const state = useCenter(controller);
   const viewMode = useMaterialViewMode();
@@ -113,6 +117,7 @@ export function MaterialCenterPage({
 
   /** "My materials" exists only once an account is claimed (Settings → 云管家); before that the page uses the company view. */
   const ownAvailable = ownScopeAvailable(binding);
+  const cloudBound = Boolean(binding);
   /* The wiki: one material's notes open at a time (read when opened, kept for the session). */
   const wikiCopy = wikiWords ?? wikiCopyFor('en');
   const [wikiFor, setWikiFor] = React.useState<string | null>(null);
@@ -211,9 +216,9 @@ export function MaterialCenterPage({
     hovered: hovered === entry.id,
     usePending: entry.source === 'cloud' ? state.usePending === entry.card?.videoId : false,
     canSelect: draftReady && entry.draft !== null && !pendingDraft.has(entry.id),
-    canUse: entry.source === 'cloud' ? entry.card !== null && !deniedNow.has(entry.card.videoId) : false,
+    canUse: entry.source === 'cloud' ? cloudBound && entry.card !== null && !deniedNow.has(entry.card.videoId) : false,
     useLabel: entry.source === 'cloud'
-      ? (entry.card && deniedNow.has(entry.card.videoId) ? useFailureCopy(copy, 'forbidden', deniedDownloads.codeOf(entry.card.videoId) ?? undefined) : copy.download)
+      ? (!cloudBound ? copy.bindToDownload : entry.card && deniedNow.has(entry.card.videoId) ? useFailureCopy(copy, 'forbidden', deniedDownloads.codeOf(entry.card.videoId) ?? undefined) : copy.download)
       : copy.download,
     onHover: look,
     onToggleSelect: toggle,
@@ -232,16 +237,17 @@ export function MaterialCenterPage({
   /** A group's materials: that group's own rows (read by its name prefix), drawn by the same card wall and actions. */
   const renderGroupEntries = (rows: readonly LibraryEntry[]) => wall(rows);
 
-  return <section data-material-center="" className={'flex min-h-0 flex-col gap-3 ' + (compact ? 'h-full overflow-y-auto p-3' : '')} aria-label={title ?? copy.title}>
+  return <section data-material-center="" className={(rail ? 'flex min-h-0 flex-row gap-3 ' : 'flex min-h-0 flex-col gap-3 ') + (compact ? 'h-full overflow-y-auto p-3' : '')} aria-label={title ?? copy.title}>
+    {rail && <MaterialSubNav copy={copy} active={viewMode} onChange={writeViewMode} />}
+    <div className="flex min-w-0 flex-1 flex-col gap-3">
     <div className="flex flex-wrap items-center gap-2">
-      <h2 className="mr-auto text-[15px] font-semibold">{title ?? copy.title}</h2>
-      <div role="group" data-view-toggle={viewMode} aria-label={copy.viewToggle} className="flex overflow-hidden rounded border border-[var(--border)] text-[11px]">
+      {!rail && !hideToggle && <div role="group" data-view-toggle={viewMode} aria-label={copy.viewToggle} className="flex overflow-hidden rounded border border-[var(--border)] text-[11px]">
         {MATERIAL_VIEW_MODES.map(mode => <button key={mode} type="button" data-view-mode={mode} aria-pressed={viewMode === mode}
-          title={mode === 'videos' ? copy.viewVideos : copy.viewCollections} aria-label={mode === 'videos' ? copy.viewVideos : copy.viewCollections}
+          title={mode === 'videos' ? copy.viewVideos : mode === 'collections' ? copy.viewCollections : '产品'} aria-label={mode === 'videos' ? copy.viewVideos : mode === 'collections' ? copy.viewCollections : '产品'}
           onClick={() => writeViewMode(mode)}
           className={(viewMode === mode ? 'bg-[var(--bg-hover)] text-[var(--text)] ' : 'text-[var(--text-muted)] hover:bg-[var(--bg-hover)] ')
             + 'px-2 py-1 first:border-r first:border-[var(--border)]'}>{mode === 'videos' ? '▦' : '▤'}</button>)}
-      </div>
+      </div>}
     </div>
 
     {/* One compact bar for one catalogue, in the drawer's own shape: a single `h-7` line whose search box takes every
@@ -250,7 +256,7 @@ export function MaterialCenterPage({
         because the group is the filter. The line never wraps: at 268px the search field keeps a width (min-w-0 flex-1)
         and a button is 28px, never a label pushed under its own control. */}
     {showFilters && <div data-filter-bar="" role="group" aria-label={copy.filters} className="flex h-7 min-w-0 items-center gap-1">
-      <form onSubmit={event => {event.preventDefault(); controller.setFilters({search});}}
+      <form onSubmit={event => {event.preventDefault(); controller.setFilters({search}); if (viewMode !== 'videos') writeViewMode('videos');}}
         className="flex h-7 min-w-0 flex-1 items-center gap-1.5 rounded-md bg-[var(--bg-field)] px-2 text-[var(--text-faint)] focus-within:ring-1 focus-within:ring-[var(--accent)]">
         <Search size={13} aria-hidden className="shrink-0" />
         <input data-filter="search" value={search} maxLength={128} aria-label={copy.search} placeholder={copy.searchHint}
@@ -313,7 +319,9 @@ export function MaterialCenterPage({
       onClose={() => setWikiFor(null)}
       onUseClip={() => { void controller.use(wikiFor); }} />}
 
-    {viewMode === 'collections'
+    {(viewMode === 'products')
+      ? (index.state === 'ready' ? <ProductFolders copy={copy} tree={index.index} renderEntries={renderGroupEntries} list={list} /> : <p className="text-[12px] text-[var(--text-muted)]">{copy.indexEmpty}</p>)
+      : (viewMode === 'collections')
       ? <CollectionsView copy={copy} index={index} entries={view.entries} page={groupReader} renderEntries={renderGroupEntries} covers={coverStore} />
       : (state.view === 'cards' ? wall(view.entries) : view.entries.length === 0 ? null : <div data-view-pane="list" className="overflow-x-auto rounded-xl border border-[var(--border)]">
         <table className="w-full text-left">
@@ -348,5 +356,6 @@ export function MaterialCenterPage({
       onToggleSelect={toggle}
       onUse={useEntry}
       {...(wiki && detail.source === 'cloud' && detail.card ? {onWiki: (videoId: string) => setWikiFor(current => (current === videoId ? null : videoId)), wikiOpen: wikiFor === detail.card.videoId} : {})} />}
+    </div>
   </section>;
 }

@@ -43,6 +43,7 @@
  */
 import { HttpError, json, readJson } from './http.mjs';
 import { isCacheName } from './materials-cache.mjs';
+import { mixRecipeFromIndex } from './material-mix-recipe.mjs';
 import { pageNamedMaterialHeaders } from './materials-proxy.mjs';
 
 /** @typedef {import('./http.mjs').Req} Req @typedef {import('./http.mjs').Res} Res */
@@ -138,6 +139,21 @@ export function createMaterialCenterRoutes({ service = null, auth = null, index 
         throw new HttpError(501, 'Material search is not configured in this installation.', { code: 'material-search-unavailable' });
       }
       json(res, 200, await search(await readJson(req)));
+      return true;
+    }
+    /* 从索引拼一份混剪配方（agent 用）：查询 → 命中产品/分组的云端素材 → 场景组 + 口播 + 9:16 + 字幕。 */
+    if (route === 'mix-recipe' && parts.length === 2) {
+      assertMethod(req.method, 'POST', 'The mix recipe');
+      assertSignedIn();
+      if (typeof index !== 'function') {
+        throw new HttpError(501, 'The landed material index is not readable here.', { code: 'material-index-unavailable' });
+      }
+      const body = await readJson(req);
+      const built = mixRecipeFromIndex({
+        index: await index(), query: body?.query, count: body?.count, line: body?.line,
+        provider: body?.provider, voice: body?.voice, aspect: body?.aspect, bgmPath: body?.bgmPath,
+      });
+      json(res, 200, built);
       return true;
     }
     if (route === 'cover') {

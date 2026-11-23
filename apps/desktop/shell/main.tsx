@@ -16,7 +16,6 @@ import { CanvasModelPicker, canvasWritingModel } from '../chat/src/components/Mo
 import './shell.css';
 import '../chat/src/chat.css';
 import { Login, type LoginState } from './Login';
-import { AccountExit } from './AccountExit';
 import { accountPresentation, createAuthEventGate } from './auth-generation';
 
 /* the canvas's words written by the agent the chat has picked, with its own settings: the chat's agents include two
@@ -59,7 +58,7 @@ function DesktopGate(){
   return <>
     {(opened||active)&&<div style={{visibility:active?'visible':'hidden',height:'100%',width:'100%'}} inert={!active} aria-hidden={!active}>
       <Fragment key={generation}><FocusNav /><App authGeneration={generation} /></Fragment>
-      <AccountExit onSignOut={()=>void fetch('/api/auth/sign-out',{method:'POST',headers:{'content-type':'application/json'},body:'{}'})} />
+      
     </div>}
     {!active&&<Login state={state} onSignedIn={()=>void refresh()} />}
   </>;

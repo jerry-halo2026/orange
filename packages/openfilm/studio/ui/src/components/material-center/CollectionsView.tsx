@@ -60,6 +60,8 @@ export type CollectionsViewProps = {
   readonly renderEntries: (entries: readonly LibraryEntry[]) => React.ReactNode;
   /** The four covers a card's collage is made of: one request per set for the visit. */
   readonly covers: CollectionCoverStore;
+  /** 产品子 tab：只画产品层级（一级分类 → 产品 → 标签 → 素材），不画批次/派生批次/未归档。 */
+  readonly productsOnly?: boolean;
 };
 
 /** The card wall of every level: the video cards' own density (104px), so a set and a material are the same size. */
@@ -71,8 +73,9 @@ const nameClass = 'min-w-0 truncate px-0.5 text-[12px] font-medium text-[var(--t
 const stageHeading = 'cursor-pointer px-1 py-1 text-[12px] font-semibold text-[var(--text-muted)]';
 const heading = 'px-1 py-1 text-[12px] font-semibold';
 
-export function CollectionsView({copy, index, entries, page, renderEntries, covers}: CollectionsViewProps) {
+export function CollectionsView({copy, index, entries, page, renderEntries, covers, productsOnly = false}: CollectionsViewProps) {
   const [selection, setSelection] = React.useState<IndexSelection>(INDEX_ROOT);
+  const [derivedAll, setDerivedAll] = React.useState(false);
   /* A cover answer is a re-render: the store counts its own changes (one per landed page). */
   const coversRevision = React.useSyncExternalStore(covers.subscribe, covers.version, covers.version);
   /* One reveal per prefix, the same function on every render of that card: an observer is not rebuilt per frame. */
@@ -95,7 +98,7 @@ export function CollectionsView({copy, index, entries, page, renderEntries, cove
 
   const tree = index.index;
   const stages = collectionsStages(tree);
-  const derivedShown = stages.derived.slice(0, DERIVED_BATCH_ROWS);
+  const derivedShown = derivedAll ? stages.derived : stages.derived.slice(0, DERIVED_BATCH_ROWS);
   const derivedHidden = stages.derived.length - derivedShown.length;
   const crumbs = crumbsOf(tree, selection, copy.allBatches);
   const collection = collectionOf(tree, selection.collectionId);
@@ -168,7 +171,8 @@ export function CollectionsView({copy, index, entries, page, renderEntries, cove
     {/* 1. 批次 → 合集 cards. The batch heading folds its wall away, the way a folder does. The heading is the batch's
         *name* and nothing else: the wall under it is what says how much is in it, and a "108 条" beside the date read
         as a second title. A card's own count stays on its collage's foot (`FolderCover`). */}
-    {!collection && <div data-stage="batches" className="flex flex-col gap-2">
+
+    {!collection && !productsOnly && <div data-stage="batches" className="flex flex-col gap-2">
       {stages.real.map(batch => <details key={batch.id} data-batch={batch.id} open className="flex flex-col gap-2">
         <summary className={stageHeading}>{batch.name}</summary>
         <div className="grid" style={wallStyle}>
@@ -178,17 +182,18 @@ export function CollectionsView({copy, index, entries, page, renderEntries, cove
     </div>}
 
     {/* 2a. 派生批次: the date / number a name opens with. Marked derived — a material date is not a batch id. */}
-    {!collection && derivedShown.length > 0 && <details data-stage="derived" open className="flex flex-col gap-1">
+    {!collection && !productsOnly && derivedShown.length > 0 && <details data-stage="derived" open className="flex flex-col gap-1">
       <summary className={stageHeading}>{copy.derivedStage}</summary>
       <div className="grid" style={wallStyle}>
         {derivedShown.map(derivedCard)}
       </div>
-      {derivedHidden > 0 && <p data-note="derived-more" data-derived-total={stages.derived.length} data-derived-shown={derivedShown.length}
-        className="px-1 text-[11px] text-[var(--text-muted)]">{copy.derivedMore(stages.derived.length, derivedShown.length)}</p>}
+      {derivedHidden > 0 && <button type="button" data-action="derived-more" data-note="derived-more" data-derived-total={stages.derived.length} data-derived-shown={derivedShown.length}
+        className="px-1 text-left text-[11px] text-[var(--text-muted)] underline-offset-2 hover:underline"
+        onClick={() => setDerivedAll(true)}>{copy.derivedMore(stages.derived.length, derivedShown.length)}</button>}
     </details>}
 
     {/* 2b. 未归档: one pseudo-collection, bucketed by the group word or by a bare `_n`. */}
-    {!collection && stages.unfiled && <details data-stage="unfiled" data-unfiled-count={stages.unfiled.count} open className="flex flex-col gap-1">
+    {!collection && !productsOnly && stages.unfiled && <details data-stage="unfiled" data-unfiled-count={stages.unfiled.count} open className="flex flex-col gap-1">
       <summary className={stageHeading}>
         {copy.unfiledStage}
         <span data-unfiled-name="" className="ml-2 font-normal text-[11px] text-[var(--text-muted)]">{stages.unfiled.name}</span>

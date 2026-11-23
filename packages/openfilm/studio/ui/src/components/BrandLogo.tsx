@@ -57,10 +57,10 @@ const BARS: ReadonlyArray<readonly [number, number, number, number, string]> = [
   [665, 225, 565, 45, '#ED7B2D'],
 ];
 
-export function BrandMark({ size = 18, label = FALLBACK_LABEL }: { size?: number; label?: string }) {
+export function BrandMark({ size = 18, label = FALLBACK_LABEL, bare = false }: { size?: number; label?: string; bare?: boolean }) {
   return (
     <svg width={size} height={size} viewBox={VIEWBOX} className="block shrink-0" role="img" aria-label={label}>
-      <rect width="1024" height="1024" rx="220" fill="#0B0B0C" />
+      {bare ? null : <rect width="1024" height="1024" rx="220" fill="#0B0B0C" />}
       {BARS.map(([x, y, height, radius, fill]) => (
         <rect
           key={fill}
@@ -77,10 +77,10 @@ export function BrandMark({ size = 18, label = FALLBACK_LABEL }: { size?: number
   );
 }
 
-export function BrandLogo({ size = 18, name = brandName }: { size?: number; name?: string }) {
+export function BrandLogo({ size = 18, name = brandName, bare = false }: { size?: number; name?: string; bare?: boolean }) {
   const [broken, setBroken] = React.useState(false);
   const label = name?.trim() || FALLBACK_LABEL;
-  if (broken) return <BrandMark size={size} label={label} />;
+  if (bare || broken) return <BrandMark size={size} label={label} bare={bare} />;
   return (
     <img
       src={brandMarkUrl}

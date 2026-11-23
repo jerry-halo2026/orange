@@ -17,9 +17,9 @@ const exts={video:new Set(['.mp4','.mov','.mkv','.m4v','.jpg','.jpeg','.png','.b
 const err=(code,status=503)=>Object.assign(new Error(code),{code,status});
 const within=(root,file)=>{const r=path.relative(root,file);return !!r&&r!=='..'&&!r.startsWith('..'+path.sep)&&!path.isAbsolute(r);};
 const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype;
-const runtimeKeys=['FFmpeg','FFprobe','FFmpeg6','TransitionsDir','AssetsRoot','LocalAssetsRoot'];
-// FFmpeg6（gltransition）是可选转场引擎：单引擎 9.x 配置里可以整键省略，缺省即"未启用 gltransition"。
-const requiredRuntimeKeys=runtimeKeys.filter(key=>key!=='FFmpeg6');
+const runtimeKeys=['FFmpeg','FFprobe','FFmpeg6','TransitionsDir','AssetsRoot','LocalAssetsRoot','FontsDir'];
+// FFmpeg6（gltransition）与 FontsDir（随包字体目录）都是可选键：缺省时单引擎与系统字体仍能工作。
+const requiredRuntimeKeys=runtimeKeys.filter(key=>key!=='FFmpeg6'&&key!=='FontsDir');
 const hasRuntimeKeys=keys=>{
  if(!Array.isArray(keys)||keys.length<requiredRuntimeKeys.length||keys.length>runtimeKeys.length)return false;
  if(new Set(keys).size!==keys.length)return false;
@@ -58,6 +58,14 @@ export async function readLocalFissionConfiguration(file){
  if(typeof ff!=='string'||typeof fp!=='string'||fold(path.basename(ff))!=='ffmpeg'+suffix||fold(path.basename(fp))!=='ffprobe'+suffix||fold(path.dirname(ff))!==fold(path.dirname(fp)))throw err('fission-configuration-invalid');
  for(const [key,v] of Object.entries({dotnet:value.dotnet,cli:value.cli,...value.paths})){
   if(typeof v!=='string'||!path.isAbsolute(v))throw err('fission-configuration-invalid');
+  /* FontsDir 是可选字体目录：可以写进配置，但目录此刻可能还没随包落下。
+     存在时仍必须是普通目录（不跟随链接）；缺失不算配置错误（引擎会回落到系统字体）。 */
+  if(key==='FontsDir'){
+   let stat;
+   try{stat=await lstat(v);}catch(error){if(error&&error.code==='ENOENT')continue;throw error;}
+   if(stat.isSymbolicLink()||!stat.isDirectory())throw err('fission-configuration-invalid');
+   continue;
+  }
   const stat=await lstat(v);const dir=['TransitionsDir','AssetsRoot','LocalAssetsRoot'].includes(key);if(stat.isSymbolicLink()||(dir?!stat.isDirectory():!stat.isFile()||stat.nlink!==1))throw err('fission-configuration-invalid');
  }
  return value;

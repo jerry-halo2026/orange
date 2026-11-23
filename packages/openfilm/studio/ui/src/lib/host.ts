@@ -13,7 +13,7 @@ import React from 'react';
 export interface HostTab { id: string; projectId: string; title: string; active: boolean; working: boolean; asking: boolean; exporting: number | null }
 
 /** Settings → Developer, as the app keeps it (`developer` below). */
-export interface HostDeveloper { logs: boolean; changes: boolean }
+export interface HostDeveloper { logs: boolean; changes: boolean; devtools: boolean }
 
 /** The project identity and current folder shared with an embedded chat. */
 export interface HostProject { id: string; name: string; path: string }

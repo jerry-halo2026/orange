@@ -4,7 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  canvasId, canvasKey, copyOf, emptyHistory, inputsChanged, inputsKey, inputsOf, isStale, makeName, makeRequest, modesFor, nextOrder, readCanvasDoc, redo, remember, reorder, undo, withVersion,
+  RECIPE_MAX, canvasId, canvasKey, copyOf, emptyHistory, inputsChanged, inputsKey, inputsOf, isMixRecipe, isStale, makeName, makeRequest, mixSummary, modesFor, nextOrder, readCanvasDoc, redo, remember, reorder, undo, withVersion,
+  type MixRecipe,
 } from './canvas.ts';
 
 test('a board as sent is read node by node: notes and files, and edges between nodes it has', () => {
@@ -173,4 +174,61 @@ test('a new edge goes after the others into its node; one can be put first', () 
 test('what a node made is its newest version, shown', () => {
   assert.deepEqual(withVersion({ versions: ['a', 'b'], path: 'a', made: 'k1' }, { path: 'c', made: 'k2' }), { versions: ['a', 'b', 'c'], path: 'c', made: 'k2' });
   assert.deepEqual(withVersion({}, { path: 'a', made: 'k' }), { versions: ['a'], path: 'a', made: 'k' });
+});
+
+/* ── a mix (docs/execution/2026-11-19-mix-contract.md) ── */
+
+const RECIPE: MixRecipe = {
+  schema: 'orange/mix-recipe/1',
+  groups: [{ name: '01-open', enabled: true, refs: [{ kind: 'dir', path: 'assets/video/open' }, { kind: 'asset', path: 'assets/video/a.mp4' }] }],
+  script: { provider: 'minimax', voice: 'female-shaonv', lines: ['第一条口播', '第二条口播'] },
+  params: { count: 4, aspect: '9:16', targetSec: null },
+};
+
+test('a mix is read with its recipe, the recipe file it came from and its batch, and nothing of a run', () => {
+  assert.deepEqual(readCanvasDoc({ nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: RECIPE, recipeId: 'r1', batchId: 'mix-abc' }], edges: [] }).nodes,
+    [{ id: 'm', x: 0, y: 0, mix: true, recipe: RECIPE, recipeId: 'r1', batchId: 'mix-abc' }]);
+  /* a run is not the board's: what it would say is left out, as any field the board does not keep */
+  assert.deepEqual(readCanvasDoc({ nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: RECIPE, progress: 0.4, status: 'running', outputs: ['a.mp4'] }], edges: [] }).nodes,
+    [{ id: 'm', x: 0, y: 0, mix: true, recipe: RECIPE }]);
+  /* a recipe that is not an object, or is over the limit, leaves the node (and its edges) out */
+  for (const recipe of ['orange/mix-recipe/1', [1, 2], null, undefined, { groups: 'x'.repeat(RECIPE_MAX) }]) {
+    assert.deepEqual(readCanvasDoc({ nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe }, { id: 'n', x: 0, y: 0, text: 'there' }], edges: [{ id: 'e', from: 'n', to: 'm' }] }),
+      { nodes: [{ id: 'n', x: 0, y: 0, text: 'there' }], edges: [] });
+  }
+  assert.equal(isMixRecipe(RECIPE), true);
+  assert.equal(isMixRecipe({ a: 'x'.repeat(RECIPE_MAX) }), false);
+  /* an empty recipe is still one: a mix just made has nothing in it yet */
+  assert.deepEqual(readCanvasDoc({ nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: {} }], edges: [] }).nodes, [{ id: 'm', x: 0, y: 0, mix: true, recipe: {} }]);
+});
+
+test('a mix keeps only a batch id its own route would take, and a recipe id of a sane length', () => {
+  const one = (extra: Record<string, unknown>) => readCanvasDoc({ nodes: [{ id: 'm', x: 0, y: 0, mix: true, recipe: {}, ...extra }], edges: [] }).nodes[0];
+  assert.deepEqual(one({ batchId: 'Mix Bad/Id' }), { id: 'm', x: 0, y: 0, mix: true, recipe: {} });
+  assert.deepEqual(one({ batchId: 'mix-1' }), { id: 'm', x: 0, y: 0, mix: true, recipe: {}, batchId: 'mix-1' });
+  assert.deepEqual(one({ recipeId: 'r'.repeat(121) }), { id: 'm', x: 0, y: 0, mix: true, recipe: {} });
+});
+
+test('a mix is not a thing that is made: it reads what a recipe says for the panel', () => {
+  assert.deepEqual(mixSummary(RECIPE), { groups: [{ name: '01-open', refs: 2 }], line: '第一条口播', voice: 'female-shaonv', count: 4, aspect: '9:16', targetSec: null });
+  assert.deepEqual(mixSummary({}), { groups: [], line: '', voice: '', count: null, aspect: '', targetSec: null });
+  assert.deepEqual(mixSummary(undefined), { groups: [], line: '', voice: '', count: null, aspect: '', targetSec: null });
+  /* a recipe of another shape says nothing rather than throwing */
+  assert.deepEqual(mixSummary({ groups: 'x', script: { lines: 'y' }, params: { count: 'many' } }), { groups: [], line: '', voice: '', count: null, aspect: '', targetSec: null });
+  assert.equal(mixSummary({ groups: [{ refs: [1] }, null] }).groups.length, 1);
+});
+
+test('a mix is drawn as a band of its own size, and a file with no path is not one', () => {
+  const [mix, file] = readCanvasDoc({ nodes: [
+    { id: 'm', x: 10, y: 20, mix: true, recipe: RECIPE },
+    { id: 'f', x: 0, y: 0, path: 'assets/video/a.mp4' },
+  ], edges: [] }).nodes;
+  assert.deepEqual([mix!.mix, mix!.path, file!.path], [true, undefined, 'assets/video/a.mp4']);
+});
+
+test('a copy of a mix keeps its recipe, and not the batch the first one was run in', () => {
+  const doc = { nodes: [{ id: 'm', x: 0, y: 0, mix: true as const, recipe: RECIPE, recipeId: 'r1', batchId: 'mix-abc', by: { agent: 'codex' } }], edges: [] };
+  const [copy] = copyOf(doc, new Set(['m']), { x: 40, y: 20 }).nodes;
+  assert.deepEqual({ ...copy, id: undefined }, { id: undefined, x: 40, y: 20, mix: true, recipe: RECIPE, recipeId: 'r1' });
+  assert.notEqual(copy!.id, 'm');
 });

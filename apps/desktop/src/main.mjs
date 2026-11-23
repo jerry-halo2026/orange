@@ -13,7 +13,8 @@
  * ffmpeg, updates (preload.cjs). The window opens straight into the last project.
  */
 import { BaseWindow, Menu, WebContentsView, app, clipboard, dialog, ipcMain, nativeTheme, safeStorage, screen, shell } from 'electron';
-import { appendFileSync, existsSync, mkdirSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FLAVOR, IDENTITY, PRODUCT_NAME } from './flavor.mjs';
@@ -52,6 +53,11 @@ import { registerOrangeIpc } from './orange-ipc.mjs';
 import { brandWindowTitle } from './brand.mjs';
 
 const isolation = prepareDesktopIsolation(app,process.env);
+/* macOS 未签名构建：Chromium 自己的 cookie 加密也访问钥匙串（"Chromium Safe Storage"），启动会弹窗并卡住主进程。
+   mock keychain 绕开它；确实要用钥匙串时设 OPENFILM_KEYCHAIN=1。 */
+if (process.platform === 'darwin' && process.env.OPENFILM_KEYCHAIN !== '1') {
+  app.commandLine.appendSwitch('use-mock-keychain');
+}
 /* the window's title and the name About says: brand.json's own words (brand.mjs), else the name this app had before */
 const DISPLAY_NAME = brandWindowTitle();
 if (isolation) Object.assign(process.env,isolationEnvironment(isolation));
@@ -123,8 +129,53 @@ let studio = null;
 /* The read-only material service (`apps/api`): the window's second child, with Studio's lifecycle rules — started
    when the window is up, stopped on quit, and stopped and started again whenever Studio restarts. */
 const MATERIAL_CHECKOUT = app.isPackaged ? packagedMaterialRoot(process.resourcesPath) : here('../../../');
-const MATERIAL_CREDENTIALS = join(MATERIAL_CHECKOUT, '.dev', 'zhishang', 'credentials.local.json');
-const MATERIAL_BINDINGS = materialBindingsPath(MATERIAL_CHECKOUT);
+/* 凭据的三个来源，按优先级：显式 env（部署方能放任何可写位置）、应用数据目录（安装后用户放一次）、
+   开发检出的 .dev（原来唯一的位置——打包后它在只读的 resources 里，等于永远没有）。 */
+const MATERIAL_CREDENTIALS = (() => {
+  const explicit = String(process.env.OPENFILM_MATERIAL_CREDENTIALS ?? '').trim();
+  if (explicit) return explicit;
+  /* apps/api 的凭据位置有自己的硬规则：路径里必须有 `.dev` 段（credentials.ts assertIgnoredLocation），
+     所以安装后的凭据放在 `<userData>/.dev/zhishang/`，与开发检出同一形状。 */
+  const candidates = [
+    join(DATA, '.dev', 'zhishang', 'credentials.local.json'),
+    join(MATERIAL_CHECKOUT, '.dev', 'zhishang', 'credentials.local.json'),
+  ];
+  return candidates.find((file) => existsSync(file)) ?? candidates[candidates.length - 1];
+})();
+/* 给用户一个能放凭据的目录：存在即可，权限随 userData。 */
+try { mkdirSync(join(DATA, '.dev', 'zhishang'), { recursive: true }); } catch { /* read-only data dir: the picker still reports it */ }
+const MATERIAL_BINDINGS = app.isPackaged ? join(DATA, '.dev', 'zhishang', 'bindings.local.json') : materialBindingsPath(MATERIAL_CHECKOUT);
+/* 绑定表由 apps/api 以 server 模式写；文件不存在它只会报 bindings absent，own/account 作用域都不可用。
+   空表先落一份（0600），绑定才真的能写进去。 */
+try {
+  if (!existsSync(MATERIAL_BINDINGS)) {
+    mkdirSync(dirname(MATERIAL_BINDINGS), { recursive: true });
+    writeFileSync(MATERIAL_BINDINGS, `${JSON.stringify({ version: 1, bindings: {}, history: [] }, null, 1)}\n`, { mode: 0o600 });
+  }
+} catch { /* read-only data dir: apps/api reports it instead */ }
+/* 素材索引落在可写的数据目录（安装后 resources 只读）；Studio 的索引路由与后台构建读同一个 env。 */
+const MATERIAL_INDEX_DIR = String(process.env.OPENFILM_MATERIAL_INDEX_DIR ?? '').trim() || join(DATA, 'material-index');
+
+/**
+ * 素材索引的首次构建/过期重建：后台游离进程，失败不影响窗口。
+ * 它读 Studio 的 run.json（OPENFILM_DEV_HOME 指向 Studio 的 home），落盘到 MATERIAL_INDEX_DIR ——
+ * 与 Studio 的索引路由同一个目录。
+ */
+function startMaterialIndexBootstrap() {
+  const script = join(MATERIAL_CHECKOUT, 'packages', 'openfilm', 'scripts', 'material-index-bootstrap.mjs');
+  if (!existsSync(script)) return;
+  const home = IDENTITY.studioHome ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm');
+  try {
+    const child = spawn(process.execPath, [script, '--detach', '--dir', MATERIAL_INDEX_DIR], {
+      detached: true, stdio: 'ignore', windowsHide: true,
+      env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR, OPENFILM_DEV_HOME: home },
+    });
+    child.unref();
+    log(`material index: started in the background (${MATERIAL_INDEX_DIR})\n`);
+  } catch (error) {
+    log(`material index: could not start (${error?.message ?? error})\n`);
+  }
+}
 /* Staging holds the bytes the service fetches: writable, disposable, and never inside the archive. A source
    checkout stages in its ignored .dev; an isolated run stays inside its own profile; a packaged app, whose
    checkout is the read-only app.asar.unpacked, stages under the app's data. */
@@ -241,7 +292,7 @@ function makeView(tabId) {
       nodeIntegration: false,
       spellcheck: true,
       autoplayPolicy: 'no-user-gesture-required',
-      devTools: !app.isPackaged,
+      devTools: true,
     },
   });
   v.setBackgroundColor(BACKGROUND[theme]);
@@ -255,13 +306,12 @@ function makeView(tabId) {
   guard(v.webContents, (url) => Boolean(studio) && url.startsWith(`${studio.origin}/`));
   /* the second way to the developer tools in a development build: F12 is the menu's, Alt+CmdOrCtrl+I is read here
      (a menu item carries one accelerator, and this one must not open and close the tools in the same key press) */
-  if (!app.isPackaged) {
-    v.webContents.on('before-input-event', (event, input) => {
-      if (!isDevToolsShortcut(input)) return;
-      event.preventDefault();
-      toggleDevTools(v, v);
-    });
-  }
+  v.webContents.on('before-input-event', (event, input) => {
+    if (readPreferences(DATA).devtools === false) return;
+    if (!isDevToolsShortcut(input)) return;
+    event.preventDefault();
+    toggleDevTools(v, v);
+  });
   /* what went wrong with the page, for the log (logs/studio.log) */
   v.webContents.on('render-process-gone', (_event, details) => log(`page: renderer gone (${details.reason}, ${details.exitCode})\n`));
   v.webContents.on('did-fail-load', (_event, code, description, url, mainFrame) => { if (mainFrame && code !== -3 && pagePresentation?.wantedId() === tabId) log(`page: ${description} (${code}) loading ${url.replace(/key=[^&]+/, 'key=…')}\n`); });
@@ -463,11 +513,15 @@ async function openProjectFolder() {
   }
 }
 
-/* the own key, sealed with the system's keychain where there is one (macOS Keychain, Windows DPAPI) */
-const seal = (text) => (safeStorage.isEncryptionAvailable() ? Buffer.concat([Buffer.from('enc:'), safeStorage.encryptString(text)]) : Buffer.from(`raw:${text}`));
+/* the own key, sealed with the system's keychain where there is one (Windows DPAPI; macOS Keychain only when asked).
+   macOS 未签名构建访问钥匙串会卡住主进程等用户点“允许”，窗口就黑在那里——默认在 macOS 上走 0600 文件式密钥，
+   签名之后再用 OPENFILM_KEYCHAIN=1 打开钥匙串。 */
+const keychainSealing = () => process.platform !== 'darwin' || process.env.OPENFILM_KEYCHAIN === '1';
+const seal = (text) => (keychainSealing() && safeStorage.isEncryptionAvailable() ? Buffer.concat([Buffer.from('enc:'), safeStorage.encryptString(text)]) : Buffer.from(`raw:${text}`));
 const unseal = (data) => {
   const kind = data.subarray(0, 4).toString();
-  return kind === 'enc:' ? safeStorage.decryptString(data.subarray(4)) : data.subarray(4).toString();
+  if (kind !== 'enc:') return data.subarray(4).toString();
+  try { return safeStorage.decryptString(data.subarray(4)); } catch { return ''; }
 };
 
 /** The page's theme (Studio's), for the window behind it and the system's menus and dialogs. */
@@ -533,6 +587,8 @@ async function runStudio(env) {
         state = {...state,tabs:readWindowState(accountStateDir).tabs};
         desktopAuthActive = true;
         broadcast('desktop:auth',{...next,uiGeneration:authUiGeneration});
+        /* 索引构建要带着登录后的会话（否则 /api/materials/list 403）：登录成功后再在后台建一次。 */
+        startMaterialIndexBootstrap();
         void openTabs();
       } else {
         materialDraftStore.lock();saveState();desktopAuthActive = false;
@@ -595,7 +651,22 @@ async function runStudio(env) {
     launch: (prepared) => startWindowStudio({ ...studioOptions, env: prepared }),
   });
   /* a Studio started again hears where the agents are working */
+  try { writeFileSync(join(DATA, 'run-key.txt'), String(studio.key ?? ''), 'utf8'); } catch { /* the crawler has the env key */ }
   tellWorking(localAgents?.working() ?? []);
+  /* 会话若是恢复的，登录回调不一定再走一遍：轮询到 active 再建索引（只建一次，最多等 10 分钟）。 */
+  {
+    let started = false;
+    const attempt = async () => {
+      if (started) return;
+      try {
+        const state = await studioApi('/api/auth/state');
+        if (state?.kind === 'active') { started = true; startMaterialIndexBootstrap(); }
+      } catch { /* Studio still starting */ }
+    };
+    const timer = setInterval(() => void attempt(), 5_000);
+    setTimeout(() => clearInterval(timer), 10 * 60_000);
+    void attempt();
+  }
   /* the first time, the tabs; a Studio started again: each page stays where it was */
   if (!tabs) { await openTabs(); return; }
   for (const [id, v] of views) {
@@ -657,6 +728,8 @@ async function start() {
     shell: shellEnv,
     extra: {
       OPENFILM_HOME: IDENTITY.studioHome ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm'),
+      /* 素材索引的落点：Studio 的索引路由要读同一份（后台构建见 startMaterialIndexBootstrap）。 */
+      OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR,
       ...((IDENTITY.library ?? process.env.OPENFILM_LIBRARY) ? { OPENFILM_LIBRARY: IDENTITY.library ?? process.env.OPENFILM_LIBRARY } : {}),
       /* a flavour with a home of its own still shares the person's library (src/locations.mjs) */
       ...(IDENTITY.sharedHome ? { OPENFILM_SHARED_HOME: IDENTITY.sharedHome } : {}),
@@ -935,7 +1008,7 @@ async function start() {
       openProject: () => void openProjectFolder(),
       openSettings: () => { focusWindow(); activeView()?.webContents.send('desktop:open-settings'); },
       reload: () => activeView()?.webContents.reload(),
-      devTools: () => toggleDevTools(activeView(), views.get(HOME)),
+      devTools: () => { if (readPreferences(DATA).devtools !== false) toggleDevTools(activeView(), views.get(HOME)); },
       tabs: {
         /* the projects window, in the page in front, to pick the project a new tab shows */
         open: () => activeView()?.webContents.send('desktop:tabs:pick') ?? views.get(HOME)?.webContents.focus(),

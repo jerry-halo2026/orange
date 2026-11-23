@@ -1096,6 +1096,7 @@ export const ko: Words = {
     binding: {
       title: '클라우드 스튜어드 연결',
       unboundBody: '이 Studio가 쓰는 클라우드 스튜어드 계정을 연결하면 그 컬렉션과 소재가 여기에 표시됩니다(컬렉션, 검색창, 분류/태그/길이/계정 필터).',
+      publicHint: '연결하지 않아도 회사의 공개 소재는 볼 수 있고, 연결하면 내 계정으로 좁혀집니다.',
       action: '계정 연결',
       accountLabel: '클라우드 스튜어드 계정',
       accountHint: '클라우드 스튜어드 계정 이름(클라우드 스튜어드 로그인은 필요 없습니다)',
@@ -1642,6 +1643,15 @@ export const ko: Words = {
   },
   canvas: {
     title: '캔버스',
+    mix: {
+      title: '배치 믹스', idle: '실행 안 됨', running: '렌더링 중…', done: '출력됨', failed: '렌더 실패',
+      batch: '배치', groups: '장면 그룹', refs: '{n}개', noRecipe: '아직 레시피가 없습니다: 폴더·대사·음성을 넣고 실행하세요.',
+      line: '내레이션', noLine: '비어 있음', count: '수량', ratio: '비율', duration: '길이', voice: '음성',
+      run: '믹스 시작', stopReason: '중지 이유', addGroup: '폴더 추가', removeGroup: '삭제',
+      lines: '대사(한 줄에 하나)', linesHint: '한 줄이 출력 하나의 내레이션이 됩니다. 비어 있으면 출력이 없습니다.',
+      provider: '음성 서비스', targetSec: '길이(초)', aspect: '비율', subtitle: '자막 굽기',
+      bgm: '배경 음악', bgmAdd: 'BGM 업로드', bgmNone: '아직 BGM 없음', bgmRemove: 'BGM 삭제',
+    },
     toEdit: '편집으로 전환',
     toCanvas: '캔버스로 전환',
     editTitle: '편집',
@@ -2308,6 +2318,7 @@ export const ko: Words = {
     close: '닫기',
   },
   settings: {
+    account: { group: '계정', signOut: '로그아웃', signOutHint: '프로젝트는 이 컴퓨터에 그대로 남습니다.' },
     title: '설정',
     done: '완료',
     search: '검색',
@@ -2612,7 +2623,7 @@ export const ko: Words = {
       changes: '각 턴의 변경 사항 보기',
       changesHint: '각 답변 아래에 이번 턴에서 추가·삭제·변경된 파일과 늘고 줄어든 줄 수를 보여 줍니다. 파일을 누르면 변경된 줄을 볼 수 있습니다.',
       logs: '각 턴의 로그 보기',
-      logsHint: '채팅의 모든 턴에 로그 버튼이 생깁니다. 프롬프트와 실행된 세션, 각 도구 호출의 입력과 출력, 모든 질문과 답변, 끝난 방식을 에이전트가 보낸 그대로 볼 수 있습니다.',
+      devtools: '개발자 도구', devtoolsHint: 'F12와 보기 메뉴로 엽니다.', logsHint: '채팅의 모든 턴에 로그 버튼이 생깁니다. 프롬프트와 실행된 세션, 각 도구 호출의 입력과 출력, 모든 질문과 답변, 끝난 방식을 에이전트가 보낸 그대로 볼 수 있습니다.',
       where: '이 설정과 관계없이 모든 턴은 프로젝트의 .film/logs 폴더에 기록됩니다(이 컴퓨터에만).',
     },
     shortcuts: {

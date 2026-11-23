@@ -43,6 +43,8 @@ export type FetchJob = {
 };
 /** Whose a skill is: its uid's owner (`openfilm` for OpenFilm's own, else the account its repository is under). */
 export const ownerOf = (skill: { uid: string }) => skill.uid.split('/')[0] ?? '';
+/** A skill's uid as the interface shows it: our own skills read `OrangeFilm/...`, never the package's old name. */
+export const displayUid = (uid: string): string => uid.replace(/^openfilm\//, '橙子创作中心/');
 /** Who made it, as they write their name: its repository's account (GitHub keeps its case there), else its uid's owner. */
 export const makerOf = (skill: { uid: string; repository?: string }) => /^https:\/\/github\.com\/([\w.-]+)\//i.exec(skill.repository ?? '')?.[1] ?? ownerOf(skill);
 /** One of Discover's, installed or not, made by someone other than OpenFilm: the community's, under its owner's name. */

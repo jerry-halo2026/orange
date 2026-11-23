@@ -132,6 +132,22 @@ jobs:
           fi
           npm run release -- --official ${{ matrix.args }} ${{ matrix.sign && '' || '--unsigned' }}
 
+      - name: Verify the signature of the app this build made
+        # Only for a signed target. The unsigned path (`--unsigned`) is ad-hoc signed on purpose: `codesign --verify
+        # --strict` would pass but `spctl` never would, so there is nothing to assert there and the step does not run.
+        if: matrix.sign
+        run: |
+          OUT="apps/desktop/.release/${{ matrix.out }}/out"
+          APP="$(find "$OUT" -maxdepth 2 -name '*.app' -type d -print -quit)"
+          if [ -z "$APP" ]; then
+            echo "::error::no .app under $OUT to verify"
+            exit 1
+          fi
+          # the Developer ID signature has to cover the whole bundle, exactly, or the app will not open on a Mac
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          # and Gatekeeper has to accept it: a notarized, stapled Developer ID app, not an unnotarized one
+          spctl -a -vv "$APP"
+
       - name: Remove the keychain
         if: always() && matrix.sign
         run: security delete-keychain "$RUNNER_TEMP/openfilm-signing.keychain-db" || true

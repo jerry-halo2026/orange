@@ -65,6 +65,21 @@ export type MaterialIndexReach = {readonly pageable: number; readonly sourceTota
 
 export type MaterialIndexTotals = {readonly videos: number; readonly parsed: number; readonly unclassified: number};
 
+/** 产品：日期 + 供应商二级分类（产品），子分组是视频标签（规格/配料/包装…）。 */
+export type IndexMaterialEntry = {readonly videoId: string; readonly videoType: number};
+export type IndexProductLabel = {readonly name: string; readonly count: number; readonly videoIds: readonly string[]; readonly entries?: readonly IndexMaterialEntry[]};
+export type IndexProductDate = {readonly date: string; readonly count: number};
+export type IndexProduct = {
+  readonly id: string;
+  readonly oneLevel: string;
+  readonly name: string;
+  readonly count: number;
+  readonly videoIds: readonly string[];
+  readonly entries?: readonly IndexMaterialEntry[];
+  readonly dates: readonly IndexProductDate[];
+  readonly labels: readonly IndexProductLabel[];
+};
+
 export type MaterialIndexTree = {
   readonly schema: string;
   readonly generatedAt: string;
@@ -72,6 +87,7 @@ export type MaterialIndexTree = {
   readonly batches: readonly IndexBatch[];
   readonly unclassified: readonly MaterialIndexRow[];
   readonly derived?: IndexDerived;
+  readonly products?: readonly IndexProduct[];
   readonly reach?: MaterialIndexReach;
 };
 
@@ -102,7 +118,7 @@ export function indexTree(
      is handed the empty string rather than an invented one. */
   /* `entryMetaOf` 是唯一决定"元数据缺了算什么"的地方（缺 → []/null/''，不抛）。
      直接只给 videoId/name/md5 会让 IndexEntry 少六个字段 —— 那正是 tsc 一直报的那条。 */
-  return buildMaterialIndex(material.map(row => ({videoId: row.videoId, name: row.name, md5: row.md5 ?? '', ...entryMetaOf(row)})), now, reach) as unknown as MaterialIndexTree;
+  return buildMaterialIndex(material.map(row => ({videoId: row.videoId, name: row.name, md5: row.md5 ?? '', ...entryMetaOf(row)})), now, reach as never) as unknown as MaterialIndexTree;
 }
 
 /** The derived layer's three buckets, summed: `total` must equal `totals.unclassified`, or a row was lost. */

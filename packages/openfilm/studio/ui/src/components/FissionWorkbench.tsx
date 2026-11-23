@@ -65,6 +65,8 @@ function readDraft(value:unknown):DraftState {
  * → ③ export (count, length, concurrency, audio, the estimate). Fission remains the only engine, and
  * the submitted job keeps the existing field names: the wizard layers the presentation only.
  */
+let fissionUnavailable = false;
+
 export function FissionWorkbench({viewActive=true,authGeneration,onOpenProject}:{viewActive?:boolean;authGeneration?:number;onOpenProject?:(id:string)=>void}) {
   const zh=useLanguage()==='zh-CN', L=(cn:string,en:string)=>zh?cn:en;
   const errorText=(code:string)=>{
@@ -110,6 +112,17 @@ export function FissionWorkbench({viewActive=true,authGeneration,onOpenProject}:
   const [pollAttempt,setPollAttempt]=React.useState(0);
   const [selecting,setSelecting]=React.useState<Role|null>(null);
   const [starting,setStarting]=React.useState(false);
+  /* 云管家批量：向导本地路径只认文件夹；云端素材走 recipe 路由（项目 + 云引用 → 下载 → 引擎）。 */
+  const [cloudOpen,setCloudOpen]=React.useState(false);
+  const [cloudQuery,setCloudQuery]=React.useState('');
+  const [cloudRows,setCloudRows]=React.useState<Array<{videoId:string;name:string}>>([]);
+  const [cloudPicked,setCloudPicked]=React.useState<string[]>([]);
+  const [cloudLines,setCloudLines]=React.useState('');
+  const [cloudProjects,setCloudProjects]=React.useState<Array<{id:string;name:string}>>([]);
+  const [cloudProject,setCloudProject]=React.useState('');
+  const [cloudBusy,setCloudBusy]=React.useState(false);
+  const [cloudSaid,setCloudSaid]=React.useState('');
+  const [cloudSearching,setCloudSearching]=React.useState(false);
   const [pendingRequestId,setPendingRequestId]=React.useState<string|null>(()=>{try{const value=pendingKey?sessionStorage.getItem(pendingKey):null;return value&&/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(value)?value:null;}catch{return null;}});
   const [cancellingId,setCancellingId]=React.useState<string|null>(null);
   const [drafts,setDrafts]=React.useState<Record<string,DraftState>>({});
@@ -135,12 +148,14 @@ export function FissionWorkbench({viewActive=true,authGeneration,onOpenProject}:
   },[]);
   React.useEffect(()=>{
     const controller=new AbortController();setService('loading');setServiceError('');
+    /* 已确认运行时未配置（503 fission-local-unavailable）：不再每次挂载都打一次 503。 */
+    if (fissionUnavailable) { setService('unavailable'); return () => controller.abort(); }
     void request('jobs',{signal:controller.signal}).then(value=>{
       if(!Array.isArray(value))throw Error('Invalid batch list');
       const found=value.map(readBatch);if(new Set(found.map(j=>j.jobId)).size!==found.length)throw Error('Duplicate batch');
       if(controller.signal.aborted)return;
       setJobs(found);setBatch(current=>current??found.find(j=>j.status==='preparing'||j.status==='running')??found[0]??null);setService('ready');
-    }).catch(error=>{if(!controller.signal.aborted){setServiceError(error instanceof FissionRequestError&&error.code==='authentication-required'?errorText(error.code):'');setService('unavailable');}});
+    }).catch(error=>{if(!controller.signal.aborted){if(error instanceof FissionRequestError&&(error.status===503||error.code==='fission-local-unavailable'))fissionUnavailable=true;setServiceError(error instanceof FissionRequestError&&error.code==='authentication-required'?errorText(error.code):'');setService('unavailable');}});
     return()=>controller.abort();
   },[serviceAttempt]);
   /** Any hand edit leaves the preset: the wizard says 自定义 from then on. */
@@ -151,6 +166,57 @@ export function FissionWorkbench({viewActive=true,authGeneration,onOpenProject}:
   const stepTitles:Record<StepId,[string,string]>={materials:['选择素材','Materials'],rules:['规则','Rules'],export:['导出','Export']};
   const goStep=(id:StepId)=>{setStep(id);const node=sectionRefs[id].current;node?.scrollIntoView({block:'start',behavior:'smooth'});node?.focus();};
   const issueLines=(list:Issue[])=>list.map(issue=>L(issueText[issue.code][0],issueText[issue.code][1]));
+  const openCloud=async()=>{
+    setCloudOpen(true);setCloudSaid('');
+    try{
+      /* Studio 没有“列出工程”的 HTTP 路由：先问一次，拿不到就建一个批量专用工程（出片要一个工程来落盘）。 */
+      const listed=await fetch('/api/projects',{cache:'no-store'}).then(async r=>(r.ok?await r.json():null)).catch(()=>null);
+      let list=Array.isArray(listed?.projects)?listed.projects:(Array.isArray(listed)?listed:[]);
+      if(!list.length){
+        const made=await fetch('/api/projects',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:`云管家批量 ${new Date().toISOString().slice(0,10)}`})}).then(r=>r.json());
+        const project=made?.project??made;
+        if(project?.id)list=[project];
+      }
+      const options=list.map((p:any)=>({id:String(p.id),name:String(p.name??p.id)}));
+      setCloudProjects(options);setCloudProject(current=>current||options[0]?.id||'');
+      if(!options.length)setCloudSaid(L('没有可用工程，且新建失败。','No project available and creating one failed.'));
+    }catch{setCloudSaid(L('读取工程失败。','Could not read projects.'));}
+  };
+  const searchCloud=async()=>{
+    setCloudSearching(true);setCloudSaid('');
+    try{
+      const url=new URL('/api/materials/list',window.location.origin);
+      url.searchParams.set('scope','company');url.searchParams.set('pageSize','24');url.searchParams.set('pageNo','1');
+      if(cloudQuery.trim())url.searchParams.set('name',cloudQuery.trim());
+      const answer=await fetch(url,{cache:'no-store'}).then(r=>r.json());
+      const items=Array.isArray(answer?.items)?answer.items:[];
+      setCloudRows(items.map((item:any)=>{
+        const id=typeof item?.id==='object'?item.id?.value:item?.id ?? item?.videoId;
+        return {videoId:String(id??''),name:String(item?.name??item?.title??item?.fileName??item?.videoName??id??'')};
+      }).filter((row:any)=>row.videoId));
+    }catch{setCloudSaid(L('素材查询失败。','Material search failed.'));}
+    finally{setCloudSearching(false);}
+  };
+  const runCloud=async()=>{
+    if(!cloudPicked.length||!cloudLines.trim()||!cloudProject||cloudBusy)return;
+    setCloudBusy(true);setCloudSaid('');
+    try{
+      const mac=/Mac/i.test(navigator.userAgent);
+      const recipe={
+        schema:'orange/mix-recipe/1',
+        groups:[{name:(cloudQuery.trim()||L('云管家素材','Cloud materials')).slice(0,60),refs:cloudPicked.map(videoId=>({kind:'cloud',videoId})),rule:'random'}],
+        script:{provider:'minimax',voice:'female-shaonv',lines:cloudLines.split('\n').map(line=>line.trim()).filter(Boolean)},
+        params:{count:options.Count,audioUses:Math.max(1,options.AudioUses||options.Count),aspect:'9:16',subtitle:true,
+          subtitleFontFamily:mac?'Noto Sans CJK SC':'Microsoft YaHei',...(options.TargetDurationSec?{targetSec:options.TargetDurationSec}:{})},
+        bgm:[],
+      };
+      const answer=await fetch('/api/fission-render/recipe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({project:cloudProject,recipe,voices:[],run:true})}).then(async r=>({status:r.status,body:await r.json().catch(()=>null)}));
+      const body:any=answer.body;
+      if(answer.status===200&&body?.ok)setCloudSaid(L(`批次 ${body.batchId}：出片 ${body.render?.report?.succeeded??'?'} 条（${body.render?.report?.stopReason??''}）`,`Batch ${body.batchId}: ${body.render?.report?.succeeded??'?'} video(s)`));
+      else setCloudSaid(`${body?.code??answer.status}${body?.problems?.length?': '+body.problems.slice(0,2).join('; '):''}`);
+    }catch(error){setCloudSaid(error instanceof Error?error.message:String(error));}
+    finally{setCloudBusy(false);}
+  };
   const pick=async(role:Role)=>{
     if(selectingRef.current||service!=='ready')return;
     selectingRef.current=true;setSelecting(role);setMessage('');
@@ -304,7 +370,7 @@ export function FissionWorkbench({viewActive=true,authGeneration,onOpenProject}:
       <div ref={sectionRefs.materials} tabIndex={-1} role="group" aria-labelledby="fission-step-materials" data-step="materials" data-step-state={stepState('materials')} data-step-active={step==='materials'?'true':'false'} inert={stepShut('materials')||undefined} onFocusCapture={()=>{if(step!=='materials')setStep('materials');}} style={{scrollMarginTop:summaryHeight+12}} className={stepFace('materials')}>
         <h2 id="fission-step-materials" className="font-semibold">{L('① 选择素材','① Materials')}</h2>
         <p className={`mt-1 ${hint}`}>{L('选择本地目录；视频目录下的数字子文件夹按场景组处理。选择已有配音目录后按配音出片；未选择时使用测试音调，无配音。文案生成与 TTS 尚未接通。','Select local folders; numbered subfolders under the video folder are scene groups. An existing voice folder drives the batch; otherwise a test tone is used with no voice. Script generation and TTS are not connected yet.')}</p>
-        <div className="mt-3 grid gap-2 md:grid-cols-2">{roles.map(role=><div key={role} className="flex min-w-0 items-center gap-2 rounded border border-[var(--border)] p-2 text-sm"><span className="w-24 shrink-0">{labels[role]}</span><span className="min-w-0 flex-1 truncate text-[var(--text-muted)]">{selections[role]?.name??L('未选择','Not selected')}</span><button type="button" className={button} disabled={Boolean(selecting)||active||starting} onClick={()=>void pick(role)}>{selecting===role?L('选择中…','Selecting…'):L('选择文件夹','Choose folder')}</button>{role!=='video'&&selections[role]&&<button type="button" className={button} disabled={active||starting} onClick={()=>setSelections(current=>({...current,[role]:null}))}>{L('清除','Clear')}</button>}</div>)}</div>
+        <div className="mt-3 grid gap-2 md:grid-cols-2">{roles.map(role=><div key={role} className="flex min-w-0 items-center gap-2 rounded border border-[var(--border)] p-2 text-sm"><span className="w-24 shrink-0">{labels[role]}</span><span className="min-w-0 flex-1 truncate text-[var(--text-muted)]">{selections[role]?.name??L('未选择','Not selected')}</span><button type="button" className={button} disabled={Boolean(selecting)||active||starting} onClick={()=>void pick(role)}>{selecting===role?L('选择中…','Selecting…'):L('选择文件夹','Choose folder')}</button>{role==='video'&&<button type="button" className={button} disabled={Boolean(selecting)||active||starting} onClick={()=>void openCloud()}>{L('云管家素材','Cloud materials')}</button>}{role!=='video'&&selections[role]&&<button type="button" className={button} disabled={active||starting} onClick={()=>setSelections(current=>({...current,[role]:null}))}>{L('清除','Clear')}</button>}</div>)}</div>
         {groups.length>0&&<div className="mt-4">
           <p className={hint}>{L('每组一张卡；拖住卡片刻或使用箭头调整顺序，顺序即引擎取用场景组的顺序。','One card per group. Drag a card or use its arrows to reorder; that order is the one the engine draws groups in.')}</p>
           <ul aria-label={L('场景组','Scene groups')} className="mt-2 grid gap-2 xl:grid-cols-2">{groups.map((group,index)=><SceneGroupCard key={group.Name} group={group} index={index} total={groups.length} count={selections.video?.groups.find(item=>item.name===group.Name)?.count} L={L} disabled={service!=='ready'||Boolean(pendingRequestId)||Boolean(active)||starting} dragging={dragging===index} issue={groupIssueText(group.Name)} onPatch={patchGroup} onMove={moveGroup} onDragStart={setDragging} onDrop={index=>{if(dragging!==null)moveGroup(dragging,index);setDragging(null);}} onDragEnd={()=>setDragging(null)}/>)}</ul>
@@ -415,6 +481,41 @@ export function FissionWorkbench({viewActive=true,authGeneration,onOpenProject}:
           </>}
         </li>;
       })}</ul>}
+      {cloudOpen&&<div role="dialog" aria-label={L('云管家批量','Cloud batch')} className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+        <div className="max-h-[86vh] w-full max-w-2xl overflow-auto rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] p-4">
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold">{L('云管家素材批量出片','Cloud materials batch')}</h3>
+            <span className="flex-1" />
+            <button type="button" className={button} onClick={()=>setCloudOpen(false)}>{L('关闭','Close')}</button>
+          </div>
+          <p className="mt-1 text-xs text-[var(--text-muted)]">{L('按关键词查云端素材（公司视图），勾选后配口播文案，走 recipe 路由出片。','Search the company catalogue, pick videos, write lines, then render through the recipe route.')}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <input value={cloudQuery} onChange={event=>setCloudQuery(event.target.value)} placeholder={L('关键词，如 乌龙茶','Keyword, e.g. oolong')} className="w-56 rounded border border-[var(--border)] bg-[var(--bg-app)] px-2 py-1.5 text-sm" />
+            <button type="button" className={button} disabled={cloudSearching} onClick={()=>void searchCloud()}>{cloudSearching?L('查询中…','Searching…'):L('查询','Search')}</button>
+            <span className="text-xs text-[var(--text-muted)]">{L('已选','Picked')} {cloudPicked.length}</span>
+          </div>
+          <ul className="mt-3 max-h-56 overflow-auto rounded border border-[var(--border)] p-2">
+            {cloudRows.map(row=><li key={row.videoId} className="flex items-center gap-2 py-1 text-sm">
+              <input type="checkbox" checked={cloudPicked.includes(row.videoId)} onChange={event=>setCloudPicked(current=>event.target.checked?[...current,row.videoId]:current.filter(id=>id!==row.videoId))} />
+              <span className="truncate">{row.name||row.videoId}</span>
+              <span className="text-xs text-[var(--text-muted)]">{row.videoId}</span>
+            </li>)}
+            {!cloudRows.length&&<li className="py-2 text-xs text-[var(--text-muted)]">{L('还没有结果，输入关键词查询。','No results yet; search by keyword.')}</li>}
+          </ul>
+          <label className="mt-3 block text-sm">{L('工程','Project')}
+            <select className="mt-1 w-full rounded border border-[var(--border)] bg-[var(--bg-app)] px-2 py-1.5 text-sm" value={cloudProject} onChange={event=>setCloudProject(event.target.value)}>
+              {cloudProjects.map(project=><option key={project.id} value={project.id}>{project.name}</option>)}
+            </select>
+          </label>
+          <label className="mt-3 block text-sm">{L('口播文案（一行一条）','Lines (one per output)')}
+            <textarea value={cloudLines} onChange={event=>setCloudLines(event.target.value)} rows={3} className="mt-1 w-full rounded border border-[var(--border)] bg-[var(--bg-app)] px-2 py-1.5 text-sm" />
+          </label>
+          <div className="mt-3 flex items-center gap-2">
+            <button type="button" className={button} disabled={cloudBusy||!cloudPicked.length||!cloudLines.trim()||!cloudProject} onClick={()=>void runCloud()}>{cloudBusy?L('出片中…','Rendering…'):L('开始出片','Render')}</button>
+            {cloudSaid&&<span role="status" className="text-sm">{cloudSaid}</span>}
+          </div>
+        </div>
+      </div>}
     </section>
   </div>;
 }

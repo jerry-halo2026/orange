@@ -217,7 +217,8 @@ test('a 200 emptied by the authorization layer says "filtered", with a way back 
   const branch = page.slice(branchStart, page.indexOf(': <>', branchStart));
   assert.equal(/[^a-zA-Z]failureCopy\(|[^a-zA-Z]authRequired|copy\.unauthorized/.test(branch), false, 'the filtered-empty branch cannot say "sign in" or "no permission"');
   const tab = readFileSync(new URL('./material-center/CloudMaterialsTab.tsx', import.meta.url), 'utf8');
-  assert.match(tab, /bindingReadCopy\(copy, binding\.loadFailure\)/, 'an unreadable claim speaks about the claim, not about reading cloud material');
+  assert.match(tab, /data-state=\{binding\.value \? 'bound' : 'unbound'\}/, 'the tab states whether a claim exists');
+  assert.equal(tab.includes('binding-guide'), false, 'the old guide card is gone: only the library is drawn');
   assert.equal(page.includes('copy.authRequired'), false, 'the page itself never answers a 200 with a sign-in sentence');
 });
 test('the retry button retries, and a warming Studio session is not shown as a failure', () => {
@@ -251,11 +252,10 @@ test('the cloud steward is the material pane\'s third tab, not a panel floating 
   assert.equal((view.match(/onScope=\{switchMedia\}/g) ?? []).length, 2, 'both media-pane mounts are handed the scope');
 
   const tab = readFileSync(new URL('./material-center/CloudMaterialsTab.tsx', import.meta.url), 'utf8');
-  assert.match(tab, /data-state="unbound"/, 'unbound: the guide card alone');
-  assert.match(tab, /data-card="binding-guide"/, 'which is a card in the tab, not a dialog over the page');
-  assert.match(tab, /data-action="open-settings"/, 'with the one guide button, which leads to Settings');
-  assert.match(tab, /t\('materials\.binding\./, 'its words come from i18n');
-  assert.match(tab, /data-state="bound"/, 'bound: the tab\'s default view');
+  assert.match(tab, /data-state=\{binding\.value \? 'bound' : 'unbound'\}/, 'the tab says whether the account is claimed');
+  assert.equal(tab.includes('binding-guide'), false, 'no guide card: the library is always the tab');
+  assert.equal(tab.includes('data-action="open-settings"'), false, 'and no settings button inside the tab');
+  assert.equal(tab.includes('data-state="bound"'), false, 'the old bound/unbound split is gone');
   const collections = readFileSync(new URL('./material-center/CollectionsView.tsx', import.meta.url), 'utf8');
   assert.match(collections, /data-collections=""/, 'the 合集');
   assert.match(tab, /renderLibrary\(\)/, 'and the one library, with no 合集 of its own');

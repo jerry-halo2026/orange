@@ -655,10 +655,12 @@ async function providerTranslator(root) {
  */
 export async function subtitleTranscriber() {
   return async (root, src, signal) => {
-    if (!(await chooseProvider('asr', { settings: await providerSettings() }).catch(() => null))) {
-      throw Object.assign(new Error(notConnected(['asr'])), { code: 'not-connected' });
-    }
-    await runGet(root, 'asr', { src }, { yes: true, signal });
+    const settings = await providerSettings();
+    let chosen = await chooseProvider('asr', { settings }).catch(() => null);
+    /* 本地 Whisper 已装好时，即使设置里的 asr 还没写好也直接用它（开箱可用）。 */
+    if (!chosen) chosen = await chooseProvider('asr', { via: 'local', settings }).catch(() => null);
+    if (!chosen) throw Object.assign(new Error(notConnected(['asr'])), { code: 'not-connected' });
+    await runGet(root, 'asr', { src }, { yes: true, signal, via: chosen.id });
   };
 }
 

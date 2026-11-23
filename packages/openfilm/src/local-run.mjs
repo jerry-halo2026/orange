@@ -18,7 +18,7 @@ try {
     const { transcribe } = await import('./local-asr.mjs');
     const bytes = readFileSync(rest[0]);
     const samples = new Float32Array(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + (bytes.length & ~3)));
-    console.log(JSON.stringify(await transcribe(id, samples)));
+    console.log(JSON.stringify(await transcribe(id, samples, rest[1] ? { language: rest[1] } : {})));
   } else if (verb === 'cutout') {
     const { cutout } = await import('./local-cutout.mjs');
     console.log(JSON.stringify(await cutout(id, rest[0], rest[1])));

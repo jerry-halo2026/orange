@@ -38,22 +38,25 @@ test('the configuration names absolute paths for the CLI, the host, ffmpeg and t
   assert.deepEqual(Object.keys(config).sort(), ['cli', 'dotnet', 'paths'], 'exactly what Studio reads');
   assert.equal(config.cli, join(resources, 'fission', 'Fission.Cli.dll'));
   assert.equal(config.dotnet, join(resources, 'fission', 'fission-host.exe'), 'the host Studio starts as `dotnet`');
-  assert.deepEqual(Object.keys(config.paths).sort(), ['AssetsRoot', 'FFmpeg', 'FFprobe', 'LocalAssetsRoot', 'TransitionsDir'].sort());
+  assert.deepEqual(Object.keys(config.paths).sort(), ['AssetsRoot', 'FFmpeg', 'FFprobe', 'FontsDir', 'LocalAssetsRoot', 'TransitionsDir'].sort());
   for (const value of [config.cli, config.dotnet, ...Object.values(config.paths)]) {
     assert.equal(isAbsolute(value), true, `${value} is absolute`);
     assert.equal(value.startsWith(resources), true, `${value} stays in the running app's resources`);
   }
   assert.equal('FFmpeg6' in config.paths, false, 'gltransition is not shipped, so the key is absent');
   assert.equal(join(config.paths.FFmpeg, '..'), join(config.paths.FFprobe, '..'), 'ffmpeg and ffprobe are one folder');
+  /* 同一个布局：随包的那份与 app 写出的这份都必须带可选的 FontsDir（字体目录可以缺席，读取端允许）。 */
   assert.deepEqual(config, shippedRuntimeConfig(resources, { platform: 'win32' }), 'the package and the app describe one layout');
   assert.deepEqual(configurationProblems(config, { platform: 'win32' }), [], 'nothing Studio would refuse');
 });
 
 test('a macOS-shaped name is the same configuration without the .exe suffix', () => {
   const config = fissionConfigFor(join('/Applications', 'App.app', 'Contents', 'Resources'), { platform: 'darwin' });
+  assert.equal(config.cli, join('/Applications', 'App.app', 'Contents', 'Resources', 'fission', 'Fission.Cli'), 'macOS ships an apphost, not a dll');
   assert.equal(config.dotnet, join('/Applications', 'App.app', 'Contents', 'Resources', 'fission', 'fission-host'));
   assert.equal(config.paths.FFmpeg, join('/Applications', 'App.app', 'Contents', 'Resources', 'runtime', 'ffmpeg', 'ffmpeg'));
   assert.equal('FFmpeg6' in config.paths, false);
+  assert.equal(config.paths.FontsDir, join('/Applications', 'App.app', 'Contents', 'Resources', 'fission', 'fonts'));
 });
 
 test('a copy of the app that carries no Fission gets no configuration, and no error', () => {

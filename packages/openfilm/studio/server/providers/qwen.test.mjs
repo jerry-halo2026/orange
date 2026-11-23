@@ -39,7 +39,7 @@ test('transcriptOf：有词级时间戳就带，没有就只给文本（不编�
   assert.throws(() => transcriptOf({ output: { choices: [] } }), /no transcript/);
 });
 
-test('tts：把句子和音色发出去，把下载到的音频落成一个文件', async () => {
+test('tts：把句子和音色发出去，把下载到的音频落成 assets/audio/vo/ 里的文件', async () => {
   const sent = [];
   const fetchImpl = async (/** @type {any} */ url, /** @type {any} */ init) => {
     sent.push({ url: String(url), body: init?.body ? JSON.parse(init.body) : null });
@@ -51,12 +51,25 @@ test('tts：把句子和音色发出去，把下载到的音频落成一个文�
   const saved = globalThis.fetch;
   globalThis.fetch = /** @type {any} */ (fetchImpl);
   try {
-    const result = await qwen.run('tts', { text: '小青柑 三十秒口播', voice: 'Cherry', out: 'assets/v.mp3' }, ctx());
+    const result = await qwen.run('tts', { text: '小青柑 三十秒口播', voice: 'Cherry', out: 'v' }, ctx());
     assert.equal(sent[0].body.model, 'qwen3-tts-flash');
     assert.deepEqual(sent[0].body.input, { text: '小青柑 三十秒口播', voice: 'Cherry' });
-    assert.equal(result.files[0].path, 'assets/v.mp3');
+    assert.equal(result.files[0].path, 'assets/audio/vo/v.mp3', '--out 是名字，落盘由 landing 决定');
     assert.equal(result.files[0].bytes.length, 2);
+    assert.equal(result.index[0].src, 'assets/audio/vo/v.mp3', 'src 指项目内，不指项目外');
+    assert.ok(result.index[0].src.startsWith('assets/audio/vo/'));
     assert.equal(result.index[0].voice, 'Cherry');
+    assert.deepEqual(result.receipt, { voice: 'Cherry', model: 'qwen3-tts-flash' });
+  } finally {
+    globalThis.fetch = saved;
+  }
+});
+
+test('tts：--out 给成路径时当场说清（不静默写到项目外）', async () => {
+  const saved = globalThis.fetch;
+  globalThis.fetch = /** @type {any} */ (async () => ({ ok: true, status: 200, json: async () => ({ output: { audio: { data: 'AAA' } } }) }));
+  try {
+    await assert.rejects(() => qwen.run('tts', { text: 'x', voice: 'Cherry', out: 'assets/v.mp3' }, ctx()), /--out is a name/);
   } finally {
     globalThis.fetch = saved;
   }

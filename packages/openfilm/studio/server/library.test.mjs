@@ -117,7 +117,7 @@ test('the starred things are kept in the shared prefs, those of the library only
 
 test('the voices are the voice-over services\' own, each once, said as `openfilm get tts` takes them; a star can be on one', async () => {
   const { providers, voices } = /** @type {{ providers: any[], voices: any[] }} */ (libraryVoices());
-  assert.deepEqual(providers.map((p) => p.id), ['elevenlabs', 'inworld', 'cartesia']);
+  assert.deepEqual(providers.map((p) => p.id), ['elevenlabs', 'inworld', 'cartesia', 'minimax', 'qwen']);
   assert.ok(providers.every((p) => p.models.length && p.models.every((/** @type {any} */ m) => m.id && m.name)));
   const seen = new Set();
   for (const v of voices) {

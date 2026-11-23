@@ -1126,6 +1126,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
     binding: {
       title: '云管家绑定',
       unboundBody: '绑定这个 Studio 使用的云管家账号后，它的合集与素材就出现在这里：合集、搜索框，以及分类 / 标签 / 时长 / 账号筛选。',
+      publicHint: '未绑定时仍可浏览供应商的公司公开素材；绑定后只按你本人的账号收窄。',
       action: '绑定账号',
       accountLabel: '云管家账号',
       accountHint: '输入云管家账号（不需要登录云管家）',
@@ -1672,6 +1673,15 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
   },
   canvas: {
     title: '画布',
+    mix: {
+      title: '超级混剪', idle: '未运行', running: '正在渲染…', done: '已出片', failed: '渲染失败',
+      batch: '批次', groups: '场景组', refs: '{n} 条素材', noRecipe: '还没有配方：添加文件夹、写一条口播、选好音色，就能运行。',
+      line: '口播', noLine: '未填写', count: '数量', ratio: '画幅', duration: '目标时长', voice: '音色',
+      run: '开始混剪', stopReason: '停止原因', addGroup: '添加文件夹', removeGroup: '移除',
+      lines: '口播文案（一行一条）', linesHint: '每条文案对应一条成片的配音；留空则没有可出片的内容。',
+      provider: '配音服务', targetSec: '目标时长（秒）', aspect: '画幅', subtitle: '烧录字幕',
+      bgm: '背景音乐', bgmAdd: '上传 BGM', bgmNone: '还没有背景音乐', bgmRemove: '移除 BGM',
+    },
     toEdit: '切换到剪辑',
     toCanvas: '切换到画布',
     editTitle: '剪辑',
@@ -2339,6 +2349,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
     close: '关闭',
   },
   settings: {
+    account: { group: '账号', signOut: '退出登录', signOutHint: '工程仍保留在这台电脑上，不会被删除。' },
     servicesLoading:'正在加载服务配置…', servicesUnavailable:'服务配置暂不可用。', servicesRetry:'重试', servicesLimited:'当前隔离环境仅支持本地配置；媒体生成、联网授权和模型安装尚未启用。',
     title: '设置',
     done: '完成',
@@ -2644,7 +2655,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
       changes: '显示每一轮的改动',
       changesHint: '每条回复下面列出这一轮新增、删除或修改的文件，以及增减的行数。点开一个文件可以看到改动的行。',
       logs: '显示每一轮的日志',
-      logsHint: '打开后，对话里每一轮都有“日志”按钮：提示词和所在会话、每次工具调用的输入和输出、每个提问和回答、这一轮怎么结束的，都按智能体发来的原样显示。',
+      devtools: '开发者工具', devtoolsHint: '开启后可用 F12 与“显示”菜单打开开发者工具。', logsHint: '打开后，对话里每一轮都有“日志”按钮：提示词和所在会话、每次工具调用的输入和输出、每个提问和回答、这一轮怎么结束的，都按智能体发来的原样显示。',
       where: '不论是否打开，每一轮都会记录在项目的 .film/logs 文件夹里，只保存在这台电脑上。',
     },
     shortcuts: {

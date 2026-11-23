@@ -12,9 +12,8 @@
  * at all before a claim, as before.
  */
 import React from 'react';
-import { useLanguage, useT } from '@/i18n';
-import { copyFor } from '@/lib/material-center/copy';
-import { bindingReadCopy, sharedBindingStore, type MaterialBindingClient } from '@/lib/material-center/binding';
+import { useT } from '@/i18n';
+import { sharedBindingStore, type MaterialBindingClient } from '@/lib/material-center/binding';
 
 export type CloudMaterialsTabProps = {
   /** A new session is a new claim: read it again. */
@@ -27,10 +26,8 @@ export type CloudMaterialsTabProps = {
   readonly renderLibrary: () => React.ReactNode;
 };
 
-export function CloudMaterialsTab({ authGeneration, bindingClient, onOpenSettings, renderLibrary }: CloudMaterialsTabProps) {
+export function CloudMaterialsTab({ authGeneration, bindingClient, renderLibrary }: CloudMaterialsTabProps) {
   const t = useT();
-  const language = useLanguage();
-  const copy = React.useMemo(() => copyFor(language), [language]);
   const store = React.useMemo(() => sharedBindingStore(bindingClient), [bindingClient]);
   const binding = React.useSyncExternalStore(store.subscribe, store.getState, store.getState);
   /* One read per session (and per new session): the claim is never asked for from a render. */
@@ -42,23 +39,8 @@ export function CloudMaterialsTab({ authGeneration, bindingClient, onOpenSetting
     return <p role="status" data-state="binding-loading" className="px-3 py-2 text-[12px] text-[var(--text-muted)]">{t('materials.binding.loading')}</p>;
   }
 
-  /* Unbound: the guide card alone — it leads to Settings, where the account is claimed. */
-  if (!binding.value) {
-    return <section data-state="unbound" aria-label={t('materials.binding.title')} className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-3">
-      <div data-card="binding-guide" className="rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] p-3">
-        <h3 className="text-[13px] font-semibold">{t('materials.binding.title')}</h3>
-        <p className="mt-1 text-[12px] text-[var(--text-muted)]">{t('materials.binding.unboundBody')}</p>
-        {binding.loadFailure && <p role="status" data-note="binding-read" className="mt-1 text-[12px] text-[var(--text-muted)]">{bindingReadCopy(copy, binding.loadFailure)}</p>}
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <button type="button" data-action="open-settings" onClick={() => onOpenSettings?.()} className="rounded border border-[var(--border)] px-2 py-1 text-[12px] hover:bg-[var(--bg-hover)]">{t('materials.binding.openSettings')}</button>
-          <span data-note="binding-where" className="text-[11px] text-[var(--text-muted)]">{t('materials.binding.where')}</span>
-        </div>
-      </div>
-    </section>;
-  }
-
-  /* Bound: the one library, with its search, its filters and its two views. */
-  return <section data-state="bound" aria-label={t('materials.binding.boundTitle')} className="flex min-h-0 flex-1 flex-col gap-2 p-2">
+  /* 云管家标签只放素材库：绑定提示已移入「设置 → 通用」，这里不再占位。 */
+  return <section data-state={binding.value ? 'bound' : 'unbound'} aria-label={t('materials.binding.boundTitle')} className="flex min-h-0 flex-1 flex-col gap-2 p-2">
     <div data-cloud-library="" className="min-h-0 flex-1 overflow-y-auto">{renderLibrary()}</div>
   </section>;
 }

@@ -342,7 +342,8 @@ const savedAccess = createSavedAccess({
       try { desktopAuth.assertActive(); } catch { throw new HttpError(403,'Sign in is required.',{code:'authentication-required'}); }
       // Installed account sessions keep Services in an account-scoped store (services-store.mjs), so the
       // routes below work without an isolation profile; they still never fall back to shared credentials.
-      if (req.method === 'POST' && parts[0] === 'projects' && ['subtitles/transcribe','subtitles/translate','caption-tracks/translate','canvas-write'].includes(projectApiOperation(parts))) throw new HttpError(503,'Account model operations are not yet available.',{code:'account-resource-unavailable'});
+      /* 字幕/翻译/画布写入与其它功能一样对客户端开放：各自的实现会在服务未配置时给出可读错误，
+         不再在路由层统一 503。 */
       // These original private stores keep what an account owns — its conversation, what it kept of a film on a
       // canvas — and need their account mapping before use. They are not silently treated as public or replaced
       // with a parallel library. The characters kept from canvases are not one of them: they live in the shared
@@ -659,6 +660,16 @@ const savedAccess = createSavedAccess({
     if (parts[0] === 'examples' && parts[1] === 'file' && parts.length > 2 && req.method === 'GET') {
       return sendMedia(req, res, exampleFile(parts.slice(2).map(decodeURIComponent).join('/')), { keep: true });
     }
+    /* 完整工程模板：复制内置工程到新工程并返回它（可播放、可编辑），不经过 Saved 片段组合。 */
+    if (parts[0] === 'project-templates' && parts.length === 3 && parts[2] === 'start' && req.method === 'POST') {
+      const slug = decodeURIComponent(parts[1]);
+      if (!/^[\w.-]{1,80}$/.test(slug)) throw new HttpError(422, 'A project template name.', { code: 'invalid-query' });
+      const folder = fileURLToPath(new URL(`../../library/project-templates/${slug}/`, import.meta.url));
+      if (!existsSync(folder)) throw new HttpError(404, 'No such project template.', { code: 'template-missing' });
+      const project = await createProject(slug);
+      cpSync(folder, project.path, { recursive: true });
+      return json(res, 200, { project });
+    }
     /* an example that ships with Studio: copied into a project of its own, then opened (owned by the person signed in) */
     if (parts[0] === 'examples' && parts.length === 3 && parts[2] === 'start' && req.method === 'POST') {
       const folder = await exampleFolderHere(decodeURIComponent(parts[1]));
@@ -734,7 +745,8 @@ const savedAccess = createSavedAccess({
       } catch (e) {
         const why = e instanceof Error ? e.message : String(e);
         const kept = readCatalog();
-        if (!kept) throw new HttpError(502, `Discover could not be read now: ${why}`);
+        /* 离线/首次打开时 Discover 读不到不是 502：窗口照常，目录为空并说明原因（下一次再试）。 */
+        if (!kept) return json(res, 200, { catalog: null, stale: true, error: why });
         storeUnreadable('Discover\'s index', e);
         return json(res, 200, { catalog: { read: kept.read }, stale: true, error: why });
       }
@@ -880,7 +892,12 @@ const savedAccess = createSavedAccess({
       requireProject({ film: !filmOptional });
     }
     /* ── subtitles: the film's lines, the person's subtitle style, translation (see captions.mjs) ── */
-    if (await captionRoutes(req, res, project.path, rest, { translate: (root) => subtitleTranslator(root, { askAgent }), transcribe: await subtitleTranscriber() })) return;
+    /* 转写器按需解析：本地 Whisper 可能在 Studio 启动之后才安装/启用，不能在启动时缓存 null。 */
+    if (await captionRoutes(req, res, project.path, rest, { translate: (root) => subtitleTranslator(root, { askAgent }), transcribe: async (...args) => {
+      const run = await subtitleTranscriber();
+      if (!run) throw Object.assign(new Error('Connect a service that transcribes in Studio: Settings (the OrangeFilm logo at the top left) → Services.'), { code: 'not-connected' });
+      return run(...args);
+    } })) return;
     /* caption tracks: a track's WebVTT file, read and written whole (caption-tracks.mjs) */
     if (await captionTrackRoutes(req, res, project.path, rest, url, { translate: (root) => subtitleTranslator(root, { askAgent }) })) return;
     /* ── end subtitles ── */
@@ -1182,6 +1199,10 @@ const savedAccess = createSavedAccess({
         return json(res, 200, {});
       }
     }
+    /* 工程内的原始文件（预览片等）：按 path 读，限制在工程目录内。 */
+    if (rest === 'raw' && req.method === 'GET') {
+      return sendMedia(req, res, inside(project.path, url.searchParams.get('path') ?? ''), { check: true });
+    }
     /* clips, groups of clips and files of this project put in Saved (saved.mjs), each bundle with its picture; and a
        thing of Saved taken into this project (a file imported, a bundle's files copied in) */
     if (rest === 'saved' && req.method === 'POST') {
@@ -1238,6 +1259,13 @@ const savedAccess = createSavedAccess({
     if (rest === 'media' && req.method === 'GET') {
       const at = url.searchParams.get('path') ?? '';
       const what = url.searchParams.get('what');
+      /* 云端素材拖进时间线留下的占位（assets/materials/<id>.mp4）在下载失败/未下载时没有文件：
+         给一张 1×1 透明图，而不是让页面反复 404 刷屏（同一地址由浏览器缓存）。 */
+      if ((what === 'poster' || what === 'frame') && at.startsWith('assets/materials/') && !existsSync(join(project.path, at))) {
+        const blank = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64');
+        res.writeHead(200, { 'content-type': 'image/png', 'cache-control': 'private, max-age=300', 'content-length': blank.length });
+        return res.end(blank);
+      }
       /* a web page says its own length and size (none: it has no end) */
       if (what === 'probe' && isPage(at)) {
         return json(res, 200, await pageFacts(project.path, pages.folderUrl(project), at).catch((e) => {
@@ -1264,6 +1292,8 @@ const savedAccess = createSavedAccess({
       const jpeg = page ? await page()
         : what === 'poster' ? await poster(project.path, at)
         : what === 'frame' ? await frame(project.path, at, Number(url.searchParams.get('ms')), Number(url.searchParams.get('w')))
+          .catch(() => frame(project.path, at, 0, Number(url.searchParams.get('w'))))
+          .catch(() => poster(project.path, at))
         : null;
       if (!jpeg) throw new HttpError(400, 'what: probe, poster, frame, wave or loudness');
       /* a media file's frame: the address names the file's version (the page adds its mtime), so the browser keeps

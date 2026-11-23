@@ -8,7 +8,6 @@ import { useSettings } from './settings/use-settings';
 import { MaterialCenter } from './MaterialCenter';
 import { type MaterialDraftOperation, type MaterialDraftReference } from '@/lib/material-draft';
 import { useLanguage, useT } from '@/i18n';
-import { queryAccountCatalog } from '@/lib/catalog-query-unavailable';
 import { createMaterialUse } from '@/lib/material-center/use-material';
 import { FissionWorkbench } from './FissionWorkbench';
 import { BatchRenderPage } from './batch/BatchRenderPage';
@@ -39,7 +38,7 @@ export function StandaloneWorkspace({kind,onHome,onResume,onMaterials,onFission,
     <main className="min-h-0 flex-1 overflow-auto p-5">
       {kind==='fission'
         ? <FissionWorkspace active={active} authGeneration={authGeneration} onOpenProject={onOpenProject} onMaterials={onMaterials}/>
-        : <MaterialCenter queryCloud={queryAccountCatalog} authGeneration={authGeneration} onUseMaterial={useMaterial} draft={draft} draftReady={draftReady} draftReason={draftReason} onDraftOperation={onDraftOperation} onDraftRetry={onDraftRetry} onOpenFission={onFission}/>}
+        : <MaterialCenter authGeneration={authGeneration} onUseMaterial={useMaterial} draft={draft} draftReady={draftReady} draftReason={draftReason} onDraftOperation={onDraftOperation} onDraftRetry={onDraftRetry} onOpenFission={onFission}/>}
     </main>
     <SettingsModal open={active&&settings!==null} section={settings??undefined} onClose={()=>setSettings(null)}/>
   </div>;

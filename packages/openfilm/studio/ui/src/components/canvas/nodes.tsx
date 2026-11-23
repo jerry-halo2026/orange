@@ -13,15 +13,15 @@
 import React from 'react';
 import { Handle, NodeResizer, NodeToolbar, Position, useStore, type NodeProps } from '@xyflow/react';
 import {
-  AlignLeft, AudioLines, BookmarkPlus, Bot, Clapperboard, FileQuestion, Film, Image as ImageIcon, Layers, LayoutGrid, Loader2, Mic, Music, PenLine, Play, Plus, Scissors,
-  Square, Type as TypeIcon, Ungroup, Upload, UserRound, Video,
+  AlignLeft, AudioLines, BookmarkPlus, Bot, Clapperboard, FileQuestion, Film, FolderOpen, Image as ImageIcon, Layers, LayoutGrid, Loader2, Mic, Music, PenLine, Play, Plus, Scissors,
+  Square, Subtitles, Type as TypeIcon, Ungroup, Upload, UserRound, Video,
 } from 'lucide-react';
 import { useT } from '@/i18n';
-import { CARD_H, MAKE_MEDIA, NOTE_H, NOTE_W, type CanvasNode, type GroupColor } from '@/lib/canvas';
+import { CARD_H, MAKE_MEDIA, NOTE_H, NOTE_W, mixSummary, type CanvasNode, type GroupColor } from '@/lib/canvas';
 import type { WorkspaceResource } from '@/lib/workspace-resources';
 import { Tooltip } from '../Tooltip';
-import { useBoard, type CutNode, type FileNode, type FrameNode, type MakeNode, type NoteNode } from './board';
-import { ActionBar, CutPanel, MakePanel, NotePanel } from './panels';
+import { useBoard, useMixRuns, type CutNode, type FileNode, type FrameNode, type MakeNode, type MixNode, type NoteNode, type SourceNode, type SubtitleNode, type VoiceNode } from './board';
+import { ActionBar, CutPanel, MakePanel, MixPanel, NotePanel, SourcePanel, SubtitlePanel, VoicePanel } from './panels';
 import { Words, WritingBar, useDraft } from './words';
 import { SoundCard } from './sound';
 
@@ -494,4 +494,98 @@ export function CutNodeView({ id, data, selected }: NodeProps<CutNode>) {
   );
 }
 
-export const NODE_TYPES = { file: FileNodeView, note: NoteNodeView, frame: FrameNodeView, make: MakeNodeView, cut: CutNodeView };
+/**
+ * A mix: a batch of videos made from its recipe, not one picture the board draws. Its card is a band with three frames
+ * where its videos go, its status dot in the name row (being made, made, failed: with what the route said) and the port
+ * what it makes can be taken from. What it is made of is its panel (panels.tsx), under it while it is selected.
+ */
+export function MixNodeView({ id, data, selected }: NodeProps<MixNode>) {
+  const t = useT();
+  const board = useBoard();
+  /* redrawn as a run starts and as its answer comes back */
+  useMixRuns();
+  const run = board.mix(id);
+  const summary = mixSummary(data.recipe);
+  const status = run?.status ?? 'idle';
+  const dot = status === 'running' ? 'animate-pulse bg-amber-400' : status === 'ok' ? 'bg-emerald-500' : status === 'failed' ? 'bg-red-500' : 'bg-[var(--cv-ink-3)]';
+  const said = status === 'running' ? t('canvas.mix.running') : status === 'ok' ? t('canvas.mix.done') : status === 'failed' ? t('canvas.mix.failed') : t('canvas.mix.idle');
+  const meta = data.batchId ?? (summary.groups.length ? t('canvas.mix.refs').replace('{n}', String(summary.groups.reduce((n, g) => n + g.refs, 0))) : null);
+  return (
+    <div className="h-full w-full">
+      <MixPanel id={id} data={data} />
+      <Frame id={id} selected={selected} icon={Layers} title={t('canvas.mix.title')} meta={meta} by={data.by} ins={false}
+        note={<span className="pointer-events-auto flex shrink-0 items-center gap-1.5" title={run?.message ?? undefined}>
+          <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />{said}
+        </span>}>
+        <div className="flex h-full w-full flex-col p-2.5">
+          {/* where its videos go: three of them, until a batch says what it made */}
+          <div className="grid min-h-0 flex-1 grid-cols-3 gap-2">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center justify-center rounded-[8px] bg-[var(--cv-card-2)] text-[var(--cv-ghost)]">
+                {run?.status === 'running' ? <Loader2 size={16} className="animate-spin" /> : <Film size={16} />}
+              </div>
+            ))}
+          </div>
+          <div className="mt-1.5 truncate text-[12px] leading-5 text-[var(--cv-label)]">
+            {run?.message ?? (summary.groups.length ? t('canvas.mix.groups') + ' · ' + summary.groups.map((g) => g.name || '—').join(', ') : t('canvas.mix.noRecipe'))}
+          </div>
+        </div>
+      </Frame>
+    </div>
+  );
+}
+
+export function SourceNodeView({ id, data, selected }: NodeProps<SourceNode>) {
+  const name = data.path.split(/[\\/]/).filter(Boolean).pop() ?? '素材文件夹';
+  const groups = data.groups ?? [];
+  return (
+    <div className="h-full w-full">
+      <SourcePanel id={id} data={data} />
+      <Frame id={id} selected={selected} icon={FolderOpen} title={name} meta={groups.length ? `${groups.length} 组` : null} by={data.by} ins={false} outs>
+      <div className="flex h-full w-full flex-col gap-1 p-2.5 text-[12px] text-[var(--cv-ink-2)]">
+        <div className="truncate text-[var(--cv-ink-3)]">{data.path}</div>
+        <div className="mt-1 space-y-0.5 overflow-hidden">
+          {groups.slice(0, 4).map((group) => (
+            <div key={group.name} className="flex items-center justify-between gap-2"><span className="truncate">{group.name}</span><span className="shrink-0 tabular-nums text-[var(--cv-ink-3)]">{group.videos + group.images}</span></div>
+          ))}
+          {groups.length > 4 ? <div className="text-[var(--cv-ink-3)]">+{groups.length - 4}</div> : null}
+          {!groups.length ? <div className="text-[var(--cv-ink-3)]">选文件夹后扫描</div> : null}
+        </div>
+      </div>
+    </Frame>
+    </div>
+  );
+}
+
+export function VoiceNodeView({ id, data, selected }: NodeProps<VoiceNode>) {
+  const files = data.files ?? [];
+  return (
+    <div className="h-full w-full">
+      <VoicePanel id={id} data={data} />
+      <Frame id={id} selected={selected} icon={Mic} title="配音" meta={`${files.length} 条`} by={data.by} outs>
+      <div className="flex h-full w-full flex-col gap-1 p-2.5 text-[12px] text-[var(--cv-ink-2)]">
+        <div className="text-[var(--cv-ink-3)]">{data.mode === 'none' ? '无配音' : data.mode === 'tts' ? 'TTS' : '上传/文件夹'}</div>
+        {files.slice(0, 4).map((file) => <div key={file.path} className="truncate">{file.path.split(/[\\/]/).pop()}</div>)}
+        {files.length > 4 ? <div className="text-[var(--cv-ink-3)]">+{files.length - 4}</div> : null}
+        {!files.length ? <div className="text-[var(--cv-ink-3)]">上传配音或选择文件夹</div> : null}
+      </div>
+    </Frame>
+    </div>
+  );
+}
+
+export function SubtitleNodeView({ id, data, selected }: NodeProps<SubtitleNode>) {
+  return (
+    <div className="h-full w-full">
+      <SubtitlePanel id={id} data={data} />
+      <Frame id={id} selected={selected} icon={Subtitles} title="字幕" meta={data.mode === 'upload' ? 'SRT' : data.mode === 'recognize' ? '识别' : '无'} by={data.by} outs>
+      <div className="flex h-full w-full flex-col gap-1 p-2.5 text-[12px] text-[var(--cv-ink-2)]">
+        <div>{data.mode === 'upload' ? '上传字幕' : data.mode === 'recognize' ? '本地 Whisper 识别' : '不显示字幕'}</div>
+        {data.path ? <div className="truncate text-[var(--cv-ink-3)]">{data.path}</div> : null}
+      </div>
+    </Frame>
+    </div>
+  );
+}
+
+export const NODE_TYPES = { file: FileNodeView, note: NoteNodeView, frame: FrameNodeView, make: MakeNodeView, cut: CutNodeView, mix: MixNodeView, source: SourceNodeView, voice: VoiceNodeView, subtitle: SubtitleNodeView };

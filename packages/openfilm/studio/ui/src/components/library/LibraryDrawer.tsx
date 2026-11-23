@@ -36,6 +36,21 @@ import { arrangedCategories } from '@/lib/library-categories';
 import { PLAIN } from './OnPicture';
 import { isClipMotion } from '@/lib/clip-presets';
 import { useLibraryArrangement } from './arrangement';
+import { useMaterialViewMode, writeViewMode } from '@/lib/material-center/view-pref';
+
+/** 云管家下面的两个子项：全部 / 产品（与素材中心同一个 viewMode，切换不重复一套状态）。 */
+function CloudSubtabs() {
+  const mode = useMaterialViewMode();
+  return <div data-cloud-subtabs="" className="flex flex-col gap-0.5 pb-1 pl-4">
+    {([['videos', '全部'], ['products', '产品']] as const).map(([value, label]) => (
+      <button key={value} type="button" data-cloud-subtab-item={value} aria-pressed={mode === value} title={label}
+        onClick={() => writeViewMode(value)}
+        className={'truncate whitespace-nowrap rounded-md px-2.5 py-1 text-left text-[11.5px] ' + (mode === value ? 'font-semibold text-[var(--accent)]' : 'font-medium text-[var(--text-muted)] hover:text-[var(--accent)]')}>
+        {label}
+      </button>
+    ))}
+  </div>;
+}
 
 type Category = 'media' | 'skill' | 'voice' | 'captions' | LibraryCategory;
 /* OpenFilm's order (the person's own in Settings › Advanced, lib/library-categories): the media, the skills, then the
@@ -365,6 +380,7 @@ export function LibraryDrawer({ media, mediaScope, onMediaScope, actions, tried,
                 <SideBox on={mediaScope === 'project'} onClick={() => onMediaScope('project')}>{t('assetDrawer.mediaImport')}</SideBox>
                 <SideBox on={mediaScope === 'saved'} onClick={() => onMediaScope('saved')}>{t('assetDrawer.favorites')}</SideBox>
                 <SideBox on={mediaScope === 'cloud'} onClick={() => onMediaScope('cloud')}>{t('materials.tabsCloud')}</SideBox>
+                {mediaScope === 'cloud' && <CloudSubtabs />}
               </>
             ) : cat === 'skill' ? (
               <>

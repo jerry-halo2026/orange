@@ -166,6 +166,12 @@ export type MaterialCopy = {
   readonly viewToggle: string;
   readonly viewVideos: string;
   readonly viewCollections: string;
+  readonly subNavTitle: string;
+  readonly subNavAll: string;
+  readonly subNavCollections: string;
+  readonly subNavProducts: string;
+  readonly subNavProductsAll: string;
+  readonly bindToDownload: string;
   readonly allBatches: string;
   readonly collectionCount: (count: number) => string;
   readonly indexPending: string;
@@ -339,6 +345,12 @@ const zh: MaterialCopy = {
   viewToggle: '视图',
   viewVideos: '视频',
   viewCollections: '合集',
+  subNavTitle: '素材库',
+  subNavAll: '全部',
+  subNavCollections: '合集',
+  subNavProducts: '产品',
+  subNavProductsAll: '全部素材',
+  bindToDownload: '绑定云管家后可下载',
   allBatches: '全部',
   collectionCount: count => `${count} 条`,
   indexPending: '正在建立索引…',
@@ -508,6 +520,12 @@ const en: MaterialCopy = {
   viewToggle: 'View',
   viewVideos: 'Videos',
   viewCollections: 'Collections',
+  subNavTitle: 'Library',
+  subNavAll: 'All',
+  subNavCollections: 'Collections',
+  subNavProducts: 'Products',
+  subNavProductsAll: 'All materials',
+  bindToDownload: 'Bind Cloud Steward to download',
   allBatches: 'All',
   collectionCount: count => `${count} items`,
   indexPending: 'Building the index…',

@@ -9,7 +9,7 @@
  * ⊕, what to bring into it. The toolbar's templates button opens it on the templates.
  */
 import React from 'react';
-import { ChevronRight, Images, LayoutTemplate, Scissors, Search, Type as TypeIcon, Upload, X } from 'lucide-react';
+import { ChevronRight, FolderOpen, Images, Layers, LayoutTemplate, Mic, Scissors, Search, Subtitles, Type as TypeIcon, Upload, X } from 'lucide-react';
 import { useT } from '@/i18n';
 import type { CanvasTemplate } from '@/lib/canvas-templates';
 import type { WorkspaceResource } from '@/lib/workspace-resources';
@@ -55,9 +55,11 @@ export function AddMenu({ menu, files, templates, onKind, onUpload, onFile, onTe
   const needle = query.trim().toLowerCase();
   const match = (label: string) => !needle || label.toLowerCase().includes(needle);
   const kind = (k: SpawnKind): Row => {
-    const Icon = k === 'note' ? TypeIcon : k === 'cut' ? Scissors : k === 'music' ? MAKE_ICON.sfx : MAKE_ICON[k];
-    /* a sound is one node (music or a sound effect, by its model): "Audio" */
-    const label = k === 'note' ? t('canvas.kinds.note') : k === 'cut' ? t('canvas.kinds.cut') : k === 'music' ? t('canvas.make.audio') : t(`canvas.make.${k}`);
+    const Icon = k === 'note' ? TypeIcon : k === 'cut' ? Scissors : k === 'mix' ? Layers : k === 'source' ? FolderOpen : k === 'voice' ? Mic : k === 'subtitle' ? Subtitles : k === 'music' ? MAKE_ICON.sfx : MAKE_ICON[k];
+    /* a sound is one node (music or a sound effect, by its model): "Audio"; a mix is a batch, not a thing it makes */
+    const label = k === 'note' ? t('canvas.kinds.note') : k === 'cut' ? t('canvas.kinds.cut') : k === 'mix' ? t('canvas.mix.title')
+      : k === 'source' ? '素材文件夹' : k === 'voice' ? '配音' : k === 'subtitle' ? '字幕'
+      : k === 'music' ? t('canvas.make.audio') : t(`canvas.make.${k}`);
     return { key: `kind:${k}`, label, icon: <Icon size={15} />, run: () => onKind(k) };
   };
   const upload: Row = { key: 'upload', label: t('canvas.menu.upload'), icon: <Upload size={15} />, run: onUpload };
@@ -75,7 +77,8 @@ export function AddMenu({ menu, files, templates, onKind, onUpload, onFile, onTe
       : menu.from?.side === 'source' ? [{ title: t('canvas.menu.fromNode'), rows: (['note', 'image', 'music', 'video', 'cut'] as const).map(kind).filter((r) => match(r.label)) }]
         : menu.from?.side === 'target' ? [{ title: t('canvas.menu.intoNode'), rows: [upload, fromAssets, kind('note'), kind('image')].filter((r) => match(r.label)) }]
           : [
-            { title: t('canvas.menu.nodes'), rows: (['note', 'image', 'music', 'video', 'cut'] as const).map(kind).filter((r) => match(r.label)) },
+            /* a mix is here, of no preset yet (M1): it is made from a recipe, not from what is wired into it */
+            { title: t('canvas.menu.nodes'), rows: (['note', 'image', 'music', 'video', 'cut', 'mix', 'source', 'voice', 'subtitle'] as const).map(kind).filter((r) => match(r.label)) },
             { title: t('canvas.menu.resources'), rows: [upload, fromAssets].filter((r) => match(r.label)) },
             /* searching: the project's files and the templates too */
             ...(needle ? [{ title: t('canvas.menu.fromAssets'), rows: fileRows.slice(0, 8) }, { title: t('canvas.menu.templates'), rows: templateRows }] : []),

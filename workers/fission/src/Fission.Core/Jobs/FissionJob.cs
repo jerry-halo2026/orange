@@ -146,6 +146,8 @@ public sealed class FissionJob
 
     /// <summary>BGM 音量（0=不加 BGM 即便有目录）。</summary>
     public double BgmVolume { get; set; } = 0.35;
+    /// <summary>BGM 选曲：random / sequence / fixed。</summary>
+    public string BgmMode { get; set; } = "random";
 
     /// <summary>分割模式。</summary>
     public SplitMode SplitMode { get; set; } = SplitMode.Scene;
@@ -191,9 +193,19 @@ public sealed class FissionJob
 
     /// <summary>字幕位置（top / middle / bottom）。</summary>
     public string SubtitlePos { get; set; } = "bottom";
+    /// <summary>字幕纵向位置（0–100，距顶部百分比）；给了它就不用 top/middle/bottom 的近似。</summary>
+    public double? SubtitlePosPct { get; set; }
+    /// <summary>粗预览：只出 1 条、不消耗素材/配音、不写组合去重。</summary>
+    public bool PreviewMode { get; set; }
 
     /// <summary>字幕字号（ASS PlayY 基准，20–160）。</summary>
     public int SubtitleFontSize { get; set; } = 64;
+
+    /// <summary>
+    /// 字幕字体族（ASS Style 行的 Fontname；缺省 Microsoft YaHei = Windows 现有行为）。
+    /// macOS 随包 Noto Sans SC 时必须显式给出（契约 §2）。
+    /// </summary>
+    public string SubtitleFontFamily { get; set; } = "Microsoft YaHei";
 
     /// <summary>封面截图时间（秒）。</summary>
     public double CoverAtSec { get; set; } = 1.0;
@@ -269,7 +281,8 @@ public sealed class FissionJob
         {
             if (SubtitleStyle is not ("white-outline" or "yellow-outline" or "white-box" or "center-bold")
                 || SubtitlePos is not ("top" or "middle" or "bottom")
-                || SubtitleFontSize is < 20 or > 160)
+                || SubtitleFontSize is < 20 or > 160
+                || (SubtitlePosPct is < 0 or > 100))
             {
                 ThrowContract("CFG_ARGS");
             }

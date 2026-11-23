@@ -29,7 +29,7 @@ From the root:
 | `pnpm check:pack` | packs `openfilm` as npm would get it, lists its files and checks them |
 | `pnpm changeset` | adds a changeset to your pull request (below, Releases) |
 
-`pnpm --filter <package> <script>` runs one package's script; the packages are `openfilm`, `@openfilm/shared` and
+`pnpm --filter <package> <script>` runs one package's script; the packages are `openfilm`, `@orange/shared` and
 `@orange/desktop`.
 
 ## Layout
@@ -45,7 +45,7 @@ packages/orangefilm/   npm `openfilm`: the format, the CLI and Studio
   studio/client.mjs    how the command finds or starts Studio
   test/                pages the tests draw
   scripts/             `pnpm dev`; product.mjs (which build the package is, below)
-packages/shared/     `@openfilm/shared`: what the desktop app's chat shares with its main process (not published)
+packages/shared/     `@orange/shared`: what the desktop app's chat shares with its main process (not published)
 apps/desktop/        the desktop app (Electron)
   src/                 the main process: windows, Studio, the agents, updates
   shell/               the window's page: Studio's editor (from packages/orangefilm) with the chat beside it
@@ -87,10 +87,10 @@ newer version replaces the older.
 
 ## packages/shared: what the clients share
 
-`@openfilm/shared` holds what the desktop app's chat reads: a chat turn and its events, how an agent's activity
+`@orange/shared` holds what the desktop app's chat reads: a chat turn and its events, how an agent's activity
 reads, prompt references, title limits and Markdown parsing.
 
-`pnpm --filter @openfilm/shared test`, `pnpm --filter @openfilm/shared typecheck`. It is not published: the
+`pnpm --filter @orange/shared test`, `pnpm --filter @orange/shared typecheck`. It is not published: the
 workspace reads its TypeScript in `src/` as it is, and the desktop app bundles it.
 
 ## apps/desktop: the desktop app
@@ -121,7 +121,7 @@ Settings → Services, or each service's variable in the environment (`ELEVENLAB
 ## Releases
 
 Every pull request that changes what a package's users get carries a **changeset**: run `pnpm changeset`, pick the
-packages it changes (`openfilm`, `@orange/desktop`, `@openfilm/shared`) and how much (`patch` for a fix, `minor`
+packages it changes (`openfilm`, `@orange/desktop`, `@orange/shared`) and how much (`patch` for a fix, `minor`
 for something new; `major` only by agreement), and write a line for the changelog, as a user would read it. Commit the
 file it writes in `.changeset/`. A change to tests, docs or CI alone needs none (`pnpm changeset --empty` says so).
 Each line in the changelog links its pull request and thanks its author.

@@ -222,7 +222,7 @@ export function readCanvasDoc(raw: unknown): CanvasDoc {
     const make = MAKE_KINDS.find((k) => k === n.make);
     if (make) nodes.push({ ...box, ...parent, ...readMake(n), make });
     else if (n.cut === true) nodes.push({ ...box, ...parent, cut: true });
-    else if (n.source === true && typeof n.path === 'string' && n.path) nodes.push({ ...box, ...parent, source: true, path: n.path,
+    else if (n.source === true && typeof n.path === 'string') nodes.push({ ...box, ...parent, source: true, path: n.path,
       ...(Array.isArray(n.groups) ? { folderGroups: n.groups as Array<{ name: string; videos: number; images: number }> } : {}),
       ...(n.settings && typeof n.settings === 'object' ? { settings: n.settings as CanvasNode['settings'] } : {}) });
     else if (n.voice === true) nodes.push({ ...box, ...parent, voice: true, ...(typeof n.path === 'string' && n.path ? { path: n.path } : {}),

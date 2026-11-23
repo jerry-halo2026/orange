@@ -180,6 +180,12 @@ export function folderFiles(root, { inject = `<script>${HOST_FLAG}</script>`, ti
       const start = range[1] ? Number(range[1]) : Math.max(0, stat.size - Number(range[2]));
       const end = range[1] && !range[2] ? Math.min(start + 2 * 1024 * 1024 - 1, stat.size - 1)
         : range[1] && range[2] ? Math.min(Number(range[2]), stat.size - 1) : stat.size - 1;
+      /* 浏览器在文件刚被替换时会请求 size-：只差这一字节就给它最后一字节，避免无意义的 416。 */
+      if (start === stat.size && stat.size > 0 && range[1] && !range[2]) {
+        res.writeHead(206, { ...headers, 'content-range': `bytes ${stat.size - 1}-${stat.size - 1}/${stat.size}`, 'content-length': 1 });
+        pipeline(createReadStream(file, { start: stat.size - 1, end: stat.size - 1 }), res, () => {});
+        return true;
+      }
       if (start > end || start >= stat.size) { res.writeHead(416, { ...headers, 'content-range': `bytes */${stat.size}` }).end(); return true; }
       res.writeHead(206, { ...headers, 'content-range': `bytes ${start}-${end}/${stat.size}`, 'content-length': end - start + 1 });
       pipeline(createReadStream(file, { start, end }), res, () => {});

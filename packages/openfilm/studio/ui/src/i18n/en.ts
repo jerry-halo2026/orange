@@ -1817,6 +1817,8 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
       character: 'Character',
       episode: 'A short episode',
       clipAbout: 'Write a shot; get its picture, then a clip made from it.',
+      superMix: 'Super mix',
+      superMixAbout: 'Sources, voice, subtitles and mixing, already wired: pick a folder, upload voice, preview or run.',
       characterAbout: 'Describe someone; get their portrait and a front, side and back sheet that keeps them the same.',
       storyboardAbout: 'Three shots, each a line and its picture, to see the story before making clips.',
       episodeAbout: 'A character and three shots made with them, their clips cut together onto the timeline.',

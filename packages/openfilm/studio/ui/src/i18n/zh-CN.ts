@@ -1817,6 +1817,8 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
       character: '角色设定',
       episode: '一集短剧',
       clipAbout: '写下一个镜头，先出画面，再把画面做成视频。',
+      superMix: '超级混剪',
+      superMixAbout: '素材文件夹、配音、字幕、混剪已连好线：选文件夹、上传配音，预览或运行。',
       characterAbout: '描述一个角色，出定妆照和正侧背三视图，后面每个镜头都靠它保持一致。',
       storyboardAbout: '三个镜头，每个一段描述和一张画面，先看故事再做视频。',
       episodeAbout: '一个角色和用他拍的三个镜头，三段视频按顺序剪进时间线。',

@@ -1384,13 +1384,15 @@ const savedAccess = createSavedAccess({
         res.writeHead(204, { 'cache-control': 'no-store' });
         return res.end();
       }
-      const jpeg = await filmPoster(project.path, pages.folderUrl(project)).catch((e) => {
-        throw new HttpError(e instanceof PageFrameError ? 404 : 422, String(e?.message ?? e));
-      });
-      /* its first one is still being drawn: the card asks again in a while, rather than hold a connection meanwhile */
+      let jpeg = await filmPoster(project.path, pages.folderUrl(project)).catch(() => null);
+      /* 整片封面画不出来时，退回第一个片段的海报；再没有就给 204（卡片自己的面），不再无限 503。 */
       if (!jpeg) {
-        res.writeHead(503, { 'retry-after': '5', 'cache-control': 'no-store', 'content-type': 'application/json' });
-        return res.end(JSON.stringify({ error: 'the film\'s poster is being drawn; ask again in a few seconds', code: 'drawing' }));
+        const first = doc.tracks.flatMap((t) => t.clips).find((c) => c.src && !isPage(c.src))?.src;
+        if (first) jpeg = await poster(project.path, first).catch(() => null);
+      }
+      if (!jpeg) {
+        res.writeHead(204, { 'cache-control': 'private, max-age=30' });
+        return res.end();
       }
       res.writeHead(200, { 'content-type': 'image/jpeg', 'cache-control': 'private, max-age=60', 'content-length': jpeg.length });
       return res.end(jpeg);

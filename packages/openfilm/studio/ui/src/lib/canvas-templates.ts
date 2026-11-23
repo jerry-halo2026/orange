@@ -9,7 +9,7 @@
 import { CARD_H, CUT_W, MAKE_W, NOTE_W, cardWidth, type CanvasDoc } from './canvas.ts';
 
 /** `about`: what laying it down gets, in a line; `flow`: what it is made of, in order, as its card draws it (OpenFilm's own) */
-export interface CanvasTemplate { id: string; name: string; nodes: number; builtIn?: boolean; about?: string; flow?: Array<'note' | 'image' | 'video' | 'cut'> }
+export interface CanvasTemplate { id: string; name: string; nodes: number; builtIn?: boolean; about?: string; flow?: Array<'note' | 'image' | 'video' | 'cut' | 'source' | 'voice' | 'subtitle' | 'mix'> }
 
 /** where a group's nodes start in it, and the room between them */
 const PAD = 32;
@@ -92,7 +92,23 @@ export function builtInTemplates(say: (key: string) => string): Array<CanvasTemp
       ]),
     ],
   };
+  const superMix: CanvasDoc = {
+    nodes: [
+      { id: 'g', x: 0, y: 0, w: PAD + NOTE_W + GAP + 620 + PAD, h: HEAD + 3 * (MAKE_H + GAP) + PAD, group: say('superMix'), color: 'orange' },
+      { id: 'source', x: PAD, y: HEAD, w: NOTE_W, h: MAKE_H, source: true, path: '', parent: 'g' },
+      { id: 'voice', x: PAD, y: HEAD + MAKE_H + GAP, w: NOTE_W, h: MAKE_H, voice: true, voiceMode: 'upload', files: [], parent: 'g' },
+      { id: 'subtitle', x: PAD, y: HEAD + 2 * (MAKE_H + GAP), w: NOTE_W, h: MAKE_H, subtitle: true, subtitleMode: 'recognize', parent: 'g' },
+      { id: 'mix', x: PAD + NOTE_W + GAP, y: HEAD + MAKE_H, w: 620, h: 200, mix: true,
+        recipe: { params: { count: 1, threads: 4, subtitle: true, subtitleFontSize: 64, subtitlePosPct: 70, bgmMode: 'random' } }, parent: 'g' },
+    ],
+    edges: [
+      { id: 'e1', from: 'source', to: 'mix', order: 0 },
+      { id: 'e2', from: 'voice', to: 'mix', order: 1 },
+      { id: 'e3', from: 'subtitle', to: 'mix', order: 2 },
+    ],
+  };
   return [
+    { id: 'builtin:super-mix', name: say('superMix'), about: say('superMixAbout'), flow: ['source', 'voice', 'subtitle', 'mix'], nodes: superMix.nodes.length, builtIn: true, doc: superMix },
     { id: 'builtin:clip', name: say('clip'), about: say('clipAbout'), flow: ['note', 'image', 'video'], nodes: clip.nodes.length, builtIn: true, doc: clip },
     { id: 'builtin:character', name: say('character'), about: say('characterAbout'), flow: ['note', 'image', 'image'], nodes: character.nodes.length, builtIn: true, doc: character },
     { id: 'builtin:storyboard', name: say('storyboard'), about: say('storyboardAbout'), flow: ['note', 'image'], nodes: storyboard.nodes.length, builtIn: true, doc: storyboard },

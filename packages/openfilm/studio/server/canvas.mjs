@@ -117,8 +117,10 @@ export function parseCanvas(raw) {
     if (MAKE_KINDS.includes(String(n.make))) out.nodes.push({ ...box, ...parent, ...named, ...readMake(n), make: String(n.make) });
     else if (n.cut === true) out.nodes.push({ ...box, ...parent, cut: true });
     /* 拓扑输入：素材文件夹 / 配音 / 字幕，只存绝对路径与设置，不展开文件。 */
-    else if (n.source === true && externalPath(n.path)) {
-      out.nodes.push({ ...box, ...parent, ...named, source: true, path: String(n.path),
+    else if (n.source === true) {
+      const path = typeof n.path === 'string' ? n.path : '';
+      if (path && !externalPath(path)) continue;
+      out.nodes.push({ ...box, ...parent, ...named, source: true, path,
         ...(Array.isArray(n.groups) ? { groups: n.groups.slice(0, 200).filter((g) => isRecord(g) && typeof g.name === 'string' && g.name.trim())
           .map((g) => ({ name: String(g.name).trim().slice(0, NAME_MAX), videos: Number.isInteger(g.videos) ? g.videos : 0, images: Number.isInteger(g.images) ? g.images : 0,
             take: Number.isInteger(g.take) && g.take > 0 && g.take <= 100 ? g.take : undefined,

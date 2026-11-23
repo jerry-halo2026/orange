@@ -513,6 +513,8 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
   React.useEffect(() => { setCanvasOpenState(canvasShown(projectId)); }, [projectId]);
   const setCanvasOpen = React.useCallback((open: boolean) => {
     if (layoutEditingRef.current) return;
+    /* a focused control in the panel that is about to be hidden would keep focus inside an aria-hidden subtree */
+    if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) document.activeElement.blur();
     if (open) pauseRef.current();
     setCanvasOpenState(open);
     try { localStorage.setItem(`${CANVAS_KEY}:${projectId}`, open ? '1' : '0'); } catch { /* for this launch only */ }

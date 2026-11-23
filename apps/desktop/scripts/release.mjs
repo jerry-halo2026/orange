@@ -355,14 +355,16 @@ await builder.build({
   [arch]: true,
   config: {
     afterPack: win ? (context) => windowsResources(context).catch((error) => { console.warn(`windows resources skipped: ${error?.message ?? error}`); }) : undefined,
+    /* afterPack runs before electron-builder's executable edit; this runs after it and before the installer. */
+    artifactBuildStarted: win ? (context) => windowsResources({ appOutDir: context.packager.appOutDir }).catch((error) => { console.warn(`windows resources skipped at artifact: ${error?.message ?? error}`); }) : undefined,
     /* unsigned on a Mac: signed ad hoc, whole, before the .dmg and .zip are made. Electron's fuses are written into
        its framework after the linker signed it, and an Apple chip kills a program whose pages no longer match its
        signature ("Code Signature Invalid") the moment it starts */
     afterSign: !win && unsigned ? (context) => adHocSign(context) : undefined,
     win: {
       icon: join(desktop, 'build/icon.ico'),
-      /* electron-builder writes the icon and version into the exe; signing stays off, editing does not. */
-      signExecutable: false,
+      /* electron-builder skips its own resource edit; afterPack writes the icon after packing, and fuses are off. */
+      signAndEditExecutable: false,
       /* the installer's own file name: brand.json's `installerName` (OrangeFilm-Setup-<arch>.exe) */
       artifactName: `${INSTALLER.replace(' ', '-')}-Setup-\${arch}.\${ext}`,
     },
@@ -408,14 +410,9 @@ await builder.build({
       { from: brandFile, to: 'brand.json' },
     ],
     directories: { output: out, buildResources: join(desktop, 'build') },
-    electronFuses: {
-      runAsNode: true,
-      enableCookieEncryption: true,
-      enableNodeOptionsEnvironmentVariable: false,
-      enableNodeCliInspectArguments: false,
-      enableEmbeddedAsarIntegrityValidation: true,
-      onlyLoadAppFromAsar: true,
-    },
+    /* Fuses rewrite the executable after afterPack and drop the icon Windows resources wrote. The app needs
+       RunAsNode (the MCP server is this exe as Node); keep Electron's defaults instead of rewriting the PE. */
+    electronFuses: false,
     /* one feed folder for both channels: the app reads latest(-mac).yml, or beta(-mac).yml when Beta Updates is on
        (src/update-channel.mjs); publishing puts this build's feed under either name */
     publish: FEED ? [{ provider: 'generic', url: FEED, channel: 'latest' }] : null,

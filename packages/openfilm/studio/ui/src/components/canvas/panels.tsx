@@ -989,20 +989,6 @@ export function MixPanel({ id, data }: { id: string; data: MixData }) {
             </label>
           </div>
         </div>
-        {/* its groups, as the recipe names them: read only here (the recipe is written by the batch page and agents) */}
-        <div className="mt-2.5">
-          <div className={OPTION_TITLE}>{t('canvas.mix.groups')}</div>
-          {summary.groups.length ? (
-            <div className="flex flex-wrap gap-1.5">
-              {summary.groups.map((group, i) => (
-                <span key={`${group.name}-${i}`} className="flex h-6 max-w-[220px] items-center gap-1.5 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px] text-[var(--cv-ink-2)]">
-                  <span className="truncate">{group.name || '—'}</span>
-                  <span className="shrink-0 text-[11px] text-[var(--cv-ink-3)]">{t('canvas.mix.refs').replace('{n}', String(group.refs))}</span>
-                </span>
-              ))}
-            </div>
-          ) : <div className="text-[12px] text-[var(--cv-ink-3)]">{t('canvas.mix.noRecipe')}</div>}
-        </div>
         {/* BGM：本地文件上传（先导入工程），供应商音乐以后接 */}
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <span className={OPTION_TITLE}>{t('canvas.mix.bgm')}</span>

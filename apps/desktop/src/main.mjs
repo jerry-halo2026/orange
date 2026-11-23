@@ -730,6 +730,9 @@ async function start() {
       OPENFILM_HOME: IDENTITY.studioHome ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm'),
       /* 素材索引的落点：Studio 的索引路由要读同一份（后台构建见 startMaterialIndexBootstrap）。 */
       OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR,
+      ...(process.env.OPENFILM_MEDIA_TENANT ? { OPENFILM_MEDIA_TENANT: process.env.OPENFILM_MEDIA_TENANT } : process.env.OPENFILM_DESKTOP_FLAVOR === 'dev' ? { OPENFILM_MEDIA_TENANT: 'tenant-a' } : {}),
+      ...(process.env.OPENFILM_EMBED_MODE ? { OPENFILM_EMBED_MODE: process.env.OPENFILM_EMBED_MODE } : {}),
+      ...(process.env.OPENFILM_EMBED_ENDPOINT ? { OPENFILM_EMBED_ENDPOINT: process.env.OPENFILM_EMBED_ENDPOINT } : {}),
       ...((IDENTITY.library ?? process.env.OPENFILM_LIBRARY) ? { OPENFILM_LIBRARY: IDENTITY.library ?? process.env.OPENFILM_LIBRARY } : {}),
       /* a flavour with a home of its own still shares the person's library (src/locations.mjs) */
       ...(IDENTITY.sharedHome ? { OPENFILM_SHARED_HOME: IDENTITY.sharedHome } : {}),

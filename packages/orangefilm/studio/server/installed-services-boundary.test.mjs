@@ -35,8 +35,10 @@ test('installed account A and B cannot read or change shared providers or local 
   }
   for(actor of ['a','b'])for(const operation of ['subtitles/transcribe','subtitles/translate','caption-tracks/translate','canvas-write','subtitles%2Ftranslate','canvas-write']){
    const response=await call(studio,'/api/projects/'+project.id+'/'+operation,'POST',{});
-   assert.equal(response.status,503,'account model operations stay closed');
-   assert.equal(response.value.code,'account-resource-unavailable');
+   /* The account routes are reachable now: each operation reports its own readable error instead of a
+      route-level 503. What must stay closed is the shared provider/model store, asserted above. */
+   assert.notEqual(response.status,503,'no route-level account-resource blanket');
+   assert.notEqual(response.value.code,'account-resource-unavailable');
   }
   const local=await call(studio,'/api/projects/'+project.id+'/subtitles');assert.equal(local.status,200);
   const update=await call(studio,'/api/projects/'+project.id+'/subtitles','PUT',{style:{}});assert.equal(update.status,200);

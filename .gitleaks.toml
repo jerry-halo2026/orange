@@ -10,7 +10,7 @@ description = "made-up provider keys Studio's tests set and read back, and RFC 6
 condition = "AND"
 paths = ['''(^|/)packages/orangefilm/studio/server/(providers/)?[\w-]+\.test\.mjs$''']
 regexTarget = "secret"
-regexes = ['''0123456789|12345678|123456|abcdef1234|ABCDEFGH9876''', '''^dGhlIHNhbXBsZSBub25jZQ==$''']
+regexes = ['''0123456789|12345678|123456|abcdef1234|ABCDEFGH9876|ofk_fixture|fixture-owned-key''', '''^dGhlIHNhbXBsZSBub25jZQ==$''']
 
 [[allowlists]]
 description = "the library's ids in the order of its vectors, and numbers: nothing else is in the file (the emoji keycap-… reads as a key)"

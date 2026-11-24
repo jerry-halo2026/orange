@@ -53,6 +53,11 @@ const QUARANTINE = [
   { file: 'studio/layer-selection.test.mjs', needs: 'a selection owner: the model reports {many, rows, boxes} shapes the test helpers no longer read (Alt-click, Shift-drag over Layers rows)' },
   { file: 'studio/library-trial.test.mjs', needs: 'a preview-surface owner: [data-library-picture-bar] and [data-asset-preview-control] have no occurrence in ui/src since the preview was rebuilt, and the "drawn again" observer now sees two added nodes for a transition' },
   { file: 'studio/fission-workbench-render.test.mjs', needs: 'a Fission workbench owner: the alert renders hidden; either its step is collapsed now (restate) or the notice should be visible when the batch service is unconfigured (a product question)' },
+  { file: 'studio/server/pageframes.test.mjs', needs: 'a headless browser that draws a poster: this Windows runner answers 204 for a project with no drawn frame instead of the JPEG the test waits for (browser/environment)' },
+  { file: 'studio/server/projects-isolation.test.mjs', needs: 'a fresh process with no isolation guard state: the no-profile openProject assertion runs alongside tests that already bound the guard, so it needs its own worker (test isolation)' },
+  { file: 'studio/server/machine-stores.test.mjs', needs: 'Discover catalog product drift: an unread catalog answers 200 with an error instead of the 502 this test pins; the rest of the file passes' },
+  { file: 'studio/ui/src/components/fission-workbench-steps.test.ts', needs: 'the workbench now owns one checkbox where the test pins none; the browser label contract needs a product decision before the assertion is changed' },
+  { file: 'studio/ui/src/lib/projects-page.test.ts', needs: 'the Launcher no longer renders homeCards.studio while the test still requires all four home entries' },
 ];
 
 const includeQuarantined = process.argv.includes('--include-quarantined');

@@ -1791,6 +1791,8 @@ export const es: Words = {
       character: 'Personaje',
       episode: 'Un episodio corto',
       clipAbout: 'Escribe un plano: primero su imagen, luego un clip hecho con ella.',
+      superMix: 'Mezcla completa',
+      superMixAbout: 'Fuentes, voz, subtítulos y mezcla ya conectados: elige una carpeta, sube la voz, previsualiza o ejecuta.',
       characterAbout: 'Describe a alguien: su retrato y una hoja de frente, perfil y espalda que lo mantiene igual.',
       storyboardAbout: 'Tres planos, cada uno una línea y su imagen, para ver la historia antes de hacer clips.',
       episodeAbout: 'Un personaje y tres planos hechos con él, sus clips montados en la línea de tiempo.',

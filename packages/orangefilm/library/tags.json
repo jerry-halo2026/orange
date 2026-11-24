@@ -153,6 +153,7 @@
   {"id": "subtitle", "kind": "use", "name": {"en": "Subtitle", "zh-CN": "字幕", "ja": "字幕", "ko": "자막", "es": "Subtítulo"}, "words": ["subtitles", "caption", "captions", "karaoke", "lyrics", "lyric", "dialogue text", "歌词", "卡拉OK", "字幕条", "歌詞", "カラオケ", "가사", "노래방", "subtítulos", "letra"]},
   {"id": "countdown", "kind": "use", "name": {"en": "Countdown", "zh-CN": "倒计时", "ja": "カウントダウン", "ko": "카운트다운", "es": "Cuenta atrás"}, "words": ["timer", "numbers", "count", "3 2 1", "clock", "计时", "数字", "倒数", "タイマー", "타이머", "숫자", "temporizador"]},
   {"id": "map", "kind": "use", "name": {"en": "Map", "zh-CN": "地图", "ja": "地図", "ko": "지도", "es": "Mapa"}, "words": ["maps", "route", "location", "pin", "travel route", "globe", "地图路线", "定位", "路线", "地球", "ルート", "位置", "경로", "위치", "ruta", "ubicación"]},
-  {"id": "chart", "kind": "use", "name": {"en": "Chart", "zh-CN": "图表", "ja": "グラフ", "ko": "차트", "es": "Gráfico"}, "words": ["graph", "data", "statistics", "numbers", "infographic", "bar chart", "pie", "数据图", "统计", "信息图", "柱状图", "データ", "統計", "그래프", "통계", "datos", "estadísticas"]}
+  {"id": "chart", "kind": "use", "name": {"en": "Chart", "zh-CN": "图表", "ja": "グラフ", "ko": "차트", "es": "Gráfico"}, "words": ["graph", "data", "statistics", "numbers", "infographic", "bar chart", "pie", "数据图", "统计", "信息图", "柱状图", "データ", "統計", "그래프", "통계", "datos", "estadísticas"]},
+  {"id": "口播", "kind": "use", "name": {"en": "Talking head", "zh-CN": "口播", "ja": "トーク", "ko": "토크", "es": "Vídeo hablado"}, "words": ["talking head", "presenter", "host", "口播", "出镜", "讲解", "トーク", "토크", "presentador"]}
  ]
 }

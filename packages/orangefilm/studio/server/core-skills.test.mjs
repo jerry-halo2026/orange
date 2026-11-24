@@ -27,7 +27,7 @@ test("Studio lists OpenFilm's own skills first, in their order, installed, and o
   const listed = async () => (await (await api('/api/skills')).json()).skills;
   const core = (await listed()).slice(0, 3);
   assert.deepEqual(core.map((s) => [s.uid, s.as, s.core, s.installed]), [
-    ['openfilm/edit', 'openfilm-edit', true, true], ['openfilm/media', 'openfilm-media', true, true], ['openfilm/canvas', 'openfilm-canvas', true, true],
+    ['orangefilm/edit', 'orangefilm-edit', true, true], ['orangefilm/media', 'orangefilm-media', true, true], ['orangefilm/canvas', 'orangefilm-canvas', true, true],
   ]);
   assert.equal(core[0].shown.title['zh-CN'], '剪辑');
   /* manual/replicate ships with OpenFilm too (the built-in replicate skill), so four are its own; the rest are not, and
@@ -35,12 +35,12 @@ test("Studio lists OpenFilm's own skills first, in their order, installed, and o
   const all = await listed();
   const own = all.filter((s) => s.core);
   assert.deepEqual(own.map((s) => [s.uid, s.as, s.installed]), [
-    ['openfilm/edit', 'openfilm-edit', true], ['openfilm/media', 'openfilm-media', true],
-    ['openfilm/canvas', 'openfilm-canvas', true], ['openfilm/replicate', 'openfilm-replicate', true],
+    ['orangefilm/edit', 'orangefilm-edit', true], ['orangefilm/media', 'orangefilm-media', true],
+    ['orangefilm/canvas', 'orangefilm-canvas', true], ['orangefilm/replicate', 'orangefilm-replicate', true],
   ]);
   assert.ok(all.slice(own.length).every((s) => !s.core), 'the library\'s are not');
-  assert.equal((await api('/api/skills/openfilm%2Fcanvas/on', { method: 'PUT', body: { on: false } })).status, 200);
-  assert.equal((await listed()).find((s) => s.uid === 'openfilm/canvas').off, true);
-  assert.equal((await api('/api/skills/openfilm%2Fcanvas/installed', { method: 'PUT', body: { installed: false } })).status, 404, 'never uninstalled');
-  assert.equal((await api('/api/skills/openfilm%2Fcanvas', { method: 'DELETE' })).status, 404, 'never removed');
+  assert.equal((await api('/api/skills/orangefilm%2Fcanvas/on', { method: 'PUT', body: { on: false } })).status, 200);
+  assert.equal((await listed()).find((s) => s.uid === 'orangefilm/canvas').off, true);
+  assert.equal((await api('/api/skills/orangefilm%2Fcanvas/installed', { method: 'PUT', body: { installed: false } })).status, 404, 'never uninstalled');
+  assert.equal((await api('/api/skills/orangefilm%2Fcanvas', { method: 'DELETE' })).status, 404, 'never removed');
 });

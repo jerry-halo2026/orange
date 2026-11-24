@@ -134,12 +134,9 @@ export function createMaterialUse(options: MaterialUseOptions = {}): (card: Mate
     /* A refusal this session already met: no request at all, whichever surface asks (the card is disabled, but a retry
        path or a second host must not slip through). */
     if (deniedDownloads.has(videoId)) throw asFailure(403, 'authorization-denied', 'forbidden', '该素材在本会话被判定为无权下载，未发出请求。');
-    const payload: {videoId: string; videoType?: number; name?: string} = typeof videoType === 'number' && Number.isInteger(videoType) && videoType >= 0 && videoType <= 4
+    const payload: {videoId: string; videoType?: number} = typeof videoType === 'number' && Number.isInteger(videoType) && videoType >= 0 && videoType <= 4
       ? {videoId, videoType}
       : {videoId};
-    const named = typeof card?.name === 'string' && card.name.trim() ? card.name.trim().slice(0, 200)
-      : typeof card?.title === 'string' ? card.title.trim().slice(0, 200) : '';
-    if (named) payload.name = named;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {

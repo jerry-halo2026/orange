@@ -51,7 +51,7 @@ test('a signed-in Studio lists the skills on this computer: an empty store is an
   assert.equal(res.status, 200, 'the skills installed here are no account\'s');
   const body = await res.json();
   assert.equal(body.catalog, null, 'Discover\'s index was never read here');
-  assert.deepEqual(body.skills.slice(0, 3).map((s) => s.uid), ['openfilm/edit', 'openfilm/media', 'openfilm/canvas'], 'OpenFilm\'s own first');
+  assert.deepEqual(body.skills.slice(0, 3).map((s) => s.uid), ['orangefilm/edit', 'orangefilm/media', 'orangefilm/canvas'], 'OpenFilm\'s own first');
   const mine = body.skills.find((s) => s.uid === 'local/quiet');
   assert.deepEqual([mine?.source, mine?.installed], ['mine', true], 'the person\'s own, listed as it is');
 });

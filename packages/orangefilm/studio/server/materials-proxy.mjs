@@ -417,10 +417,9 @@ export function createMaterialsService({ upstream, secret = null, cache = null, 
     if (!/^\.[a-z0-9]{1,5}$/.test(extension)) throw new Error('unusable extension');
     await mkdir(join(cloud, CLOUD_META), { recursive: true });
     const readable = safeName(displayName);
-    /* 云管家的名字原样落盘；只有同名文件已存在时才加 `(id)` 区分（以前一律加 id，看起来像被重命名过）。 */
-    const plain = readable ? `${readable}${extension}` : `${id}${extension}`;
-    const taken = await stat(join(cloud, plain)).then(() => true).catch(() => false);
-    const name = readable && taken ? `${readable} (${id})${extension}` : plain;
+    /* 有素材名时用「素材名 (id)」：可辨认，也不会与同名的另一条互相覆盖。 */
+    const plain = readable ? `${readable} (${id})${extension}` : `${id}${extension}`;
+    const name = plain;
     const target = join(cloud, name);
     await copyFile(staged.path, target);
     const bytes = await readFile(target);
@@ -552,7 +551,7 @@ export function createMaterialsService({ upstream, secret = null, cache = null, 
       }
       if (already) {
         const known = await knownOf(cloud, id, join(cloud, already));
-        json(res, 200, { landed: `saved/${CLOUD_DIR}/${already}`, path: join(cloud, already), reused: true, sha256: known.sha256, bytes: known.bytes });
+        json(res, 200, { landed: `saved/${CLOUD_DIR}/${already}`, reused: true, sha256: known.sha256, bytes: known.bytes });
         return;
       }
 
@@ -576,7 +575,7 @@ export function createMaterialsService({ upstream, secret = null, cache = null, 
         } finally { release(); }
         if (copy) {
           note({ at: new Date(now()).toISOString(), event: 'material-content', result: 'hit', md5, bytes: copy.bytes, videoId: id, stored: 'already' });
-          json(res, 200, { landed: `saved/${CLOUD_DIR}/${copy.name}`, path: join(cloud, copy.name), reused: false, sha256: copy.sha256, bytes: copy.bytes, cache: 'hit' });
+          json(res, 200, { landed: `saved/${CLOUD_DIR}/${copy.name}`, reused: false, sha256: copy.sha256, bytes: copy.bytes, cache: 'hit' });
           return;
         }
         note({ at: new Date(now()).toISOString(), event: 'material-content', result: 'miss', md5, bytes: held.bytes, videoId: id, reason: 'local-copy-unusable' });
@@ -630,7 +629,7 @@ export function createMaterialsService({ upstream, secret = null, cache = null, 
           note({ at: new Date(now()).toISOString(), event: 'material-content', result: 'md5-mismatch', md5: landed.md5, expected: md5, bytes: landed.bytes, videoId: id });
         }
       }
-      json(res, 200, { landed: `saved/${CLOUD_DIR}/${landed.name}`, path: join(cloud, landed.name), reused: false, sha256: landed.sha256, bytes: landed.bytes });
+      json(res, 200, { landed: `saved/${CLOUD_DIR}/${landed.name}`, reused: false, sha256: landed.sha256, bytes: landed.bytes });
     },
     /**
      * One cover, by the supplier's own url: from this computer's cover cache when it is there, else fetched once and

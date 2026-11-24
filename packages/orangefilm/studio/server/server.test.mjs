@@ -802,7 +802,8 @@ test('an advertised Studio writes run.json, quits when asked by a key holder, an
     assert.equal(other.key, readFileSync(join(process.env.OPENFILM_HOME, 'key'), 'utf8'), 'the machine\'s key, the same every launch');
     const health = await (await fetch(`${other.origin}/api/health`)).json();
     /* its home only as a digest, and no process id: anyone may ask */
-    assert.deepEqual(health, { product: 'openfilm-studio', version: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version,
+    assert.deepEqual(health, { product: 'openfilm-studio', products: ['openfilm-studio', 'orangefilm-studio'],
+      version: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version,
       home: createHash('sha256').update(process.env.OPENFILM_HOME).digest('hex'), filmOrigin: other.filmOrigin });
     assert.equal((await fetch(`${other.origin}/api/quit`, { method: 'POST' })).status, 401);
     assert.equal((await fetch(`${other.origin}/api/quit`, { method: 'POST', headers: { 'x-studio-key': other.key } })).status, 200);

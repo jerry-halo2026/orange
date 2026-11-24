@@ -1,4 +1,4 @@
-﻿name: packaging-check
+name: packaging-check
 # Manual packaging validation only: build the Windows NSIS and macOS arm64 app on native GitHub runners,
 # in a clean checkout, and upload whatever the build made (or the logs that say why it did not).
 # Nothing is published, signed or uploaded to a release. Temporary public visibility exists only to use
@@ -34,10 +34,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Unpacked app (resedit + fuses only)
-        continue-on-error: true
+        continue-on-error: false
         run: pnpm --filter @orange/desktop release -- --platform=win --arch=x64 --dir
       - name: Windows installer (NSIS)
-        continue-on-error: true
+        continue-on-error: false
         run: pnpm --filter @orange/desktop release -- --platform=win --arch=x64
       - name: Collect logs
         if: always()
@@ -74,10 +74,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Unpacked app (ad-hoc, no signing)
-        continue-on-error: true
+        continue-on-error: false
         run: pnpm --filter @orange/desktop release -- --arch=arm64 --unsigned --dir
       - name: macOS app and dmg (unsigned)
-        continue-on-error: true
+        continue-on-error: false
         run: pnpm --filter @orange/desktop release -- --arch=arm64 --unsigned
       - name: Collect logs
         if: always()

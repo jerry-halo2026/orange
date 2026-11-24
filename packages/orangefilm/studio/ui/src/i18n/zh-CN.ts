@@ -2387,6 +2387,8 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
       homeAlready: '已经在使用新的设置目录。',
       homeMigrated: '设置已复制，旧目录已保留。',
       homeMigrate: '迁移设置',
+      homeConfirm: '将设置、账号和归属记录复制到新目录？旧目录会完整保留。',
+      homeCancel: '取消',
       projects: '项目位置',
       projectsPick: '选择项目位置',
       pickButton: '选择',

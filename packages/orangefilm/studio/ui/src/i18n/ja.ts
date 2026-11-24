@@ -2360,6 +2360,8 @@ export const ja: Words = {
       homeAlready: '新しい設定フォルダーを使用中です。',
       homeMigrated: '設定をコピーしました。古いフォルダーは残しています。',
       homeMigrate: '設定を移行',
+      homeConfirm: '設定・アカウント・所有記録を新しいフォルダーにコピーしますか？古いフォルダーはそのまま残ります。',
+      homeCancel: 'キャンセル',
       projects: 'プロジェクトの場所',
       projectsPick: 'プロジェクトの場所を選択',
       pickButton: '選択',

@@ -2355,6 +2355,8 @@ export const ko: Words = {
       homeAlready: '새 설정 폴더를 사용 중입니다.',
       homeMigrated: '설정을 복사했습니다. 이전 폴더는 보관했습니다.',
       homeMigrate: '설정 이동',
+      homeConfirm: '설정, 계정, 소유 기록을 새 폴더로 복사할까요? 이전 폴더는 그대로 보관됩니다.',
+      homeCancel: '취소',
       projects: '프로젝트 위치',
       projectsPick: '프로젝트 위치 선택',
       pickButton: '선택',

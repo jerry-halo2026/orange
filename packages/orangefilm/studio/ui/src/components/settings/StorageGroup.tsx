@@ -35,6 +35,7 @@ export function StorageGroup() {
   const [home, setHome] = React.useState<HomeMigrationPlan | null>(null);
   const [homeBusy, setHomeBusy] = React.useState(false);
   const [homeNote, setHomeNote] = React.useState<string | null>(null);
+  const [homeAsking, setHomeAsking] = React.useState(false);
   const load = React.useCallback(() => {
     void api.locations().then(setWhere).catch(() => {});
     void api.homeMigration().then(setHome).catch(() => {});
@@ -137,7 +138,7 @@ export function StorageGroup() {
         </>
       )}
       control={home.action === 'copy' || home.action === 'dry-run' ? (
-        <SettingsButton disabled={homeBusy} onClick={() => void migrateHome()}>{t('settings.storage.homeMigrate')}</SettingsButton>
+        <SettingsButton disabled={homeBusy} onClick={() => setHomeAsking(true)}>{t('settings.storage.homeMigrate')}</SettingsButton>
       ) : null}
     />
   ) : null;
@@ -146,6 +147,15 @@ export function StorageGroup() {
     <SettingsGroup title={t('settings.storage.group')}>
       {row('projects', where.projects)}
       {homeRow}
+      <ConfirmDialog
+        open={homeAsking}
+        title={t('settings.storage.home')}
+        description={t('settings.storage.homeConfirm')}
+        confirmLabel={t('settings.storage.homeMigrate')}
+        cancelLabel={t('settings.storage.homeCancel')}
+        onConfirm={() => { setHomeAsking(false); void migrateHome(); }}
+        onCancel={() => setHomeAsking(false)}
+      />
       <ConfirmDialog
         open={!!asking}
         title={t('settings.storage.moveTitle')}

@@ -2387,6 +2387,8 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
       homeAlready: 'Already using the new settings folder.',
       homeMigrated: 'Settings copied; the old folder was kept.',
       homeMigrate: 'Migrate settings',
+      homeConfirm: 'Copy the settings, accounts and ownership records into the new folder? The old folder stays as it is.',
+      homeCancel: 'Cancel',
       projects: 'Projects folder',
       projectsPick: 'Choose the projects folder',
       pickButton: 'Choose',

@@ -2360,6 +2360,8 @@ export const es: Words = {
       homeAlready: 'Ya se usa la nueva carpeta de ajustes.',
       homeMigrated: 'Ajustes copiados; la carpeta antigua se conservó.',
       homeMigrate: 'Migrar ajustes',
+      homeConfirm: '¿Copiar los ajustes, cuentas y registros de propiedad en la nueva carpeta? La carpeta antigua se conserva tal cual.',
+      homeCancel: 'Cancelar',
       projects: 'Carpeta de proyectos',
       projectsPick: 'Elige la carpeta de proyectos',
       pickButton: 'Elegir',

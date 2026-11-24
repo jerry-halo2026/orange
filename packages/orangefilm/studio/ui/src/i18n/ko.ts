@@ -2350,6 +2350,11 @@ export const ko: Words = {
     },
     storage: {
       group: '저장 위치',
+      home: '설정 폴더',
+      homeBlocked: '새 설정 폴더에 데이터가 있습니다. 이동하기 전에 확인하세요.',
+      homeAlready: '새 설정 폴더를 사용 중입니다.',
+      homeMigrated: '설정을 복사했습니다. 이전 폴더는 보관했습니다.',
+      homeMigrate: '설정 이동',
       projects: '프로젝트 위치',
       projectsPick: '프로젝트 위치 선택',
       pickButton: '선택',

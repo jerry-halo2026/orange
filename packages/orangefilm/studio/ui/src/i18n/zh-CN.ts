@@ -2382,6 +2382,11 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
     },
     storage: {
       group: '存储位置',
+      home: '设置目录',
+      homeBlocked: '新设置目录已有数据，迁移前请先检查。',
+      homeAlready: '已经在使用新的设置目录。',
+      homeMigrated: '设置已复制，旧目录已保留。',
+      homeMigrate: '迁移设置',
       projects: '项目位置',
       projectsPick: '选择项目位置',
       pickButton: '选择',

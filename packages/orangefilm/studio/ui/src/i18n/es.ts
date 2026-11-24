@@ -2355,6 +2355,11 @@ export const es: Words = {
     },
     storage: {
       group: 'Almacenamiento',
+      home: 'Carpeta de ajustes',
+      homeBlocked: 'La nueva carpeta de ajustes ya tiene datos; compruébala antes de migrar.',
+      homeAlready: 'Ya se usa la nueva carpeta de ajustes.',
+      homeMigrated: 'Ajustes copiados; la carpeta antigua se conservó.',
+      homeMigrate: 'Migrar ajustes',
       projects: 'Carpeta de proyectos',
       projectsPick: 'Elige la carpeta de proyectos',
       pickButton: 'Elegir',

@@ -2355,6 +2355,11 @@ export const ja: Words = {
     },
     storage: {
       group: '保存場所',
+      home: '設定フォルダー',
+      homeBlocked: '新しい設定フォルダーにデータがあります。移行前に確認してください。',
+      homeAlready: '新しい設定フォルダーを使用中です。',
+      homeMigrated: '設定をコピーしました。古いフォルダーは残しています。',
+      homeMigrate: '設定を移行',
       projects: 'プロジェクトの場所',
       projectsPick: 'プロジェクトの場所を選択',
       pickButton: '選択',

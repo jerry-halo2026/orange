@@ -16,6 +16,13 @@ regexes = ['''0123456789|12345678|123456|abcdef1234|ABCDEFGH9876''', '''^dGhlIHN
 description = "the library's ids in the order of its vectors, and numbers: nothing else is in the file (the emoji keycap-… reads as a key)"
 paths = ['''(^|/)packages/orangefilm/library/vectors\.json$''']
 
+[[allowlists]]
+description = "apps/api tests: one made-up internal secret and fixture-signed JWTs, never a real credential"
+condition = "AND"
+paths = ['''(^|/)apps/api/src/.*\.test\.ts$''']
+regexTarget = "secret"
+regexes = ['''fixture-internal-secret-0123456789abcdef''', '''fixture-signature''']
+
 # The environment every installer carries (scripts/release-environment.mjs, resources/auth-environment.json). Its
 # `publishableKey` is the client-side key Supabase hands to browsers: it is inside every installed app by design, and
 # the build refuses a privileged key (`sb_secret_…`, a `service_role` JWT) before it can ever be written here.

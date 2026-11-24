@@ -80,6 +80,7 @@ import { charactersRoute, listCharacters, projectCharactersRoute } from './canva
 import { transitionPageRoutes } from './transition-pages.mjs';
 import { createAsks, getRoute, subtitleTranscriber, subtitleTranslator } from './get.mjs';
 import { LOCATION_KEYS, chooseFolder, locations, studioHomeDir, usableFolder } from '../../src/locations.mjs';
+import { migrateHome, planHomeMigration } from '../../src/home-migration.mjs';
 import { doctor } from '../../src/doctor.mjs';
 import { recentProblems } from '../../src/problems.mjs';
 import { exportDiagnostics } from './diagnostics.mjs';
@@ -354,6 +355,17 @@ const savedAccess = createSavedAccess({
       // answering the empty state (machineStore) rather than a 503 for something that is merely not made yet.
     }
     if (await orangeRoutes(req, res, parts)) return;
+    /* The old ~/.openfilm home, copied into ~/.orangefilm only when asked: the settings UI reads the plan first
+       and sends { confirm: true } for the copy. The old home is never removed by this route. */
+    if (parts[0] === 'home' && parts[1] === 'migration') {
+      if (req.method === 'GET' && parts.length === 2) return json(res, 200, planHomeMigration());
+      if (req.method === 'POST' && parts.length === 2) {
+        const body = /** @type {{ confirm?: boolean, dryRun?: boolean, includeLibrary?: boolean }} */ (await readJson(req));
+        if (body?.confirm !== true) throw new HttpError(400, 'confirm the home migration', { code: 'migration-confirmation-required' });
+        return json(res, 200, migrateHome({ dryRun: body.dryRun === true, includeLibrary: body.includeLibrary === true }));
+      }
+      throw new HttpError(405, 'Use GET for the plan or POST with { confirm: true } to migrate.');
+    }
     const run = () => isolationResourceCall(isolation,parts,req.method,async () => {
 
     /* stop: another app is taking over this machine's Studio, or `openfilm open` starts it afresh (`whenIdle`: not

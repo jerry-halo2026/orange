@@ -116,6 +116,13 @@ export interface StudioPrefs {
 /** Where the projects library is (src/locations.mjs): the folder, its default, whether the person chose it, the free space on its disk, how many projects are in it. */
 export interface StudioLocation { path: string; default: string; chosen: boolean; free: number | null; count: number }
 export interface StudioLocations { projects: StudioLocation }
+/** The old home and the new one, as src/home-migration.mjs prepares a copy. */
+export interface HomeMigrationPlan {
+  from: string; to: string;
+  action: 'none' | 'already' | 'blocked' | 'copy' | 'nothing-to-copy' | 'dry-run' | 'migrated' | 'failed';
+  entries: string[]; reason: string | null;
+  error?: string;
+}
 /** Said on the window when they change, for what plays by them (the preview's proxies). */
 export const PREFS_EVENT = 'openfilm:prefs';
 /** Said on the window when the library moved, for the Projects list. */
@@ -145,6 +152,9 @@ export const api = {
   prefs: () => call<StudioPrefs>('prefs'),
   /** where new projects and exports go, and the free space there */
   locations: () => call<StudioLocations>('locations'),
+  /** the old ~/.openfilm → ~/.orangefilm plan; copy only with `confirm` */
+  homeMigration: () => call<HomeMigrationPlan>('home/migration'),
+  migrateHome: (includeLibrary = false, dryRun = false) => call<HomeMigrationPlan>('home/migration', { method: 'POST', json: { confirm: true, includeLibrary, dryRun } }),
   /** move the library to `path` (null: the default); with `move`, its projects go too (those that could not are in `failed`) */
   /** `failed`: projects that stay where they were; `left`: moved across disks, their old folder left there (the trash would not take it) */
   moveLibrary: (path: string | null, move: boolean) => call<{ moved: number; failed: { name: string; error: string }[]; left: { name: string; path: string; error: string }[]; locations: StudioLocations }>('locations/projects', { method: 'PUT', json: { path, move } }).then((done) => {

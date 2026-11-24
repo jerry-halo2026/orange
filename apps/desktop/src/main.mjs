@@ -52,6 +52,7 @@ import { isDevToolsShortcut, toggleDevTools } from './dev-tools.mjs';
 import { registerOrangeIpc } from './orange-ipc.mjs';
 import { brandWindowTitle } from './brand.mjs';
 import { bridgeOrangeEnv } from 'openfilm/orange-env';
+import { studioHomeDir } from 'openfilm/locations';
 
 /* ORANGE_* wins over the legacy OPENFILM_* for every setting read below. */
 bridgeOrangeEnv();
@@ -168,7 +169,7 @@ const MATERIAL_INDEX_DIR = String(process.env.OPENFILM_MATERIAL_INDEX_DIR ?? '')
 function startMaterialIndexBootstrap() {
   const script = join(MATERIAL_CHECKOUT, 'packages', 'orangefilm', 'scripts', 'material-index-bootstrap.mjs');
   if (!existsSync(script)) return;
-  const home = IDENTITY.studioHome ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm');
+  const home = IDENTITY.studioHome ?? studioHomeDir();
   try {
     const child = spawn(process.execPath, [script, '--detach', '--dir', MATERIAL_INDEX_DIR], {
       detached: true, stdio: 'ignore', windowsHide: true,
@@ -731,7 +732,7 @@ async function start() {
   if (authRuntime.error) console.error(`[auth] ${authRuntime.code}: ${authRuntime.message}`);  const env = childEnvironment({
     shell: shellEnv,
     extra: {
-      OPENFILM_HOME: IDENTITY.studioHome ?? process.env.ORANGE_HOME ?? process.env.OPENFILM_HOME ?? join(app.getPath('home'), '.openfilm'),
+      OPENFILM_HOME: IDENTITY.studioHome ?? studioHomeDir(),
       /* 素材索引的落点：Studio 的索引路由要读同一份（后台构建见 startMaterialIndexBootstrap）。 */
       OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR,
       ...(() => {

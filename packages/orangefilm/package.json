@@ -31,6 +31,7 @@
     "./development-isolation": "./src/development-isolation.mjs",
     "./orange-env": "./src/orange-env.mjs",
     "./home-migration": "./src/home-migration.mjs",
+    "./locations": "./src/locations.mjs",
     "./film-doc": "./src/film-doc.mjs",
     "./host": "./src/host.mjs",
     "./index-client": "./src/index-client.mjs",

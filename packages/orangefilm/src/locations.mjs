@@ -24,9 +24,9 @@ import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 const isolatedLocation = (key, fallback) => { const p = readIsolationProfile(); return p ? assertIsolationPath(p,p.paths[key],key) : fallback(); };
 const envText = (name) => process.env[`ORANGE_${name}`] ?? process.env[`OPENFILM_${name}`];
 /** A new install starts at ~/.orangefilm; an existing ~/.openfilm keeps working until an explicit migration wrote its marker. */
-const defaultStudioHome = () => {
-  const next = join(homedir(), '.orangefilm');
-  const old = join(homedir(), '.openfilm');
+export const defaultStudioHome = (home = homedir()) => {
+  const next = join(home, '.orangefilm');
+  const old = join(home, '.openfilm');
   const migrated = existsSync(join(next, '.orangefilm-home-migration.json'));
   return migrated || !existsSync(old) ? next : old;
 };

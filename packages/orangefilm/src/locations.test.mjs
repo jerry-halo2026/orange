@@ -7,7 +7,7 @@ import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { testRoot } from './test-roots.mjs';
-import { exportsRoot, libraryDefault, libraryProjects, libraryRoot, locations, usableFolder } from './locations.mjs';
+import { defaultStudioHome, exportsRoot, libraryDefault, libraryProjects, libraryRoot, locations, usableFolder } from './locations.mjs';
 
 const KEYS = ['OPENFILM_HOME', 'OPENFILM_LIBRARY', 'OPENFILM_EXPORTS', 'OPENFILM_SHARED_HOME'];
 let saved;
@@ -106,4 +106,16 @@ test('isolated effective projects preferences and folder selection cannot escape
     assert.throws(()=>chooseFolder('projectsFolder',join(home,'outside')),/isolat/);
     const outside=join(home,'new-external');assert.throws(()=>usableFolder(outside),/isolat/);assert.equal(existsSync(outside),false);
   }finally{for(const[k,v]of Object.entries(old)){if(v===undefined)delete process.env[k];else process.env[k]=v}}
+});
+
+test('a migrated home wins only after its completion marker', () => {
+  const base = mkdtempSync(join(testRoot('locations'), 'of-home-'));
+  const old = join(base, '.openfilm');
+  const next = join(base, '.orangefilm');
+  mkdirSync(old, { recursive: true });
+  assert.equal(defaultStudioHome(base), old, 'an existing old home wins before migration');
+  mkdirSync(next, { recursive: true });
+  assert.equal(defaultStudioHome(base), old, 'an empty target is not a migration');
+  writeFileSync(join(next, '.orangefilm-home-migration.json'), '{}\n');
+  assert.equal(defaultStudioHome(base), next, 'the marker switches the desktop to the new home');
 });

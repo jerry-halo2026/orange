@@ -1119,6 +1119,9 @@ export const ja: Words = {
   },
   saved: {
     title: 'コレクション',
+    claimTitle: 'この保存ライブラリは別のアカウントのものです',
+    claimBody: 'このログインを追加すると同じライブラリを使えます。元のアカウントの記録は残ります。',
+    claimButton: 'このアカウントを追加',
     back: 'プロジェクトの素材に戻る',
     add: 'コレクションに追加',
     addTogether: '{n} 個のクリップをまとめてコレクションに追加',

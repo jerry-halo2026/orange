@@ -1115,6 +1115,9 @@ export const ko: Words = {
   },
   saved: {
     title: '보관함',
+    claimTitle: '이 저장 라이브러리는 다른 계정의 것입니다',
+    claimBody: '이 로그인을 추가하면 같은 라이브러리를 사용할 수 있습니다. 원래 계정 기록은 유지됩니다.',
+    claimButton: '이 계정 추가',
     back: '프로젝트 미디어로 돌아가기',
     add: '보관함에 추가',
     addTogether: '클립 {n}개를 하나로 보관함에 추가',

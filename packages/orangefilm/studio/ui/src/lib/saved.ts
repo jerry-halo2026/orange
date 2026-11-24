@@ -92,6 +92,38 @@ export function useSavedListing(on: boolean): MediaListing | null {
   ) : null), [raw, facts]);
 }
 
+/** The library's account ownership, read when the Saved tab opens (studio/server/saved-owners.mjs). */
+export type SavedOwnership = {
+  readonly mine: boolean;
+  readonly holds: boolean;
+  readonly refs: readonly { ref: string; current: boolean; claimedAt: string }[];
+};
+
+export function useSavedOwnership(on: boolean): SavedOwnership | null {
+  const seen = React.useSyncExternalStore(
+    (fn) => { listeners.add(fn); return () => { listeners.delete(fn); }; },
+    () => version,
+    () => version,
+  );
+  const [state, setState] = React.useState<SavedOwnership | null>(null);
+  React.useEffect(() => {
+    if (!on) return undefined;
+    let live = true;
+    void fetch('/api/saved/ownership', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null), () => null).then((body) => {
+      if (live && body) setState(body as SavedOwnership);
+    });
+    return () => { live = false; };
+  }, [on, seen]);
+  return state;
+}
+
+/** Add this sign-in to a library another account holds, then let the pane read it again. */
+export async function claimSaved(ref: string): Promise<void> {
+  const res = await send('POST', '/api/saved/claim', { confirm: 'add-this-account', owner: ref });
+  if (!res.ok) throw new Error('claim failed');
+  refreshSaved();
+}
+
 const result = async (res: Response): Promise<MediaResult> => (res.ok ? 'ok' : res.status === 409 ? recycleRefusalOf(await res.json().catch(() => null)) ?? 'taken' : 'failed');
 const send = (method: string, url: string, body: unknown) => fetch(url, { method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
 

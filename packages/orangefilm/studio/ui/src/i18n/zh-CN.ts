@@ -1145,6 +1145,9 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
   },
   saved: {
     title: '收藏',
+    claimTitle: '这个素材库属于另一个账号',
+    claimBody: '把当前账号加入后即可使用同一个素材库；原账号记录仍保留。',
+    claimButton: '加入当前账号',
     back: '回到项目素材',
     add: '收藏',
     addTogether: '把 {n} 个片段收藏为一组',

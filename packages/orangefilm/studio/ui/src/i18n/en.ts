@@ -1145,6 +1145,9 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
   },
   saved: {
     title: 'Saved',
+    claimTitle: 'This Saved library belongs to another account',
+    claimBody: 'Add this sign-in to use the same Saved library. The account that created it stays recorded.',
+    claimButton: 'Add this account',
     back: 'Back to the project’s media',
     add: 'Add to Saved',
     addTogether: 'Add {n} clips to Saved as one',

@@ -1119,6 +1119,9 @@ export const es: Words = {
   },
   saved: {
     title: 'Guardados',
+    claimTitle: 'Esta biblioteca de Guardados pertenece a otra cuenta',
+    claimBody: 'Añade este inicio de sesión para usar la misma biblioteca; la cuenta original queda registrada.',
+    claimButton: 'Añadir esta cuenta',
     back: 'Volver a los medios del proyecto',
     add: 'Añadir a Guardados',
     addTogether: 'Añadir {n} clips a Guardados como uno',

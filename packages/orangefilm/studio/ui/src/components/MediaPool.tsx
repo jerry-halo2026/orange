@@ -85,6 +85,7 @@ import { retryImage } from '@/lib/retry-image';
 import { boxBetween, boxHits, boxPick, moveTargets, pickItem, type Box } from '@/lib/media-selection';
 import { barLayout, type BarWords } from '@/lib/media-bar';
 import { byName, folderFaces } from '@/lib/media-folders';
+import { claimSaved, useSavedOwnership } from '@/lib/saved';
 
 type Filter = 'all' | 'video' | 'image' | 'audio' | 'page' | 'other';
 type SortKey = 'name' | 'time' | 'duration' | 'type';
@@ -268,6 +269,8 @@ export function MediaPool({
   const [osDrag, setOsDrag] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const inSaved = scope === 'saved';
+  const savedOwnership = useSavedOwnership(inSaved);
+  const [claimingSaved, setClaimingSaved] = React.useState(false);
   React.useEffect(() => { setQuery(''); }, [scope]);
   /* the top folder: All of the project's media, or Saved */
   const topName = inSaved ? t('saved.title') : t('media.filter_all');
@@ -1021,6 +1024,22 @@ export function MediaPool({
         {marquee ? (
           <div className="pointer-events-none absolute z-20 rounded-[2px] border border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)]"
             style={{ left: marquee.left, top: marquee.top, width: marquee.right - marquee.left, height: marquee.bottom - marquee.top }} />
+        ) : null}
+        {inSaved && savedOwnership && !savedOwnership.mine ? (
+          <div className="mx-1 mb-3 rounded-md border border-[var(--border)] bg-[var(--bg-panel)] p-3 text-[12px]" role="status">
+            <div className="font-medium text-[var(--text)]">{t('saved.claimTitle')}</div>
+            <p className="mt-1 text-[var(--text-muted)]">{t('saved.claimBody')}</p>
+            <button type="button" disabled={claimingSaved}
+              onClick={() => {
+                const ref = savedOwnership.refs.find((record) => !record.current)?.ref;
+                if (!ref) return;
+                setClaimingSaved(true);
+                void claimSaved(ref).catch(() => {}).finally(() => setClaimingSaved(false));
+              }}
+              className="mt-2 inline-flex h-7 items-center rounded-md border border-[var(--border)] px-2.5 text-[12.5px] hover:bg-[var(--bg-hover)]">
+              {t('saved.claimButton')}
+            </button>
+          </div>
         ) : null}
         {items && !items.length && !creating && !(flat ? [] : uploads.filter((u) => u.into === at)).length ? (
           flat ? <p className="px-1 pt-6 text-center text-[12px] text-[var(--text-muted)]">{t('media.noMatch')}</p> : (

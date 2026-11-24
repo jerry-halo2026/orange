@@ -1,4 +1,4 @@
-// 漏 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
+// © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner鈥檚 written permission.
 
 /** First-party authentication in the existing Studio utility. Never expose this object to a renderer. */

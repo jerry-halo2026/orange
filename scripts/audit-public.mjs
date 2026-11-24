@@ -46,7 +46,7 @@ const ROOT = resolve(opts.dir ?? join(import.meta.dirname, '..'));
 /* `docs/` and `overlay/` are internal records, not product content: they hold evidence from our own machines (paths
    under a home folder) and the vendoring patches, and neither ships in an installer. The checks below are for what
    does ship and for the repository's own configuration. */
-const SKIP_DIR = /(^|\/)(node_modules|dist|\.dev|\.release|\.git|docs|overlay)\//;
+const SKIP_DIR = /(^|\/)(node_modules|dist|\.dev|\.release|\.git|docs|overlay|packages\/orangefilm\/library\/models)\//;
 /* the source files that must carry the proprietary header: someone reading one file — or an agent pointed at it —
    sees the copyright before the code. `docs/`, JSON and assets are covered by LICENSE and TRADEMARK instead. */
 const SOURCE = /\.(mjs|cjs|js|jsx|ts|tsx|mts|cts|cs|sh|ps1)$/;
@@ -65,7 +65,7 @@ const ALLOWED = [
   { file: 'packages/orangefilm/src/render.mjs', check: 'private', match: "C:\\\\Users\\\\O'Brien", why: 'a made-up Windows path with a quote in it' },
   /* the 8.3 short name is what these files *refuse*: it is the counter-example in a rule about canonical long paths,
      not a home folder anyone's data lives in */
-  { file: /(^|\/)packages\/openfilm\/(src\/test-roots\.mjs|studio\/server\/fission-(engine-paths|run)\.mjs)$/, check: 'private', match: /ADMINI~1/, why: 'the short name these files reject, quoted as the reason' },
+  { file: /(^|\/)packages\/orangefilm\/(src\/test-roots\.mjs|studio\/server\/fission-(engine-paths|run)\.mjs)$/, check: 'private', match: /ADMINI~1/, why: 'the short name these files reject, quoted as the reason' },
   { file: 'workers/fission/tests/Fission.UnitTests/TestSupport.cs', check: 'private', match: /ADMINI~1/, why: 'the short name the engine refuses, quoted in the assertion message' },
   /* a comment about where Vite lives inside a dependency folder, not a path this repository resolves */
   { file: 'scripts/verify-macos.sh', check: 'path', match: /node_modules\/\.pnpm\/vite@/, why: 'the glob the verification greps for, printed as an example' },

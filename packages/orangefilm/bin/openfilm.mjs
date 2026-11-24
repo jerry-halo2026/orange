@@ -20,6 +20,8 @@ const USAGE = `openfilm — a film is a function of time: given t, it draws that
   openfilm skills                      the skills this film can be made with; \`openfilm skill <name>\` prints one
   openfilm update                      the newest OrangeFilm; Studio starts again on it
   openfilm doctor                      what this computer has for OrangeFilm, to paste into an issue
+  openfilm home status                 the old ~/.openfilm and the new ~/.orangefilm
+  openfilm home migrate [--check|--dry-run|--include-library]  copy the old Studio settings into the new home
 
   Run with no arguments for the manual; \`openfilm <command> --help\` for one command's options; --version for the version.
   look, render, get and canvas work on the project around the current folder.
@@ -69,6 +71,13 @@ openfilm skill remove <name>
   projects folders, how much the projects' .film folders hold, npm, and the last errors in Studio's log. Paths under
   your home folder read ~; no keys, accounts or projects are in it. Exit status 1 when something needs fixing; the
   report says what.`,
+  home: `openfilm home status
+openfilm home migrate [--check] [--dry-run] [--include-library]
+
+  The Studio home before the rename is ~/.openfilm; new installs use ~/.orangefilm. migrate copies the settings,
+  accounts and saved ownership records into the new home, writes a completion marker, and keeps the old home as it was.
+  It does not copy the material cache or the person's projects unless --include-library is given. A target that already
+  has data and no marker is not merged; run --check or --dry-run first.`,
   material: `openfilm material search <query>
 
   Searches the company's cloud materials through a running Studio and prints one line per hit:
@@ -207,6 +216,7 @@ if (RAW[0] === 'get') {
         blur: { type: 'boolean' }, samples: { type: 'string' }, shutter: { type: 'string' }, alpha: { type: 'boolean' }, subtitles: { type: 'boolean' },
         fps: { type: 'string' }, workers: { type: 'string' }, loudness: { type: 'string' }, help: { type: 'boolean', short: 'h' },
           'long-edge': { type: 'string' }, frames: { type: 'string' }, project: { type: 'string' }, 'video-id': { type: 'string' }, json: { type: 'boolean' },
+          check: { type: 'boolean' }, 'dry-run': { type: 'boolean' }, 'include-library': { type: 'boolean' },
       },
     });
   } catch (e) {
@@ -255,6 +265,7 @@ if (RAW[0] === 'get') {
       const report = await m.doctor({ run: RUN });
       return { ok: report.ok, lines: [report.text] };
     }),
+    home: () => import('../src/home-cli.mjs').then((m) => m.homeCommand(args, o)),
   };
   /**
    * Show a project in Studio; `.film/opened` marks a project Studio has shown. A folder named is made a project when it is

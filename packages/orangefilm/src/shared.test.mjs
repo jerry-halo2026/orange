@@ -23,7 +23,7 @@ test('an ffmpeg that does not end is stopped, and says what did not finish', { s
 });
 
 test('a mix is exactly the film\'s length: padded when its sounds end early, cut when one runs on', { skip: noFfmpeg, timeout: 30_000 }, async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-mix-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-mix-'));
   try {
     const tone = (name, seconds, rate) => {
       const file = join(dir, name);
@@ -58,7 +58,7 @@ function levelAt(file, t, ms = 20) {
 }
 
 test('a sound\'s fades ramp its level in the mix, straight, from where its clip starts (cut by a range too)', { skip: noFfmpeg, timeout: 30_000 }, async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-fade-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-fade-'));
   try {
     const tone = join(dir, 'tone.wav');
     spawnSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=frequency=1000:duration=6:sample_rate=48000', tone]);
@@ -84,7 +84,7 @@ test('a sound\'s fades ramp its level in the mix, straight, from where its clip 
 });
 
 test('a mono sound is mixed on both sides at its own level, as a browser plays it; a stereo one as it is', { skip: noFfmpeg, timeout: 30_000 }, async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-mono-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-mono-'));
   try {
     const mono = join(dir, 'mono.wav'), stereo = join(dir, 'stereo.wav');
     spawnSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=frequency=1000:duration=2:sample_rate=48000', mono]);
@@ -107,7 +107,7 @@ test('fadeFilter: the ramps as a per-sample expression, nothing without fades', 
 });
 
 test('fileOf: a sound stays inside the film\'s folder, however its path is written', () => {
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-fileof-'));
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-fileof-'));
   try {
     const ws = join(root, 'ws');
     mkdirSync(join(ws, 'assets'), { recursive: true });
@@ -134,9 +134,9 @@ test('fileOf: a sound stays inside the film\'s folder, however its path is writt
 
 test('fileOf: a link to media the person linked is followed; a link a project brought from elsewhere is not', { skip: process.platform === 'win32' && 'links need Developer Mode on Windows' }, () => {
   /* the places the person linked are kept in Studio's home: this test's own */
-  const home = process.env.OPENFILM_HOME;
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-fileof-links-'));
-  process.env.OPENFILM_HOME = join(root, 'home');
+  const home = process.env.ORANGE_HOME;
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-fileof-links-'));
+  process.env.ORANGE_HOME = join(root, 'home');
   try {
     const ws = join(root, 'ws'), nas = join(root, 'nas'), away = join(root, 'away');
     mkdirSync(join(ws, 'assets'), { recursive: true });
@@ -157,7 +157,7 @@ test('fileOf: a link to media the person linked is followed; a link a project br
     symlinkSync(join(nas, 'bed.mp3'), join(ws, 'bed.mp3'));
     assert.throws(() => fileOf(ws, 'film.html', 'bed.mp3'), /link out of the film's folder/);
   } finally {
-    if (home === undefined) delete process.env.OPENFILM_HOME; else process.env.OPENFILM_HOME = home;
+    if (home === undefined) delete process.env.ORANGE_HOME; else process.env.ORANGE_HOME = home;
     rmSync(root, { recursive: true, force: true });
   }
 });
@@ -173,7 +173,7 @@ test('checkSound: a sound\'s numbers are numbers before they reach ffmpeg', () =
 });
 
 test('a sound used by many clips is one input, split and cut in the graph: the same mix as one input each', { skip: noFfmpeg, timeout: 60_000 }, async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-mix-shared-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-mix-shared-'));
   try {
     const tone = join(dir, 'tone.wav');
     spawnSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=frequency=330:duration=2:sample_rate=48000', tone]);
@@ -198,7 +198,7 @@ test('a sound used by many clips is one input, split and cut in the graph: the s
 });
 
 test('a mix of hundreds of sounds keeps its command short: its graph goes in a file, gone once mixed', { skip: noFfmpeg, timeout: 120_000 }, async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-mix-many-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-mix-many-'));
   try {
     const tick = join(dir, 'tick.wav');
     spawnSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=frequency=880:duration=0.1:sample_rate=48000', tick]);
@@ -218,7 +218,7 @@ test('a mix of hundreds of sounds keeps its command short: its graph goes in a f
 });
 
 test('a file made again at the same path is asked again for its sound: one that was silent can have it now', { skip: noFfmpeg }, () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-channels-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-channels-'));
   try {
     const file = join(dir, 'clip.mp4');
     spawnSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'color=c=black:s=64x64:d=1', '-pix_fmt', 'yuv420p', file]);

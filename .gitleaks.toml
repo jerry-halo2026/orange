@@ -1,6 +1,6 @@
 # gitleaks: its default rules, less the made-up values the tests use. Read by CI (`gitleaks git`) and by
 # `pnpm audit:public` (`gitleaks dir`). Each allowance names the files it covers and what the values look like.
-title = "openfilm"
+title = "orangefilm"
 
 [extend]
 useDefault = true

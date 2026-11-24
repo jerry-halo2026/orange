@@ -1,11 +1,11 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-/** OpenFilm's built-in Pi agent: the Services account and the cloud's model catalog, with no separate credentials. */
+/** OrangeFilm's built-in Pi agent: the Services account and the cloud's model catalog, with no separate credentials. */
 import { join } from 'node:path';
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { contextLength, effortLevels } from './pi-config.mjs';
-import { OPENFILM_MODELS, modelPreferences, orderedModels } from './orangefilm-models.mjs';
+import { ORANGE_MODELS, modelPreferences, orderedModels } from './orangefilm-models.mjs';
 import { brandProductName } from './brand.mjs';
 const PRODUCT = brandProductName();
 
@@ -22,9 +22,9 @@ export function agentOffer(body, baseUrl) {
     const levels = effortLevels((Array.isArray(m.efforts) ? m.efforts : []).map((e) => e === 'on' ? 'high' : e));
     const effort = m.default_effort === 'on' ? 'high' : m.default_effort;
     return [{ id: m.id, model: m.id, name: typeof m.name === 'string' ? m.name : m.id,
-      api: 'openai-completions', baseUrl, keyEnv: 'OPENFILM_ACCOUNT_KEY', levels,
+      api: 'openai-completions', baseUrl, keyEnv: 'ORANGE_ACCOUNT_KEY', levels,
       effort: levels.includes(effort) ? effort : levels[0], context: contextLength(m.context_length) ?? 128_000,
-      // The address is OpenFilm's, but its wire format is OpenRouter's, including reasoning and tool history.
+      // The address is OrangeFilm's, but its wire format is OpenRouter's, including reasoning and tool history.
       compat: { supportsDeveloperRole: false, supportsStore: false, supportsUsageInStreaming: true,
         maxTokensField: 'max_tokens', thinkingFormat: 'openrouter', sendSessionAffinityHeaders: true, sessionAffinityFormat: 'openrouter' },
     }];
@@ -32,7 +32,7 @@ export function agentOffer(body, baseUrl) {
   return { models, model: models.some((m) => m.id === body?.default) ? body.default : models[0]?.id };
 }
 
-export function createOpenFilmAgent({ dataDir, readAccount, signIn, cancelSignIn, signOut, closeSessions, refreshSessions = () => {}, onChange, fetch: fetchImpl = fetch }) {
+export function createOrangeFilmAgent({ dataDir, readAccount, signIn, cancelSignIn, signOut, closeSessions, refreshSessions = () => {}, onChange, fetch: fetchImpl = fetch }) {
   let account = null;
   let offer = null;
   let askAfter = 0;
@@ -41,7 +41,7 @@ export function createOpenFilmAgent({ dataDir, readAccount, signIn, cancelSignIn
   let revision = 0;
   let pending = null;
   let published = '';
-  const preferencesFile = join(dataDir, 'openfilm-models.json');
+  const preferencesFile = join(dataDir, 'orangefilm-models.json');
   let preferences;
   try { preferences = modelPreferences(JSON.parse(readFileSync(preferencesFile, 'utf8'))); }
   catch { preferences = modelPreferences(null); }
@@ -49,10 +49,10 @@ export function createOpenFilmAgent({ dataDir, readAccount, signIn, cancelSignIn
   const firstModel = () => visibleModels().some((m) => m.id === offer?.model) ? offer.model : visibleModels()[0]?.id;
   const modelState = () => ({
     ...preferences,
-    defaultOrder: OPENFILM_MODELS.map((m) => m.id),
+    defaultOrder: ORANGE_MODELS.map((m) => m.id),
     model: firstModel(),
     models: preferences.order.map((id) => {
-      const metadata = OPENFILM_MODELS.find((m) => m.id === id);
+      const metadata = ORANGE_MODELS.find((m) => m.id === id);
       const available = offer?.models.find((m) => m.id === id);
       return { ...metadata, shown: !preferences.hidden.includes(id), available: Boolean(available),
         ...(available ? { levels: available.levels, effort: available.effort } : {}) };
@@ -69,7 +69,7 @@ export function createOpenFilmAgent({ dataDir, readAccount, signIn, cancelSignIn
       ...(message ? { error: message } : {}),
       signOut: true,
       configurationRevision: revision,
-      openfilm: modelState(),
+      orangefilm: modelState(),
     };
   };
   const changed = () => {
@@ -135,7 +135,7 @@ export function createOpenFilmAgent({ dataDir, readAccount, signIn, cancelSignIn
     state, refresh,
     saveModels(config) {
       const hidden = new Set(Array.isArray(config?.hidden) ? config.hidden : []);
-      if (OPENFILM_MODELS.every((m) => hidden.has(m.id))) return { ok: false, error: 'Keep at least one model visible.' };
+      if (ORANGE_MODELS.every((m) => hidden.has(m.id))) return { ok: false, error: 'Keep at least one model visible.' };
       const next = modelPreferences(config);
       try {
         mkdirSync(dataDir, { recursive: true });
@@ -160,7 +160,7 @@ export function createOpenFilmAgent({ dataDir, readAccount, signIn, cancelSignIn
       await refresh();
       if (!account?.key || needsSignIn) throw Object.assign(new Error(`Sign in to ${PRODUCT} in Settings → Agents or Services.`), { code: 'sign-in' });
       if (!visibleModels().length) throw new Error(error || `The ${PRODUCT} agent has no visible models available.`);
-      return { home: join(dataDir, 'agents', 'openfilm', 'pi'), models: visibleModels(), model: firstModel(), env: { OPENFILM_ACCOUNT_KEY: account.key } };
+      return { home: join(dataDir, 'agents', 'orangefilm', 'pi'), models: visibleModels(), model: firstModel(), env: { ORANGE_ACCOUNT_KEY: account.key } };
     },
   };
 }

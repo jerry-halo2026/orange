@@ -28,8 +28,8 @@ test('isolated Services reads and writes only the active account; GET and config
  const checkA=()=>{if(active!=='a')throw Error('session-expired')},checkB=()=>{if(active!=='b')throw Error('session-expired')};
  try{
   const before=await call(a,checkA,'GET',[]);assert.equal(before.status,200);assert(before.body.providers.length>5);assert.equal(before.body.providers.find(p=>p.id==='openai').source,null);
-  assert.equal(before.body.providers.find(p=>p.id==='openfilm').signIn,false);
-  const keyed=await call(a,checkA,'PUT',['openfilm','key'],{key:'ofk_fixture-1234'});assert.equal(keyed.body.providers.find(p=>p.id==='openfilm').source,'file');assert.equal(keyed.body.providers.find(p=>p.id==='openfilm').signIn,false);
+  assert.equal(before.body.providers.find(p=>p.id==='orangefilm').signIn,false);
+  const keyed=await call(a,checkA,'PUT',['orangefilm','key'],{key:'ofk_fixture-1234'});assert.equal(keyed.body.providers.find(p=>p.id==='orangefilm').source,'file');assert.equal(keyed.body.providers.find(p=>p.id==='orangefilm').signIn,false);
   const saved=await call(a,checkA,'PUT',['openai','key'],{key:'fixture-owned-key-1234'});assert.equal(saved.body.providers.find(p=>p.id==='openai').source,'file');
   assert.doesNotMatch(JSON.stringify(saved.body),/fixture-owned-key/);
   active='b';const other=await call(b,checkB,'GET',[]);assert.equal(other.body.providers.find(p=>p.id==='openai').source,null);
@@ -44,7 +44,7 @@ test('revoked account guard prevents local provider setting commit',async()=>{
 });
 test('isolated provider OAuth and model installation stay explicitly unavailable',async()=>{
  const root=await mkdtemp(join(base,'limited-')),file=join(root,'providers.json');
- await assert.rejects(call(file,()=>{},'POST',['openfilm','sign-in'],{}),e=>e.status===503);
+ await assert.rejects(call(file,()=>{},'POST',['orangefilm','sign-in'],{}),e=>e.status===503);
  const {res}=response();await assert.rejects(localModelsRoute(request('POST'),res,['whisper-small','install'],{readOnly:true}),e=>e.status===503);
 });
 

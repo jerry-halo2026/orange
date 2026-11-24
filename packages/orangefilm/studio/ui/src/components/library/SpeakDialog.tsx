@@ -3,7 +3,7 @@
 
 /**
  * Words spoken in a voice of the library (VoicesPane's "Generate"): typed here, made by the voice's service and put on
- * the film at the playhead (ProjectView, as `openfilm get tts` makes an agent's: its words timed beside it, so its
+ * the film at the playhead (ProjectView, as `orangefilm get tts` makes an agent's: its words timed beside it, so its
  * captions come by themselves). The "?" shows how that service reads marks in the words (a pause, a tone, a laugh), as
  * its own documentation says; a mark clicked goes in where the cursor is.
  */

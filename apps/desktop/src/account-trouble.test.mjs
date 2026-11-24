@@ -19,7 +19,7 @@ test('a turn that failed for the account offers Switch account; one that failed 
   ]) assert.equal(accountTrouble(error), true, error);
   for (const error of [
     'Claude Code stopped while answering without saying why. If it cannot reach its service, check the network or proxy, then try again.',
-    'Codex 0.120.0 is older than OpenFilm needs (0.132.0 or later): update Codex, then try again.',
+    'Codex 0.120.0 is older than OrangeFilm needs (0.132.0 or later): update Codex, then try again.',
     'The model gpt-5 does not exist',
     'Rate limit reached: 429',
     '',

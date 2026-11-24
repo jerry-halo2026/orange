@@ -25,9 +25,9 @@ const B = '22222222-2222-4222-8222-222222222222';
 async function studio() {
     const root = await mkdtemp(join(base, 'saved-'));
     const env = {
-        OPENFILM_HOME: join(root, 'home'), OPENFILM_SHARED_HOME: join(root, 'shared'), OPENFILM_LIBRARY: join(root, 'projects'),
-        OPENFILM_LIBRARY_CACHE: join(root, 'cache'), OPENFILM_SAVED: join(root, 'saved'), OPENFILM_SKILLS: join(root, 'skills'),
-        OPENFILM_EXPORTS: join(root, 'exports'), OPENFILM_ISOLATION_PROFILE: undefined, OPENFILM_ISOLATION_ROOT: undefined,
+        ORANGE_HOME: join(root, 'home'), ORANGE_SHARED_HOME: join(root, 'shared'), ORANGE_LIBRARY: join(root, 'projects'),
+        ORANGE_LIBRARY_CACHE: join(root, 'cache'), ORANGE_SAVED: join(root, 'saved'), ORANGE_SKILLS: join(root, 'skills'),
+        ORANGE_EXPORTS: join(root, 'exports'), ORANGE_ISOLATION_PROFILE: undefined, ORANGE_ISOLATION_ROOT: undefined,
     };
     for (const [key, value] of Object.entries(env)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
     for (const path of Object.values(env).filter(Boolean)) await mkdir(path, { recursive: true });
@@ -45,11 +45,11 @@ async function studio() {
     const server = await startStudio({ port: 0, key: 'fixture-key', editorDir, advertise: false, desktopAuth: auth });
     return {
         root, state, server,
-        ownersFile: join(env.OPENFILM_HOME, 'orange-saved-owners.json'),
-        saved: env.OPENFILM_SAVED,
+        ownersFile: join(env.ORANGE_HOME, 'orange-saved-owners.json'),
+        saved: env.ORANGE_SAVED,
         async claim(actor = A) {
             const previous = state.actor; state.actor = actor;
-            await writeFile(join(env.OPENFILM_HOME, 'orange-saved-owners.json'),
+            await writeFile(join(env.ORANGE_HOME, 'orange-saved-owners.json'),
                 JSON.stringify({ version: 1, saved: [{ environmentId: ENV, subjectId: actor, windowScope: `scope-${actor}`, claimedAt: new Date(0).toISOString() }] }) + '\n');
             state.actor = previous;
         },

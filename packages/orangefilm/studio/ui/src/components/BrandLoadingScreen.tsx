@@ -52,7 +52,7 @@ export function BrandLoadingScreen({
       {/* The bar is fake: opening a project cannot report a percentage. It only says one thing
           here: something is still moving. A line frozen in one place would look stuck. */}
       <div className="mt-5 h-[3px] w-[180px] overflow-hidden rounded-full bg-[var(--border)]">
-        <div className="openfilm-loading-bar h-full w-1/3 rounded-full bg-[var(--accent)]" />
+        <div className="orangefilm-loading-bar h-full w-1/3 rounded-full bg-[var(--accent)]" />
       </div>
     </div>
   );

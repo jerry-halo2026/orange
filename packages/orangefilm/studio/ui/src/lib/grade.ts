@@ -3,7 +3,7 @@
 
 /**
  * A filter of the library as a clip wears it: a color grade, written into the clip's CSS `filter` as one SVG filter in
- * a data URL (`url("data:image/svg+xml,…#openfilm-look")`), first in the list so the inspector's adjustments go after
+ * a data URL (`url("data:image/svg+xml,…#orangefilm-look")`), first in the list so the inspector's adjustments go after
  * it and a mask's stroke stays last. The grade mixes the channels, sets the saturation and bends a tone curve per
  * channel; how strongly is how far each of those goes from leaving the picture as it is. The SVG says which filter it
  * is and how strong (`data-look='filters/teal-orange 0.8'`), so the inspector reads it back.
@@ -26,7 +26,7 @@ export interface Grade {
 }
 
 /** The SVG filter's id. */
-export const LOOK_FILTER_ID = 'openfilm-look';
+export const LOOK_FILTER_ID = 'orangefilm-look';
 
 const SAMPLES = 17;
 const IDENTITY_MIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0];

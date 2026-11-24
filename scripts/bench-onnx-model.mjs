@@ -28,8 +28,8 @@ export function defaultOptions() {
   return {
     tenant: 'tenant-a',
     analyzerVer: 'card-meta-2',
-    modelDir: path.join(ROOT, 'packages', 'openfilm', 'library', 'models', 'bge-small-zh-onnx'),
-    runtime: path.join(ROOT, 'packages', 'openfilm', 'library', 'models', 'onnxruntime-web-1.31.1', 'ort.wasm.min.mjs'),
+    modelDir: path.join(ROOT, 'packages', 'orangefilm', 'library', 'models', 'bge-small-zh-onnx'),
+    runtime: path.join(ROOT, 'packages', 'orangefilm', 'library', 'models', 'onnxruntime-web-1.31.1', 'ort.wasm.min.mjs'),
     dims: 512,
     pooling: 'cls',
     threads: 1,

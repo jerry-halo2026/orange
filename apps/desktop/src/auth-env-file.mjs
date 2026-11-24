@@ -21,15 +21,15 @@ import { join } from 'node:path';
  * A static `../../../packages/…` import works in the checkout and **crashes an installed app**:
  * inside `app.asar` that path resolves to `Contents/packages/…`, which does not exist — the window died on
  * `ERR_MODULE_NOT_FOUND` before it could say anything. In an installed app the release copies the module to
- * `Resources/openfilm/packages/orangefilm/src` (PACKED_EDITOR_MODULES), so the packaged path is asked first.
+ * `Resources/orangefilm/packages/orangefilm/src` (PACKED_EDITOR_MODULES), so the packaged path is asked first.
  */
 let loaded = null;
 async function environmentModule(resourcesDir) {
   if (loaded) return loaded;
   const candidates = [];
   if (resourcesDir) {
-    for (const root of ['orangefilm', 'openfilm']) {
-      for (const pkg of ['orangefilm', 'openfilm']) {
+    for (const root of ['orangefilm', 'orangefilm']) {
+      for (const pkg of ['orangefilm', 'orangefilm']) {
         candidates.push(new URL(`file://${join(resourcesDir, root, 'packages', pkg, 'src', 'auth-environment.mjs')}`).href);
       }
     }

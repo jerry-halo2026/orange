@@ -17,8 +17,8 @@ const HEX = /^[a-f0-9]{64}$/;
 const ITEM = /^(sound|music|transition|effect)\/[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const languages = ['en', 'zh-CN', 'ja', 'ko', 'es'];
 const sha256 = (/** @type {Buffer} */ bytes) => createHash('sha256').update(bytes).digest('hex');
-const endpoint = () => (process.env.OPENFILM_COMMUNITY_LIBRARY_URL ??
-  `${(process.env.OPENFILM_LIBRARY_URL || 'https://openfilm.dev/library').replace(/\/+$/, '')}/${PREFIX}`).replace(/\/+$/, '');
+const endpoint = () => (process.env.ORANGE_COMMUNITY_LIBRARY_URL ??
+  `${(process.env.ORANGE_LIBRARY_URL || 'https://orangefilm.dev/library').replace(/\/+$/, '')}/${PREFIX}`).replace(/\/+$/, '');
 
 /** @typedef {{ sha256: string, bytes: number }} Blob */
 /** @typedef {{ group: string, id: string, cat: string, kind: 'sound' | 'page', name: Record<string,string>, durationMs: number, tags: string[], about: string, by: string, src?: string, place?: 'cut' }} Item */
@@ -91,7 +91,7 @@ export const isCommunity = (/** @type {string} */ rel) => rel.startsWith('commun
 
 /** A failed refresh leaves the previously verified catalog in memory until a successful refresh. */
 export function refreshCommunity() {
-  if (process.env.NODE_TEST_CONTEXT && !process.env.OPENFILM_COMMUNITY_LIBRARY_URL) return Promise.resolve();
+  if (process.env.NODE_TEST_CONTEXT && !process.env.ORANGE_COMMUNITY_LIBRARY_URL) return Promise.resolve();
   if (refreshing) return refreshing;
   if (Date.now() - checked < REFRESH) return Promise.resolve();
   refreshing = (async () => {

@@ -20,7 +20,7 @@ export type SubtitleStyle = FilmSubtitleStyle;
  * last used, the look a new project starts in (written to it as it is made, see api.newProject): someone who set up
  * large yellow subtitles wants them in the next film too.
  */
-const STORE_KEY = 'openfilm.subtitles';
+const STORE_KEY = 'orangefilm.subtitles';
 
 /** The look used last, switched on: the switch belongs to each film (subtitles off in one do not hide another's). */
 export function readLastSubtitleStyle(): SubtitleStyle | null {

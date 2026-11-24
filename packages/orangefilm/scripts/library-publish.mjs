@@ -7,8 +7,8 @@
  * The library's published parts, ready to upload: its sounds and music (`library/audio/`), its voices' samples
  * (`library/voices/`), its emoji stickers (`library/stickers/emoji/`), the model semantic search runs and its runtime
  * (`library/models/`, listed with their checksums in library/models.json), each template's example with its music
- * (`library/examples/`), none of them in git or the npm package. OpenFilm
- * fetches each on first use from openfilm.dev/library/<its place> (studio/server/library.mjs fetchLibrary).
+ * (`library/examples/`), none of them in git or the npm package. OrangeFilm
+ * fetches each on first use from orangefilm.dev/library/<its place> (studio/server/library.mjs fetchLibrary).
  *
  *   node scripts/library-publish.mjs
  *

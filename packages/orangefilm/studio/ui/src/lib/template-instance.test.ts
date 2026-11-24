@@ -8,11 +8,11 @@ import { filledTemplate, fillFor, filmLength, filmTemplate, isSlotSrc, markedCli
 const mark = (m: string, extra: Record<string, string> = {}) => ({ [TEMPLATE_ATTR]: m, ...extra });
 const tracks = [
   { clips: [
-    { id: 'title', src: 'saved/openfilm/templates-travel-vlog/title-script.html', at: 0.3, attrs: mark('travel-vlog', { 'data-props': JSON.stringify([{ name: 'Title', type: 'text', at: '.t1' }, { name: 'Color', type: 'var', var: '--color' }]) }), overrides: [{ at: '.t1', text: 'Summer Days' }] },
-    { id: 'leak', src: 'saved/openfilm/templates-travel-vlog/light-leak.html', at: 0, attrs: mark('travel-vlog') },
+    { id: 'title', src: 'saved/orangefilm/templates-travel-vlog/title-script.html', at: 0.3, attrs: mark('travel-vlog', { 'data-props': JSON.stringify([{ name: 'Title', type: 'text', at: '.t1' }, { name: 'Color', type: 'var', var: '--color' }]) }), overrides: [{ at: '.t1', text: 'Summer Days' }] },
+    { id: 'leak', src: 'saved/orangefilm/templates-travel-vlog/light-leak.html', at: 0, attrs: mark('travel-vlog') },
   ] },
   { clips: [
-    { id: 'slot-2', src: 'saved/openfilm/templates-travel-vlog/slot.html', at: 3, attrs: mark('travel-vlog') },
+    { id: 'slot-2', src: 'saved/orangefilm/templates-travel-vlog/slot.html', at: 3, attrs: mark('travel-vlog') },
     { id: 'beach', src: 'assets/beach.mp4', at: 0, attrs: mark('travel-vlog') },
     { id: 'other', src: 'assets/other.mp4', at: 0 },
   ] },
@@ -34,7 +34,7 @@ test('each time a template is put in it is marked apart; its clips carry the mar
   assert.equal(templateOf([{ clips: [{ id: 'a', src: 'assets/a.mp4', attrs: mark('travel-vlog-2') }] }], 'a')!.id, 'templates/travel-vlog');
   const [one] = markedClips([{ track: 0, at: 0, clip: { src: 'x.html', attrs: { 'data-place': '{}' } } }], 'travel-vlog');
   assert.deepEqual(one!.clip.attrs, { 'data-place': '{}', [TEMPLATE_ATTR]: 'travel-vlog' });
-  assert.equal(isSlotSrc('saved/openfilm/templates-beat-cut/slot.html#t=0,3'), true);
+  assert.equal(isSlotSrc('saved/orangefilm/templates-beat-cut/slot.html#t=0,3'), true);
 });
 
 test('empty places are filled with the person\'s pictures the film does not use yet first', () => {
@@ -44,12 +44,12 @@ test('empty places are filled with the person\'s pictures the film does not use 
 });
 
 test("a template's places in the order they play, and its clips with the person's own files in them before it is put in", () => {
-  const slot = (at: number, len: number, n: string) => ({ track: 3, at, clip: { src: 'saved/openfilm/templates-trip/slot.html', time: [0, len], style: 'object-fit: cover', overrides: [{ at: ':root', style: { '--n': n } }, { fade: [0, 0.3] }] } });
+  const slot = (at: number, len: number, n: string) => ({ track: 3, at, clip: { src: 'saved/orangefilm/templates-trip/slot.html', time: [0, len], style: 'object-fit: cover', overrides: [{ at: ':root', style: { '--n': n } }, { fade: [0, 0.3] }] } });
   const clips = [
-    { track: 0, at: 0.3, clip: { src: 'saved/openfilm/templates-trip/title.html', time: [0, 2.5] } },
+    { track: 0, at: 0.3, clip: { src: 'saved/orangefilm/templates-trip/title.html', time: [0, 2.5] } },
     slot(3, 2.4, '2'),
     slot(0, 3, '1'),
-    { track: 4, at: 0, clip: { src: 'saved/openfilm/music-x.mp3', time: [0, 11] } },
+    { track: 4, at: 0, clip: { src: 'saved/orangefilm/music-x.mp3', time: [0, 11] } },
   ];
   assert.deepEqual(templateSlots(clips).map((s) => [s.clip.at, s.durMs]), [[0, 3000], [3, 2400]]);
   /* the library's own bundle names its place `slot.html` */
@@ -72,16 +72,16 @@ test("a template put in as one compound clip: what its film offers, places, word
   const props = (list: unknown[]) => ({ 'data-props': JSON.stringify(list) });
   const film = [
     { clips: [
-      { id: 'title', src: '../../saved/openfilm/templates-trip/title.html', at: 0.3, attrs: props([{ name: 'Title', type: 'text', at: '.t1' }, { name: 'Color', type: 'var', var: '--color' }, { name: 'Ribbon', type: 'boolean', at: '.ribbon' }]),
+      { id: 'title', src: '../../saved/orangefilm/templates-trip/title.html', at: 0.3, attrs: props([{ name: 'Title', type: 'text', at: '.t1' }, { name: 'Color', type: 'var', var: '--color' }, { name: 'Ribbon', type: 'boolean', at: '.ribbon' }]),
         overrides: [{ at: '.t1', text: 'Summer' }, { at: ':root', style: { '--color': '#ff0' } }, { at: '.ribbon', style: { visibility: 'hidden' } }] },
-      { id: 'pin', src: '../../saved/openfilm/templates-trip/pin.html', at: 5, attrs: props([{ name: 'Color', type: 'var', var: '--color' }, { name: 'Logo', type: 'image', kind: 'img', at: 'img.logo' }]) },
+      { id: 'pin', src: '../../saved/orangefilm/templates-trip/pin.html', at: 5, attrs: props([{ name: 'Color', type: 'var', var: '--color' }, { name: 'Logo', type: 'image', kind: 'img', at: 'img.logo' }]) },
     ] },
     { clips: [
-      { id: 'one', src: '../../saved/openfilm/templates-trip/example-1.jpg', attrs: { 'data-slot': '1' } },
-      { id: 'two', src: '../../saved/openfilm/templates-trip/slot.html', at: 3 },
+      { id: 'one', src: '../../saved/orangefilm/templates-trip/example-1.jpg', attrs: { 'data-slot': '1' } },
+      { id: 'two', src: '../../saved/orangefilm/templates-trip/slot.html', at: 3 },
       { id: 'mine', src: '../../assets/beach.mp4', at: 6 },
     ] },
-    { clips: [{ id: 'tune', src: '../../saved/openfilm/music-x.mp3' }] },
+    { clips: [{ id: 'tune', src: '../../saved/orangefilm/music-x.mp3' }] },
   ];
   const t = filmTemplate(film);
   /* the template's own example picture waits for the person's own, as an empty place does */
@@ -90,7 +90,7 @@ test("a template put in as one compound clip: what its film offers, places, word
   assert.deepEqual(t.looks, [{ name: 'Color', var: '--color', clips: ['title', 'pin'], value: '#ff0' }], 'one control for every page offering it');
   assert.deepEqual(t.switches.map((s) => [s.clip, s.prop.name, s.on]), [['title', 'Ribbon', false]]);
   assert.deepEqual(t.pictures.map((p) => [p.clip, p.prop.name, p.value]), [['pin', 'Logo', null]]);
-  assert.deepEqual(t.sounds, [{ clip: 'tune', src: '../../saved/openfilm/music-x.mp3' }]);
+  assert.deepEqual(t.sounds, [{ clip: 'tune', src: '../../saved/orangefilm/music-x.mp3' }]);
 });
 
 test("a place's picture framed: filling or whole, the point looked at, how near; read back as written", () => {

@@ -34,7 +34,7 @@ function filmPage({ alone = false, duration = 10, unplayed = [] } = {}) {
   const requestAnimationFrame = (fn) => { frames.set(++ids, fn); return ids; };
   const cancelAnimationFrame = (id) => frames.delete(id);
   runInNewContext(BRIDGE.replaceAll('__EDITOR__', JSON.stringify(EDITOR)), { window, parent, location: { origin: 'http://localhost:4793' }, setTimeout, clearTimeout, Promise, performance, requestAnimationFrame, cancelAnimationFrame });
-  const send = (data) => listeners.get('message')({ origin: EDITOR, data: { source: 'openfilm-studio', ...data } });
+  const send = (data) => listeners.get('message')({ origin: EDITOR, data: { source: 'orangefilm-studio', ...data } });
   const settle = () => new Promise((r) => setTimeout(r, 10));
   /** The screen refreshes `ms` from now: the frame callbacks waiting run, then the draws they start settle. */
   const refresh = async (ms = 1000 / 60) => {
@@ -173,7 +173,7 @@ test('the film\'s clock is read with a ping, and an edit while playing is drawn 
   const page = filmPage();
   await page.settle();
   page.send({ type: 'clock', ping: 123 });
-  assert.deepEqual(page.said.filter((m) => m.type === 'clock').map((m) => ({ ...m })), [{ source: 'openfilm-film', type: 'clock', ping: 123, now: page.clock() }]);
+  assert.deepEqual(page.said.filter((m) => m.type === 'clock').map((m) => ({ ...m })), [{ source: 'orangefilm-film', type: 'clock', ping: 123, now: page.clock() }]);
   assert.equal(page.said.find((m) => m.type === 'ready').origin, 1_700_000_000_000, 'where its clock starts, said as it is ready');
   page.send({ type: 'play', t: 1, at: page.clock(), rate: 1, fps: 30 });
   await page.refresh();

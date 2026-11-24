@@ -6,16 +6,16 @@
  * speaking ACP on stdin/stdout like the person's Codex and Claude Code adapters do, so the chat takes it the same way
  * (agents.mjs starts it with Electron as Node).
  *
- * What it runs with comes in OPENFILM_PI (JSON; pi-config.mjs): its own folder (`agentDir`: Pi's models and settings,
+ * What it runs with comes in ORANGE_PI (JSON; pi-config.mjs): its own folder (`agentDir`: Pi's models and settings,
  * never the person's ~/.pi), the person's models (`models`, each its own service with its key in a variable, its name,
  * the model asked for and its reasoning efforts: pi-config.mjs OwnModel; `model` the id of the one a session starts
  * on; the chat switches between them with the session's `model` option, and a model's efforts with `effort`, for one
  * offering more than one; `auto` sends none), and its whole system prompt (agents.mjs ownAgentPrompt), in place of Pi's. Of the project's instructions only its own AGENTS.md (or CLAUDE.md) is read, not
- * the folders above it; no SYSTEM.md; of skills only OpenFilm's (`skills`: their folder and names, agent-skills.mjs). Besides Pi's read, bash, edit and write it has `ask`: questions for
+ * the folders above it; no SYSTEM.md; of skills only OrangeFilm's (`skills`: their folder and names, agent-skills.mjs). Besides Pi's read, bash, edit and write it has `ask`: questions for
  * the person, with options, shown in the chat as Claude Code's and Codex's are (an ACP form).
  *
  * A conversation's session is kept with the project it is about (chat-store.mjs: `.film/chat/agent/`), so it goes
- * where the project goes. Each prompt may name, in `_meta.openfilm`, the turn's log: each request to the model (its whole
+ * where the project goes. Each prompt may name, in `_meta.orangefilm`, the turn's log: each request to the model (its whole
  * context, as Pi sends it, and the answer) is written there (chat-store.mjs's `<turn>.model.jsonl`), only what is new
  * since the request before.
  *
@@ -46,8 +46,8 @@ const WAIT_MS = WAIT_MINUTES * 60_000;
 setGlobalDispatcher(new Agent({ headersTimeout: WAIT_MS, bodyTimeout: WAIT_MS }));
 install();
 
-const config = JSON.parse(process.env.OPENFILM_PI ?? '{}');
-/** OpenFilm's skills for this session (agent-skills.mjs): Pi loads these and no others */
+const config = JSON.parse(process.env.ORANGE_PI ?? '{}');
+/** OrangeFilm's skills for this session (agent-skills.mjs): Pi loads these and no others */
 const ownSkills = { paths: Array.isArray(config.skills?.paths) ? config.skills.paths : [], names: Array.isArray(config.skills?.names) ? config.skills.names : [] };
 const VERSION = '1.1.0';
 /** @type {import('./pi-config.mjs').OwnModel[]} */
@@ -133,7 +133,7 @@ async function open(client, cwd, resumeId) {
   let imagesSent = 0;
   const resourceLoader = new DefaultResourceLoader({
     cwd, agentDir: config.agentDir, settingsManager, noExtensions: true, noPromptTemplates: true, noThemes: true,
-    /* OpenFilm's skills, and no other Pi would find (in the project, or its own folders), listed in the order named */
+    /* OrangeFilm's skills, and no other Pi would find (in the project, or its own folders), listed in the order named */
     noSkills: !ownSkills.names.length, additionalSkillPaths: ownSkills.paths,
     skillsOverride: (base) => ({ ...base, skills: base.skills.filter((skill) => ownSkills.names.includes(skill.name))
       .sort((a, b) => ownSkills.names.indexOf(a.name) - ownSkills.names.indexOf(b.name)) }),
@@ -142,17 +142,17 @@ async function open(client, cwd, resumeId) {
     agentsFilesOverride: ({ agentsFiles }) => ({ agentsFiles: agentsFiles.filter((f) => dirname(resolve(f.path)) === resolve(cwd)) }),
     extensionFactories: [
       /* each request's pictures within the budget, the oldest left out first: the request only, never the session */
-      { name: 'openfilm-images', hidden: true, factory: (pi) => {
+      { name: 'orangefilm-images', hidden: true, factory: (pi) => {
         pi.on('context', (event) => {
           const fitted = fitImages(event.messages, imageBudget);
           imagesSent = fitted.kept;
           return fitted.messages === event.messages ? undefined : { messages: fitted.messages };
         });
       } },
-      { name: 'openfilm-log', hidden: true, factory: (pi) => {
+      { name: 'orangefilm-log', hidden: true, factory: (pi) => {
         pi.on('context_with_system', (event) => { pending = { startedAt: Date.now(), messages: event.messages }; });
       } },
-      { name: 'openfilm-ask', hidden: true, factory: (pi) => pi.registerTool(askTool(client, () => sessionId)) },
+      { name: 'orangefilm-ask', hidden: true, factory: (pi) => pi.registerTool(askTool(client, () => sessionId)) },
     ],
   });
   await resourceLoader.reload();
@@ -330,7 +330,7 @@ const connection = new acp.AgentSideConnection((client) => ({
     const entry = sessions.get(params.sessionId);
     if (!entry) throw new Error('This conversation has ended.');
     const { session } = entry;
-    const meta = params._meta?.openfilm ?? {};
+    const meta = params._meta?.orangefilm ?? {};
     entry.log = typeof meta.turnId === 'string' && typeof meta.cwd === 'string' ? modelLog(meta.cwd, meta.turnId) : null;
     entry.answer = null;
     entry.overflow = null;

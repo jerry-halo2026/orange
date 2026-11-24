@@ -4,7 +4,7 @@
 /**
  * The update in Studio's top bar, beside the projects button. The app's (lib/host.ts `update`): once a new version is
  * downloaded, Restart to install it; refused while an agent works or Studio exports, it says why beside it and stays,
- * ready; quitting installs it too. Studio run with npm (WebUpdateButton): a newer openfilm on npm is offered, and Update
+ * ready; quitting installs it too. Studio run with npm (WebUpdateButton): a newer orangefilm on npm is offered, and Update
  * runs it in the background; Studio starts again on it and the page reloads.
  */
 import { useCallback, useEffect, useState } from 'react';
@@ -52,7 +52,7 @@ const LOOK_MS = 6 * 3_600_000;
 const UPDATING_MS = 2000;
 
 /**
- * The newest openfilm for a Studio run with npm (none in the app, which updates itself, nor in a source checkout), and
+ * The newest orangefilm for a Studio run with npm (none in the app, which updates itself, nor in a source checkout), and
  * `start` to update to it. Shared by the top bar and Settings → About.
  */
 export function useWebUpdate(): { update: WebUpdate | null; start: () => void } {
@@ -76,7 +76,7 @@ export function useWebUpdate(): { update: WebUpdate | null; start: () => void } 
   return { update, start };
 }
 
-/** Studio run with npm: Update when npm has a newer openfilm, its progress, or why it waits or failed. */
+/** Studio run with npm: Update when npm has a newer orangefilm, its progress, or why it waits or failed. */
 export function WebUpdateButton() {
   const t = useT();
   const { update, start } = useWebUpdate();

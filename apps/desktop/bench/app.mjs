@@ -138,7 +138,7 @@ export function prepare(dir) {
 export async function launch({ dir, cdpPort, log = () => {} }) {
   const electron = require('electron');
   const { PATH } = await loginShellEnvironment();
-  const env = { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir };
+  const env = { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir };
   const child = spawn(electron, [DESKTOP, `--remote-debugging-port=${cdpPort}`], { env, stdio: ['ignore', 'pipe', 'pipe'] });
   child.stdout.on('data', (d) => log(String(d)));
   child.stderr.on('data', (d) => log(String(d)));

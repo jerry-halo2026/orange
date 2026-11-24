@@ -14,17 +14,17 @@ import { startStudio } from './server/server.mjs';
 test('a restored chat turn refreshes the canvas and clears steps that could bring its removed files back', { timeout: 90_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-canvas-turn-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map((n) => [`OPENFILM_${n}`, process.env[`OPENFILM_${n}`]]));
-  for (const n of names) process.env[`OPENFILM_${n}`] = join(scratch, n.toLowerCase());
+  const saved = new Map(names.map((n) => [`ORANGE_${n}`, process.env[`ORANGE_${n}`]]));
+  for (const n of names) process.env[`ORANGE_${n}`] = join(scratch, n.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Turn');
+    const root = join(process.env.ORANGE_LIBRARY, 'Turn');
     await mkdir(join(root, '.film'), { recursive: true });
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: [] }));
     const before = { nodes: [{ id: 'note', x: 0, y: 0, w: 350, h: 200, text: 'Before the turn' }], edges: [] };
     await writeFile(join(root, '.film', 'canvas.json'), JSON.stringify(before));
     const project = await openProject(root);
-    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
     const post = async (path, body) => {
       const response = await fetch(`${studio.origin}${path}`, {
         method: 'POST', headers: { 'x-studio-key': studio.key, 'content-type': 'application/json' }, body: JSON.stringify(body ?? {}),

@@ -8,9 +8,9 @@
 import { host } from './bridge';
 import { Fragment, StrictMode, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from 'openfilm/studio-ui/App.tsx';
-import { FocusNav } from 'openfilm/studio-ui/components/FocusNav.tsx';
-import { applyStudioHost, type HostWritingModel } from 'openfilm/studio-ui/lib/host.ts';
+import { App } from 'orangefilm/studio-ui/App.tsx';
+import { FocusNav } from 'orangefilm/studio-ui/components/FocusNav.tsx';
+import { applyStudioHost, type HostWritingModel } from 'orangefilm/studio-ui/lib/host.ts';
 import { mountChat } from '../chat/src/mount';
 import { CanvasModelPicker, canvasWritingModel } from '../chat/src/components/ModelPopover';
 import './shell.css';
@@ -19,12 +19,12 @@ import { Login, type LoginState } from './Login';
 import { accountPresentation, createAuthEventGate } from './auth-generation';
 
 /* the canvas's words written by the agent the chat has picked, with its own settings: the chat's agents include two
-   Studio's own canvas cannot be written by (`openfilm`, `antigravity`), so one of those is no writing model at all */
+   Studio's own canvas cannot be written by (`orangefilm`, `antigravity`), so one of those is no writing model at all */
 host.canvasWriting = {
   Picker: CanvasModelPicker,
   selection: (): HostWritingModel | null => {
     const picked = canvasWritingModel();
-    if (!picked || picked.agent === 'openfilm' || picked.agent === 'antigravity') return null;
+    if (!picked || picked.agent === 'orangefilm' || picked.agent === 'antigravity') return null;
     return { agent: picked.agent, options: picked.options };
   },
 };

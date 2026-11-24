@@ -32,11 +32,11 @@ let api;
 let base = '';
 before(async () => {
   await new Promise((done) => library.listen(0, '127.0.0.1', () => done(undefined)));
-  process.env.OPENFILM_LIBRARY_URL = `http://127.0.0.1:${/** @type {import('node:net').AddressInfo} */ (library.address()).port}/library`;
-  process.env.OPENFILM_LIBRARY_CACHE = mkdtempSync(join(tmpdir(), 'library-cache-'));
-  process.env.OPENFILM_BUILT_IN_LIBRARY = pkg;
+  process.env.ORANGE_LIBRARY_URL = `http://127.0.0.1:${/** @type {import('node:net').AddressInfo} */ (library.address()).port}/library`;
+  process.env.ORANGE_LIBRARY_CACHE = mkdtempSync(join(tmpdir(), 'library-cache-'));
+  process.env.ORANGE_BUILT_IN_LIBRARY = pkg;
   /* the choices of Settings → Services, which a model coming or going moves: the test's own */
-  process.env.OPENFILM_HOME = mkdtempSync(join(tmpdir(), 'local-models-home-'));
+  process.env.ORANGE_HOME = mkdtempSync(join(tmpdir(), 'local-models-home-'));
   const { localModelsRoute } = await import('./local-models.mjs');
   const { json } = await import('./http.mjs');
   api = createServer((req, res) => {
@@ -76,7 +76,7 @@ test('a local model is installed, turned off and on, and uninstalled', async () 
 
   ({ models } = await call('/whisper-large-v3-turbo', 'DELETE'));
   assert.deepEqual([turbo().installed, turbo().on], [false, false]);
-  for (const rel of Object.keys(files)) assert.equal(existsSync(join(/** @type {string} */ (process.env.OPENFILM_LIBRARY_CACHE), rel)), false, `${rel} thrown away`);
+  for (const rel of Object.keys(files)) assert.equal(existsSync(join(/** @type {string} */ (process.env.ORANGE_LIBRARY_CACHE), rel)), false, `${rel} thrown away`);
 
   assert.equal((await call('/someone-else', 'DELETE')).status, 404);
 });

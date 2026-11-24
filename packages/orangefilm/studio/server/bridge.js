@@ -5,7 +5,7 @@
  * Studio's bridge into the film's timeline page (src/timeline.mjs), injected after the host flag and before the
  * page's own script. The editor, on another origin, drives the film through it:
  *
- *   editor → { source: 'openfilm-studio', type: 'seek', t, seq, behind }   draw the film at t, still (`behind`: this
+ *   editor → { source: 'orangefilm-studio', type: 'seek', t, seq, behind }   draw the film at t, still (`behind`: this
  *                                         load is not shown yet, another one is: its first picture is waited for whole)
  *            { type: 'play', t, at, rate, fps }   play: film second t at `at` (ms on this page's clock), `rate` film
  *                                         seconds a second; the frames are drawn here, on the film's frame grid
@@ -17,7 +17,7 @@
  *            { type: 'overrides', list }  a page on its own: its clip's changes (SPEC §1), applied after each frame
  *            { type: 'pick', x, y, seq }          what is under this stage point
  *            { type: 'shown' }            this load is shown now, over the one it replaces: say when it is on screen
- *   film   → { source: 'openfilm-film', type: 'ready', duration, width, height, sounds, spans, origin }
+ *   film   → { source: 'orangefilm-film', type: 'ready', duration, width, height, sounds, spans, origin }
  *            { type: 'seeked', t, seq }           the frame at t is on screen
  *            { type: 'clock', ping, now }         this page's clock (performance.now) when the ping came
  *            { type: 'played', frames, drawn, late, rendered, ms, spans }   while playing, about once a second over
@@ -41,7 +41,7 @@
      nothing (a message to the editor's origin would only be refused) */
   try { if (parent !== window && parent.location.origin === location.origin) return; } catch { /* the parent is the editor */ }
   const EDITOR = __EDITOR__;
-  const post = (message) => parent.postMessage({ source: 'openfilm-film', ...message }, EDITOR);
+  const post = (message) => parent.postMessage({ source: 'orangefilm-film', ...message }, EDITOR);
   const fail = (error) => post({ type: 'error', message: String(error?.message ?? error ?? 'the film failed') });
   window.addEventListener('error', (e) => fail(e.error ?? e.message));
   window.addEventListener('unhandledrejection', (e) => fail(e.reason));
@@ -208,7 +208,7 @@
   }
 
   window.addEventListener('message', async (e) => {
-    if (e.origin !== EDITOR || e.data?.source !== 'openfilm-studio') return;
+    if (e.origin !== EDITOR || e.data?.source !== 'orangefilm-studio') return;
     const m = e.data;
     if (m.type === 'clock') { post({ type: 'clock', ping: m.ping, now: clock() }); return; }
     /* a refresh draws this page as shown, the next one is on screen */

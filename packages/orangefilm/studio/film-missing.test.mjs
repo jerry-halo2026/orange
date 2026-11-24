@@ -21,16 +21,16 @@ const film = (src) => filmHtml({ stage: { w: 1920, h: 1080 }, tracks: [{ clips: 
 async function open(t, name, setup) {
   const scratch = await mkdtemp(join(tmpdir(), 'of-film-missing-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR', 'SKILLS_INDEX'];
-  const saved = new Map(names.map((n) => [`OPENFILM_${n}`, process.env[`OPENFILM_${n}`]]));
-  for (const n of names) process.env[`OPENFILM_${n}`] = join(scratch, n.toLowerCase());
-  await writeFile(process.env.OPENFILM_SKILLS_INDEX, '{"version":1,"skills":[]}');
-  await mkdir(process.env.OPENFILM_TRASH_DIR, { recursive: true });
-  const root = join(process.env.OPENFILM_LIBRARY, name);
+  const saved = new Map(names.map((n) => [`ORANGE_${n}`, process.env[`ORANGE_${n}`]]));
+  for (const n of names) process.env[`ORANGE_${n}`] = join(scratch, n.toLowerCase());
+  await writeFile(process.env.ORANGE_SKILLS_INDEX, '{"version":1,"skills":[]}');
+  await mkdir(process.env.ORANGE_TRASH_DIR, { recursive: true });
+  const root = join(process.env.ORANGE_LIBRARY, name);
   await mkdir(root, { recursive: true });
   await writeFile(join(root, 'card.html'), card('Before'));
   await writeFile(join(root, 'film.html'), film('card.html'));
   const project = await openProject(root);
-  const studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+  const studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
   const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
   t.after(async () => {
     await browser.close();

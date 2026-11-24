@@ -24,8 +24,8 @@ import { libraryGet, libraryVerbs } from '../../src/library-search.mjs';
    it first on Studio's PATH), but a bare `node --test` in a checkout has no such PATH — so these skip, the way the rest
    of the suite's ffmpeg tests do, instead of failing for a reason that is not about this code. */
 const hasFfmpeg = (() => { try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); return true; } catch { return false; } })();
-/* OpenFilm's service is asked what it offers: nowhere here (a port that refuses at once) */
-process.env.OPENFILM_API_URL ??= 'http://127.0.0.1:9';
+/* OrangeFilm's service is asked what it offers: nowhere here (a port that refuses at once) */
+process.env.ORANGE_API_URL ??= 'http://127.0.0.1:9';
 
 /**
  * A fake ElevenLabs, fal.ai and OpenAI on 127.0.0.1 (each provider's OPENFILM_<NAME>_URL points here), answering as
@@ -86,8 +86,8 @@ before(async () => {
   await new Promise((done) => service.listen(0, '127.0.0.1', done));
   base = `http://127.0.0.1:${service.address().port}`;
   Object.assign(process.env, {
-    OPENFILM_HOME: join(scratch, 'home'), OPENFILM_LIBRARY: join(scratch, 'library'),
-    OPENFILM_ELEVENLABS_URL: base, OPENFILM_FAL_URL: base, OPENFILM_OPENAI_URL: base, OPENFILM_MIMO_URL: base,
+    ORANGE_HOME: join(scratch, 'home'), ORANGE_LIBRARY: join(scratch, 'library'),
+    ORANGE_ELEVENLABS_URL: base, ORANGE_FAL_URL: base, ORANGE_OPENAI_URL: base, ORANGE_MIMO_URL: base,
   });
   for (const p of [...listProviders(), { env: 'GOOGLE_API_KEY' }]) delete process.env[p.env];
 });
@@ -437,24 +437,24 @@ test('Studio: GET /api/get lists what can be got, never who makes it; a video ru
 
 const freePort = () => new Promise((done) => { const probe = netServer().listen(0, '127.0.0.1', () => { const { port } = probe.address(); probe.close(() => done(port)); }); });
 
-test('openfilm get: what can be got here, connected, partly or not at all; wrong commands exit 2', { timeout: 60_000 }, async () => {
-  const bin = fileURLToPath(new URL('../../bin/openfilm.mjs', import.meta.url));
+test('orangefilm get: what can be got here, connected, partly or not at all; wrong commands exit 2', { timeout: 60_000 }, async () => {
+  const bin = fileURLToPath(new URL('../../bin/orangefilm.mjs', import.meta.url));
   /* the library's model, where this checkout has none, fetched from nowhere into a cache of the test's own */
-  Object.assign(process.env, { OPENFILM_LIBRARY_CACHE: mkdtempSync(join(tmpdir(), 'get-library-')), OPENFILM_LIBRARY_URL: 'http://127.0.0.1:9/library' });
-  const env = { ...process.env, OPENFILM_STUDIO_PORT: String(await freePort()) };
+  Object.assign(process.env, { ORANGE_LIBRARY_CACHE: mkdtempSync(join(tmpdir(), 'get-library-')), ORANGE_LIBRARY_URL: 'http://127.0.0.1:9/library' });
+  const env = { ...process.env, ORANGE_STUDIO_PORT: String(await freePort()) };
   const get = (cwd, ...args) => spawnSync(process.execPath, [bin, 'get', ...args], { cwd, env, encoding: 'utf8' });
   const run = (cwd, ...args) => new Promise((done) => execFile(process.execPath, [bin, 'get', ...args], { cwd, env, encoding: 'utf8' }, (error, stdout) => done({ status: error?.code ?? 0, stdout })));
   const root = project();
   /* the listing as the CLI prints it: the verbs' names padded to the longest shown */
-  /* OpenFilm's own library first (src/library-search.mjs), but for one verb's help */
+  /* OrangeFilm's own library first (src/library-search.mjs), but for one verb's help */
   const free = libraryVerbs();
   const lines = (list, width) => list.flatMap((v) => [`  ${v.verb.padEnd(width)}  ${v.help}${v.dir ? ` Saved under ${v.dir}/.` : ''}`,
     `${' '.repeat(width + 4)}${Object.entries(v.options).map(([n, o]) => flagHelp(n, o)).join(' ')}`]);
-  const library = (width) => ['Free, offline, from OpenFilm\'s own library (CC0): search it first, and make only what it does not have.', ...lines(free, width), ''];
+  const library = (width) => ['Free, offline, from OrangeFilm\'s own library (CC0): search it first, and make only what it does not have.', ...lines(free, width), ''];
   const listing = (verbs, { one = false } = {}) => {
     const width = Math.max(...[...(one ? [] : free.map((v) => v.verb)), ...verbs].map((v) => v.length));
     return [
-      'openfilm get <what> [--option value …]   media for this project, saved under assets/',
+      'orangefilm get <what> [--option value …]   media for this project, saved under assets/',
       '  --yes              the person already agreed to what it spends',
       '',
       ...(one ? [] : [...library(width), 'From a connected service:']),
@@ -477,8 +477,8 @@ test('openfilm get: what can be got here, connected, partly or not at all; wrong
     assert.equal(modelled.status, 0, modelled.stdout);
     assert.equal(JSON.parse(calls.at(-1).body).model_id, 'music_v2');
 
-    /* web search and web pages: listed for an agent without its own (OPENFILM_GET_WEB=1), when something makes them */
-    const withWeb = spawnSync(process.execPath, [bin, 'get'], { cwd: scratch, env: { ...env, OPENFILM_GET_WEB: '1' }, encoding: 'utf8' });
+    /* web search and web pages: listed for an agent without its own (ORANGE_GET_WEB=1), when something makes them */
+    const withWeb = spawnSync(process.execPath, [bin, 'get'], { cwd: scratch, env: { ...env, ORANGE_GET_WEB: '1' }, encoding: 'utf8' });
     assert.equal(withWeb.stdout, `${[...listing(Object.keys(VERBS).filter(made)), '', services()].join('\n')}\n`);
 
     /* nothing connected: no verbs, what to do instead */
@@ -487,10 +487,10 @@ test('openfilm get: what can be got here, connected, partly or not at all; wrong
     assert.equal(nothing.status, 0, nothing.stderr);
     assert.equal(nothing.stdout, `${library(Math.max(...free.map((v) => v.verb.length))).join('\n')}\n`
       + 'Nothing is connected for media here: each kind works only once the person connects a service that makes it (below). '
-      + 'Until then, take what OpenFilm\'s own library has (its verbs are free and need nothing connected), make sound and pictures in code, '
+      + 'Until then, take what OrangeFilm\'s own library has (its verbs are free and need nothing connected), make sound and pictures in code, '
       + 'or use a service the person has a key for (with its API docs), and save them under assets/. '
-      + `\`openfilm get <what> --help\` shows what one kind takes (${media.join(', ')}).\n\n${services()}\n`);
-    assert.match(services(), /^Media services, each used with the person's own key: Brave Search \(web search\), Cartesia \(voice-over\), Doubao \(transcripts\), ElevenLabs \(voice-over, sound effects, music, transcripts\), fal\.ai \(images, video, music, sound effects\), .*, Microsoft Azure \(voice-over\), .*, Tavily \(web search\), Xiaomi MiMo \(voice-over, transcripts\)\. In Studio, the OpenFilm logo at the top left opens Settings/);
+      + `\`orangefilm get <what> --help\` shows what one kind takes (${media.join(', ')}).\n\n${services()}\n`);
+    assert.match(services(), /^Media services, each used with the person's own key: Brave Search \(web search\), Cartesia \(voice-over\), Doubao \(transcripts\), ElevenLabs \(voice-over, sound effects, music, transcripts\), fal\.ai \(images, video, music, sound effects\), .*, Microsoft Azure \(voice-over\), .*, Tavily \(web search\), Xiaomi MiMo \(voice-over, transcripts\)\. In Studio, the OrangeFilm logo at the top left opens Settings/);
 
     /* partly: what is connected, then one line for the rest with the services that make each, then the services there
        are; never who makes what is connected */
@@ -511,23 +511,23 @@ test('openfilm get: what can be got here, connected, partly or not at all; wrong
       + 'Until then, make it in code, or use a service the person has a key for (with its API docs), and save it under assets/.\n');
 
     /* a search of the library: answered by the Studio running, which keeps it loaded, as the CLI answers it itself */
-    const studio = JSON.parse(readFileSync(join(process.env.OPENFILM_HOME, 'run.json'), 'utf8'));
+    const studio = JSON.parse(readFileSync(join(process.env.ORANGE_HOME, 'run.json'), 'utf8'));
     const ask = (body) => fetch(`${studio.origin}/api/get/library`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-studio-key': studio.key }, body: JSON.stringify(body) });
     const searched = await (await ask({ verb: 'transition', args: { prompt: 'glitch', limit: '3' } })).json();
     assert.deepEqual(searched, await libraryGet('transition', { prompt: 'glitch', limit: '3' }));
     assert.equal(get(scratch, 'transition', '--prompt', 'glitch', '--limit', '3').stdout, `${searched.lines.join('\n')}\n`);
-    assert.equal((await ask({ verb: 'transition', args: { take: 'openfilm/transitions/glitch' } })).status, 400, 'taking one is the CLI\'s, in its project');
+    assert.equal((await ask({ verb: 'transition', args: { take: 'orangefilm/transitions/glitch' } })).status, 400, 'taking one is the CLI\'s, in its project');
     assert.equal((await ask({ verb: 'music', args: { prompt: 'calm' } })).status, 400);
 
     assert.equal(get(scratch, 'tts', '--out', 'x').status, 2, 'not in a project');
-    assert.match(get(scratch, 'tts').stdout, /is not in a project; `openfilm open` makes one/);
+    assert.match(get(scratch, 'tts').stdout, /is not in a project; `orangefilm open` makes one/);
     const wrong = get(root, 'tts', '--out', 'a/b', '--text', 'hi', '--voice', 'v');
     assert.equal(wrong.status, 2);
     assert.match(wrong.stdout, /--out is a simple name/);
     assert.equal(get(root, 'tts', 'extra', '--out', 'x').status, 2);
     assert.equal(get(root, 'tts', '--via', 'nobody', '--out', 'x', '--text', 'hi', '--voice', 'v').status, 2);
   } finally {
-    const run = JSON.parse(readFileSync(join(process.env.OPENFILM_HOME, 'run.json'), 'utf8'));
+    const run = JSON.parse(readFileSync(join(process.env.ORANGE_HOME, 'run.json'), 'utf8'));
     await fetch(`${run.origin}/api/quit`, { method: 'POST', headers: { 'x-studio-key': run.key } });
   }
 });
@@ -562,7 +562,7 @@ test('call: the person\'s own services are listed with what they do, and reached
 });
 
 test('a voice-over spoken again without word timings: the last take\'s transcript goes, and the receipt says there is none', async () => {
-  process.env.OPENFILM_TRASH_DIR ??= mkdtempSync(join(tmpdir(), 'of-trash-'));
+  process.env.ORANGE_TRASH_DIR ??= mkdtempSync(join(tmpdir(), 'of-trash-'));
   const root = project();
   mkdirSync(join(root, 'assets/audio/vo'), { recursive: true });
   writeFileSync(join(root, 'assets/audio/vo/intro.wav'), 'old take');

@@ -70,7 +70,7 @@ export function ConfirmDialog({
   return createPortal(
     <div
       className="fixed inset-0 z-[10100] flex items-center justify-center bg-black/45 p-4 backdrop-blur-[2px]"
-      style={{ animation: 'openfilm-rise 0.16s ease-out both' }}
+      style={{ animation: 'orangefilm-rise 0.16s ease-out both' }}
       onClick={onCancel}
     >
       <div

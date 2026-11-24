@@ -6,7 +6,7 @@
  * Semantic search of the library, run **here**: what a thing is (`passageOf`) turned into a vector by the same model the
  * material search uses (bge-base-zh-v1.5, `./local-embedder.mjs`), compared by cosine against `library/vectors.i8`.
  *
- * 之前这一层是"服务端算"：`POST /v1/library/search` 在 openfilm.dev 上跑 e5，这台机器只保留目录。现在不这样了 ——
+ * 之前这一层是"服务端算"：`POST /v1/library/search` 在 orangefilm.dev 上跑 e5，这台机器只保留目录。现在不这样了 ——
  *
  *   - 云端向量库已经删掉，没有理由为一个检索再养一个服务；
  *   - 客户端已经必须带 bge-base-zh（素材检索要它），元素库复用它＝**不多一次下载**；

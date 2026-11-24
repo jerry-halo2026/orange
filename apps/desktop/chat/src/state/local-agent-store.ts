@@ -70,13 +70,13 @@ function probeModel(state: Persisted, agent: LocalAgentId): string | undefined {
 
 const probeKey = (agent: LocalAgentId, model: string | undefined, revision = 0) => JSON.stringify([agent, model, revision]);
 
-const KEY = 'openfilm.local-agents.v2';
+const KEY = 'orangefilm.local-agents.v2';
 
 function load(): Persisted {
   const empty: Persisted = { picked: 'claude', prefs: {}, options: {} };
   if (typeof window === 'undefined') return empty;
   try {
-    const raw = JSON.parse(window.localStorage.getItem(KEY) ?? window.localStorage.getItem('openfilm.local-agents.v1') ?? 'null') as Partial<Persisted> | null;
+    const raw = JSON.parse(window.localStorage.getItem(KEY) ?? window.localStorage.getItem('orangefilm.local-agents.v1') ?? 'null') as Partial<Persisted> | null;
     if (!raw) return empty;
     return {
       picked: isAgent(raw.picked) ? raw.picked : 'claude',
@@ -118,13 +118,13 @@ const EFFORT_NAMES: Record<string, string> = { auto: 'Auto', off: 'Off', minimal
  * `effort` options, apps/desktop/src/pi-config.mjs). The person's own agents' is the one a session last reported.
  */
 export function agentOptions(state: Pick<LocalAgentStore, 'options' | 'roster'> & Partial<Pick<LocalAgentStore, 'prefs'>>, agent: LocalAgentId): ConfigOptions | undefined {
-  if (agent === 'openfilm') {
-    const settings = state.roster?.find((a) => a.id === 'openfilm')?.openfilm;
+  if (agent === 'orangefilm') {
+    const settings = state.roster?.find((a) => a.id === 'orangefilm')?.orangefilm;
     if (settings) {
       const models = settings.models.filter((m) => m.shown);
       if (!models.length) return undefined;
       const available = models.filter((m) => m.available);
-      const model = available.find((m) => m.id === state.prefs?.openfilm?.model) ?? available.find((m) => m.id === settings.model) ?? available[0];
+      const model = available.find((m) => m.id === state.prefs?.orangefilm?.model) ?? available.find((m) => m.id === settings.model) ?? available[0];
       const options: ConfigOptions = [{ id: 'model', name: 'Model', category: 'model', type: 'select', currentValue: model?.id, options: models.map((m) => ({ value: m.id, name: m.name, disabled: !m.available })) }];
       if (model?.levels && model.levels.length > 1) options.push({ id: 'effort', name: 'Effort', category: 'thought_level', type: 'select', currentValue: model.effort,
         options: model.levels.map((level) => ({ value: level, name: EFFORT_NAMES[level] ?? level })) });
@@ -133,8 +133,8 @@ export function agentOptions(state: Pick<LocalAgentStore, 'options' | 'roster'> 
   }
   if (agent !== 'byok') {
     let options = state.options[agent];
-    if (agent === 'openfilm' && options) {
-      const settings = state.roster?.find((a) => a.id === 'openfilm')?.openfilm;
+    if (agent === 'orangefilm' && options) {
+      const settings = state.roster?.find((a) => a.id === 'orangefilm')?.orangefilm;
       options = options.map((o) => {
         if (o.category !== 'model') return o;
         const choices = orderedModels(o.options ?? [], settings ?? {}, (m) => m.value);
@@ -267,7 +267,7 @@ export const useLocalAgents = create<LocalAgentStore>((set, get) => ({
   async ensureOptions(agent, { retry = false } = {}) {
     /* the own key's are known from Settings (agentOptions); a failed probe is not tried again on every render, each
        try being a whole session of the agent's */
-    if (agent === 'byok' || agent === 'openfilm' && get().roster?.some((a) => a.id === agent && a.openfilm) || probing.has(agent)) return;
+    if (agent === 'byok' || agent === 'orangefilm' && get().roster?.some((a) => a.id === agent && a.orangefilm) || probing.has(agent)) return;
     if (!get().roster?.some((a) => a.id === agent && a.shown && a.status === 'ready')) return;
     const model = probeModel(get(), agent);
     const currentKey = () => probeKey(agent, probeModel(get(), agent), get().roster?.find((a) => a.id === agent)?.configurationRevision ?? 0);
@@ -302,7 +302,7 @@ export const useLocalAgents = create<LocalAgentStore>((set, get) => ({
  * take no flag.
  */
 const AGENT_FORCED_PREFS: Partial<Record<LocalAgentId, Record<string, unknown>>> = {
-  openfilm: { mode: 'agent-full-access' },
+  orangefilm: { mode: 'agent-full-access' },
   claude: { mode: 'bypassPermissions' },
   codex: { mode: 'agent-full-access' },
   kimi: { mode: 'yolo' },

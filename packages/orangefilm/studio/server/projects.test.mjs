@@ -13,9 +13,9 @@ import { readFilmFile } from '../../src/film-doc.mjs';
 let scratch;
 beforeEach(() => {
   scratch = mkdtempSync(join(tmpdir(), 'of-projects-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  delete process.env.OPENFILM_SHARED_HOME;
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  delete process.env.ORANGE_SHARED_HOME;
 });
 
 test('opening a new folder makes it a project: an empty film, .film/ with an id, kept out of git', async () => {
@@ -73,7 +73,7 @@ test('duplicate creates an independent edit in the same project group with a uni
   const film = readFileSync(join(source.path, 'film.html'), 'utf8');
   for (const copy of [a, b]) {
     assert.equal(copy.folderId, group.id);
-    assert.equal(copy.path, join(realpathSync(process.env.OPENFILM_LIBRARY), copy.name));
+    assert.equal(copy.path, join(realpathSync(process.env.ORANGE_LIBRARY), copy.name));
     assert.equal(readFileSync(join(copy.path, '.film/id'), 'utf8').trim(), copy.id);
     assert.equal(readFileSync(join(copy.path, 'film.html'), 'utf8'), film);
     for (const [name, value] of Object.entries(contents)) assert.equal(readFileSync(join(copy.path, name), 'utf8'), value);
@@ -108,7 +108,7 @@ test('a failed duplicate leaves the library and source untouched', { skip: proce
   rmSync(join(source.path, 'film.html'));
   symlinkSync(other, join(source.path, 'film.html'));
   await assert.rejects(duplicateProject(source.id), /editable files must be inside/);
-  assert.deepEqual(readdirSync(process.env.OPENFILM_LIBRARY), []);
+  assert.deepEqual(readdirSync(process.env.ORANGE_LIBRARY), []);
   assert.equal(readFileSync(other, 'utf8'), 'original');
   assert.deepEqual((await listProjects()).map((p) => p.id), [source.id]);
   rmSync(join(source.path, 'film.html'));
@@ -124,10 +124,10 @@ test('new projects go to the library as Untitled, Untitled 2', async () => {
 
 test('new projects go to the folder chosen in Settings; those made before stay where they are', async () => {
   const before = await createProject('Before');
-  mkdirSync(process.env.OPENFILM_HOME, { recursive: true });
-  writeFileSync(join(process.env.OPENFILM_HOME, 'prefs.json'), JSON.stringify({ projectsFolder: join(scratch, 'D', 'OpenFilm', 'Projects') }));
+  mkdirSync(process.env.ORANGE_HOME, { recursive: true });
+  writeFileSync(join(process.env.ORANGE_HOME, 'prefs.json'), JSON.stringify({ projectsFolder: join(scratch, 'D', 'OrangeFilm', 'Projects') }));
   const after = await createProject('After');
-  assert.ok(after.path.startsWith(join(realpathSync(scratch), 'D', 'OpenFilm', 'Projects')), after.path);
+  assert.ok(after.path.startsWith(join(realpathSync(scratch), 'D', 'OrangeFilm', 'Projects')), after.path);
   const listed = await listProjects();
   assert.equal(listed.find((p) => p.id === before.id)?.path, before.path, 'the one made before is listed where it is');
   assert.equal(listed.find((p) => p.id === before.id)?.missing, false);
@@ -241,11 +241,11 @@ test('a moved project is located: same id and place in the list, its history wit
   assert.equal((await openProject(join(scratch, 'q2'))).id, q.id, 'opened again, it is the same project');
 });
 
-test('what a newer OpenFilm keeps in studio.json stays when this one writes it', async () => {
-  mkdirSync(process.env.OPENFILM_HOME, { recursive: true });
-  writeFileSync(join(process.env.OPENFILM_HOME, 'studio.json'), JSON.stringify({ recent: [], folders: [], pinned: ['abc'] }));
+test('what a newer OrangeFilm keeps in studio.json stays when this one writes it', async () => {
+  mkdirSync(process.env.ORANGE_HOME, { recursive: true });
+  writeFileSync(join(process.env.ORANGE_HOME, 'studio.json'), JSON.stringify({ recent: [], folders: [], pinned: ['abc'] }));
   await openProject(join(scratch, 'Launch'));
-  const written = JSON.parse(readFileSync(join(process.env.OPENFILM_HOME, 'studio.json'), 'utf8'));
+  const written = JSON.parse(readFileSync(join(process.env.ORANGE_HOME, 'studio.json'), 'utf8'));
   assert.deepEqual(written.pinned, ['abc']);
   assert.equal(written.recent.length, 1);
 });
@@ -304,22 +304,22 @@ test('moving the library with its projects: each folder whole, a name taken beco
 /* another disk, for a move across disks (rename says EXDEV: copied whole, the old folder to the trash): GitHub's Linux
    runner has /dev/shm, its Windows runner the D: drive the job runs on, a developer names one (a RAM disk) */
 const otherDisk = (() => {
-  const named = process.env.OPENFILM_TEST_OTHER_DISK ?? (process.platform === 'linux' ? '/dev/shm' : process.platform === 'win32' ? process.env.RUNNER_TEMP : null);
+  const named = process.env.ORANGE_TEST_OTHER_DISK ?? (process.platform === 'linux' ? '/dev/shm' : process.platform === 'win32' ? process.env.RUNNER_TEMP : null);
   try { return named && statSync(named).isDirectory() && statSync(named).dev !== statSync(tmpdir()).dev ? named : null; } catch { return null; }
 })();
 
-test('moving the library across disks: an old folder the trash will not take stays there, named, and the project has moved (#345)', { skip: !otherDisk && 'no second disk here (OPENFILM_TEST_OTHER_DISK names one)' }, async () => {
+test('moving the library across disks: an old folder the trash will not take stays there, named, and the project has moved (#345)', { skip: !otherDisk && 'no second disk here (ORANGE_TEST_OTHER_DISK names one)' }, async () => {
   const a = await createProject('Alpha');
   writeFileSync(join(a.path, 'take.wav'), 'a take');
   const into = mkdtempSync(join(otherDisk, 'of-library-'));
   /* a trash that takes nothing: its folder a file (on Windows, the Recycle Bin refusing a folder too big for it) */
   const wall = join(scratch, 'wall');
   writeFileSync(wall, 'no trash here');
-  const was = process.env.OPENFILM_TRASH_DIR;
-  process.env.OPENFILM_TRASH_DIR = join(wall, 'trash');
+  const was = process.env.ORANGE_TRASH_DIR;
+  process.env.ORANGE_TRASH_DIR = join(wall, 'trash');
   let done;
   try { done = await moveLibrary(into, { move: true, choose: (f) => chooseFolder('projectsFolder', f) }); }
-  finally { if (was === undefined) delete process.env.OPENFILM_TRASH_DIR; else process.env.OPENFILM_TRASH_DIR = was; }
+  finally { if (was === undefined) delete process.env.ORANGE_TRASH_DIR; else process.env.ORANGE_TRASH_DIR = was; }
   try {
     assert.deepEqual([done.moved, done.failed, done.left.map((l) => [l.name, l.path])], [1, [], [['Alpha', a.path]]]);
     assert.match(done.left[0].error, /ENOTDIR|EEXIST|not a directory/i);
@@ -331,7 +331,7 @@ test('moving the library across disks: an old folder the trash will not take sta
        moves by rename, as the freedesktop trash does, and would not take a folder from another disk either) */
     const b = await createProject('Beta');
     const bin = mkdtempSync(join(otherDisk, 'of-trash-'));
-    process.env.OPENFILM_TRASH_DIR = bin;
+    process.env.ORANGE_TRASH_DIR = bin;
     try {
       const back = await moveLibrary(join(scratch, 'library'), { move: true, choose: (f) => chooseFolder('projectsFolder', f) });
       assert.deepEqual([back.moved, back.failed, back.left], [2, [], []]);
@@ -339,7 +339,7 @@ test('moving the library across disks: an old folder the trash will not take sta
       assert.ok(existsSync(join(bin, 'Beta', 'film.html')));
       assert.equal((await listProjects()).find((p) => p.id === b.id)?.path, join(realpathSync(join(scratch, 'library')), 'Beta'));
     } finally {
-      if (was === undefined) delete process.env.OPENFILM_TRASH_DIR; else process.env.OPENFILM_TRASH_DIR = was;
+      if (was === undefined) delete process.env.ORANGE_TRASH_DIR; else process.env.ORANGE_TRASH_DIR = was;
       rmSync(bin, { recursive: true, force: true });
     }
   } finally {
@@ -356,15 +356,15 @@ test('moving the library without its projects: they stay where they are, still i
 });
 
 test('a Studio with a home of its own shares the library the person chose, kept in the shared home', async () => {
-  process.env.OPENFILM_SHARED_HOME = join(scratch, 'machine');
+  process.env.ORANGE_SHARED_HOME = join(scratch, 'machine');
   const chosen = join(scratch, 'Chosen');
-  mkdirSync(process.env.OPENFILM_SHARED_HOME, { recursive: true });
-  writeFileSync(join(process.env.OPENFILM_SHARED_HOME, 'prefs.json'), JSON.stringify({ proxies: { on: false }, projectsFolder: chosen }));
+  mkdirSync(process.env.ORANGE_SHARED_HOME, { recursive: true });
+  writeFileSync(join(process.env.ORANGE_SHARED_HOME, 'prefs.json'), JSON.stringify({ proxies: { on: false }, projectsFolder: chosen }));
   assert.ok((await createProject('Shared')).path.startsWith(realpathSync(chosen)));
   await moveLibrary(null, { move: false, choose: (f) => chooseFolder('projectsFolder', f) });
-  const machine = JSON.parse(readFileSync(join(process.env.OPENFILM_SHARED_HOME, 'prefs.json'), 'utf8'));
+  const machine = JSON.parse(readFileSync(join(process.env.ORANGE_SHARED_HOME, 'prefs.json'), 'utf8'));
   assert.deepEqual(machine, { proxies: { on: false }, projectsFolder: null }, 'only the folder changed, in the shared home');
-  assert.equal(existsSync(join(process.env.OPENFILM_HOME, 'prefs.json')), false, 'nothing in its own');
+  assert.equal(existsSync(join(process.env.ORANGE_HOME, 'prefs.json')), false, 'nothing in its own');
 });
 
 test('a listed project moved into the library outside Studio is the same project at its new folder, listed once', async () => {

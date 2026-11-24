@@ -24,8 +24,8 @@
 | [12](discovery/12_前端视觉延续与交互标准.md) | 原版UI增量标准 |
 | [13](discovery/13_技术架构与目录依赖基线.md) | 物理目录/信任/平台/Git |
 | [14](discovery/14_新会话启动与开发交付流程.md) | 接手核验与执行流程 |
-| [15](discovery/15_OpenFilm资源来源与分发边界.md) | 资源来源/许可/分发边界 |
-| [16](discovery/16_OpenFilm原生接口与平台对齐.md) | 原生源码IO/API/CLI/ID/时基索引 |
+| [15](discovery/15_OrangeFilm资源来源与分发边界.md) | 资源来源/许可/分发边界 |
+| [16](discovery/16_OrangeFilm原生接口与平台对齐.md) | 原生源码IO/API/CLI/ID/时基索引 |
 | [17](discovery/17_小范围试用交付与Goal验收.md) | 完整试用PG矩阵与U包 |
 | [18](discovery/18_Goal新会话交接包.md) | 新goal可复制交接指令 |
 

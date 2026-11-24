@@ -1,6 +1,6 @@
 # 转场能力清单：66 个 gltransition 转场 → FFmpeg 9.0.2 单引擎
 
-> 范围：W1-E（Fission 适配 OpenFilm 0.3.2 随包 ffmpeg 9.0.2）。本文是**判定依据文档**，代码实现与本文一一对应：
+> 范围：W1-E（Fission 适配 OrangeFilm 0.3.2 随包 ffmpeg 9.0.2）。本文是**判定依据文档**，代码实现与本文一一对应：
 > `src/Fission.Providers/Media/TransitionCatalog.cs`（映射表 + 后端选择）、`TransitionCapability.cs`（能力探测）、
 > `CommandBuilders.cs`（命令）、`Pipeline/FissionEngine.cs`（ASSEMBLE 降级链）、`Diagnostics/DoctorService.cs`（体检口径）。
 >
@@ -19,7 +19,7 @@
 
 ## 2. 依据：本机实测 9.0.2 能力面
 
-二进制：`%APPDATA%\OpenFilm Dev\runtime\ffmpeg-9.0.2\ffmpeg.exe`（`apps/desktop/src/ffmpeg-runtime.mjs:21` 固定的 gyan `9.0.2` essentials build）。
+二进制：`%APPDATA%\OrangeFilm Dev\runtime\ffmpeg-9.0.2\ffmpeg.exe`（`apps/desktop/src/ffmpeg-runtime.mjs:21` 固定的 gyan `9.0.2` essentials build）。
 
 ```
 $ ffmpeg -hide_banner -version

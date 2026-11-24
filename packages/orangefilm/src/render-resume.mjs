@@ -45,8 +45,8 @@ export function chunksOf(f0, f1, fps) {
   return chunks;
 }
 
-/** A render's settings as kept with its chunks, with the OpenFilm that drew them (another may draw differently). @param {Record<string, unknown>} settings */
-export const settingsOf = (settings) => JSON.stringify({ openfilm: VERSION, ...settings });
+/** A render's settings as kept with its chunks, with the OrangeFilm that drew them (another may draw differently). @param {Record<string, unknown>} settings */
+export const settingsOf = (settings) => JSON.stringify({ orangefilm: VERSION, ...settings });
 
 /** The folder a render of `out` keeps its chunks in, beside the project's other renders. @param {string} renderDir @param {string} out */
 export const chunkFolder = (renderDir, out) => join(renderDir, `.chunks-${hash(Buffer.from(resolve(out)))}`);

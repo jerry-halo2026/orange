@@ -27,13 +27,13 @@ const freePort = async () => {
 
 test('the CLI starts one Studio in the background, reuses it, and it cleans up when stopped', { timeout: 60_000 }, async () => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-client-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  process.env.OPENFILM_STUDIO_PORT = String(await freePort());
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_STUDIO_PORT = String(await freePort());
   const said = [];
   const first = await ensureStudio((line) => said.push(line));
   try {
-    assert.deepEqual(said, ['Starting OpenFilm Studio…']);
+    assert.deepEqual(said, ['Starting OrangeFilm Studio…']);
     const again = await ensureStudio((line) => said.push(line));
     assert.equal(again.pid, first.pid, 'the running one is reused');
     assert.equal(said.length, 1);
@@ -55,14 +55,14 @@ test('the CLI starts one Studio in the background, reuses it, and it cleans up w
 test('an older Studio is replaced, and one whose run.json was lost is still found', { timeout: 60_000 }, async () => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-client-'));
   const home = join(scratch, 'home');
-  process.env.OPENFILM_HOME = home;
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_HOME = home;
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
   const port = await freePort();
-  process.env.OPENFILM_STUDIO_PORT = String(port);
+  process.env.ORANGE_STUDIO_PORT = String(port);
   /* an older Studio on the usual port: it says its version, and stops when asked */
   const quits = [];
   const old = createHttpServer((req, res) => {
-    if (req.url === '/api/health') return res.end(JSON.stringify({ product: 'openfilm-studio', pid: 1, version: '0.0.1' }));
+    if (req.url === '/api/health') return res.end(JSON.stringify({ product: 'orangefilm-studio', pid: 1, version: '0.0.1' }));
     if (req.url === '/api/quit') { quits.push(req.headers['x-studio-key']); res.end('{}'); old.close(); old.closeAllConnections(); return; }
     res.statusCode = 404; res.end();
   });
@@ -73,7 +73,7 @@ test('an older Studio is replaced, and one whose run.json was lost is still foun
   const studio = await ensureStudio((line) => said.push(line));
   try {
     assert.deepEqual(quits, ['old'], 'the older one was asked to stop');
-    assert.match(said[0], /^Updating OpenFilm Studio to /);
+    assert.match(said[0], /^Updating OrangeFilm Studio to /);
     assert.equal(studio.origin, `http://127.0.0.1:${port}`, 'the new one takes its port: pages open on it reconnect');
     assert.equal(studio.key, readFileSync(join(home, 'key'), 'utf8'), 'with the machine\'s key');
     rmSync(join(home, 'run.json'));
@@ -93,11 +93,11 @@ test('versions compare as numbers', () => {
   assert.ok(!olderThanThis('0.1.2', '0.1.2'));
 });
 
-test('`openfilm open` never makes the current folder a project unasked, nor a code project one', { timeout: 120_000 }, async () => {
+test('`orangefilm open` never makes the current folder a project unasked, nor a code project one', { timeout: 120_000 }, async () => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-client-'));
-  const env = { ...process.env, OPENFILM_HOME: join(scratch, 'home'), OPENFILM_LIBRARY: join(scratch, 'library'),
-    OPENFILM_STUDIO_PORT: String(await freePort()), OPENFILM_NO_BROWSER: '1' };
-  const cli = (cwd, ...args) => spawnSync(process.execPath, [fileURLToPath(new URL('../bin/openfilm.mjs', import.meta.url)), 'open', ...args], { cwd, env, encoding: 'utf8' });
+  const env = { ...process.env, ORANGE_HOME: join(scratch, 'home'), ORANGE_LIBRARY: join(scratch, 'library'),
+    ORANGE_STUDIO_PORT: String(await freePort()), ORANGE_NO_BROWSER: '1' };
+  const cli = (cwd, ...args) => spawnSync(process.execPath, [fileURLToPath(new URL('../bin/orangefilm.mjs', import.meta.url)), 'open', ...args], { cwd, env, encoding: 'utf8' });
   const repo = join(scratch, 'my-cli');
   mkdirSync(join(repo, '.git'), { recursive: true });
   writeFileSync(join(repo, 'package.json'), '{}');
@@ -124,39 +124,39 @@ test('`openfilm open` never makes the current folder a project unasked, nor a co
   }
 });
 
-test('a newer openfilm on npm is told from what was learnt (no network when not asked), never an older one', async () => {
+test('a newer orangefilm on npm is told from what was learnt (no network when not asked), never an older one', async () => {
   const { newerOpenfilm } = await import('./client.mjs');
   const home = mkdtempSync(join(tmpdir(), 'of-update-'));
-  const was = process.env.OPENFILM_HOME, wasOff = process.env.OPENFILM_NO_UPDATE_CHECK;
-  process.env.OPENFILM_HOME = home;
+  const was = process.env.ORANGE_HOME, wasOff = process.env.ORANGE_NO_UPDATE_CHECK;
+  process.env.ORANGE_HOME = home;
   /* the check itself is what is tested: whoever runs the tests may have it turned off */
-  delete process.env.OPENFILM_NO_UPDATE_CHECK;
+  delete process.env.ORANGE_NO_UPDATE_CHECK;
   try {
     writeFileSync(join(home, 'update.json'), JSON.stringify({ checkedAt: Date.now(), latest: '99.0.0' }));
     assert.equal(await newerOpenfilm({ network: false }), '99.0.0');
     writeFileSync(join(home, 'update.json'), JSON.stringify({ checkedAt: Date.now(), latest: '0.0.1' }));
     assert.equal(await newerOpenfilm({ network: false }), null);
   } finally {
-    if (was === undefined) delete process.env.OPENFILM_HOME; else process.env.OPENFILM_HOME = was;
-    if (wasOff !== undefined) process.env.OPENFILM_NO_UPDATE_CHECK = wasOff;
+    if (was === undefined) delete process.env.ORANGE_HOME; else process.env.ORANGE_HOME = was;
+    if (wasOff !== undefined) process.env.ORANGE_NO_UPDATE_CHECK = wasOff;
   }
 });
 
-test('`openfilm update` in a source checkout says git pull updates it, and touches nothing', async () => {
+test('`orangefilm update` in a source checkout says git pull updates it, and touches nothing', async () => {
   const said = await updateOpenfilm();
   assert.equal(said.ok, true);
   assert.match(said.lines[0], /source checkout: git pull updates it/);
 });
 
-test('the agent running a command: the desktop app\'s by OPENFILM_AGENT, else the program past the shells that ran it', () => {
+test('the agent running a command: the desktop app\'s by ORANGE_AGENT, else the program past the shells that ran it', () => {
   const name = (env) => spawnSync(process.execPath, ['--input-type=module', '-e', `import('${new URL('./client.mjs', import.meta.url)}').then((m) => console.log(m.agentName()))`], {
-    encoding: 'utf8', env: { ...process.env, OPENFILM_AGENT: '', ...env },
+    encoding: 'utf8', env: { ...process.env, ORANGE_AGENT: '', ...env },
   }).stdout.trim();
-  assert.equal(name({ OPENFILM_AGENT: 'app:c1' }), 'app:c1');
+  assert.equal(name({ ORANGE_AGENT: 'app:c1' }), 'app:c1');
   /* run through a shell from this process: the shell is passed over, this process is the agent (no /bin/sh on Windows) */
   if (process.platform !== 'win32') {
     const viaShell = spawnSync('/bin/sh', ['-c', `"${process.execPath}" --input-type=module -e "import('${new URL('./client.mjs', import.meta.url)}').then((m) => console.log(m.agentName()))"`], {
-      encoding: 'utf8', env: { ...process.env, OPENFILM_AGENT: '' },
+      encoding: 'utf8', env: { ...process.env, ORANGE_AGENT: '' },
     }).stdout.trim();
     assert.equal(viaShell, `pid:${process.pid}`);
   }

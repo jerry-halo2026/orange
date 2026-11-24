@@ -14,10 +14,10 @@ import { nleRate } from './nle.mjs';
 const timeline = {
   name: 'Film <one> & "two"', rate: nleRate(29.97), width: 1920, height: 1080, durationFrames: 90,
   files: [
-    { id: 'file-1', name: 'shot & one.mov', path: join(tmpdir(), 'openfilm-fcpxml', '电影', 'shot & one.mov'), durationFrames: 120,
+    { id: 'file-1', name: 'shot & one.mov', path: join(tmpdir(), 'orangefilm-fcpxml', '电影', 'shot & one.mov'), durationFrames: 120,
       video: { w: 960, h: 540, still: false, alpha: true, fps: 25 }, audio: { channels: 2, sampleRate: 48000 } },
-    { id: 'file-2', name: 'voice.wav', path: join(tmpdir(), 'openfilm-fcpxml', 'voice.wav'), durationFrames: 90, audio: { channels: 1, sampleRate: 44100 } },
-    { id: 'file-3', name: 'still.png', path: join(tmpdir(), 'openfilm-fcpxml', 'still.png'), durationFrames: 90, video: { w: 400, h: 200, still: true, alpha: true } },
+    { id: 'file-2', name: 'voice.wav', path: join(tmpdir(), 'orangefilm-fcpxml', 'voice.wav'), durationFrames: 90, audio: { channels: 1, sampleRate: 44100 } },
+    { id: 'file-3', name: 'still.png', path: join(tmpdir(), 'orangefilm-fcpxml', 'still.png'), durationFrames: 90, video: { w: 400, h: 200, still: true, alpha: true } },
   ],
   video: [
     { enabled: true, clips: [{ name: 'footage', fileId: 'file-1', start: 15, end: 60, in: 30, out: 75, enabled: true,
@@ -74,8 +74,8 @@ test('FCPXML keeps exact NTSC times, source trims, layering, transforms and sepa
 
 test('only real empty intervals become primary gaps, with overlays anchored in source time', () => {
   const xml = fcpxmlDocument(timeline);
-  assert.match(xml, /<spine>\s*<gap name="OpenFilm" offset="0\/30000s" start="0s" duration="15015\/30000s">/);
-  assert.match(xml, /<gap name="OpenFilm" offset="60060\/30000s" start="0s" duration="30030\/30000s">/);
+  assert.match(xml, /<spine>\s*<gap name="OrangeFilm" offset="0\/30000s" start="0s" duration="15015\/30000s">/);
+  assert.match(xml, /<gap name="OrangeFilm" offset="60060\/30000s" start="0s" duration="30030\/30000s">/);
   assert.equal((xml.match(/<gap /g) ?? []).length, 2);
   assert.match(xml, /name="footage" lane="0" offset="15015\/30000s" start="30030\/30000s"/);
   assert.match(xml, /name="overlay" lane="1" offset="45045\/30000s" start="0\/30000s"/);
@@ -85,7 +85,7 @@ test('only real empty intervals become primary gaps, with overlays anchored in s
 test('FCPXML also writes integer-rate, audio-only timelines with a full-length primary storyline', () => {
   const xml = fcpxmlDocument({ ...timeline, rate: nleRate(25), video: [], files: [timeline.files[1]], audio: [timeline.audio[1]] });
   assert.match(xml, /frameDuration="1\/25s"/);
-  assert.match(xml, /<gap name="OpenFilm" offset="0\/25s" start="0s" duration="90\/25s">/);
+  assert.match(xml, /<gap name="OrangeFilm" offset="0\/25s" start="0s" duration="90\/25s">/);
   assert.doesNotMatch(xml, /<video /);
 });
 
@@ -108,7 +108,7 @@ test('FCPXML includes editable subtitle titles above pictures, clipped to the se
   assert.equal((xml.match(/<title /g) ?? []).length, 2);
   assert.match(xml, /<effect id="subtitle-title" name="Basic Title" uid="\.\.\.\/Titles.localized\/Bumper:Opener.localized\/Basic Title.localized\/Basic Title.moti"\/>/);
   assert.match(xml, /<title ref="subtitle-title" name="Hello[^>]*lane="2"/);
-  assert.match(xml, /role="titles.OpenFilm Subtitles"/);
+  assert.match(xml, /role="titles.OrangeFilm Subtitles"/);
   assert.match(xml, /<text><text-style ref="subtitle-style-1">Ann：Hello &amp; &lt;world&gt;\n第二行<\/text-style><\/text>/);
   assert.match(xml, /<adjust-transform position="0 -40"\/>/);
   assert.deepEqual([...xml.matchAll(/<text-style-def id="([^"]+)"/g)].map((m) => m[1]), ['subtitle-style-1', 'subtitle-style-2']);
@@ -166,7 +166,7 @@ test('invalid plans fail instead of silently attaching a connection to an unrela
 
 const dtd = '/Applications/Final Cut Pro.app/Contents/Frameworks/Interchange.framework/Versions/A/Resources/FCPXMLv1_10.dtd';
 test('FCPXML validates against Final Cut Pro’s installed 1.10 DTD', { skip: !existsSync(dtd) && 'Final Cut Pro DTD not installed' }, () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-fcpxml-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-fcpxml-'));
   try {
     const file = join(dir, 'Film.fcpxml');
     const audio = timeline.audio.map((track, i) => ({ ...track, sourceTrack: i }));

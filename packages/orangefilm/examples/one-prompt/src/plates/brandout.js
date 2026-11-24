@@ -3,7 +3,7 @@
 
 // Plate `brandout` (BRAND_T → FILM_END): the outro has drawn its one line back into the caret at the mark's centre
 // (MARK_C). The caret wakes and stands up to the mark's height; then, as a clock hand through the mark's centre, it
-// sweeps half a turn and leaves the OpenFilm mark (a flag on its pole, the F) behind it, engraved along its outline
+// sweeps half a turn and leaves the OrangeFilm mark (a flag on its pole, the F) behind it, engraved along its outline
 // and then filled, a gust rippling the flags once. The wordmark is set beside it, and the caret types the address
 // under it.
 import * as THREE from 'three';
@@ -31,7 +31,7 @@ const RPX = Math.hypot(MARK_BOX.x1 - MARK_BOX.x0, MARK_BOX.y1 - MARK_BOX.y0) / 2
 const WK = K * LW.s;
 const WB = MY + (LW.y - (LM.y + LM.s * MARK_MID.y)) * K;
 const WX = MX + (wordX(WORDMARK[0].x0) - lockX(MARK_MID.x)) * K;
-const URL = 'openfilm.dev', URL_HOT = [4, 8]; // "film" in the signal colour
+const URL = 'orangefilm.dev', URL_HOT = [4, 8]; // "film" in the signal colour
 const UX = WX + 8, UB = WB + 80, US = 36, UADV = US * 0.6;
 const GLYPHS = WORDMARK.map((g) => ({ ...g, path: new Path2D(g.d) }));
 

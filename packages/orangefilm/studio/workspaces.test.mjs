@@ -12,22 +12,22 @@ import { filmHtml } from '../src/film-doc.mjs';
 import { openProject } from './server/projects.mjs';
 import { startStudio } from './server/server.mjs';
 
-const output = process.env.OPENFILM_WORKSPACE_SCREENSHOTS;
+const output = process.env.ORANGE_WORKSPACE_SCREENSHOTS;
 async function withWorkspace(run, {hasChat=true, clips=[]}={}) {
   const scratch = await mkdtemp(join(tmpdir(), 'of-workspaces-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map(name => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map(name => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Workspace');
+    const root = join(process.env.ORANGE_LIBRARY, 'Workspace');
     await mkdir(join(root, '.film'), { recursive: true });
     await mkdir(join(root, 'assets'), { recursive: true });
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: clips.length ? [{ clips }] : [] }));
     await writeFile(join(root, 'assets', 'sample.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#13b9b2"/></svg>');
     await writeFile(join(root, '.film', 'canvas.json'), JSON.stringify({ nodes: [{ id: 'note', x: 0, y: 0, w: 350, h: 200, text: 'Keep this canvas' }], edges: [] }));
-    await mkdir(process.env.OPENFILM_SAVED, { recursive: true });
-    await writeFile(join(process.env.OPENFILM_SAVED, 'saved.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="20" height="20" fill="red"/></svg>');
+    await mkdir(process.env.ORANGE_SAVED, { recursive: true });
+    await writeFile(join(process.env.ORANGE_SAVED, 'saved.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="20" height="20" fill="red"/></svg>');
     const project = await openProject(root);
     studio = await startStudio({ port: 0, openBrowser: () => {} });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
@@ -61,7 +61,7 @@ async function withWorkspace(run, {hasChat=true, clips=[]}={}) {
     await page.locator('[data-work-mode="edit"]').waitFor();
     try { await run(page); assert.deepEqual(errors, []); }
     catch (error) {
-      console.error('Workspace failure:', await page.evaluate(() => ({ text: document.body.innerText.slice(-2200), profile: localStorage.getItem('openfilm.workspace.current.v2') })), errors);
+      console.error('Workspace failure:', await page.evaluate(() => ({ text: document.body.innerText.slice(-2200), profile: localStorage.getItem('orangefilm.workspace.current.v2') })), errors);
       if (output) await page.screenshot({ path: join(output, 'workspace-failure.png') });
       throw error;
     }
@@ -78,12 +78,12 @@ async function closeLayout(page) { if (await menu(page).count()) await page.keyb
 async function rect(locator) { const value = await locator.boundingBox(); assert.ok(value); return value; }
 async function profile(page, mode = 'edit', { hasTree, libraryDock, changedFrom } = {}) {
   await page.waitForFunction(({ mode, hasTree, libraryDock, changedFrom }) => {
-    const value = JSON.parse(localStorage.getItem('openfilm.workspace.current.v2') ?? 'null')?.[mode];
+    const value = JSON.parse(localStorage.getItem('orangefilm.workspace.current.v2') ?? 'null')?.[mode];
     return value && (hasTree === undefined || Boolean(value.tree) === hasTree)
       && (libraryDock === undefined || value.libraryDock === libraryDock)
       && (changedFrom === undefined || JSON.stringify(value) !== changedFrom);
   }, { mode, hasTree, libraryDock, changedFrom });
-  return page.evaluate(mode => JSON.parse(localStorage.getItem('openfilm.workspace.current.v2'))[mode], mode);
+  return page.evaluate(mode => JSON.parse(localStorage.getItem('orangefilm.workspace.current.v2'))[mode], mode);
 }
 async function shot(page, name) { if (output) await page.screenshot({ path: join(output,name) }); }
 
@@ -119,7 +119,7 @@ test('dragging the chat edge with its library open keeps the library and active 
       if (mode === 'canvas') await page.locator('[data-work-mode="edit"]').click();
       await page.evaluate(() => window.openfilmHost.panel.setAssetsOpen(true));
       await library(page).waitFor();
-      await page.waitForFunction(mode => JSON.parse(localStorage.getItem('openfilm.workspace.current.v2'))?.[mode]?.assets, mode);
+      await page.waitForFunction(mode => JSON.parse(localStorage.getItem('orangefilm.workspace.current.v2'))?.[mode]?.assets, mode);
       const chat = page.locator('#test-chat');
       const start = await rect(chat);
       const seam = await rect(page.getByRole('separator', { name: 'Chat', exact: true }));
@@ -137,7 +137,7 @@ test('dragging the chat edge with its library open keeps the library and active 
       await aligned();
       await page.mouse.up();
       await aligned();
-      await page.waitForFunction(({ mode, width }) => JSON.parse(localStorage.getItem('openfilm.workspace.current.v2'))?.[mode]?.chatWidth === width, { mode, width: start.width + delta });
+      await page.waitForFunction(({ mode, width }) => JSON.parse(localStorage.getItem('orangefilm.workspace.current.v2'))?.[mode]?.chatWidth === width, { mode, width: start.width + delta });
     }
     await page.locator('[data-work-mode="canvas"]').click();
     await page.waitForFunction(() => document.querySelector('#test-chat').getBoundingClientRect().width === 540

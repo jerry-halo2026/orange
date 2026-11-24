@@ -9,14 +9,14 @@
  *   proxies       light copies of heavy footage for the preview (proxies.mjs): on, and how tall
  *   seenVersion   the version whose "what's new" was last shown (null: none yet, a new install shows none)
  *   projectsFolder   where the projects library is, when the person chose (null: the default; src/locations.mjs,
- *                 which the `openfilm` command reads too). Kept in the prefs.json of the home that holds the library
- *                 (OPENFILM_SHARED_HOME, else this one), so every OpenFilm on the computer shares it.
- *   keys          the keyboard shortcuts: the scheme in use and the custom ones (null: OpenFilm's). Kept as Studio's
+ *                 which the `orangefilm` command reads too). Kept in the prefs.json of the home that holds the library
+ *                 (ORANGE_SHARED_HOME, else this one), so every OrangeFilm on the computer shares it.
+ *   keys          the keyboard shortcuts: the scheme in use and the custom ones (null: OrangeFilm's). Kept as Studio's
  *                 page gives them, in shape only (keysOf); the page checks every action and key (ui/src/lib/keymap.ts).
  *   autoVersions  whether a project open in Studio saves versions of itself while it is worked on (auto-versions.mjs)
  *   showAutoVersions  legacy visibility hint for older clients; the current history dialog uses its type filter
  *   libraryCategories  the library drawer's categories as the person arranged them (Settings › Advanced): their order and
- *                 the ones turned off, by name (null: OpenFilm's order, all on); the media always first and on
+ *                 the ones turned off, by name (null: OrangeFilm's order, all on); the media always first and on
  */
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { isAbsolute, join, resolve } from 'node:path';
@@ -102,8 +102,8 @@ export function readPrefs() {
 }
 
 /**
- * Change some of them (a field at a time); returns them all. The file is shared with every OpenFilm on this computer
- * (`npx openfilm`, the app), older or newer: what this one does not know of it is written back as it was.
+ * Change some of them (a field at a time); returns them all. The file is shared with every OrangeFilm on this computer
+ * (`npx orangefilm`, the app), older or newer: what this one does not know of it is written back as it was.
  * @param {unknown} patch @returns {Prefs}
  */
 export function writePrefs(patch) {

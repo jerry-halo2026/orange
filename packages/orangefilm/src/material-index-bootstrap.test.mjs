@@ -408,8 +408,8 @@ test('the CLI\'s flags are the ones it documents, and a flag it does not know is
 
 test('a foreground sweep waits for the Studio\'s run.json to appear instead of failing on the first read', async () => {
   const home = tmp();
-  mkdirSync(join(home, '.openfilm-dev'), { recursive: true });
-  const file = join(home, '.openfilm-dev', 'run.json');
+  mkdirSync(join(home, '.orangefilm-dev'), { recursive: true });
+  const file = join(home, '.orangefilm-dev', 'run.json');
   let clock = 0;
   const sleep = async (ms) => { clock += ms; if (clock >= 1000) writeFileSync(file, JSON.stringify({ pid: 1, origin: 'http://127.0.0.1:4848', key: 'k' }), 'utf8'); };
 

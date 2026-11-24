@@ -5,7 +5,7 @@
  * Run the app from this repository: `pnpm --filter @orange/desktop start`.
  *
  * It is the `dev` flavour (src/flavor.mjs): on macOS a renamed copy of Electron.app with its own name, bundle id and
- * data folder, so it never shares a Dock icon, a lock or a Studio with an installed OpenFilm. The window's page
+ * data folder, so it never shares a Dock icon, a lock or a Studio with an installed OrangeFilm. The window's page
  * (shell/) is built first (`--no-build` skips it). Electron gets a clean environment: run from inside Claude Code or Codex, this
  * process carries their variables, which the app's agents would inherit (src/environment.mjs). Arguments after the
  * script go to Electron as they are (e.g. --remote-debugging-port=9333).
@@ -20,7 +20,7 @@ import { FLAVORS } from '../src/flavor.mjs';
 import { readIsolationProfile, isolationEnvironment, prepareIsolationDirectories } from '../src/isolation.mjs';
 export async function startDevelopment({ source = process.env, argv = process.argv.slice(2), adapters = {} } = {}) {
     const profile = readIsolationProfile(source);
-    const env = { ...source, OPENFILM_DESKTOP_FLAVOR: 'dev', ...(profile ? isolationEnvironment(profile) : {}) };
+    const env = { ...source, ORANGE_DESKTOP_FLAVOR: 'dev', ...(profile ? isolationEnvironment(profile) : {}) };
     if (profile)
         prepareIsolationDirectories(profile, adapters.mkdir ?? mkdirSync);
     const control = adapters.control ?? process;
@@ -54,7 +54,7 @@ export async function startDevelopment({ source = process.env, argv = process.ar
         const version = require('electron/package.json').version;
         const productVersion = require('../package.json').version;
         /* .dev/ is git-ignored */
-        const runtime = profile ? join(profile.paths.cache, 'electron', `${version}-openfilm-dev-v2-${productVersion}`) : join(desktop, '.dev', 'runtime', `${version}-openfilm-dev-v2-${productVersion}`);
+        const runtime = profile ? join(profile.paths.cache, 'electron', `${version}-orangefilm-dev-v2-${productVersion}`) : join(desktop, '.dev', 'runtime', `${version}-orangefilm-dev-v2-${productVersion}`);
         const bundle = join(runtime, `${identity.productName}.app`);
         const marker = join(runtime, 'ready');
         /* the executable keeps Electron's own name: Electron decides `app.isPackaged` from it. The name people see comes
@@ -72,8 +72,8 @@ export async function startDevelopment({ source = process.env, argv = process.ar
             set('CFBundleShortVersionString', productVersion);
             set('CFBundleVersion', productVersion);
             set('CFBundleIdentifier', identity.bundleId);
-            set('CFBundleIconFile', 'openfilm.icns');
-            copyFileSync(join(desktop, 'build/icon-dev.icns'), join(bundle, 'Contents/Resources/openfilm.icns'));
+            set('CFBundleIconFile', 'orangefilm.icns');
+            copyFileSync(join(desktop, 'build/icon-dev.icns'), join(bundle, 'Contents/Resources/orangefilm.icns'));
             /* a local ad-hoc signature covers the changed bundle */
             execFileSync('/usr/bin/codesign', ['--force', '--deep', '--sign', '-', bundle], { stdio: 'ignore' });
             execFileSync('/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister', ['-f', bundle]);

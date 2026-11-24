@@ -12,12 +12,12 @@ import { bringClip, libraryRel, listLibrary, saveClip, saveFile, saveGroup, take
 let saved;
 let before;
 beforeEach(() => {
-  before = process.env.OPENFILM_SAVED;
+  before = process.env.ORANGE_SAVED;
   saved = join(mkdtempSync(join(tmpdir(), 'of-saved-')), 'Saved');
-  process.env.OPENFILM_SAVED = saved;
+  process.env.ORANGE_SAVED = saved;
 });
 afterEach(() => {
-  if (before === undefined) delete process.env.OPENFILM_SAVED; else process.env.OPENFILM_SAVED = before;
+  if (before === undefined) delete process.env.ORANGE_SAVED; else process.env.ORANGE_SAVED = before;
 });
 
 /** A project with a title page that loads its own CSS, a picture and a page in a frame, beside another clip's page. */
@@ -173,11 +173,11 @@ test('the clips of two pages brought from one project: the files of each, under 
   for (const f of ['assets/logo.png', 'assets/v.mp4', 'pages/other.html']) assert.ok(existsSync(join(root, 'pasted/Launch', f)), f);
 });
 
-test('a filter of OpenFilm\'s library is taken as its layer page under the filter\'s own name', async () => {
+test('a filter of OrangeFilm\'s library is taken as its layer page under the filter\'s own name', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-saved-filter-'));
-  const taken = /** @type {{ clip: { src: string } }} */ (await takeSaved(root, 'openfilm/filters/bw'));
-  assert.equal(taken.clip.src, 'saved/openfilm/filters-bw/layer.html');
-  assert.ok(existsSync(join(root, 'saved/openfilm/filters-bw/layer.html')));
+  const taken = /** @type {{ clip: { src: string } }} */ (await takeSaved(root, 'orangefilm/filters/bw'));
+  assert.equal(taken.clip.src, 'saved/orangefilm/filters-bw/layer.html');
+  assert.ok(existsSync(join(root, 'saved/orangefilm/filters-bw/layer.html')));
   /* the layer itself, and a folder of the filters' pictures, are what they are */
-  await assert.rejects(takeSaved(root, 'openfilm/filters/nothing-here/deeper'));
+  await assert.rejects(takeSaved(root, 'orangefilm/filters/nothing-here/deeper'));
 });

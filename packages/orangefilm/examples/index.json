@@ -1,5 +1,5 @@
 {
-  "repo": "https://github.com/openfilm/examples",
+  "repo": "https://github.com/orangefilm/examples",
   "branch": "main",
   "examples": [
     {
@@ -11,10 +11,10 @@
       "category": "music"
     },
     {
-      "folder": "openfilm-intro",
-      "title": "OpenFilm intro",
-      "description": "The 1:42 film that introduces OpenFilm: footage, app recordings and motion graphics cut to a Chinese voice-over.",
-      "poster": "openfilm-intro/look.jpg",
+      "folder": "orangefilm-intro",
+      "title": "OrangeFilm intro",
+      "description": "The 1:42 film that introduces OrangeFilm: footage, app recordings and motion graphics cut to a Chinese voice-over.",
+      "poster": "orangefilm-intro/look.jpg",
       "duration": "1:42",
       "category": "explainer"
     }

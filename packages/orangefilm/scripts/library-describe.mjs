@@ -3,7 +3,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * What the library's sounds and music are like, for `openfilm get` (src/library-search.mjs) to search by: each one of
+ * What the library's sounds and music are like, for `orangefilm get` (src/library-search.mjs) to search by: each one of
  * library/audio.json measured (scripts/audio-measure.mjs) and given its tags of library/tags.json — its moods, its
  * instruments, what it is for (src/library-words.mjs describeAudio) — and, measured, its energy (1 calm – 5 driving), its tempo (bpm, music with a clear
  * beat) and whether it loops. Written into audio.json, each thing's own fields left as they were. Run on the computer

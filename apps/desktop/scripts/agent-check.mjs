@@ -33,7 +33,7 @@ export async function checkAgent(id, pathDirs, { sessionMs = SESSION_MS } = {}) 
   if (!cli) return { id, found: null, version: null, acp: null, error: 'not found' };
   const started = await checkAgentProgram(id, cli.path);
   if (!started.ok) return { id, found: cli.path, version: null, acp: null, error: `--version: ${started.error}` };
-  const cwd = mkdtempSync(join(tmpdir(), `openfilm-agent-check-${id}-`));
+  const cwd = mkdtempSync(join(tmpdir(), `orangefilm-agent-check-${id}-`));
   const session = new AgentSession({ agent: id, cwd });
   let timer;
   try {

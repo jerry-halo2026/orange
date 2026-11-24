@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import vm from 'node:vm';
 import { registerSkillsIpc } from './skills-ipc.mjs';
-import { readSkill } from 'openfilm/skills';
+import { readSkill } from 'orangefilm/skills';
 
 test('the preload carries a chosen cover through preview and commit into the installed skill', async (t) => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-ipc-'));

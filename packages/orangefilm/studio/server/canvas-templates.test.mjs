@@ -27,9 +27,9 @@ test('a template keeps a part of the board from 0, 0, without what it made or wh
 
 test('a template is kept with its files, and laid down in another project with copies of them', async (t) => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-canvas-templates-'));
-  const before = process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SHARED_HOME = join(scratch, 'home');
-  t.after(() => { if (before === undefined) delete process.env.OPENFILM_SHARED_HOME; else process.env.OPENFILM_SHARED_HOME = before; rmSync(scratch, { recursive: true, force: true }); });
+  const before = process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SHARED_HOME = join(scratch, 'home');
+  t.after(() => { if (before === undefined) delete process.env.ORANGE_SHARED_HOME; else process.env.ORANGE_SHARED_HOME = before; rmSync(scratch, { recursive: true, force: true }); });
   const one = join(scratch, 'one');
   const two = join(scratch, 'two');
   mkdirSync(join(one, 'assets'), { recursive: true });

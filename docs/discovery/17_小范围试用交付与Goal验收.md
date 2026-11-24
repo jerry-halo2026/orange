@@ -6,7 +6,7 @@
 
 ## 1. 目标和范围不能混淆
 
-目标是原版OpenFilm主工程上可实际安装、登录、创作、保存重开、交付和恢复的orangeflim Windows内部试用候选，不是dev服务器能开、首页截图或演示壳。产品平台仅Windows与macOS Apple Silicon arm64；一期交付Windows，保留Mac arm64适配/构建，不承诺Mac本期验收，排除Intel Mac/Linux客户端/Universal包。CI运行在Linux不等于支持Linux客户端，也不因此删除原上游通用代码。
+目标是原版OrangeFilm主工程上可实际安装、登录、创作、保存重开、交付和恢复的orangeflim Windows内部试用候选，不是dev服务器能开、首页截图或演示壳。产品平台仅Windows与macOS Apple Silicon arm64；一期交付Windows，保留Mac arm64适配/构建，不承诺Mac本期验收，排除Intel Mac/Linux客户端/Universal包。CI运行在Linux不等于支持Linux客户端，也不因此删除原上游通用代码。
 
 现有T01–T10只是第一段原版主链，不等于PRD全部首版。全首版以PRD FR-01–FR-11和V01–V61及剪口播增量验收；有缺项只能如实叫局部候选。若Ethan选择缩小试用，必须列明具体不开放功能/用户范围和替代入口，获明确批准后登记，不能由Agent自动缩减。
 

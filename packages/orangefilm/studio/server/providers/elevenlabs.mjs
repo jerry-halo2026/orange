@@ -104,7 +104,7 @@ export default {
 
 /**
  * The account's voices (its own and the premade ones), searched by the prompt, then by language and gender. Each as
- * `openfilm get voice` gives it: { voiceId, name, language, gender, description }.
+ * `orangefilm get voice` gives it: { voiceId, name, language, gender, description }.
  * @param {Record<string, unknown>} args @param {(path: string) => Promise<Response>} send
  */
 async function voices(args, send) {

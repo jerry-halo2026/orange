@@ -27,14 +27,14 @@ test('the pair Studio needs is the service\'s own origin and secret, and nothing
 test('the service is up before Studio is built, and Studio is handed its environment', async () => {
   const order = [];
   const studio = await startStudioBesideMaterials({
-    env: { OPENFILM_HOME: 'home' },
+    env: { ORANGE_HOME: 'home' },
     materials: async () => { order.push('materials'); return { origin: 'http://127.0.0.1:60018', secret: 'e'.repeat(64) }; },
     launch: async (env) => { order.push('studio'); return { env }; },
   });
   assert.deepEqual(order, ['materials', 'studio'], 'the order is the whole fix');
   assert.equal(studio.env.MATERIALS_UPSTREAM, 'http://127.0.0.1:60018');
   assert.equal(studio.env.MATERIALS_SECRET, 'e'.repeat(64));
-  assert.equal(studio.env.OPENFILM_HOME, 'home', 'the rest of the environment is passed through untouched');
+  assert.equal(studio.env.ORANGE_HOME, 'home', 'the rest of the environment is passed through untouched');
 });
 
 test('a Studio started again is given the new service\'s environment as well', async () => {

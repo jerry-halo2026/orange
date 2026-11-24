@@ -18,11 +18,11 @@ const PAGE = '<!doctype html><body style="margin:0;background:#224"><script>wind
 async function withLibrary(category, run, prepare = async (_page) => {}) {
   const scratch = await mkdtemp(join(tmpdir(), 'of-library-trial-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((n) => [`OPENFILM_${n}`, process.env[`OPENFILM_${n}`]]));
-  for (const n of names) process.env[`OPENFILM_${n}`] = join(scratch, n.toLowerCase());
+  const saved = new Map(names.map((n) => [`ORANGE_${n}`, process.env[`ORANGE_${n}`]]));
+  for (const n of names) process.env[`ORANGE_${n}`] = join(scratch, n.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Trial');
+    const root = join(process.env.ORANGE_LIBRARY, 'Trial');
     await mkdir(root, { recursive: true });
     await writeFile(join(root, 'page.html'), PAGE);
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: [{ clips: [{ id: 'page', src: 'page.html', time: [0, 4] }] }] }));
@@ -318,7 +318,7 @@ test('an uncached voice downloads and plays only on click', { timeout: 60_000 },
         assert.ok(quiet.area > 0 && quiet.edgeSpread < 2 && loud.edgeSpread < 2, 'the painted outline is circular in both frames');
         assert.ok(loud.area > quiet.area * 1.07, 'the circle expands evenly with the voice');
         assert.notEqual(loud.color, quiet.color, 'the color inside the circle changes');
-        if (process.env.OPENFILM_TEST_ARTIFACTS) await cover.screenshot({ path: join(process.env.OPENFILM_TEST_ARTIFACTS, 'voice-preview.png') });
+        if (process.env.ORANGE_TEST_ARTIFACTS) await cover.screenshot({ path: join(process.env.ORANGE_TEST_ARTIFACTS, 'voice-preview.png') });
         await page.evaluate(() => { window.__voiceAudio.currentTime = 16; });
         await page.waitForFunction(() => window.__voiceAudio.currentTime > 16
           && document.querySelector('[data-voice-orb]')?.getAttribute('data-energy') === '0');
@@ -332,7 +332,7 @@ test('an uncached voice downloads and plays only on click', { timeout: 60_000 },
         await cover.getByText('Rose voice', { exact: true }).waitFor();
         const rose = await cover.evaluate((el) => el.style.getPropertyValue('--voice-glow').trim());
         assert.notEqual(rose, color, 'switching voices changes the orb palette');
-        if (process.env.OPENFILM_TEST_ARTIFACTS) await cover.screenshot({ path: join(process.env.OPENFILM_TEST_ARTIFACTS, 'voice-preview-rose.png') });
+        if (process.env.ORANGE_TEST_ARTIFACTS) await cover.screenshot({ path: join(process.env.ORANGE_TEST_ARTIFACTS, 'voice-preview-rose.png') });
       } finally { release(); }
     }, async (page) => {
       await page.addInitScript(() => {
@@ -346,7 +346,7 @@ test('an uncached voice downloads and plays only on click', { timeout: 60_000 },
         };
       });
       await page.route('**/api/providers', (route) => route.fulfill({ json: { providers: [
-        { id: 'openfilm', source: 'account', models: { tts: [{ id: 'elevenlabs/demo' }] } },
+        { id: 'orangefilm', source: 'account', models: { tts: [{ id: 'elevenlabs/demo' }] } },
       ] } }));
       await page.route('**/api/library/voices', (route) => route.fulfill({ json: { version: 1, providers: [{ id: 'elevenlabs', name: 'ElevenLabs', models: [] }], voices: [
         { provider: 'elevenlabs', id: 'hover', name: 'Hover voice', gender: 'm', language: 'en', tags: [], sample: 'voices/elevenlabs/hover.m4a' },
@@ -409,12 +409,12 @@ test('one click on an uncached music card downloads and plays automatically, wit
         assert.equal(await progress.getAttribute('aria-valuenow'), null, 'an unknown download size has no invented percentage');
         assert.equal((await player.innerText()).trim(), 'Automatic music', 'loading adds no visible explanatory text');
         assert.equal(await card.getByRole('progressbar').count(), 1);
-        if (process.env.OPENFILM_TEST_ARTIFACTS) {
-          await player.screenshot({ path: join(process.env.OPENFILM_TEST_ARTIFACTS, 'automatic-download.png') });
-          await page.evaluate(() => { localStorage.setItem('openfilm.language', 'zh-CN'); window.dispatchEvent(new StorageEvent('storage', { key: 'openfilm.language' })); });
+        if (process.env.ORANGE_TEST_ARTIFACTS) {
+          await player.screenshot({ path: join(process.env.ORANGE_TEST_ARTIFACTS, 'automatic-download.png') });
+          await page.evaluate(() => { localStorage.setItem('orangefilm.language', 'zh-CN'); window.dispatchEvent(new StorageEvent('storage', { key: 'orangefilm.language' })); });
           await card.getByRole('progressbar', { name: '正在下载…', exact: true }).waitFor();
-          await player.screenshot({ path: join(process.env.OPENFILM_TEST_ARTIFACTS, 'automatic-download-zh.png') });
-          await page.evaluate(() => { localStorage.setItem('openfilm.language', 'en'); window.dispatchEvent(new StorageEvent('storage', { key: 'openfilm.language' })); });
+          await player.screenshot({ path: join(process.env.ORANGE_TEST_ARTIFACTS, 'automatic-download-zh.png') });
+          await page.evaluate(() => { localStorage.setItem('orangefilm.language', 'en'); window.dispatchEvent(new StorageEvent('storage', { key: 'orangefilm.language' })); });
           await card.getByRole('progressbar', { name: 'Downloading…', exact: true }).waitFor();
         }
         fileReady();
@@ -513,8 +513,8 @@ test('a remote effect shows a network notice and retries from the card; a timeli
       try {
         const card = page.locator('[data-library-card="community/v1/effect/automatic"]');
         await page.evaluate(() => {
-          localStorage.setItem('openfilm.language', 'zh-CN');
-          window.dispatchEvent(new StorageEvent('storage', { key: 'openfilm.language' }));
+          localStorage.setItem('orangefilm.language', 'zh-CN');
+          window.dispatchEvent(new StorageEvent('storage', { key: 'orangefilm.language' }));
         });
         await card.click();
         const retry = card.getByRole('button', { name: '重试', exact: true });

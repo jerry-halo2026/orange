@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = path.join(ROOT, 'infra', 'docker-compose.yml');
 const LOCAL_DB = 'orange';
-const LIBRARY = path.join(ROOT, 'packages', 'openfilm', 'library');
+const LIBRARY = path.join(ROOT, 'packages', 'orangefilm', 'library');
 
 export function defaultOptions() {
   return {

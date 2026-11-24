@@ -38,7 +38,7 @@ const VIEWBOX: Partial<Record<AgentIconId, string>> = { devin: '48 48 330 330' }
 /** The Lobe Icons marks fill even-odd (so their cut-outs stay empty). */
 const EVEN_ODD = new Set<AgentIconId>(['codebuddy', 'qwen', 'kimi', 'deepseek', 'antigravity']);
 
-/** Whether this agent has its own mark (those without, such as OpenFilm's own agent, use the OpenFilm mark). */
+/** Whether this agent has its own mark (those without, such as OrangeFilm's own agent, use the OrangeFilm mark). */
 export const hasAgentIcon = (id: string): id is AgentIconId => Object.hasOwn(PATHS, id);
 
 export function AgentIcon({ id, size = 18 }: { id: AgentIconId; size?: number }) {

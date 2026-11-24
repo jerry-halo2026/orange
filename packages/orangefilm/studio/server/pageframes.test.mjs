@@ -13,10 +13,10 @@ import { filmHtml } from '../../src/film-doc.mjs';
 let studio, scratch;
 before(async () => {
   scratch = mkdtempSync(join(tmpdir(), 'of-pageframes-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  process.env.OPENFILM_TRASH_DIR = join(scratch, 'trash');
-  mkdirSync(process.env.OPENFILM_TRASH_DIR);
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_TRASH_DIR = join(scratch, 'trash');
+  mkdirSync(process.env.ORANGE_TRASH_DIR);
   studio = await startStudio({ port: 0, openBrowser: () => {} });
 });
 after(() => studio.close());
@@ -191,7 +191,7 @@ test('a thumbnails browser that is ended (it crashed, or took too much memory) i
   assert.equal((await frame(500)).status, 200);
   /* the browsers this process started (the host marks each), ended as the system or the memory guard ends one */
   const ours = execFileSync('/bin/ps', ['-axo', 'pid=,ppid=,command='], { encoding: 'utf8' }).split('\n')
-    .map((r) => r.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/)).filter((m) => m && Number(m[2]) === process.pid && m[3].includes('--openfilm-browser='));
+    .map((r) => r.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/)).filter((m) => m && Number(m[2]) === process.pid && m[3].includes('--orangefilm-browser='));
   assert.ok(ours.length >= 1);
   for (const m of ours) process.kill(Number(m[1]), 'SIGKILL');
   await new Promise((r) => setTimeout(r, 500));

@@ -2,11 +2,11 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * OpenFilm for desktop: one window of tabs, a project in each, Studio on the left and a chat on the right, one page
+ * OrangeFilm for desktop: one window of tabs, a project in each, Studio on the left and a chat on the right, one page
  * per tab (tabs.mjs). A project is picked in Studio's projects window (the tabs' `+`), and its tab opens; with no tab
  * open, the window's page is the projects (HOME).
  *
- * Studio is the open-source one (the `openfilm` package), run in a utility process (studio.mjs). It serves the
+ * Studio is the open-source one (the `orangefilm` package), run in a utility process (studio.mjs). It serves the
  * window's page: Studio's editor, built together with the chat beside it (shell/), on Studio's own origin, so the
  * editor works as it does in a browser and the chat is a column of the same page. What happens between them happens
  * in the page (shell/bridge.ts); this process does what only the app can: the window, the agents, files on the disk,
@@ -51,16 +51,12 @@ import { startMaterialService, startStudioBesideMaterials, packagedMaterialRoot,
 import { isDevToolsShortcut, toggleDevTools } from './dev-tools.mjs';
 import { registerOrangeIpc } from './orange-ipc.mjs';
 import { brandWindowTitle } from './brand.mjs';
-import { bridgeOrangeEnv } from 'openfilm/orange-env';
-import { studioHomeDir } from 'openfilm/locations';
-
-/* ORANGE_* wins over the legacy OPENFILM_* for every setting read below. */
-bridgeOrangeEnv();
+import { studioHomeDir } from 'orangefilm/locations';
 
 const isolation = prepareDesktopIsolation(app,process.env);
 /* macOS 未签名构建：Chromium 自己的 cookie 加密也访问钥匙串（"Chromium Safe Storage"），启动会弹窗并卡住主进程。
-   mock keychain 绕开它；确实要用钥匙串时设 OPENFILM_KEYCHAIN=1。 */
-if (process.platform === 'darwin' && process.env.OPENFILM_KEYCHAIN !== '1') {
+   mock keychain 绕开它；确实要用钥匙串时设 ORANGE_KEYCHAIN=1。 */
+if (process.platform === 'darwin' && process.env.ORANGE_KEYCHAIN !== '1') {
   app.commandLine.appendSwitch('use-mock-keychain');
 }
 /* the window's title and the name About says: brand.json's own words (brand.mjs), else the name this app had before */
@@ -73,7 +69,7 @@ const windows = process.platform === 'win32';
 /** Windows' window buttons over the top bar: the board's color, and the text's */
 const overlayColours = (t) => ({ color: t === 'dark' ? '#111114' : '#e9e9eb', symbolColor: t === 'dark' ? '#ebebed' : '#161619', height: 32 });
 
-/* HTML-in-Canvas in Studio's viewer, as in the renderer (the `openfilm` package's src/host.mjs) */
+/* HTML-in-Canvas in Studio's viewer, as in the renderer (the `orangefilm` package's src/host.mjs) */
 app.commandLine.appendSwitch('enable-blink-features', 'CanvasDrawElement');
 if (mac) {
   /* Flush small Canvas2D batches: blur on hundreds of strokes otherwise queues gigabytes of intermediate
@@ -137,7 +133,7 @@ const MATERIAL_CHECKOUT = app.isPackaged ? packagedMaterialRoot(process.resource
 /* 凭据的三个来源，按优先级：显式 env（部署方能放任何可写位置）、应用数据目录（安装后用户放一次）、
    开发检出的 .dev（原来唯一的位置——打包后它在只读的 resources 里，等于永远没有）。 */
 const MATERIAL_CREDENTIALS = (() => {
-  const explicit = String(process.env.OPENFILM_MATERIAL_CREDENTIALS ?? '').trim();
+  const explicit = String(process.env.ORANGE_MATERIAL_CREDENTIALS ?? '').trim();
   if (explicit) return explicit;
   /* apps/api 的凭据位置有自己的硬规则：路径里必须有 `.dev` 段（credentials.ts assertIgnoredLocation），
      所以安装后的凭据放在 `<userData>/.dev/zhishang/`，与开发检出同一形状。 */
@@ -159,11 +155,11 @@ try {
   }
 } catch { /* read-only data dir: apps/api reports it instead */ }
 /* 素材索引落在可写的数据目录（安装后 resources 只读）；Studio 的索引路由与后台构建读同一个 env。 */
-const MATERIAL_INDEX_DIR = String(process.env.OPENFILM_MATERIAL_INDEX_DIR ?? '').trim() || join(DATA, 'material-index');
+const MATERIAL_INDEX_DIR = String(process.env.ORANGE_MATERIAL_INDEX_DIR ?? '').trim() || join(DATA, 'material-index');
 
 /**
  * 素材索引的首次构建/过期重建：后台游离进程，失败不影响窗口。
- * 它读 Studio 的 run.json（OPENFILM_DEV_HOME 指向 Studio 的 home），落盘到 MATERIAL_INDEX_DIR ——
+ * 它读 Studio 的 run.json（ORANGE_DEV_HOME 指向 Studio 的 home），落盘到 MATERIAL_INDEX_DIR ——
  * 与 Studio 的索引路由同一个目录。
  */
 function startMaterialIndexBootstrap() {
@@ -173,7 +169,7 @@ function startMaterialIndexBootstrap() {
   try {
     const child = spawn(process.execPath, [script, '--detach', '--dir', MATERIAL_INDEX_DIR], {
       detached: true, stdio: 'ignore', windowsHide: true,
-      env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR, OPENFILM_DEV_HOME: home },
+      env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', ORANGE_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR, ORANGE_DEV_HOME: home },
     });
     child.unref();
     log(`material index: started in the background (${MATERIAL_INDEX_DIR})\n`);
@@ -444,7 +440,7 @@ function closeGoneTabs() {
 }
 
 /**
- * Studio's "open this project" (`openfilm open`, File › Open Project…), heard by every page at once: once only. Its
+ * Studio's "open this project" (`orangefilm open`, File › Open Project…), heard by every page at once: once only. Its
  * tab comes to the front, opened if it is not.
  */
 let lastOpen = { to: '', at: 0 };
@@ -520,8 +516,8 @@ async function openProjectFolder() {
 
 /* the own key, sealed with the system's keychain where there is one (Windows DPAPI; macOS Keychain only when asked).
    macOS 未签名构建访问钥匙串会卡住主进程等用户点“允许”，窗口就黑在那里——默认在 macOS 上走 0600 文件式密钥，
-   签名之后再用 OPENFILM_KEYCHAIN=1 打开钥匙串。 */
-const keychainSealing = () => process.platform !== 'darwin' || process.env.OPENFILM_KEYCHAIN === '1';
+   签名之后再用 ORANGE_KEYCHAIN=1 打开钥匙串。 */
+const keychainSealing = () => process.platform !== 'darwin' || process.env.ORANGE_KEYCHAIN === '1';
 const seal = (text) => (keychainSealing() && safeStorage.isEncryptionAvailable() ? Buffer.concat([Buffer.from('enc:'), safeStorage.encryptString(text)]) : Buffer.from(`raw:${text}`));
 const unseal = (data) => {
   const kind = data.subarray(0, 4).toString();
@@ -577,10 +573,10 @@ async function runStudio(env) {
   await stopMaterials();
   /* Studio serves the window's page as its editor (shell/: its editor with the chat beside it) */
   /* its diagnostic file takes the app's own logs too (Studio's diagnostics.mjs) */
-  const studioEnv = { ...env, OPENFILM_EDITOR_DIR: windowEditorDirectory({packaged:app.isPackaged,isolated:Boolean(isolation),explicit:process.env.OPENFILM_EDITOR_DIR,bundled:here('../shell/dist/')}), OPENFILM_APP_LOGS: LOGS };
+  const studioEnv = { ...env, ORANGE_EDITOR_DIR: windowEditorDirectory({packaged:app.isPackaged,isolated:Boolean(isolation),explicit:process.env.ORANGE_EDITOR_DIR,bundled:here('../shell/dist/')}), ORANGE_APP_LOGS: LOGS };
   const studioOptions = {
     onAsk: answerStudio,
-    home: env.OPENFILM_HOME,
+    home: env.ORANGE_HOME,
     port: isolation?.ports.studio ?? IDENTITY.studioPort,
     log,
     onAuth: (next, scope) => {
@@ -732,38 +728,38 @@ async function start() {
   if (authRuntime.error) console.error(`[auth] ${authRuntime.code}: ${authRuntime.message}`);  const env = childEnvironment({
     shell: shellEnv,
     extra: {
-      OPENFILM_HOME: IDENTITY.studioHome ?? studioHomeDir(),
+      ORANGE_HOME: IDENTITY.studioHome ?? studioHomeDir(),
       /* 素材索引的落点：Studio 的索引路由要读同一份（后台构建见 startMaterialIndexBootstrap）。 */
-      OPENFILM_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR,
+      ORANGE_MATERIAL_INDEX_DIR: MATERIAL_INDEX_DIR,
       ...(() => {
-        const tenant = process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT
-          ?? (process.env.OPENFILM_DESKTOP_FLAVOR === 'dev' ? 'tenant-a' : null);
-        const key = process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'OPENFILM_MEDIA_TENANT';
+        const tenant = process.env.ORANGE_MEDIA_TENANT ?? process.env.ORANGE_MEDIA_TENANT
+          ?? (process.env.ORANGE_DESKTOP_FLAVOR === 'dev' ? 'tenant-a' : null);
+        const key = process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'ORANGE_MEDIA_TENANT';
         return tenant ? { [key]: tenant } : {};
       })(),
-      ...(process.env.OPENFILM_EMBED_MODE ? { OPENFILM_EMBED_MODE: process.env.OPENFILM_EMBED_MODE } : {}),
-      ...(process.env.OPENFILM_EMBED_ENDPOINT ? { OPENFILM_EMBED_ENDPOINT: process.env.OPENFILM_EMBED_ENDPOINT } : {}),
-      ...((IDENTITY.library ?? process.env.OPENFILM_LIBRARY) ? { OPENFILM_LIBRARY: IDENTITY.library ?? process.env.OPENFILM_LIBRARY } : {}),
+      ...(process.env.ORANGE_EMBED_MODE ? { ORANGE_EMBED_MODE: process.env.ORANGE_EMBED_MODE } : {}),
+      ...(process.env.ORANGE_EMBED_ENDPOINT ? { ORANGE_EMBED_ENDPOINT: process.env.ORANGE_EMBED_ENDPOINT } : {}),
+      ...((IDENTITY.library ?? process.env.ORANGE_LIBRARY) ? { ORANGE_LIBRARY: IDENTITY.library ?? process.env.ORANGE_LIBRARY } : {}),
       /* a flavour with a home of its own still shares the person's library (src/locations.mjs) */
-      ...(IDENTITY.sharedHome ? { OPENFILM_SHARED_HOME: IDENTITY.sharedHome } : {}),
+      ...(IDENTITY.sharedHome ? { ORANGE_SHARED_HOME: IDENTITY.sharedHome } : {}),
       /* the app names Studio's home, which would put exports inside it (Studio's rule for a home kept apart): the
-         Desktop, where `openfilm` puts them, unless this is a flavour with a home of its own */
-      ...(IDENTITY.studioHome || process.env.OPENFILM_EXPORTS ? {} : { OPENFILM_EXPORTS: app.getPath('desktop') }),
+         Desktop, where `orangefilm` puts them, unless this is a flavour with a home of its own */
+      ...(IDENTITY.studioHome || process.env.ORANGE_EXPORTS ? {} : { ORANGE_EXPORTS: app.getPath('desktop') }),
       /* another examples index (a file, to try one), passed through when run from source */
-      ...(process.env.OPENFILM_EXAMPLES_INDEX ? { OPENFILM_EXAMPLES_INDEX: process.env.OPENFILM_EXAMPLES_INDEX } : {}),
-      /* another OpenFilm service (a local one, to develop it), passed through when run from source */
-      ...(process.env.OPENFILM_API_URL ? { OPENFILM_API_URL: process.env.OPENFILM_API_URL } : {}),
+      ...(process.env.ORANGE_EXAMPLES_INDEX ? { ORANGE_EXAMPLES_INDEX: process.env.ORANGE_EXAMPLES_INDEX } : {}),
+      /* another OrangeFilm service (a local one, to develop it), passed through when run from source */
+      ...(process.env.ORANGE_API_URL ? { ORANGE_API_URL: process.env.ORANGE_API_URL } : {}),
       ...(authRuntime?.file ? { ORANGE_AUTH_CONFIG_FILE: authRuntime.file } : {}),
       /* and, when there is none, why: an installed app whose installer is incomplete says so in the window, instead of
          asking its user to provide a configuration they have no way to provide */
-      ...(authRuntime?.error ? { OPENFILM_AUTH_ENV_REASON: authEnvironmentReason(authRuntime.code) } : {}),
+      ...(authRuntime?.error ? { ORANGE_AUTH_ENV_REASON: authEnvironmentReason(authRuntime.code) } : {}),
       ...(fissionConfig ? { ORANGE_FISSION_CONFIG_FILE: fissionConfig } : {}),
     },
   });
 
 
   /* what the installer brings (scripts/release.mjs): ffmpeg and ffprobe, first on the PATH of Studio and of the
-     agents' `openfilm` command, and the headless browser Studio and `openfilm` draw pages in. A build without them
+     agents' `orangefilm` command, and the headless browser Studio and `orangefilm` draw pages in. A build without them
      (from source): no ffmpeg on this computer, the app's own goes first on the PATH and is downloaded once the window
      is up (they find it the moment it lands); the browser, Studio downloads the first time (studio-process.mjs) */
   const runtime = app.isPackaged ? join(process.resourcesPath, 'runtime') : null;
@@ -813,7 +809,7 @@ async function start() {
     showMenu();
   });
   /* our own channels — the account UI's state and the shared material draft — registered by their one entry
-     (orange-ipc.mjs); OpenFilm's own (the chat, the agents, the skills, the tabs) keep the registrations below */
+     (orange-ipc.mjs); OrangeFilm's own (the chat, the agents, the skills, the tabs) keep the registrations below */
   registerOrangeIpc({
     ipcMain,
     isAllowed: (event) => fromShell(event) && viewGenerationFence.isCurrent(event.sender, authUiGeneration),
@@ -882,11 +878,11 @@ async function start() {
   /* a tab left behind long enough lets its page go; it comes back when shown */
   setInterval(() => { for (const id of tabs?.idle(IDLE_PAGE_MS) ?? []) dropView(id); }, 60_000).unref?.();
 
-  /* the agents: Studio's home and library go with them, so the `openfilm` they run finds this window's Studio */
-  /* the person's own skills: Skills/ beside this app's projects (~/Movies/OpenFilm/Skills), as its `openfilm` finds them */
-  /* which official skills are installed and which skills are off: the prefs.json every OpenFilm here shares (openfilm/skills usableSkills) */
-  const prefsHome = env.OPENFILM_SHARED_HOME || env.OPENFILM_HOME;
-  const mySkills = process.env.OPENFILM_SKILLS || (env.OPENFILM_LIBRARY ? join(dirname(env.OPENFILM_LIBRARY), 'Skills') : (await import('openfilm/skills')).mySkillsDir());
+  /* the agents: Studio's home and library go with them, so the `orangefilm` they run finds this window's Studio */
+  /* the person's own skills: Skills/ beside this app's projects (~/Movies/OrangeFilm/Skills), as its `orangefilm` finds them */
+  /* which official skills are installed and which skills are off: the prefs.json every OrangeFilm here shares (orangefilm/skills usableSkills) */
+  const prefsHome = env.ORANGE_SHARED_HOME || env.ORANGE_HOME;
+  const mySkills = process.env.ORANGE_SKILLS || (env.ORANGE_LIBRARY ? join(dirname(env.ORANGE_LIBRARY), 'Skills') : (await import('orangefilm/skills')).mySkillsDir());
   localAgents = registerLocalAgentIpc(ipcMain, {
     trusted: event => fromPage(event) && desktopAuthActive,
     log,
@@ -895,20 +891,20 @@ async function start() {
     /* a tab says when its agent waits for the person's answer */
     onAsking: (folders) => void tellTabsWorking({ asking: folders }),
     onConnectionResult: (id, error) => roster?.recordConnectionResult(id, error),
-    /* the `openfilm` command first (with the app's ffmpeg and browser in it); the app's ffmpeg last, for a computer
+    /* the `orangefilm` command first (with the app's ffmpeg and browser in it); the app's ffmpeg last, for a computer
        that has none of its own: the person's own ffmpeg and browsers are what the agent's commands use */
     binDir: installOpenfilmCommand(DATA, { ffmpeg: ffmpegHere, env: { ...browsers, ...(isolation ? isolationEnvironment(isolation) : {}) } }),
     fallbackDir: ffmpegHere,
     env: {
       ...(isolation ? isolationEnvironment(isolation) : {}),
-      OPENFILM_HOME: env.OPENFILM_HOME,
-      ...(env.OPENFILM_LIBRARY ? { OPENFILM_LIBRARY: env.OPENFILM_LIBRARY } : {}),
-      ...(env.OPENFILM_SHARED_HOME ? { OPENFILM_SHARED_HOME: env.OPENFILM_SHARED_HOME } : {}),
+      ORANGE_HOME: env.ORANGE_HOME,
+      ...(env.ORANGE_LIBRARY ? { ORANGE_LIBRARY: env.ORANGE_LIBRARY } : {}),
+      ...(env.ORANGE_SHARED_HOME ? { ORANGE_SHARED_HOME: env.ORANGE_SHARED_HOME } : {}),
     },
     harness: async (id) => roster?.harness(id) ?? null,
     /* Developer mode: an agent whose own record lacks what its model got logs it here (agent-logs.mjs) */
     logDir: () => (readPreferences(DATA).developer ? join(DATA, 'agent-logs') : null),
-    /* each session's skills: its maker's, OpenFilm's, and of the person's own those let in (agent-skills.mjs) */
+    /* each session's skills: its maker's, OrangeFilm's, and of the person's own those let in (agent-skills.mjs) */
     skills: { dataDir: DATA, mine: mySkills, prefsHome },
   });
   /* the composer's Skills button */
@@ -918,7 +914,7 @@ async function start() {
     dataDir: DATA,
     mine: mySkills,
     prefsHome,
-    oldMine: join(env.OPENFILM_HOME, 'skills'),
+    oldMine: join(env.ORANGE_HOME, 'skills'),
     reveal: (path) => { void shell.openPath(path); },
     pickFolder: (words) => pickFolder(words),
     refreshSkills: (agent) => localAgents?.refreshSkills(agent),
@@ -960,7 +956,7 @@ async function start() {
   agentHandle('desktop:agents:cancel-sign-in', ({ id }) => { roster.cancelSignIn(String(id)); return { ok: true }; });
   agentHandle('desktop:agents:disconnect', ({ id }) => { roster.disconnect(String(id)); return { ok: true }; });
   agentHandle('desktop:agents:switch-account', ({ id }) => roster.switchAccount(String(id)));
-  /* what is left of Claude Code's and Codex's plan, on OpenFilm's sign-in (agent-usage.mjs); null when it can't say */
+  /* what is left of Claude Code's and Codex's plan, on OrangeFilm's sign-in (agent-usage.mjs); null when it can't say */
   agentHandle('desktop:agents:usage', ({ id, fresh }) => agentUsage(String(id), { fresh: fresh === true }));
   agentHandle('desktop:agents:locate', ({ id, words }) => roster.locate(String(id), words));
   agentHandle('desktop:agents:automatic', ({ id }) => roster.useAutomatic(String(id)));
@@ -977,7 +973,7 @@ async function start() {
     electron: process.versions.electron, pathSource: lastPathSource(),
   });
   agentHandle('desktop:agents:report', appReport);
-  /* the chat's "Copy diagnostic report" by a turn that failed: what Studio's report has (`openfilm doctor`, with the
+  /* the chat's "Copy diagnostic report" by a turn that failed: what Studio's report has (`orangefilm doctor`, with the
      last week's problems) and the app's agents, on the clipboard (the chat's page may not be let write it) */
   agentHandle('desktop:diagnostics:copy', async () => {
     const [computer, own] = await Promise.all([

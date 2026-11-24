@@ -188,9 +188,9 @@ const STROKE: MaskStroke = { width: 0.5, color: '#ff3b30', position: 'center' };
 test('a stroke is a filter drawn over the picture, and a mask layer for what is past the edge', () => {
   const m = { ...maskDefault('ellipse', BOX), w: 40, h: 60 };
   const css = maskCss(reader({}), m, BOX, STROKE)!;
-  assert.match(css.filter!, /^url\("data:image\/svg\+xml,%3Csvg xmlns='http:\/\/www.w3.org\/2000\/svg'%3E%3Cfilter id='openfilm-mask-stroke' x='0' y='0' width='1' height='1' primitiveUnits='objectBoundingBox'/);
+  assert.match(css.filter!, /^url\("data:image\/svg\+xml,%3Csvg xmlns='http:\/\/www.w3.org\/2000\/svg'%3E%3Cfilter id='orangefilm-mask-stroke' x='0' y='0' width='1' height='1' primitiveUnits='objectBoundingBox'/);
   assert.match(css.filter!, /feImage href='data:image\/svg\+xml;base64,[A-Za-z0-9+/=]+'/);
-  assert.ok(css.filter!.endsWith(`#openfilm-mask-stroke")`));
+  assert.ok(css.filter!.endsWith(`#orangefilm-mask-stroke")`));
   assert.deepEqual(maskStrokeOf(css.filter!), STROKE);
   /* across the edge: one more layer, added above the shape */
   const layers = maskLayersOf(css['mask-image']!);
@@ -270,9 +270,9 @@ test('faded edges and a stroked shape share mask-image: the stroke stays with th
 });
 
 test('a stroke filter that is not readable, or a filter written by hand, takes no stroke', () => {
-  assert.equal(maskStrokeOf('url("data:image/svg+xml,%3Csvg/%3E#openfilm-mask-stroke")'), null);
+  assert.equal(maskStrokeOf('url("data:image/svg+xml,%3Csvg/%3E#orangefilm-mask-stroke")'), null);
   /* a filter of the page's own with that id is the page's: kept as written */
-  const own = 'url(#openfilm-mask-stroke)';
+  const own = 'url(#orangefilm-mask-stroke)';
   assert.equal(maskStrokeOf(own), undefined);
   assert.equal(maskCss(reader({ filter: own }), maskDefault('ellipse', BOX), BOX, STROKE)!.filter!.startsWith(`${own} url("data:`), true);
   assert.equal(maskStrokeOf('blur(2px)'), undefined);

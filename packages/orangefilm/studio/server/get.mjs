@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * `openfilm get`: media for a project (voice-over, music, sound effects, transcripts, pictures, video) from a provider
+ * `orangefilm get`: media for a project (voice-over, music, sound effects, transcripts, pictures, video) from a provider
  * the person connected with their own key (providers/). The CLI sends the verb and its options to Studio (`/api/get`);
  * here they are checked, a provider is picked (`--via`, else the person's choice in Studio's Settings; none chosen,
  * nothing runs), it runs, and what comes back lands in the project: files under assets/ only, and timed speech's
@@ -24,7 +24,7 @@
  * a chat (`askAgent`), else it goes through the provider chosen for `translate`.
  *
  * Web search and reading web pages (WEB_VERBS) are listed only for an agent without web tools of its own: the app's
- * own agents say so with OPENFILM_GET_WEB=1 (the CLI asks for them); an agent like Claude Code or Codex searches with
+ * own agents say so with ORANGE_GET_WEB=1 (the CLI asks for them); an agent like Claude Code or Codex searches with
  * its own. Either can run them.
  */
 import { execFile } from 'node:child_process';
@@ -120,7 +120,7 @@ export const VERBS = /** @type {Record<string, VerbSpec>} */ ({
       frames: { value: 'n', min: 2, max: 16, integer: true, default: 9 }, 'frame-ms': { value: 'ms', min: 20, max: 2000, integer: true, default: 200 } },
   },
   video: {
-    help: 'Make one video clip. --resolution 480p to 4K, as the model makes them (720p, or its nearest, when not asked): a bigger one costs more. Returns src, dur, its size and preview frames. It spends a lot: the person confirms it in Studio first (--yes when they already agreed). The same request again returns the same clip; --force makes a new one. A person who speaks on screen speaks in the clip, the voice and the lips made together, never a voice laid over a clip made without it: write the words in the prompt, in quotes, and keep the clip\'s own sound (--voice gives a recording of whose voice it is, the same across clips); or give a recording with --audio and the lips follow it word for word (at fal: omnihuman-v2 or kling-avatar-v2 from a picture of the person, --first-frame; sync-3 for a clip, --video). --video makes it from a clip in the project, trimmed to the part to make again (references/ is the place for another\'s footage); what it keeps is the model\'s way, chosen with --model: at fal, kling-o3-edit changes what the prompt names and keeps the rest; kling-o3-reference makes a new clip with its camera and motion; seedance-2.0 takes it as a reference (@Video1 in the prompt); luma-ray-3.2 redraws it, its performance kept; minimax-h3-max-recast puts the people of --input-reference in place of its own, one picture each; at OpenRouter, a Seedance model takes it as a reference too, given a web address (OpenFilm\'s service gives one; your own key cannot); at Google and OpenRouter, gemini-omni-1.2-flash edits it as the prompt says, or continues it when the prompt asks (a clip of 15 s at most to edit, 30 s in all once continued; --duration: the 3 to 10 s a continuation adds, else the clip\'s own length).',
+    help: 'Make one video clip. --resolution 480p to 4K, as the model makes them (720p, or its nearest, when not asked): a bigger one costs more. Returns src, dur, its size and preview frames. It spends a lot: the person confirms it in Studio first (--yes when they already agreed). The same request again returns the same clip; --force makes a new one. A person who speaks on screen speaks in the clip, the voice and the lips made together, never a voice laid over a clip made without it: write the words in the prompt, in quotes, and keep the clip\'s own sound (--voice gives a recording of whose voice it is, the same across clips); or give a recording with --audio and the lips follow it word for word (at fal: omnihuman-v2 or kling-avatar-v2 from a picture of the person, --first-frame; sync-3 for a clip, --video). --video makes it from a clip in the project, trimmed to the part to make again (references/ is the place for another\'s footage); what it keeps is the model\'s way, chosen with --model: at fal, kling-o3-edit changes what the prompt names and keeps the rest; kling-o3-reference makes a new clip with its camera and motion; seedance-2.0 takes it as a reference (@Video1 in the prompt); luma-ray-3.2 redraws it, its performance kept; minimax-h3-max-recast puts the people of --input-reference in place of its own, one picture each; at OpenRouter, a Seedance model takes it as a reference too, given a web address (OrangeFilm\'s service gives one; your own key cannot); at Google and OpenRouter, gemini-omni-1.2-flash edits it as the prompt says, or continues it when the prompt asks (a clip of 15 s at most to edit, 30 s in all once continued; --duration: the 3 to 10 s a continuation adds, else the clip\'s own length).',
     dir: 'assets/video', timeoutSec: 1200,
     options: { out, prompt, force: {}, duration: { value: 'seconds', min: 2, max: 30, integer: true, default: 5 },
       resolution: { value: 'size', choices: ['480p', '720p', '768p', '1080p', '2K', '4K'] },
@@ -153,7 +153,7 @@ export const VERBS = /** @type {Record<string, VerbSpec>} */ ({
 export const WEB_VERBS = ['web-search', 'web-fetch'];
 
 /** Where the person connects a service and picks its models, said the same way everywhere. */
-export const WHERE_TO_CONNECT = 'In Studio, the OpenFilm logo at the top left opens Settings: under Services the person chooses the model '
+export const WHERE_TO_CONNECT = 'In Studio, the OrangeFilm logo at the top left opens Settings: under Services the person chooses the model '
   + 'for each kind of media, and connects its service there (signing in, or with their own key).';
 /** The services that make `verb`, by name: "fal.ai, Google or OpenAI". @param {string} verb */
 const makers = (verb) => {
@@ -165,14 +165,14 @@ const notConnected = (verbs) => `Not connected here: ${verbs.map((v) => `${v} ($
   + `Each works only once the person connects a service that makes it. ${WHERE_TO_CONNECT}`;
 /** Whether any of the services, connected or not, can make `verb`. */
 const offered = (/** @type {string} */ verb) => listProviders().some((p) => /** @type {readonly string[]} */ (p.verbs).includes(verb));
-/** The whole of `openfilm get` when nothing is connected. */
+/** The whole of `orangefilm get` when nothing is connected. */
 const nothing = () => 'Nothing is connected for media here: each kind works only once the person connects a service that makes it (below). '
-  + 'Until then, take what OpenFilm\'s own library has (its verbs are free and need nothing connected), make sound and pictures in code, '
+  + 'Until then, take what OrangeFilm\'s own library has (its verbs are free and need nothing connected), make sound and pictures in code, '
   + 'or use a service the person has a key for (with its API docs), and save them under assets/. '
-  + `\`openfilm get <what> --help\` shows what one kind takes (${Object.keys(VERBS).filter((v) => !WEB_VERBS.includes(v) && offered(v)).join(', ')}).`;
+  + `\`orangefilm get <what> --help\` shows what one kind takes (${Object.keys(VERBS).filter((v) => !WEB_VERBS.includes(v) && offered(v)).join(', ')}).`;
 
 /** What `call` says when the person has added no service of their own. */
-const NO_OWN_SERVICES = 'The person has added no services of their own. In Studio, the OpenFilm logo at the top left opens Settings: '
+const NO_OWN_SERVICES = 'The person has added no services of their own. In Studio, the OrangeFilm logo at the top left opens Settings: '
   + 'they add one under Services (its address, its key if it takes one, and what it does).';
 
 /** Each kind of media, in words (finding voices is part of voice-over). */
@@ -191,7 +191,7 @@ export const services = () => `Media services, each used with the person's own k
 const ADD_ONE = () => `A service not listed is added as a provider: ${join(addedDir(), '<id>', 'provider.mjs')}, whose default export follows `
   + `${fileURLToPath(new URL('./providers/contract.mjs', import.meta.url))} (as ${fileURLToPath(new URL('./providers/openrouter.mjs', import.meta.url))} does), `
   + 'written from the service\'s API docs; once the person adds its key in Settings → Services, it makes media like the others, on the canvas too. '
-  + 'Try it with `openfilm get <verb> --via <id>`.';
+  + 'Try it with `orangefilm get <verb> --via <id>`.';
 
 /** How long the person has to answer a question about spending. */
 const ASK_WAIT_MS = 15 * 60_000;
@@ -444,7 +444,7 @@ async function speechOf(abs, signal, speechFormat) {
     : ext === '.mp3' ? { codec: ['-c:a', 'libmp3lame', '-b:a', '32k'], f: 'mp3' }
     : ext === '.wav' ? { codec: ['-c:a', 'pcm_s16le'], f: 'wav' }
     : { codec: ['-c:a', 'libopus', '-b:a', '24k'], f: ext === '.webm' ? 'webm' : 'matroska' };
-  const dir = await mkdtemp(join(tmpdir(), 'openfilm-speech-'));
+  const dir = await mkdtemp(join(tmpdir(), 'orangefilm-speech-'));
   const to = join(dir, `speech${ext || '.mka'}`);
   try {
     await new Promise((done, fail) => {
@@ -729,7 +729,7 @@ export function createAsks(pages) {
  *                           { ok: false, code, text, reason? }: code 2, not a project or a wrong command; 1, it did not run
  *                           (`reason` 'balance': the service's account had too little left)
  *   POST /api/get/asks/:id  { allow } → { answered }: the person's answer to a question about spending
- *   POST /api/get/library   { verb, args } → { code, lines }: a search of OpenFilm's own library (src/library-search.mjs),
+ *   POST /api/get/library   { verb, args } → { code, lines }: a search of OrangeFilm's own library (src/library-search.mjs),
  *                           answered with the library and its model kept loaded here, so it takes milliseconds
  * @param {Req} req @param {Res} res @param {string[]} parts the path after /api/get @param {ReturnType<typeof createAsks>} asks
  */
@@ -756,7 +756,7 @@ export async function getRoute(req, res, parts, asks) {
   res.once('close', () => { if (!res.writableEnded) controller.abort(); });
   try {
     const root = resolve(String(body.folder ?? ''));
-    if (!(await stat(join(root, FILM_FILE)).catch(() => null))?.isFile()) throw usage(`${root} is not a project; \`openfilm open\` makes one`);
+    if (!(await stat(join(root, FILM_FILE)).catch(() => null))?.isFile()) throw usage(`${root} is not a project; \`orangefilm open\` makes one`);
     const given = body.args && typeof body.args === 'object' && !Array.isArray(body.args) ? /** @type {Record<string, unknown>} */ (body.args) : {};
     const text = await runGet(root, String(body.verb ?? ''), given, {
       ...(typeof body.via === 'string' && body.via ? { via: body.via } : {}),

@@ -46,15 +46,15 @@ if (platform === 'win32') {
   const roaming = env.APPDATA ?? join(home, 'AppData', 'Roaming');
   add(join(local, 'Programs', 'OpenFilm'), 'install', '旧版 Windows 安装目录');
   add(join(local, 'openfilm-updater'), 'install', '旧版增量更新缓存');
-  add(join(roaming, 'openfilm'), 'config', '旧版 Electron userData');
+  add(join(roaming, 'orangefilm'), 'config', '旧版 Electron userData');
   add(join(roaming, 'OpenFilm'), 'config', '旧版 Electron userData（大小写别名）');
   add(join(roaming, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'OpenFilm.lnk'), 'install', '开始菜单快捷方式');
   add(join(roaming, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'OpenFilm'), 'install', '开始菜单文件夹');
 } else if (platform === 'darwin') {
   add('/Applications/OpenFilm.app', 'install', '旧版 macOS 应用');
   add(join(home, 'Library', 'Application Support', 'OpenFilm'), 'config', '旧版 Application Support');
-  add(join(home, 'Library', 'Application Support', 'openfilm'), 'config', '旧版 Application Support（小写）');
-  add(join(home, 'Library', 'Caches', 'openfilm'), 'cache', '旧版缓存');
+  add(join(home, 'Library', 'Application Support', 'orangefilm'), 'config', '旧版 Application Support（小写）');
+  add(join(home, 'Library', 'Caches', 'orangefilm'), 'cache', '旧版缓存');
   add(join(home, 'Library', 'Caches', 'OpenFilm'), 'cache', '旧版缓存（大小写别名）');
   add(join(home, 'Library', 'Preferences', 'dev.openfilm.desktop.plist'), 'config', '旧版偏好设置');
   add(join(home, 'Library', 'Preferences', 'dev.openfilm.desktop.helper.plist'), 'config', '旧版偏好设置（helper）');

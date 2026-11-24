@@ -1,10 +1,11 @@
 # OpenFilm → OrangeFilm 全量改造计划
 
-状态：待执行（2026-11-24）。基线 `909f1dc`。本计划取代 `docs/decisions/naming.md` 里"分五个发布周期
-逐步兼容"的旧路线：操作者已明确放弃对旧 `openfilm` 运行时、旧配置、旧安装的兼容，源码与构建产物
-一次性收敛到 OrangeFilm。
+状态：**P0–P5 已实施，P6 待执行**（2026-11-24，分支 `orangefilm-clean-break`，基线 `909f1dc`）。
+本计划取代 `docs/decisions/naming.md` 里"分五个发布周期逐步兼容"的旧路线：操作者已明确放弃对旧
+`openfilm` 运行时、旧配置、旧安装的兼容，源码与构建产物一次性收敛到 OrangeFilm。
 
-配套清单：[inventory.md](inventory.md)（`node scripts/inventory-openfilm.mjs` 生成，可重复跑）。
+配套清单：改造前 [inventory.md](inventory.md)、改造后 [inventory-after.md](inventory-after.md)
+（`node scripts/inventory-openfilm.mjs` 生成，可重复跑）。
 
 ---
 
@@ -231,3 +232,36 @@
 2. 产品名英文 `OrangeFilm`、中文 `橙子创作中心`，appId `com.orange.studio`（`brand.json` 已如此）。
 3. 不发布 npm `openfilm`，`orangefilm` 包名暂只做内部分发。
 4. Mac 侧清理由本人在 Mac 上执行同一脚本；本工作区只处理 Windows。
+
+---
+
+## 7. 实施记录（2026-11-24）
+
+分支 `orangefilm-clean-break`，基线 `909f1dc`（P0 计划提交 `f2df2a1`）。回滚：`git reset --hard 909f1dc`，
+或在别的分支上 `git checkout 909f1dc -- .`；分支本身保留，不推送。
+
+### 已完成
+
+| 阶段 | 落地内容 |
+|---|---|
+| P0 | 清单脚本、护栏脚本、决策文档改为 clean break |
+| P1 | `OPENFILM_*`→`ORANGE_*`（含测试里的动态变量名）、模块说明符→`orangefilm`、删 `orange-env` 桥接、删 `openfilm` npm 别名与旧 bin、改名 `bin/orangefilm.mjs` |
+| P2 | `defaultStudioHome()` 恒为 `~/.orangefilm`，删迁移标记回退；旧主目录只作为一次性导入源 |
+| P3 | MCP 前缀只认 `orangefilm`、provider id → `orangefilm`、技能元数据 `orangefilm.json`（读旧写新）、localStorage 键、agent 定义键 |
+| P4 | `resources/orangefilm` 单份、打包只装 `node_modules/orangefilm`、CSS 类前缀 `orangefilm-*`、文件改名、CI 发布门指向 `jerry-halo2026/orange`、签名 secret 支持 `ORANGE_SIGN_IDENTITY` |
+| P5 | 产品文案 `OrangeFilm`、维护文档与链接、示例项目引用 |
+
+### 验证
+
+- `node scripts/rename-guard.mjs`：0 命中（历史证据、许可、旧主目录导入、清理脚本按规则豁免）。
+- `pnpm test`：`packages/orangefilm` 全绿；`packages/shared` 全绿；`apps/desktop` 剩 2 个用例失败，
+  经基线复核（`git stash` 后在同一基线跑）同样失败，与本次改名无关：
+  `src/display-name.test.mjs`（react ESM 的 require）、`src/material-draft-main-lifecycle.test.mjs`（沙箱缺 `startMaterialIndexBootstrap`）。
+- `pnpm audit:public --no-secrets`：删除 `_scratch` 后 0 findings。
+- 期间修掉两个自己引入的问题：`skills.mjs` 的 `metadataPath` 未定义（技能封面读不到）、Studio UI 用了中间态构建产物。
+
+### 未做（需要单独决定）
+
+- P6 本机清理：`node scripts/cleanup-legacy-openfilm.mjs --apply`（先跑 dry-run）。`~/.openfilm` 现有 1.6 GB，
+  library 1.3 GB 属用户数据，默认不删。
+- npm 发布保持关闭（`vars.NPM_PUBLISH` 未设为 `true` 时 release.yml 不跑）。

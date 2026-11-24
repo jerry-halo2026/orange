@@ -1,6 +1,6 @@
 {
   "version": "0.1.3",
-  "repository": "https://github.com/openfilm/skill-replicate/tree/main/skills/replicate",
+  "repository": "https://github.com/orangefilm/skill-replicate/tree/main/skills/replicate",
   "kind": "workflow",
   "icon": "copy",
   "cover": "cover.jpg",

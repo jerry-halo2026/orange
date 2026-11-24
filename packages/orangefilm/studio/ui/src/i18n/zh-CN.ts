@@ -171,7 +171,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
     goneApp: 'Studio 已停止运行。退出并重新打开 {brand} 应用即可恢复。',
     copied: '已复制',
     lockedTitle: '这个浏览器还没有登录 Studio',
-    lockedBody: 'Studio 正在运行，但只接受用带 key 的地址打开过一次的浏览器。请打开 `openfilm open`（开发时是 `pnpm dev`）打印的完整地址，也就是带 ?key= 的那个；打开一次之后，这个浏览器就能直接用 Studio 的地址了。',
+    lockedBody: 'Studio 正在运行，但只接受用带 key 的地址打开过一次的浏览器。请打开 `orangefilm open`（开发时是 `pnpm dev`）打印的完整地址，也就是带 ?key= 的那个；打开一次之后，这个浏览器就能直接用 Studio 的地址了。',
     lockedHow: '想重新拿到地址，运行',
   },
   projects: {
@@ -1027,7 +1027,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
     discoverNone: '发现里还没有技能。',
     mineEmptyTitle: '还没有导入的技能',
     mineEmpty: '从技能索引或本地文件夹导入，导入后所有项目都能用。',
-    mineEmptyCli: '在终端运行 openfilm skill add，从技能索引或文件夹导入，所有项目都能用。',
+    mineEmptyCli: '在终端运行 orangefilm skill add，从技能索引或文件夹导入，所有项目都能用。',
     mineImport: '导入技能',
     communityEmptyTitle: '还没有安装社区技能',
     communityEmpty: '现成的做某一类片子的方式。从发现里安装后，智能体会照着做。',
@@ -2342,7 +2342,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
     delete: '删除',
     cancel: '取消',
   },
-  /* what an agent's `openfilm get` asks before it spends (see SpendAsks) */
+  /* what an agent's `orangefilm get` asks before it spends (see SpendAsks) */
   asks: {
     videoTitle: '智能体想生成一段视频片段',
     videoNote: '视频是最昂贵的一类媒体。',
@@ -2436,7 +2436,7 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
       newer: '{brand} {version} 已发布。',
       upToDate: '已是最新版本。',
       source: '从源码运行：用 git pull 更新。',
-      off: '这里关闭了更新检查（OPENFILM_NO_UPDATE_CHECK）。',
+      off: '这里关闭了更新检查（ORANGE_NO_UPDATE_CHECK）。',
       never: '还没有检查过。',
       inApp: 'Studio 随桌面端一起更新：{brand} → Check for Updates…',
       howTitle: '更新',
@@ -2783,13 +2783,13 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
       downloaded: '{done} / {size}',
       count: '已安装 {n} 个',
       facts: { kind: '用途', size: '大小', memory: '运行时内存', memoryValue: '约 {n} MB', license: '许可证', where: '在哪里用' },
-      where: { asr: '转写和字幕（设置 → 服务 → 语音转写，Agent 用 openfilm get asr）：不上传任何内容。Small 在较新的电脑上约为实时的 2.5 倍速。', cutout: '把图片的背景去掉（Agent 用 openfilm get cutout）：保留图片的主体，其余变透明。' },
+      where: { asr: '转写和字幕（设置 → 服务 → 语音转写，Agent 用 orangefilm get asr）：不上传任何内容。Small 在较新的电脑上约为实时的 2.5 倍速。', cutout: '把图片的背景去掉（Agent 用 orangefilm get cutout）：保留图片的主体，其余变透明。' },
       about: { 'whisper-small': 'OpenAI 的语音识别模型（小号）：约 100 种语言准确率都不错，每个词都有时间，可直接做字幕。', 'whisper-large-v3-turbo': '最准的 Whisper：人名、中英混说更少出错，中文也更稳定；但体积更大，速度约等于实时。', 'birefnet-lite': '找出图片的主体（人、物、动物），干净地抠出来，头发边缘也能保留。' },
     },
     providers: {
       included: '支持',
       about: {
-        openfilm: '{brand} 自己的服务。连接一次 {brand} 账号，就能用领先的模型生成配音、音乐、音效、文字稿、图片和视频，从 {brand} 余额扣费，不需要别的账号或 key。',
+        orangefilm: '{brand} 自己的服务。连接一次 {brand} 账号，就能用领先的模型生成配音、音乐、音效、文字稿、图片和视频，从 {brand} 余额扣费，不需要别的账号或 key。',
         openai: 'ChatGPT 的开发者。它的 API 能用 GPT Image 生成图片，用自己的音色配音，并逐词转写语音。',
         google: 'Google 的 Gemini API（来自 Google AI Studio）：Gemini 配音与转写、Nano Banana 图片和 Veo 视频，一个 key 全部搞定。',
         azure: '微软的云服务。Azure AI Speech 提供数百种自然音色，覆盖一百多种语言。',

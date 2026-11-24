@@ -24,7 +24,7 @@ const crossings = (file, start) => {
 };
 
 test('multi-range video joins only selected frames, with matching sound and retimed sidecar captions', { skip: !hasFfmpeg, timeout: 120_000 }, async () => {
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-ranges-'));
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-ranges-'));
   const queue = createExports({ captions: async () => ({ cues: [{ startMs: 0, durMs: 500, text: 'Early' }, { startMs: 500, durMs: 700, text: 'Late' }], style: {} }) });
   try {
     writeFileSync(join(root, 'page.html'), '<!doctype html><body style="margin:0"><script>window.film={width:320,height:180,duration:1.2,frame(t){document.body.style.background=t<.5?"#e02020":"#2040e0"}}</script>');

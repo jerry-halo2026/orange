@@ -178,7 +178,7 @@ export const PromptEditor = React.forwardRef<PromptEditorHandle, PromptEditorPro
 
     const initialConfig = React.useMemo(
       () => ({
-        namespace: 'openfilm-prompt',
+        namespace: 'orangefilm-prompt',
         nodes: [PromptReferenceNode],
         editable: !disabled,
         onError: (error: Error) => {

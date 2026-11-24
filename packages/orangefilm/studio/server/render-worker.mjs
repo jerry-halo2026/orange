@@ -41,7 +41,7 @@ if (process.argv.includes('--pool')) {
           return;
         } catch (e) {
           if (tries > 1 || signal.aborted || !browserFailed(e)) throw e;
-          process.stderr.write(`openfilm: ${e instanceof Error ? e.message.split('\n')[0] : e}: drawn again in new browsers\n`);
+          process.stderr.write(`orangefilm: ${e instanceof Error ? e.message.split('\n')[0] : e}: drawn again in new browsers\n`);
         }
       }
     } catch (e) {
@@ -78,7 +78,7 @@ if (process.argv.includes('--pool')) {
           break;
         } catch (e) {
           if (tries > 1 || abort.signal.aborted || !browserFailed(e)) throw e;
-          process.stderr.write(`openfilm: ${e instanceof Error ? e.message.split('\n')[0] : e}: drawn again in a new browser\n`);
+          process.stderr.write(`orangefilm: ${e instanceof Error ? e.message.split('\n')[0] : e}: drawn again in a new browser\n`);
         }
       }
       await say({ type: 'done', result });

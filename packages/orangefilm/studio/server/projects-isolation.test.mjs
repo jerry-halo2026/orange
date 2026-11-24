@@ -32,7 +32,7 @@ before(() => {
   root = testRootFor('projects-isolation', 'scratch');
   if (!base) return;
   const c = { baseRoot: base, instanceId: 'instance-a', taskId: 'T01', attemptId: attempt('attempt'), ports: { studio: 18471, film: 18472 } };
-  profile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), OPENFILM_ISOLATION_ROOT: c.baseRoot });
+  profile = readIsolationProfile({ ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), ORANGE_ISOLATION_ROOT: c.baseRoot });
   Object.assign(process.env, isolationEnvironment(profile));
 });
 after(() => { rmSync(root, { recursive: true, force: true }); if (profile) rmSync(profile.root, { recursive: true, force: true }); });
@@ -61,7 +61,7 @@ const isIsolationPathError = (error) => error instanceof ProjectError && error.s
 
 test('actual native project HTTP denial is 403 isolation-path without metadata or server-error stack', { skip: unprovisioned }, async () => {
   const config = { baseRoot: base, instanceId: 'instance-path', taskId: 'T01', attemptId: attempt('attempt-path'), ports: { studio: 18773, film: 18774 } };
-  const actualProfile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(config)).toString('base64url'), OPENFILM_ISOLATION_ROOT: config.baseRoot });
+  const actualProfile = readIsolationProfile({ ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(config)).toString('base64url'), ORANGE_ISOLATION_ROOT: config.baseRoot });
   const env = isolationEnvironment(actualProfile);
   const previous = Object.fromEntries(Object.keys(env).map(key => [key, process.env[key]]));
   const originalFetch = globalThis.fetch;
@@ -124,9 +124,9 @@ test('no-profile original openProject still permits a safe synthetic folder outs
     const project = await openProject(process.argv[1]);
     process.stdout.write(JSON.stringify({ path: project.path }));
   `;
-  const env = { ...process.env, OPENFILM_HOME: join(root, 'legacy-home'), OPENFILM_SHARED_HOME: join(root, 'legacy-home') };
-  delete env.OPENFILM_ISOLATION_PROFILE;
-  delete env.OPENFILM_ISOLATION_ROOT;
+  const env = { ...process.env, ORANGE_HOME: join(root, 'legacy-home'), ORANGE_SHARED_HOME: join(root, 'legacy-home') };
+  delete env.ORANGE_ISOLATION_PROFILE;
+  delete env.ORANGE_ISOLATION_ROOT;
   const printed = execFileSync(process.execPath, ['--input-type=module', '-e', script, local], { env, encoding: 'utf8' });
   assert.deepEqual(JSON.parse(printed), { path: local });
   assert.ok(existsSync(join(local, 'film.html')));

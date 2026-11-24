@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * `openfilm doctor`: what this computer has for the product, as text a person pastes into an issue. Studio's Settings →
+ * `orangefilm doctor`: what this computer has for the product, as text a person pastes into an issue. Studio's Settings →
  * Developer copies the same report, with what the browser it is open in can do.
  *
  * Each check is a line: what it is, what was found, and when something is wrong, what to do about it. A path under the
@@ -170,7 +170,7 @@ async function chipText() {
  * @param {{ run?: string, env?: Record<string, string | undefined>, studio?: { origin: string, version: string, app?: boolean } | null,
  *           browser?: boolean, network?: boolean, home?: string }} [options]
  */
-export async function doctor({ run = 'openfilm', env = process.env, studio = null, browser = true, network = true, home = homedir() } = {}) {
+export async function doctor({ run = 'orangefilm', env = process.env, studio = null, browser = true, network = true, home = homedir() } = {}) {
   /** @type {Check[]} */
   const checks = [];
   const at = (/** @type {string} */ path) => tidy(path, home);
@@ -250,7 +250,7 @@ export async function doctor({ run = 'openfilm', env = process.env, studio = nul
   checks.push({ label: 'Film files', text: `${size(usage)} in ${films.length} project${films.length === 1 ? '' : 's'}' .film folders (cache, history and logs)` });
 
   if (network) {
-    const reached = await fetch('https://registry.npmjs.org/openfilm', { method: 'HEAD', signal: AbortSignal.timeout(5000) }).then((r) => r.ok, () => false);
+    const reached = await fetch('https://registry.npmjs.org/orangefilm', { method: 'HEAD', signal: AbortSignal.timeout(5000) }).then((r) => r.ok, () => false);
     checks.push(reached ? { label: 'Network', text: 'npm reachable' }
       : { label: 'Network', text: 'npm not reachable', problem: 'npx and updates need registry.npmjs.org: check the network, a proxy, or the agent\'s sandbox' });
   }

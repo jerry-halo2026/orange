@@ -30,7 +30,7 @@ import { dropSpaceAfterRemoval, PILL_NEIGHBOR, spacesAroundPill } from './pill-s
 
 /* Marks a drag as a pill of this editor. The data is only the node's key: a pill moves within its own editor, and
    anything else (another window, Studio, Finder) ignores a type it does not know. */
-const PILL_DRAG_TYPE = 'application/x-openfilm-pill';
+const PILL_DRAG_TYPE = 'application/x-orangefilm-pill';
 
 /** A place in the text, as the DOM sees it. */
 interface DomPlace {

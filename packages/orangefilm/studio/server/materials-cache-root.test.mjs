@@ -5,7 +5,7 @@
 /**
  * The material cache's root, in every kind of Studio run: an isolation profile, the operator's
  * MATERIALS_CACHE_ROOT, or Studio's own private folder. The last two exist so an ordinary desktop
- * run (no OPENFILM_ISOLATION_*) still builds the material service instead of answering 501 forever.
+ * run (no ORANGE_ISOLATION_*) still builds the material service instead of answering 501 forever.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -67,9 +67,9 @@ async function boot(/** @type {Record<string, string | undefined>} */ env) {
     const root = await mkdtemp(join(tmpdir(), 'materials-boot-'));
     // Every boot starts from no material settings at all, so one test cannot leak into the next.
     for (const key of ['MATERIALS_UPSTREAM', 'MATERIALS_SECRET', 'MATERIALS_CACHE_ROOT']) delete process.env[key];
-    const settings = { OPENFILM_HOME: join(root, 'home'), OPENFILM_SHARED_HOME: join(root, 'shared'), OPENFILM_LIBRARY: join(root, 'projects'), OPENFILM_LIBRARY_CACHE: join(root, 'cache'), OPENFILM_SAVED: join(root, 'saved'), OPENFILM_SKILLS: join(root, 'skills'), OPENFILM_EXPORTS: join(root, 'exports'), OPENFILM_ISOLATION_PROFILE: undefined, OPENFILM_ISOLATION_ROOT: undefined, ...env };
+    const settings = { ORANGE_HOME: join(root, 'home'), ORANGE_SHARED_HOME: join(root, 'shared'), ORANGE_LIBRARY: join(root, 'projects'), ORANGE_LIBRARY_CACHE: join(root, 'cache'), ORANGE_SAVED: join(root, 'saved'), ORANGE_SKILLS: join(root, 'skills'), ORANGE_EXPORTS: join(root, 'exports'), ORANGE_ISOLATION_PROFILE: undefined, ORANGE_ISOLATION_ROOT: undefined, ...env };
     for (const [key, value] of Object.entries(settings)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
-    for (const path of [settings.OPENFILM_HOME, settings.OPENFILM_SHARED_HOME, settings.OPENFILM_LIBRARY, settings.OPENFILM_LIBRARY_CACHE, settings.OPENFILM_SAVED, settings.OPENFILM_SKILLS, settings.OPENFILM_EXPORTS]) if (path) await mkdir(path, { recursive: true });
+    for (const path of [settings.ORANGE_HOME, settings.ORANGE_SHARED_HOME, settings.ORANGE_LIBRARY, settings.ORANGE_LIBRARY_CACHE, settings.ORANGE_SAVED, settings.ORANGE_SKILLS, settings.ORANGE_EXPORTS]) if (path) await mkdir(path, { recursive: true });
     const editorDir = join(root, 'editor'); await mkdir(editorDir); await writeFile(join(editorDir, 'index.html'), '<html>fixture</html>');
     const { startStudio } = await import('./server.mjs');
     // The material routes name the person: a synthetic signed-in session, as the desktop would have.
@@ -92,7 +92,7 @@ const ask = async (/** @type {any} */ studio) => {
 test('an ordinary desktop run builds the service: the configured root is enough', async () => {
     const site = await boot({ MATERIALS_UPSTREAM: 'http://127.0.0.1:1', MATERIALS_SECRET: 'fixture-secret' });
     try {
-        assert.equal(existsSync(join(site.settings.OPENFILM_HOME ?? '', MATERIALS_CACHE_DIR)), true, 'the cache folder exists beside Studio data');
+        assert.equal(existsSync(join(site.settings.ORANGE_HOME ?? '', MATERIALS_CACHE_DIR)), true, 'the cache folder exists beside Studio data');
         const answer = await ask(site.studio);
         assert.notEqual(answer.status, 501, 'the service is there: no "not connected" answer');
         assert.equal(answer.body?.code, 'material-upstream-unreachable', 'and it really tried to read the configured upstream');
@@ -106,7 +106,7 @@ test('MATERIALS_CACHE_ROOT decides where that run keeps its cache', async () => 
         const answer = await ask(site.studio);
         assert.notEqual(answer.status, 501, 'the service is built from the chosen root');
         assert.equal(existsSync(chosen), true, 'the configured root is the one used (it is made)');
-        assert.equal(existsSync(join(site.settings.OPENFILM_HOME ?? '', MATERIALS_CACHE_DIR)), false, 'and the home fallback is not touched');
+        assert.equal(existsSync(join(site.settings.ORANGE_HOME ?? '', MATERIALS_CACHE_DIR)), false, 'and the home fallback is not touched');
     } finally { await site.studio.close(); await rm(chosen, { recursive: true, force: true }); }
 });
 

@@ -29,11 +29,11 @@ const CARD = `<!doctype html><body style="margin:0;background:#222">
 async function withCard(name, run, { chat = false, again = false, mixed = false } = {}) {
   const scratch = await mkdtemp(join(tmpdir(), 'of-layer-selection-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((n) => [`OPENFILM_${n}`, process.env[`OPENFILM_${n}`]]));
-  for (const n of names) process.env[`OPENFILM_${n}`] = join(scratch, n.toLowerCase());
+  const saved = new Map(names.map((n) => [`ORANGE_${n}`, process.env[`ORANGE_${n}`]]));
+  for (const n of names) process.env[`ORANGE_${n}`] = join(scratch, n.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, name);
+    const root = join(process.env.ORANGE_LIBRARY, name);
     await mkdir(root, { recursive: true });
     await writeFile(join(root, 'card.html'), CARD);
     const clips = [{ id: 'card', src: 'card.html', time: [0, 4] }, ...(again ? [{ id: 'again', src: 'card.html', at: 4, time: [0, 4] }] : [])];
@@ -46,11 +46,11 @@ async function withCard(name, run, { chat = false, again = false, mixed = false 
     }
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1080, h: 1920 }, tracks }));
     const project = await openProject(root);
-    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const page = await browser.newPage({ viewport: { width: 1400, height: 1000 }, locale: 'en-US', reducedMotion: 'reduce' });
     await page.addInitScript((withChat) => {
-      localStorage.setItem('openfilm.project.layers', '1');
+      localStorage.setItem('orangefilm.project.layers', '1');
       if (withChat) window.openfilmHost = { version: 1, refer: () => {} };
     }, chat);
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);

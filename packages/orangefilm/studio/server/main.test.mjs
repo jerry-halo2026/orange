@@ -34,7 +34,7 @@ async function until(home, ok, ms = 20_000) {
     try {
       const run = JSON.parse(readFileSync(join(home, 'run.json'), 'utf8'));
       const health = await (await fetch(`${run.origin}/api/health`, { signal: AbortSignal.timeout(1000) })).json();
-      if (health?.product === 'openfilm-studio' && ok(run)) return run;
+      if (health?.product === 'orangefilm-studio' && ok(run)) return run;
     } catch { /* not yet */ }
     await sleep(200);
   }
@@ -45,7 +45,7 @@ test('a Studio that ends unexpectedly is started again on the same address; one 
   const home = mkdtempSync(join(tmpdir(), 'of-main-'));
   const port = await freePort();
   const supervisor = spawn(process.execPath, [MAIN], {
-    env: { ...process.env, OPENFILM_HOME: home, OPENFILM_STUDIO_PORT: String(port), OPENFILM_NO_UPDATE_CHECK: '1', OPENFILM_NO_BROWSER: '1' },
+    env: { ...process.env, ORANGE_HOME: home, ORANGE_STUDIO_PORT: String(port), ORANGE_NO_UPDATE_CHECK: '1', ORANGE_NO_BROWSER: '1' },
     stdio: 'ignore',
   });
   const ended = new Promise((done) => supervisor.once('exit', (code) => done(code)));
@@ -61,7 +61,7 @@ test('a Studio that ends unexpectedly is started again on the same address; one 
     assert.equal(again.key, first.key);
     assert.equal(again.supervisor, supervisor.pid);
 
-    /* asked to quit (as a newer openfilm does): it stops, and so does its supervisor */
+    /* asked to quit (as a newer orangefilm does): it stops, and so does its supervisor */
     const res = await fetch(`${again.origin}/api/quit`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-studio-key': again.key }, body: '{}' });
     assert.equal(res.status, 200);
     assert.equal(await Promise.race([ended, sleep(15_000).then(() => 'still running')]), 0);

@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * Projects: folders, and the list of them (~/.openfilm/studio.json): every project in the library (src/locations.mjs,
+ * Projects: folders, and the list of them (~/.orangefilm/studio.json): every project in the library (src/locations.mjs,
  * one folder each, found again at each listing) and the ones opened from elsewhere. A project is its folder, and
  * everything about it is in the folder, so moving or copying the folder moves or copies the project:
  *
@@ -50,7 +50,7 @@ export class ProjectError extends Error {
   }
 }
 
-/** Where Studio keeps its own state (not projects): ~/.openfilm, or OPENFILM_HOME. */
+/** Where Studio keeps its own state (not projects): ~/.orangefilm, or ORANGE_HOME. */
 export const studioHome = studioHomeDir;
 
 /** Trusted desktop context: original StudioState, stored separately for each verified subject. */
@@ -62,7 +62,7 @@ export function withProjectAuthority(authority, work) { return projectAuthority.
 const nativeStateFile = () => projectAuthority.getStore()?.stateFile ?? join(studioHome(), 'studio.json');
 
 /**
- * The key this machine's Studio opens with (~/.openfilm/key, readable by this user only), the same at every launch: an
+ * The key this machine's Studio opens with (~/.orangefilm/key, readable by this user only), the same at every launch: an
  * address Studio printed, and a page open on it, still work after it restarts (an update, a reboot).
  */
 function nativeStudioKey() {
@@ -124,7 +124,7 @@ async function native_readState() {
   return state;
 }
 
-/* the file is shared with every OpenFilm on this computer (`npx openfilm`, the app), older or newer: what this one does
+/* the file is shared with every OrangeFilm on this computer (`npx orangefilm`, the app), older or newer: what this one does
    not know of it is written back as it was */
 async function writeState(/** @type {StudioState} */ state) {
   const path = ordinaryControlPath(nativeStateFile());
@@ -533,7 +533,7 @@ async function native_projectById(/** @type {string} */ id) {
 
 /**
  * The person opened the project in Studio (from the Projects window, or by its address): it is the one opened last, as
- * `openProject` makes a project the CLI opens, so `openfilm open` alone comes back to it.
+ * `openProject` makes a project the CLI opens, so `orangefilm open` alone comes back to it.
  */
 async function native_markOpened(/** @type {string} */ id) {
   return exclusive(async () => {
@@ -892,10 +892,10 @@ export async function registerProjectControl(identity) {
       reservation = await guard.acquireControlledReservation({ ...homes, roots: [root] });
       if (resolve(nativeLibraryRoot()) !== root) throw invalid();
       const home = resolve(studioHome()), file = ordinaryControlPath(join(home, 'studio.json'));
-      const markers = [...new Set([home, root])].map(at => ordinaryControlPath(join(at, '.openfilm-control.json')));
+      const markers = [...new Set([home, root])].map(at => ordinaryControlPath(join(at, '.orangefilm-control.json')));
       // A registration may reopen its own two committed markers, never an ancestor's domain.
       for (const start of [...homes.homes, root]) for (let at = start;; at = dirname(at)) {
-        for (const candidate of [join(at, '.openfilm-control.json'), join(at, '.film', 'control.json')]) {
+        for (const candidate of [join(at, '.orangefilm-control.json'), join(at, '.film', 'control.json')]) {
           ordinaryControlPath(candidate);
           if (existsSync(candidate) && !markers.includes(candidate)) throw controlError('control-required');
         }

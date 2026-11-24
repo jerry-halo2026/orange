@@ -1,4 +1,4 @@
-# OpenFilm资源来源与后续分发边界
+# OrangeFilm资源来源与后续分发边界
 
 文档集：U1（2026-11-07）。当前执行口径，不包含历史指令。
 
@@ -11,17 +11,17 @@
 | 通用库 | packages/orangefilm/library目录及https://openfilm.dev/library | 目录/部分bundle随包，audio/voices/emoji/models/产品模板预览等按需远程取；URL不全带版本 |
 | 模板 | Saved v2 group bundle、files、音乐依赖 | 本pin统计14组模板，复用原film/轨道/插槽，不是第二项目格式 |
 | 用户Saved/项目 | 本机个人Saved、Projects/项目skills | 用户内容不自动回传或成为公共资源；取用有项目副本 |
-| 其他媒体/生成 | 已配置Provider如Pexels/Pixabay/生成服务 | 非OpenFilm自有库存，来源记录不等于可镜像/转售授权 |
+| 其他媒体/生成 | 已配置Provider如Pexels/Pixabay/生成服务 | 非OrangeFilm自有库存，来源记录不等于可镜像/转售授权 |
 | 模型/runtime/字体 | library模型manifest、远端runtime、本机字体等 | 属运行依赖，不是智尚业务素材，需单独来源/许可/体积核验 |
 
-当前只读索引观察到openfilm/replicate 0.1.3→https://github.com/openfilm/skill-replicate，commit eef1ee5eda2a2aaeec60a3f133d73b86dd53c053；这是当前远端状态，不是v0.3.0固定清单或永久承诺。
+当前只读索引观察到orangefilm/replicate 0.1.3→https://github.com/openfilm/skill-replicate，commit eef1ee5eda2a2aaeec60a3f133d73b86dd53c053；这是当前远端状态，不是v0.3.0固定清单或永久承诺。
 
 ## 2 默认地址、缓存与版本边界
-- 示例索引：https://raw.githubusercontent.com/openfilm/examples/main/examples.json，可OPENFILM_EXAMPLES_INDEX覆盖。本地<studioHome>/cache/examples-index.json；引用示例cache/examples/<id>，完整项目导入到Projects、不保留.git。
-- 技能索引：https://raw.githubusercontent.com/openfilm/skills/main/index.json，可OPENFILM_SKILLS_INDEX覆盖；<sharedHome>/skill-catalog与skills-installed保存commit来源。安装后固定pin，更新由用户触发；Try now也能进入Agent上下文。
-- 通用库根https://openfilm.dev/library，可OPENFILM_LIBRARY_URL/OPENFILM_LIBRARY_CACHE/OPENFILM_BUILT_IN_LIBRARY覆盖。默认<sharedHome>/library。普通媒体同路径缓存没有统一sha256/版本刷新，模型文件另有sha256校验。
-- 单文件入项目assets，bundle入saved/openfilm/<id>，返回原clip/group/page结构。项目已修改内容不应静默被库更新覆盖；原文字组件跟随更新特例需单列验证。
-- 原外部引导skill含npx openfilm@latest，不能作为orangeflim锁定运行方式。
+- 示例索引：https://raw.githubusercontent.com/orangefilm/examples/main/examples.json，可ORANGE_EXAMPLES_INDEX覆盖。本地<studioHome>/cache/examples-index.json；引用示例cache/examples/<id>，完整项目导入到Projects、不保留.git。
+- 技能索引：https://raw.githubusercontent.com/orangefilm/skills/main/index.json，可ORANGE_SKILLS_INDEX覆盖；<sharedHome>/skill-catalog与skills-installed保存commit来源。安装后固定pin，更新由用户触发；Try now也能进入Agent上下文。
+- 通用库根https://openfilm.dev/library，可ORANGE_LIBRARY_URL/ORANGE_LIBRARY_CACHE/ORANGE_BUILT_IN_LIBRARY覆盖。默认<sharedHome>/library。普通媒体同路径缓存没有统一sha256/版本刷新，模型文件另有sha256校验。
+- 单文件入项目assets，bundle入saved/orangefilm/<id>，返回原clip/group/page结构。项目已修改内容不应静默被库更新覆盖；原文字组件跟随更新特例需单列验证。
+- 原外部引导skill含npx orangefilm@latest，不能作为orangeflim锁定运行方式。
 - 库语义搜索默认向https://openfilm.dev/v1/library/search提交text/cat/limit；不是纯本地模型搜索。业务查询词不得未经授权外发。首次媒体/技能缓存/预读也属于联网和本机写入，禁更新检查不等于断网。
 
 本pin目录合并统计：8744条通用资源、另2219条音色目录项；不是全部文件随包。音效5456、音乐1222、贴纸1643、文字148、特效97、转场98、滤镜66、组模板14。统计是版本观察，不作为永久产品规格。
@@ -39,7 +39,7 @@ Skill全文进入Agent上下文，且可附脚本；安装/收录/下载不等�
 ## 5 自有用户点击下载库（未来候选，未授权搭建）
 先做可审核资源manifest与原界面本地导入验证，再决定托管；不先造网站/数据库/新时间线。
 逻辑区分：产品资源包、智尚业务素材、运行依赖、用户Saved/Projects，不必拆成多个服务。业务素材仍由智尚本人权限取用，不公开打包镜像。
-最小要求：来源repo/commit/path/url、不可变资源版本、逐文件bytes/hash、入口与依赖、OpenFilm/film协议/平台兼容、许可/notices/可再分发证据、可执行/出站能力、审查摘要、分发可见范围/撤回。若实施，字段统一登记07，不在此成为第二机器契约。
+最小要求：来源repo/commit/path/url、不可变资源版本、逐文件bytes/hash、入口与依赖、OrangeFilm/film协议/平台兼容、许可/notices/可再分发证据、可执行/出站能力、审查摘要、分发可见范围/撤回。若实施，字段统一登记07，不在此成为第二机器契约。
 轻量目录→用户点击下载大包→staging校验→审批→原子入缓存→复用takeSaved/项目clone插入。下载、安装和允许执行分开。更新显式、可回滚，不静默改项目；下架保留审计，不未经规则删除用户工程。
 尚未创建自有云端资源仓、上传模型或镜像任何资源。
 

@@ -4,7 +4,7 @@
 /**
  * OrangeFilm's library as the assets drawer shows it (studio/server/library.mjs): its index, read once, and what each
  * thing of it is on the timeline. Pages and sounds go in as things of Saved go (a drag or "+": lib/saved, the server's
- * `saved/take` with an `openfilm/` path); a look is written into the picked clips' style; a fade is one of the
+ * `saved/take` with an `orangefilm/` path); a look is written into the picked clips' style; a fade is one of the
  * timeline's transitions (lib/transitions), put on a cut.
  */
 import React from 'react';
@@ -15,7 +15,7 @@ import { declared, withDeclarations } from './clip-look.ts';
 import { gradeFilter, gradeOf, withGrade, type Grade } from './grade.ts';
 
 /** What a path names OrangeFilm's library by, as `saved/` names Saved. */
-export const BUILT_IN = 'openfilm';
+export const BUILT_IN = 'orangefilm';
 
 export type LibraryCategory = 'transition' | 'effect' | 'filter' | 'text' | 'sticker' | 'sound' | 'music' | 'template';
 export type LibraryNames = Partial<Record<Language, string>> & { en: string };
@@ -114,19 +114,19 @@ export function useLibraryIndex(refresh = false): LibraryIndex | null {
 let byFolder: { of: LibraryIndex; map: Map<string, LibraryItem> } | null = null;
 
 /**
- * The thing of the library a clip is (its page under `saved/openfilm/<id as one name>/`, or a template put in as one
+ * The thing of the library a clip is (its page under `saved/orangefilm/<id as one name>/`, or a template put in as one
  * compound clip, its film under `parts/templates-<id>[-n]/`), when the index has been read: what the timeline and Layers
  * call it (every emoji's page is `emoji.html`; its name is its own).
  */
 export function libraryItemOfClip(src: string | undefined): LibraryItem | null {
   const path = src?.split('#')[0] ?? '';
-  const m = /^saved\/openfilm\/([^/]+)\//.exec(path) ?? /^parts\/(templates-[^/]+?)(?:-\d+)?\/film\.html$/.exec(path);
+  const m = /^saved\/orangefilm\/([^/]+)\//.exec(path) ?? /^parts\/(templates-[^/]+?)(?:-\d+)?\/film\.html$/.exec(path);
   if (!m || !index) return null;
   if (byFolder?.of !== index) byFolder = { of: index, map: new Map(index.items.map((item) => [item.id.replace(/\//g, '-'), item])) };
   return byFolder.map.get(m[1]!) ?? null;
 }
 
-/** A thing of the library by its `openfilm/` path, when the index has been read and has it. */
+/** A thing of the library by its `orangefilm/` path, when the index has been read and has it. */
 export function builtInItem(path: string | null | undefined): LibraryItem | null {
   if (!path || !index || !path.startsWith(`${BUILT_IN}/`)) return null;
   const id = path.slice(BUILT_IN.length + 1);
@@ -134,7 +134,7 @@ export function builtInItem(path: string | null | undefined): LibraryItem | null
 }
 
 /**
- * Whether a project file came from the library: a page taken from it (its bundle under `saved/openfilm/`, as the
+ * Whether a project file came from the library: a page taken from it (its bundle under `saved/orangefilm/`, as the
  * server's takeSaved puts it), or one of its sounds or pieces of music, put in assets/ under its own name.
  */
 export function fromLibrary(path: string, items: readonly LibraryItem[] | null = index?.items ?? null): boolean {
@@ -166,7 +166,7 @@ export const waveUrl = (item: LibraryItem): string => libraryUrl(item.id.replace
 
 /**
  * What a drag carries to the timeline (lib/resource-drag): a page or a sound its own page or file for the kind and the
- * preview's length, and its `openfilm/` path to be taken into the project as it lands; a look or a fade what it goes
+ * preview's length, and its `orangefilm/` path to be taken into the project as it lands; a look or a fade what it goes
  * on (`apply`: a clip, a cut), being no clip itself.
  */
 export function libraryDragItem(item: LibraryItem, name: string): ResourceDragItem | null {
@@ -467,12 +467,12 @@ export function coverLook(item: Pick<LibraryItem, 'id' | 'group'>): { background
 
 /** The library's text component: a line of words whose look and motion are its CSS variables. */
 export const TEXT_COMPONENT = 'text/text';
-/** Where a project keeps it once taken (server takeSaved: `saved/openfilm/<id as one name>/`). */
+/** Where a project keeps it once taken (server takeSaved: `saved/orangefilm/<id as one name>/`). */
 const TEXT_IN_PROJECT = `saved/${BUILT_IN}/${TEXT_COMPONENT.replace('/', '-')}/`;
 
 /**
  * Whether a clip is a thing of the library (a sticker, an effect, a title, a line of words: taken into the project
- * under `saved/openfilm/`): one thing on the picture, picked and moved whole, never by the parts its page is made of.
+ * under `saved/orangefilm/`): one thing on the picture, picked and moved whole, never by the parts its page is made of.
  */
 export const isLibraryClip = (src: string | undefined): boolean => Boolean(src?.split('#')[0]?.startsWith(`saved/${BUILT_IN}/`));
 /** Whether a clip is one of the library's stickers: drawn on the timeline by its picture. */
@@ -480,10 +480,10 @@ export const isLibrarySticker = (src: string | undefined): boolean => Boolean(sr
 
 /**
  * A filter of the library on a track of its own: its see-through page, taken into the project under the filter's name
- * (`saved/openfilm/filters-warm-film/layer.html`, studio/server saved.mjs FILTER_LAYER), the clip's `backdrop-filter`
+ * (`saved/orangefilm/filters-warm-film/layer.html`, studio/server saved.mjs FILTER_LAYER), the clip's `backdrop-filter`
  * grading every layer under it while it is on.
  */
-export const isFilterLayer = (src: string | undefined): boolean => /^saved\/openfilm\/filters-[^/]+\/layer\.html$/.test(src?.split('#')[0] ?? '');
+export const isFilterLayer = (src: string | undefined): boolean => /^saved\/orangefilm\/filters-[^/]+\/layer\.html$/.test(src?.split('#')[0] ?? '');
 
 /** An effect of the library (its page laid over the whole picture). */
 export const isLibraryEffect = (src: string | undefined): boolean => Boolean(src?.split('#')[0]?.startsWith(`saved/${BUILT_IN}/effects-`));

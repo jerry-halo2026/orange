@@ -24,7 +24,7 @@
  * (`logout`) switches account from Settings → Agents (agent-roster.mjs switchAccount); the others in the agent itself,
  * or its maker's app where they share it (Codex, DeepSeek Harness).
  *
- * The agent works the way it would in a terminal: in the project's folder, with the `openfilm` command on its PATH
+ * The agent works the way it would in a terminal: in the project's folder, with the `orangefilm` command on its PATH
  * (this app's copy, so its Studio is the one in the window) and a few lines saying where it is and naming that command
  * by its whole path (agentInstructions).
  *
@@ -48,7 +48,7 @@ const PRODUCT = brandProductName();
 import { afterFirstReading, firstWindowsApps, refreshWindowsApps } from './windows-apps.mjs';
 import { mergeConfig, sessionSkills } from './agent-skills.mjs';
 import { nodeBinary } from './node-runtime.mjs';
-import { openfilmMcpServerConfig } from './orangefilm-mcp.mjs';
+import { orangefilmMcpServerConfig } from './orangefilm-mcp.mjs';
 import { openfilmCommand } from './orangefilm-command.mjs';
 import { outOfBalance } from './pi-config.mjs';
 import { AGENT_DEFINITIONS } from './agent-definitions.mjs';
@@ -174,8 +174,8 @@ export const AGENTS = Object.freeze({
 export function withToolKind(update, toolKinds) {
   if (!toolKinds || update?.sessionUpdate !== 'tool_call' || (update.kind ?? 'other') !== 'other') return update;
   const title = String(update.title ?? '');
-  /* OpenFilm MCP tools arrive as mcp__openfilm__<name>_<hash>, or mcp__orangefilm__… after the rename. */
-  if (title.startsWith('mcp__openfilm__') || title.startsWith('mcp__orangefilm__')) {
+  /* OrangeFilm's own MCP tools arrive as mcp__orangefilm__<name>_<hash>. */
+  if (title.startsWith('mcp__orangefilm__')) {
     if (/material|library/.test(title)) return { ...update, kind: 'search' };
     if (/plan|timeline|caption/.test(title)) return { ...update, kind: 'edit' };
     return update;
@@ -196,7 +196,7 @@ export function agentDefaults(id, shell = {}) {
  * account (`orangefilm-agent.mjs`), and the person's own key (`agent-roster.mjs`). Each is started with the `harness`
  * its roster hands out, so neither is looked up in AGENTS and neither has a launcher to be discovered.
  */
-export const HARNESS_AGENTS = Object.freeze(['openfilm', 'byok']);
+export const HARNESS_AGENTS = Object.freeze(['orangefilm', 'byok']);
 export const isChatAgent = (id) => isAgentId(id) || HARNESS_AGENTS.includes(id);
 
 /** How the person points at things in Studio, and how the agent points back: told to every agent, the app's own too. */
@@ -207,17 +207,17 @@ In your replies, [[clip:ID]] (by its id in film.html), [[t:SECONDS]], [[range:ST
 (0 is the first) and [[file:PATH]] (a file of the project) show as links that open it in Studio.`;
 
 /**
- * What the agent is told about where it is, on top of its own instructions. `command`: the app's `openfilm` by its
+ * What the agent is told about where it is, on top of its own instructions. `command`: the app's `orangefilm` by its
  * whole path (openfilmCommand), named in place of the one on the PATH, which the agent's shell may not find first.
  */
 export function agentInstructions(command = null) {
-  const run = command ?? 'openfilm';
+  const run = command ?? 'orangefilm';
   const which = command
-    ? `That is this app's own \`openfilm\` command, on the Studio beside you: run it by
-that path every time, as its manual does, not as \`openfilm\` (your shell may find another one first) and not as
-\`npx openfilm\`, whatever a skill says.`
-    : `Use the \`openfilm\` command on your PATH (this app's own, on the Studio beside you), not
-\`npx openfilm\`, whatever a skill says.`;
+    ? `That is this app's own \`orangefilm\` command, on the Studio beside you: run it by
+that path every time, as its manual does, not as \`orangefilm\` (your shell may find another one first) and not as
+\`npx orangefilm\`, whatever a skill says.`
+    : `Use the \`orangefilm\` command on your PATH (this app's own, on the Studio beside you), not
+\`npx orangefilm\`, whatever a skill says.`;
   return `You are working inside ${PRODUCT}, a desktop app for making videos. Beside this chat the person sees ${PRODUCT} Studio,
 the video editor, showing the project in your working directory; it updates live as you save files.
 
@@ -240,8 +240,8 @@ export const INSTRUCTIONS = agentInstructions();
  * The app's own agent's whole system prompt, in place of Pi's (a coding assistant's, with Pi's own docs): who it is,
  * where it is and how it talks with the person (agent-prompt.md: written for it, so not INSTRUCTIONS, which tell
  * another agent to go and read the manual), and how the person points at Studio (STUDIO_REFERENCES). How a film is
- * made is OpenFilm's skills' (openfilm/skills coreSkills), which Pi lists after it and the agent reads when a task
- * needs one. `edit` false: the person turned OpenFilm's `edit` off, so the prompt does not send the agent to it.
+ * made is OrangeFilm's skills' (orangefilm/skills coreSkills), which Pi lists after it and the agent reads when a task
+ * needs one. `edit` false: the person turned OrangeFilm's `edit` off, so the prompt does not send the agent to it.
  */
 export function ownAgentPrompt({ edit = true } = {}) {
   const read = readFileSync(new URL('./agent-prompt.md', import.meta.url), 'utf8').trim();
@@ -275,7 +275,7 @@ export function codexDeveloperInstructions(toml) {
 /**
  * What Codex's adapter starts Codex with on top of its config.toml (CODEX_CONFIG): the app's instructions after the
  * person's own (`theirs`), and the PATH the session has (`path`), kept for each command. Codex runs a command after
- * the person's shell profile is read again (its shell snapshot), whose PATH can put another `openfilm` before the
+ * the person's shell profile is read again (its shell snapshot), whose PATH can put another `orangefilm` before the
  * app's; the PATH its config sets is kept. A dotted key leaves the rest of their shell_environment_policy as it is.
  * Not on Windows, which has no such snapshot.
  */
@@ -305,8 +305,8 @@ const windows = process.platform === 'win32';
  * the reason came out as `������`. There Codex is started through a script that turns the console to UTF-8 first, made
  * on disk (the app's own files are in an archive cmd.exe cannot run from); Codex's own messages are UTF-8 already.
  */
-export const CODEX_UTF8_CMD = '@echo off\r\nchcp 65001 >nul\r\n"%OPENFILM_CODEX%" %*\r\n';
-export function codexLaunchEnv(/** @type {string} */ path, { win = windows, dir = join(tmpdir(), 'openfilm-codex') } = {}) {
+export const CODEX_UTF8_CMD = '@echo off\r\nchcp 65001 >nul\r\n"%ORANGE_CODEX%" %*\r\n';
+export function codexLaunchEnv(/** @type {string} */ path, { win = windows, dir = join(tmpdir(), 'orangefilm-codex') } = {}) {
   if (!win) return { CODEX_PATH: path };
   try {
     const script = join(dir, 'codex-utf8.cmd');
@@ -314,7 +314,7 @@ export function codexLaunchEnv(/** @type {string} */ path, { win = windows, dir 
       mkdirSync(dir, { recursive: true });
       writeFileSync(script, CODEX_UTF8_CMD);
     }
-    return { CODEX_PATH: script, OPENFILM_CODEX: path };
+    return { CODEX_PATH: script, ORANGE_CODEX: path };
   } catch {
     /* no room for the script: Codex as before, its reasons maybe unreadable */
     return { CODEX_PATH: path };
@@ -403,8 +403,8 @@ const AS_NODE = fileURLToPath(new URL('./as-node.mjs', import.meta.url));
 const asNode = (/** @type {string} */ script) => ['--import', pathToFileURL(AS_NODE).href, script];
 
 /** This app's MCP server, as an agent is told to start it: an absolute command and script, and Electron read as Node. */
-const OPENFILM_MCP_SCRIPT = fileURLToPath(new URL('./orangefilm-mcp.mjs', import.meta.url));
-const openfilmMcpServer = () => openfilmMcpServerConfig({ command: nodeBinary(), script: OPENFILM_MCP_SCRIPT, nodeArgs: asNode('').slice(0, -1) });
+const ORANGE_MCP_SCRIPT = fileURLToPath(new URL('./orangefilm-mcp.mjs', import.meta.url));
+const openfilmMcpServer = () => orangefilmMcpServerConfig({ command: nodeBinary(), script: ORANGE_MCP_SCRIPT, nodeArgs: asNode('').slice(0, -1) });
 
 /**
  * How to start a program found for an agent: itself, a script with the app's own Node (an npm install on Windows), or
@@ -560,7 +560,7 @@ const SIGNED_IN_FOR_MS = 10 * 60_000;
  * its instructions files.
  */
 export function probeFolder() {
-  const dir = join(tmpdir(), 'openfilm-agent-probe');
+  const dir = join(tmpdir(), 'orangefilm-agent-probe');
   mkdirSync(dir, { recursive: true });
   return dir;
 }
@@ -696,7 +696,7 @@ async function agentSignInMethodsEntered(id) {
   const retirement = ownCommand(child, { eof: true });
   child.once('error', () => {});
   try {
-    const conn = acp.client({ name: 'openfilm-desktop' }).connect(acp.ndJsonStream(Writable.toWeb(child.stdin), Readable.toWeb(child.stdout)));
+    const conn = acp.client({ name: 'orangefilm-desktop' }).connect(acp.ndJsonStream(Writable.toWeb(child.stdin), Readable.toWeb(child.stdout)));
     const init = await Promise.race([
       conn.agent.request(acp.methods.agent.initialize, { protocolVersion: acp.PROTOCOL_VERSION, clientCapabilities: CLIENT_CAPABILITIES, clientInfo: CLIENT_INFO }),
       new Promise((_, fail) => setTimeout(() => fail(new Error('timed out')), 30_000)),
@@ -717,7 +717,7 @@ async function agentSignInMethodsEntered(id) {
  * (CodeBuddy, Qwen Code) first asks whether to trust the folder it is in, and in the home folder a new Terminal window
  * opens in, warns that it may hold sensitive files; trusted once, this folder is not asked about again.
  */
-const SIGN_IN_DIR = () => join(tmpdir(), 'openfilm-sign-in');
+const SIGN_IN_DIR = () => join(tmpdir(), 'orangefilm-sign-in');
 
 /**
  * Sign in: Terminal runs the program's own sign-in, which opens the maker's own page. The app touches nothing. One
@@ -967,7 +967,7 @@ export const CLIENT_CAPABILITIES = {
   _meta: { parameterizedModelPicker: true, jetbrains: { air: { version: 1, capabilities: ['recommendedValue'] } } },
 };
 
-const CLIENT_INFO = { name: 'openfilm-desktop', title: PRODUCT, version: '0.1.0' };
+const CLIENT_INFO = { name: 'orangefilm-desktop', title: PRODUCT, version: '0.1.0' };
 
 /** How long an agent may wait on its model with nothing coming before the turn is stopped. */
 const MODEL_STALL_MS = 5 * 60_000;
@@ -996,7 +996,7 @@ export const CODEX_TESTED = '0.132.0';
 
 /**
  * The oldest Claude Code the chat was tried with. An older one lists only the models it knows: 2.1.288 has no Haiku
- * 5.5, which 2.1.308 has (#230), and the person takes that for OpenFilm's or the service's doing. Never above npm's
+ * 5.5, which 2.1.308 has (#230), and the person takes that for OrangeFilm's or the service's doing. Never above npm's
  * `stable`, which the Claude app, the Homebrew cask and `claude update` follow: else most are told to update with
  * nothing to update to.
  */
@@ -1239,7 +1239,7 @@ export class AgentSession {
    *           onSend?: (sent: { prompt: any[], _meta?: any }) => void, stallMs?: number, answerOnly?: boolean }} opts
    * `onSend` hears each message as it goes to the agent, whole (the app's words before the first one's, for an agent
    * told them there); `opened`, once started, says what it was started and opened with.
-   * `skills`: the session has its maker's skills and MCP servers, OpenFilm's skills, and of the person's own only those
+   * `skills`: the session has its maker's skills and MCP servers, OrangeFilm's skills, and of the person's own only those
    * let in (`allowed`, `mcpAllowed`), each agent told by its own switch (agent-skills.mjs); `opened.skills` says how.
    * `stallMs`: how long the agent may wait on its model with nothing coming (MODEL_STALL_MS) before the turn is stopped.
  * `answerOnly`: it may only answer (Studio's own questions): every permission it asks is refused, even what the app
@@ -1253,7 +1253,7 @@ export class AgentSession {
     this.opts = opts;
     /* the app's own agent runs Pi (pi-agent.mjs), the person's their own program through its adapter */
     this.spec = HARNESS_AGENTS.includes(opts.agent)
-      ? { label: opts.agent === 'openfilm' ? AGENT_DEFINITIONS.openfilm.name : 'Own key', env: () => ({}) }
+      ? { label: opts.agent === 'orangefilm' ? AGENT_DEFINITIONS.orangefilm.name : 'Own key', env: () => ({}) }
       : AGENTS[opts.agent];
     this.sessionId = null;
     this.info = null;
@@ -1265,7 +1265,7 @@ export class AgentSession {
   /**
    * Start the adapter, shake hands, open (or resume) the session. The agent gets all the person's login shell sets
    * (their keys, gateways, tokens; Claude Code only its PATH and the like, agentShell), as in their terminal, and the app's
-   * `openfilm` first on its PATH; the app's ffmpeg (`fallbackDir`) last, for a computer that has none of its own.
+   * `orangefilm` first on its PATH; the app's ffmpeg (`fallbackDir`) last, for a computer that has none of its own.
    */
   start() {
     if (this.retirement || agentAdmissionSealed) return Promise.reject(retirementError());
@@ -1327,16 +1327,16 @@ export class AgentSession {
     const node = nodeRuntime();
     const path = [this.opts.binDir, shell.PATH, this.opts.fallbackDir].filter(Boolean).join(PATH_SEP);
     const instructions = agentInstructions(this.opts.binDir ? openfilmCommand(this.opts.binDir) : null);
-    /* the app's own agent: what Pi runs with (its whole system prompt is ours), and the web search of `openfilm get`
-       (OPENFILM_GET_WEB lists it) */
+    /* the app's own agent: what Pi runs with (its whole system prompt is ours), and the web search of `orangefilm get`
+       (ORANGE_GET_WEB lists it) */
     const own = !harness ? {} : {
       ...harness.env,
-      OPENFILM_GET_WEB: '1',
+      ORANGE_GET_WEB: '1',
     };
-    /* its skills and MCP servers: its maker's, OpenFilm's skills, and the person's own only those let in (agent-skills.mjs) */
+    /* its skills and MCP servers: its maker's, OrangeFilm's skills, and the person's own only those let in (agent-skills.mjs) */
     const skills = this.opts.skills
       ? await sessionSkills(this.opts.agent, { cwd: this.opts.cwd, env: shell, ...this.opts.skills }).catch(() => null) : null;
-    if (harness) own.OPENFILM_PI = JSON.stringify({ agentDir: harness.home, models: harness.models, model: harness.model, systemPrompt: ownAgentPrompt({ edit: skills?.piSkills?.names.includes('edit') ?? true }), skills: skills?.piSkills ?? null });
+    if (harness) own.ORANGE_PI = JSON.stringify({ agentDir: harness.home, models: harness.models, model: harness.model, systemPrompt: ownAgentPrompt({ edit: skills?.piSkills?.names.includes('edit') ?? true }), skills: skills?.piSkills ?? null });
     /* Developer mode: the agent's own logging switch, so the turn log has what its model got; none when the person
        set its telemetry themselves (agent-logs.mjs) */
     this.logging = this.opts.logDir && cli && !this.spec.adapter
@@ -1345,17 +1345,17 @@ export class AgentSession {
     const native = cli && !this.spec.adapter ? starting(cli.path, [...this.spec.args, ...(this.logging?.args ?? []), ...(skills?.args ?? [])]) : null;
     /* what a failure names: the agent's program and its own words, as the person would run it (not our logging or skills) */
     this.command = native ? [cli.path, ...this.spec.args] : null;
-    /* who it is, as `openfilm canvas` marks what it puts on the board (OPENFILM_AGENT) */
+    /* who it is, as `orangefilm canvas` marks what it puts on the board (ORANGE_AGENT) */
     const extra = { ...agentDefaults(this.opts.agent, shell), ...this.opts.env, ...(native ? native.env : node.env), ...(cli && this.spec.env ? this.spec.env(cli.path) : {}), ...own, ...skills?.env, ...this.logging?.env,
       ...(() => {
-        const tenant = process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT
-          ?? (process.env.OPENFILM_DESKTOP_FLAVOR === 'dev' ? 'tenant-a' : null);
-        const key = process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'OPENFILM_MEDIA_TENANT';
+        const tenant = process.env.ORANGE_MEDIA_TENANT ?? process.env.ORANGE_MEDIA_TENANT
+          ?? (process.env.ORANGE_DESKTOP_FLAVOR === 'dev' ? 'tenant-a' : null);
+        const key = process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'ORANGE_MEDIA_TENANT';
         return tenant ? { [key]: tenant } : {};
       })(),
-      ...(process.env.OPENFILM_EMBED_MODE ? { OPENFILM_EMBED_MODE: process.env.OPENFILM_EMBED_MODE } : {}),
-      ...(process.env.OPENFILM_EMBED_ENDPOINT ? { OPENFILM_EMBED_ENDPOINT: process.env.OPENFILM_EMBED_ENDPOINT } : {}),
-      OPENFILM_AGENT: this.spec.label };
+      ...(process.env.ORANGE_EMBED_MODE ? { ORANGE_EMBED_MODE: process.env.ORANGE_EMBED_MODE } : {}),
+      ...(process.env.ORANGE_EMBED_ENDPOINT ? { ORANGE_EMBED_ENDPOINT: process.env.ORANGE_EMBED_ENDPOINT } : {}),
+      ORANGE_AGENT: this.spec.label };
     /* OpenCode's inline configuration carries both its skills and, in Developer mode, its logging */
     if (skills?.env?.OPENCODE_CONFIG_CONTENT && this.logging?.env?.OPENCODE_CONFIG_CONTENT) {
       extra.OPENCODE_CONFIG_CONTENT = JSON.stringify(mergeConfig(JSON.parse(skills.env.OPENCODE_CONFIG_CONTENT), JSON.parse(this.logging.env.OPENCODE_CONFIG_CONTENT)));
@@ -1382,7 +1382,7 @@ export class AgentSession {
     this.child.once('error', () => {});
 
     const stream = acp.ndJsonStream(Writable.toWeb(this.child.stdin), Readable.toWeb(this.child.stdout));
-    this.conn = acp.client({ name: 'openfilm-desktop' })
+    this.conn = acp.client({ name: 'orangefilm-desktop' })
       .onRequest(acp.methods.client.session.requestPermission, async (ctx) => {
         /* a session that may only answer is never given a permission, not even what every agent is let do */
         const optionId = (this.spec.approve && !this.opts.answerOnly ? allowOption(ctx.params) : null)
@@ -1473,7 +1473,7 @@ export class AgentSession {
       /* the command line the agent's process was started with: its own program, or the app's Node running its adapter (or Pi) */
       command: native ? [native.cmd, ...native.args] : [node.command, ...(node.env.ELECTRON_RUN_AS_NODE ? asNode(script) : [script])],
       adapter: this.spec.adapter ?? null,
-      env: Object.fromEntries(Object.entries(extra).map(([k, v]) => [k, secret.has(k) || /KEY|TOKEN|SECRET|PASSWORD/i.test(k) ? '(hidden)' : k === 'OPENFILM_PI' ? JSON.parse(v) : v])),
+      env: Object.fromEntries(Object.entries(extra).map(([k, v]) => [k, secret.has(k) || /KEY|TOKEN|SECRET|PASSWORD/i.test(k) ? '(hidden)' : k === 'ORANGE_PI' ? JSON.parse(v) : v])),
       ...(env.CODEX_CONFIG ? { codexConfig: JSON.parse(env.CODEX_CONFIG) } : {}),
       path: { first: this.opts.binDir ?? null, last: this.opts.fallbackDir ?? null },
       fromShell: this.spec.fromShell ? Object.keys(shell).sort() : 'all',
@@ -1500,7 +1500,7 @@ export class AgentSession {
 
   async promptEntered(blocks, { turnId } = {}) {
     if (!this.sessionId) throw new Error('The session has not started.');
-    const meta = this.opts.harness && turnId ? { _meta: { openfilm: { turnId, cwd: this.opts.cwd } } } : {};
+    const meta = this.opts.harness && turnId ? { _meta: { orangefilm: { turnId, cwd: this.opts.cwd } } } : {};
     const told = this.instructions ? [{ type: 'text', text: this.instructions }] : [];
     this.instructions = null;
     /* the message exactly as the agent gets it, for the turn log */

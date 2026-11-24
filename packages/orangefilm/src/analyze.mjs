@@ -28,14 +28,14 @@ export function manifest() {
 }
 
 /**
- * Where the component goes: `OPENFILM_SERVICES_ROOT` when something names it (tests, a portable
+ * Where the component goes: `ORANGE_SERVICES_ROOT` when something names it (tests, a portable
  * install), else the per-user application data folder that the desktop app uses.
  * @param {{ env?: NodeJS.ProcessEnv, platform?: string }} [options]
  */
 export function servicesRoot({ env = process.env, platform = process.platform } = {}) {
-  const named = (env.OPENFILM_SERVICES_ROOT ?? '').trim();
+  const named = (env.ORANGE_SERVICES_ROOT ?? '').trim();
   if (named) return named;
-  const product = (env.OPENFILM_PRODUCT_NAME ?? PRODUCT_NAME).trim() || PRODUCT_NAME;
+  const product = (env.ORANGE_PRODUCT_NAME ?? PRODUCT_NAME).trim() || PRODUCT_NAME;
   if (platform === 'win32') return join(env.APPDATA ?? join(homedir(), 'AppData', 'Roaming'), product);
   if (platform === 'darwin') return join(homedir(), 'Library', 'Application Support', product);
   return join(env.XDG_DATA_HOME ?? join(homedir(), '.local', 'share'), product);
@@ -52,7 +52,7 @@ export function installed(options = {}) {
 }
 
 /**
- * What `openfilm analyze` says when it cannot run: a structured line a script can read (JSON on
+ * What `orangefilm analyze` says when it cannot run: a structured line a script can read (JSON on
  * stderr), never a stack trace, never a usage error.
  * @param {{ env?: NodeJS.ProcessEnv, platform?: string }} [options]
  */
@@ -68,7 +68,7 @@ export function missingReport(options = {}) {
     installsInto: componentDir(options),
     requires: { python: described.requires.python },
     message: `首次使用分析功能需要安装组件 ${described.name}（约 ${described.install.sizeMB} MB）`,
-    hint: `openfilm services install ${described.name}`,
+    hint: `orangefilm services install ${described.name}`,
   };
 }
 

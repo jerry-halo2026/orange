@@ -1,7 +1,7 @@
 {
-  "name": "openfilm-monorepo",
+  "name": "orangefilm-monorepo",
   "private": true,
-  "description": "OrangeFilm: proprietary video production workspace. The `openfilm` package (the format, the CLI and Studio), the desktop app, and what the clients share with the OrangeFilm service.",
+  "description": "OrangeFilm: proprietary video production workspace. The `orangefilm` package (the format, the CLI and Studio), the desktop app, and what the clients share with the OrangeFilm service.",
   "license": "UNLICENSED",
   "type": "module",
   "packageManager": "pnpm@9.15.9",

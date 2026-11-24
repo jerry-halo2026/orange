@@ -17,8 +17,8 @@ import { mkdtempSync } from 'node:fs';
 
 /* 这条测试必须在空的 home 里跑：默认包目录与默认模型目录都在 shared home 下，
    机器上真的装了包/模型时，断言会读到它们（'pack' 而不是 'vector'、模型居然加载成功）。 */
-process.env.OPENFILM_HOME = mkdtempSync(join(tmpdir(), 'material-search-home-'));
-process.env.OPENFILM_SHARED_HOME = process.env.OPENFILM_HOME;
+process.env.ORANGE_HOME = mkdtempSync(join(tmpdir(), 'material-search-home-'));
+process.env.ORANGE_SHARED_HOME = process.env.ORANGE_HOME;
 
 import {
   DEFAULT_EMBED_ENDPOINT, DEFAULT_EMBED_MODEL, EMBED_DIMS, INDEX_SCORES, MATERIAL_SEARCH_CAPS,
@@ -305,14 +305,14 @@ test('itemOf keeps the nine fields and drops anything that is not a row', () => 
 
 test('the service is null without a tenant and without local data, and a tenant builds it', async () => {
   assert.equal(createMaterialSearchService({ env: {}, packDir: '' }), null);
-  assert.equal(createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: '  ' }, packDir: '' }), null);
-  assert.equal(createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: 'not a key' }, packDir: '' }), null, 'a tenant is a token');
+  assert.equal(createMaterialSearchService({ env: { ORANGE_MEDIA_TENANT: '  ' }, packDir: '' }), null);
+  assert.equal(createMaterialSearchService({ env: { ORANGE_MEDIA_TENANT: 'not a key' }, packDir: '' }), null, 'a tenant is a token');
 
   /** @type {string[]} */
   const scripts = [];
   const service = createMaterialSearchService({
     /* 这条测的是 HTTP 那条路的降级：默认已经是本地模型（离线可用），所以显式选 service */
-    env: { OPENFILM_MEDIA_TENANT: 'tenant-a', OPENFILM_EMBED_MODE: 'service', OPENFILM_EMBED_ENDPOINT: 'http://embed.invalid/v1/embeddings' },
+    env: { ORANGE_MEDIA_TENANT: 'tenant-a', ORANGE_EMBED_MODE: 'service', ORANGE_EMBED_ENDPOINT: 'http://embed.invalid/v1/embeddings' },
     fetchImpl: async () => ({ ok: true, status: 200, json: async () => ({ data: [{ embedding: vector() }] }) }),
     psql: async (script) => { scripts.push(script); return { code: 0, stdout: `${JSON.stringify(ROWS)}\n`, stderr: '' }; },
     index: () => TREE,
@@ -326,7 +326,7 @@ test('the service is null without a tenant and without local data, and a tenant 
 
   /* the same service with a dead embedder is the lexical route; with a dead RPC, the index */
   const lexical = createMaterialSearchService({
-    env: { OPENFILM_MEDIA_TENANT: 'tenant-a', OPENFILM_EMBED_MODE: 'service', OPENFILM_EMBED_ENDPOINT: 'http://127.0.0.1:1/v1/embeddings' },
+    env: { ORANGE_MEDIA_TENANT: 'tenant-a', ORANGE_EMBED_MODE: 'service', ORANGE_EMBED_ENDPOINT: 'http://127.0.0.1:1/v1/embeddings' },
     fetchImpl: async () => { throw new Error('ECONNREFUSED'); },
     psql: async () => ({ code: 0, stdout: `${JSON.stringify(ROWS)}\n`, stderr: '' }),
     index: () => TREE,
@@ -334,7 +334,7 @@ test('the service is null without a tenant and without local data, and a tenant 
   assert.equal((await lexical.search({ query: '茶' })).mode, 'lexical');
 
   const indexed = createMaterialSearchService({
-    env: { OPENFILM_MEDIA_TENANT: 'tenant-a', OPENFILM_EMBED_MODE: 'service' },
+    env: { ORANGE_MEDIA_TENANT: 'tenant-a', ORANGE_EMBED_MODE: 'service' },
     fetchImpl: async () => { throw new Error('ECONNREFUSED'); },
     psql: async () => ({ code: 1, stdout: '', stderr: 'ERROR:  relation "public.media_doc" does not exist' }),
     index: () => TREE,
@@ -407,11 +407,11 @@ test('createLocalEmbedder：模型目录不存在时是 embed-unavailable，不�
   });
 });
 
-test('createMaterialSearchService：默认走本地模型，OPENFILM_EMBED_MODE=service 才回 HTTP', async () => {
+test('createMaterialSearchService：默认走本地模型，ORANGE_EMBED_MODE=service 才回 HTTP', async () => {
   const { createMaterialSearchService } = await import('./material-search.mjs');
-  const local = createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: 'tenant-a' } });
+  const local = createMaterialSearchService({ env: { ORANGE_MEDIA_TENANT: 'tenant-a' } });
   assert.equal(typeof local.embed, 'function', '本地那条也要给一个 embed');
-  const remote = createMaterialSearchService({ env: { OPENFILM_MEDIA_TENANT: 'tenant-a', OPENFILM_EMBED_MODE: 'service' } });
+  const remote = createMaterialSearchService({ env: { ORANGE_MEDIA_TENANT: 'tenant-a', ORANGE_EMBED_MODE: 'service' } });
   assert.equal(typeof remote.embed, 'function');
 });
 

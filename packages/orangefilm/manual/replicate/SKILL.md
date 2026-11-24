@@ -37,12 +37,12 @@ its own clock, or a filmed shot redrawn as a drawing.
 
 - `node <this skill's folder>/scripts/measure.mjs study <video>`: the reference in time: every cut to the frame, each
   change's place and pace, its holds, its sound's hits and beat.
-- `openfilm look <video> a-b` shows a stretch frame by frame, `t` one frame.
+- `orangefilm look <video> a-b` shows a stretch frame by frame, `t` one frame.
 - `node <this skill's folder>/scripts/measure.mjs compare <reference> <render>`: the film against the reference: cuts,
   changes and hits with their offsets, each change's pace, each shot's palette and layout, how alike the frames are,
-  side-by-side pictures of the worst, and any of the reference in it. Render first (`openfilm render`); `--fit`
+  side-by-side pictures of the worst, and any of the reference in it. Render first (`orangefilm render`); `--fit`
   when lengths differ.
-- `openfilm get`: pictures made from the reference's frames with what to change (`--ref`, `--mask`, `--markup`);
+- `orangefilm get`: pictures made from the reference's frames with what to change (`--ref`, `--mask`, `--markup`);
   video clips from a stretch of the reference (`--video`), from frames and pictures, or of a person speaking (the words
   in the prompt and `--voice`, or a recording with `--audio`); clips and pictures found on the web; voice, music, sound
   effects, transcripts timed word by word; anything else that makes a clip.

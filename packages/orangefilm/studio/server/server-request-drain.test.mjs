@@ -20,7 +20,7 @@ function profile() {
   const baseRoot = resolve('.dev/studio-request-drain/profiles');
   const value = resolveIsolationProfile({ baseRoot, instanceId: 'studio-request', taskId: 'T02_SERVER_REQUEST', attemptId: 'a-' + process.pid + '-' + Date.now() + '-' + sequence++, ports: { studio: 18483, film: 18484 } }, { approvedBaseRoot: baseRoot });
   for (const p of Object.values(value.paths)) mkdirSync(p, { recursive: true });
-  for (const [key, text] of Object.entries(isolationEnvironment(value))) if (key.startsWith('OPENFILM_')) process.env[key] = text;
+  for (const [key, text] of Object.entries(isolationEnvironment(value))) if (key.startsWith('ORANGE_')) process.env[key] = text;
   return value;
 }
 profile();

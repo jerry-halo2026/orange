@@ -40,9 +40,9 @@ let root, scratch;
 
 before(() => {
   scratch = mkdtempSync(join(tmpdir(), 'of-exports-'));
-  process.env.OPENFILM_EXPORTS = join(scratch, 'Exports');
+  process.env.ORANGE_EXPORTS = join(scratch, 'Exports');
   /* the problems the failing exports here record go to this home's log, not to the person's (Studio's report reads it) */
-  process.env.OPENFILM_HOME = join(scratch, 'home');
+  process.env.ORANGE_HOME = join(scratch, 'home');
   root = join(scratch, 'Tiny');
   mkdirSync(join(root, 'assets', 'audio', 'sfx'), { recursive: true });
   mkdirSync(join(root, 'assets', 'audio', 'music'), { recursive: true });
@@ -179,19 +179,19 @@ test('the ends of the range: a 100× clip and a 0.1× one export at their length
   }
 });
 
-test('the exports folder: OPENFILM_EXPORTS, else `exports` in OPENFILM_HOME, else the Movies folder', () => {
-  const env = { exports: process.env.OPENFILM_EXPORTS, home: process.env.OPENFILM_HOME };
+test('the exports folder: ORANGE_EXPORTS, else `exports` in ORANGE_HOME, else the Movies folder', () => {
+  const env = { exports: process.env.ORANGE_EXPORTS, home: process.env.ORANGE_HOME };
   try {
-    delete process.env.OPENFILM_EXPORTS;
-    process.env.OPENFILM_HOME = join(scratch, 'home');
+    delete process.env.ORANGE_EXPORTS;
+    process.env.ORANGE_HOME = join(scratch, 'home');
     assert.equal(exportsRoot(), join(scratch, 'home', 'exports'));
-    process.env.OPENFILM_EXPORTS = join(scratch, 'Mine');
+    process.env.ORANGE_EXPORTS = join(scratch, 'Mine');
     assert.equal(exportsRoot(), join(scratch, 'Mine'));
-    delete process.env.OPENFILM_EXPORTS;
-    delete process.env.OPENFILM_HOME;
+    delete process.env.ORANGE_EXPORTS;
+    delete process.env.ORANGE_HOME;
     assert.equal(exportsRoot(), join(homedir(), 'Desktop'));
   } finally {
-    for (const [key, value] of [['OPENFILM_EXPORTS', env.exports], ['OPENFILM_HOME', env.home]]) {
+    for (const [key, value] of [['ORANGE_EXPORTS', env.exports], ['ORANGE_HOME', env.home]]) {
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
     }
   }
@@ -751,15 +751,15 @@ test('Final Cut Pro keeps source audio rows when an effect overlaps adjacent nar
   ]);
   assert.deepEqual(timeline.audio.map((t) => t.sourceTrack), [1, 2, 3]);
   const xml = fcpxmlDocument(timeline);
-  assert.match(xml, /name="story-01-1" lane="-1"[^>]*role="OpenFilm A1"/);
-  assert.match(xml, /name="story-01-2" lane="-1"[^>]*role="OpenFilm A1"/);
-  assert.match(xml, /name="game-sfx-1" lane="-2"[^>]*role="OpenFilm A2"/);
-  assert.match(xml, /name="adventure-music" lane="-3"[^>]*role="OpenFilm A3"/);
+  assert.match(xml, /name="story-01-1" lane="-1"[^>]*role="OrangeFilm A1"/);
+  assert.match(xml, /name="story-01-2" lane="-1"[^>]*role="OrangeFilm A1"/);
+  assert.match(xml, /name="game-sfx-1" lane="-2"[^>]*role="OrangeFilm A2"/);
+  assert.match(xml, /name="adventure-music" lane="-3"[^>]*role="OrangeFilm A3"/);
   assert.notDeepEqual(planNleTimeline(film, opts).audio.map((t) => t.clips.map((c) => c.name)), timeline.audio.map((t) => t.clips.map((c) => c.name)), 'other editors keep their existing role grouping');
   const overlapping = planNleTimeline({ ...film, sounds: [...film.sounds, sound('overlapping-voice', 1, 1, 2)] }, { ...opts, audioTracks: 'source' });
   assert.equal(overlapping.audio.length, 4, 'only an overlap within a source row needs another lane');
   assert.deepEqual(overlapping.audio.map((t) => t.sourceTrack), [1, 1, 2, 3]);
-  assert.match(fcpxmlDocument(overlapping), /name="overlapping-voice"[^>]*role="OpenFilm A1"/);
+  assert.match(fcpxmlDocument(overlapping), /name="overlapping-voice"[^>]*role="OrangeFilm A1"/);
   const reversed = planNleTimeline({ ...film, sounds: [...film.sounds].reverse() }, { ...opts, audioTracks: 'source' });
   assert.deepEqual(reversed.audio.map((t) => t.clips.map((c) => c.name)), timeline.audio.map((t) => t.clips.map((c) => c.name)));
   const { track, ...untracked } = film.sounds[0];
@@ -866,7 +866,7 @@ test('Final Cut Pro exports Studio row names for empty tracks, overlaps and foot
     sounds: evaluated.filter((clip) => clip.track.kind === 'audio').map((clip) => ({ ...clip, kind: 'voice' })),
   });
   assert.deepEqual(studio.map((row) => row.badge), ['V2', 'V1', 'A1', 'A2', 'A3']);
-  const expected = Object.fromEntries(studio.flatMap((row) => row.blocks.map((clip) => [clip.clipId, `OpenFilm ${row.badge}`])));
+  const expected = Object.fromEntries(studio.flatMap((row) => row.blocks.map((clip) => [clip.clipId, `OrangeFilm ${row.badge}`])));
   const done = await exported({ kind: 'nle', format: 'fcpxml', fps: 25, audio: 'clips', subtitles: false }, 'Source rows', folder);
   const [{ error, found }] = await parseXml([readFileSync(done.out, 'utf8')], (doc) =>
     Object.fromEntries([...doc.querySelectorAll('audio')].map((audio) => [audio.getAttribute('name'), audio.getAttribute('role')])));
@@ -881,7 +881,7 @@ test('Final Cut Pro reports unreadable subtitles before writing an incomplete ex
   assert.equal(done.status, 'failed');
   assert.match(done.error, /subtitle storage is unreadable/);
   assert.deepEqual(done.outputs, []);
-  assert.ok(!readdirSync(process.env.OPENFILM_EXPORTS).some((entry) => entry.includes(name)), 'no incomplete folder is published');
+  assert.ok(!readdirSync(process.env.ORANGE_EXPORTS).some((entry) => entry.includes(name)), 'no incomplete folder is published');
 });
 
 test('Final Cut Pro connections retain their parent and sequence positions across cuts, trims and gaps', async () => {
@@ -944,9 +944,9 @@ test('Final Cut Pro connections retain their parent and sequence positions acros
     assert.equal(parents['overlay-a'], 'first');
     assert.equal(parents['overlay-b'], 'second');
     assert.equal(parents.voice, 'second');
-    assert.equal(parents['across-gap'], 'OpenFilm');
+    assert.equal(parents['across-gap'], 'OrangeFilm');
     assert.equal(parents[caption.name], 'second');
-    assert.equal(parents[gapCaption.name], 'OpenFilm');
+    assert.equal(parents[gapCaption.name], 'OrangeFilm');
   }
 });
 
@@ -973,9 +973,9 @@ test('Final Cut Pro export packages FCPXML, rendered pages, audio and timeline s
     assert.equal(found.clips.filter((c) => c.kind === 'video').length, 2);
     assert.ok(found.clips.some((c) => c.kind === 'audio' && c.lane < 0));
     if (audio === 'clips') {
-      assert.equal(found.clips.find((c) => c.name === 'tone')?.role, 'OpenFilm A1');
-      assert.equal(found.clips.find((c) => c.name === 'click')?.role, 'OpenFilm A2');
-      assert.equal(found.clips.find((c) => c.name === 'bed')?.role, 'OpenFilm A3');
+      assert.equal(found.clips.find((c) => c.name === 'tone')?.role, 'OrangeFilm A1');
+      assert.equal(found.clips.find((c) => c.name === 'click')?.role, 'OrangeFilm A2');
+      assert.equal(found.clips.find((c) => c.name === 'bed')?.role, 'OrangeFilm A3');
     } else {
       assert.equal(found.clips.find((c) => c.name === 'Voice stem')?.role, 'dialogue.Voice');
       assert.equal(found.clips.find((c) => c.name === 'SFX stem')?.role, 'effects');
@@ -1525,8 +1525,8 @@ test('a project export named where it is asked for: the zip and the folder in it
 });
 
 test('the API: where exports go and what can be made here; several at once; open and reveal only what is there', async () => {
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
   const { startStudio } = await import('./server.mjs');
   const studio = await startStudio({ port: 0, openBrowser: () => {} });
   try {

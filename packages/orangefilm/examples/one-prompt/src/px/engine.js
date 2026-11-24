@@ -162,7 +162,7 @@ export class Engine {
    * Render song time t. `dt` is the nominal frame step (1/fps). A non-sequential t counts as a
    * seek: stateful scenes are reset and fast-forwarded.
    *
-   * Motion blur (the pages draw 1 sample, and a render's motion blur is the host's: `openfilm render --blur`): `samples` > 1 renders that many sub-frames
+   * Motion blur (the pages draw 1 sample, and a render's motion blur is the host's: `orangefilm render --blur`): `samples` > 1 renders that many sub-frames
    * spread evenly over `shutter` x dt around t and averages them before post-processing, which gives real
    * motion blur plus temporal anti-aliasing. With an AdaptiveSampling the count is chosen per frame:
    * sub-frames are added in nested steps (4, 12, 36 … each set evenly spread over the shutter, see

@@ -58,12 +58,12 @@ async function stageOf(dir, query = '') {
   /** Ask the stage what the editor asks it. */
   const ask = (op, args) => page.evaluate(({ op, args, seq }) => new Promise((done) => {
     const hear = (e) => {
-      if (e.data?.source !== 'openfilm-film' || e.data.type !== 'stage' || e.data.seq !== seq) return;
+      if (e.data?.source !== 'orangefilm-film' || e.data.type !== 'stage' || e.data.seq !== seq) return;
       window.removeEventListener('message', hear);
       done(e.data.error ? { error: e.data.error } : e.data.result);
     };
     window.addEventListener('message', hear);
-    window.postMessage({ source: 'openfilm-studio', type: 'stage', seq, op, ...args }, '*');
+    window.postMessage({ source: 'orangefilm-studio', type: 'stage', seq, op, ...args }, '*');
   }), { op, args, seq: ++seq });
   return { ask, page, close, browser };
 }
@@ -194,7 +194,7 @@ test('a line typed in place tells the editor its words as they are typed, and ke
   try {
     await stage.page.evaluate(() => {
       window.heard = [];
-      window.addEventListener('message', (e) => { if (e.data?.source === 'openfilm-film' && e.data.type === 'stage-event') window.heard.push(e.data); });
+      window.addEventListener('message', (e) => { if (e.data?.source === 'orangefilm-film' && e.data.type === 'stage-event') window.heard.push(e.data); });
     });
     const title = await stage.ask('hit', { x: 40, y: 30, detail: true });
     assert.equal(await stage.ask('textStart', { handle: title.handle }), true);

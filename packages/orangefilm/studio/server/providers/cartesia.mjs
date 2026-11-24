@@ -95,7 +95,7 @@ function events(/** @type {string} */ stream) {
 
 /**
  * The voices the account can use (Cartesia's and the person's own), searched by the prompt, narrowed by language and
- * gender. Each as `openfilm get voice` gives it: { voiceId, name, language, gender, description }.
+ * gender. Each as `orangefilm get voice` gives it: { voiceId, name, language, gender, description }.
  * @param {Record<string, unknown>} args @param {(path: string) => Promise<Response>} send
  */
 async function voices(args, send) {

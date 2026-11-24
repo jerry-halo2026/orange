@@ -18,7 +18,7 @@
  *
  * 不做 ffprobe：真实时长由后续步骤（对齐/混音）负责，这里不猜。
  *
- * `run` 可注入（测试、或换一条链路），默认懒加载 `get.mjs` 的 `runGet`（`openfilm get tts`）。
+ * `run` 可注入（测试、或换一条链路），默认懒加载 `get.mjs` 的 `runGet`（`orangefilm get tts`）。
  */
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
@@ -111,7 +111,7 @@ export async function synthesizeVoices({ project, lines, provider, voice, model,
   const dir = cacheDirOf(project);
   await mkdir(dir, { recursive: true });
 
-  /* 默认走 `openfilm get tts`；懒加载，注入 run 时完全不碰 get.mjs */
+  /* 默认走 `orangefilm get tts`；懒加载，注入 run 时完全不碰 get.mjs */
   const speak = run ?? (async ({ text, out }) => {
     const { runGet } = await import('./get.mjs');
     return runGet(project, 'tts', { out, text, voice, via: provider }, { ...(model ? { model } : {}) });

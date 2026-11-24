@@ -21,26 +21,26 @@ let fixture;
 before(() => { fixture = testRootFor('development-isolation', 'native-profile'); });
 after(() => rmSync(fixture, { recursive: true, force: true }));
 const config = () => ({ baseRoot: join(fixture, 'approved'), instanceId: 'instance-a', taskId: 'T01', attemptId: 'attempt-1', ports: { studio: 18471, film: 18472 } });
-const declaration = (value = config()) => ({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(value)).toString('base64url'), OPENFILM_ISOLATION_ROOT: value.baseRoot });
+const declaration = (value = config()) => ({ ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(value)).toString('base64url'), ORANGE_ISOLATION_ROOT: value.baseRoot });
 test('no opt-in preserves the original environment and does not invent a profile', () => { assert.equal(capability('readIsolationProfile')({}), null); });
 test('explicit profile round-trips through the original environment transport', () => {
     const profile = capability('readIsolationProfile')(declaration());
     const env = capability('isolationEnvironment')(profile);
-    assert.equal(env.OPENFILM_HOME, join(profile.root, 'home'));
-    assert.equal(env.OPENFILM_SHARED_HOME, join(profile.root, 'shared-home'));
-    assert.equal(env.OPENFILM_LIBRARY, join(profile.root, 'projects'));
-    assert.equal(env.OPENFILM_SAVED, join(profile.root, 'Saved'));
-    assert.equal(env.OPENFILM_LIBRARY_CACHE, join(profile.root, 'library'));
-    assert.equal(env.OPENFILM_SKILLS, join(profile.root, 'skills'));
-    assert.equal(env.OPENFILM_EXPORTS, join(profile.root, 'exports'));
+    assert.equal(env.ORANGE_HOME, join(profile.root, 'home'));
+    assert.equal(env.ORANGE_SHARED_HOME, join(profile.root, 'shared-home'));
+    assert.equal(env.ORANGE_LIBRARY, join(profile.root, 'projects'));
+    assert.equal(env.ORANGE_SAVED, join(profile.root, 'Saved'));
+    assert.equal(env.ORANGE_LIBRARY_CACHE, join(profile.root, 'library'));
+    assert.equal(env.ORANGE_SKILLS, join(profile.root, 'skills'));
+    assert.equal(env.ORANGE_EXPORTS, join(profile.root, 'exports'));
     assert.equal(env.PLAYWRIGHT_BROWSERS_PATH, join(profile.root, 'cache', 'browsers'));
     for (const key of ['TEMP', 'TMP', 'TMPDIR'])
         assert.equal(env[key], join(profile.root, 'temp'));
-    assert.equal(env.OPENFILM_STUDIO_PORT, '18471');
-    assert.equal(env.OPENFILM_NO_UPDATE_CHECK, '1');
+    assert.equal(env.ORANGE_STUDIO_PORT, '18471');
+    assert.equal(env.ORANGE_NO_UPDATE_CHECK, '1');
     assert.deepEqual(capability('readIsolationProfile')(env), profile);
 });
-for (const env of [{ OPENFILM_ISOLATION_PROFILE: 'broken' }, { OPENFILM_ISOLATION_ROOT: 'missing' }, { OPENFILM_ISOLATION_PROFILE: '' }]) {
+for (const env of [{ ORANGE_ISOLATION_PROFILE: 'broken' }, { ORANGE_ISOLATION_ROOT: 'missing' }, { ORANGE_ISOLATION_PROFILE: '' }]) {
     test(`partial or malformed opt-in fails closed ${JSON.stringify(env)}`, () => { assert.throws(() => capability('readIsolationProfile')(env)); });
 }
 test('native server paired ports reject an unhonorable arbitrary film port', () => {
@@ -50,7 +50,7 @@ test('native server paired ports reject an unhonorable arbitrary film port', () 
 });
 test('development profiles cannot be used by a packaged release', () => { assert.throws(() => capability('readIsolationProfile')(declaration(), { packaged: true }), /packaged/); });
 test('effective isolated environment refuses contradictory legacy path values', () => {
-    assert.throws(() => capability('readIsolationProfile')({ ...declaration(), OPENFILM_SHARED_HOME: join(fixture, 'official') }), /conflict|match/);
+    assert.throws(() => capability('readIsolationProfile')({ ...declaration(), ORANGE_SHARED_HOME: join(fixture, 'official') }), /conflict|match/);
 });
 test('write boundary checks reject outside and traversal before touching filesystem', () => {
     const profile = capability('readIsolationProfile')(declaration());

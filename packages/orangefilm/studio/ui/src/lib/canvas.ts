@@ -79,13 +79,13 @@ export interface MakeOptions {
   /** a picture made as a GIF (its frames and each one's length) or an SVG; one redrawn from the first picture wired in,
       where a mask (a PNG, clear where it is redrawn) or a markup (changes drawn on a clear PNG) says */
   format?: 'gif' | 'svg'; gifFrames?: number; frameMs?: number; mask?: string; markup?: string;
-  /** a voice-over's voice, its id at its service (`openfilm get tts --voice`) */
+  /** a voice-over's voice, its id at its service (`orangefilm get tts --voice`) */
   voice?: string;
 }
 
 /** how many a node makes at once */
 export const MAKE_COUNTS = [1, 2, 4] as const;
-/** a GIF's frames and each frame's length, unless asked otherwise (`openfilm get image --format gif`) */
+/** a GIF's frames and each frame's length, unless asked otherwise (`orangefilm get image --format gif`) */
 export const GIF_FRAMES = 9;
 export const GIF_FRAME_MS = 200;
 
@@ -478,7 +478,7 @@ export function modeOf(opts: MakeOptions | undefined, spec: ModelSpec | undefine
 }
 
 /**
- * What `openfilm get` is asked for a node: the words wired in, then its own; a picture made from the pictures wired in
+ * What `orangefilm get` is asked for a node: the words wired in, then its own; a picture made from the pictures wired in
  * (`--ref`); a clip from them (its first and last frames, or references), or from a clip or a recording wired in when
  * its model makes it so; each within what the node's model makes (`spec`). `unused`: what is wired in that it cannot
  * use.
@@ -490,7 +490,7 @@ export function makeRequest(node: CanvasNode & { make: MakeKind }, inputs: reado
   const pictures = inputs.flatMap((i) => ('media' in i && i.media === 'image' ? [i.path] : []));
   const clips = inputs.flatMap((i) => ('media' in i && i.media === 'video' ? [i.path] : []));
   const sounds = inputs.flatMap((i) => ('media' in i && i.media === 'audio' ? [i.path] : []));
-  /* as `openfilm get` is given them: words, as on its command line */
+  /* as `orangefilm get` is given them: words, as on its command line */
   const opts = node.opts ?? {};
   /* a voice-over: its words spoken in its voice; nothing wired in but words is used */
   if (node.make === 'tts') return { verb: 'tts', args: { out: name, text: words, voice: opts.voice ?? '' }, unused: pictures.length + clips.length + sounds.length };

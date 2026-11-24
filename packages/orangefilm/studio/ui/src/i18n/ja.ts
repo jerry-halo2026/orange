@@ -146,7 +146,7 @@ export const ja: Words = {
     goneApp: 'Studio が停止しました。{brand} アプリを終了して開き直すと復旧します。',
     copied: 'コピーしました',
     lockedTitle: 'このブラウザーは Studio にサインインしていません',
-    lockedBody: 'Studio は動いていますが、キー付きのアドレスで一度開いたブラウザーしか受け付けません。`openfilm open`（開発中は `pnpm dev`）が表示した ?key= 付きの完全なアドレスを開いてください。一度開けば、このブラウザーは Studio のアドレスをそのまま使えます。',
+    lockedBody: 'Studio は動いていますが、キー付きのアドレスで一度開いたブラウザーしか受け付けません。`orangefilm open`（開発中は `pnpm dev`）が表示した ?key= 付きの完全なアドレスを開いてください。一度開けば、このブラウザーは Studio のアドレスをそのまま使えます。',
     lockedHow: 'アドレスをもう一度得るには',
   },
   projects: {
@@ -1002,7 +1002,7 @@ export const ja: Words = {
     discoverNone: '見つけられるスキルはまだありません。',
     mineEmptyTitle: 'インポートしたスキルはまだありません',
     mineEmpty: 'スキル索引やこのパソコンのフォルダからインポートでき、すべてのプロジェクトで使えます。',
-    mineEmptyCli: 'openfilm skill add でスキル索引やフォルダからインポートでき、すべてのプロジェクトで使えます。',
+    mineEmptyCli: 'orangefilm skill add でスキル索引やフォルダからインポートでき、すべてのプロジェクトで使えます。',
     mineImport: 'スキルをインポート',
     communityEmptyTitle: 'コミュニティスキルはまだありません',
     communityEmpty: 'ある種類の映像のすぐ使える作り方。「見つける」からインストールすると、エージェントがそれに沿って作ります。',
@@ -2316,7 +2316,7 @@ export const ja: Words = {
     delete: '削除',
     cancel: 'キャンセル',
   },
-  /* what an agent's `openfilm get` asks before it spends (see SpendAsks) */
+  /* what an agent's `orangefilm get` asks before it spends (see SpendAsks) */
   asks: {
     videoTitle: 'エージェントがビデオクリップを作成しようとしています',
     videoNote: 'ビデオは最も費用のかかる種類のメディアです。',
@@ -2409,7 +2409,7 @@ export const ja: Words = {
       newer: '{brand} {version} が公開されています。',
       upToDate: '最新の状態です。',
       source: 'ソースから実行中です。git pull で更新します。',
-      off: 'ここではアップデートの確認がオフです（OPENFILM_NO_UPDATE_CHECK）。',
+      off: 'ここではアップデートの確認がオフです（ORANGE_NO_UPDATE_CHECK）。',
       never: 'まだ確認していません。',
       inApp: 'Studio はデスクトップアプリと一緒に更新されます：{brand} → Check for Updates…',
       howTitle: 'アップデート',
@@ -2756,13 +2756,13 @@ export const ja: Words = {
       downloaded: '{done} / {size}',
       count: '{n} 個インストール済み',
       facts: { kind: '用途', size: 'サイズ', memory: '実行時のメモリ', memoryValue: '約 {n} MB', license: 'ライセンス', where: '使われる場所' },
-      where: { asr: '文字起こしと字幕（設定 → サービス → 文字起こし、エージェントは openfilm get asr）：何もアップロードしません。最近のコンピューターで Small は実時間の約 2.5 倍速です。', cutout: '画像の背景を取り除きます（エージェントは openfilm get cutout）：被写体を残し、残りを透明にします。' },
+      where: { asr: '文字起こしと字幕（設定 → サービス → 文字起こし、エージェントは orangefilm get asr）：何もアップロードしません。最近のコンピューターで Small は実時間の約 2.5 倍速です。', cutout: '画像の背景を取り除きます（エージェントは orangefilm get cutout）：被写体を残し、残りを透明にします。' },
       about: { 'whisper-small': 'OpenAI の音声認識モデル（小サイズ）：約 100 言語で十分な精度、各単語に時刻が付くので字幕にそのまま使えます。', 'whisper-large-v3-turbo': '最も正確な Whisper：人名や言語の混在に強く、中国語も安定しますが、サイズが大きく速度はほぼ実時間です。', 'birefnet-lite': '画像の被写体（人・物・動物）を見つけ、髪の毛まできれいな輪郭で切り抜きます。' },
     },
     providers: {
       included: '対応',
       about: {
-        openfilm: '{brand} 自身のサービス。{brand} アカウントを一度接続するだけで、ナレーション、音楽、効果音、書き起こし、画像、ビデオを主要なモデルで作れます。支払いは {brand} の残高から。ほかのアカウントやキーは不要です。',
+        orangefilm: '{brand} 自身のサービス。{brand} アカウントを一度接続するだけで、ナレーション、音楽、効果音、書き起こし、画像、ビデオを主要なモデルで作れます。支払いは {brand} の残高から。ほかのアカウントやキーは不要です。',
         openai: 'ChatGPT の開発元。API で GPT Image による画像生成、独自の音声によるナレーション、単語単位の書き起こしができます。',
         google: 'Google AI Studio の Gemini API：Gemini の音声と書き起こし、Nano Banana の画像、Veo のビデオを一つのキーで。',
         azure: 'Microsoft のクラウド。Azure AI Speech は百以上の言語で数百の自然な音声を話します。',

@@ -46,7 +46,7 @@ export const isClipMotion = (item: { kind: string; place?: string | undefined })
 export function takesMotion(block: { kind: string; src?: string | undefined }): boolean {
   if (block.kind !== 'video' && block.kind !== 'mg') return false;
   const src = block.src?.split('#')[0] ?? '';
-  return !/^saved\/openfilm\/(text-|filters-|effects-|transitions-)/.test(src);
+  return !/^saved\/orangefilm\/(text-|filters-|effects-|transitions-)/.test(src);
 }
 
 /**

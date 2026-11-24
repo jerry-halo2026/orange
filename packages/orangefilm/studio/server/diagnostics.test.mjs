@@ -38,7 +38,7 @@ test("a turn's log goes in as how it went, without what was said unless asked", 
 });
 
 test('the diagnostic file: the report, the problems, the logs, the failed turns, and Codex\'s own log around its problem', async () => {
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-diagnostics-'));
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-diagnostics-'));
   const home = join(root, 'home');
   const appLogs = join(root, 'app-logs');
   const project = join(root, 'Film');
@@ -65,11 +65,11 @@ test('the diagnostic file: the report, the problems, the logs, the failed turns,
     db.close();
   }
 
-  const made = await exportDiagnostics({ report: 'OpenFilm doctor\n✓ Node', folder: join(root, 'out'), home, appLogs, now: new Date('2026-10-18T14:00:00Z') });
+  const made = await exportDiagnostics({ report: 'OrangeFilm doctor\n✓ Node', folder: join(root, 'out'), home, appLogs, now: new Date('2026-10-18T14:00:00Z') });
   assert.equal(made.path, join(root, 'out', diagnosticsName(new Date('2026-10-18T14:00:00Z'))));
   assert.deepEqual(made.files.filter((f) => f !== 'agents/codex.txt'), ['report.txt', 'problems.jsonl', 'logs/studio/studio.log', 'logs/app/updates.log', 'turns/local-abc.jsonl']);
   const zip = readFileSync(made.path).toString('utf8');
-  assert.match(zip, /OpenFilm doctor/);
+  assert.match(zip, /OrangeFilm doctor/);
   assert.match(zip, /export failed: no codec/);
   assert.match(zip, /Reconnecting\.\.\. 2\/5/);
   assert.doesNotMatch(zip, /secret/, 'no words of the turn');

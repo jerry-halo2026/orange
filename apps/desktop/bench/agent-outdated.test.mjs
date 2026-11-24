@@ -29,7 +29,7 @@ test('a Claude Code older than the chat was tried with says so in Settings › A
       const errors = [];
       page.on('pageerror', (error) => errors.push(error.message));
       await page.addInitScript((locale) => {
-        localStorage.setItem('openfilm.language', locale);
+        localStorage.setItem('orangefilm.language', locale);
         const agents = [
           { id: 'claude', name: 'Claude Code', shown: true, status: 'ready', path: '/usr/local/bin/claude',
             outdated: { version: '2.1.288', tested: '2.1.308', update: 'npm i -g @anthropic-ai/claude-code@latest' } },
@@ -43,12 +43,12 @@ test('a Claude Code older than the chat was tried with says so in Settings › A
       await page.goto(`http://127.0.0.1:${server.httpServer.address().port}/agent-outdated-ui`);
       const zh = locale === 'zh-CN';
       const row = (name) => page.locator('div.py-4').filter({ has: page.getByText(name, { exact: true }) });
-      const said = zh ? 'Claude Code 2.1.288 比 OpenFilm 测过的 2.1.308 旧' : 'Claude Code 2.1.288 is older than the 2.1.308 OpenFilm was tested with';
+      const said = zh ? 'Claude Code 2.1.288 比 OrangeFilm 测过的 2.1.308 旧' : 'Claude Code 2.1.288 is older than the 2.1.308 OrangeFilm was tested with';
       await row('Claude Code').getByRole('status').filter({ hasText: said }).waitFor();
       assert.equal(await row('Claude Code').getByText('npm i -g @anthropic-ai/claude-code@latest', { exact: true }).isVisible(), true, 'the command that updates it');
       assert.equal(await row('Claude Code').getByText(zh ? '已连接' : 'Connected', { exact: true }).isVisible(), true, 'an older one still works: it stays connected');
       assert.equal(await row('Codex').getByText(/2\.1\.310/).count(), 0, 'an agent that is not older says nothing');
-      if (process.env.OPENFILM_OUTDATED_PREVIEW) await page.screenshot({ path: `${process.env.OPENFILM_OUTDATED_PREVIEW}-${locale}.png`, fullPage: true });
+      if (process.env.ORANGE_OUTDATED_PREVIEW) await page.screenshot({ path: `${process.env.ORANGE_OUTDATED_PREVIEW}-${locale}.png`, fullPage: true });
       assert.deepEqual(errors, []);
       await page.close();
     }

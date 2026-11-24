@@ -160,8 +160,8 @@ export function filterParts(v: string | undefined): { name: string; args: string
 
 const joinFilter = (parts: { name: string; args: string }[]) => (parts.length ? parts.map((p) => `${p.name}(${p.args})`).join(' ') : null);
 
-/** The id of the SVG filter that draws a mask's stroke (lib/clip-mask): `url("data:…#openfilm-mask-stroke")`. */
-export const MASK_STROKE_ID = 'openfilm-mask-stroke';
+/** The id of the SVG filter that draws a mask's stroke (lib/clip-mask): `url("data:…#orangefilm-mask-stroke")`. */
+export const MASK_STROKE_ID = 'orangefilm-mask-stroke';
 /**
  * Whether a filter function is a mask's stroke: the panel's own (an SVG in a data URL, with its id), kept last so no
  * adjustment tints it. A filter of the page's own, `url(#…)`, is not.

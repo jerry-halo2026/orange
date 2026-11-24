@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * Where `openfilm get` gets media from: services the person connects with their own key, each paid directly, with the
+ * Where `orangefilm get` gets media from: services the person connects with their own key, each paid directly, with the
  * model the person chose for each kind of media. Each provider is a module
  * whose default export is a `Provider`; `get.mjs` picks one per verb (`--via`, else the person's choice in Settings;
  * nothing is picked for them) and lands what it returns in the project.
@@ -62,7 +62,7 @@
 /**
  * `read`: a project file's bytes (for `asr`, the speech alone: a small mono copy, in `speechFormat` when requested).
  * `link`: a temporary web (https) address of a project file, for a service that fetches what it is given from an
- * address only; there only when the run can make one (OpenFilm's service: kept until the run ends, then deleted).
+ * address only; there only when the run can make one (OrangeFilm's service: kept until the run ends, then deleted).
  * `model`: the id of the model, one of the provider's `models` for the verb, the person chose (a provider uses its first
  * when there is none).
  * @typedef {{
@@ -138,7 +138,7 @@
  * `ready`: it takes no key at all (Local services): connected while it can run, which it says.
  * `added`: one the person added in their shared home (added.mjs), not built in; set when it is read.
  * `pricingUrl`: the provider's own pricing page, linked as "Pricing" in Settings → Providers. Only the link: what is free
- * and what is paid changes on the provider's side. None for OpenFilm's own service (no price is shown in the app) and for
+ * and what is paid changes on the provider's side. None for OrangeFilm's own service (no price is shown in the app) and for
  * Local services (free).
  * `billingUrl`: the provider's own page where the person tops up its balance. A run that fails because the account has
  * no balance left throws an Error with `code: 'balance'` (common.mjs `noBalance`), the same for every provider: the

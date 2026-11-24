@@ -731,7 +731,7 @@ export function materialsServiceFromEnv({ cache = null, auth = null, env = proce
   const root = trimmed(mediaRoot);
   /* 名字优先从**向量包**取（`names.tsv`，随客户端下发的那一份）；包里没有才退回落地索引。
      下载命名要的是"这一条叫什么"—— 索引一旦和语料不是同一快照就查不到，文件只好退回数字名。 */
-  const packDir = trimmed(env.OPENFILM_MATERIAL_PACK) || DEFAULT_PACK_DIR();
+  const packDir = trimmed(env.ORANGE_MATERIAL_PACK) || DEFAULT_PACK_DIR();
   const packNames = packDir ? createPackNames(packDir) : null;
   return createMaterialsService({
     upstream, secret, cache, auth,

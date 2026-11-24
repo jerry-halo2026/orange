@@ -176,7 +176,7 @@ export function createMaterialUse(options: MaterialUseOptions = {}): (card: Mate
 }
 
 /** Where "this costs a download" was already said; once per session is enough. */
-export const SPEND_NOTICE_KEY = 'openfilm.material-use.spend-notice';
+export const SPEND_NOTICE_KEY = 'orangefilm.material-use.spend-notice';
 export type NoticeStorage = {getItem(key: string): string | null; setItem(key: string, value: string): void};
 
 /**

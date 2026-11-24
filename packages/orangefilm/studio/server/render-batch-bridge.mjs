@@ -94,7 +94,7 @@ export function createRenderBatchBridge({
     typeof auth?.runNative === 'function' ? auth.runNative(work) : work();
   return {
     auth,
-    dataDir: dataDir || process.env.OPENFILM_DATA_DIR || '',
+    dataDir: dataDir || process.env.ORANGE_DATA_DIR || '',
     projectById: async (/** @type {string} */ id) => {
       /* 依次尝试：按 id 取（Studio 自己的项目库）→ 直接当成目录（桌面端把工程目录传进来时的形态） */
       try {

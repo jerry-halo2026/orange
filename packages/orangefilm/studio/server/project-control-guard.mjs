@@ -100,10 +100,10 @@ function canonical(p, deny) {
   for (let n = 1; n <= segments.length; n++) {
    const prefix = segments.slice(0, n).join(sep);
    if (isAbsolute(prefix)) for (const parent of ancestors(resolve(prefix))) {
-    marker(join(parent, '.openfilm-control.json')); marker(join(parent, '.film', 'control.json'));
+    marker(join(parent, '.orangefilm-control.json')); marker(join(parent, '.film', 'control.json'));
     if (stat(parent)) {
      let real; try { real = realpathSync(parent); } catch { throw controlError(); }
-     for (const realParent of ancestors(real)) { marker(join(realParent, '.openfilm-control.json')); marker(join(realParent, '.film', 'control.json')); }
+     for (const realParent of ancestors(real)) { marker(join(realParent, '.orangefilm-control.json')); marker(join(realParent, '.film', 'control.json')); }
     }
    }
   }
@@ -112,7 +112,7 @@ function canonical(p, deny) {
  let at = full, tail = [];
  while (!stat(at)) { tail.unshift(at.slice(dirname(at).length + (dirname(at).endsWith(sep) ? 0 : 1))); const up = dirname(at); if (up === at) throw controlError(); at = up; }
  try { paths.add(resolve(realpathSync(at), ...tail)); } catch { throw controlError(); }
- if (deny) for (const base of paths) for (const parent of ancestors(base)) { marker(join(parent, '.openfilm-control.json')); marker(join(parent, '.film', 'control.json')); }
+ if (deny) for (const base of paths) for (const parent of ancestors(base)) { marker(join(parent, '.orangefilm-control.json')); marker(join(parent, '.film', 'control.json')); }
  return [...paths].map(fold);
 }
 function resources(value, deny = true) {
@@ -150,7 +150,7 @@ export function createProjectControlGuard(options = {}) {
    boundPolicy = policy; boundRoot = pathValue(policy.coordinationRoot);
   } else {
    if (boundPolicy) throw controlError();
-   const candidate = explicit ?? join(userInfo().homedir, '.openfilm-control-coordination');
+   const candidate = explicit ?? join(userInfo().homedir, '.orangefilm-control-coordination');
    if (boundRoot && fold(boundRoot) !== fold(candidate)) throw controlError();
    boundRoot = pathValue(candidate);
   }

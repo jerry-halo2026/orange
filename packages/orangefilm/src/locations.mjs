@@ -5,10 +5,10 @@
 /**
  * Where the product keeps the person's work on this computer: the projects library (one folder per project, the folders
  * Studio's Projects list shows) and the exports folder. The library has a default and may be moved in Studio's
- * Settings → General: Studio's `prefs.json` (`projectsFolder`), read by Studio and by the `openfilm` command alike, so
- * a project fetched from the command line lands where Studio's go. A Studio with a home of its own (OPENFILM_HOME, as
- * `pnpm dev` and the desktop app's dev and preview builds have) shares the person's library when OPENFILM_SHARED_HOME
- * names the home that keeps it (~/.openfilm). OPENFILM_LIBRARY sets the default (a build, or a Studio kept apart);
+ * Settings → General: Studio's `prefs.json` (`projectsFolder`), read by Studio and by the `orangefilm` command alike, so
+ * a project fetched from the command line lands where Studio's go. A Studio with a home of its own (ORANGE_HOME, as
+ * `pnpm dev` and the desktop app's dev and preview builds have) shares the person's library when ORANGE_SHARED_HOME
+ * names the home that keeps it (~/.orangefilm). ORANGE_LIBRARY sets the default (a build, or a Studio kept apart);
  * what the person chose comes first. Exports go to the folder picked when exporting (the export dialog keeps the last
  * one), else to the exports default.
  *
@@ -19,22 +19,17 @@ import { homedir } from 'node:os';
 import { readIsolationProfile, assertIsolationPath } from './development-isolation.mjs';
 import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 
-/** Studio's own home (its settings and keys, not the person's work): ORANGE_HOME, else the legacy OPENFILM_HOME, else ~/.openfilm. */
+/** Studio's own home (its settings and keys, not the person's work): ORANGE_HOME, else ~/.orangefilm. */
 /** @param {string} key @param {()=>string} fallback */
 const isolatedLocation = (key, fallback) => { const p = readIsolationProfile(); return p ? assertIsolationPath(p,p.paths[key],key) : fallback(); };
-const envText = (name) => process.env[`ORANGE_${name}`] ?? process.env[`OPENFILM_${name}`];
-/** A new install starts at ~/.orangefilm; an existing ~/.openfilm keeps working until an explicit migration wrote its marker. */
-export const defaultStudioHome = (home = homedir()) => {
-  const next = join(home, '.orangefilm');
-  const old = join(home, '.openfilm');
-  const migrated = existsSync(join(next, '.orangefilm-home-migration.json'));
-  return migrated || !existsSync(old) ? next : old;
-};
+const envText = (name) => process.env[`ORANGE_${name}`];
+/** Studio's home is ~/.orangefilm, and nothing else: the old ~/.orangefilm is read only by the explicit import. */
+export const defaultStudioHome = (home = homedir()) => join(home, '.orangefilm');
 export const studioHomeDir = () => isolatedLocation('home', () => envText('HOME') || defaultStudioHome());
 
 /**
- * The Studio home whose prefs.json holds what every OpenFilm on this computer shares (where the library is, the skills
- * turned off): OPENFILM_SHARED_HOME, else Studio's own.
+ * The Studio home whose prefs.json holds what every OrangeFilm on this computer shares (where the library is, the skills
+ * turned off): ORANGE_SHARED_HOME, else Studio's own.
  */
 export const sharedHome = () => isolatedLocation('sharedHome', () => envText('SHARED_HOME') || studioHomeDir());
 
@@ -49,7 +44,7 @@ export function sharedPref(key, home = sharedHome()) {
 }
 
 /**
- * Keep one value in the shared prefs.json. The file is shared with every OpenFilm on this computer, older or newer:
+ * Keep one value in the shared prefs.json. The file is shared with every OrangeFilm on this computer, older or newer:
  * what this one does not know of it is written back as it was. @param {string} key @param {unknown} value
  */
 export function setSharedPref(key, value, home = sharedHome()) {
@@ -63,7 +58,7 @@ export function setSharedPref(key, value, home = sharedHome()) {
 
 /** The product's folder in the person's own folders: brand.json's `productName` (…/Videos/OrangeFilm). */
 const PRODUCT_FOLDER = 'OrangeFilm';
-/** The folder it was before the product was renamed: what a first start moves, once (…/Videos/OpenFilm). */
+/** The folder it was before the product was renamed: what a first start moves, once (…/Videos/OrangeFilm). */
 const LEGACY_PRODUCT_FOLDER = 'OpenFilm';
 
 /** The folder the product keeps its projects, saved things and skills in: ~/Movies/<product>, or ~/Videos/<product>. */
@@ -71,13 +66,13 @@ export const productFolder = () => join(homedir(), process.platform === 'darwin'
 /** Where that folder was before the rename (migrateProductFolder). */
 export const legacyProductFolder = () => join(homedir(), process.platform === 'darwin' ? 'Movies' : 'Videos', LEGACY_PRODUCT_FOLDER);
 
-/** Where new projects go unless the person chose: OPENFILM_LIBRARY, else ~/Movies/OrangeFilm/Projects on macOS, ~/Videos/OrangeFilm/Projects elsewhere. */
+/** Where new projects go unless the person chose: ORANGE_LIBRARY, else ~/Movies/OrangeFilm/Projects on macOS, ~/Videos/OrangeFilm/Projects elsewhere. */
 export const libraryDefault = () => isolatedLocation('projects', () => envText('LIBRARY')
   || join(productFolder(), 'Projects'));
 
 /**
- * Where exports go unless a folder is picked when exporting: OPENFILM_EXPORTS, else `exports` in OPENFILM_HOME when
- * that is set (a Studio kept apart, for work on OpenFilm itself, leaves nothing in the person's own folder), else the
+ * Where exports go unless a folder is picked when exporting: ORANGE_EXPORTS, else `exports` in ORANGE_HOME when
+ * that is set (a Studio kept apart, for work on OrangeFilm itself, leaves nothing in the person's own folder), else the
  * Desktop.
  */
 export const exportsDefault = () => isolatedLocation('exports', () => envText('EXPORTS')
@@ -86,13 +81,13 @@ export const exportsDefault = () => isolatedLocation('exports', () => envText('E
 
 /**
  * Where what the person saved goes (clips and files kept to use again in any project, studio/server/saved.mjs): beside
- * the projects' default folder, `Saved` (~/Movies/OrangeFilm/Saved on macOS), else OPENFILM_SAVED. Not moved with the
+ * the projects' default folder, `Saved` (~/Movies/OrangeFilm/Saved on macOS), else ORANGE_SAVED. Not moved with the
  * projects folder: what was saved stays where it was found.
  */
 export const savedRoot = () => isolatedLocation('saved', () => envText('SAVED') || join(dirname(libraryDefault()), 'Saved'));
 
 /**
- * The product's folder under its new name, moving the one it had before (`…/Videos/OpenFilm` → `…/Videos/OrangeFilm`),
+ * The product's folder under its new name, moving the one it had before (`…/Videos/OrangeFilm` → `…/Videos/OrangeFilm`),
  * so the person's projects — and `Saved` and `Skills` beside them — keep being theirs after the rename.
  *
  * The whole product folder moves, not just `Projects`: the three live side by side, and a `Saved` left behind under the

@@ -20,7 +20,7 @@ test('login renders the creation center name and native account inputs',async()=
  const module={exports:{}};new Function('require','module','exports',compiled)(require,module,module.exports);
  const html=renderToStaticMarkup(React.createElement(module.exports.Login,{state:{kind:'signed-out',reason:null},onSignedIn(){}}));
  /* the product's name, brand.json's own: the sign-in page names the app a person just opened */
- assert.ok(html.includes(product));assert.match(html,/type="email"/);assert.match(html,/type="password"/);assert.doesNotMatch(html,/OpenFilm Studio|orangeflim/);
+ assert.ok(html.includes(product));assert.match(html,/type="email"/);assert.match(html,/type="password"/);assert.doesNotMatch(html,/OrangeFilm Studio|orangeflim/);
 });
 test('window, launcher and editor use the same display name without changing native identity',async()=>{
  const main=await read('./main.mjs'),shell=await read('../shell/index.html'),studioPage=await read('../../../packages/orangefilm/studio/ui/index.html');

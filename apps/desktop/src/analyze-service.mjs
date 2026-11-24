@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * `openfilm analyze`, wired: the analyser runs in this process, its result is cached locally by the runner itself, and
+ * `orangefilm analyze`, wired: the analyser runs in this process, its result is cached locally by the runner itself, and
  * the write-back to the index happens **only when a client is there and the upload works**. An index that is not
  * configured is a reason in the answer, never a failed analysis: the local result is still worth having.
  *
@@ -16,7 +16,7 @@ import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 
 /** Where an analysis of this project is kept when the caller names no workspace. */
-export const analysisWorkspace = (project) => join(project, '.openfilm', 'analysis');
+export const analysisWorkspace = (project) => join(project, '.orangefilm', 'analysis');
 
 /**
  * The width of `wiki_summary.embedding` — `docs/sql/embedding.json` → `dims: 768`, and the column is declared

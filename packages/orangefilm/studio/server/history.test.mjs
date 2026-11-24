@@ -14,7 +14,7 @@ import { replaceFile } from './atomic.mjs';
 let trash;
 before(() => {
   trash = mkdtempSync(join(tmpdir(), 'of-history-trash-'));
-  process.env.OPENFILM_TRASH_DIR = trash;
+  process.env.ORANGE_TRASH_DIR = trash;
 });
 
 const film = (...clips) => `<!doctype html>\n<html>\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=1920, height=1080">\n</head>\n<body>\n<section>\n${clips.join('\n')}\n</section>\n</body>\n</html>\n`;
@@ -31,7 +31,7 @@ const project = () => {
 };
 /* who writes the versions an earlier edition made, as Studio does (history-store.mjs): a CI runner has no git identity */
 const gitEnv = (root) => ({ ...process.env, GIT_DIR: join(root, '.film', 'history'), GIT_WORK_TREE: root, GIT_CONFIG_NOSYSTEM: '1',
-  GIT_AUTHOR_NAME: 'OpenFilm Studio', GIT_AUTHOR_EMAIL: 'studio@openfilm.local', GIT_COMMITTER_NAME: 'OpenFilm Studio', GIT_COMMITTER_EMAIL: 'studio@openfilm.local' });
+  GIT_AUTHOR_NAME: 'OrangeFilm Studio', GIT_AUTHOR_EMAIL: 'studio@orangefilm.local', GIT_COMMITTER_NAME: 'OrangeFilm Studio', GIT_COMMITTER_EMAIL: 'studio@orangefilm.local' });
 const gitOut = (root, args, input) => execFileSync('git', args, { cwd: root, env: gitEnv(root), ...(input ? { input } : {}) }).toString();
 /** What a version holds. */
 const tracked = (root, rev = 'HEAD') => gitOut(root, ['ls-tree', '-r', '--name-only', rev]).trim().split('\n').filter(Boolean).sort();
@@ -128,7 +128,7 @@ test('media is kept by its content outside git, and comes back byte for byte', a
   const first = await saveVersion(root, { message: 'Take 1' });
   /* the tree holds a pointer; the store holds the bytes once */
   const pointer = gitOut(root, ['show', 'HEAD:assets/shot.mp4']);
-  assert.match(pointer, /^openfilm-media 1\nsha256 [0-9a-f]{64}\nsize 3145728\n$/);
+  assert.match(pointer, /^orangefilm-media 1\nsha256 [0-9a-f]{64}\nsize 3145728\n$/);
   const store = readdirSync(join(root, '.film', 'history', 'media'));
   assert.equal(store.length, 1, 'the same content is stored once');
   assert.deepEqual(readFileSync(join(root, '.film', 'history', 'media', store[0])), take1);
@@ -214,8 +214,8 @@ test('a file the trash will not take stays, named; the version is put back aroun
   /* a trash that takes nothing: its folder a file (on Windows, the Recycle Bin refusing a file too big for it) */
   const wall = join(root, '.film', 'wall');
   writeFileSync(wall, 'no trash here');
-  const was = process.env.OPENFILM_TRASH_DIR;
-  process.env.OPENFILM_TRASH_DIR = join(wall, 'trash');
+  const was = process.env.ORANGE_TRASH_DIR;
+  process.env.ORANGE_TRASH_DIR = join(wall, 'trash');
   try {
     const done = await checkoutVersion(root, first);
     assert.deepEqual([done.commit, done.kept.map((k) => k.path), done.missing], [first, ['new.html'], []]);
@@ -232,7 +232,7 @@ test('a file the trash will not take stays, named; the version is put back aroun
     assert.equal(readFileSync(join(root, 'title.html'), 'utf8'), 'title', 'the edit is discarded');
     assert.ok(existsSync(join(root, 'extra.html')), 'the file the trash refused stays');
   } finally {
-    process.env.OPENFILM_TRASH_DIR = was;
+    process.env.ORANGE_TRASH_DIR = was;
   }
   /* the trash back: the same restore takes the files away, none kept */
   const again = await checkoutVersion(root, second, { discard: true });
@@ -284,7 +284,7 @@ test('the versions of every branch an earlier edition made, and the changes it p
   gitOut(root, ['update-ref', 'refs/heads/idea', idea]);
   gitOut(root, ['update-ref', 'refs/heads/main', second]);
   const parked = gitOut(root, ['commit-tree', `${idea}^{tree}`, '-p', idea, '-m', 'parked: idea']).trim();
-  gitOut(root, ['update-ref', 'refs/openfilm/parked/idea', parked]);
+  gitOut(root, ['update-ref', 'refs/orangefilm/parked/idea', parked]);
   writeFileSync(join(root, 'title.html'), 'two');
   const list = await versions(root);
   assert.deepEqual(list.map((v) => [v.kind, v.name]).sort(), [['named', 'Idea'], ['named', 'One'], ['named', 'Two'], ['parked', 'idea']]);
@@ -434,7 +434,7 @@ test('an earlier Studio\'s history is brought up to date on first use: its versi
   /* a branch with changes left on it, as an earlier Studio left them: a stash */
   git('switch', '--quiet', '-c', 'idea', v1);
   writeFileSync(join(root, 'title.html'), 'idea, half done');
-  git('stash', 'push', '--quiet', '--include-untracked', '-m', 'openfilm:idea', '--', '.');
+  git('stash', 'push', '--quiet', '--include-untracked', '-m', 'orangefilm:idea', '--', '.');
   git('switch', '--quiet', 'main');
   assert.ok(tracked(root).includes('render.log'), 'the old rule took everything');
   const posters = join(root, '.film', 'cache', 'commits');
@@ -449,7 +449,7 @@ test('an earlier Studio\'s history is brought up to date on first use: its versi
   assert.equal(state.changes, null, 'nothing looks changed after');
   assert.deepEqual(mark(join(root, 'title.html')), titleNow, 'the person\'s files are not written');
   assert.deepEqual(mark(join(root, 'render.log')), logNow);
-  assert.ok(existsSync(join(root, '.film', 'history', 'openfilm.json')));
+  assert.ok(existsSync(join(root, '.film', 'history', 'orangefilm.json')));
   assert.equal(readdirSync(trash).filter((n) => n.startsWith('history-before-cleanup-')).length >= 1, true, 'the old history went to the trash');
   const commits = await versions(root);
   assert.deepEqual(commits.filter((c) => c.kind !== 'parked').map((c) => [c.kind, c.name]), [['upgrade', ''], ['named', 'v2'], ['named', 'v1']]);
@@ -474,14 +474,14 @@ test('an earlier Studio\'s history is brought up to date on first use: its versi
 test('a history that kept the film\'s files only is brought up to date: the project\'s others are added, nothing looks changed', async () => {
   const root = project();
   await saveVersion(root, { message: 'One' });
-  writeFileSync(join(root, '.film', 'history', 'openfilm.json'), '{"format":2}\n');
+  writeFileSync(join(root, '.film', 'history', 'orangefilm.json'), '{"format":2}\n');
   writeFileSync(join(root, 'notes.md'), 'notes a version did not keep before');
   const before = mark(join(root, 'notes.md'));
   assert.equal((await status(root)).changes, null);
   assert.deepEqual((await versions(root)).map((v) => [v.kind, v.name]), [['upgrade', ''], ['named', 'One']]);
   assert.ok(tracked(root).includes('notes.md'));
   assert.deepEqual(mark(join(root, 'notes.md')), before, 'the person\'s files are not written');
-  assert.match(readFileSync(join(root, '.film', 'history', 'openfilm.json'), 'utf8'), /"format":3/);
+  assert.match(readFileSync(join(root, '.film', 'history', 'orangefilm.json'), 'utf8'), /"format":3/);
 });
 
 test('without film.html nothing is saved: the person is told why, a version on its own is not made (#304)', async () => {

@@ -31,7 +31,7 @@ before(async () => {
     res.writeHead(status, { 'content-type': 'application/json' }).end(JSON.stringify(body));
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
-  process.env.OPENFILM_MIMO_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.ORANGE_MIMO_URL = `http://127.0.0.1:${server.address().port}`;
 });
 after(() => server.close());
 beforeEach(() => { seen.length = 0; });
@@ -120,7 +120,7 @@ test('a Token Plan key pointed elsewhere is told where it belongs; a used-up pla
   const files = { 'assets/talk.mp3': mp3 };
   reply = () => [401, { error: { message: 'Invalid API Key' } }];
   await assert.rejects(mimo.run('asr', { src: 'assets/talk.mp3' }, ctx(files, undefined, 'tp-test_0123456789abcdef')),
-    /Token Plan key answers at https:\/\/token-plan-cn\.xiaomimimo\.com; check OPENFILM_MIMO_URL/);
+    /Token Plan key answers at https:\/\/token-plan-cn\.xiaomimimo\.com; check ORANGE_MIMO_URL/);
   reply = () => [429, { error: { message: 'quota exhausted' } }];
   await assert.rejects(mimo.run('asr', { src: 'assets/talk.mp3' }, ctx(files)), (e) => e.code === 'balance');
   reply = () => [401, { error: { message: 'Invalid API Key' } }];

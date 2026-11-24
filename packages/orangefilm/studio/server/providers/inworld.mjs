@@ -103,7 +103,7 @@ export default {
 
 /**
  * The workspace's voices (Inworld's own and the person's clones), searched by the prompt, then narrowed by language
- * and gender. Each as `openfilm get voice` gives it: { voiceId, name, language, gender, description }.
+ * and gender. Each as `orangefilm get voice` gives it: { voiceId, name, language, gender, description }.
  * @param {Record<string, unknown>} args @param {(path: string) => Promise<any>} send
  */
 async function voices(args, send) {

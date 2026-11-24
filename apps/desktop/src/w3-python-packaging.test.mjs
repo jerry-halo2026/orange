@@ -15,7 +15,7 @@ import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT } from '../scripts/packed-edi
 const here = dirname(fileURLToPath(import.meta.url));
 const desktop = join(here, '..');
 const repo = join(desktop, '..', '..');
-const cli = join(repo, 'packages/orangefilm/bin/openfilm.mjs');
+const cli = join(repo, 'packages/orangefilm/bin/orangefilm.mjs');
 
 /** A services root of its own, so a test never touches the person's real one. */
 const servicesRootOf = () => mkdtempSync(join(tmpdir(), 'services-root-'));
@@ -27,7 +27,7 @@ test('the component describes itself, and says where it would live', () => {
     assert.match(described.requires.python, />=3\.10/);
     assert.equal(described.install.onDemand, true);
     const root = servicesRootOf();
-    const options = { env: { OPENFILM_SERVICES_ROOT: root }, platform: 'win32' };
+    const options = { env: { ORANGE_SERVICES_ROOT: root }, platform: 'win32' };
     assert.equal(servicesRoot(options), root);
     assert.equal(componentDir(options), join(root, 'services', 'rea-video'));
     assert.equal(installed(options), false, 'nothing is installed in an empty root');
@@ -37,11 +37,11 @@ test('the component describes itself, and says where it would live', () => {
     assert.match(report.message, /首次使用分析功能需要安装组件/);
 });
 
-test('without the component `openfilm analyze` says so in one structured line, and exits 4 — not 2', () => {
+test('without the component `orangefilm analyze` says so in one structured line, and exits 4 — not 2', () => {
     const root = servicesRootOf();
     const run = spawnSync(process.execPath, [cli, 'analyze', 'clip.mp4'], {
         encoding: 'utf8',
-        env: { ...process.env, OPENFILM_SERVICES_ROOT: root },
+        env: { ...process.env, ORANGE_SERVICES_ROOT: root },
     });
     assert.equal(run.status, NOT_INSTALLED_EXIT, 'its own code: the component is missing');
     assert.notEqual(run.status, 2, 'never a usage error');
@@ -55,7 +55,7 @@ test('without the component `openfilm analyze` says so in one structured line, a
     assert.equal(report.component, 'rea-video');
     assert.ok(report.sizeMB > 0);
     // and the same without --json: the shape does not depend on the flag
-    const plain = spawnSync(process.execPath, [cli, 'analyze', 'clip.mp4'], { encoding: 'utf8', env: { ...process.env, OPENFILM_SERVICES_ROOT: root } });
+    const plain = spawnSync(process.execPath, [cli, 'analyze', 'clip.mp4'], { encoding: 'utf8', env: { ...process.env, ORANGE_SERVICES_ROOT: root } });
     assert.equal(plain.status, NOT_INSTALLED_EXIT);
     assert.equal(plain.stdout, '');
     assert.equal((plain.stderr ?? '').trim().split('\n').filter(Boolean).length, 1);
@@ -67,14 +67,14 @@ test('an installed component is not mistaken for a missing one', () => {
     const dir = join(root, 'services', 'rea-video');
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, '.installed'), '');
-    assert.equal(installed({ env: { OPENFILM_SERVICES_ROOT: root } }), true, 'the marker says it is there');
+    assert.equal(installed({ env: { ORANGE_SERVICES_ROOT: root } }), true, 'the marker says it is there');
     // Installed means the command goes on to analyse: it does not answer as "component missing" (4).
     // Nothing here can analyse (no media, no ffmpeg, no model), so the honest answer is 5 with a code.
     // `--video-id` is given because the write-back is keyed by it: without one the command stops before reading a
     // frame (`video-id-required`), which would prove the component was installed but not that it was tried.
     const run = spawnSync(process.execPath, [cli, 'analyze', 'clip.mp4', '--video-id', 'fixture-video', '--json'], {
         encoding: 'utf8',
-        env: { ...process.env, OPENFILM_SERVICES_ROOT: root },
+        env: { ...process.env, ORANGE_SERVICES_ROOT: root },
     });
     assert.notEqual(run.status, NOT_INSTALLED_EXIT, 'not "component missing"');
     assert.equal(run.status, 5, 'it tried, and the analysis failed with its own code');
@@ -83,7 +83,7 @@ test('an installed component is not mistaken for a missing one', () => {
     assert.match(answer.code, /media-missing|frames-empty|not-configured/, 'a named reason, not a stack');
 });
 test('the packaged app reaches the editor modules from resources, a source run from the checkout', () => {
-    // packaged: resources/openfilm/packages/... is where scripts/release.mjs puts them
+    // packaged: resources/orangefilm/packages/... is where scripts/release.mjs puts them
     const resources = mkdtempSync(join(tmpdir(), 'resources-'));
     for (const relative of PACKED_EDITOR_MODULES) {
         const file = join(resources, PACKED_EDITOR_ROOT, relative);
@@ -98,7 +98,7 @@ test('the packaged app reaches the editor modules from resources, a source run f
     assert.equal(source, repo, 'a source run reads the checkout');
 
     // either way an explicit folder wins (a moved install, and the tests that need a stub)
-    assert.equal(editorModulesDir({ resources, env: { OPENFILM_EDITOR_MODULES: '/somewhere/else' } }), resolve('/somewhere/else'));
+    assert.equal(editorModulesDir({ resources, env: { ORANGE_EDITOR_MODULES: '/somewhere/else' } }), resolve('/somewhere/else'));
 });
 
 test('the release packs exactly the modules the MCP server loads', () => {
@@ -108,7 +108,7 @@ test('the release packs exactly the modules the MCP server loads', () => {
     // release.mjs runs its build when imported, so its packaging step is read as text.
     const text = readFileSync(join(desktop, 'scripts', 'release.mjs'), 'utf8');
     assert.match(text, /PACKED_EDITOR_MODULES/, 'the release copies the list, not a hand-written one');
-    assert.match(text, /to: PACKED_EDITOR_ROOT/, 'and ships it as resources/openfilm');
+    assert.match(text, /to: PACKED_EDITOR_ROOT/, 'and ships it as resources/orangefilm');
     for (const relative of PACKED_EDITOR_MODULES) {
         assert.ok(existsSync(join(repo, relative)), relative + ' exists to be copied');
     }

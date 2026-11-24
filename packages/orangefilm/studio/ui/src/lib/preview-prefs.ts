@@ -16,7 +16,7 @@ export type PreviewPrefs = { fitPages: boolean; renders: boolean; stats: boolean
 type Pref = keyof PreviewPrefs;
 
 const DEFAULTS: PreviewPrefs = { fitPages: true, renders: true, stats: false };
-const KEY: Record<Pref, string> = { fitPages: 'openfilm.preview.fitPages', renders: 'openfilm.preview.renders', stats: 'openfilm.preview.stats' };
+const KEY: Record<Pref, string> = { fitPages: 'orangefilm.preview.fitPages', renders: 'orangefilm.preview.renders', stats: 'orangefilm.preview.stats' };
 
 /** Without localStorage (private window), the choices last this session. */
 const memory: Partial<PreviewPrefs> = {};

@@ -30,9 +30,9 @@ test('HEVC master keeps changing fine grain instead of flattening it into one st
   const scratch = mkdtempSync(join(tmpdir(), 'of-master-grain-'));
   const root = join(scratch, 'project');
   mkdirSync(root);
-  const saved = { exports: process.env.OPENFILM_EXPORTS, home: process.env.OPENFILM_HOME };
-  process.env.OPENFILM_EXPORTS = join(scratch, 'exports');
-  process.env.OPENFILM_HOME = join(scratch, 'home');
+  const saved = { exports: process.env.ORANGE_EXPORTS, home: process.env.ORANGE_HOME };
+  process.env.ORANGE_EXPORTS = join(scratch, 'exports');
+  process.env.ORANGE_HOME = join(scratch, 'home');
   const w = 640, h = 360, fps = 30;
   try {
     writeFileSync(join(root, 'grain.html'), `<!doctype html><body style="margin:0"><canvas width="${w}" height="${h}"></canvas><script>
@@ -75,7 +75,7 @@ window.film={duration:0.4,width:${w},height:${h},frame(t){g.putImageData(new Ima
     assert.ok(correlation > 0.1, `the changing grain follows the source, not one frozen texture: ${correlation}`);
     for (const value of delta) assert.ok(Math.abs(value / (w * h)) < 1, `no constant color shift: ${delta.map((v) => v / (w * h))}`);
   } finally {
-    for (const [key, value] of [['OPENFILM_EXPORTS', saved.exports], ['OPENFILM_HOME', saved.home]]) {
+    for (const [key, value] of [['ORANGE_EXPORTS', saved.exports], ['ORANGE_HOME', saved.home]]) {
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
     }
     rmSync(scratch, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });

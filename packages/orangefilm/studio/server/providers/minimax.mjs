@@ -23,7 +23,7 @@ const TTS_MODEL = 'speech-2.8-hd';
 const ASR_MODEL = 'asr-1.0';
 const MUSIC_MODEL = 'music-3.0';
 
-/** The host: `OPENFILM_MINIMAX_URL`, else the mainland one. */
+/** The host: `ORANGE_MINIMAX_URL`, else the mainland one. */
 const endpoint = (/** @type {string} */ path) => `${serviceUrl('MINIMAX', DEFAULT_URL).replace(/\/+$/, '')}${path}`;
 
 /**

@@ -296,7 +296,7 @@ function refLine(ref: StudioRef): string {
       const facts = [ref.fileKind, ref.w && ref.h ? `${ref.w}×${ref.h}` : null, ref.duration ? sec(ref.duration) : null].filter(Boolean);
       return `file ${ref.path}${facts.length ? ` (${facts.join(', ')})` : ''}`;
     }
-    /* not in the film: the canvas beside it, changed with `openfilm canvas apply` */
+    /* not in the film: the canvas beside it, changed with `orangefilm canvas apply` */
     case 'node': return [
       `canvas node \`${ref.id}\` (${ref.nodeKind}${ref.nodeKind === 'note' || ref.nodeKind === 'file' || ref.nodeKind === 'group' ? '' : ' maker'})`,
       ref.text ? `text ${quote(ref.text, 300)}` : null,
@@ -313,7 +313,7 @@ function refLine(ref: StudioRef): string {
     case 'example': return [
       `example film ${quote(ref.title, 80)} (another ${BRAND.product} film, not this one: read its film.html and pages for how it is made)`,
       ref.folder ? `folder ${ref.folder}` : 'its folder could not be fetched: read it at its source',
-      ref.canvas ? 'its canvas, the steps it was made with, is .film/canvas.json in its folder (`openfilm canvas` run there prints it)' : null,
+      ref.canvas ? 'its canvas, the steps it was made with, is .film/canvas.json in its folder (`orangefilm canvas` run there prints it)' : null,
       ref.end ? `its ${ref.start?.toFixed(3) ?? '0.000'}–${ref.end.toFixed(3)} s${ref.segment ? ` (${quote(ref.segment, 60)})` : ''}` : 'the whole film',
       `source ${ref.url}`,
     ].filter(Boolean).join(' · ');
@@ -321,7 +321,7 @@ function refLine(ref: StudioRef): string {
     case 'voice': {
       const model = ref.models[0];
       const how = ref.via
-        ? `speak in it with \`openfilm get tts --via ${ref.via}${model ? ` --model ${model}` : ''} --voice ${ref.id}\`${ref.models.length > 1 ? ` (models: ${ref.models.join(', ')})` : ''}`
+        ? `speak in it with \`orangefilm get tts --via ${ref.via}${model ? ` --model ${model}` : ''} --voice ${ref.id}\`${ref.models.length > 1 ? ` (models: ${ref.models.join(', ')})` : ''}`
         : `not connected: the person connects ${ref.service} or ${BRAND.product} in Studio's Settings › Services first`;
       return [`voice ${quote(ref.name, 80)} of ${ref.service} for voice-over, id \`${ref.id}\``, ref.language ? `speaks ${ref.language}` : null, how].filter(Boolean).join(' · ');
     }

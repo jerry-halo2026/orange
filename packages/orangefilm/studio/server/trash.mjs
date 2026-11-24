@@ -28,10 +28,10 @@ const run = promisify(execFile);
 /** macOS's own command for the Trash (macOS 15 and later). */
 const MAC_TRASH = '/usr/bin/trash';
 
-/** PowerShell's exit code when the item in $env:OPENFILM_TRASH cannot go to the Recycle Bin; why is its output (JSON). */
+/** PowerShell's exit code when the item in $env:ORANGE_TRASH cannot go to the Recycle Bin; why is its output (JSON). */
 const CANNOT_RECYCLE = 3;
 /**
- * Windows: the item in $env:OPENFILM_TRASH to the Recycle Bin, once it is known the bin takes it. The shell recycles
+ * Windows: the item in $env:ORANGE_TRASH to the Recycle Bin, once it is known the bin takes it. The shell recycles
  * only on a fixed drive, whose bin holds items up to a size (the person's setting, a policy's, or about a twentieth of
  * the drive when neither was set) and is not set to delete right away; anything else it deletes for good, asking only
  * through the confirmations `OnlyErrorDialogs` turns off. So those are checked first, by the shell's own settings, for
@@ -53,9 +53,9 @@ function Get-OwnSize($dir) {
   }
   $sum
 }
-$root = [System.IO.Path]::GetPathRoot($env:OPENFILM_TRASH)
+$root = [System.IO.Path]::GetPathRoot($env:ORANGE_TRASH)
 if ($root.StartsWith('\\\\')) { Refuse 'network' $root }
-$item = Get-Item -LiteralPath $env:OPENFILM_TRASH -Force
+$item = Get-Item -LiteralPath $env:ORANGE_TRASH -Force
 $mount = $null
 $volume = $null
 $id = $null
@@ -142,15 +142,15 @@ async function moveInto(/** @type {string} */ from, /** @type {string} */ to) {
 /** @param {string} path an absolute path */
 export async function moveToTrash(path) {
   /* tests (and anyone who wants deletes kept elsewhere) name the folder that stands for the trash */
-  if (process.env.OPENFILM_TRASH_DIR) {
-    const dir = process.env.OPENFILM_TRASH_DIR;
+  if (process.env.ORANGE_TRASH_DIR) {
+    const dir = process.env.ORANGE_TRASH_DIR;
     await mkdir(dir, { recursive: true });
     await moveInto(path, join(dir, freeName(dir, basename(path))));
     return;
   }
   if (process.platform === 'win32') {
     try {
-      await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', RECYCLE], { env: { ...process.env, OPENFILM_TRASH: path }, windowsHide: true });
+      await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', RECYCLE], { env: { ...process.env, ORANGE_TRASH: path }, windowsHide: true });
     } catch (e) {
       const { code, stdout } = /** @type {{ code?: unknown, stdout?: string }} */ (e);
       if (code !== CANNOT_RECYCLE) throw e;

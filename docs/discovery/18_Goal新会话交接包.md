@@ -4,7 +4,7 @@
 
 ## 1. 唯一目标与防漂移红线
 
-在同一orange仓库，以固定OpenFilm v0.3.0完整desktop＋Studio为主工程，交付orangeflim Windows内部小范围试用候选。原UI、IO、API、命令、工程格式和操作链优先复用；新增首页是原App增量，不做新壳/网站/时间线/平行编辑API。技术栈不重选。平台仅Windows和macOS Apple Silicon arm64；Windows一期交付，Mac规划/适配不冒充已验收，不支持IntelMac/Linux客户端。
+在同一orange仓库，以固定OrangeFilm v0.3.0完整desktop＋Studio为主工程，交付orangeflim Windows内部小范围试用候选。原UI、IO、API、命令、工程格式和操作链优先复用；新增首页是原App增量，不做新壳/网站/时间线/平行编辑API。技术栈不重选。平台仅Windows和macOS Apple Silicon arm64；Windows一期交付，Mac规划/适配不冒充已验收，不支持IntelMac/Linux客户端。
 
 可试用标准见[17](17_小范围试用交付与Goal验收.md)PG01–PG12；现有四条主工作线不是整个首版完成。不以静态页面、MP4、上游测试、旧分支绿灯或Agent口头汇报结题。
 
@@ -14,7 +14,7 @@
 | --- | --- |
 | `D:/dev/orange` | 当前原版主工作区，先核实际branch/HEAD/dirty状态，禁止假定会话附带工作树仍是它 |
 | `dev` | 当前唯一开发/集成与文档维护分支；精确远端/本地头从Git核验，不固定成本页自身无法包含的最终commit |
-| `7713d38c8ddc860e1b8e517bb8b0f180988f8f73` | OpenFilm v0.3.0源码pin；本地原生代码行为引用16，不自动跟远端main升级 |
+| `7713d38c8ddc860e1b8e517bb8b0f180988f8f73` | OrangeFilm v0.3.0源码pin；本地原生代码行为引用16，不自动跟远端main升级 |
 | `workers/fission` / `c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9` | 70文件.NET快照已导入，路径隔离/构建/媒体未验，不能直接运行原Web/doctor/stress |
 | `dev` / 起点 `8b8ef162708033dd3ed06c81dc0afffc95e8b950` | 现为原生基座；后续从最新dev分主题任务。旧dcb44a2保全为codex/archive-legacy-dev-20261107，不参与新代码 |
 | `codex/archive-consolidated-20261107` / `697191bba465e41f2ecb0a0ff0661c28a9d78ce2` | 六份脱敏源码/明确WIP快照仅供查阅，不作开发基线，不把快照归集当真实功能合并 |
@@ -45,7 +45,7 @@
 - Supabase自有开发目标由Ethan确认过；新会话从私有配置核对确切项目ref，不凭“orange”名称猜，凭据不贴聊天/日志/公共文档；原Studio本地key不能代本人身份。
 - 用户提供的智尚私有配置留原本地指定文件；公开仓不包含值。缺本人绑定需要账号标识/绑定，不重复索要公司密钥。真实测试账号从私有运行配置/用户交互取得，不把旧聊天密码复制进文件。
 - 本机定位索引：`E:/CodexData/archives/orange-20261107/next-session-private-locations.json`，仅存用户已给的配置位置/开发项目标识，不存密钥/密码。新会话只读该文件定位，禁止把其内容复制到PUBLIC；位置存在不等于本人绑定/费用/服务已通过。
-- 官方OpenFilm资源/skills/examples可能动态联网或执行代码，来源/固定版本/许可见15；不用下载成功代表可执行批准。
+- 官方OrangeFilm资源/skills/examples可能动态联网或执行代码，来源/固定版本/许可见15；不用下载成功代表可执行批准。
 
 ## 6. 可复制启动指令
 
@@ -58,7 +58,7 @@
 
 我确认交接包的产品和工程方向，批准计划范围内的本地实现、隔离测试及自有orange仓库审过源码/脱敏文档提交。目标按17的矩阵达到Windows内部小范围试用候选；不能把T01–T10或截图当完整首版完成。任何缩小试用范围须明确给我确认。
 
-严格以OpenFilm v0.3.0原desktop/Studio为主工程，原UI、类型、IO、API、CLI和工程格式优先；只为缺失业务做最小增量，不另造壳、编辑器、素材库或平行协议。平台只考虑Windows与macOS Apple Silicon arm64，Windows先交付，Mac未经实测不宣称支持。
+严格以OrangeFilm v0.3.0原desktop/Studio为主工程，原UI、类型、IO、API、CLI和工程格式优先；只为缺失业务做最小增量，不另造壳、编辑器、素材库或平行协议。平台只考虑Windows与macOS Apple Silicon arm64，Windows先交付，Mac未经实测不宣称支持。
 
 按C89依赖/可消费冻结/独立工作树/写集/资源/N5a动态并行，待审优先、共享基础单写、非作者独审、串行集成。批准范围内连续执行，不逐任务问继续。原生工作树工具失联不得手工绕过，缺本人绑定仅暂停真实云联调，其它就绪任务继续。
 

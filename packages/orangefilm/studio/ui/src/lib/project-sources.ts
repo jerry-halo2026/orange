@@ -41,27 +41,27 @@ export type FetchJob = {
   code?: string;
   project?: { id: string };
 };
-/** Whose a skill is: its uid's owner (`openfilm` for OrangeFilm's own, else the account its repository is under). */
+/** Whose a skill is: its uid's owner (`orangefilm` for OrangeFilm's own, else the account its repository is under). */
 export const ownerOf = (skill: { uid: string }) => skill.uid.split('/')[0] ?? '';
 /** A skill's uid as the interface shows it: our own skills read `OrangeFilm/...`, never the package's old name. */
-export const displayUid = (uid: string): string => uid.replace(/^openfilm\//, '橙子创作中心/');
+export const displayUid = (uid: string): string => uid.replace(/^orangefilm\//, '橙子创作中心/');
 /** Who made it, as they write their name: its repository's account (GitHub keeps its case there), else its uid's owner. */
 export const makerOf = (skill: { uid: string; repository?: string }) => /^https:\/\/github\.com\/([\w.-]+)\//i.exec(skill.repository ?? '')?.[1] ?? ownerOf(skill);
 /** One of Discover's, installed or not, made by someone other than OrangeFilm: the community's, under its owner's name. */
-export const communityOf = (skill: { uid: string; source: string; core?: true }) => skill.source === 'official' && !skill.core && ownerOf(skill) !== 'openfilm';
+export const communityOf = (skill: { uid: string; source: string; core?: true }) => skill.source === 'official' && !skill.core && ownerOf(skill) !== 'orangefilm';
 
-/** a skill a project can be made with (openfilm/src/skills.mjs): the project's own, the person's, or official */
+/** a skill a project can be made with (orangefilm/src/skills.mjs): the project's own, the person's, or official */
 export type SkillEntry = {
-  /** whose it is and its name, `owner/name` (openfilm/src/skills.mjs SKILL_UID): how it is told apart, shared and searched */
+  /** whose it is and its name, `owner/name` (orangefilm/src/skills.mjs SKILL_UID): how it is told apart, shared and searched */
   uid: string;
   name: string; description: string; source: 'project' | 'mine' | 'official'; scripts: number;
   /** the name agents are given it by: its own, or `owner-name` beside another of that name (none: turned off) */
   as?: string;
   /** OrangeFilm's own (how a film is made, its media, its canvas): in every agent's hands, and only turned off */
   core?: true;
-  /** how people see it (its openfilm.json): a title and a one-line summary, by language */
+  /** how people see it (its orangefilm.json): a title and a one-line summary, by language */
   shown?: { title: Record<string, string>; summary: Record<string, string>; details?: Record<string, string> };
-  /** its openfilm.json's (else its front matter's) */
+  /** its orangefilm.json's (else its front matter's) */
   version?: string;
   /** a way of working (a kind of job) or a look; its place among its kind; its mark */
   kind?: 'workflow' | 'style'; order?: number; icon?: string;
@@ -117,7 +117,7 @@ export const seenCatalog = (): string | null => seen.catalog;
 export const seenSkills = (projectId?: string | null): SkillEntry[] | null => seen.skills.get(projectId ?? '') ?? seen.skills.get('') ?? null;
 
 /** The desktop's add dialog and Studio's gallery share the window. */
-export const SKILLS_CHANGED = 'openfilm:skills-changed';
+export const SKILLS_CHANGED = 'orangefilm:skills-changed';
 
 /** Read an open gallery's skills again after an addition; a stale request must not replace the newer list. */
 export function watchSkills(projectId: string | null | undefined, changed: (skills: SkillEntry[]) => void, events: EventTarget = window): () => void {
@@ -306,7 +306,7 @@ export function followFetch(
   return { stop: () => { stopped = true; }, done };
 }
 
-const COLLAPSE_KEY = 'openfilm.projects.examplesCollapsed';
+const COLLAPSE_KEY = 'orangefilm.projects.examplesCollapsed';
 /** Whether the person folded the examples away (kept in this browser). */
 export function examplesCollapsed(storage: Pick<Storage, 'getItem'> | null): boolean {
   try { return storage?.getItem(COLLAPSE_KEY) === '1'; } catch { return false; }

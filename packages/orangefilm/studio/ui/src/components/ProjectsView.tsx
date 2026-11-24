@@ -332,7 +332,7 @@ export function ProjectsView({
           <div className="pointer-events-none sticky bottom-0 z-20 flex justify-center pb-5">
             <div
               className="pointer-events-auto flex items-center gap-1 rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] py-1.5 pl-4 pr-1.5 shadow-[var(--shadow-lg)]"
-              style={{ animation: 'openfilm-rise 0.16s ease-out both' }}
+              style={{ animation: 'orangefilm-rise 0.16s ease-out both' }}
             >
               <span className="text-[13px] font-medium tabular-nums text-[var(--text)]">
                 {t('library.selectedCount').replace('{n}', String(selectedCount))}
@@ -1355,7 +1355,7 @@ function FolderPicker({
     >
       <div
         className="flex w-full max-w-[460px] flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] shadow-[var(--shadow-lg)]"
-        style={{ animation: 'openfilm-pop 0.16s ease-out both' }}
+        style={{ animation: 'orangefilm-pop 0.16s ease-out both' }}
         onKeyDown={(event) => {
           if (event.key === 'Enter' && naming === undefined && canMove && !(event.target instanceof HTMLInputElement)) { event.preventDefault(); move(picked); }
         }}
@@ -1512,7 +1512,7 @@ function SortButton({
           <div
             role="dialog"
             className="fixed z-[10060] w-[200px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-raised)] pb-1.5 shadow-[var(--shadow-lg)]"
-            style={{ left: anchor.left, top: anchor.top, animation: 'openfilm-rise 0.14s ease-out both' }}
+            style={{ left: anchor.left, top: anchor.top, animation: 'orangefilm-rise 0.14s ease-out both' }}
             onClick={(event) => event.stopPropagation()}
           >
             <p className="px-3 pb-1 pt-2 text-[10.5px] font-semibold uppercase tracking-[0.06em] text-[var(--text-faint)]">{t('library.sortLabel')}</p>

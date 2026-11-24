@@ -6,23 +6,23 @@
  * Mac's; `--unsigned` for a local try; `--platform=win --arch=x64|arm64` for the Windows installer, built here too;
  * `--dir` to stop at the unpacked app, no installer — the way to look inside a build, and the step that fails a build
  * short of a file (scripts/packaged-selfcheck.mjs); `--verify` with it to check the build already made, without making
- * it again; `--official` for the project's own build; `--preview` for "OpenFilm Preview", an app of its own to try a
+ * it again; `--official` for the project's own build; `--preview` for "OrangeFilm Preview", an app of its own to try a
  * build in).
  *
- * Which build it is comes from the `openfilm` package's product files: a build of this source uses product.json,
+ * Which build it is comes from the `orangefilm` package's product files: a build of this source uses product.json,
  * empty in the repository (no update feed: the app never looks for updates); `--official` uses product.official.json
  * (the update feed under its `desktop.updates`).
  *
  *   1. the window's page (shell/: Studio's editor with the chat beside it) and Studio's editor on its own (the
- *      `openfilm` package's UI) are built (the chat's `@orange/shared` is bundled into the page);
- *   2. a stage folder gets the app's own files and a plain npm install of what it needs at run time: the `openfilm`
+ *      `orangefilm` package's UI) are built (the chat's `@orange/shared` is bundled into the page);
+ *   2. a stage folder gets the app's own files and a plain npm install of what it needs at run time: the `orangefilm`
  *      package as `npm pack` makes it (what npm would publish), the agents' ACP adapters
  *      and the updater. Optional dependencies are left out: the adapters would bring the makers' own Claude Code and
  *      Codex programs (200–330 MB each), and the app uses the person's own installation instead (src/agents.mjs).
- *      The staged `openfilm` package gets the build's product.json;
+ *      The staged `orangefilm` package gets the build's product.json;
  *   2b. the programs the app needs that are not node modules, for the platform and chip built for, in the app's
  *      resources (runtime/; src/main.mjs puts them to use): ffmpeg and ffprobe with their license (src/ffmpeg-runtime.mjs),
- *      and the headless browser Studio and `openfilm` draw pages in (Playwright's, the revision the staged
+ *      and the headless browser Studio and `orangefilm` draw pages in (Playwright's, the revision the staged
  *      playwright-core takes). People never download either: on a slow or blocked connection the first start used to
  *      fail there;
  *   2d. Fission, for a Windows x64 build: the batch mixer's .NET CLI, published self-contained (the computer has no
@@ -36,17 +36,17 @@
  *      else: a bench's credentials are never packaged. Without it the installed app cannot say which environment it
  *      belongs to, so a build with no source to take it from says so and `--dir` fails on the missing file;
  *   2f. the editor's own modules, material index included (scripts/packed-editor-modules.mjs), as
- *      resources/openfilm: `orangefilm-mcp.mjs` loads `material-tools.mjs` from there, and an install that lacked it
+ *      resources/orangefilm: `orangefilm-mcp.mjs` loads `material-tools.mjs` from there, and an install that lacked it
  *      answered every `material.*` call with `not-configured`;
  *   3. electron-builder makes the .dmg (to download) and the .zip (for updates), signed with the Developer ID
- *      OPENFILM_SIGN_IDENTITY ("Name (TEAMID)") and notarized (APPLE_TEAM_ID, the `openfilm-notary` keychain profile or
- *      OPENFILM_NOTARY_PROFILE), with the update feed written in (none without one). Without OPENFILM_SIGN_IDENTITY
+ *      ORANGE_SIGN_IDENTITY ("Name (TEAMID)") and notarized (APPLE_TEAM_ID, the `orangefilm-notary` keychain profile or
+ *      ORANGE_NOTARY_PROFILE), with the update feed written in (none without one). Without ORANGE_SIGN_IDENTITY
  *      and APPLE_TEAM_ID the build is unsigned, as with --unsigned.
  *
  *   4. the .dmg is signed and notarized too, so the download itself opens without a warning.
  *
- * Windows: an NSIS installer (OpenFilm-Setup-<version>-<arch>.exe, per user, no admin) and its feed (latest.yml). It is
- * built on this Mac: the program's icon and version are written into OpenFilm.exe with resedit (rcedit would need
+ * Windows: an NSIS installer (OrangeFilm-Setup-<version>-<arch>.exe, per user, no admin) and its feed (latest.yml). It is
+ * built on this Mac: the program's icon and version are written into OrangeFilm.exe with resedit (rcedit would need
  * wine). Not code-signed yet (no Windows certificate): SmartScreen asks once, "More info" → "Run anyway".
  *
  * npm and pnpm run as node programs (`process.execPath …/npm-cli.js`, `…/pnpm.cjs`), never as bare names: on Windows
@@ -61,7 +61,7 @@ import { chmodSync, cpSync, existsSync, mkdirSync, readFileSync, readdirSync, re
 import { createRequire } from 'node:module';
 import { createHash } from 'node:crypto';
 import { basename, delimiter, dirname, join, resolve } from 'node:path';
-import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT, PACKED_EDITOR_ROOT_ALIAS } from './packed-editor-modules.mjs';
+import { PACKED_EDITOR_MODULES, PACKED_EDITOR_ROOT } from './packed-editor-modules.mjs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { lockedOverrides, versionsOffLock } from './locked-versions.mjs';
 import { fissionCliName, fissionHostName, fissionRid, publishFission } from './fission-publish.mjs';
@@ -70,8 +70,8 @@ import { AUTH_ENVIRONMENT_FILE, packagedSelfCheck, reportSelfCheck } from './pac
 
 const require = createRequire(import.meta.url);
 const desktop = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-/* the `openfilm` package (Studio, the CLI), where node finds it */
-const protocol = dirname(require.resolve('openfilm/package.json'));
+/* the `orangefilm` package (Studio, the CLI), where node finds it */
+const protocol = dirname(require.resolve('orangefilm/package.json'));
 const asked = process.argv.find((a) => a.startsWith('--arch='))?.slice('--arch='.length);
 const arch = asked === 'x64' || asked === 'arm64' ? asked : process.arch === 'arm64' ? 'arm64' : 'x64';
 /* --platform=win, and the machine's own name for it (`--platform win-x64`, which says the arch too): either way the
@@ -82,17 +82,17 @@ const work = join(desktop, '.release', win ? `win-${arch}` : arch);
 const stage = join(work, 'app');
 const out = join(work, 'out');
 /* the Developer ID ("Name (TEAMID)") and its team, from the environment (the release pipeline's secrets) */
-const IDENTITY = process.env.OPENFILM_SIGN_IDENTITY?.trim() || '';
+const IDENTITY = process.env.ORANGE_SIGN_IDENTITY?.trim() || '';
 const TEAM_ID = process.env.APPLE_TEAM_ID?.trim() || '';
 const unsigned = process.argv.includes('--unsigned') || (!win && (!IDENTITY || !TEAM_ID));
 if (unsigned && !win && !process.argv.includes('--unsigned')) {
-  console.warn('OPENFILM_SIGN_IDENTITY and APPLE_TEAM_ID are not set: building an unsigned app (not notarized). Official builds are signed by the release pipeline.');
+  console.warn('ORANGE_SIGN_IDENTITY and APPLE_TEAM_ID are not set: building an unsigned app (not notarized). Official builds are signed by the release pipeline.');
 }
 
 /* this build's product: its update feed (see the header) */
 const official = process.argv.includes('--official');
 /* --preview: "<product> Preview", to try a build in apart from an installed app: its own name and bundle, data
-   folder, Studio home, port and projects (src/flavor.mjs `preview`, from the package's `openfilmFlavor`); no updates */
+   folder, Studio home, port and projects (src/flavor.mjs `preview`, from the package's `orangefilmFlavor`); no updates */
 const preview = process.argv.includes('--preview');
 if (preview && official) throw new Error('--preview is never the official build');
 /* --dir: the unpacked app only (no installer, no signing): the way to look inside a build */
@@ -118,7 +118,7 @@ const product = JSON.parse(readFileSync(productFile, 'utf8'));
 const updates = typeof product.desktop?.updates === 'string' ? product.desktop.updates.trim().replace(/\/+$/, '') : '';
 /** Where the packaged app looks for updates (the release's files are uploaded there), or null: it never looks. */
 export const FEED = updates ? `${updates}/${win ? 'win' : 'mac'}/${arch}` : null;
-const NOTARY_PROFILE = process.env.OPENFILM_NOTARY_PROFILE || 'openfilm-notary';
+const NOTARY_PROFILE = process.env.ORANGE_NOTARY_PROFILE || 'orangefilm-notary';
 
 /* ── npm and pnpm, whoever's machine this is ─────────────────────────────────────────────────────────────────────
  * Windows has no `npm` program, only shims: npm.cmd, and npm.ps1 which PowerShell refuses to load at all (execution
@@ -253,13 +253,13 @@ cpSync(join(desktop, 'shell/dist'), join(stage, 'shell/dist'), { recursive: true
    The tests and any node_modules are not shipped: they are not part of the program. */
 cpSync(api, join(stage, 'apps', 'api'), { recursive: true, filter: (from) => !from.includes('node_modules') && !from.endsWith('.test.ts') });
 const pack = (dir) => runNpm(['pack', '--ignore-scripts', '--pack-destination', work, '--silent'], { cwd: dir, encoding: 'utf8', stdio: 'pipe' }).trim().split('\n').pop();
-const dependencies = { ...pkg.dependencies, openfilm: `file:../${pack(protocol)}`, orangefilm: `file:../${pack(protocol)}` };
+const dependencies = { ...pkg.dependencies, orangefilm: `file:../${pack(protocol)}` };
 /* npm takes the versions pnpm's lockfile has (locked-versions.mjs): what the tests ran with, not the latest */
 const lockedTree = JSON.parse(runPnpm(['list', '--prod', '--depth', 'Infinity', '--json'], { cwd: desktop, encoding: 'utf8', stdio: 'pipe', maxBuffer: 256 * 1024 * 1024 }))[0];
 writeFileSync(join(stage, 'package.json'), `${JSON.stringify({
-  name: 'openfilm-desktop',
+  name: 'orangefilm-desktop',
   productName: NAME,
-  ...(preview ? { openfilmFlavor: 'preview' } : {}),
+  ...(preview ? { orangefilmFlavor: 'preview' } : {}),
   version: pkg.version,
   description: pkg.description,
   author: PRODUCT,
@@ -276,13 +276,13 @@ if (offLock.length) {
   throw new Error(`The installer's packages are not the lockfile's:\n${offLock.map((p) => `  ${p.name} ${p.version} (locked: ${p.locked.join(', ')})`).join('\n')}`);
 }
 /* the build's product file */
-cpSync(productFile, join(stage, 'node_modules/openfilm/product.json'));
+cpSync(productFile, join(stage, 'node_modules/orangefilm/product.json'));
 /* models and project templates are excluded from npm pack (`files`), but the installed app needs them:
    BGE for local material search, Whisper for subtitles, and the project templates the canvas offers. */
 for (const part of ['models', 'project-templates']) {
   const from = join(protocol, 'library', part);
   if (existsSync(from)) {
-    cpSync(from, join(stage, 'node_modules/openfilm/library', part), { recursive: true });
+    cpSync(from, join(stage, 'node_modules/orangefilm/library', part), { recursive: true });
     console.log(`library/${part}: copied into the installed package`);
   } else {
     console.warn(`library/${part}: not in this checkout — the installed app will miss it`);
@@ -293,12 +293,12 @@ for (const part of ['models', 'project-templates']) {
 const runtime = join(work, 'runtime');
 if (ffmpegDownloadable(platform, arch)) {
   /* 离线/慢网：用已下载好的同一版本 ffmpeg 目录，跳过发布时的再下载（内容与 pin 一致，license 也带）。 */
-  const cachedFfmpeg = String(process.env.OPENFILM_FFMPEG_CACHE ?? '').trim();
+  const cachedFfmpeg = String(process.env.ORANGE_FFMPEG_CACHE ?? '').trim();
   if (cachedFfmpeg && existsSync(join(cachedFfmpeg, 'ffmpeg'))) cpSync(cachedFfmpeg, join(runtime, 'ffmpeg'), { recursive: true });
   else await fetchFfmpeg(join(runtime, 'ffmpeg'), { platform, arch, license: true });
 } else console.warn(`No ffmpeg build for ${platform}-${arch}: this app downloads none either; people install their own.`);
 /* 同理：已装好的 Playwright 浏览器目录直接复制，安装器在目录已存在时不再联网。 */
-const cachedBrowsers = String(process.env.OPENFILM_PLAYWRIGHT_CACHE ?? '').trim();
+const cachedBrowsers = String(process.env.ORANGE_PLAYWRIGHT_CACHE ?? '').trim();
 if (cachedBrowsers && existsSync(cachedBrowsers)) {
   cpSync(cachedBrowsers, join(runtime, 'ms-playwright'), { recursive: true });
 } else {
@@ -318,17 +318,13 @@ const fission = fissionRid(targetPlatform, arch)
 if (!fission) console.warn(`Fission is not published for ${win ? 'win32' : 'darwin'}-${arch}: this build carries none.`);
 
 /* 2c. the editor's own modules, beside the archive: the MCP tools load them by name
-   (src/orangefilm-mcp.mjs reads resources/openfilm/... in an installed app; the checkout has no such
+   (src/orangefilm-mcp.mjs reads resources/orangefilm/... in an installed app; the checkout has no such
    folder, which is why they are copied rather than reached by relative path) */
-const openfilmModules = join(work, PACKED_EDITOR_ROOT);
-const orangefilmModules = join(work, PACKED_EDITOR_ROOT_ALIAS);
+const editorModules = join(work, PACKED_EDITOR_ROOT);
 for (const relative of PACKED_EDITOR_MODULES) {
-  const to = join(openfilmModules, relative);
+  const to = join(editorModules, relative);
   mkdirSync(dirname(to), { recursive: true });
   cpSync(join(desktop, '..', '..', relative), to);
-  const alias = join(orangefilmModules, relative);
-  mkdirSync(dirname(alias), { recursive: true });
-  cpSync(join(desktop, '..', '..', relative), alias);
 }
 
 /* 2e. the environment the installed app signs into: `resources/auth-environment.json`, exactly the three fields
@@ -397,7 +393,7 @@ await builder.build({
     },
     nsis: {
       /* electron-builder's NSIS target keeps `.mp4`/`.webm`/… out of the archive and adds them back one by one, and that
-         walk does not enter a folder named `node_modules` — ours is `resources/app.asar.unpacked/node_modules/openfilm`.
+         walk does not enter a folder named `node_modules` — ours is `resources/app.asar.unpacked/node_modules/orangefilm`.
          The library's preview videos were therefore dropped from every Windows installer without a warning, and the
          cards had nothing to play under the pointer. `null` keeps them in the archive like any other file; they are
          9.6 MB, so 7z compressing them costs little. This line comes before the names below on purpose: they are
@@ -422,15 +418,14 @@ await builder.build({
     asar: true,
     /* run by Electron as Node from outside the archive: the CLI the agents run, the agents' adapters, and the
        material service's source (a plain node child cannot read an asar archive) */
-    asarUnpack: ['node_modules/openfilm/**', 'node_modules/@agentclientprotocol/**', 'node_modules/playwright-core/**', 'apps/api/**'],
+    asarUnpack: ['node_modules/orangefilm/**', 'node_modules/@agentclientprotocol/**', 'node_modules/playwright-core/**', 'apps/api/**'],
     files: ['src/**/*', 'shell/dist/**/*', 'apps/api/**/*', 'package.json', 'node_modules/**/*'],
     /* ffmpeg, the headless browser (2b) and Fission (2d), as files of their own beside the archive: they run as
        programs. Fission's ffmpeg is the same resources/runtime/ffmpeg folder, never a second copy */
     extraResources: [
       { from: runtime, to: 'runtime' },
       ...(fission ? [{ from: fission.dir, to: 'fission' }] : []),
-      { from: openfilmModules, to: PACKED_EDITOR_ROOT },
-      { from: orangefilmModules, to: PACKED_EDITOR_ROOT_ALIAS },
+      { from: editorModules, to: PACKED_EDITOR_ROOT },
       /* the environment the app signs into (2e), at the root of resources where resolveEnvironment() reads it:
          `to: '.'` is a folder's contents into the resources folder itself, not a folder of its own */
       { from: environmentDir, to: '.' },

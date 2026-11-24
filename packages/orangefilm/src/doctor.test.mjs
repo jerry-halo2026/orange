@@ -9,7 +9,7 @@ import { test } from 'node:test';
 import { agentHints, doctor, formatReport, logTrouble, softwareRenderer, tidy } from './doctor.mjs';
 
 test('a path under the home folder reads ~', () => {
-  assert.equal(tidy('/Volumes/Home/someone/.openfilm', '/Volumes/Home/someone'), '~/.openfilm');
+  assert.equal(tidy('/Volumes/Home/someone/.orangefilm', '/Volumes/Home/someone'), '~/.orangefilm');
   assert.equal(tidy('/opt/homebrew/bin/node', '/Volumes/Home/someone'), '/opt/homebrew/bin/node');
 });
 
@@ -44,7 +44,7 @@ test('the report lists each check, then what to fix', () => {
 });
 
 test('doctor: the report says how much the projects\' .film folders hold', async () => {
-  const home = mkdtempSync(join(tmpdir(), 'openfilm-doctor-usage-'));
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-doctor-usage-'));
   const projects = join(home, 'Projects');
   mkdirSync(join(projects, 'Alpha', '.film', 'cache'), { recursive: true });
   writeFileSync(join(projects, 'Alpha', 'film.html'), '{"stage":{"w":1920,"h":1080},"tracks":[]}');
@@ -52,15 +52,15 @@ test('doctor: the report says how much the projects\' .film folders hold', async
   mkdirSync(join(projects, 'Beta', '.film'), { recursive: true });
   writeFileSync(join(projects, 'Beta', 'film.html'), '{"stage":{"w":1920,"h":1080},"tracks":[]}');
   writeFileSync(join(projects, 'Beta', '.film', 'id'), 'beta');
-  const before = { home: process.env.OPENFILM_HOME, library: process.env.OPENFILM_LIBRARY };
-  process.env.OPENFILM_HOME = join(home, '.openfilm');
-  process.env.OPENFILM_LIBRARY = projects;
+  const before = { home: process.env.ORANGE_HOME, library: process.env.ORANGE_LIBRARY };
+  process.env.ORANGE_HOME = join(home, '.orangefilm');
+  process.env.ORANGE_LIBRARY = projects;
   try {
     const report = await doctor({ studio: { origin: 'http://127.0.0.1:4848', version: '0.2.7' }, browser: false, network: false, home });
     assert.match(report.text, /Film files +1\.5 MB in 2 projects' \.film folders/);
     assert.ok(!report.text.includes(home), 'no full home path, and no project names');
   } finally {
-    for (const [name, value] of [['OPENFILM_HOME', before.home], ['OPENFILM_LIBRARY', before.library]]) {
+    for (const [name, value] of [['ORANGE_HOME', before.home], ['ORANGE_LIBRARY', before.library]]) {
       if (value === undefined) delete process.env[name]; else process.env[name] = value;
     }
     rmSync(home, { recursive: true, force: true });
@@ -68,14 +68,14 @@ test('doctor: the report says how much the projects\' .film folders hold', async
 });
 
 test('doctor: the log\'s errors hide keys and email addresses, as the report promises', async () => {
-  const home = mkdtempSync(join(tmpdir(), 'openfilm-doctor-log-'));
-  const data = join(home, '.openfilm');
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-doctor-log-'));
+  const data = join(home, '.orangefilm');
   mkdirSync(join(data, 'logs'), { recursive: true });
   writeFileSync(join(data, 'logs', 'studio.log'),
     'Error: request failed with Authorization: Bearer abcdefgh12345678 and sk-proj-ABCDEFGHIJKLMNOP from alice@example.com\n');
-  const before = { home: process.env.OPENFILM_HOME, library: process.env.OPENFILM_LIBRARY };
-  process.env.OPENFILM_HOME = data;
-  process.env.OPENFILM_LIBRARY = join(home, 'Projects');
+  const before = { home: process.env.ORANGE_HOME, library: process.env.ORANGE_LIBRARY };
+  process.env.ORANGE_HOME = data;
+  process.env.ORANGE_LIBRARY = join(home, 'Projects');
   try {
     const { text } = await doctor({ studio: { origin: 'http://127.0.0.1:4848', version: '0.3.0' }, browser: false, network: false, home });
     assert.match(text, /\(hidden\)/);
@@ -86,7 +86,7 @@ test('doctor: the log\'s errors hide keys and email addresses, as the report pro
     assert.ok(!text.includes('alice@example.com'), 'no email address');
     assert.ok(!text.includes(home), 'no full home path');
   } finally {
-    for (const [name, value] of [['OPENFILM_HOME', before.home], ['OPENFILM_LIBRARY', before.library]]) {
+    for (const [name, value] of [['ORANGE_HOME', before.home], ['ORANGE_LIBRARY', before.library]]) {
       if (value === undefined) delete process.env[name]; else process.env[name] = value;
     }
     rmSync(home, { recursive: true, force: true });
@@ -94,26 +94,26 @@ test('doctor: the log\'s errors hide keys and email addresses, as the report pro
 });
 
 test('doctor: the folders and the log, paths under home as ~', async () => {
-  const home = mkdtempSync(join(tmpdir(), 'openfilm-doctor-'));
-  const data = join(home, '.openfilm');
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-doctor-'));
+  const data = join(home, '.orangefilm');
   mkdirSync(join(data, 'logs'), { recursive: true });
   writeFileSync(join(data, 'logs', 'studio.log'), `2026-10-18T00:00:00Z Error: could not read ${join(home, 'film', 'film.html')}\n`);
-  const before = { home: process.env.OPENFILM_HOME, library: process.env.OPENFILM_LIBRARY };
-  process.env.OPENFILM_HOME = data;
-  process.env.OPENFILM_LIBRARY = join(home, 'Projects');
+  const before = { home: process.env.ORANGE_HOME, library: process.env.ORANGE_LIBRARY };
+  process.env.ORANGE_HOME = data;
+  process.env.ORANGE_LIBRARY = join(home, 'Projects');
   try {
     const report = await doctor({ env: { CODEX_SANDBOX: 'seatbelt' }, studio: { origin: 'http://127.0.0.1:4848', version: '0.1.7' }, browser: false, network: false, home });
     assert.match(report.text, /Run by +Codex \(CODEX_SANDBOX\)/);
     assert.match(report.text, /Studio +0\.1\.7 at http:\/\/127\.0\.0\.1:4848/);
     /* what ffmpeg does on the graphics chip here, or that it does it on the processor */
     if (/ffmpeg +\d/.test(report.text)) assert.match(report.text, /Hardware +ffmpeg encodes (with [^;]+|on the processor); decodes (with \S+|on the processor)\n/);
-    assert.match(report.text, /Data +~[/\\]\.openfilm/);
+    assert.match(report.text, /Data +~[/\\]\.orangefilm/);
     assert.match(report.text, /Projects +~[/\\]Projects \(not made yet\)/);
     assert.match(report.text, /Last errors in ~.*studio\.log:\n {2}.*could not read ~[/\\]film/);
     assert.ok(!report.text.includes(home), 'no full home path');
     assert.ok(!report.text.includes('seatbelt'), 'no variable values');
   } finally {
-    for (const [name, value] of [['OPENFILM_HOME', before.home], ['OPENFILM_LIBRARY', before.library]]) {
+    for (const [name, value] of [['ORANGE_HOME', before.home], ['ORANGE_LIBRARY', before.library]]) {
       if (value === undefined) delete process.env[name]; else process.env[name] = value;
     }
     rmSync(home, { recursive: true, force: true });

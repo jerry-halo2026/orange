@@ -10,16 +10,16 @@ import { changeSettings, cleanKey, modelFor, providerKey, providersFile, readSet
 import { listProviders } from './providers/index.mjs';
 import { startStudio } from './server.mjs';
 
-/* OpenFilm's service is asked what it offers: nowhere here (a port that refuses at once) */
-process.env.OPENFILM_API_URL ??= 'http://127.0.0.1:9';
+/* OrangeFilm's service is asked what it offers: nowhere here (a port that refuses at once) */
+process.env.ORANGE_API_URL ??= 'http://127.0.0.1:9';
 
 const KEY = 'xi-secret-key-abcdef1234';
 let studio;
 const opened = [];
 before(async () => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-keys-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
   for (const name of ['ELEVENLABS_API_KEY', 'OPENAI_API_KEY', 'GEMINI_API_KEY', 'GOOGLE_API_KEY', 'FAL_KEY', 'PEXELS_API_KEY', 'PIXABAY_API_KEY', 'BRAVE_API_KEY', 'TAVILY_API_KEY', 'GROQ_API_KEY', 'AZURE_SPEECH_KEY', 'AZURE_SPEECH_REGION', 'KEENABLE_API_KEY']) delete process.env[name];
   studio = await startStudio({ port: 0, openBrowser: (url) => opened.push(url) });
 });
@@ -35,7 +35,7 @@ test('keys are kept in a file only this user can read, in a folder only this use
   await changeSettings((s) => { s.keys.elevenlabs = KEY; });
   /* Windows has no file modes: the profile's own permissions keep it */
   if (process.platform !== 'win32') assert.equal(statSync(providersFile()).mode & 0o777, 0o600);
-  if (process.platform !== 'win32') assert.equal(statSync(process.env.OPENFILM_HOME).mode & 0o777, 0o700);
+  if (process.platform !== 'win32') assert.equal(statSync(process.env.ORANGE_HOME).mode & 0o777, 0o700);
   chmodSync(providersFile(), 0o644);
   assert.equal((await readSettings()).keys.elevenlabs, KEY);
   /* Windows has no file modes: the profile's own permissions keep it */
@@ -187,7 +187,7 @@ test('an own key comes with its model: the provider\'s first unless chosen, kept
   assert.equal(modelFor({ keys: {}, use: {}, model: { tts: 'gone' } }, provider, 'tts'), first.id);
 });
 
-test('what a newer OpenFilm keeps in providers.json stays when this one writes it', async () => {
+test('what a newer OrangeFilm keeps in providers.json stays when this one writes it', async () => {
   const file = join(mkdtempSync(join(tmpdir(), 'of-keys-newer-')), 'providers.json');
   writeFileSync(file, JSON.stringify({
     keys: { elevenlabs: 'xi-kept-0123456789' }, use: {}, model: {}, off: [], spending: { ask: 'video' },
@@ -201,7 +201,7 @@ test('what a newer OpenFilm keeps in providers.json stays when this one writes i
   assert.equal(written.keys.openai, 'sk-new-0123456789');
 });
 
-test('the library is searched by its words alone in this build, and meaning at OpenFilm\'s service is the person\'s choice', async () => {
+test('the library is searched by its words alone in this build, and meaning at OrangeFilm\'s service is the person\'s choice', async () => {
   let state = await (await api('/api/providers')).json();
   /* 模型现在随客户端分发（bge-base-zh），语义检索默认开：本地算，没有服务、没有网络、没有额外下载 */
   assert.equal(state.librarySearch, 'local', '本地语义检索默认开');

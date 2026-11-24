@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import { parseInlineMarkdown, safeMarkdownHref } from './markdown-blocks';
 
 test('a link written with backslashes does not leave the site', () => {
-  const base = 'https://openfilm.dev/chat/turn';
+  const base = 'https://orangefilm.dev/chat/turn';
   for (const href of ['\\\\evil.com', '/\\\\evil.com', '\\\\/evil.com', '\\\\\\\\evil.com']) {
     assert.equal(new URL(href, base).origin, 'https://evil.com', `${href} is read as an outside host by a browser`);
     assert.equal(safeMarkdownHref(href), null, href);

@@ -62,7 +62,7 @@ export const EFFECTS: Array<LibraryItem<EffectGroup>> = [
 ];
 
 export type LibraryKind = 'styles' | 'effects';
-const KEY = 'openfilm.canvas.library';
+const KEY = 'orangefilm.canvas.library';
 type Kept = Record<LibraryKind, { fav: string[]; recent: string[] }>;
 const empty = (): Kept => ({ styles: { fav: [], recent: [] }, effects: { fav: [], recent: [] } });
 function read(): Kept {

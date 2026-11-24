@@ -14,7 +14,7 @@ import { manifest } from './library-semantic.mjs';
 /* 语义检索现在**在本机算**（bge-base-zh-v1.5 + library/vectors.i8），不再有 `POST /v1/library/search`：
    以前这里起一个假服务喂向量，现在只要这个检出里带着模型与向量，本地那条路就是真的在跑。 */
 /* the Services settings of the tests' own (Library search on, as it is by default) */
-process.env.OPENFILM_HOME = mkdtempSync(join(tmpdir(), 'library-search-home-'));
+process.env.ORANGE_HOME = mkdtempSync(join(tmpdir(), 'library-search-home-'));
 const model = manifest();
 const semantic = model?.model === 'bge-base-zh-v1.5';
 
@@ -67,14 +67,14 @@ test('nothing that fits is nothing found, and said so', async () => {
   const said = await libraryGet('music-search', { prompt: 'qwzxv' });
   assert.equal(said.code, 0);
   /* a vector is near something whatever is asked: then the nearest are given as such */
-  if (semantic) assert.match(said.lines[0], /^No words of “qwzxv” are in OpenFilm's library; the 8 nearest in meaning, which may not fit:$/);
+  if (semantic) assert.match(said.lines[0], /^No words of “qwzxv” are in OrangeFilm's library; the 8 nearest in meaning, which may not fit:$/);
   else {
-    assert.match(said.lines[0], /^Nothing in OpenFilm's library for “qwzxv”: make one with `openfilm get music`\.$/);
+    assert.match(said.lines[0], /^Nothing in OrangeFilm's library for “qwzxv”: make one with `orangefilm get music`\.$/);
     assert.match((await libraryGet('transition', { prompt: 'qwzxv' })).lines[0], /write it yourself/);
   }
 });
 
-test('with OpenFilm\'s service, what is meant is found with no word in common, and what is named stays first', { skip: !semantic && 'the model is not in this library' }, async () => {
+test('with OrangeFilm\'s service, what is meant is found with no word in common, and what is named stays first', { skip: !semantic && 'the model is not in this library' }, async () => {
   const goodbye = (await searchLibrary('music', 'sad goodbye at a train station', { limit: 5 })).found;
   assert.ok(goodbye.filter(({ item }) => /farewell|grief|goodbye|lament|elegiac/i.test(`${item.name.en} ${item.about ?? ''}`)).length >= 3, goodbye.map((f) => f.item.name.en).join());
   assert.ok(!goodbye.some(({ item }) => /training|gym/i.test(item.name.en)), 'no word taken for what it is not');
@@ -89,7 +89,7 @@ test('with OpenFilm\'s service, what is meant is found with no word in common, a
   assert.ok(long.every(({ item }) => /** @type {number} */ (item.durationMs) >= 50000 || item.loop), 'music at least as long as asked, or a loop');
 });
 
-test('the library is part of `openfilm get`: a search verb beside each one that makes, a verb for each kind only it has', () => {
+test('the library is part of `orangefilm get`: a search verb beside each one that makes, a verb for each kind only it has', () => {
   assert.deepEqual(Object.keys(LIBRARY_VERBS), ['music-search', 'sfx-search', 'transition', 'effect', 'filter', 'sticker', 'text', 'template']);
   for (const v of libraryVerbs()) {
     assert.match(v.help, /^Free and offline/);
@@ -105,15 +105,15 @@ test('a search prints each match\'s id to take, what it is like and where to see
   const { code, lines } = await libraryGet('transition', { prompt: 'glitch', limit: '3' });
   const text = lines.join('\n');
   assert.equal(code, 0);
-  assert.match(text, /^3 in OpenFilm's library for “glitch”, the best first/);
-  assert.match(text, /^ {4}openfilm\/transitions\/glitch$/m);
+  assert.match(text, /^3 in OrangeFilm's library for “glitch”, the best first/);
+  assert.match(text, /^ {4}orangefilm\/transitions\/glitch$/m);
   assert.match(text, /over a cut/);
   assert.match(text, /see it: .*transitions[\\/]glitch[\\/]preview\.mp4/);
-  assert.match(text, /`openfilm get transition --take <id>`/);
-  assert.equal((await libraryGet('transition', { prompt: 'glitch', n: '2' })).lines.filter((l) => /^ {4}openfilm\//.test(l)).length, 2, '--n is --limit');
+  assert.match(text, /`orangefilm get transition --take <id>`/);
+  assert.equal((await libraryGet('transition', { prompt: 'glitch', n: '2' })).lines.filter((l) => /^ {4}orangefilm\//.test(l)).length, 2, '--n is --limit');
   const music = (await libraryGet('music-search', { prompt: 'calm piano', sec: '50' })).lines.join('\n');
   assert.match(music, /^ {4}has: calm, piano$/m, 'what of the prompt each has');
-  assert.match(music, /None fits well enough, or the film needs its own\? Make one with `openfilm get music`, made to the prompt \(it costs\)\./);
+  assert.match(music, /None fits well enough, or the film needs its own\? Make one with `orangefilm get music`, made to the prompt \(it costs\)\./);
   /* 语义这一层现在是本机的 bge-base-zh-v1.5 —— **中文优先**的模型。所以：
      - 中文里"说不清"的查询由它补上（元素名与标签是英文，词法那一路照样能命中英文名）；
      - 原来那条"英文 dragon roar in a cave 靠语义找到 cave"的断言不再成立：实测英文语义很弱
@@ -127,7 +127,7 @@ test('a search prints each match\'s id to take, what it is like and where to see
   }
   const zh = (await libraryGet('sfx-search', { prompt: '雨声' })).lines.join('\n');
   assert.match(zh, /雨声 \(Rain\)/);
-  for (const [flags, said] of [[{}, /what to look for, please: `openfilm get music-search --prompt "/], [{ prompt: 'calm', limit: '0' }, /--limit is a whole number/],
+  for (const [flags, said] of [[{}, /what to look for, please: `orangefilm get music-search --prompt "/], [{ prompt: 'calm', limit: '0' }, /--limit is a whole number/],
     [{ prompt: 'calm', sec: 'long' }, /--sec is seconds/], [{ prompt: 'calm', via: 'x' }, /there is no --via/], [{ prompt: true }, /--prompt takes a value/]]) {
     const wrong = await libraryGet('music-search', /** @type {any} */ (flags));
     assert.equal(wrong.code, 2);
@@ -142,23 +142,23 @@ test('--take copies a thing into the project and says what to write in film.html
   const before = process.cwd();
   process.chdir(join(root, 'scenes'));
   try {
-    const page = await libraryGet('transition', { take: 'openfilm/transitions/glitch' });
+    const page = await libraryGet('transition', { take: 'orangefilm/transitions/glitch' });
     assert.equal(page.code, 0);
-    assert.ok(existsSync(join(root, 'saved/openfilm/transitions-glitch')));
-    assert.match(page.lines.join('\n'), /its middle on the cut[\s\S]*<iframe src="saved\/openfilm\/transitions-glitch\/glitch\.html"><\/iframe>/);
+    assert.ok(existsSync(join(root, 'saved/orangefilm/transitions-glitch')));
+    assert.match(page.lines.join('\n'), /its middle on the cut[\s\S]*<iframe src="saved\/orangefilm\/transitions-glitch\/glitch\.html"><\/iframe>/);
     const sound = await libraryGet('sfx-search', { take: 'sounds/whoosh.m4a' });
     assert.ok(existsSync(join(root, 'assets/whoosh.m4a')));
     assert.match(sound.lines.join('\n'), /<audio src="assets\/whoosh\.m4a"><\/audio>/);
     /* once the film has it, a search says so */
     writeFileSync(join(root, 'film.html'), '<!doctype html><html><body><section><audio src="assets/whoosh.m4a"></audio></section></body></html>');
     const again = (await libraryGet('sfx-search', { prompt: 'whoosh' })).lines.join('\n');
-    assert.match(again, /^ {4}openfilm\/sounds\/whoosh\.m4a\n(?: {4}.*\n)*? {4}in this film already$/m);
-    const motion = await libraryGet('effect', { take: 'openfilm/motions/in-fade' });
+    assert.match(again, /^ {4}orangefilm\/sounds\/whoosh\.m4a\n(?: {4}.*\n)*? {4}in this film already$/m);
+    const motion = await libraryGet('effect', { take: 'orangefilm/motions/in-fade' });
     assert.match(motion.lines.join('\n'), /@keyframes motion-in-fade \{ from \{ opacity: 0 \} \}[\s\S]*animation: motion-in-fade 0\.5s ease-out backwards/);
-    const look = await libraryGet('filter', { take: 'openfilm/filters/warm-film' });
+    const look = await libraryGet('filter', { take: 'orangefilm/filters/warm-film' });
     assert.match(look.lines.join('\n'), /in Studio/);
-    assert.equal((await libraryGet('transition', { take: 'openfilm/nope' })).code, 2);
-    assert.equal((await libraryGet('music-search', { take: 'openfilm/transitions/glitch' })).code, 2, 'a thing of its own kind');
+    assert.equal((await libraryGet('transition', { take: 'orangefilm/nope' })).code, 2);
+    assert.equal((await libraryGet('music-search', { take: 'orangefilm/transitions/glitch' })).code, 2, 'a thing of its own kind');
     process.chdir(tmpdir());
     assert.equal((await libraryGet('sfx-search', { take: 'sounds/whoosh.m4a' })).code, 2, 'not in a project');
   } finally {

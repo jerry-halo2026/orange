@@ -5,7 +5,7 @@
  * Fail when a retired OpenFilm runtime identifier comes back.
  *
  * The rename is a clean break: `OPENFILM_*`, `openfilm` module specifiers, `@openfilm/`,
- * `mcp__openfilm__`, `resources/openfilm`, `~/.openfilm` and `openfilm.json` are not allowed in
+ * `mcp__openfilm__`, `resources/openfilm`, `~/.openfilm` and `orangefilm.json` are not allowed in
  * source. History and provenance stay readable: docs/history and docs/execution/2026-1* are exempt,
  * and so are the license/notice files.
  *
@@ -32,16 +32,36 @@ const SCAN_ROOTS = ['apps', 'packages', 'scripts', 'skills', 'workers', '.github
 const TEXT_EXT = /\.(mjs|cjs|js|jsx|ts|tsx|json|ya?ml|toml|ps1|sh|cmd|bat|plist|nsh)$/;
 const SKIP_DIRS = new Set(['node_modules', '.git', '.dev', '_scratch', 'dist', 'dist-electron', 'release', '.release', 'out', 'coverage']);
 
-const args = new Set(process.argv.slice(2));
-const WARN = args.has('--warn');
-const JSON_OUT = args.has('--json');
+/* Files whose job is the old name: the guard's own patterns, the one-way import of the old Studio home,
+   and the machine cleanup that removes what the old client left behind. */
+const EXEMPT = new Set([
+  'scripts/inventory-openfilm.mjs',
+  'scripts/rename-guard.mjs',
+  'scripts/naming-guard.mjs',
+  'scripts/cleanup-legacy-openfilm.mjs',
+  'packages/orangefilm/src/home-migration.mjs',
+  'packages/orangefilm/src/home-migration.test.mjs',
+  'packages/orangefilm/src/home-cli.mjs',
+  'packages/orangefilm/src/home-cli.test.mjs',
+]);
+
+/* A rule a file may keep, because the old name is data there: a skill made before the rename still carries
+   `openfilm.json`, and the reader has to name it to read it. */
+const ALLOWED = new Map([
+  ['packages/orangefilm/src/skills.mjs', new Set(['data-file'])],
+]);
 
 function exempt(rel) {
+  if (EXEMPT.has(rel)) return true;
   if (rel.startsWith('docs/history/')) return true;
   if (/^docs\/execution\/2026-1[0-9]-/.test(rel)) return true;
   if (/^(LICENSE|THIRD_PARTY_NOTICES\.md|NOTICE)$/.test(rel)) return true;
   return false;
 }
+
+const args = new Set(process.argv.slice(2));
+const WARN = args.has('--warn');
+const JSON_OUT = args.has('--json');
 
 async function* walk(dir) {
   let entries;
@@ -75,7 +95,10 @@ for (const root of SCAN_ROOTS) {
       continue;
     }
     if (!/openfilm/i.test(text)) continue;
+    /* a GitHub secret's name lives in the repository's settings, not in the source: only the env var it feeds is ours */
+    text = text.replace(/secrets\.OPENFILM_[A-Z0-9_]+/g, 'secrets.SECRET_NAME');
     for (const rule of RULES) {
+      if (ALLOWED.get(rel)?.has(rule.id)) continue;
       rule.re.lastIndex = 0;
       let match;
       let count = 0;

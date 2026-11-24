@@ -37,7 +37,7 @@ export type TimelineLaneKind = 'visual' | 'audio';
 /* ── Zoom ─────────────────────────────────────────────────────────────────── */
 
 /** Where a project keeps the library's things it uses (studio/server saved.mjs takeSaved): their pages are under it. */
-const LIBRARY_PAGES = 'saved/openfilm/';
+const LIBRARY_PAGES = 'saved/orangefilm/';
 
 /**
  * Zoom is how much time one screen shows, not a pixel density.
@@ -649,8 +649,8 @@ function withDocTimes(film: TimelineFilm): TimelineFilm {
   };
 }
 
-/** Where a project keeps a text of the library once taken (server takeSaved: `saved/openfilm/text-<name>/`). */
-const LIBRARY_TEXT = 'saved/openfilm/text-';
+/** Where a project keeps a text of the library once taken (server takeSaved: `saved/orangefilm/text-<name>/`). */
+const LIBRARY_TEXT = 'saved/orangefilm/text-';
 /** Whether a clip is one of the library's texts (a line of words, a name card, a callout…). */
 export const isLibraryText = (src: string | undefined): boolean => Boolean(src?.split('#')[0]?.startsWith(LIBRARY_TEXT));
 

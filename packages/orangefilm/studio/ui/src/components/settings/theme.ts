@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The theme: light, dark or the system's, dark until the person chooses. The choice is kept in localStorage `openfilm.theme` and shown as
+ * The theme: light, dark or the system's, dark until the person chooses. The choice is kept in localStorage `orangefilm.theme` and shown as
  * `<html data-theme>`; index.html applies it before the first paint, this keeps it current afterwards, in every page
  * of Studio that is open.
  */
@@ -11,7 +11,7 @@ import React from 'react';
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 const KEY = 'orangefilm.theme';
-const LEGACY_KEY = 'openfilm.theme';
+const LEGACY_KEY = 'orangefilm.theme';
 const dark = () => window.matchMedia('(prefers-color-scheme: dark)');
 
 function saved(): ThemeMode {

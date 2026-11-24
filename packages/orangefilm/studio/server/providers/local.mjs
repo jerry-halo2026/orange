@@ -68,7 +68,7 @@ export default {
     const models = usable()[verb] ?? [];
     const model = models.find((m) => m.id === ctx.model) ?? models[0];
     if (!model) throw new Error(`No local model for ${verb} is installed and on: install one in Studio (Settings → Services → Local services).`);
-    const tmp = await mkdtemp(join(tmpdir(), 'openfilm-local-'));
+    const tmp = await mkdtemp(join(tmpdir(), 'orangefilm-local-'));
     try {
       if (verb === 'asr') {
         const src = needed(args, 'src');

@@ -146,7 +146,7 @@ export const es: Words = {
     goneApp: 'Studio se ha detenido. Cierra y vuelve a abrir la app {brand} para recuperarlo.',
     copied: 'Copiado',
     lockedTitle: 'Este navegador no ha entrado en Studio',
-    lockedBody: 'Studio está en marcha, pero solo deja entrar a un navegador que lo abrió una vez con su clave. Abre la dirección completa que mostró `openfilm open` (o `pnpm dev`), la que lleva ?key=; después, este navegador puede usar la dirección de Studio tal cual.',
+    lockedBody: 'Studio está en marcha, pero solo deja entrar a un navegador que lo abrió una vez con su clave. Abre la dirección completa que mostró `orangefilm open` (o `pnpm dev`), la que lleva ?key=; después, este navegador puede usar la dirección de Studio tal cual.',
     lockedHow: 'Para obtenerla de nuevo, ejecuta',
   },
   projects: {
@@ -1002,7 +1002,7 @@ export const es: Words = {
     discoverNone: 'Todavía no hay habilidades para descubrir.',
     mineEmptyTitle: 'Aún no hay habilidades importadas',
     mineEmpty: 'Importa una del índice de skills o de una carpeta de este equipo; todos los proyectos pueden usarla.',
-    mineEmptyCli: 'Ejecuta openfilm skill add con una skill del índice o una carpeta; todos los proyectos pueden usarla.',
+    mineEmptyCli: 'Ejecuta orangefilm skill add con una skill del índice o una carpeta; todos los proyectos pueden usarla.',
     mineImport: 'Importar habilidad',
     communityEmptyTitle: 'No hay habilidades de la comunidad instaladas',
     communityEmpty: 'Formas listas de hacer un tipo de vídeo. Instala una desde Descubrir y los agentes la siguen.',
@@ -2316,7 +2316,7 @@ export const es: Words = {
     delete: 'Eliminar',
     cancel: 'Cancelar',
   },
-  /* what an agent's `openfilm get` asks before it spends (see SpendAsks) */
+  /* what an agent's `orangefilm get` asks before it spends (see SpendAsks) */
   asks: {
     videoTitle: 'Tu agente quiere crear un clip de video',
     videoNote: 'El video es el tipo de medio más caro de crear.',
@@ -2409,7 +2409,7 @@ export const es: Words = {
       newer: 'Ya está disponible {brand} {version}.',
       upToDate: 'Está al día.',
       source: 'Se ejecuta desde el código fuente: git pull lo actualiza.',
-      off: 'Aquí no se buscan actualizaciones (OPENFILM_NO_UPDATE_CHECK).',
+      off: 'Aquí no se buscan actualizaciones (ORANGE_NO_UPDATE_CHECK).',
       never: 'Aún no se ha comprobado.',
       inApp: 'Studio se actualiza con la app de escritorio: {brand} → Check for Updates…',
       howTitle: 'Actualizar',
@@ -2756,13 +2756,13 @@ export const es: Words = {
       downloaded: '{done} de {size}',
       count: '{n} instalados',
       facts: { kind: 'Para', size: 'Tamaño', memory: 'Memoria en uso', memoryValue: 'Unos {n} MB', license: 'Licencia', where: 'Dónde se usa' },
-      where: { asr: 'Transcripciones y subtítulos (Ajustes → Servicios → Transcripción, y openfilm get asr para tu agente): no se sube nada. Small va unas 2,5 veces más rápido que el tiempo real en un ordenador reciente.', cutout: 'Quitar el fondo de una imagen (openfilm get cutout para tu agente): se conserva el sujeto y el resto queda transparente.' },
+      where: { asr: 'Transcripciones y subtítulos (Ajustes → Servicios → Transcripción, y orangefilm get asr para tu agente): no se sube nada. Small va unas 2,5 veces más rápido que el tiempo real en un ordenador reciente.', cutout: 'Quitar el fondo de una imagen (orangefilm get cutout para tu agente): se conserva el sujeto y el resto queda transparente.' },
       about: { 'whisper-small': 'El modelo de reconocimiento de voz de OpenAI, tamaño pequeño: buena precisión en unos 100 idiomas, cada palabra con su tiempo para subtítulos.', 'whisper-large-v3-turbo': 'El Whisper más preciso: menos errores en nombres y en idiomas mezclados, y más estable en chino, pero más grande y casi tan lento como el tiempo real.', 'birefnet-lite': 'Encuentra el sujeto de una imagen (personas, objetos, animales) y lo recorta con bordes limpios, cabello incluido.' },
     },
     providers: {
       included: 'Disponible',
       about: {
-        openfilm: 'El servicio propio de {brand}. Conecta tu cuenta de {brand} una vez y crea voz en off, música, sonido, transcripciones, imágenes y vídeo con modelos de primera, pagando con tu saldo de {brand}: sin otras cuentas ni claves.',
+        orangefilm: 'El servicio propio de {brand}. Conecta tu cuenta de {brand} una vez y crea voz en off, música, sonido, transcripciones, imágenes y vídeo con modelos de primera, pagando con tu saldo de {brand}: sin otras cuentas ni claves.',
         openai: 'Los creadores de ChatGPT. Su API crea imágenes con GPT Image, habla con sus propias voces y transcribe palabra por palabra.',
         google: 'La API de Gemini de Google, desde Google AI Studio: voces y transcripción de Gemini, imágenes de Nano Banana y vídeo de Veo, con una sola clave.',
         azure: 'La nube de Microsoft. Azure AI Speech habla con cientos de voces naturales en más de cien idiomas.',

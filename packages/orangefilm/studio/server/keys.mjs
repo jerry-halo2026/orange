@@ -6,14 +6,14 @@
  * The person's own keys for media services, which service makes each kind of media and with which model
  * (Settings → Services).
  *
- * Kept in ~/.openfilm/providers.json, readable by this user only (0600, in a 0700 folder), written whole and atomically:
+ * Kept in ~/.orangefilm/providers.json, readable by this user only (0600, in a 0700 folder), written whole and atomically:
  *   { "keys": { "<provider id>": "<key>" }, "use": { "<verb>": "<provider id>" }, "model": { "<verb>": "<model id>" },
  *     "custom": [ the person's own services (custom-services.mjs), each with its key ],
  *     "accounts": { "<provider id>": "<email>" } (who a provider signed in to, sign-in.mjs, is connected as) }
  * A keyless provider connected without a key keeps '' as its key. A kind of media with no model (or one its provider no
  * longer has) is made with the provider's first. Listing voices goes with voice-over: same provider, same model.
  *
- * The file is shared with every OpenFilm on this computer (`npx openfilm`, the app), which may be older or newer than
+ * The file is shared with every OrangeFilm on this computer (`npx orangefilm`, the app), which may be older or newer than
  * this one: what this one does not know of it (a newer one's field) is written back as it was, never dropped.
  *
  * A key in the environment (the provider's variable, e.g. ELEVENLABS_API_KEY) wins over the file: it is how people
@@ -33,7 +33,7 @@ import { keptServices } from './custom-services.mjs';
 /** @typedef {import('./providers/contract.mjs').Provider} Provider */
 /**
  * `off`: the providers disconnected while the environment has a key for them (that key is not used). `custom`: the
- * person's own services. `libraryOff`: the library is searched by its words alone, not by meaning at OpenFilm's
+ * person's own services. `libraryOff`: the library is searched by its words alone, not by meaning at OrangeFilm's
  * service (src/library-semantic.mjs).
  * @typedef {{ keys: Record<string, string>, use: Record<string, string>, model: Record<string, string>, off: string[],
  *   custom: import('./custom-services.mjs').CustomService[], accounts: Record<string, string>, libraryOff: boolean }} ProviderSettings
@@ -71,11 +71,11 @@ function guardAccountFile(file,scope=accountProviders.getStore()) {
   ordinaryControlPath(file);scope.check();
 }
 
-/** Where the keys and choices are kept: ~/.openfilm/providers.json. */
+/** Where the keys and choices are kept: ~/.orangefilm/providers.json. */
 export const providersFile = () => accountProviders.getStore()?.file ?? join(studioHome(), 'providers.json');
 
 /** Other names a provider's key goes by in the wild (Google's own tools read either). */
-const ALSO = /** @type {Record<string, string[]>} */ ({ GEMINI_API_KEY: ['GOOGLE_API_KEY'], OPENFILM_API_KEY: ['ORANGE_API_KEY'] });
+const ALSO = /** @type {Record<string, string[]>} */ ({ GEMINI_API_KEY: ['GOOGLE_API_KEY'], ORANGE_API_KEY: ['ORANGE_API_KEY'] });
 
 const plain = (/** @type {unknown} */ v) => v && typeof v === 'object' && !Array.isArray(v) ? /** @type {Record<string, unknown>} */ (v) : {};
 const strings = (/** @type {unknown} */ v) => /** @type {Record<string, string>} */ (Object.fromEntries(Object.entries(plain(v)).filter(([, s]) => typeof s === 'string')));
@@ -95,7 +95,7 @@ export async function readSettings(file = providersFile()) {
   } catch(error) {
     check();
     if(scope&&/** @type {NodeJS.ErrnoException} */(error)?.code!=='ENOENT')throw error;
-    /* orangeflim: a new install searches the library by its words alone. Meaning-search asks openfilm.dev to rank
+    /* orangeflim: a new install searches the library by its words alone. Meaning-search asks orangefilm.dev to rank
        what was typed, which our build does not do by default (offline first, and nothing of the person's leaves the
        machine), and it ranks the library's own things by names it already knows — a thing added to this library since
        is not in it, so it would sort below everything the service knows. The person turns it on in Settings. */

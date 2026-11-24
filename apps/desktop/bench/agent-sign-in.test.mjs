@@ -32,7 +32,7 @@ test('Settings allows cancelling sign-in and restores the login button on termin
       const errors = [];
       page.on('pageerror', (error) => errors.push(error.message));
       await page.addInitScript((locale) => {
-        localStorage.setItem('openfilm.language', locale);
+        localStorage.setItem('orangefilm.language', locale);
         let agents = [{ id: 'qwen', name: 'Qwen Code', shown: true, status: 'waiting' }];
         const listeners = new Set();
         const calls = { cancel: 0, connect: 0, disconnect: 0 };

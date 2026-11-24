@@ -195,7 +195,7 @@ const TIMELINE_SHARE = 0.45;
 const TIMELINE_SPARE = 48;
 const CanvasView = React.lazy(loadCanvas);
 /** whether a project shows its canvas, kept on this computer by project */
-const CANVAS_KEY = 'openfilm.canvas.open';
+const CANVAS_KEY = 'orangefilm.canvas.open';
 const canvasShown = (projectId: string) => { try { return localStorage.getItem(`${CANVAS_KEY}:${projectId}`) === '1'; } catch { return false; } };
 
 const TOP_BTN =
@@ -520,7 +520,7 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
     setCanvasOpenState(open);
     try { localStorage.setItem(`${CANVAS_KEY}:${projectId}`, open ? '1' : '0'); } catch { /* for this launch only */ }
   }, [projectId]);
-  /* what an agent lays out on the canvas (`openfilm canvas apply`) is shown: the canvas opens on it */
+  /* what an agent lays out on the canvas (`orangefilm canvas apply`) is shown: the canvas opens on it */
   React.useEffect(() => projectEvents(projectId, (event) => { if (event.type === 'canvas') setCanvasOpen(true); }), [projectId, setCanvasOpen]);
   /* warmed in place, then kept hidden under the edit: opening it never reloads or refits the same board */
   const [canvasKept, setCanvasKept] = React.useState(canvasOpen);
@@ -1023,7 +1023,7 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
       if (op.op !== 'insert') return op;
       const clip = op.clip as { src?: string; box?: unknown; size?: unknown } | undefined;
       if (!clip?.src || clip.box || clip.size || !isLibraryText(clip.src)) return op;
-      const folder = /^saved\/openfilm\/text-([^/]+)\//.exec(clip.src)?.[1] ?? '';
+      const folder = /^saved\/orangefilm\/text-([^/]+)\//.exec(clip.src)?.[1] ?? '';
       const item = builtInItem(`${BUILT_IN}/text/${folder}`) ?? builtInItem(`${BUILT_IN}/${TEXT_COMPONENT}`);
       const box = libraryBox(item ?? { w: 1600, h: 260, fit: 0.14 }, stageRef.current ?? { w: 1920, h: 1080 });
       return box ? { ...op, clip: { ...op.clip, box, size: { w: box.w, h: box.h } } as never } : op;

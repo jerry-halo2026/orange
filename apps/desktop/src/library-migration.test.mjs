@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The rename of the product's folder (`…/Videos/OpenFilm` → `…/Videos/OrangeFilm`): the person's projects, `Saved` and
+ * The rename of the product's folder (`…/Videos/OrangeFilm` → `…/Videos/OrangeFilm`): the person's projects, `Saved` and
  * `Skills` move with it on the first start, and the owner records follow them — a project whose record kept the old
  * root would answer `project-access-denied`. Simulated in a temporary home: no real project is touched.
  */

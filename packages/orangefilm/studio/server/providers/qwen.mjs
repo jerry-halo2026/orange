@@ -10,7 +10,7 @@
  * and word timings when the model reports them.
  *
  * Region matters: a Beijing key does not work against the Singapore endpoint and the other way round (401). `QWEN_URL`
- * names the endpoint to use (`OPENFILM_QWEN_URL` through `serviceUrl`), so a person using another region sets it once.
+ * names the endpoint to use (`ORANGE_QWEN_URL` through `serviceUrl`), so a person using another region sets it once.
  */
 import { billedBy, landing, needed, noBalance, serviceUrl } from './common.mjs';
 
@@ -23,7 +23,7 @@ const VOICES = ['Cherry', 'Serena', 'Ethan', 'Chelsie', 'Dylan'];
 /** 本 provider 收的语音格式（契约里的 speechFormat）：mp3 → udio/mpeg。 */
 const SPEECH_MIME = 'audio/mpeg';
 
-/** The endpoint: `OPENFILM_QWEN_URL`, else DashScope's Beijing one. */
+/** The endpoint: `ORANGE_QWEN_URL`, else DashScope's Beijing one. */
 const endpoint = () => serviceUrl('QWEN', DEFAULT_URL);
 
 /**
@@ -99,7 +99,7 @@ export default {
       } catch { throw new Error('Qwen was interrupted or timed out. Not retried.'); }
       if (!response.ok) {
         if (response.status === 402) throw noBalance(NAME);
-        if (response.status === 401) throw new Error('Qwen refused the key (401). A Beijing key does not work on the Singapore endpoint: check the region, or set OPENFILM_QWEN_URL.');
+        if (response.status === 401) throw new Error('Qwen refused the key (401). A Beijing key does not work on the Singapore endpoint: check the region, or set ORANGE_QWEN_URL.');
         const said2 = await response.text().catch(() => '');
         throw new Error(`Qwen HTTP ${response.status}${said2 ? `: ${said2.slice(0, 160)}` : ''}. Not retried.`);
       }
@@ -142,7 +142,7 @@ export default {
     } catch { throw new Error('Qwen was interrupted or timed out. Not retried.'); }
     if (!response.ok) {
       if (response.status === 402) throw noBalance(NAME);
-      if (response.status === 401) throw new Error('Qwen refused the key (401). Check the DashScope region (OPENFILM_QWEN_URL).');
+      if (response.status === 401) throw new Error('Qwen refused the key (401). Check the DashScope region (ORANGE_QWEN_URL).');
       const said = await response.text().catch(() => '');
       throw new Error(`Qwen HTTP ${response.status}${said ? `: ${said.slice(0, 160)}` : ''}. Not retried.`);
     }

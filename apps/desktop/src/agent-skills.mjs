@@ -3,34 +3,34 @@
 
 /**
  * What an agent has in the chat besides its own program: its maker's skills and MCP servers (never touched),
- * OpenFilm's skills (the project's, the person's own and the official ones: openfilm/src/skills.mjs), and of the skills
- * and MCP servers the person installed in the agent themselves only those they let into OpenFilm, one by one. Each
+ * OrangeFilm's skills (the project's, the person's own and the official ones: orangefilm/src/skills.mjs), and of the skills
+ * and MCP servers the person installed in the agent themselves only those they let into OrangeFilm, one by one. Each
  * agent is told by its own switch, for that session only: the person's own configuration is never written, nor the
  * folder the agent signs in from.
  *
- *   Claude Code   `_meta.claudeCode.options`: OpenFilm's skills as local plugins, one for each owner (`plugins`, each
- *                 skill named owner:name: openfilm:replicate, webgrs:borrow-style, local:my-brand);
+ *   Claude Code   `_meta.claudeCode.options`: OrangeFilm's skills as local plugins, one for each owner (`plugins`, each
+ *                 skill named owner:name: orangefilm:replicate, webgrs:borrow-style, local:my-brand);
  *                 `settings` (for that session, above the person's own): `skillOverrides` turning each of the person's
  *                 own skills off, and `deniedMcpServers` their own MCP servers (claude.ai's connectors stay).
- *   Codex         OpenFilm's through ACP `additionalDirectories` (Codex reads `<dir>/.agents/skills`); CODEX_CONFIG
+ *   Codex         OrangeFilm's through ACP `additionalDirectories` (Codex reads `<dir>/.agents/skills`); CODEX_CONFIG
  *                 turning each of the person's own skills off by its file (`skills.config`), and their own MCP servers
  *                 (`mcp_servers.<name>.enabled: false`, the rest of each left as it is).
- *   OpenCode      OPENCODE_CONFIG_CONTENT: OpenFilm's folder in `skills.paths`, `permission.skill` denying every skill
- *                 but its own, OpenFilm's and those let in, and `mcp.<name>.enabled: false` (merged with the person's).
+ *   OpenCode      OPENCODE_CONFIG_CONTENT: OrangeFilm's folder in `skills.paths`, `permission.skill` denying every skill
+ *                 but its own, OrangeFilm's and those let in, and `mcp.<name>.enabled: false` (merged with the person's).
  *   Qwen Code     a system-defaults file of the app's (QWEN_CODE_SYSTEM_DEFAULTS_PATH): `skills.disabled`,
- *                 `skills.directories` (OpenFilm's), `mcp.excluded`. Its lists merge with the person's own.
- *   Copilot       OpenFilm's through COPILOT_SKILLS_DIRS and `--disable-mcp-server` for the person's own servers; it
+ *                 `skills.directories` (OrangeFilm's), `mcp.excluded`. Its lists merge with the person's own.
+ *   Copilot       OrangeFilm's through COPILOT_SKILLS_DIRS and `--disable-mcp-server` for the person's own servers; it
  *                 has no way to hide a skill, so it keeps all of the person's.
- *   Pi            OpenFilm's only.
+ *   Pi            OrangeFilm's only.
  * CodeBuddy, Cursor, Kimi, MiniMax Code and DeepSeek Harness are not told anything: they have the person's skills and
- * servers as in their own terminal, and OpenFilm's skills when named in a message. A system-defaults file the person
+ * servers as in their own terminal, and OrangeFilm's skills when named in a message. A system-defaults file the person
  * set themselves is left as it is.
  *
  * Which are the person's own is read from where each agent keeps them; its maker's are elsewhere or marked (Claude
  * Code's skills/synced/ from claude.ai and its claude.ai connectors, Codex's .system skills, OpenAI's plugins and the
  * servers its own apps put in its configuration).
  *
- * A session's OpenFilm skills are a folder of the app's, links to each skill's own folder (agent-skills/<id>/skills),
+ * A session's OrangeFilm skills are a folder of the app's, links to each skill's own folder (agent-skills/<id>/skills),
  * as each agent reads a plugin or a skills folder. Reads no Electron module, so `node --test` can use it.
  */
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
@@ -44,11 +44,11 @@ const PRODUCT = brandProductName();
 
 const require = createRequire(import.meta.url);
 /* by its file URL: import() takes no Windows path (`D:\…`) */
-const skillsLib = () => import(pathToFileURL(require.resolve('openfilm/skills')).href);
+const skillsLib = () => import(pathToFileURL(require.resolve('orangefilm/skills')).href);
 
-/** The agents whose own skills can be hidden in OpenFilm (byok: the app's own agent, Pi). */
-export const FILTERED_AGENTS = Object.freeze(['claude', 'codex', 'opencode', 'qwen', 'openfilm', 'byok']);
-/** The agents whose own MCP servers can be hidden in OpenFilm. */
+/** The agents whose own skills can be hidden in OrangeFilm (byok: the app's own agent, Pi). */
+export const FILTERED_AGENTS = Object.freeze(['claude', 'codex', 'opencode', 'qwen', 'orangefilm', 'byok']);
+/** The agents whose own MCP servers can be hidden in OrangeFilm. */
 export const MCP_AGENTS = Object.freeze(['claude', 'codex', 'opencode', 'qwen', 'copilot']);
 
 /** a session's folder of links is kept this long (a conversation resumed later makes a new one) */
@@ -57,7 +57,7 @@ const KEEP_MS = 2 * 24 * 60 * 60_000;
 /* ── what the person let in ──────────────────────────────────────────────── */
 
 /**
- * The app's record (`<dataDir>/skills.json`): `allowed[agent]`, the person's own skills let into OpenFilm, and
+ * The app's record (`<dataDir>/skills.json`): `allowed[agent]`, the person's own skills let into OrangeFilm, and
  * `mcp[agent]`, their own MCP servers let in, each by name.
  */
 export function skillStore(dataDir) {
@@ -104,11 +104,11 @@ async function skillFolders(dir, { except = [] } = {}) {
 }
 
 /**
- * OpenFilm's own skill for agents in a terminal (the repository's skills/openfilm: "run `npx openfilm`, read the
+ * OrangeFilm's own skill for agents in a terminal (the repository's skills/orangefilm: "run `npx orangefilm`, read the
  * manual"), installed in an agent: in the app it is never wanted, as the app tells the agent the same, and its `npx`
  * would contradict it. Never shown, never let in.
  */
-export const isOurs = (skill) => skill.name === 'openfilm' && /\bOpenFilm\b/.test(skill.description ?? '');
+export const isOurs = (skill) => skill.name === 'orangefilm' && /\bOrangeFilm\b/.test(skill.description ?? '');
 /** the folder and each above it, to the root */
 const upFrom = (cwd) => { const out = []; for (let up = resolve(cwd); ; up = dirname(up)) { out.push(up); if (up === dirname(up)) break; } return out; };
 const subdirs = (dir) => { try { return readdirSync(dir); } catch { return []; } };
@@ -229,10 +229,10 @@ function removeSession(dir) {
 }
 
 /**
- * A folder of OpenFilm's skills for one session. Every skill is there by its full name, `owner-name`, never its name
+ * A folder of OrangeFilm's skills for one session. Every skill is there by its full name, `owner-name`, never its name
  * alone (`skills/`, read as a skills folder also from `.agents/skills`): a folder of its own whose SKILL.md says that
  * name and who made it, linking to the rest of the skill. For Claude Code, one plugin for each owner (`plugins/<owner>`),
- * which names its skills `owner:name` (`openfilm:replicate`, `webgrs:borrow-style`, `local:my-brand`), each a link to
+ * which names its skills `owner:name` (`orangefilm:replicate`, `webgrs:borrow-style`, `local:my-brand`), each a link to
  * the skill's own folder.
  */
 function linkFolder(base, skills) {
@@ -264,10 +264,10 @@ function linkFolder(base, skills) {
   return dir;
 }
 
-/** Who made a skill, as they write their name: its repository's account, else its uid's owner (OpenFilm for its own). */
+/** Who made a skill, as they write their name: its repository's account, else its uid's owner (OrangeFilm for its own). */
 const makerOf = (skill) => {
   const owner = skill.uid.split('/')[0];
-  if (owner === 'openfilm') return PRODUCT;
+  if (owner === 'orangefilm') return PRODUCT;
   if (owner === 'local') return 'you';
   if (owner === 'project') return 'this project';
   return /^https:\/\/github\.com\/([\w.-]+)\//i.exec(skill.repository ?? '')?.[1] ?? owner;
@@ -306,23 +306,23 @@ function defaultsFile(dir, name, settings) {
  * additionalDirectories?, env?, args?, piSkills?, log }` (agents.mjs puts each where it goes). `log`: what the turn log
  * says of it (agents.mjs `opened.skills`). `allowed`, `mcpAllowed`: the person's own let in, by name.
  * @param {string} agent
- * `mine`: the person's own skills folder (openfilm/skills mySkillsDir); `prefsHome`: the Studio home whose prefs.json
- * says which official skills are installed and which skills are off (openfilm/skills usableSkills).
+ * `mine`: the person's own skills folder (orangefilm/skills mySkillsDir); `prefsHome`: the Studio home whose prefs.json
+ * says which official skills are installed and which skills are off (orangefilm/skills usableSkills).
  * @param {{ cwd: string, env?: Record<string, string>, dataDir: string, mine?: string, prefsHome?: string, allowed?: string[],
  *   mcpAllowed?: string[], home?: string }} o
  */
 export async function sessionSkills(agent, { cwd, env = {}, dataDir, mine, prefsHome, allowed = [], mcpAllowed = [], home = homedir() }) {
   const { mySkillsDir, offeredSkills } = await skillsLib();
-  /* OpenFilm's own first (how a film is made, its media, its canvas), unless turned off; then those installed and on.
+  /* OrangeFilm's own first (how a film is made, its media, its canvas), unless turned off; then those installed and on.
      Each by the name the agent is given it by: its own, but a second of a name told apart by whose it is */
-  const openfilm = offeredSkills({ project: cwd, mine: mine ?? mySkillsDir(), ...(prefsHome ? { home: prefsHome } : {}) }).given;
-  const names = openfilm.map((s) => s.as);
+  const orangefilm = offeredSkills({ project: cwd, mine: mine ?? mySkillsDir(), ...(prefsHome ? { home: prefsHome } : {}) }).given;
+  const names = orangefilm.map((s) => s.as);
   const filtered = FILTERED_AGENTS.includes(agent);
-  const base = { openfilm: names, allowed: [...allowed], mcpAllowed: [...mcpAllowed], filtered, mcpFiltered: MCP_AGENTS.includes(agent) };
+  const base = { orangefilm: names, allowed: [...allowed], mcpAllowed: [...mcpAllowed], filtered, mcpFiltered: MCP_AGENTS.includes(agent) };
   if (!filtered && !MCP_AGENTS.includes(agent)) return { log: base };
   const hidden = filtered && agent !== 'byok' ? (await ownSkills(agent, { cwd, env, home })).filter((s) => s.ours || !allowed.includes(s.name)) : [];
   const mcpHidden = MCP_AGENTS.includes(agent) ? ownMcpServers(agent, { cwd, env, home }).filter((s) => !mcpAllowed.includes(s.name)).map((s) => s.name) : [];
-  const dir = linkFolder(join(dataDir, 'agent-skills'), openfilm);
+  const dir = linkFolder(join(dataDir, 'agent-skills'), orangefilm);
   const log = { ...base, folder: dir, hidden: hidden.map((s) => s.name), mcpHidden };
   switch (agent) {
     case 'claude': {
@@ -360,10 +360,10 @@ export async function sessionSkills(agent, { cwd, env = {}, dataDir, mine, prefs
         args: mcpHidden.flatMap((n) => ['--disable-mcp-server', n]),
         log,
       };
-    case 'openfilm': case 'byok':
+    case 'orangefilm': case 'byok':
       return { piSkills: { paths: [join(dir, 'skills')], names }, log };
     case 'deepseek': {
-      /* DSH scans <project>/.agents/skills (and $DSH_HOME/skills): link OpenFilm's folder into this project so the
+      /* DSH scans <project>/.agents/skills (and $DSH_HOME/skills): link OrangeFilm's folder into this project so the
          session sees the same skills as the other agents, without writing the person's own skill dirs. */
       const target = join(cwd, '.agents', 'skills');
       try {

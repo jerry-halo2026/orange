@@ -5,7 +5,7 @@
 /** The desktop main process's view of the same account Services uses. Never served to an editor page. */
 import { providerKey, readSettings } from './keys.mjs';
 import { signInState } from './sign-in.mjs';
-import openfilm from './providers/openfilm.mjs';
+import orangefilm from './providers/orangefilm.mjs';
 import { serviceUrl } from './providers/common.mjs';
 
 /** @typedef {{ status: number, catalog: any, error: string | null }} Connection */
@@ -40,16 +40,16 @@ async function connection(key, baseUrl, { fresh = false, fetch: fetchImpl = fetc
 /** @param {{ fresh?: boolean, fetch?: typeof fetch }} options */
 export async function desktopAccount(options = {}) {
   const settings = await readSettings();
-  const credential = providerKey(openfilm, settings);
+  const credential = providerKey(orangefilm, settings);
   const signing = signInState();
-  const baseUrl = `${serviceUrl('API', 'https://openfilm.dev')}/v1/agent`;
-  const checked = credential?.key && signing.provider !== 'openfilm' ? await connection(credential.key, baseUrl, options) : null;
+  const baseUrl = `${serviceUrl('API', 'https://orangefilm.dev')}/v1/agent`;
+  const checked = credential?.key && signing.provider !== 'orangefilm' ? await connection(credential.key, baseUrl, options) : null;
   return {
     key: credential?.key ?? null,
-    email: credential?.source === 'file' ? settings.accounts.openfilm ?? null : null,
+    email: credential?.source === 'file' ? settings.accounts.orangefilm ?? null : null,
     baseUrl,
     connection: checked,
-    signingIn: signing.provider === 'openfilm',
-    error: signing.errorFor === 'openfilm' ? signing.error : null,
+    signingIn: signing.provider === 'orangefilm',
+    error: signing.errorFor === 'orangefilm' ? signing.error : null,
   };
 }

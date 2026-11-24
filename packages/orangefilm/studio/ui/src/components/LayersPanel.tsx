@@ -41,7 +41,7 @@ function clipIcon(clip: { kind: string; src?: string; words?: boolean } | null):
   const src = clip?.src?.split('#')[0] ?? '';
   if (clip?.words) return Type;
   if (isLibrarySticker(src)) return Sticker;
-  if (src.startsWith('saved/openfilm/effects-')) return Sparkles;
+  if (src.startsWith('saved/orangefilm/effects-')) return Sparkles;
   if (clip?.kind === 'caption') return Captions;
   if (clip?.kind === 'video') return src && filmSrcIsStill(src) ? ImageIcon : Film;
   return clip?.kind === 'mg' ? Globe : ImageIcon;

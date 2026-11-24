@@ -557,9 +557,9 @@ function random(seed) {
 
 /**
  * How many seeds the random runs try. For the long run, 5,000 of them:
- *   OPENFILM_MERGE_SEEDS=5000 node --test --test-name-pattern="random interleavings" studio/server/person-merge.test.mjs
+ *   ORANGE_MERGE_SEEDS=5000 node --test --test-name-pattern="random interleavings" studio/server/person-merge.test.mjs
  */
-const SEEDS = Number(process.env.OPENFILM_MERGE_SEEDS) || 300;
+const SEEDS = Number(process.env.ORANGE_MERGE_SEEDS) || 300;
 
 /**
  * The film's facts as this test sees them, apart from Studio's code: each clip there, its at, box x and w, class, and
@@ -600,7 +600,7 @@ const asFirst = (f, first, strict = true) => {
 
 /**
  * One run: the person edits film.html in Studio; two agents write it whole, each from the copy it last read (the latest,
- * asking for notes first as `openfilm` does, sometimes without asking; or one of any age, kept since), with changes of
+ * asking for notes first as `orangefilm` does, sometimes without asking; or one of any age, kept since), with changes of
  * their own: of the same things the person changes, removals, new clips, clips renamed, float noise, every clip at
  * once. Few of the person's versions are kept (`cap`), so copies are older than any of them too. Each write is merged
  * as Studio merges it and checked, fact by fact, against the base the writer really had (no version "as near"):

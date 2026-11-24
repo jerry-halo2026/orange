@@ -15,13 +15,13 @@ test('macOS: the words and the folder are arguments of the script, never inside 
 
 test('a starting folder that is not a full path is left out', () => {
   assert.equal(folderPickerCommand('darwin', { title: 'T', at: 'Desktop' }).args.at(-1), '');
-  assert.equal(folderPickerCommand('win32', { title: 'T', at: 'Desktop' }).env.OPENFILM_PICK_AT, '');
+  assert.equal(folderPickerCommand('win32', { title: 'T', at: 'Desktop' }).env.ORANGE_PICK_AT, '');
 });
 
 test('Windows: PowerShell reads the words from its environment', () => {
   const c = folderPickerCommand('win32', { title: "it's mine", at: 'D:\\Films' });
   assert.equal(c.cmd, 'powershell.exe');
-  assert.equal(c.env.OPENFILM_PICK_TITLE, "it's mine");
+  assert.equal(c.env.ORANGE_PICK_TITLE, "it's mine");
   assert.ok(!c.args.join(' ').includes("it's mine"));
 });
 
@@ -37,7 +37,7 @@ test('files: several at once, a path a line; the words are arguments, never insi
   assert.ok(mac.args.some((a) => a.includes('multiple selections allowed')));
   assert.ok(mac.args.filter((a, i) => mac.args[i - 1] === '-e').every((line) => !line.includes('media')));
   const win = filePickerCommand('win32', { title: "it's mine" });
-  assert.equal(win.env.OPENFILM_PICK_TITLE, "it's mine");
+  assert.equal(win.env.ORANGE_PICK_TITLE, "it's mine");
   assert.match(win.args.at(-1), /Multiselect = \$true/);
   assert.ok(filePickerCommand('linux', { title: 'T' }, (n) => n === 'zenity').args.includes('--multiple'));
   assert.equal(filePickerCommand('linux', { title: 'T' }, () => false), null);
@@ -81,9 +81,9 @@ for (const [kind, picker] of [['folder', folderPickerCommand], ['files', filePic
     const expected = kind === 'folder' ? paths[0] : paths.join('\n');
     const command = picker('win32', { title: 'Choose' });
     // Run the command's output setup without opening an interactive dialog. The chosen paths come from the environment.
-    const script = command.args.at(-1).replace(/Add-Type[\s\S]*$/, '[Console]::Out.Write($env:OPENFILM_PICK_TEST_PATHS)');
+    const script = command.args.at(-1).replace(/Add-Type[\s\S]*$/, '[Console]::Out.Write($env:ORANGE_PICK_TEST_PATHS)');
     const stdout = execFileSync(command.cmd, [...command.args.slice(0, -1), script], {
-      env: { ...process.env, ...command.env, OPENFILM_PICK_TEST_PATHS: expected },
+      env: { ...process.env, ...command.env, ORANGE_PICK_TEST_PATHS: expected },
       encoding: 'utf8', windowsHide: true, timeout: 10_000,
     });
     assert.equal(stdout, expected);

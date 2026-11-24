@@ -24,7 +24,7 @@ before(async () => {
     else res.writeHead(status, { 'content-type': 'application/json' }).end(JSON.stringify(body));
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
-  process.env.OPENFILM_OPENAI_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.ORANGE_OPENAI_URL = `http://127.0.0.1:${server.address().port}`;
 });
 after(() => server.close());
 
@@ -41,7 +41,7 @@ function png(w, h) {
   return b;
 }
 
-test('pictures with GPT Image 2.6 Flare, the default, and Sunburst, and 2.5 Flare and Sunburst: what OpenFilm\'s service runs too', () => {
+test('pictures with GPT Image 2.6 Flare, the default, and Sunburst, and 2.5 Flare and Sunburst: what OrangeFilm\'s service runs too', () => {
   assert.deepEqual(openai.models.image.map((m) => m.id), ['gpt-image-2.6-flare', 'gpt-image-2.6-sunburst', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst']);
 });
 

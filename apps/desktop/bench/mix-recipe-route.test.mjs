@@ -30,7 +30,7 @@ test('素材检索拼配方：10 条 9:16，引擎 dry-run 接受', { timeout: 6
   console.log('step: launch');
   const app = await electron.launch({
     executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
-    env: { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir, OPENFILM_MATERIAL_INDEX_DIR: indexDir },
+    env: { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir, ORANGE_MATERIAL_INDEX_DIR: indexDir },
   });
   try {
     let run = null;

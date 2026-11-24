@@ -7,7 +7,7 @@
  * the icon of what it is.
  */
 import React from 'react';
-import type { FilmDoc } from 'openfilm/film-doc';
+import type { FilmDoc } from 'orangefilm/film-doc';
 
 /** how long a read may take before it is given up */
 const READ_WAIT_MS = 4000;
@@ -43,7 +43,7 @@ export async function readStudioProject(projectId: string): Promise<string | nul
  * What the person changed in Studio while the agent worked that its writes would have undone, kept by Studio, as a
  * block for the next message to the agent of `conversation` (empty when nothing), and `said`, to call once the agent
  * has the message (its turn started): only then does Studio count it told. Studio gives it once to each agent: to its
- * `openfilm` commands or here, whichever asks first.
+ * `orangefilm` commands or here, whichever asks first.
  */
 export async function keptNote(projectId: string, conversation: string): Promise<{ text: string; said: () => void }> {
   const none = { text: '', said: () => {} };

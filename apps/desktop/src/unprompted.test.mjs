@@ -12,7 +12,7 @@ test('the agent writing, thinking, starting a tool or planning opens a turn of i
 });
 
 test('the late output and exit of a command from a turn already ended open no turn', () => {
-  /* as Codex sent them 2.6 s after a stopped turn: `openfilm look` still running, then done */
+  /* as Codex sent them 2.6 s after a stopped turn: `orangefilm look` still running, then done */
   const late = [
     { sessionUpdate: 'tool_call_update', toolCallId: 'exec-1', _meta: { terminal_output_delta: { data: 'film  1920×1080\n' } } },
     { sessionUpdate: 'tool_call_update', toolCallId: 'exec-1', status: 'completed', _meta: { terminal_exit: { exit_code: 0 } } },
@@ -34,7 +34,7 @@ test('a background turn that ended with nothing in it is empty', () => {
 test('a background turn with something in it, still running, or failed is kept', () => {
   assert.equal(isEmptyBackgroundTurn({ origin: 'background', status: 'ready' }, [{ type: 'text' }]), false);
   assert.equal(isEmptyBackgroundTurn({ origin: 'background', status: 'generating' }, []), false);
-  assert.equal(isEmptyBackgroundTurn({ origin: 'background', status: 'error', error: 'OpenFilm closed while the agent was working on this.' }, []), false);
+  assert.equal(isEmptyBackgroundTurn({ origin: 'background', status: 'error', error: 'OrangeFilm closed while the agent was working on this.' }, []), false);
 });
 
 test('a turn the person started is never dropped, even with nothing in it', () => {

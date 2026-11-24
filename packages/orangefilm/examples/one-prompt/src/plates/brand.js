@@ -1,8 +1,8 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-// The OpenFilm mark and wordmark, from OpenFilm's logo (logo-dark.svg in github.com/openfilm/openfilm, docs/):
-// a flag on its pole, the letter F, set beside "OpenFilm". Here as exact geometry: a GLSL signed distance field of
+// The OrangeFilm mark and wordmark, from OrangeFilm's logo (logo-dark.svg in github.com/orangefilm/orangefilm, docs/):
+// a flag on its pole, the letter F, set beside "OrangeFilm". Here as exact geometry: a GLSL signed distance field of
 // the mark, and the wordmark's glyphs as paths for Canvas2D.
 
 /** the mark, in its own units (the logo's 100 × 100 box, y down): the pole with its rounded head, as one path */
@@ -19,7 +19,7 @@ export const POLE_X = 23;
 /** the lockup, as the logo sets it: logo units → lockup units (the mark), glyph units → lockup units (the word) */
 export const LOCKUP = { mark: { x: -16.93, y: -96.85, s: 1.2095 }, word: { x: 110.37, y: 0, s: 0.04883 } };
 
-/** "OpenFilm", glyph by glyph: its outline and its ink from x0 to x1 (font units, baseline at y = 0, y down) */
+/** "OrangeFilm", glyph by glyph: its outline and its ink from x0 to x1 (font units, baseline at y = 0, y down) */
 export const WORDMARK = [
   { ch: 'O', x0: 93.9, x1: 1484.0, d: 'M789.4 20Q591.9 20 434.3 -70.1Q276.7 -160.1 185.3 -331.1Q93.9 -502.1 93.9 -744Q93.9 -987.5 185.3 -1158.7Q276.7 -1329.9 434.3 -1420Q591.9 -1510 789.4 -1510Q986.9 -1510 1144 -1420Q1301.1 -1329.9 1392.5 -1158.7Q1484 -987.5 1484 -744Q1484 -501.5 1392.5 -330.6Q1301.1 -159.6 1144 -69.8Q986.9 20 789.4 20ZM789.4 -251Q905.1 -251 991.6 -307.7Q1078 -364.4 1126.1 -474.6Q1174.2 -584.8 1174.2 -744Q1174.2 -904.7 1126.1 -1015.1Q1078 -1125.6 991.6 -1182.3Q905.1 -1239 789.4 -1239Q673.8 -1239 587.1 -1182Q500.4 -1125.1 452 -1014.7Q403.7 -904.2 403.7 -744Q403.7 -584.8 452 -474.8Q500.4 -364.9 587.1 -308Q673.8 -251 789.4 -251Z' },
   { ch: 'p', x0: 1664.8, x1: 2746.4, d: 'M1664.8 418V-1118H1959.8V-929.8H1974.4Q1995 -974.4 2033.3 -1021.2Q2071.6 -1068.1 2134.8 -1100Q2198 -1132 2293 -1132Q2417.3 -1132 2520 -1067.9Q2622.7 -1003.9 2684.6 -876Q2746.4 -748.1 2746.4 -557.1Q2746.4 -371 2686.4 -242.6Q2626.4 -114.2 2523.4 -47.8Q2420.5 18.6 2291.3 18.6Q2200.4 18.6 2137.3 -12.2Q2074.2 -43.1 2034.8 -88.5Q1995.5 -133.9 1974.4 -178.9H1964.7V418ZM2198.9 -221.8Q2277.5 -221.8 2330.7 -264.8Q2383.9 -307.8 2411.3 -383.8Q2438.7 -459.9 2438.7 -558Q2438.7 -656.2 2411.5 -731.3Q2384.4 -806.5 2331.1 -849Q2277.9 -891.6 2198.9 -891.6Q2121.8 -891.6 2068 -850.4Q2014.2 -809.2 1986.3 -734.5Q1958.4 -659.9 1958.4 -558Q1958.4 -457.2 1986.5 -381.7Q2014.7 -306.1 2068.7 -263.9Q2122.8 -221.8 2198.9 -221.8Z' },

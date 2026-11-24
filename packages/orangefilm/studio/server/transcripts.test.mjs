@@ -54,9 +54,9 @@ test('a link in the project to a folder out of it is not followed for transcript
 });
 
 test('Chinese and Japanese transcripts lose the spaces a service put beside full-width marks and between characters', () => {
-  assert.equal(tightCjk('欢迎使用OpenFilm， 说一 句话就能做出一部片子 。'), '欢迎使用OpenFilm，说一句话就能做出一部片子。');
+  assert.equal(tightCjk('欢迎使用OrangeFilm， 说一 句话就能做出一部片子 。'), '欢迎使用OrangeFilm，说一句话就能做出一部片子。');
   assert.equal(tightCjk('今日は いい 天気 ですね 。'), '今日はいい天気ですね。');
-  assert.equal(tightCjk('我用 OpenFilm 做片子'), '我用 OpenFilm 做片子', 'Han beside Latin keeps its space');
+  assert.equal(tightCjk('我用 OrangeFilm 做片子'), '我用 OrangeFilm 做片子', 'Han beside Latin keeps its space');
   assert.equal(tightCjk('안녕 하세요'), '안녕 하세요', 'Korean is written with spaces');
   const [line] = spokenLines('说一句话， 就能', [{ token: '说', startSec: 0.1, endSec: 0.3 }, { token: '能', startSec: 1, endSec: 1.2 }], 1500);
   assert.equal(line.text, '说一句话，就能');

@@ -23,7 +23,7 @@ before(async () => {
     else res.writeHead(status, { 'content-type': 'application/json' }).end(JSON.stringify(body));
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
-  process.env.OPENFILM_ELEVENLABS_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.ORANGE_ELEVENLABS_URL = `http://127.0.0.1:${server.address().port}`;
 });
 after(() => server.close());
 

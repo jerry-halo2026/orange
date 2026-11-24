@@ -34,7 +34,7 @@ before(() => {
   root = testRootFor('client-isolation', 'scratch');
   if (!base) return;
   const c = { baseRoot: base, instanceId: 'instance-a', taskId: 'T01', attemptId: attempt('attempt'), ports: { studio: 18471, film: 18472 } };
-  profile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), OPENFILM_ISOLATION_ROOT: c.baseRoot });
+  profile = readIsolationProfile({ ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(c)).toString('base64url'), ORANGE_ISOLATION_ROOT: c.baseRoot });
   Object.assign(process.env, isolationEnvironment(profile));
   mkdirSync(profile.paths.home, { recursive: true });
   originalFetch = globalThis.fetch;
@@ -42,13 +42,13 @@ before(() => {
 after(() => { globalThis.fetch = originalFetch; if (profile) rmSync(profile.root, { recursive: true, force: true }); rmSync(root, { recursive: true, force: true }); });
 const run = p => ({ origin: `http://127.0.0.1:${p.ports.studio}`, filmOrigin: `http://localhost:${p.ports.film}`, key: 'synthetic' });
 test('isolated client refuses hostile run.json before contacting its origin or revealing key', { skip: unprovisioned }, async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify({ ...run(profile), origin: 'https://unapproved.invalid' })); let requests = 0; globalThis.fetch = async () => { requests++; throw new Error('must not fetch'); }; await assert.rejects(() => running(), /isolat|origin/); assert.equal(requests, 0); });
-test('isolated client requires health home binding and paired origins, without fallback', { skip: unprovisioned }, async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify(run(profile))); globalThis.fetch = async () => ({ json: async () => ({ product: 'openfilm-studio', home: 'wrong', filmOrigin: run(profile).filmOrigin }) }); await assert.rejects(() => running(), /isolat|home/); });
-test('isolated CLI uses matching native Studio without replacing old versions', { skip: unprovisioned }, async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify(run(profile))); globalThis.fetch = async () => ({ json: async () => ({ product: 'openfilm-studio', home: createHash('sha256').update(profile.paths.home).digest('hex'), filmOrigin: run(profile).filmOrigin, version: '0.0.1' }) }); const up = await ensureStudio(); assert.equal(up.origin, run(profile).origin); await assert.rejects(() => ensureStudio(() => { }, { fresh: true }), /isolat|restart/); });
+test('isolated client requires health home binding and paired origins, without fallback', { skip: unprovisioned }, async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify(run(profile))); globalThis.fetch = async () => ({ json: async () => ({ product: 'orangefilm-studio', home: 'wrong', filmOrigin: run(profile).filmOrigin }) }); await assert.rejects(() => running(), /isolat|home/); });
+test('isolated CLI uses matching native Studio without replacing old versions', { skip: unprovisioned }, async () => { writeFileSync(join(profile.paths.home, 'run.json'), JSON.stringify(run(profile))); globalThis.fetch = async () => ({ json: async () => ({ product: 'orangefilm-studio', home: createHash('sha256').update(profile.paths.home).digest('hex'), filmOrigin: run(profile).filmOrigin, version: '0.0.1' }) }); const up = await ensureStudio(); assert.equal(up.origin, run(profile).origin); await assert.rejects(() => ensureStudio(() => { }, { fresh: true }), /isolat|restart/); });
 test('isolated CLI does not auto-start a supervisor or make logs when desktop is absent', { skip: unprovisioned }, async () => { rmSync(join(profile.paths.home, 'run.json')); let requests = 0; globalThis.fetch = async () => { requests++; throw new Error('must not probe fallback'); }; await assert.rejects(() => ensureStudio(), /isolat|running/); assert.equal(requests, 0); });
 
 test('isolated running accepts actual native Studio advertised localhost film origin', { skip: unprovisioned }, async () => {
   const config = { baseRoot: base, instanceId: 'instance-runtime', taskId: 'T01', attemptId: attempt('attempt-runtime'), ports: { studio: 18771, film: 18772 } };
-  const actualProfile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(config)).toString('base64url'), OPENFILM_ISOLATION_ROOT: config.baseRoot });
+  const actualProfile = readIsolationProfile({ ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(config)).toString('base64url'), ORANGE_ISOLATION_ROOT: config.baseRoot });
   const env = isolationEnvironment(actualProfile);
   const previous = Object.fromEntries(Object.keys(env).map(key => [key, process.env[key]]));
   /* the earlier tests left their own stub in place; this one talks to a real Studio */

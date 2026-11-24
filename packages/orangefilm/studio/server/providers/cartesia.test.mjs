@@ -22,7 +22,7 @@ before(async () => {
     res.writeHead(status, { 'content-type': type }).end(typeof body === 'string' ? body : JSON.stringify(body));
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
-  process.env.OPENFILM_CARTESIA_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.ORANGE_CARTESIA_URL = `http://127.0.0.1:${server.address().port}`;
 });
 after(() => server.close());
 

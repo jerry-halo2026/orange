@@ -51,7 +51,7 @@ export default {
     const { region, key } = placed(ctx.key);
     const base = serviceUrl('AZURE', `https://${region}.tts.speech.microsoft.com`);
     const send = (/** @type {string} */ path, /** @type {RequestInit} */ init = {}) =>
-      call(NAME, `${base}/cognitiveservices${path}`, { ...init, headers: { 'ocp-apim-subscription-key': key, 'user-agent': 'openfilm', ...init.headers } }, ctx);
+      call(NAME, `${base}/cognitiveservices${path}`, { ...init, headers: { 'ocp-apim-subscription-key': key, 'user-agent': 'orangefilm', ...init.headers } }, ctx);
 
     if (verb === 'voice') {
       const limit = clamp(Math.round(number(args.limit) ?? 5), 1, 100);

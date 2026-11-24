@@ -14,10 +14,10 @@ import { moveToTrash } from './trash.mjs';
 const linuxTrash = (t) => {
   const root = mkdtempSync(join(tmpdir(), 'of-linux-trash-'));
   const platform = Object.getOwnPropertyDescriptor(process, 'platform');
-  const kept = { XDG_DATA_HOME: process.env.XDG_DATA_HOME, OPENFILM_TRASH_DIR: process.env.OPENFILM_TRASH_DIR };
+  const kept = { XDG_DATA_HOME: process.env.XDG_DATA_HOME, ORANGE_TRASH_DIR: process.env.ORANGE_TRASH_DIR };
   Object.defineProperty(process, 'platform', { value: 'linux' });
   process.env.XDG_DATA_HOME = join(root, 'data');
-  delete process.env.OPENFILM_TRASH_DIR;
+  delete process.env.ORANGE_TRASH_DIR;
   t.after(() => {
     Object.defineProperty(process, 'platform', platform);
     for (const [key, value] of Object.entries(kept)) {
@@ -162,13 +162,13 @@ const win = process.platform === 'win32';
    would leave every delete on the developer's drive permanent */
 const ci = win && !!process.env.CI;
 const ps = (/** @type {string} */ script) => execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8', windowsHide: true }).trim();
-/** A scratch folder, with the real trash in use (no OPENFILM_TRASH_DIR). */
+/** A scratch folder, with the real trash in use (no ORANGE_TRASH_DIR). */
 const realTrash = (t) => {
   const root = mkdtempSync(join(tmpdir(), 'of-win-trash-'));
-  const kept = process.env.OPENFILM_TRASH_DIR;
-  delete process.env.OPENFILM_TRASH_DIR;
+  const kept = process.env.ORANGE_TRASH_DIR;
+  delete process.env.ORANGE_TRASH_DIR;
   t.after(() => {
-    if (kept !== undefined) process.env.OPENFILM_TRASH_DIR = kept;
+    if (kept !== undefined) process.env.ORANGE_TRASH_DIR = kept;
     rmSync(root, { recursive: true, force: true });
   });
   return root;
@@ -252,10 +252,10 @@ test('on Windows, an item on a network path is refused, and stays', { skip: !win
 test('a PowerShell that refuses the Recycle Bin is told as the reason it gives, with the item\'s name, and answered for Studio to say in its language; any other failure as it is', { skip: win && 'the real PowerShell is tested above' }, async (t) => {
   const root = mkdtempSync(join(tmpdir(), 'of-fake-ps-'));
   const platform = Object.getOwnPropertyDescriptor(process, 'platform');
-  const kept = { PATH: process.env.PATH, OPENFILM_TRASH_DIR: process.env.OPENFILM_TRASH_DIR };
+  const kept = { PATH: process.env.PATH, ORANGE_TRASH_DIR: process.env.ORANGE_TRASH_DIR };
   Object.defineProperty(process, 'platform', { value: 'win32' });
   process.env.PATH = `${root}:${process.env.PATH}`;
-  delete process.env.OPENFILM_TRASH_DIR;
+  delete process.env.ORANGE_TRASH_DIR;
   t.after(() => {
     Object.defineProperty(process, 'platform', platform);
     for (const [key, value] of Object.entries(kept)) {

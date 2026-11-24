@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * Connecting a provider by signing in on its website instead of pasting a key (a provider's `signIn`: OpenFilm's), as
+ * Connecting a provider by signing in on its website instead of pasting a key (a provider's `signIn`: OrangeFilm's), as
  * a native app signs in (PKCE, RFC 7636 and 8252):
  *
  *   1. A one-off listener on 127.0.0.1 (a free port), and the provider's connect page opened in the person's browser
@@ -45,7 +45,7 @@ export function cancelSignIn() {
 /** This computer's name, as the connect page and the key's label show it. */
 export const deviceName = (env = process.env, host = hostname()) => {
   const name = host.replace(/\.local$/i, '');
-  const app = env.OPENFILM_ACCOUNT_DEVICE?.trim();
+  const app = env.ORANGE_ACCOUNT_DEVICE?.trim();
   return app ? `${name.slice(0, 35)} · ${app.slice(0, 20)}` : name.slice(0, 60);
 };
 

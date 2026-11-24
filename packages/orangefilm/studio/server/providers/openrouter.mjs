@@ -112,14 +112,14 @@ function length(/** @type {{ seconds?: [number, number], only?: number[] }} */ s
 
 /**
  * A recording or a clip as an address the model fetches it from: a temporary web address when the run can make one
- * (`ctx.link`, as OpenFilm's service does), else the file inline for a model that takes it so; Seedance takes them from
+ * (`ctx.link`, as OrangeFilm's service does), else the file inline for a model that takes it so; Seedance takes them from
  * a web address only.
  * @param {string} path @param {'voice' | 'video'} flag @param {{ name: string, inline?: true }} spec @param {RunContext} ctx
  */
 async function addressOf(path, flag, spec, ctx) {
   if (ctx.link) return ctx.link(path);
   if (spec.inline) return dataUri(path, ctx);
-  throw new Error(`--${flag}: ${spec.name} at OpenRouter takes a ${flag === 'voice' ? 'recording' : 'clip'} only from a web address, and with your own key OrangeFilm has nowhere to put your file for it, so this can't be done here. fal takes it straight from the project, and OpenFilm's own service gives it an address. Anyone who needs it with their own key can add their own storage in providers/openrouter.mjs, for themselves or in a pull request.`);
+  throw new Error(`--${flag}: ${spec.name} at OpenRouter takes a ${flag === 'voice' ? 'recording' : 'clip'} only from a web address, and with your own key OrangeFilm has nowhere to put your file for it, so this can't be done here. fal takes it straight from the project, and OrangeFilm's own service gives it an address. Anyone who needs it with their own key can add their own storage in providers/openrouter.mjs, for themselves or in a pull request.`);
 }
 
 /** What OpenRouter reported a run cost, when it did. */

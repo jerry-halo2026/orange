@@ -13,9 +13,9 @@ const seen = [];
 let challenge = '';
 test('development and preview apps use distinct computer names and cannot replace the installed app login', () => {
   assert.equal(deviceName({}, 'My Mac.local'), 'My Mac');
-  assert.equal(deviceName({ OPENFILM_ACCOUNT_DEVICE: 'OpenFilm Dev' }, 'My Mac.local'), 'My Mac · OpenFilm Dev');
-  assert.equal(deviceName({ OPENFILM_ACCOUNT_DEVICE: 'OpenFilm Preview' }, 'My Mac.local'), 'My Mac · OpenFilm Preview');
-  assert.ok(deviceName({ OPENFILM_ACCOUNT_DEVICE: 'x'.repeat(200) }, 'y'.repeat(200)).length <= 60);
+  assert.equal(deviceName({ ORANGE_ACCOUNT_DEVICE: 'OrangeFilm Dev' }, 'My Mac.local'), 'My Mac · OrangeFilm Dev');
+  assert.equal(deviceName({ ORANGE_ACCOUNT_DEVICE: 'OrangeFilm Preview' }, 'My Mac.local'), 'My Mac · OrangeFilm Preview');
+  assert.ok(deviceName({ ORANGE_ACCOUNT_DEVICE: 'x'.repeat(200) }, 'y'.repeat(200)).length <= 60);
 });
 before(async () => {
   site = createServer(async (req, res) => {
@@ -34,7 +34,7 @@ before(async () => {
 });
 after(() => site.close());
 
-const provider = () => ({ id: 'openfilm', name: 'OpenFilm', signIn: { page: `${base}/account/connect`, token: `${base}/api/connect/token`, revoke: `${base}/api/connect/revoke` } });
+const provider = () => ({ id: 'orangefilm', name: 'OrangeFilm', signIn: { page: `${base}/account/connect`, token: `${base}/api/connect/token`, revoke: `${base}/api/connect/revoke` } });
 
 /** Signing in, the browser played by `browse` once the connect page was opened. */
 async function signIn(browse) {
@@ -62,17 +62,17 @@ test('a wrong state is not answered; a no in the browser is said, and nothing is
   const { got, back } = await signIn(async (page) => {
     const port = page.searchParams.get('port');
     assert.equal((await fetch(`http://127.0.0.1:${port}/callback?state=forged&code=the-code`)).status, 404);
-    assert.equal(signInState().provider, 'openfilm', 'still waiting');
+    assert.equal(signInState().provider, 'orangefilm', 'still waiting');
     return fetch(`http://127.0.0.1:${port}/callback?state=${page.searchParams.get('state')}&error=access_denied`, { redirect: 'manual' });
   });
   assert.equal(got, null);
   assert.equal(back.headers.get('location'), `${base}/account/connect?result=failed`);
-  assert.deepEqual(signInState(), { provider: null, error: 'Signing in to OpenFilm was cancelled.', errorFor: 'openfilm' });
+  assert.deepEqual(signInState(), { provider: null, error: 'Signing in to OrangeFilm was cancelled.', errorFor: 'orangefilm' });
 });
 
 test('cancelled while waiting; signing out revokes the key at the provider', async () => {
   await startSignIn(provider(), { openBrowser: () => {}, done: async () => {} });
-  assert.equal(signInState().provider, 'openfilm');
+  assert.equal(signInState().provider, 'orangefilm');
   cancelSignIn();
   assert.equal(signInState().provider, null);
   await signOut(provider(), 'ofk_fromsignin');

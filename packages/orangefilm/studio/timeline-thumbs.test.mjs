@@ -25,11 +25,11 @@ const card = (title) => `<!doctype html><body style="margin:0">
 test('a page clip edited, or written by an agent, keeps its thumbnails until the new ones are in', { timeout: 120_000, skip: !hasFfmpeg && 'no ffmpeg' }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-timeline-thumbs-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Thumbs');
+    const root = join(process.env.ORANGE_LIBRARY, 'Thumbs');
     await mkdir(join(root, 'assets'), { recursive: true });
     execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'testsrc2=size=540x960:rate=25:duration=6', '-pix_fmt', 'yuv420p', join(root, 'assets', 'clip.mp4')]);
     await writeFile(join(root, 'card.html'), card('Every parcel'));
@@ -102,11 +102,11 @@ test('a page clip edited, or written by an agent, keeps its thumbnails until the
 test('a compound clip shows its mixed audio and opens from its menu or a double-click', { timeout: 90_000, skip: !hasFfmpeg && 'no ffmpeg' }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-compound-timeline-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Compound test');
+    const root = join(process.env.ORANGE_LIBRARY, 'Compound test');
     const part = join(root, 'parts', 'travel');
     await mkdir(join(root, 'assets'), { recursive: true });
     await mkdir(part, { recursive: true });
@@ -193,8 +193,8 @@ test('a paused preview redraws a page when its pictures finish loading', { timeo
     editor = createServer((_req, res) => res.writeHead(200, { 'content-type': 'text/html' }).end(`<!doctype html>
       <script>
         window.addEventListener('message', event => {
-          if (event.origin !== ${JSON.stringify(preview.origin)} || event.data?.source !== 'openfilm-film') return;
-          if (event.data.type === 'ready') event.source.postMessage({ source: 'openfilm-studio', type: 'seek', t: 1, seq: 1 }, event.origin);
+          if (event.origin !== ${JSON.stringify(preview.origin)} || event.data?.source !== 'orangefilm-film') return;
+          if (event.data.type === 'ready') event.source.postMessage({ source: 'orangefilm-studio', type: 'seek', t: 1, seq: 1 }, event.origin);
         });
       </script>
       <iframe title="film" src="${preview.href}" width="320" height="180"></iframe>`));

@@ -6,7 +6,7 @@
  * `GET /api/materials/index`: the 批次 → 合集 → 子合集 index our own builder landed on this computer, read-only.
  *
  * Why a route and not a page-side read: the tree is already built and on disk
- * (`~/.openfilm-dev/material-index/index.json` — 78 874 rows on this account, 7 real batches, 1 726 derived ones).
+ * (`~/.orangefilm-dev/material-index/index.json` — 78 874 rows on this account, 7 real batches, 1 726 derived ones).
  * The page used to walk the supplier itself, 8 pages × 100 rows, so the 合集 view drew 800 rows out of 78 874 and
  * looked almost empty. The file is the whole account; this hands it over.
  *
@@ -32,7 +32,7 @@ import { materialIndexStatus } from '../../src/material-index-bootstrap.mjs';
  * the page and the CLI cannot disagree about it. A file that cannot say when it was built is stale.
  *
  * @param {{dir?: string, now?: Date, read?: (path: string, encoding: 'utf8') => string}} [options]
- *   `dir` defaults to `defaultIndexDir()` (`$OPENFILM_MATERIAL_INDEX_DIR`, else `~/.openfilm-dev/material-index`).
+ *   `dir` defaults to `defaultIndexDir()` (`$ORANGE_MATERIAL_INDEX_DIR`, else `~/.orangefilm-dev/material-index`).
  */
 export function landedIndex({ dir = defaultIndexDir(), now = new Date(), read = readFileSync } = {}) {
   const file = materialIndexPath(dir);

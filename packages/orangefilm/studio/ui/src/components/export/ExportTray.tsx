@@ -26,7 +26,7 @@ import {
    Closed ones stay closed while Studio runs, the project or the page opened again or not (its exports are this
    launch's): kept in the tab's session storage, which may refuse (a private window), then for as long as the page. */
 const closedByProject = new Map<string, Set<string>>();
-const CLOSED_KEY = 'openfilm.exportTray.closed';
+const CLOSED_KEY = 'orangefilm.exportTray.closed';
 function closedOf(projectId: string): Set<string> {
   const known = closedByProject.get(projectId);
   if (known) return known;

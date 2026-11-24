@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { testRoot } from './test-roots.mjs';
 import { defaultStudioHome, exportsRoot, libraryDefault, libraryProjects, libraryRoot, locations, usableFolder } from './locations.mjs';
 
-const KEYS = ['OPENFILM_HOME', 'OPENFILM_LIBRARY', 'OPENFILM_EXPORTS', 'OPENFILM_SHARED_HOME'];
+const KEYS = ['ORANGE_HOME', 'ORANGE_LIBRARY', 'ORANGE_EXPORTS', 'ORANGE_SHARED_HOME'];
 let saved;
 let home;
 beforeEach(() => {
@@ -17,10 +17,10 @@ beforeEach(() => {
   /* a home the isolation validator can accept: `os.tmpdir()` is on `C:` with a short-name alias, which
      `development-isolation.mjs`'s rootPath refuses, so a profile built on it could never round-trip. */
   home = mkdtempSync(join(testRoot('locations'), 'of-locations-'));
-  process.env.OPENFILM_HOME = home;
-  delete process.env.OPENFILM_LIBRARY;
-  delete process.env.OPENFILM_EXPORTS;
-  delete process.env.OPENFILM_SHARED_HOME;
+  process.env.ORANGE_HOME = home;
+  delete process.env.ORANGE_LIBRARY;
+  delete process.env.ORANGE_EXPORTS;
+  delete process.env.ORANGE_SHARED_HOME;
 });
 afterEach(() => {
   for (const k of KEYS) { if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k]; }
@@ -28,9 +28,9 @@ afterEach(() => {
 const prefs = (value) => writeFileSync(join(home, 'prefs.json'), JSON.stringify(value));
 
 test('new projects go to the folder chosen, before any default', () => {
-  process.env.OPENFILM_LIBRARY = join(home, 'lib');
+  process.env.ORANGE_LIBRARY = join(home, 'lib');
   assert.equal(libraryRoot(), join(home, 'lib'), 'the default: what the build set');
-  const projects = join(tmpdir(), 'D', 'OpenFilm', 'Projects');
+  const projects = join(tmpdir(), 'D', 'OrangeFilm', 'Projects');
   prefs({ proxies: { on: true }, projectsFolder: projects });
   assert.equal(libraryRoot(), projects);
   assert.equal(libraryDefault(), join(home, 'lib'), 'the default stays what it was');
@@ -40,8 +40,8 @@ test('new projects go to the folder chosen, before any default', () => {
 });
 
 test('exports go to the default: no folder kept in prefs.json moves them (the export dialog picks one)', () => {
-  process.env.OPENFILM_EXPORTS = join(home, 'out');
-  prefs({ exportsFolder: join(tmpdir(), 'D', 'OpenFilm', 'Exports') });
+  process.env.ORANGE_EXPORTS = join(home, 'out');
+  prefs({ exportsFolder: join(tmpdir(), 'D', 'OrangeFilm', 'Exports') });
   assert.equal(exportsRoot(), join(home, 'out'));
 });
 
@@ -72,7 +72,7 @@ test('a folder offered is made and kept by its full path; a disk, Studio\'s own 
 
 test('a library\'s projects are its folders that hold a film; Settings counts them', () => {
   const lib = join(home, 'lib');
-  process.env.OPENFILM_LIBRARY = lib;
+  process.env.ORANGE_LIBRARY = lib;
   for (const name of ['One', 'Two', '.hidden']) { mkdirSync(join(lib, name), { recursive: true }); writeFileSync(join(lib, name, 'film.html'), ''); }
   mkdirSync(join(lib, 'Lost its film', '.film'), { recursive: true });
   writeFileSync(join(lib, 'Lost its film', '.film', 'id'), 'abcdef');
@@ -85,7 +85,7 @@ test('a library\'s projects are its folders that hold a film; Settings counts th
 
 test('with a shared home, the folder chosen there is the library; a folder inside either home is refused', () => {
   const shared = join(home, '..', `of-shared-${process.pid}`);
-  process.env.OPENFILM_SHARED_HOME = shared;
+  process.env.ORANGE_SHARED_HOME = shared;
   mkdirSync(shared, { recursive: true });
   writeFileSync(join(shared, 'prefs.json'), JSON.stringify({ projectsFolder: join(home, 'X', 'Projects') }));
   prefs({ projectsFolder: join(home, 'Own') });
@@ -97,7 +97,7 @@ test('isolated effective projects preferences and folder selection cannot escape
   const { readIsolationProfile, isolationEnvironment } = await import('./development-isolation.mjs');
   const { chooseFolder } = await import('./locations.mjs');
   const c={baseRoot:join(home,'approved'),instanceId:'instance-a',taskId:'T01',attemptId:'attempt-1',ports:{studio:18471,film:18472}};
-  const p=readIsolationProfile({OPENFILM_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),OPENFILM_ISOLATION_ROOT:c.baseRoot});
+  const p=readIsolationProfile({ORANGE_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),ORANGE_ISOLATION_ROOT:c.baseRoot});
   const env=isolationEnvironment(p);const old=Object.fromEntries(Object.keys(env).map(k=>[k,process.env[k]]));
   try{
     Object.assign(process.env,env);mkdirSync(p.paths.sharedHome,{recursive:true});
@@ -110,7 +110,7 @@ test('isolated effective projects preferences and folder selection cannot escape
 
 test('a migrated home wins only after its completion marker', () => {
   const base = mkdtempSync(join(testRoot('locations'), 'of-home-'));
-  const old = join(base, '.openfilm');
+  const old = join(base, '.orangefilm');
   const next = join(base, '.orangefilm');
   mkdirSync(old, { recursive: true });
   assert.equal(defaultStudioHome(base), old, 'an existing old home wins before migration');

@@ -1309,7 +1309,7 @@ async function compare(refFile, remakeFile, { out, fit = false, film }) {
     const said = leaks.words.length ? `longest shared run ${leaks.words.length} ${leaks.words.cjk ? 'characters' : 'words'} at ${fmt(leaks.words.at)}, 「${leaks.words.run}」` : 'no shared run';
     lines.push(`- words: ${Math.round(leaks.words.share * 100)}% of the remake's 6-token runs are the reference's; ${said}${leaks.words.long || leaks.words.share > 0.2 ? '. Only right when the person asked for the same words' : ''}`);
   } else {
-    lines.push(`- words: not measured, no ${leaks.wordsMissing} (openfilm get asr)`);
+    lines.push(`- words: not measured, no ${leaks.wordsMissing} (orangefilm get asr)`);
   }
   lines.push('');
   writeFileSync(join(folder, 'compare.md'), lines.join('\n'));

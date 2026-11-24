@@ -1,6 +1,6 @@
 {
  "version": 1,
- "about": "Pages rewritten for OpenFilm from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0, pinned v0.9.60). Kept in a catalog of their own so library/index.json stays upstream's.",
+ "about": "Pages rewritten for OrangeFilm from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0, pinned v0.9.60). Kept in a catalog of their own so library/index.json stays upstream's.",
  "groups": {
   "text": [
    {

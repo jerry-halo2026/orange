@@ -13,10 +13,10 @@ import { pictureType } from './cover.mjs';
 let studio, scratch;
 before(async () => {
   scratch = mkdtempSync(join(tmpdir(), 'of-cover-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  process.env.OPENFILM_TRASH_DIR = join(scratch, 'trash');
-  mkdirSync(process.env.OPENFILM_TRASH_DIR);
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_TRASH_DIR = join(scratch, 'trash');
+  mkdirSync(process.env.ORANGE_TRASH_DIR);
   studio = await startStudio({ port: 0, openBrowser: () => {} });
 });
 after(() => studio.close());

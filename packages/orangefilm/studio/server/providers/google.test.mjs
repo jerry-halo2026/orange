@@ -32,7 +32,7 @@ before(async () => {
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
   base = `http://127.0.0.1:${server.address().port}`;
-  process.env.OPENFILM_GOOGLE_URL = base;
+  process.env.ORANGE_GOOGLE_URL = base;
   polling.ms = 5;
 });
 after(() => server.close());

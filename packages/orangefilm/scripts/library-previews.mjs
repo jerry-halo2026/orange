@@ -151,7 +151,7 @@ for (const item of index.items) {
   if (item.kind === 'motion' && (!asked.length || asked.includes(item.id))) {
     const dir = join(LIB, item.id);
     mkdirSync(dir, { recursive: true });
-    const work = mkdtempSync(join(tmpdir(), 'openfilm-library-'));
+    const work = mkdtempSync(join(tmpdir(), 'orangefilm-library-'));
     try {
       stills(item, work);
       const { html, posterAt } = motionFilm(item);
@@ -169,7 +169,7 @@ for (const item of index.items) {
   if (item.kind === 'group' && (!asked.length || asked.includes(item.id))) {
     const dir = join(LIB, item.id);
     const about = JSON.parse(readFileSync(join(dir, 'saved.json'), 'utf8'));
-    const work = mkdtempSync(join(tmpdir(), 'openfilm-library-'));
+    const work = mkdtempSync(join(tmpdir(), 'orangefilm-library-'));
     try {
       cpSync(join(dir, 'files'), join(work, 'item'), { recursive: true });
       const { html, posterAt, length } = groupFilm(item, about);
@@ -195,7 +195,7 @@ for (const item of index.items) {
   if ((item.kind !== 'page' && item.kind !== 'fade') || item.still || (asked.length && !asked.includes(item.id))) continue;
   const dir = join(LIB, item.id);
   const about = item.kind === 'page' ? JSON.parse(readFileSync(join(dir, 'saved.json'), 'utf8')) : null;
-  const work = mkdtempSync(join(tmpdir(), 'openfilm-library-'));
+  const work = mkdtempSync(join(tmpdir(), 'orangefilm-library-'));
   mkdirSync(dir, { recursive: true });
   try {
     if (about) cpSync(join(dir, 'files'), join(work, 'item'), { recursive: true });

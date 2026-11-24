@@ -10,7 +10,7 @@
  * stay there.
  *
  * What goes in is tidied first: the home folder reads ~, and keys, tokens and email addresses are taken out
- * (`redact`). The desktop app writes here too (OPENFILM_HOME is the same), so Studio's report has its agents'
+ * (`redact`). The desktop app writes here too (ORANGE_HOME is the same), so Studio's report has its agents'
  * problems.
  *
  * Reads no Studio module, so the command and the desktop app can use it.

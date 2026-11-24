@@ -20,7 +20,7 @@ const mod = await import('./desktop-auth.mjs').catch(error => {
   return {};
 });
 // The same native modules the controller itself resolves, so the project API below is the one it guards.
-const { createProject, listProjects, projectById, openProject } = await import(new URL('./projects.mjs', pathToFileURL(createRequire(import.meta.url).resolve('openfilm/studio'))));
+const { createProject, listProjects, projectById, openProject } = await import(new URL('./projects.mjs', pathToFileURL(createRequire(import.meta.url).resolve('orangefilm/studio'))));
 const A = '11111111-1111-4111-8111-111111111111';
 const B = '22222222-2222-4222-8222-222222222222';
 const configuration = {environmentId:'isolated-test',authOrigin:'https://auth.invalid',publishableKey:'public-fixture'};
@@ -224,8 +224,8 @@ async function degradedPair(environmentId) {
   const base=await mkdtemp(join(root,'degraded-'));
   const home=join(base,'home'),library=join(base,'library');
   await mkdir(home);await mkdir(library);
-  const saved={OPENFILM_HOME:process.env.OPENFILM_HOME,OPENFILM_SHARED_HOME:process.env.OPENFILM_SHARED_HOME,OPENFILM_LIBRARY:process.env.OPENFILM_LIBRARY};
-  Object.assign(process.env,{OPENFILM_HOME:home,OPENFILM_SHARED_HOME:home,OPENFILM_LIBRARY:library});
+  const saved={ORANGE_HOME:process.env.ORANGE_HOME,ORANGE_SHARED_HOME:process.env.ORANGE_SHARED_HOME,ORANGE_LIBRARY:process.env.ORANGE_LIBRARY};
+  Object.assign(process.env,{ORANGE_HOME:home,ORANGE_SHARED_HOME:home,ORANGE_LIBRARY:library});
   const calls=[];let now=10,subject=A;
   const fetch=async(url,request)=>{
     calls.push({url,method:request.method});

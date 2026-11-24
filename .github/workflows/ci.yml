@@ -55,7 +55,7 @@ jobs:
       - run: pnpm test
         env:
           # what a failing test keeps to be looked at (look's two pictures of a t that differed)
-          OPENFILM_TEST_ARTIFACTS: ${{ runner.temp }}/test-artifacts
+          ORANGE_TEST_ARTIFACTS: ${{ runner.temp }}/test-artifacts
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -107,7 +107,7 @@ jobs:
           apps/desktop/scripts/fission-publish.test.mjs
           apps/desktop/src/fission-config.test.mjs
 
-  # what npm would get: the tarball of openfilm, listed in the log and checked (no tests, fixtures or dev files; the
+  # what npm would get: the tarball of orangefilm, listed in the log and checked (no tests, fixtures or dev files; the
   # official product.json)
   pack:
     runs-on: ubuntu-latest

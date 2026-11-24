@@ -12,7 +12,7 @@ import { agentProblem, registerLocalAgentIpc, sentError, turnModel } from './loc
 test("a start that fails is written in the log of the turn it was for, with why", async () => {
   const handlers = new Map();
   registerLocalAgentIpc({ handle: (channel, fn) => handlers.set(channel, fn) }, { trusted: () => true });
-  const project = mkdtempSync(join(tmpdir(), 'openfilm-ipc-'));
+  const project = mkdtempSync(join(tmpdir(), 'orangefilm-ipc-'));
   const event = { sender: { once() {}, isDestroyed: () => false, send() {} } };
   /* the own key with no models set up: refused before anything starts */
   const r = await handlers.get('desktop:local-agents:start')(event, { agent: 'byok', cwd: project, meta: { turnId: 'local:startfail1' } });
@@ -50,7 +50,7 @@ test('the error as the agent sent it, under any rewording on the way; none when 
 });
 
 test("a Copilot turn's model, read once its usage record has reached the file; another agent's turn doesn't wait", async () => {
-  const home = mkdtempSync(join(tmpdir(), 'openfilm-copilot-'));
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-copilot-'));
   mkdirSync(join(home, 'session-state', 'cop-24680'), { recursive: true });
   const file = join(home, 'session-state', 'cop-24680', 'events.jsonl');
   const from = Date.now();

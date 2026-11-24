@@ -17,15 +17,15 @@ const provider = (id: string, source: 'file' | null, tts: string[]) => ({
 test('a service is spoken through OrangeFilm first when it offers that service\'s models, else with its own key', () => {
   const state = { providers: [
     provider('elevenlabs', 'file', ['eleven_v4', 'eleven_v4_turbo', 'eleven_multilingual_v2']),
-    provider('openfilm', 'file', ['elevenlabs/eleven_v4', 'cartesia/sonic-3.6']),
+    provider('orangefilm', 'file', ['elevenlabs/eleven_v4', 'cartesia/sonic-3.6']),
     provider('inworld', null, ['inworld-tts-2']),
   ] };
   assert.deepEqual(voiceAccess(services, state), {
-    elevenlabs: { via: 'openfilm', models: ['elevenlabs/eleven_v4'] },
-    cartesia: { via: 'openfilm', models: ['cartesia/sonic-3.6'] },
+    elevenlabs: { via: 'orangefilm', models: ['elevenlabs/eleven_v4'] },
+    cartesia: { via: 'orangefilm', models: ['cartesia/sonic-3.6'] },
   });
   /* not signed in to OrangeFilm: the service's own key */
-  assert.deepEqual(voiceAccess(services, { providers: state.providers.filter((p) => p.id !== 'openfilm') }), {
+  assert.deepEqual(voiceAccess(services, { providers: state.providers.filter((p) => p.id !== 'orangefilm') }), {
     elevenlabs: { via: 'elevenlabs', models: ['eleven_v4', 'eleven_v4_turbo'] },
   });
   assert.deepEqual(voiceAccess(services, null), {});
@@ -36,8 +36,8 @@ test('a voice is starred by its service and id, sorted by its language, and refe
   assert.equal(voiceKey(v), 'voice:cartesia/db6b');
   assert.equal(languageOf(v), 'en');
   assert.equal(languageOf({ ...v, language: null }), null);
-  assert.deepEqual(voiceRef(v, services[2]!, { via: 'openfilm', models: ['cartesia/sonic-3.6'] }), {
-    kind: 'voice', provider: 'cartesia', service: 'Cartesia', id: 'db6b', name: 'Skylar', via: 'openfilm', models: ['cartesia/sonic-3.6'], language: 'en-US', description: 'Friendly',
+  assert.deepEqual(voiceRef(v, services[2]!, { via: 'orangefilm', models: ['cartesia/sonic-3.6'] }), {
+    kind: 'voice', provider: 'cartesia', service: 'Cartesia', id: 'db6b', name: 'Skylar', via: 'orangefilm', models: ['cartesia/sonic-3.6'], language: 'en-US', description: 'Friendly',
   });
 });
 

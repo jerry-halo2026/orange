@@ -128,7 +128,7 @@ for (const fault of ['mkdirSync', 'writeFileSync']) test(`post-listen isolated m
   let auto, starting, returned, startupError, working = 0, statesAtFault, watchEnteredAtFault, autoEnteredAtFault, autoHasEntered = false;
   await free();
   assert.equal(fs.existsSync(runFile), false, 'new profile cannot take over an advertisement');
-  assert.equal(resolve(process.env.OPENFILM_HOME), home);
+  assert.equal(resolve(process.env.ORANGE_HOME), home);
   assert.ok(runFile.startsWith(f.profile.root + '\\'));
   Server.prototype.emit = function (event, ...args) {
     if (event === 'listening' && [18475, 18476].includes(this.address()?.port)) {

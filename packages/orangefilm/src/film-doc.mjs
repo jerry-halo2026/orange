@@ -47,7 +47,7 @@ export function isStill(src) {
 }
 
 /**
- * What a sound is for: `sfx`, `music` and `voice` by a folder it is in (where openfilm get saves them:
+ * What a sound is for: `sfx`, `music` and `voice` by a folder it is in (where orangefilm get saves them:
  * assets/audio/sfx/, music/, vo/; an agent's own assets/sfx/ alike), the nearest one deciding; elsewhere a name that
  * says music (bed, music, song, loop…) or an effect (sfx, hit, whoosh…) decides; anything else (a video's own sound
  * among them) is a voice.

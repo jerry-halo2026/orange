@@ -7,7 +7,7 @@
  * the MiMo API (https://platform.xiaomimimo.com/docs). Both are chat completions under /v1/chat/completions with the
  * key in an `api-key` header. A platform key (sk-…) answers at the pay-as-you-go API; a Token Plan key (tp-…) at its
  * gateway (https://token-plan-cn.xiaomimimo.com) — the key says which, so neither is set by hand.
- * OPENFILM_MIMO_URL points both somewhere else (a test server, a proxy).
+ * ORANGE_MIMO_URL points both somewhere else (a test server, a proxy).
  *
  * Recognition answers text with no word timings. To keep subtitles honest, the speech is cut at its pauses first
  * (ffmpeg, as `get` already needs it) and each stretch is asked for on its own, so every stretch's words carry the
@@ -49,9 +49,9 @@ export const baseFor = (/** @type {string} */ key) =>
 /** What MiMo says when a key cannot work where it was sent, or the plan has nothing left. */
 function guided(/** @type {unknown} */ e, /** @type {string} */ key) {
   const said = String(/** @type {Error} */ (e)?.message ?? e);
-  /* a Token Plan key answered 401: it went where it was told (an OPENFILM_MIMO_URL), not where it belongs */
+  /* a Token Plan key answered 401: it went where it was told (an ORANGE_MIMO_URL), not where it belongs */
   if (/\(401\)/.test(said) && key.startsWith('tp-')) {
-    return new Error(`${said} A Token Plan key answers at https://token-plan-cn.xiaomimimo.com; check OPENFILM_MIMO_URL is not pointing it elsewhere.`);
+    return new Error(`${said} A Token Plan key answers at https://token-plan-cn.xiaomimimo.com; check ORANGE_MIMO_URL is not pointing it elsewhere.`);
   }
   /* the plan's quota used up answers 429 */
   if (/answered 429/.test(said)) return noBalance(NAME);
@@ -65,7 +65,7 @@ function guided(/** @type {unknown} */ e, /** @type {string} */ key) {
  * @returns {Promise<{ stretches: { at: number, bytes: Uint8Array }[], total: number | null }>}
  */
 async function stretches(bytes, signal) {
-  const dir = await mkdtemp(join(tmpdir(), 'openfilm-mimo-'));
+  const dir = await mkdtemp(join(tmpdir(), 'orangefilm-mimo-'));
   const speech = join(dir, 'speech.mp3');
   await writeFile(speech, bytes);
   try {

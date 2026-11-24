@@ -9,7 +9,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, truncateSync, symlinkSync, rmSyn
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { chromium } from 'playwright-core';
-import { startStudio } from 'openfilm/studio';
+import { startStudio } from 'orangefilm/studio';
 import shellConfig from '../shell/vite.config.ts';
 
 function wav(size) {
@@ -23,7 +23,7 @@ function wav(size) {
 
 /**
  * A project call made while the project-control lock is free. Every project read and write passes through that lock,
- * and the lock is one file for every Studio on the machine (`%USERPROFILE%\.openfilm-control-coordination` when no
+ * and the lock is one file for every Studio on the machine (`%USERPROFILE%\.orangefilm-control-coordination` when no
  * isolated profile is set): a suite running beside this one, or a Studio someone left open, holds it for a few
  * milliseconds and the guard answers 409 `control-busy`. Waiting it out is what the app itself does
  * (`project-control-guard.mjs` retries with `Atomics.wait`) — only the setup waits here, every assertion below is
@@ -42,13 +42,13 @@ async function projectCall(studio, path, init = {}) {
 }
 
 test('chat audio uses Studio file URLs: playback, ranges, large files and project boundaries', { timeout: 60_000 }, async t => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-markdown-audio-'));
-  const names = ['OPENFILM_HOME', 'OPENFILM_LIBRARY', 'OPENFILM_TRASH_DIR', 'OPENFILM_SHARED_HOME'];
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-markdown-audio-'));
+  const names = ['ORANGE_HOME', 'ORANGE_LIBRARY', 'ORANGE_TRASH_DIR', 'ORANGE_SHARED_HOME'];
   const env = new Map(names.map(name => [name, process.env[name]]));
-  process.env.OPENFILM_HOME = join(dir, 'home');
-  process.env.OPENFILM_LIBRARY = join(dir, 'library');
-  process.env.OPENFILM_TRASH_DIR = join(dir, 'trash');
-  delete process.env.OPENFILM_SHARED_HOME;
+  process.env.ORANGE_HOME = join(dir, 'home');
+  process.env.ORANGE_LIBRARY = join(dir, 'library');
+  process.env.ORANGE_TRASH_DIR = join(dir, 'trash');
+  delete process.env.ORANGE_SHARED_HOME;
   let studio, server, browser;
   try {
     studio = await startStudio({ port: 0, openBrowser: () => {} });

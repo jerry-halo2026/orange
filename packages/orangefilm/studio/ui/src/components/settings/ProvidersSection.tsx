@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The services at the top of Settings → Services (ServicesBar): what `openfilm get` gets voices, music, sound
+ * The services at the top of Settings → Services (ServicesBar): what `orangefilm get` gets voices, music, sound
  * effects, transcripts, images, video and web searches from, each a chip, the connected ones first, then the
  * recommended ones (lib/providers RECOMMENDED_PROVIDERS), the rest and adding one behind "N more".
  *
@@ -48,7 +48,7 @@ export function ServicesBar({ hook, onOpen, local }: { hook: ProvidersHook; onOp
   const t = useT();
   const rows = hook.state?.providers ?? [];
   /* OrangeFilm's own first, then the others */
-  const own = rows.find((p) => p.id === 'openfilm');
+  const own = rows.find((p) => p.id === 'orangefilm');
   /* Local services has its own chip (`local`) */
   const order = providerOrder(rows.filter((p) => p !== own && p.id !== 'local'));
   const [all, setAll] = React.useState(false);

@@ -37,11 +37,11 @@ test("a slot lists the library's clip motions, not a cut's", () => {
 
 test('videos, pictures and pages take an animation; words, filters, effects, transitions and sounds do not', () => {
   assert.equal(takesMotion({ kind: 'video', src: 'clip.mp4' }), true);
-  assert.equal(takesMotion({ kind: 'mg', src: 'saved/openfilm/stickers-star/star.html#t=0,3' }), true);
-  assert.equal(takesMotion({ kind: 'mg', src: 'saved/openfilm/templates-weekend-vlog/slot.html' }), true);
-  assert.equal(takesMotion({ kind: 'mg', src: 'saved/openfilm/text-text/text.html' }), false);
-  assert.equal(takesMotion({ kind: 'mg', src: 'saved/openfilm/filters-warm/layer.html' }), false);
-  assert.equal(takesMotion({ kind: 'mg', src: 'saved/openfilm/effects-snow/snow.html' }), false);
+  assert.equal(takesMotion({ kind: 'mg', src: 'saved/orangefilm/stickers-star/star.html#t=0,3' }), true);
+  assert.equal(takesMotion({ kind: 'mg', src: 'saved/orangefilm/templates-weekend-vlog/slot.html' }), true);
+  assert.equal(takesMotion({ kind: 'mg', src: 'saved/orangefilm/text-text/text.html' }), false);
+  assert.equal(takesMotion({ kind: 'mg', src: 'saved/orangefilm/filters-warm/layer.html' }), false);
+  assert.equal(takesMotion({ kind: 'mg', src: 'saved/orangefilm/effects-snow/snow.html' }), false);
   assert.equal(takesMotion({ kind: 'music', src: 'assets/song.mp3' }), false);
 });
 

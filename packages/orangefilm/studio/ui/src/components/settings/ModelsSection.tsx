@@ -82,10 +82,10 @@ export function ModelsSection() {
  */
 function LibraryRow({ hook }: { hook: ProvidersHook }) {
   const t = useT();
-  const openfilm = hook.state?.providers.find((p) => p.id === 'openfilm');
-  if (!openfilm || hook.state?.limited) return null;
+  const orangefilm = hook.state?.providers.find((p) => p.id === 'orangefilm');
+  if (!orangefilm || hook.state?.limited) return null;
   const label = t('settings.models.library.title');
-  const only: Choice = { value: 'openfilm:library', provider: 'openfilm', name: t('settings.models.library.engine'), model: '' };
+  const only: Choice = { value: 'orangefilm:library', provider: 'orangefilm', name: t('settings.models.library.engine'), model: '' };
   return (
     <SettingsItem
       mark={<FolderSearch size={17} strokeWidth={1.75} />}
@@ -94,7 +94,7 @@ function LibraryRow({ hook }: { hook: ProvidersHook }) {
       control={(
         <ModelPicker
           label={label}
-          connected={[openfilm]}
+          connected={[orangefilm]}
           waiting={[]}
           choicesOf={() => [only]}
           current={hook.state?.librarySearch ? only : null}

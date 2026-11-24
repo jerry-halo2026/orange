@@ -14,11 +14,11 @@ mkdirSync(resolve('.dev/projects-admission'), { recursive: true });
 const base = mkdtempSync(resolve('.dev/projects-admission/native-'));
 const home = join(base,'home'), library = join(base,'library'), coord = join(base,'coord');
 mkdirSync(home); mkdirSync(library);
-process.env.OPENFILM_HOME = home; process.env.OPENFILM_SHARED_HOME = home; process.env.OPENFILM_LIBRARY = library;
+process.env.ORANGE_HOME = home; process.env.ORANGE_SHARED_HOME = home; process.env.ORANGE_LIBRARY = library;
 const guard = createProjectControlGuard({ coordinationRoot: coord });
 test('actual open refuses a marked target before film/id writes', async () => {
  const target = join(base,'marked'); mkdirSync(target);
- writeFileSync(join(target,'.openfilm-control.json'), JSON.stringify({version:1,domainId:'synthetic'}));
+ writeFileSync(join(target,'.orangefilm-control.json'), JSON.stringify({version:1,domainId:'synthetic'}));
  await projects.withProjectControlGuard(guard, async () => {
   await assert.rejects(projects.openProject(target), { code:'control-required' });
  });
@@ -43,10 +43,10 @@ test('registration exposes only intermediate deny-marker capabilities and denies
 });
 function fresh() {
  const root=mkdtempSync(join(base,'api-')); const home=join(root,'home'),library=join(root,'library');mkdirSync(home);mkdirSync(library);
- process.env.OPENFILM_HOME=home;process.env.OPENFILM_SHARED_HOME=home;process.env.OPENFILM_LIBRARY=library;
+ process.env.ORANGE_HOME=home;process.env.ORANGE_SHARED_HOME=home;process.env.ORANGE_LIBRARY=library;
  return {root,home,library,guard:createProjectControlGuard({coordinationRoot:join(root,'coord')})};
 }
-const marked=path=>writeFileSync(join(path,'.openfilm-control.json'),JSON.stringify({version:1,domainId:'synthetic'}));
+const marked=path=>writeFileSync(join(path,'.orangefilm-control.json'),JSON.stringify({version:1,domainId:'synthetic'}));
 test('all actual public IO APIs deny a controlled home before effects or choose/trash',async()=>{
  const f=fresh();marked(f.home);let chosen=0;
  await projects.withProjectControlGuard(f.guard,async()=>{

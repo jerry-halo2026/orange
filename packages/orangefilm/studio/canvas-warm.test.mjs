@@ -14,11 +14,11 @@ import { startStudio } from './server/server.mjs';
 async function withBoard(nodes, run) {
   const scratch = await mkdtemp(join(tmpdir(), 'of-canvas-warm-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Board');
+    const root = join(process.env.ORANGE_LIBRARY, 'Board');
     await mkdir(join(root, '.film'), { recursive: true });
     await writeFile(join(root, 'page.html'), '<body style="background:#234"><script>window.film={duration:3,frame(){}}</script>');
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: [{ clips: [{ id: 'page', src: 'page.html', time: [0, 3] }] }] }));
@@ -26,7 +26,7 @@ async function withBoard(nodes, run) {
     const file = join(root, '.film', 'canvas.json');
     await writeFile(file, board);
     const project = await openProject(root);
-    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const context = await browser.newContext({ viewport: { width: 1400, height: 900 }, locale: 'en-US', reducedMotion: 'reduce' });
     const page = await context.newPage();
@@ -59,13 +59,13 @@ test('an open video node picks up a service sign-in without reloading the canvas
     const name = 'Seedance 2.0 Fast';
     await page.context().route((requestUrl) => requestUrl.pathname.startsWith('/api/providers'), async (route) => {
       const path = new URL(route.request().url()).pathname;
-      if (path === '/api/providers/openfilm/sign-in' && route.request().method() === 'POST') status = 'waiting';
+      if (path === '/api/providers/orangefilm/sign-in' && route.request().method() === 'POST') status = 'waiting';
       const connected = status === 'connected';
       await route.fulfill({ json: {
-        providers: [{ id: 'openfilm', name: 'OpenFilm', verbs: ['video'], models: { video: [{ id: model, name }] },
+        providers: [{ id: 'orangefilm', name: 'OrangeFilm', verbs: ['video'], models: { video: [{ id: model, name }] },
           source: connected ? 'file' : null, signIn: true, account: null, keysUrl: '', pricingUrl: '', env: '', envKey: false, last4: null }],
-        use: { video: connected ? 'openfilm' : null }, model: { video: connected ? model : null }, custom: [],
-        signingIn: { provider: status === 'waiting' ? 'openfilm' : null, error: null, errorFor: null }, librarySearch: null,
+        use: { video: connected ? 'orangefilm' : null }, model: { video: connected ? model : null }, custom: [],
+        signingIn: { provider: status === 'waiting' ? 'orangefilm' : null, error: null, errorFor: null }, librarySearch: null,
       } });
     });
     const openNode = async (tab) => {
@@ -84,8 +84,8 @@ test('an open video node picks up a service sign-in without reloading the canvas
       await page.getByRole('button', { name: 'Connect a service', exact: true }).click();
       await page.getByRole('button', { name: /Seedance 2\.0 Fast.*Connect/ }).click();
       const settings = page.getByRole('dialog', { name: 'Services', exact: true });
-      await settings.getByRole('button', { name: 'OpenFilm', exact: true }).click();
-      const provider = page.getByRole('dialog', { name: 'OpenFilm', exact: true });
+      await settings.getByRole('button', { name: 'OrangeFilm', exact: true }).click();
+      const provider = page.getByRole('dialog', { name: 'OrangeFilm', exact: true });
       await provider.getByRole('button', { name: 'Connect', exact: true }).click();
       await provider.getByText('Finish signing in in your browser…').waitFor();
       await provider.getByRole('button', { name: 'Done', exact: true }).click();
@@ -108,8 +108,8 @@ test('the edit warms a fitted hidden canvas without writing it; the first switch
   const nodes = ['One', 'Two'].map((text, i) => ({ id: `n${i}`, x: 0, y: 0, w: 350, h: 200, text }));
   await withBoard(nodes, async ({ page, url, path, file, board }) => {
     await page.addInitScript(() => {
-      localStorage.setItem('openfilm.project.assets', '1');
-      localStorage.setItem('openfilm.project.assetsW', '380');
+      localStorage.setItem('orangefilm.project.assets', '1');
+      localStorage.setItem('orangefilm.project.assetsW', '380');
     });
     const requests = [];
     page.on('request', (r) => { if (new URL(r.url()).pathname === path) requests.push(r.method()); });

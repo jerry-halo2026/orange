@@ -17,11 +17,11 @@ const hasFfmpeg = (() => { try { execFileSync('ffmpeg', ['-version'], { stdio: '
 test('Detach audio on two selected videos takes the sound off both, each linked to its own video', { timeout: 120_000, skip: !hasFfmpeg && 'no ffmpeg' }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-detach-audio-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Detach');
+    const root = join(process.env.ORANGE_LIBRARY, 'Detach');
     await mkdir(join(root, 'assets'), { recursive: true });
     for (const name of ['one', 'two']) {
       execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'testsrc=size=320x180:rate=25:duration=4', '-f', 'lavfi', '-i', 'sine=frequency=220:duration=4', '-shortest', '-pix_fmt', 'yuv420p', join(root, 'assets', `${name}.mp4`)]);
@@ -38,7 +38,7 @@ test('Detach audio on two selected videos takes the sound off both, each linked 
     studio = await startStudio({ port: 0, openBrowser: () => {} });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, locale: 'en-US', reducedMotion: 'reduce' });
-    await page.addInitScript(() => { localStorage.setItem('openfilm.project.timelineH', '420'); });
+    await page.addInitScript(() => { localStorage.setItem('orangefilm.project.timelineH', '420'); });
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);
     const until = async (check, what) => {
       for (let i = 0; i < 80; i += 1) { if (await check()) return; await page.waitForTimeout(100); }

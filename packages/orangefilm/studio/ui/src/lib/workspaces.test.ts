@@ -57,7 +57,7 @@ test('edit and canvas profiles restore independently, recovering a broken profil
 });
 
 test('legacy panel preferences migrate once into edit, leaving canvas defaults independent', () => {
-  const result = readWorkspaceProfiles(storage({ 'openfilm.project.layers': '1', 'openfilm.project.inspector': '0', 'openfilm.project.layersW': '300', 'openfilm.project.timelineH': '456' }));
+  const result = readWorkspaceProfiles(storage({ 'orangefilm.project.layers': '1', 'orangefilm.project.inspector': '0', 'orangefilm.project.layersW': '300', 'orangefilm.project.timelineH': '456' }));
   assert.equal(result.edit.layers, true);
   assert.equal(result.edit.inspector, false);
   assert.equal(result.edit.layersWidth, 300);

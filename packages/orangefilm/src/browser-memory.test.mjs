@@ -18,7 +18,7 @@ const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 test('a browser one of whose processes holds more than the most is ended, and says so; one under it is left', async () => {
   const heavy = fakeBrowser();
   let reads = 0;
-  guard(/** @type {any} */ (heavy), '--openfilm-browser=test-heavy', { max: 1000, every: 10, read: async () => { reads += 1; return reads < 3 ? [200, 300] : [200, 1500] } });
+  guard(/** @type {any} */ (heavy), '--orangefilm-browser=test-heavy', { max: 1000, every: 10, read: async () => { reads += 1; return reads < 3 ? [200, 300] : [200, 1500] } });
   for (let i = 0; i < 100 && !heavy.closed; i += 1) await sleep(10);
   assert.equal(heavy.closed, 1, 'closed once');
   assert.equal(memoryExceeded(heavy), 1500);
@@ -31,7 +31,7 @@ test('a browser one of whose processes holds more than the most is ended, and sa
 
   const light = fakeBrowser();
   let lightReads = 0;
-  guard(/** @type {any} */ (light), '--openfilm-browser=test-light', { max: 1000, every: 10, read: async () => { lightReads += 1; return [900]; } });
+  guard(/** @type {any} */ (light), '--orangefilm-browser=test-light', { max: 1000, every: 10, read: async () => { lightReads += 1; return [900]; } });
   await sleep(80);
   assert.equal(light.closed, 0);
   assert.equal(memoryExceeded(light), null);
@@ -54,7 +54,7 @@ test('a canvas drawn stroke by stroke through a blur stays a few hundred MB in t
   try {
     /* the browser's own process: the one started with the host's marker, under this one */
     const rows = execFileSync('/bin/ps', ['-axo', 'pid=,ppid=,command='], { encoding: 'utf8' }).split('\n');
-    const marker = rows.filter((r) => Number(r.trim().split(/\s+/)[1]) === process.pid).map((r) => r.match(/--openfilm-browser=[\w-]+/)?.[0]).find(Boolean);
+    const marker = rows.filter((r) => Number(r.trim().split(/\s+/)[1]) === process.pid).map((r) => r.match(/--orangefilm-browser=[\w-]+/)?.[0]).find(Boolean);
     assert.ok(marker, 'started with its marker');
     const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
     await page.setContent('<canvas id="c" width="1920" height="1080"></canvas>');

@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * `openfilm skills`, `openfilm skill <name>`, `openfilm skill add <address | folder>` and `openfilm skill remove
+ * `orangefilm skills`, `orangefilm skill <name>`, `orangefilm skill add <address | folder>` and `orangefilm skill remove
  * <name>` (src/skills.mjs): the skills a film can be made with, one read whole, one added to the person's own, one of
  * theirs moved to the trash. Each resolves to `{ ok, lines, usage? }`. Skills kept where they used to be are moved
  * first (migrateMySkills).
@@ -25,13 +25,13 @@ export function projectAround(from) {
 }
 
 const SOURCE = { project: 'this project', mine: 'yours', official: 'installed' };
-/** where one came from, for the list: OpenFilm's own, the community's (by whose it is), yours, or this project's */
-const sourceOf = (/** @type {{ uid: string, source: keyof typeof SOURCE }} */ s) => (s.source !== 'official' ? SOURCE[s.source] : s.uid.startsWith('openfilm/') ? 'installed, OpenFilm\'s' : 'installed, community');
+/** where one came from, for the list: OrangeFilm's own, the community's (by whose it is), yours, or this project's */
+const sourceOf = (/** @type {{ uid: string, source: keyof typeof SOURCE }} */ s) => (s.source !== 'official' ? SOURCE[s.source] : s.uid.startsWith('orangefilm/') ? 'installed, OrangeFilm\'s' : 'installed, community');
 /** a path as the person reads it: from the current folder when it is under it */
 const shown = (/** @type {string} */ p) => { const r = relative(process.cwd(), p); return r && !r.startsWith('..') ? r : p; };
 
 /**
- * `openfilm skills`: the skills the project around here (if any) can be made with: its own, the person's and the
+ * `orangefilm skills`: the skills the project around here (if any) can be made with: its own, the person's and the
  * ones installed from Discover, none they turned off (usableSkills).
  * @param {string} run
  */
@@ -146,7 +146,7 @@ export async function addSkillFrom(from, { cwd = process.cwd(), mine = mySkillsD
 }
 
 /**
- * `openfilm skill <name>`, or `openfilm skill add <address | folder>`.
+ * `orangefilm skill <name>`, or `orangefilm skill add <address | folder>`.
  * @param {string[]} args @param {string} run @param {Parameters<typeof addSkillFrom>[1]} [opts]
  */
 export async function skillCommand(args, run, opts = {}) {

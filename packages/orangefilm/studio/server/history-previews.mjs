@@ -37,7 +37,7 @@ export function createHistoryPreviews() {
       if (copy) { copies.delete(key); copies.set(key, copy); }
       if (!copy) {
         copy = (async () => {
-          const path = await mkdtemp(join(tmpdir(), 'openfilm-history-preview-'));
+          const path = await mkdtemp(join(tmpdir(), 'orangefilm-history-preview-'));
           try {
             const { missing } = await copyVersion(root, commit, path);
             return { path, missing };

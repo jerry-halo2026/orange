@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * `openfilm analyze <media>`: the analysis pipeline from the command line.
+ * `orangefilm analyze <media>`: the analysis pipeline from the command line.
  *
  * The work is the same code the app runs (`apps/desktop/src/analyze-service.mjs`, which itself calls
  * `analyze-runner.mjs`): this file only parses the command, decides its exit code, and prints either
@@ -46,7 +46,7 @@ async function serviceOf() {
   } catch {
     /* Only `runAnalysis` is present: same shape, no index to publish to. */
     return {
-      analysisWorkspace: (/** @type {string} */ project) => `${project}/.openfilm/analysis`,
+      analysisWorkspace: (/** @type {string} */ project) => `${project}/.orangefilm/analysis`,
       async runAnalyze({ project, media, workspace, videoId, options = {}, runner }) {
         if (!project) return { ok: false, uploaded: false, reason: 'project-required' };
         if (!media) return { ok: false, uploaded: false, reason: 'media-required' };
@@ -55,7 +55,7 @@ async function serviceOf() {
         const run = runner ?? (await import('./analyze-runner.mjs')).runAnalysis;
         let answer;
         try {
-          answer = await run({ ...options, media, workspace: workspace ?? `${project}/.openfilm/analysis` });
+          answer = await run({ ...options, media, workspace: workspace ?? `${project}/.orangefilm/analysis` });
         } catch (error) {
           return { ok: false, uploaded: false, reason: /** @type {any} */ (error)?.code ?? 'analysis-failed' };
         }
@@ -72,13 +72,13 @@ async function component() {
 }
 
 /**
- * `openfilm analyze`, with the command's own options already parsed by the CLI.
+ * `orangefilm analyze`, with the command's own options already parsed by the CLI.
  * @param {string[]} args the positional arguments after `analyze`
  * @param {{ project?: string, frames?: number, longEdge?: number, videoId?: string, json?: boolean }} opts
  * @param {string} [run] how this was invoked, for the messages
  * @returns {Promise<{ lines: string[], code?: number }>}
  */
-export async function analyzeCommand(args, opts = {}, run = 'openfilm') {
+export async function analyzeCommand(args, opts = {}, run = 'orangefilm') {
   // The command's own shape is checked before anything is loaded: a wrong command must not depend on
   // which modules this install happens to carry.
   if (!(args.find((arg) => !arg.startsWith('-')) ?? '')) {
@@ -93,7 +93,7 @@ export async function analyzeCommand(args, opts = {}, run = 'openfilm') {
  * loaded, and what a test drives with a fake one.
  * @param {any} service @param {string[]} args @param {any} [opts] @param {string} [run]
  */
-export async function analyzeCommandWith(service, args, opts = {}, run = 'openfilm') {
+export async function analyzeCommandWith(service, args, opts = {}, run = 'orangefilm') {
   const media = args.find((arg) => !arg.startsWith('-')) ?? '';
   if (!media) {
     const { UsageError } = await import('./shared.mjs');

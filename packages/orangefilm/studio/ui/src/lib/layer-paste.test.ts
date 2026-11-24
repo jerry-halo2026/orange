@@ -170,10 +170,10 @@ test('what the page\'s rules give the layer and not its copy, and the copy and n
     ],
   }], 0)!;
   assert.equal(out.text, '<head><style>#col p:first-child { color: var(--accent) }</style>'
-    + '\n<style>:where(#p-copy)#p-copy:not(.openfilm-none):not(openfilm-none) { color: var(--accent); animation: 1s both in; } :where(#b-copy):not(.openfilm-none) { font-weight: 700; }</style>'
-    + '<link rel="stylesheet" href="b.css"><style>@media (min-width: 800px) { :where(#p-copy):not(openfilm-none) { border-top-color: unset; } }</style>\n</head>'
+    + '\n<style>:where(#p-copy)#p-copy:not(.orangefilm-none):not(orangefilm-none) { color: var(--accent); animation: 1s both in; } :where(#b-copy):not(.orangefilm-none) { font-weight: 700; }</style>'
+    + '<link rel="stylesheet" href="b.css"><style>@media (min-width: 800px) { :where(#p-copy):not(orangefilm-none) { border-top-color: unset; } }</style>\n</head>'
     + '<body><div id="col"><p>A<b>!</b></p>\n<p id="p-copy">A<b id="b-copy">!</b></p><p>B</p></div></body>', 'as the rules write it: live, and weighed as they are');
-  assert.equal(weighted('a', [2, 0, 3]), ':where(#a)#a#a:not(openfilm-none):not(openfilm-none):not(openfilm-none)');
+  assert.equal(weighted('a', [2, 0, 3]), ':where(#a)#a#a:not(orangefilm-none):not(orangefilm-none):not(orangefilm-none)');
 });
 
 test('ids are written as CSS writes them: a leading digit, a - and a digit, other signs', () => {
@@ -186,7 +186,7 @@ test('ids are written as CSS writes them: a leading digit, a - and a digit, othe
     look: [{ path: [], rules: [{ sheet: -1, within: [], weight: [1, 0, 1], decls: [['font-weight', '700']] }] }],
   }], 0)!;
   assert.equal(out.ats[0], '#\\31 st-copy', 'and the copy named so, to be selected');
-  assert.ok(out.text.startsWith('<head><style>:where(#\\31 st-copy)#\\31 st-copy:not(openfilm-none) { font-weight: 700; }</style>'), out.text);
+  assert.ok(out.text.startsWith('<head><style>:where(#\\31 st-copy)#\\31 st-copy:not(orangefilm-none) { font-weight: 700; }</style>'), out.text);
 });
 
 test('the ids a selector names, read as CSS reads them: escapes ended by a space or not, whole names only', () => {

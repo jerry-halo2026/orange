@@ -4,17 +4,17 @@
 // @ts-check
 /**
  * The example films the Projects window offers: an index (examples.json) in the examples repository, read from
- * GitHub, or from OPENFILM_EXAMPLES_INDEX (another address, or a file on this computer, to try a new index). Each
+ * GitHub, or from ORANGE_EXAMPLES_INDEX (another address, or a file on this computer, to try a new index). Each
  * example is a folder of that repository, opened with the same fetch as "Get from GitHub". Unreachable, or not an
  * index: no examples, and the window shows none.
  *
- *   { "repo": "https://github.com/openfilm/examples", "branch": "main",
+ *   { "repo": "https://github.com/orangefilm/examples", "branch": "main",
  *     "examples": [{ "folder": "one-prompt", "title": "�?, "description": "�?, "poster": "one-prompt/look.png", "duration": "1:29" }] }
  *
  * An index read from a file on this computer (trying a new one) has its posters and previews served by Studio from
  * the folder it is in (`/api/examples/file/<path>`), so they show before the repository has them.
  *
- * GitHub's index shows at once: OpenFilm comes with a copy of it and its posters (examples-index, `pnpm examples:sync`),
+ * GitHub's index shows at once: OrangeFilm comes with a copy of it and its posters (examples-index, `pnpm examples:sync`),
  * and the last one read is kept in Studio's home. Those are shown while GitHub is asked in the background (Studio asks
  * as it starts), and a poster the copy has is served from it, so a slow or blocked GitHub costs no wait.
  *
@@ -32,16 +32,16 @@ import { studioHomeDir } from '../../src/locations.mjs';
 /**
  * The examples index Projects reads: the Orange film-skill repository's examples.json (the sibling orange-film-skill checkout,
  * published as OWNER/orange-film-skill), which lists the Orange example films and their folders.
- * `OWNER` stands in until that repository is pushed. Override it with OPENFILM_EXAMPLES_INDEX: another address, or
+ * `OWNER` stands in until that repository is pushed. Override it with ORANGE_EXAMPLES_INDEX: another address, or
  * an examples.json on this computer (a local file path is read as it is, offline, its posters served from its folder).
  */
 export const EXAMPLES_INDEX = fileURLToPath(new URL('../../examples/index.json', import.meta.url));
-const DEFAULT_REPO = { owner: 'openfilm', repo: 'examples', branch: 'main' };
+const DEFAULT_REPO = { owner: 'orangefilm', repo: 'examples', branch: 'main' };
 /* an index read is kept a while; one that failed is tried again sooner */
 const KEEP_MS = 10 * 60 * 1000;
 const RETRY_MS = 60 * 1000;
 const NAME = /^[\w.-]+$/;
-/** The copy of GitHub's index and its posters that comes with OpenFilm (`pnpm examples:sync`). */
+/** The copy of GitHub's index and its posters that comes with OrangeFilm (`pnpm examples:sync`). */
 export const BUNDLED_INDEX = fileURLToPath(new URL('../../examples-index/', import.meta.url));
 /** Where the last index read from GitHub is kept, for the next start. */
 const savedIndex = (/** @type {string} */ home) => join(home, 'cache', 'examples-index.json');
@@ -82,7 +82,7 @@ export function readExamples(raw, source = EXAMPLES_INDEX) {
   for (const entry of index.examples.slice(0, 50)) {
     if (!entry || typeof entry !== 'object' || !repoPath(entry.folder) || typeof entry.title !== 'string' || !entry.title.trim()) continue;
     const local = !/^https?:\/\//.test(source);
-    /* GitHub's index: a poster the copy that came with OpenFilm has is served from it */
+    /* GitHub's index: a poster the copy that came with OrangeFilm has is served from it */
     const bundled = source === EXAMPLES_INDEX ? (/** @type {string} */ v) => existsSync(join(BUNDLED_INDEX, ...v.split('/'))) : () => false;
     const media = (/** @type {unknown} */ v) => (typeof v === 'string' && /^https:\/\//.test(v) ? v
       : !repoPath(v) ? null
@@ -112,9 +112,9 @@ export function readExamples(raw, source = EXAMPLES_INDEX) {
  * A file beside an index read from this computer (its posters and previews), or null: a path inside its folder only.
  * @param {string} path @param {{ source?: string }} [options]
  */
-export function exampleFile(path, { source = process.env.OPENFILM_EXAMPLES_INDEX || EXAMPLES_INDEX } = {}) {
+export function exampleFile(path, { source = process.env.ORANGE_EXAMPLES_INDEX || EXAMPLES_INDEX } = {}) {
   if (!repoPath(path)) return null;
-  /* GitHub's index: the posters of the copy that came with OpenFilm */
+  /* GitHub's index: the posters of the copy that came with OrangeFilm */
   if (/^https?:\/\//.test(source)) return existsSync(join(BUNDLED_INDEX, ...path.split('/'))) ? join(BUNDLED_INDEX, ...path.split('/')) : null;
   if (/^https?:\/\//.test(source)) return null;
   return join(dirname(source), ...path.split('/'));
@@ -126,7 +126,7 @@ const cache = new Map();
 /** @type {Map<string, Promise<Example[]>>} */
 const reading = new Map();
 
-/** An index kept on disk (the last read, or the copy that came with OpenFilm), as examples; null when there is none. @param {string} file */
+/** An index kept on disk (the last read, or the copy that came with OrangeFilm), as examples; null when there is none. @param {string} file */
 function indexAt(file) {
   try { return readExamples(JSON.parse(readFileSync(file, 'utf8')), EXAMPLES_INDEX); } catch { return null; }
 }
@@ -134,10 +134,10 @@ function indexAt(file) {
 /**
  * The examples, read from the index (cached a while). Never fails: an index that cannot be read is no examples.
  * GitHub's index never waits on GitHub when there is one to show: the last read (here, then in Studio's home), else
- * the copy that came with OpenFilm, while GitHub is asked in the background.
+ * the copy that came with OrangeFilm, while GitHub is asked in the background.
  * @param {{ source?: string, fetchImpl?: typeof fetch, home?: string }} [options]
  */
-export async function listExamples({ source = process.env.OPENFILM_EXAMPLES_INDEX || EXAMPLES_INDEX, fetchImpl = fetch, home = studioHomeDir() } = {}) {
+export async function listExamples({ source = process.env.ORANGE_EXAMPLES_INDEX || EXAMPLES_INDEX, fetchImpl = fetch, home = studioHomeDir() } = {}) {
   const kept = cache.get(source);
   if (kept && Date.now() - kept.at < (kept.ok ? KEEP_MS : RETRY_MS)) return kept.examples;
   if (source === EXAMPLES_INDEX) {
@@ -188,7 +188,7 @@ const DAY = 24 * 60 * 60 * 1000;
  * @param {{ home: string, source?: string, fetchFolder: (url: string, into: string) => Promise<string>, now?: () => number }} options
  *   `fetchFolder`: a repository folder's address fetched into a folder (fetch-repo.mjs), �?where it landed
  */
-export async function exampleFolder(id, { home, source = process.env.OPENFILM_EXAMPLES_INDEX || EXAMPLES_INDEX, fetchFolder, now = Date.now }) {
+export async function exampleFolder(id, { home, source = process.env.ORANGE_EXAMPLES_INDEX || EXAMPLES_INDEX, fetchFolder, now = Date.now }) {
   if (!repoPath(id) || id.includes('/')) throw new Error('There is no such example.');
   if (!/^https?:\/\//.test(source)) {
     const dir = join(dirname(source), id);

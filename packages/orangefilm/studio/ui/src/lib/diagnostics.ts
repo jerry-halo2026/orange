@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The diagnostic report Settings → Developer copies: `openfilm doctor` as Studio's server runs it (src/doctor.mjs), what
+ * The diagnostic report Settings → Developer copies: `orangefilm doctor` as Studio's server runs it (src/doctor.mjs), what
  * the browser Studio is open in can do (an agent's built-in browser can lack what Studio needs), and in the desktop
  * app, its agents (lib/host.ts `diagnostics`).
  */
@@ -32,7 +32,7 @@ export function pageFacts(): PageFacts {
     }
   } catch { /* none */ }
   let storage = false;
-  try { localStorage.setItem('openfilm-doctor', '1'); localStorage.removeItem('openfilm-doctor'); storage = true; } catch { /* blocked */ }
+  try { localStorage.setItem('orangefilm-doctor', '1'); localStorage.removeItem('orangefilm-doctor'); storage = true; } catch { /* blocked */ }
   let framed = false;
   try { framed = window.top !== window; } catch { framed = true; }
   return {

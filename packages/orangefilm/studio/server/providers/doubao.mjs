@@ -9,7 +9,7 @@ import { billedBy, needed, noBalance, serviceUrl } from './common.mjs';
 const NAME = 'Doubao';
 const MODEL = 'volc.bigasr.auc_turbo';
 const ENDPOINT = 'https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash';
-/** Convert only actual service timestamps, in milliseconds, to OpenFilm words in seconds.
+/** Convert only actual service timestamps, in milliseconds, to OrangeFilm words in seconds.
  * @param {any} body @param {string | null} status */
 export function doubaoResult(body, status) {
   if (status !== '20000000') throw new Error('Doubao did not report recognition success. Check Speech service access and balance. Not retried.');
@@ -53,7 +53,7 @@ export default {
       response = await fetch(serviceUrl('DOUBAO', ENDPOINT), {
         method: 'POST', redirect: 'error', signal: AbortSignal.any([ctx.signal, AbortSignal.timeout(180_000)]),
         headers: { 'Content-Type': 'application/json', 'X-Api-Key': ctx.key, 'X-Api-Resource-Id': MODEL, 'X-Api-Request-Id': requestId, 'X-Api-Sequence': '-1' },
-        body: JSON.stringify({ user: { uid: 'openfilm-local' }, audio: { data: bytes.toString('base64') }, request: { model_name: 'bigmodel', enable_itn: true, enable_punc: true, enable_ddc: false, show_utterances: true } }),
+        body: JSON.stringify({ user: { uid: 'orangefilm-local' }, audio: { data: bytes.toString('base64') }, request: { model_name: 'bigmodel', enable_itn: true, enable_punc: true, enable_ddc: false, show_utterances: true } }),
       });
     } catch { throw new Error(`Doubao was interrupted or timed out and may have charged. Check the console before retrying. Request id: ${requestId}. Not retried.`); }
     const status = response.headers.get('X-Api-Status-Code');

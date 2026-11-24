@@ -1,4 +1,4 @@
-# OpenFilm Protocol 0.1 (draft)
+# OrangeFilm Protocol 0.1 (draft)
 
 A film is a web page, `film.html`, that cuts pages, footage, pictures and sound together. A page is a web page that
 can draw any moment of itself.
@@ -134,7 +134,7 @@ during `ready`. Hosts MAY provide tools that write such files.
 What a sound or a video says is a WebVTT file beside it with the same name (`assets/vo/1.wav` → `assets/vo/1.vtt`),
 in the file's own seconds: a cue is a line, timestamp tags inside it time its words, and a voice tag names who speaks.
 Its translations are beside it as `1.<language>.vtt`, the same lines at the same times. A file that begins with
-`NOTE Each cue is one subtitle, as cut by hand in OpenFilm Studio.` has its cues as the person cut them: each is shown
+`NOTE Each cue is one subtitle, as cut by hand in OrangeFilm Studio.` has its cues as the person cut them: each is shown
 as one subtitle as it is, where an editor would otherwise cut long lines into subtitles. An editor's subtitles are the
 lines of the clips that can be heard, placed by each clip's `at`, its `#t=` fragment and `speed`; a host draws none
 of them into the picture. Words on the picture are a caption track.

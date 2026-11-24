@@ -17,11 +17,11 @@ const hasFfmpeg = (() => { try { execFileSync('ffmpeg', ['-version'], { stdio: '
 test('a click or a box in the dark around the picture selects no text: the picture is never tinted blue', { timeout: 300_000, skip: !hasFfmpeg && 'no ffmpeg' }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-viewer-dark-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Dark');
+    const root = join(process.env.ORANGE_LIBRARY, 'Dark');
     await mkdir(join(root, 'assets'), { recursive: true });
     execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'testsrc2=size=540x960:rate=25:duration=4', '-pix_fmt', 'yuv420p', join(root, 'assets', 'clip.mp4')]);
     await writeFile(join(root, 'card.html'), `<!doctype html><body style="margin:0">
@@ -37,7 +37,7 @@ test('a click or a box in the dark around the picture selects no text: the pictu
     studio = await startStudio({ port: 0, openBrowser: () => {} });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, locale: 'en-US', reducedMotion: 'reduce' });
-    await page.addInitScript(() => { localStorage.setItem('openfilm.project.layers', '1'); });
+    await page.addInitScript(() => { localStorage.setItem('orangefilm.project.layers', '1'); });
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);
     const until = async (check, what) => {
       for (let i = 0; i < 50; i += 1) { if (await check()) return; await page.waitForTimeout(100); }

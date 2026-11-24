@@ -11,11 +11,11 @@ import { charactersRoute, listCharacters, saveCharacter, useCharacter } from './
 
 test('a character is kept with its pictures, put on any project, renamed and moved to the trash', async (t) => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-characters-'));
-  const before = { home: process.env.OPENFILM_SHARED_HOME, trash: process.env.OPENFILM_TRASH_DIR };
-  process.env.OPENFILM_SHARED_HOME = join(scratch, 'home');
-  process.env.OPENFILM_TRASH_DIR = join(scratch, 'trash');
+  const before = { home: process.env.ORANGE_SHARED_HOME, trash: process.env.ORANGE_TRASH_DIR };
+  process.env.ORANGE_SHARED_HOME = join(scratch, 'home');
+  process.env.ORANGE_TRASH_DIR = join(scratch, 'trash');
   t.after(() => {
-    for (const [k, v] of [['OPENFILM_SHARED_HOME', before.home], ['OPENFILM_TRASH_DIR', before.trash]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+    for (const [k, v] of [['ORANGE_SHARED_HOME', before.home], ['ORANGE_TRASH_DIR', before.trash]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
     rmSync(scratch, { recursive: true, force: true });
   });
   const a = join(scratch, 'a');
@@ -50,10 +50,10 @@ test('a character is kept with its pictures, put on any project, renamed and mov
 
 test('a character is kept only from pictures inside the project, however a path is written', async (t) => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-characters-'));
-  const before = process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SHARED_HOME = join(scratch, 'home');
+  const before = process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SHARED_HOME = join(scratch, 'home');
   t.after(() => {
-    if (before === undefined) delete process.env.OPENFILM_SHARED_HOME; else process.env.OPENFILM_SHARED_HOME = before;
+    if (before === undefined) delete process.env.ORANGE_SHARED_HOME; else process.env.ORANGE_SHARED_HOME = before;
     rmSync(scratch, { recursive: true, force: true });
   });
   const root = join(scratch, 'projects', 'a');
@@ -72,13 +72,13 @@ test('a character is kept only from pictures inside the project, however a path 
 
 test('a damaged character record does not hide the others', async (t) => {
   const scratch = mkdtempSync(join(tmpdir(), 'of-characters-'));
-  const before = process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SHARED_HOME = join(scratch, 'home');
+  const before = process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SHARED_HOME = join(scratch, 'home');
   t.after(() => {
-    if (before === undefined) delete process.env.OPENFILM_SHARED_HOME; else process.env.OPENFILM_SHARED_HOME = before;
+    if (before === undefined) delete process.env.ORANGE_SHARED_HOME; else process.env.ORANGE_SHARED_HOME = before;
     rmSync(scratch, { recursive: true, force: true });
   });
-  const dir = process.env.OPENFILM_SHARED_HOME;
+  const dir = process.env.ORANGE_SHARED_HOME;
   mkdirSync(join(dir, 'canvas-characters', 'good'), { recursive: true });
   mkdirSync(join(dir, 'canvas-characters', 'damaged'), { recursive: true });
   writeFileSync(join(dir, 'canvas-characters', 'good', 'character.json'), JSON.stringify({ name: 'Mia', created: 1, pictures: [] }));

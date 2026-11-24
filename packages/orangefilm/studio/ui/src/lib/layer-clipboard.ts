@@ -89,7 +89,7 @@ export function pasteOffset(board: LayerClipboard, goals: readonly PasteGoal[]):
 
 /* ── kept in the browser, for every window and project of this Studio ── */
 
-const KEY = 'openfilm.layer-clipboard';
+const KEY = 'orangefilm.layer-clipboard';
 
 export function readLayerClipboard(): LayerClipboard | null {
   try {

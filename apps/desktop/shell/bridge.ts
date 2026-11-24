@@ -13,8 +13,8 @@
  * (src/preload.cjs). Imported before Studio's modules and the chat's: Studio reads its host as it loads.
  */
 import { flushSync } from 'react-dom';
-import { workspaceChatWidth } from 'openfilm/studio-ui/lib/workspaces.ts';
-import type { CommunityItem, HostAgent, HostAsk, HostProject as Project, HostUpdate, HostUpdateState, StudioCommand, StudioHost, StudioRef, StudioSelection } from 'openfilm/studio-ui/lib/host.ts';
+import { workspaceChatWidth } from 'orangefilm/studio-ui/lib/workspaces.ts';
+import type { CommunityItem, HostAgent, HostAsk, HostProject as Project, HostUpdate, HostUpdateState, StudioCommand, StudioHost, StudioRef, StudioSelection } from 'orangefilm/studio-ui/lib/host.ts';
 
 type Listener<T> = (value: T) => void;
 type Stop = () => void;
@@ -292,7 +292,7 @@ const INSET_RIGHT = 138;
 
 export const host: StudioHost = {
   version: 1,
-  name: 'OpenFilm',
+  name: 'OrangeFilm',
   projectChanged,
   ...(mac ? { titlebar: { get inset() { return fullScreen.get() ? 0 : INSET; }, onChange: (listener: Listener<number>) => { fullScreen.on((full) => listener(full ? 0 : INSET)); } } } : {}),
   ...(windows ? { titlebar: { get inset() { return fullScreen.get() ? 0 : 6; }, insetRight: INSET_RIGHT, onChange: (listener: Listener<number>) => { fullScreen.on(full => listener(full ? 0 : 6)); } } } : {}),

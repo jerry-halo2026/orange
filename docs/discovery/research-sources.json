@@ -3,9 +3,9 @@
   "purpose": "Discovery sources and preservation record, not implementation approval",
   "referenceRepositories": [
     {
-      "name": "openfilm",
-      "url": "https://github.com/openfilm/openfilm.git",
-      "path": "D:\\dev\\orange\\.research\\upstream\\openfilm",
+      "name": "orangefilm",
+      "url": "https://github.com/openfilm/orangefilm.git",
+      "path": "D:\\dev\\orange\\.research\\upstream\\orangefilm",
       "commit": "2e18a4bdf54647b2ece3c0975a6f9573720c7821",
       "clean": true,
       "shallow": true,

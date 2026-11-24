@@ -545,7 +545,7 @@ export function maskOwned(prop: string, value: string, all: (p: string) => strin
  * shape's inside is around it.
  *
  * A mask only hides, and nothing else in a box's own CSS paints over its picture, so the stroke is an SVG filter,
- * `url("data:image/svg+xml,…#openfilm-mask-stroke")`, last in `filter`, laying an image of the stroke over the
+ * `url("data:image/svg+xml,…#orangefilm-mask-stroke")`, last in `filter`, laying an image of the stroke over the
  * picture. The image is an SVG in the box's proportions, as the mask's own (its viewBox in units,
  * `preserveAspectRatio='none'`), placed over the whole box (`primitiveUnits='objectBoundingBox'`), so the stroke
  * scales with the box as the mask does. It is base64: the only way Chromium loads an image inside a filter that is

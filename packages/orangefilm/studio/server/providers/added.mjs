@@ -6,7 +6,7 @@
  * Services the person (or their agent) added themselves, beside the built-in ones: a folder each in
  * `<shared home>/providers/<folder>/`, whose `provider.mjs` default-exports a Provider (contract.mjs) the way the
  * built-in ones do. Once its key is added in Settings → Services it makes media like any other: on the canvas, in
- * Settings, with `openfilm get --via <id>`. Each is read when Studio asks what there is, and read again when its file
+ * Settings, with `orangefilm get --via <id>`. Each is read when Studio asks what there is, and read again when its file
  * changes; one that cannot be read, or takes a built-in service's id, is left out, and why is kept (`addedProblems`).
  */
 import { readdir, stat } from 'node:fs/promises';

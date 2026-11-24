@@ -12,7 +12,7 @@
  * This re-export is a **source-checkout convenience**: its relative path resolves because `apps/api` and
  * `packages/orangefilm` sit in one workspace. The packaged desktop never loads this module (`src/main.ts` does not
  * import it), so nothing in an asar depends on that path; the desktop itself imports the package subpath
- * `openfilm/index-client`, which is what `release.mjs` installs from the packed tarball.
+ * `orangefilm/index-client`, which is what `release.mjs` installs from the packed tarball.
  */
 export {createIndexClient,RPC_NAMES} from '../../../../packages/orangefilm/src/index-client.mjs';
 export type {

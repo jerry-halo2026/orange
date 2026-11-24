@@ -86,17 +86,17 @@ export function isRateLimited(error) {
   return /\b429\b|provider-rate-limited|rate.?limit|限流/i.test(String(at?.message ?? ''));
 }
 
-/** The `.openfilm-dev` home a dev Studio and the desktop app share. */
+/** The `.orangefilm-dev` home a dev Studio and the desktop app share. */
 export function openfilmDevHome(home) {
-  const given = process.env.OPENFILM_DEV_HOME;
+  const given = process.env.ORANGE_DEV_HOME;
   if (typeof given === 'string' && given.trim()) return given.trim();
-  return join(home || homedir(), '.openfilm-dev');
+  return join(home || homedir(), '.orangefilm-dev');
 }
 
-/** Where the index lands unless `--dir` says otherwise: `~/.openfilm-dev/material-index`.
+/** Where the index lands unless `--dir` says otherwise: `~/.orangefilm-dev/material-index`.
  *  @param {{ home?: string }} [options] */
 export function defaultIndexDir({ home } = {}) {
-  const given = process.env.OPENFILM_MATERIAL_INDEX_DIR;
+  const given = process.env.ORANGE_MATERIAL_INDEX_DIR;
   if (typeof given === 'string' && given.trim()) return given.trim();
   return join(openfilmDevHome(home), 'material-index');
 }

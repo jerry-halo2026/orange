@@ -16,7 +16,7 @@ test("what a board's making nodes were given is noted, and stays noted when the 
     mkdirSync(join(root, 'assets/image'), { recursive: true });
     writeFileSync(join(root, 'assets/image/a.png'), 'a');
     writeFileSync(join(root, 'assets/image/b.png'), 'b');
-    const node = { id: 'm', x: 0, y: 0, make: 'image', prompt: 'a fox at dawn', via: 'openfilm', model: 'gpt-image', versions: ['assets/image/a.png'] };
+    const node = { id: 'm', x: 0, y: 0, make: 'image', prompt: 'a fox at dawn', via: 'orangefilm', model: 'gpt-image', versions: ['assets/image/a.png'] };
     await writeCanvas(root, { nodes: [node], edges: [] });
     await writeCanvas(root, { nodes: [{ ...node, versions: ['assets/image/a.png', 'assets/image/b.png', 'assets/image/gone.png'] }], edges: [] });
     await writeCanvas(root, { nodes: [], edges: [] });

@@ -52,7 +52,7 @@ function SourceDialog({
     >
       <div
         className="flex max-h-[calc(100vh-48px)] w-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] shadow-[var(--shadow-lg)]"
-        style={{ maxWidth: width, animation: 'openfilm-pop 0.16s ease-out both' }}
+        style={{ maxWidth: width, animation: 'orangefilm-pop 0.16s ease-out both' }}
       >
         {children}
       </div>
@@ -290,7 +290,7 @@ function FetchProgress({ job }: { job: FetchJob | null }) {
       </div>
       <div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--border)]">
         {percent == null ? (
-          <div className="openfilm-loading-bar absolute inset-y-0 left-0 w-1/3 rounded-full bg-[var(--accent)]" />
+          <div className="orangefilm-loading-bar absolute inset-y-0 left-0 w-1/3 rounded-full bg-[var(--accent)]" />
         ) : (
           <div className="h-full rounded-full bg-[var(--accent)] transition-[width] duration-300 ease-out" style={{ width: `${percent}%` }} />
         )}

@@ -93,7 +93,7 @@ test('a file comes back into assets/<service>/; text without a type is read as t
 });
 
 test('a voice saved over the last take takes the last take\'s subtitles to the trash', async () => {
-  process.env.OPENFILM_TRASH_DIR ??= mkdtempSync(join(tmpdir(), 'of-trash-'));
+  process.env.ORANGE_TRASH_DIR ??= mkdtempSync(join(tmpdir(), 'of-trash-'));
   const root = project();
   const [s] = withService([], null, { name: 'Della', url: base });
   mkdirSync(join(root, 'assets/della'), { recursive: true });

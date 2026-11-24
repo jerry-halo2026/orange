@@ -89,7 +89,7 @@ export async function render(args, opts = {}) {
   if (opts.root && fissionRoot !== opts.root && fissionProfile) throw new FissionExportError(["fission-derived-audio-context"]);
   if (range && opts.ranges) throw new UsageError('choose a range or ranges, not both');
   if (opts.loudness != null && !isLoudness(opts.loudness)) throw new UsageError(`--loudness is a target from ${LOUDNESS_RANGE[0]} to ${LOUDNESS_RANGE[1]} LUFS, e.g. --loudness=-14 for online video`);
-  if (at != null) throw new UsageError(`render takes a range (for example ${at}-${at + 2}), not one time; for one frame use openfilm look ${at}`);
+  if (at != null) throw new UsageError(`render takes a range (for example ${at}-${at + 2}), not one time; for one frame use orangefilm look ${at}`);
   /* --subtitles: a project's subtitles from before caption tracks (its voices' transcripts in the style Studio kept),
      the project's film drawn around by a page that burns them in (the export's own, burn.mjs),
      rendered in its place, from the project's folder, named as the film's own render is. Studio burns only the
@@ -142,7 +142,7 @@ export async function render(args, opts = {}) {
   const fps = rate.fps;
   /* a page without a duration has no end: it is rendered by a range */
   const end = meta.duration ?? Infinity;
-  if (!range && !opts.ranges && meta.duration == null) { await probe.close(); await pool?.give(lent); throw new UsageError('this page has no duration, so it has no end: give a range to render, e.g. openfilm render 0-6'); }
+  if (!range && !opts.ranges && meta.duration == null) { await probe.close(); await pool?.give(lent); throw new UsageError('this page has no duration, so it has no end: give a range to render, e.g. orangefilm render 0-6'); }
   let selection = null;
   try { if (opts.ranges) selection = renderSelection(opts.ranges, fps, end); }
   catch (e) { await probe.close(); await pool?.give(lent); throw e; }
@@ -151,7 +151,7 @@ export async function render(args, opts = {}) {
   const f1 = Math.round(to * fps);
   const total = f1 - f0;
   if (total <= 0) { await probe.close(); await pool?.give(lent); throw new UsageError(`nothing to render between ${fmt(from)} and ${fmt(to)}${meta.duration != null ? `: the film is ${fmt(meta.duration)} long` : ''}`); }
-  if (range && range[1] > end) console.error(`openfilm render: ${fmt(range[0])}-${fmt(range[1])} runs past the film's end (${fmt(meta.duration)}): rendered to there`);
+  if (range && range[1] > end) console.error(`orangefilm render: ${fmt(range[0])}-${fmt(range[1])} runs past the film's end (${fmt(meta.duration)}): rendered to there`);
   const scale = opts.scale ?? (opts['4k'] ? 3840 / meta.width : 1);
   const samples = Math.max(1, Number(opts.samples ?? (opts.blur ? 8 : 1)));
   const shutter = Number(opts.shutter ?? 0.5);
@@ -190,7 +190,7 @@ export async function render(args, opts = {}) {
     /* one the browser does not decode then fails its first frame, by its clip (timeline.mjs): never drawn black */
     const failed = (/** @type {string} */ file, /** @type {string} */ reason) => {
       uncopied.push(file);
-      console.error(`openfilm render: ${shown(file)}: a copy this browser plays could not be made (${reason}), so it is drawn as it is`);
+      console.error(`orangefilm render: ${shown(file)}: a copy this browser plays could not be made (${reason}), so it is drawn as it is`);
     };
     try {
       copies = await browserCopies(browser, site.url, root, files, { signal: opts.signal, slow: total >= fps * 2, fine: !!opts.fine, failed });

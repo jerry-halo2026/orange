@@ -3,7 +3,7 @@
 
 /**
  * Settings → Developer's Diagnostics, for when something does not work and a person wants to say why: the report to
- * copy (short: `openfilm doctor` with the last week's problems, this browser, the desktop app's agents; lib/diagnostics),
+ * copy (short: `orangefilm doctor` with the last week's problems, this browser, the desktop app's agents; lib/diagnostics),
  * the diagnostic file to export (the rest: the logs and the failed turns, zipped; server/diagnostics.mjs), and the
  * problems of the last two weeks, newest first.
  */

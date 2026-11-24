@@ -91,7 +91,7 @@ test('stubborn owned child is forced to exit; unknown exit stays reconciliation 
 });
 test('two independent processes claim one request once and reject a different input',async()=>{
  const f=await fixture();const requestId=randomUUID(),readyA=path.join(f.root,'ready-a'),readyB=path.join(f.root,'ready-b'),go=path.join(f.root,'go');const resultA=path.join(f.root,'a.json'),resultB=path.join(f.root,'b.json'),script=path.join(f.root,'race.mjs');
- /* 从本文件算，不从 cwd 算：`pnpm --filter openfilm test` 从包目录跑，仓库根也跑，两处必须找到同一个模块 */
+ /* 从本文件算，不从 cwd 算：`pnpm --filter orangefilm test` 从包目录跑，仓库根也跑，两处必须找到同一个模块 */
  const moduleUrl=new URL('./fission-local.mjs',import.meta.url).href;
  await writeFile(script,`import {writeFile,access} from 'node:fs/promises';import {createLocalFission} from ${JSON.stringify(moduleUrl)};const [root,cli,ready,go,result,requestId]=process.argv.slice(2);const owner={environmentId:'local-test',subjectId:'a'};const service=createLocalFission({workspaceRoot:root,runtime:{dotnet:process.execPath,cli,paths:{}},pickFolder:async()=>null,assertSession:e=>e===owner});await writeFile(ready,'1');for(;;){try{await access(go);break}catch{await new Promise(r=>setTimeout(r,5));}}const value=service.start(owner,{requestId,selections:{video:'shared-selection'},job:{Count:2}});await writeFile(result,JSON.stringify(value));await new Promise(r=>setTimeout(r,100));await service.close();`);
  const cli=f.options.runtime.cli,children=[spawn(process.execPath,[script,f.workspace,cli,readyA,go,resultA,requestId],{stdio:'ignore'}),spawn(process.execPath,[script,f.workspace,cli,readyB,go,resultB,requestId],{stdio:'ignore'})];
@@ -140,7 +140,7 @@ test('picker unconfirmed close prevents account retirement and seals that owner'
  try{const selection=service.select(f.owner,'video');await entered;const selected=assert.rejects(selection,e=>e.code==='source-preservation-failed');await assert.rejects(service.retire(f.owner),e=>e.code==='source-preservation-failed');await selected;assert.throws(()=>service.select(f.owner,'video'),e=>e.code==='source-preservation-failed');await assert.rejects(service.close(),e=>e.code==='source-preservation-failed');}finally{await f.service.close();}
 });
 
-/* 从本文件算：测试从包目录跑（pnpm --filter openfilm test），CLI 却在仓库根的 workers/fission 下 */
+/* 从本文件算：测试从包目录跑（pnpm --filter orangefilm test），CLI 却在仓库根的 workers/fission 下 */
 const CLI_DLL=fileURLToPath(new URL('../../../../workers/fission/src/Fission.Cli/bin/Release/net10.0/Fission.Cli.dll',import.meta.url));
 const DOTNET_HOST=process.env.DOTNET_HOST_PATH||'C:'+path.sep+'Program Files'+path.sep+'dotnet'+path.sep+'dotnet.exe';
 /* CLI 是构建产物，不在版本库里：没有就按名字跳过，跳过名写着怎么造出来 —— 而不是抛错拖垮整个文件，也不是静默通过 */

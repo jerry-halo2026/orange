@@ -110,10 +110,10 @@ export const FIXED_KEYS: readonly { label: string; keys: readonly string[] }[] =
 
 /* ── schemes ── */
 
-export type BuiltInScheme = 'openfilm' | 'premiere' | 'fcp';
+export type BuiltInScheme = 'orangefilm' | 'premiere' | 'fcp';
 export type CustomSlot = 'custom1' | 'custom2' | 'custom3';
 export type SchemeId = BuiltInScheme | CustomSlot;
-export const BUILT_IN_SCHEMES: readonly BuiltInScheme[] = ['openfilm', 'premiere', 'fcp'];
+export const BUILT_IN_SCHEMES: readonly BuiltInScheme[] = ['orangefilm', 'premiere', 'fcp'];
 export const CUSTOM_SLOTS: readonly CustomSlot[] = ['custom1', 'custom2', 'custom3'];
 export const isBuiltIn = (id: SchemeId): id is BuiltInScheme => (BUILT_IN_SCHEMES as readonly string[]).includes(id);
 
@@ -252,7 +252,7 @@ const FINAL_CUT: Partial<Record<ActionId, Binding>> = {
   'paste-attrs': ['mod+shift+v'],
 };
 
-const SCHEMES: Record<BuiltInScheme, Partial<Record<ActionId, Binding>>> = { openfilm: {}, premiere: PREMIERE, fcp: FINAL_CUT };
+const SCHEMES: Record<BuiltInScheme, Partial<Record<ActionId, Binding>>> = { orangefilm: {}, premiere: PREMIERE, fcp: FINAL_CUT };
 
 /** Every action's keys. */
 export type Keymap = Record<ActionId, readonly string[]>;
@@ -457,7 +457,7 @@ export function hintOf(keymap: Keymap, id: ActionId, mac: boolean): string | und
 
 /** The scheme in use and the custom ones, as Studio's prefs keep them (`keys`). */
 export interface KeyPrefs { scheme: SchemeId; custom: Partial<Record<CustomSlot, CustomScheme>> }
-export const DEFAULT_KEY_PREFS: KeyPrefs = { scheme: 'openfilm', custom: {} };
+export const DEFAULT_KEY_PREFS: KeyPrefs = { scheme: 'orangefilm', custom: {} };
 
 /** What is kept, each part checked: an unknown scheme is OrangeFilm's; unknown actions and keys that are none are left out. */
 export function keyPrefsOf(raw: unknown): KeyPrefs {
@@ -467,7 +467,7 @@ export function keyPrefsOf(raw: unknown): KeyPrefs {
   for (const slot of CUSTOM_SLOTS) {
     const one = given[slot] as { base?: unknown; keys?: unknown } | undefined;
     if (!one || typeof one !== 'object') continue;
-    const base = (BUILT_IN_SCHEMES as readonly unknown[]).includes(one.base) ? one.base as BuiltInScheme : 'openfilm';
+    const base = (BUILT_IN_SCHEMES as readonly unknown[]).includes(one.base) ? one.base as BuiltInScheme : 'orangefilm';
     const keys: CustomScheme['keys'] = {};
     if (one.keys && typeof one.keys === 'object') {
       for (const [id, list] of Object.entries(one.keys as Record<string, unknown>)) {
@@ -476,15 +476,15 @@ export function keyPrefsOf(raw: unknown): KeyPrefs {
     }
     custom[slot] = { base, keys };
   }
-  const scheme = ([...BUILT_IN_SCHEMES, ...CUSTOM_SLOTS] as readonly unknown[]).includes(p.scheme) ? p.scheme as SchemeId : 'openfilm';
-  return { scheme: isBuiltIn(scheme) || custom[scheme] ? scheme : 'openfilm', custom };
+  const scheme = ([...BUILT_IN_SCHEMES, ...CUSTOM_SLOTS] as readonly unknown[]).includes(p.scheme) ? p.scheme as SchemeId : 'orangefilm';
+  return { scheme: isBuiltIn(scheme) || custom[scheme] ? scheme : 'orangefilm', custom };
 }
 
 /** The keys of a scheme (an empty custom slot: OrangeFilm's). */
 export function keymapFor(prefs: KeyPrefs, id: SchemeId, mac: boolean): Keymap {
   if (isBuiltIn(id)) return schemeKeymap(id, mac);
   const custom = prefs.custom[id];
-  return custom ? customKeymap(custom, mac) : schemeKeymap('openfilm', mac);
+  return custom ? customKeymap(custom, mac) : schemeKeymap('orangefilm', mac);
 }
 
 /** The keys in use. */
@@ -493,7 +493,7 @@ export const keymapOf = (prefs: KeyPrefs, mac: boolean): Keymap => keymapFor(pre
 /** A copy of scheme `from`, as a custom scheme: all its keys, and the built-in scheme it comes from. */
 export function copyOf(prefs: KeyPrefs, from: SchemeId, mac: boolean): CustomScheme {
   const keymap = keymapFor(prefs, from, mac);
-  const base = isBuiltIn(from) ? from : prefs.custom[from]?.base ?? 'openfilm';
+  const base = isBuiltIn(from) ? from : prefs.custom[from]?.base ?? 'orangefilm';
   return { base, keys: Object.fromEntries(ACTION_IDS.map((id) => [id, [...keymap[id]]])) };
 }
 
@@ -508,7 +508,7 @@ export function editable(prefs: KeyPrefs, mac: boolean): { prefs: KeyPrefs; slot
   if (!isBuiltIn(prefs.scheme)) {
     const slot = prefs.scheme;
     if (prefs.custom[slot]) return { prefs, slot, copiedTo: null };
-    return { prefs: { ...prefs, custom: { ...prefs.custom, [slot]: copyOf(prefs, 'openfilm', mac) } }, slot, copiedTo: null };
+    return { prefs: { ...prefs, custom: { ...prefs.custom, [slot]: copyOf(prefs, 'orangefilm', mac) } }, slot, copiedTo: null };
   }
   const slot = freeSlot(prefs);
   if (!slot) return null;
@@ -517,20 +517,20 @@ export function editable(prefs: KeyPrefs, mac: boolean): { prefs: KeyPrefs; slot
 
 /** A custom scheme set back to the keys of the scheme it was copied from. */
 export function restoreDefaults(prefs: KeyPrefs, slot: CustomSlot, mac: boolean): KeyPrefs {
-  const base = prefs.custom[slot]?.base ?? 'openfilm';
+  const base = prefs.custom[slot]?.base ?? 'orangefilm';
   return { ...prefs, custom: { ...prefs.custom, [slot]: copyOf(prefs, base, mac) } };
 }
 
 /** A custom scheme with one action's keys changed (`combo` alone; whatever had it loses it). */
 export function withKey(prefs: KeyPrefs, slot: CustomSlot, id: ActionId, combo: string, mac: boolean): KeyPrefs {
-  const custom = prefs.custom[slot] ?? copyOf(prefs, 'openfilm', mac);
+  const custom = prefs.custom[slot] ?? copyOf(prefs, 'orangefilm', mac);
   const keys = assignKey(customKeymap(custom, mac), id, combo, mac);
   return { ...prefs, custom: { ...prefs.custom, [slot]: { base: custom.base, keys: Object.fromEntries(ACTION_IDS.map((a) => [a, [...keys[a]]])) } } };
 }
 
 /** A custom scheme with one action's keys taken away. */
 export function withoutKeys(prefs: KeyPrefs, slot: CustomSlot, id: ActionId, mac: boolean): KeyPrefs {
-  const custom = prefs.custom[slot] ?? copyOf(prefs, 'openfilm', mac);
+  const custom = prefs.custom[slot] ?? copyOf(prefs, 'orangefilm', mac);
   const keys = { ...customKeymap(custom, mac), [id]: [] };
   return { ...prefs, custom: { ...prefs.custom, [slot]: { base: custom.base, keys: Object.fromEntries(ACTION_IDS.map((a) => [a, [...keys[a]]])) } } };
 }

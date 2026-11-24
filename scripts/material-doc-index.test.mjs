@@ -48,7 +48,7 @@ const TEA = '20261106-柠檬宝藏茶200g罐-外包装 (46)';
 const OIL = '20261109-油弃乌龙茶-茶干 (12)';
 const vector = (fill = 0.5) => Array.from({ length: EMBED_DIMS }, () => fill);
 
-/** 一个两层的索引（外层 build 信封 + `index` 树），和 `~/.openfilm-dev/material-index/index.json` 同形状。 */
+/** 一个两层的索引（外层 build 信封 + `index` 树），和 `~/.orangefilm-dev/material-index/index.json` 同形状。 */
 function fixtureIndex() {
   return {
     schema: 'orange/material-index-build/1',

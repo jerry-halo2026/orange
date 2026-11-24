@@ -55,14 +55,14 @@ test('the surface stays inside five tools, and the plan says which slots the thr
   assert.ok(plan.after.includes('materials.take') && plan.after.includes('timeline.insert_clip'), 'the write verbs stay');
   assert.equal(plan.after.includes('materials.search'), false, 'absorbed into material.search');
   assert.equal(plan.after.includes('material.batches'), false, 'its one fact is material.collections({batch})’s answer');
-  assert.equal(plan.after.includes('openfilm.look'), false, 'retired: it draws a PNG for a person');
+  assert.equal(plan.after.includes('orangefilm.look'), false, 'retired: it draws a PNG for a person');
   assert.deepEqual(plan.merged, [{ from: ['wiki.video', 'wiki.timeline', 'wiki.shot'], to: 'wiki.read', why: plan.merged[0].why }]);
-  assert.deepEqual(plan.retired, ['wiki.read', 'openfilm.look']);
+  assert.deepEqual(plan.retired, ['wiki.read', 'orangefilm.look']);
   assert.deepEqual(plan.absorbed.map((entry) => [entry.tool, entry.into]), [['materials.search', 'material.search']]);
   assert.deepEqual(plan.replaced.map((entry) => [entry.tool, entry.by]), [['material.batches', 'material.collections']]);
   assert.deepEqual(plan.slots, { before: 7, merged: 2, absorbed: 1, retired: 2, added: 3, after: 5, balanced: true });
 
-  const keepWiki = planMaterialToolSurface(undefined, { retire: ['openfilm.look'] });
+  const keepWiki = planMaterialToolSurface(undefined, { retire: ['orangefilm.look'] });
   assert.equal(keepWiki.fits, false, 'keeping the wiki read needs the documented fold, not a sixth slot');
   assert.equal(keepWiki.slots.after, 6);
   assert.equal(keepWiki.slots.balanced, true);
@@ -93,7 +93,7 @@ test('material.search says the two things it needs: a query, and a machine that 
   const refused = await unconfigured['material.search']({ query: '柠檬宝藏茶' });
   assert.equal(refused.structuredContent.ok, false);
   assert.equal(refused.structuredContent.code, 'not-configured');
-  assert.match(refused.structuredContent.message, /OPENFILM_MEDIA_TENANT/);
+  assert.match(refused.structuredContent.message, /ORANGE_MEDIA_TENANT/);
   assert.equal(refused.isError, undefined, 'a state, not a crash');
 
   const blank = await unconfigured['material.search']({ query: '   ' });

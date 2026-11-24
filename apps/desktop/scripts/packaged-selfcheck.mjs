@@ -64,7 +64,7 @@ export function authEnvironmentCheck(resources) {
 }
 
 /**
- * The material index modules the `material.*` tools load from `resources/openfilm`: `material-tools.mjs` and the two
+ * The material index modules the `material.*` tools load from `resources/orangefilm`: `material-tools.mjs` and the two
  * files it imports. Their absence is exactly the `not-configured` answer this check exists to stop shipping.
  * @param {string} resources @returns {Check}
  */

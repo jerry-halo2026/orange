@@ -34,8 +34,8 @@ test('素材中心与示例：示例能建工程，公开素材目录能列出�
   const app = await electron.launch({
     executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
     env: {
-      ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir,
-      OPENFILM_MATERIAL_INDEX_DIR: indexDir,
+      ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir,
+      ORANGE_MATERIAL_INDEX_DIR: indexDir,
     },
   });
   /** @type {import('playwright-core').Page | null} */
@@ -121,11 +121,11 @@ test('素材中心与示例：示例能建工程，公开素材目录能列出�
       const started = Date.now();
       await new Promise((resolve, reject) => {
         const child = spawn(process.execPath, [
-          join(DESKTOP, '..', '..', 'packages', 'openfilm', 'scripts', 'material-index-bootstrap.mjs'),
+          join(DESKTOP, '..', '..', 'packages', 'orangefilm', 'scripts', 'material-index-bootstrap.mjs'),
           '--wait', '--dir', indexDir, '--force',
         ], {
           cwd: join(DESKTOP, '..', '..'),
-          env: { ...process.env, OPENFILM_DEV_HOME: join(dir, 'home'), OPENFILM_MATERIAL_INDEX_DIR: indexDir },
+          env: { ...process.env, ORANGE_DEV_HOME: join(dir, 'home'), ORANGE_MATERIAL_INDEX_DIR: indexDir },
           stdio: ['ignore', 'pipe', 'pipe'],
         });
         let output = '';
@@ -147,7 +147,7 @@ test('素材中心与示例：示例能建工程，公开素材目录能列出�
     /* UI：素材中心页（首页卡）应显示卡片，且不说“未接通”。 */
     await link('materials-ui', async () => {
       assert.ok(page, 'no Studio page');
-      await page.evaluate(() => localStorage.setItem('openfilm.language', 'zh-CN'));
+      await page.evaluate(() => localStorage.setItem('orangefilm.language', 'zh-CN'));
       await page.reload({ waitUntil: 'domcontentloaded' });
       const card = page.getByRole('button', { name: '素材中心', exact: true });
       await card.first().waitFor({ timeout: 60_000 });

@@ -3,8 +3,8 @@
 
 // @ts-check
 /**
- * The library's verbs of `openfilm get` (LIBRARY_VERBS: music-search, sfx-search, transition, effect, filter, sticker,
- * text, template): OpenFilm's own library (studio/server/library.mjs) searched, so a film uses a sound, a music bed, a
+ * The library's verbs of `orangefilm get` (LIBRARY_VERBS: music-search, sfx-search, transition, effect, filter, sticker,
+ * text, template): OrangeFilm's own library (studio/server/library.mjs) searched, so a film uses a sound, a music bed, a
  * transition, an effect, a filter, a sticker, a text or a template that is already there, free, where it fits; and the
  * one chosen taken into the project, as Studio's assets drawer takes it.
  *
@@ -314,38 +314,38 @@ export function projectAround(from) {
   return null;
 }
 
-/** An option of a library verb, as `openfilm get` lists options. */
+/** An option of a library verb, as `orangefilm get` lists options. */
 const PROMPT = { value: 'text' };
 const TAKE = { value: 'id' };
 const LIMIT = { value: 'n', min: 1, max: 50, default: 8, alias: 'n' };
 const SEC = { value: 'seconds' };
 
 /**
- * The library's verbs of `openfilm get`: free and offline. `music-search` and `sfx-search` sit beside `music` and
+ * The library's verbs of `orangefilm get`: free and offline. `music-search` and `sfx-search` sit beside `music` and
  * `sfx` (what is there, or one made to the prompt: the agent chooses), as `image-search` sits beside `image`; what only the library has is a verb
  * of its own name. Each searches with --prompt, and takes one into the project with --take.
  * @type {Record<string, { kind: keyof typeof KINDS, makes?: string, help: string, options: Record<string, object> }>}
  */
 export const LIBRARY_VERBS = {
   'music-search': { kind: 'music', makes: 'music', options: { prompt: PROMPT, sec: SEC, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s own music (CC0), searched in any words and language. Returns the best matches: id, name, length, tempo, energy 1–5, whether it loops, what of the prompt it has and lacks, a file to hear it; --sec puts what is at least that long first. --take <id> copies one into assets/. Music of the film\'s own, made to the prompt and length: `get music`.' },
+    help: 'Free and offline: OrangeFilm\'s own music (CC0), searched in any words and language. Returns the best matches: id, name, length, tempo, energy 1–5, whether it loops, what of the prompt it has and lacks, a file to hear it; --sec puts what is at least that long first. --take <id> copies one into assets/. Music of the film\'s own, made to the prompt and length: `get music`.' },
   'sfx-search': { kind: 'sound', makes: 'sfx', options: { prompt: PROMPT, sec: SEC, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s own sound effects (CC0), about 5,400, searched in any words and language. Returns the best matches: id, name, length, what of the prompt it has and lacks, a file to hear it; --sec puts those near that long first. --take <id> copies one into assets/. A sound of the film\'s own, made to the prompt and length: `get sfx`.' },
+    help: 'Free and offline: OrangeFilm\'s own sound effects (CC0), about 5,400, searched in any words and language. Returns the best matches: id, name, length, what of the prompt it has and lacks, a file to hear it; --sec puts those near that long first. --take <id> copies one into assets/. A sound of the film\'s own, made to the prompt and length: `get sfx`.' },
   transition: { kind: 'transition', options: { prompt: PROMPT, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s transitions over a cut (light, glitch, shapes, film, ink, wipes, camera moves). Search them before writing one. --take <id> copies it into the project and says where it goes in film.html.' },
+    help: 'Free and offline: OrangeFilm\'s transitions over a cut (light, glitch, shapes, film, ink, wipes, camera moves). Search them before writing one. --take <id> copies it into the project and says where it goes in film.html.' },
   effect: { kind: 'effect', options: { prompt: PROMPT, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s effects over a clip (grain, light leaks, snow, confetti, frames) and motions in and out. Search them before writing one. --take <id> copies it into the project and says how to use it.' },
+    help: 'Free and offline: OrangeFilm\'s effects over a clip (grain, light leaks, snow, confetti, frames) and motions in and out. Search them before writing one. --take <id> copies it into the project and says how to use it.' },
   filter: { kind: 'filter', options: { prompt: PROMPT, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s color grades (film, cinema, portrait, vintage, black and white…). The person puts one on a clip in Studio.' },
+    help: 'Free and offline: OrangeFilm\'s color grades (film, cinema, portrait, vintage, black and white…). The person puts one on a clip in Studio.' },
   sticker: { kind: 'sticker', options: { prompt: PROMPT, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s stickers: 1,587 emoji, and arrows, marks, buttons and badges that move. --take <id> copies one into the project.' },
+    help: 'Free and offline: OrangeFilm\'s stickers: 1,587 emoji, and arrows, marks, buttons and badges that move. --take <id> copies one into the project.' },
   text: { kind: 'text', options: { prompt: PROMPT, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s text templates (titles, name cards, callouts, chapters, endings) and text looks and motions. --take <id> copies a template into the project.' },
+    help: 'Free and offline: OrangeFilm\'s text templates (titles, name cards, callouts, chapters, endings) and text looks and motions. --take <id> copies a template into the project.' },
   template: { kind: 'template', options: { prompt: PROMPT, limit: LIMIT, take: TAKE },
-    help: 'Free and offline: OpenFilm\'s templates, short films with places for the film\'s own videos and photos, titles, effects and music on them. --take <id> copies one into the project.' },
+    help: 'Free and offline: OrangeFilm\'s templates, short films with places for the film\'s own videos and photos, titles, effects and music on them. --take <id> copies one into the project.' },
 };
 
-/** The library's verbs as `openfilm get` lists them (`only`: that one). @param {string} [only] */
+/** The library's verbs as `orangefilm get` lists them (`only`: that one). @param {string} [only] */
 export const libraryVerbs = (only) => Object.entries(LIBRARY_VERBS).filter(([verb]) => !only || verb === only)
   .map(([verb, v]) => {
     if (!isolationRequested()) return { verb, help: v.help, options: v.options };
@@ -354,15 +354,15 @@ export const libraryVerbs = (only) => Object.entries(LIBRARY_VERBS).filter(([ver
   });
 
 /**
- * `openfilm get <library verb> --prompt <what>`: the best matches, each with its id, name, length, what it is like and
- * where to see or hear it; `--take <id>`: that one into the project (takeOne). `code` as `openfilm get` has it: 0 done,
+ * `orangefilm get <library verb> --prompt <what>`: the best matches, each with its id, name, length, what it is like and
+ * where to see or hear it; `--take <id>`: that one into the project (takeOne). `code` as `orangefilm get` has it: 0 done,
  * 1 it did not run, 2 a wrong command.
  * @param {string} verb @param {Record<string, string | true | (string | true)[]>} flags
  * @returns {Promise<{ code: number, lines: string[] }>}
  */
 export async function libraryGet(verb, flags) {
   const spec = LIBRARY_VERBS[verb];
-  const wrong = (/** @type {string} */ text) => ({ code: 2, lines: [`openfilm get ${verb}: ${text}`] });
+  const wrong = (/** @type {string} */ text) => ({ code: 2, lines: [`orangefilm get ${verb}: ${text}`] });
   const { n, ...given } = flags;
   if (n !== undefined && given.limit === undefined) given.limit = n;
   const unknown = Object.keys(given).find((name) => !(name in spec.options));
@@ -370,28 +370,28 @@ export async function libraryGet(verb, flags) {
   for (const [name, value] of Object.entries(given)) if (typeof value !== 'string') return wrong(`--${name} takes a value, once`);
   const { prompt, sec, limit, take } = /** @type {Record<string, string | undefined>} */ (given);
   if (take !== undefined) {
-    if (isolationRequested()) return { code: 1, lines: [`openfilm get ${verb}: taking a library item is unavailable in the isolated desktop until project authorization is connected.`] };
+    if (isolationRequested()) return { code: 1, lines: [`orangefilm get ${verb}: taking a library item is unavailable in the isolated desktop until project authorization is connected.`] };
     /* what the community sent is fetched first, so a thing taken by its id is there to take */
     if (take.startsWith('community/') || take.startsWith(`${BUILT_IN}/community/`)) await refreshCommunity();
     return takeOne(verb, take);
   }
-  if (!prompt?.trim()) return wrong(`what to look for, please: \`openfilm get ${verb} --prompt "${EXAMPLES[verb]}"\``);
+  if (!prompt?.trim()) return wrong(`what to look for, please: \`orangefilm get ${verb} --prompt "${EXAMPLES[verb]}"\``);
   const seconds = sec === undefined ? undefined : Number(sec);
   if (seconds !== undefined && !(seconds > 0 && seconds <= 3600)) return wrong(`--sec is seconds, from 0 to 3600, not ${sec}`);
   const count = limit === undefined ? 8 : Number(limit);
   if (!(Number.isInteger(count) && count >= 1 && count <= 50)) return wrong(`--limit is a whole number from 1 to 50, not ${limit}`);
   const query = prompt.trim();
   const { found, worded } = await searchLibrary(spec.kind, query, { duration: seconds, limit: count });
-  const make = spec.makes ? `make one with \`openfilm get ${spec.makes}\`` : 'write it yourself, as a page or CSS';
-  if (!found.length) return { code: 0, lines: [isolationRequested() ? `Nothing in OpenFilm's local library for “${query}”.` : `Nothing in OpenFilm's library for “${query}”: ${make}.`] };
+  const make = spec.makes ? `make one with \`orangefilm get ${spec.makes}\`` : 'write it yourself, as a page or CSS';
+  if (!found.length) return { code: 0, lines: [isolationRequested() ? `Nothing in OrangeFilm's local library for “${query}”.` : `Nothing in OrangeFilm's library for “${query}”: ${make}.`] };
   const lang = languageOf(query);
   const { vocab } = library();
   /* what the film around here has already: a sound or music the library gave keeps its file's name in assets/ */
   const root = projectAround('.');
   let film = '';
   try { if (root) film = readFileSync(join(root, 'film.html'), 'utf8'); } catch { /* no film yet */ }
-  const lines = [worded ? `${found.length} in OpenFilm's library for “${query}”, the best first (free to use in any film):`
-    : `No words of “${query}” are in OpenFilm's library; the ${found.length} nearest in meaning, which may not fit:`, ''];
+  const lines = [worded ? `${found.length} in OrangeFilm's library for “${query}”, the best first (free to use in any film):`
+    : `No words of “${query}” are in OrangeFilm's library; the ${found.length} nearest in meaning, which may not fit:`, ''];
   found.forEach(({ item, tags }, i) => {
     const name = lang === 'en' || !item.name[lang] ? item.name.en : `${item.name[lang]} (${item.name.en})`;
     const facts = [
@@ -415,7 +415,7 @@ export async function libraryGet(verb, flags) {
   if (isolationRequested()) {
     lines.push('', 'Taking a library item into a project is unavailable in the isolated desktop until project authorization is connected.');
   } else {
-    lines.push('', `Take one into the film: \`openfilm get ${verb} --take <id>\` (it says what to put in film.html).`);
+    lines.push('', `Take one into the film: \`orangefilm get ${verb} --take <id>\` (it says what to put in film.html).`);
     lines.push(spec.makes ? `None fits well enough, or the film needs its own? ${make[0].toUpperCase()}${make.slice(1)}, made to the prompt (it costs).` : `None fits? ${make[0].toUpperCase()}${make.slice(1)}.`);
   }
   return { code: 0, lines };
@@ -429,24 +429,24 @@ const EXAMPLES = /** @type {Record<string, string>} */ ({
 
 /**
  * A thing of the library taken into the project around the current folder, as Studio's assets drawer takes it
- * (saved.mjs takeSaved): a sound into assets/, a page's files to saved/openfilm/<its id>/; and what to write in
+ * (saved.mjs takeSaved): a sound into assets/, a page's files to saved/orangefilm/<its id>/; and what to write in
  * film.html to use it. A motion preset is CSS, printed; a filter, a fade and a text style are put on a clip in Studio.
- * @param {string} verb @param {string} asked its id, with `openfilm/` or without
+ * @param {string} verb @param {string} asked its id, with `orangefilm/` or without
  * @returns {Promise<{ code: number, lines: string[] }>}
  */
 async function takeOne(verb, asked) {
   const id = asked.replace(new RegExp(`^${BUILT_IN}/`), '');
   const item = library().items.get(id);
   if (!item || item.cat !== KINDS[LIBRARY_VERBS[verb].kind]) {
-    return { code: 2, lines: [`openfilm get ${verb}: no ${asked} here; \`openfilm get ${verb} --prompt <what>\` says what there is`] };
+    return { code: 2, lines: [`orangefilm get ${verb}: no ${asked} here; \`orangefilm get ${verb} --prompt <what>\` says what there is`] };
   }
   if (item.kind === 'look' || item.kind === 'textstyle' || item.kind === 'textmotion' || item.kind === 'fade') {
     const where = item.kind === 'look' ? 'Filters' : item.kind === 'fade' ? 'Transitions' : 'Text';
     return { code: 0, lines: [`${item.name.en} is put on a clip in Studio: the person drops it from the library's ${where} onto the clip.`,
-      item.kind === 'fade' ? 'To write a fade yourself, overlap the two clips and fade the upper one in: `openfilm get effect --prompt "fade in"` has the motion for it.' : 'Tell the person which one, and on which clip.'] };
+      item.kind === 'fade' ? 'To write a fade yourself, overlap the two clips and fade the upper one in: `orangefilm get effect --prompt "fade in"` has the motion for it.' : 'Tell the person which one, and on which clip.'] };
   }
   const root = projectAround('.');
-  if (!root) return { code: 2, lines: [`openfilm get: ${resolve('.')} is not in a project; \`openfilm open\` makes one`] };
+  if (!root) return { code: 2, lines: [`orangefilm get: ${resolve('.')} is not in a project; \`orangefilm open\` makes one`] };
   if (item.kind === 'motion') {
     const { withPreset } = await import('./clip-motion.mjs');
     const slots = /** @type {[import('./clip-motion.mjs').PresetSlot, import('./clip-motion.mjs').Preset][]} */ (Object.entries(/** @type {object} */ (item.motion ?? {})));
@@ -460,7 +460,7 @@ async function takeOne(verb, asked) {
   }
   if (item.kind === 'sound' && !(await fetchLibrary(item.id))) {
     const make = LIBRARY_VERBS[verb].makes;
-    return { code: 1, lines: [`openfilm get ${verb}: ${item.name.en}'s file could not be fetched (the library's sounds and music come over the network the first time they are used). Try again online, or make one with \`openfilm get ${make}\`.`] };
+    return { code: 1, lines: [`orangefilm get ${verb}: ${item.name.en}'s file could not be fetched (the library's sounds and music come over the network the first time they are used). Try again online, or make one with \`orangefilm get ${make}\`.`] };
   }
   const { takeSaved } = await import('../studio/server/saved.mjs');
   const { clipTag } = await import('./film-doc.mjs');

@@ -16,7 +16,7 @@ import {useSyncExternalStore} from 'react';
 
 export type MaterialViewMode = 'videos' | 'collections' | 'products';
 
-export const MATERIAL_VIEW_KEY = 'openfilm.materialView';
+export const MATERIAL_VIEW_KEY = 'orangefilm.materialView';
 
 /** The two modes, in the order the toggle offers them. */
 export const MATERIAL_VIEW_MODES = Object.freeze(['videos', 'collections', 'products'] as const);

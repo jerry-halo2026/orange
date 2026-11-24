@@ -102,7 +102,7 @@ async function useFakeAgent(studio, chat, model) {
   if (!done?.ok) throw new Error(`setting up the agent: ${done?.error ?? 'no answer'}`);
   for (const id of ['codex', 'claude']) await studio.evaluate((x) => window.openfilmHost.agents.setShown(x, false), id);
   await until('the own-key agent ready', () => studio.evaluate(async () => (await window.openfilmHost.agents.list()).find((a) => a.id === 'byok')?.status === 'ready'), 120_000, 500);
-  await chat.evaluate(() => localStorage.setItem('openfilm.local-agents.v2', JSON.stringify({ picked: 'byok', prefs: {}, options: {} })));
+  await chat.evaluate(() => localStorage.setItem('orangefilm.local-agents.v2', JSON.stringify({ picked: 'byok', prefs: {}, options: {} })));
   await chat.reload();
   await until('the chat back', () => chat.evaluate(() => Boolean(document.querySelector('[data-prompt-editor]'))), 60_000);
 }
@@ -141,7 +141,7 @@ export async function benchRun({ dir, log }) {
   try {
     await waitForCdp(app.cdp);
     let pages = await connect(app.cdp);
-    /* the film opened as `openfilm open` opens it, without a browser */
+    /* the film opened as `orangefilm open` opens it, without a browser */
     const run = await until('Studio advertised', async () => (existsSync(join(dir, 'home/run.json')) ? JSON.parse(readFileSync(join(dir, 'home/run.json'), 'utf8')) : null), 60_000, 200);
     await signIn(run, auth);
     /* First-party Studio owns what it makes (projects.mjs): the film is this account's, made here, with its footage. */
@@ -174,7 +174,7 @@ export async function benchRun({ dir, log }) {
     figures.scrub = await measured(pages, async () => {
       const box = await pages.studio.locator('[data-timeline] [role="slider"][aria-label="Drag the playhead"]').boundingBox();
       if (!box) throw new Error('no ruler');
-      const seen = await pages.studio.evaluate(() => { window.__seeked = 0; window.addEventListener('message', (e) => { if (e.data?.source === 'openfilm-film' && e.data.type === 'seeked') window.__seeked += 1; }); return true; });
+      const seen = await pages.studio.evaluate(() => { window.__seeked = 0; window.addEventListener('message', (e) => { if (e.data?.source === 'orangefilm-film' && e.data.type === 'seeked') window.__seeked += 1; }); return true; });
       const y = box.y + box.height / 2, x0 = box.x + 20, x1 = box.x + Math.min(box.width - 20, 900);
       await pages.studio.mouse.move(x0, y);
       await pages.studio.mouse.down();

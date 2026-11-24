@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "orange/mcp-tools/1",
-  "$comment": "MCP 工具面固定 6 个；上限是硬截断（超限返回 truncated:true，不报错）。新增工具必须先改本文件。2026-11-17：material.search 取代 material.batches 占第 1 槽——批次的条数/合集数由 material.collections({batch}) 给出，而 agent 真正检索不到的是「有没有这个画面」，那一问只有 media_search 能答（向量/词法/索引三路降级，行上带本地可用性）。旧名仍可在 OPENFILM_MCP_SURFACE=compat 的面上调用，见 apps/desktop/src/openfilm-mcp.mjs 的 SURFACE_CHANGES。本文件列的就是默认面：createOpenFilmMcpServer() 的库默认与 stdio 入口都是 materials（5 个），compat 是整体回退（7 个）。caps 的键名以契约为准：material.search 的 rows / defaultRows 就是 MATERIAL_SEARCH_CAPS.limit / defaultLimit（50 / 10），material.items 的 rows / defaultRows 就是 MATERIAL_TOOL_CAPS.items / itemsDefault（200 / 50），数字必须逐一相等。 2026-11-19：新增 library.search 作为第 6 槽 —— agent 要能\"找更适合的元素\"（转场/特效/滤镜/贴纸/文字/模板/音乐/音效）；它与 material.search 用的是同一台机器上的同一个模型（bge-base-zh-v1.5），关键词与语义按名次融合，没有服务、没有网络。",
+  "$comment": "MCP 工具面固定 6 个；上限是硬截断（超限返回 truncated:true，不报错）。新增工具必须先改本文件。2026-11-17：material.search 取代 material.batches 占第 1 槽——批次的条数/合集数由 material.collections({batch}) 给出，而 agent 真正检索不到的是「有没有这个画面」，那一问只有 media_search 能答（向量/词法/索引三路降级，行上带本地可用性）。旧名仍可在 ORANGE_MCP_SURFACE=compat 的面上调用，见 apps/desktop/src/orangefilm-mcp.mjs 的 SURFACE_CHANGES。本文件列的就是默认面：createOrangeFilmMcpServer() 的库默认与 stdio 入口都是 materials（5 个），compat 是整体回退（7 个）。caps 的键名以契约为准：material.search 的 rows / defaultRows 就是 MATERIAL_SEARCH_CAPS.limit / defaultLimit（50 / 10），material.items 的 rows / defaultRows 就是 MATERIAL_TOOL_CAPS.items / itemsDefault（200 / 50），数字必须逐一相等。 2026-11-19：新增 library.search 作为第 6 槽 —— agent 要能\"找更适合的元素\"（转场/特效/滤镜/贴纸/文字/模板/音乐/音效）；它与 material.search 用的是同一台机器上的同一个模型（bge-base-zh-v1.5），关键词与语义按名次融合，没有服务、没有网络。",
   "type": "object",
   "additionalProperties": false,
   "required": [

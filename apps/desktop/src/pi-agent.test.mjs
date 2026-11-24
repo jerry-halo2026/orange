@@ -42,9 +42,9 @@ async function service({ broke = false, fails = null, busyOnce = false, largest 
 }
 
 /** One of the person's own models, as the roster's harness gives it (pi-config.mjs OwnModel). */
-const own = (id, url, over = {}) => ({ id, name: id, api: 'openai-completions', baseUrl: url, keyEnv: `OPENFILM_BYOK_KEY_${id}`, model: id, levels: ['auto'], effort: 'auto', ...over });
+const own = (id, url, over = {}) => ({ id, name: id, api: 'openai-completions', baseUrl: url, keyEnv: `ORANGE_BYOK_KEY_${id}`, model: id, levels: ['auto'], effort: 'auto', ...over });
 
-test('OpenFilm runs Pi on the shared account, switches cloud models and sends OpenRouter reasoning through the relay', { timeout: 60_000 }, async () => {
+test('OrangeFilm runs Pi on the shared account, switches cloud models and sends OpenRouter reasoning through the relay', { timeout: 60_000 }, async () => {
   const svc = await service();
   const deepseek = 'deepseek/deepseek-v4.1-flash-1017';
   const haiku = 'anthropic/claude-haiku-5.5';
@@ -57,8 +57,8 @@ test('OpenFilm runs Pi on the shared account, switches cloud models and sends Op
       { id: deepseek, name: 'DeepSeek V4.1 Flash 1017', efforts: ['low', 'high', 'max'], default_effort: 'high', context_length: 1_048_576 },
       { id: haiku, name: 'Claude Haiku 5.5', efforts: ['off', 'low', 'medium', 'high'], default_effort: 'high', context_length: 1_000_000 },
     ] }, svc.url);
-    session = new AgentSession({ agent: 'openfilm', cwd: mkdtempSync(join(tmpdir(), 'of-built-in-')),
-      harness: { home: mkdtempSync(join(tmpdir(), 'of-built-in-home-')), ...offer, env: { OPENFILM_ACCOUNT_KEY: 'ofk-test-account' } },
+    session = new AgentSession({ agent: 'orangefilm', cwd: mkdtempSync(join(tmpdir(), 'of-built-in-')),
+      harness: { home: mkdtempSync(join(tmpdir(), 'of-built-in-home-')), ...offer, env: { ORANGE_ACCOUNT_KEY: 'ofk-test-account' } },
     });
     const info = await session.start();
     assert.equal(svc.asked.length, 0, 'listing models spends nothing');
@@ -86,7 +86,7 @@ test("the own key's models, each on its own service and key, are the session's m
       home: mkdtempSync(join(tmpdir(), 'of-pi-home-')),
       models: [own('a', first.url, { name: 'Vision', model: 'vision' }), own('b', second.url, { name: 'Big', model: 'big' })],
       model: 'a',
-      env: { OPENFILM_BYOK_KEY_a: 'sk-first', OPENFILM_BYOK_KEY_b: 'sk-second' },
+      env: { ORANGE_BYOK_KEY_a: 'sk-first', ORANGE_BYOK_KEY_b: 'sk-second' },
     },
   });
   try {
@@ -118,7 +118,7 @@ test('a model\'s efforts are the session\'s effort option: Auto sends no reasoni
       home: mkdtempSync(join(tmpdir(), 'of-pi-home-')),
       models: [own('thinker', svc.url, { levels: ['auto', 'off', 'low', 'high'], effort: 'low' }), own('plain', svc.url)],
       model: 'thinker',
-      env: { OPENFILM_BYOK_KEY_thinker: 'sk-test', OPENFILM_BYOK_KEY_plain: 'sk-test' },
+      env: { ORANGE_BYOK_KEY_thinker: 'sk-test', ORANGE_BYOK_KEY_plain: 'sk-test' },
     },
   });
   const effortOf = (options) => options.find((o) => o.id === 'effort');
@@ -162,7 +162,7 @@ test('a service with no balance left is named for the model the turn was on, not
       home: mkdtempSync(join(tmpdir(), 'of-pi-home-')),
       models: [own('a', first.url), own('b', second.url)],
       model: 'a',
-      env: { OPENFILM_BYOK_KEY_a: 'sk-first', OPENFILM_BYOK_KEY_b: 'sk-second' },
+      env: { ORANGE_BYOK_KEY_a: 'sk-first', ORANGE_BYOK_KEY_b: 'sk-second' },
     },
   });
   try {
@@ -183,7 +183,7 @@ test('a turn that fails says why, as the service said it, not "Internal error"',
   const session = new AgentSession({
     agent: 'byok',
     cwd: mkdtempSync(join(tmpdir(), 'of-pi-')),
-    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { OPENFILM_BYOK_KEY_a: 'sk' } },
+    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { ORANGE_BYOK_KEY_a: 'sk' } },
   });
   try {
     await session.start();
@@ -201,7 +201,7 @@ test('a conversation too long for the model says so, and where its context is se
   const session = new AgentSession({
     agent: 'byok',
     cwd: mkdtempSync(join(tmpdir(), 'of-pi-')),
-    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { OPENFILM_BYOK_KEY_a: 'sk' } },
+    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { ORANGE_BYOK_KEY_a: 'sk' } },
   });
   try {
     await session.start();
@@ -220,7 +220,7 @@ test('a service that fails and is tried again says so in the chat as a notice, a
   const session = new AgentSession({
     agent: 'byok',
     cwd: mkdtempSync(join(tmpdir(), 'of-pi-')),
-    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { OPENFILM_BYOK_KEY_a: 'sk' } },
+    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { ORANGE_BYOK_KEY_a: 'sk' } },
     onUpdate: (update) => updates.push(update),
   });
   try {
@@ -259,7 +259,7 @@ test('a request refused as too large is tried again at once with half of its pic
   const session = new AgentSession({
     agent: 'byok',
     cwd: mkdtempSync(join(tmpdir(), 'of-pi-')),
-    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { OPENFILM_BYOK_KEY_a: 'sk' } },
+    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { ORANGE_BYOK_KEY_a: 'sk' } },
   });
   /* fourteen pictures of about 0.95 MB each (Pi sends them as they are): 13 MB, past this service's 8 MB */
   const pictures = Array.from({ length: 14 }, () => ({ type: 'image', mimeType: 'image/png', data: noisePng(560, 420).toString('base64') }));
@@ -281,7 +281,7 @@ test('a request still too large when tried again with half of its pictures says 
   const session = new AgentSession({
     agent: 'byok',
     cwd: mkdtempSync(join(tmpdir(), 'of-pi-')),
-    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { OPENFILM_BYOK_KEY_a: 'sk' } },
+    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { ORANGE_BYOK_KEY_a: 'sk' } },
   });
   const pictures = Array.from({ length: 14 }, () => ({ type: 'image', mimeType: 'image/png', data: noisePng(560, 420).toString('base64') }));
   try {
@@ -301,7 +301,7 @@ test('a request too large with no pictures in it is not tried again, and says so
   const session = new AgentSession({
     agent: 'byok',
     cwd: mkdtempSync(join(tmpdir(), 'of-pi-')),
-    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { OPENFILM_BYOK_KEY_a: 'sk' } },
+    harness: { home: mkdtempSync(join(tmpdir(), 'of-pi-home-')), models: [own('a', svc.url)], model: 'a', env: { ORANGE_BYOK_KEY_a: 'sk' } },
   });
   try {
     await session.start();

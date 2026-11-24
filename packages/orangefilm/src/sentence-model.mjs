@@ -6,7 +6,7 @@
  * The sentence model of the library's semantic search (multilingual-e5-small, int8), on its own: its tokenizer
  * (SentencePiece's unigram model, its vocabulary packed as vocab.bin) and the model run by onnxruntime-web
  * (WebAssembly, one thread), a text to its vector. It needs nothing but its files, so that the library's vectors
- * (scripts/library-vectors.mjs) and a search's query (OpenFilm's service, `POST /v1/library/query`) are made by the
+ * (scripts/library-vectors.mjs) and a search's query (OrangeFilm's service, `POST /v1/library/query`) are made by the
  * same code, and so are the same.
  */
 import { readFileSync } from 'node:fs';

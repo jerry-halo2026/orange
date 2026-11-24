@@ -304,7 +304,7 @@ export function idsIn(sel: string): Array<{ start: number; end: number; id: stri
  */
 export function weighted(id: string, weight: readonly [number, number, number]): string {
   const sel = idSel(id);
-  return `:where(${sel})${sel.repeat(weight[0])}${':not(.openfilm-none)'.repeat(weight[1])}${':not(openfilm-none)'.repeat(weight[2])}`;
+  return `:where(${sel})${sel.repeat(weight[0])}${':not(.orangefilm-none)'.repeat(weight[1])}${':not(orangefilm-none)'.repeat(weight[2])}`;
 }
 
 /** A rule in its at-rules. */

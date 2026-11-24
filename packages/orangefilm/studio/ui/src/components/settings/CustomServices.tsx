@@ -5,7 +5,7 @@
  * Settings → Services, under which service makes each kind of media: the person's custom services. Any service at an
  * address (one they run on this computer, their own voice, an API not listed), with its key and their words on what it
  * does and how it is called (or where its docs are). OrangeFilm does not call one itself: their agent reads those words
- * in `openfilm get` and calls it with `openfilm get call` (studio/server/custom-services.mjs).
+ * in `orangefilm get` and calls it with `orangefilm get call` (studio/server/custom-services.mjs).
  */
 import React from 'react';
 import { Plus, Server } from 'lucide-react';

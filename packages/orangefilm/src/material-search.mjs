@@ -64,7 +64,7 @@ export const DEFAULT_EMBED_TIMEOUT_MS = 20_000;
 export const LOCAL_EMBED_MODEL = 'bge-base-zh-v1.5';
 /**
  * 向量包放在哪：<shared home>/materials/pack。装好客户端之后它就是这个位置 —— 不需要环境变量，
- * 也不需要用户配置；OPENFILM_MATERIAL_PACK 只是给测试与非常规布局用的覆盖。
+ * 也不需要用户配置；ORANGE_MATERIAL_PACK 只是给测试与非常规布局用的覆盖。
  * 包不在时 createPackSearch 仍然构造，但 eadPack 回 null、检索退到 RPC / 索引，不会出错。
  */
 export const DEFAULT_PACK_DIR = () => join(sharedHome(), 'materials', 'pack');
@@ -427,7 +427,7 @@ export const LOCAL_EMBED_DIR = 'models/bge-base-zh-onnx';
  * 本地嵌入器：ONNX（onnxruntime-web，wasm）跑 `library/models/bge-base-zh-onnx/`，不需要网络、不需要 LM Studio。
  *
  * 与 `createEmbedder` 的区别只有一个 —— 向量在**本进程**算出来：客户端装完就自带模型，检索才谈得上离线可用；
- * HTTP 那条留给开发期（LM Studio）和回退（`OPENFILM_EMBED_MODE=service`）。
+ * HTTP 那条留给开发期（LM Studio）和回退（`ORANGE_EMBED_MODE=service`）。
  *
  * 三件容易错、错了又不报错的事都显式写在这里：
  *   - **池化**：BERT 系取第一个 token（`<s>`/CLS），不是 e5 的平均（用错余弦只有 0.749）；
@@ -636,7 +636,7 @@ export function createMediaSearchCall({ tenant, composeFile = DEFAULT_COMPOSE_FI
 }
 
 /**
- * The landed index as the fallback reads it: `~/.openfilm-dev/material-index/index.json` (or `dir`), re-read only when
+ * The landed index as the fallback reads it: `~/.orangefilm-dev/material-index/index.json` (or `dir`), re-read only when
  * the question is actually asked — a machine with no index answers `[]` there, and the RPC's answer is what it was.
  * @param {{ dir?: string }} [options]
  */
@@ -660,14 +660,14 @@ export function defaultIndexLoader({ dir = defaultIndexDir() } = {}) {
  */
 export function createMaterialSearchService({
   env = process.env, fetchImpl, psql, index = null, indexDir = null,
-  tenant = env?.ORANGE_MEDIA_TENANT ?? env?.OPENFILM_MEDIA_TENANT,
-  endpoint = env?.ORANGE_EMBED_ENDPOINT ?? env?.OPENFILM_EMBED_ENDPOINT,
-  model = env?.ORANGE_EMBED_MODEL ?? env?.OPENFILM_EMBED_MODEL,
-  composeFile = env?.ORANGE_MEDIA_COMPOSE ?? env?.OPENFILM_MEDIA_COMPOSE, timeoutMs,
+  tenant = env?.ORANGE_MEDIA_TENANT ?? env?.ORANGE_MEDIA_TENANT,
+  endpoint = env?.ORANGE_EMBED_ENDPOINT ?? env?.ORANGE_EMBED_ENDPOINT,
+  model = env?.ORANGE_EMBED_MODEL ?? env?.ORANGE_EMBED_MODEL,
+  composeFile = env?.ORANGE_MEDIA_COMPOSE ?? env?.ORANGE_MEDIA_COMPOSE, timeoutMs,
   /* `local` 用随应用分发的 ONNX 模型（离线可用）；`service` 是 LM Studio 那类 HTTP 端点（开发期/回退）。 */
-  embedder = (env?.ORANGE_EMBED_MODE ?? env?.OPENFILM_EMBED_MODE) === 'service' ? 'service' : 'local',
-  modelDir = env?.ORANGE_EMBED_MODEL_DIR ?? env?.OPENFILM_EMBED_MODEL_DIR,
-  packDir = env?.ORANGE_MATERIAL_PACK ?? env?.OPENFILM_MATERIAL_PACK ?? DEFAULT_PACK_DIR(),
+  embedder = (env?.ORANGE_EMBED_MODE ?? env?.ORANGE_EMBED_MODE) === 'service' ? 'service' : 'local',
+  modelDir = env?.ORANGE_EMBED_MODEL_DIR ?? env?.ORANGE_EMBED_MODEL_DIR,
+  packDir = env?.ORANGE_MATERIAL_PACK ?? env?.ORANGE_MATERIAL_PACK ?? DEFAULT_PACK_DIR(),
 } = {}) {
   const key = typeof tenant === 'string' ? tenant.trim() : '';
   const named = typeof indexDir === 'string' && indexDir ? indexDir : null;

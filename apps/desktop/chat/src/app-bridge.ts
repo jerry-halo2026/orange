@@ -5,11 +5,11 @@
  * The parts of `window.openfilmDesktop` that are this app's own (src/preload-chat.cjs); the parts the copied chat code
  * uses (localAgents, pathForFile) are typed in lib/desktop-bridge.ts.
  */
-import type { CommunityItem, StudioRef, StudioSelection } from 'openfilm/studio-ui/lib/host.ts';
+import type { CommunityItem, StudioRef, StudioSelection } from 'orangefilm/studio-ui/lib/host.ts';
 import type { FileChange } from './lib/file-changes';
 
 /* what Studio and the chat say to each other about the film is Studio's own contract (its lib/host.ts) */
-export type { StageBox, StudioCommand, StudioRef, StudioRefImage, StudioSelection } from 'openfilm/studio-ui/lib/host.ts';
+export type { StageBox, StudioCommand, StudioRef, StudioRefImage, StudioSelection } from 'orangefilm/studio-ui/lib/host.ts';
 
 export type Theme = 'light' | 'dark';
 export interface Project { id: string; name: string; path: string }
@@ -100,9 +100,9 @@ interface AppBridge {
     list(project: string, agent: string): Promise<SkillListing>;
     /** the skills a message names, as its agent reads each (its folder and its SKILL.md whole) */
     texts(project: string, agent: string, names: string[]): Promise<Array<{ name: string; text: string }>>;
-    /** one of the agent's own skills let into OpenFilm, or not */
+    /** one of the agent's own skills let into OrangeFilm, or not */
     allow(agent: string, name: string, allowed: boolean): Promise<{ ok: boolean }>;
-    /** OpenFilm's skills changed (one added, or turned on or off): the agents' sessions take them up */
+    /** OrangeFilm's skills changed (one added, or turned on or off): the agents' sessions take them up */
     changed?(): Promise<unknown>;
     /** a GitHub or GitLab address fetched to be looked at; then kept (`commit`) or let go (`discard`) */
     preview(url: string): Promise<{ ok: true; id: string; skills: SkillPreview[] } | { ok: false; error: string }>;
@@ -119,7 +119,7 @@ interface AppBridge {
 
 export interface DeveloperPrefs { logs: boolean; changes: boolean }
 
-/** One of OpenFilm's skills: the project's, the person's own, or official (openfilm/src/skills.mjs). */
+/** One of OrangeFilm's skills: the project's, the person's own, or official (orangefilm/src/skills.mjs). */
 export interface SkillInfo {
   name: string;
   description: string;
@@ -129,7 +129,7 @@ export interface SkillInfo {
   scripts: string[];
   /** the places with a skill of the same name it takes the place of */
   over?: Array<'project' | 'mine' | 'official'>;
-  /** how people see it (its openfilm.json): title, summary and who it is for and what it does, by language */
+  /** how people see it (its orangefilm.json): title, summary and who it is for and what it does, by language */
   shown?: { title: Record<string, string>; summary: Record<string, string>; details?: Record<string, string> };
 }
 
@@ -139,11 +139,11 @@ export interface StarterSkill { name: string; description: string; cover: string
 /** A skill fetched from an address, before it is kept: `replaces`, one of the person's has its name. */
 export interface SkillPreview { name: string; description: string; scripts: string[]; size: number; replaces: boolean }
 
-/** A skill the person installed in their agent themselves, let into OpenFilm or not. */
+/** A skill the person installed in their agent themselves, let into OrangeFilm or not. */
 export interface OwnSkill { name: string; description: string; folder: string; allowed: boolean }
 
 export interface SkillListing {
-  openfilm: SkillInfo[];
+  orangefilm: SkillInfo[];
   /** `filtered`: the agent's own are hidden unless let in; otherwise it has them all, as in its own terminal */
   own: { agent: string; filtered: boolean; skills: OwnSkill[] };
   /** the person's own skills folder */

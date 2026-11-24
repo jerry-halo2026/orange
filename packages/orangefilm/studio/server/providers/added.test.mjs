@@ -12,9 +12,9 @@ import { freshProviders, listProviders } from './index.mjs';
 /* a service the person added is read beside the built-in ones, read again once changed, and one that is not a provider is left out with why */
 test('a provider the person added in their shared home is one more service', async (t) => {
   const home = mkdtempSync(join(tmpdir(), 'of-added-'));
-  const before = process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SHARED_HOME = home;
-  t.after(() => { if (before === undefined) delete process.env.OPENFILM_SHARED_HOME; else process.env.OPENFILM_SHARED_HOME = before; rmSync(home, { recursive: true, force: true }); });
+  const before = process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SHARED_HOME = home;
+  t.after(() => { if (before === undefined) delete process.env.ORANGE_SHARED_HOME; else process.env.ORANGE_SHARED_HOME = before; rmSync(home, { recursive: true, force: true }); });
   const write = (folder, body) => { mkdirSync(join(home, 'providers', folder), { recursive: true }); writeFileSync(join(home, 'providers', folder, 'provider.mjs'), body); };
   const module = (name) => `export default { id: 'acme', name: '${name}', env: 'ACME_KEY', verbs: ['image'],
     models: { image: [{ id: 'acme-1', name: 'Acme 1', spec: { ratios: ['1:1'], refs: 2 } }] },

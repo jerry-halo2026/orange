@@ -250,64 +250,64 @@ body {
 
 /* ── keyframes ── */
 /* the desktop dialog's drawn window: its playhead walks the timeline */
-@keyframes openfilm-desktop-playhead {
+@keyframes orangefilm-desktop-playhead {
   from { left: 8%; }
   to { left: 92%; }
 }
-.openfilm-desktop-playhead {
-  animation: openfilm-desktop-playhead 7s linear infinite;
+.orangefilm-desktop-playhead {
+  animation: orangefilm-desktop-playhead 7s linear infinite;
 }
 /* the selected clip and its reference in the chat glow together: the one is the other */
-@keyframes openfilm-desktop-pulse {
+@keyframes orangefilm-desktop-pulse {
   0%, 100% { filter: none; }
   50% { filter: drop-shadow(0 0 5px var(--accent)); }
 }
-.openfilm-desktop-pulse {
-  animation: openfilm-desktop-pulse 2.4s ease-in-out infinite;
+.orangefilm-desktop-pulse {
+  animation: orangefilm-desktop-pulse 2.4s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .openfilm-desktop-playhead { animation: none; left: 46%; }
-  .openfilm-desktop-pulse { animation: none; }
+  .orangefilm-desktop-playhead { animation: none; left: 46%; }
+  .orangefilm-desktop-pulse { animation: none; }
 }
 
 /* an open project at work: its light breathes (ProjectSwitcher) */
-@keyframes openfilm-breathe {
+@keyframes orangefilm-breathe {
   0%, 100% { opacity: 0.35; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.15); }
 }
-.status-breathe { animation: openfilm-breathe 1.6s ease-in-out infinite; }
+.status-breathe { animation: orangefilm-breathe 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .status-breathe { animation: none; } }
-@keyframes openfilm-rise {
+@keyframes orangefilm-rise {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes openfilm-shimmer {
+@keyframes orangefilm-shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 /* with background-size 200% the offset runs backwards: 150% → −50% sweeps the light left to right */
-@keyframes openfilm-text-sweep {
+@keyframes orangefilm-text-sweep {
   from { background-position: 150% 0; }
   to { background-position: -50% 0; }
 }
-@keyframes openfilm-pop {
+@keyframes orangefilm-pop {
   from { opacity: 0; transform: translateY(6px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-@keyframes openfilm-loading-bar {
+@keyframes orangefilm-loading-bar {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(300%); }
 }
 
-.openfilm-rise {
-  animation: openfilm-rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.orangefilm-rise {
+  animation: orangefilm-rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
-.openfilm-pop {
-  animation: openfilm-pop 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.orangefilm-pop {
+  animation: orangefilm-pop 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 /* the loading screen's bar: says "still moving", promises no progress */
-.openfilm-loading-bar {
-  animation: openfilm-loading-bar 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+.orangefilm-loading-bar {
+  animation: orangefilm-loading-bar 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* Focus rings only when moving by Tab: `:focus-visible` counts Space as keyboard, and the play shortcut would ring
@@ -336,7 +336,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
 .skeleton {
   background: linear-gradient(90deg, var(--bg-raised) 25%, var(--bg-field) 37%, var(--bg-raised) 63%);
   background-size: 200% 100%;
-  animation: openfilm-shimmer 1.4s ease-in-out infinite;
+  animation: orangefilm-shimmer 1.4s ease-in-out infinite;
 }
 
 /* "doing this now": a glint sweeps across the words themselves */
@@ -353,7 +353,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: openfilm-text-sweep 1.8s linear infinite;
+  animation: orangefilm-text-sweep 1.8s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .text-sweep {
@@ -639,7 +639,7 @@ html[data-file-drag] iframe { pointer-events: none; }
   --cv-modal: #181818;
   --cv-group: rgba(255, 255, 255, 0.03);
 }
-.openfilm-canvas {
+.orangefilm-canvas {
   --xy-background-color: var(--cv-bg);
   --xy-background-pattern-color: var(--cv-dot);
   --xy-edge-stroke: var(--cv-edge);
@@ -655,9 +655,9 @@ html[data-file-drag] iframe { pointer-events: none; }
   background: var(--cv-bg);
   font-family: -apple-system, system-ui, 'PingFang SC', Inter, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
 }
-.openfilm-canvas .react-flow__edge-path { stroke-linecap: round; }
+.orangefilm-canvas .react-flow__edge-path { stroke-linecap: round; }
 /* the selected node's wires: blue, glowing, flowing towards what they feed */
-.openfilm-canvas .react-flow__edge.lit .react-flow__edge-path {
+.orangefilm-canvas .react-flow__edge.lit .react-flow__edge-path {
   stroke: var(--cv-edge-lit); stroke-width: 2; stroke-dasharray: 10 6; animation: cv-flow 0.6s linear infinite;
   filter: drop-shadow(0 0 3px color-mix(in srgb, var(--cv-edge-lit) 70%, transparent));
 }
@@ -670,14 +670,14 @@ html[data-file-drag] iframe { pointer-events: none; }
 .cv-fade { animation: cv-fade 160ms ease-out; }
 .cv-grow { animation: cv-grow 180ms cubic-bezier(0.2, 0.8, 0.2, 1); }
 @media (prefers-reduced-motion: reduce) { .cv-pop, .cv-fade, .cv-grow { animation: none; } }
-.openfilm-canvas .react-flow__minimap { overflow: hidden; border-radius: 12px; box-shadow: var(--cv-float-shadow); }
-.openfilm-canvas .react-flow__node { border-radius: 12px; }
+.orangefilm-canvas .react-flow__minimap { overflow: hidden; border-radius: 12px; box-shadow: var(--cv-float-shadow); }
+.orangefilm-canvas .react-flow__node { border-radius: 12px; }
 /* a group is held by its title bar (and its resize handles once selected): inside it the board is the board, so a drag
    there draws a selection box and what is in it is reached as anywhere else */
-.openfilm-canvas .react-flow__node-frame { pointer-events: none !important; }
-.openfilm-canvas .react-flow__node-frame .cv-group-head,
-.openfilm-canvas .react-flow__node-frame .react-flow__resize-control { pointer-events: auto; }
-.openfilm-canvas .react-flow__edge-textbg { rx: 6; }
+.orangefilm-canvas .react-flow__node-frame { pointer-events: none !important; }
+.orangefilm-canvas .react-flow__node-frame .cv-group-head,
+.orangefilm-canvas .react-flow__node-frame .react-flow__resize-control { pointer-events: auto; }
+.orangefilm-canvas .react-flow__edge-textbg { rx: 6; }
 /* 原生下拉的 option 跟随主题：Windows/Chromium 的弹层默认是系统白底黑字，与页面控件不一致 */
 select { color-scheme: dark; }
 select option {

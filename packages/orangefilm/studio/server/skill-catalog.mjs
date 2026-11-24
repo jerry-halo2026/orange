@@ -3,8 +3,8 @@
 
 // @ts-check
 /**
- * The skills Discover shows: the openfilm/skills index on GitHub, read as it is now, never a copy released with
- * OpenFilm. The index names each skill's repository, its folder there and the commit it is pinned to (its index.json);
+ * The skills Discover shows: the orangefilm/skills index on GitHub, read as it is now, never a copy released with
+ * OrangeFilm. The index names each skill's repository, its folder there and the commit it is pinned to (its index.json);
  * each skill at that commit is kept here so Discover shows its picture and words without asking again, and works
  * offline with what it last read.
  *
@@ -13,11 +13,11 @@
  * index pins a newer commit, it says so (`update`); updating puts the old one in the trash. One the index no longer has
  * stays installed and works, said to be retired (`retired`); one not installed is gone from Discover.
  *
- *   ~/.openfilm/skill-catalog/index.json                       what the index said, and when it was read
- *   ~/.openfilm/skill-catalog/<owner>/<name>@<commit>/         a skill at the commit it named
- *   ~/.openfilm/skills-installed/<owner>-<name>/               an installed one, its `.source.json` beside it
+ *   ~/.orangefilm/skill-catalog/index.json                       what the index said, and when it was read
+ *   ~/.orangefilm/skill-catalog/<owner>/<name>@<commit>/         a skill at the commit it named
+ *   ~/.orangefilm/skills-installed/<owner>-<name>/               an installed one, its `.source.json` beside it
  *
- * OPENFILM_SKILLS_INDEX names another index: an https address, or a file on this computer.
+ * ORANGE_SKILLS_INDEX names another index: an https address, or a file on this computer.
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { cp, mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
@@ -30,7 +30,7 @@ import { moveToTrash } from './trash.mjs';
  * The index Discover reads: the Orange film-skill index, kept in its own repository (the sibling orange-film-skill checkout,
  * published as OWNER/orange-film-skill: index.json, skills/<id>/SKILL.md, examples/<id>/). `OWNER` stands in until
  * that repository is pushed and `commit` in its index.json is pinned.
- * It can be overridden with OPENFILM_SKILLS_INDEX: another https index, or an index.json on this computer
+ * It can be overridden with ORANGE_SKILLS_INDEX: another https index, or an index.json on this computer
  * (a local file path is read as it is, offline).
  */
 export const INDEX_URL = 'https://raw.githubusercontent.com/jerry-halo2026/orange-film-skill/master/index.json';
@@ -54,7 +54,7 @@ const repoOf = (repo) => {
 const catalogFolder = discoverFolder;
 
 /**
- * The entries of an index that are well formed (as openfilm/skills checks them); the rest are left out.
+ * The entries of an index that are well formed (as orangefilm/skills checks them); the rest are left out.
  * @param {unknown} index @returns {IndexEntry[]}
  */
 export function indexEntries(index) {
@@ -81,7 +81,7 @@ export function readCatalog() {
  * @returns {Promise<Catalog>}
  */
 export async function refreshCatalog({ signal, hosts, fetch: get = fetch } = {}) {
-  const from = process.env.OPENFILM_SKILLS_INDEX || INDEX_URL;
+  const from = process.env.ORANGE_SKILLS_INDEX || INDEX_URL;
   let index;
   if (/^https:\/\//.test(from)) {
     /* asked past any cache between (GitHub's raw files are cached for minutes): what the index says now */

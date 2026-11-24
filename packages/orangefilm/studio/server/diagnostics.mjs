@@ -6,9 +6,9 @@
  * Settings → Developer's diagnostic file: one zip with everything that says why something went wrong lately, for a
  * person to look at and then attach to an issue. The copied report is short; this is the rest of it:
  *
- *   report.txt          the report the page copies (`openfilm doctor`, the browser, the desktop app's agents)
+ *   report.txt          the report the page copies (`orangefilm doctor`, the browser, the desktop app's agents)
  *   problems.jsonl      the problems of the last KEEP_DAYS days (src/problems.mjs)
- *   logs/…              the last of each log Studio and the desktop app write (OPENFILM_APP_LOGS)
+ *   logs/…              the last of each log Studio and the desktop app write (ORANGE_APP_LOGS)
  *   turns/…             the logs of the turns the last agent problems were in. Unless `conversations`, only how they
  *                       went (turnLogForFile): never a word the person or the agent wrote, a tool's title, command,
  *                       input or output, or anything from the person's files
@@ -107,7 +107,7 @@ export async function codexLogAround(dir, times) {
   }
 }
 
-/** A name for the file, by the time: `OpenFilm diagnostics 2026-10-18 1013.zip`. @param {Date} now */
+/** A name for the file, by the time: `OrangeFilm diagnostics 2026-10-18 1013.zip`. @param {Date} now */
 export function diagnosticsName(now) {
   const pad = (/** @type {number} */ n) => String(n).padStart(2, '0');
   return `${PRODUCT_NAME} diagnostics ${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}${pad(now.getMinutes())}.zip`;
@@ -117,7 +117,7 @@ export function diagnosticsName(now) {
  * Write the diagnostic file; → where it is.
  * @param {{ report: string, conversations?: boolean, folder?: string, home?: string, appLogs?: string | null, now?: Date }} options
  */
-export async function exportDiagnostics({ report, conversations = false, folder = exportsDefault(), home = studioHomeDir(), appLogs = process.env.OPENFILM_APP_LOGS ?? null, now = new Date() }) {
+export async function exportDiagnostics({ report, conversations = false, folder = exportsDefault(), home = studioHomeDir(), appLogs = process.env.ORANGE_APP_LOGS ?? null, now = new Date() }) {
   /** @type {{ name: string, data: Buffer }[]} */
   const entries = [];
   const add = (/** @type {string} */ name, /** @type {string} */ text) => entries.push({ name, data: Buffer.from(text) });

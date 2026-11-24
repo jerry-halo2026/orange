@@ -142,7 +142,7 @@ export function createMaterialSearchAnswer({ service = null, availability = null
 
 /**
  * The service this installation can actually reach: the RPC over the local database, the embedder on this machine's
- * LM Studio, and the landed index for the third route. `null` when no tenant is configured (`OPENFILM_MEDIA_TENANT`).
+ * LM Studio, and the landed index for the third route. `null` when no tenant is configured (`ORANGE_MEDIA_TENANT`).
  * @param {{ env?: Record<string, string | undefined>, fetchImpl?: typeof fetch,
  *   psql?: (script: string) => Promise<any>, index?: (() => any) | null, indexDir?: string | null }} [options]
  */

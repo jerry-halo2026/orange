@@ -23,7 +23,7 @@ const invoke = (channel) => (opts) => ipcRenderer.invoke(channel, opts);
  * the ones the main process answers and the ones it says. It is written here as a list because a preload runs before
  * any module of the app's can be imported into it; `main.test.mjs` holds it equal to what `registerOrangeIpc`
  * registers, so a channel added on one side and not the other fails there rather than silently never arriving. The
- * channels OpenFilm came with keep the calls they had: this list neither lets them through nor keeps any of them out.
+ * channels OrangeFilm came with keep the calls they had: this list neither lets them through nor keeps any of them out.
  */
 const ORANGE_CHANNELS = Object.freeze([
   'desktop:auth-ui-state',
@@ -90,9 +90,9 @@ contextBridge.exposeInMainWorld('openfilmNative', {
     copyReport: () => ipcRenderer.invoke('desktop:diagnostics:copy'),
     saveOwnModel: (config) => ipcRenderer.invoke('desktop:agents:own-model', { config }),
     removeOwnModel: (id) => ipcRenderer.invoke('desktop:agents:own-model-remove', { id }),
-    /* the MCP servers the person added to it themselves, each let into OpenFilm or not (skills-ipc.mjs) */
+    /* the MCP servers the person added to it themselves, each let into OrangeFilm or not (skills-ipc.mjs) */
     mcp: (id) => ipcRenderer.invoke('desktop:agents:mcp', { id }),
-    /* the skills the person installed in it themselves, each let into OpenFilm or not */
+    /* the skills the person installed in it themselves, each let into OrangeFilm or not */
     skills: (id) => ipcRenderer.invoke('desktop:agents:skills', { id }),
     allowSkill: (id, name, allowed) => ipcRenderer.invoke('desktop:skills:allow', { agent: id, name, allowed: allowed === true }),
     allowMcp: (id, name, allowed) => ipcRenderer.invoke('desktop:agents:mcp-allow', { id, name, allowed: allowed === true }),
@@ -138,7 +138,7 @@ contextBridge.exposeInMainWorld('openfilmNative', {
     list: (project, agent) => ipcRenderer.invoke('desktop:skills:list', { project, agent }),
     texts: (project, agent, names) => ipcRenderer.invoke('desktop:skills:texts', { project, agent, names }),
     allow: (agent, name, allowed) => ipcRenderer.invoke('desktop:skills:allow', { agent, name, allowed }),
-    /* one of OpenFilm's skills turned on or off: the agents' sessions take it up */
+    /* one of OrangeFilm's skills turned on or off: the agents' sessions take it up */
     changed: () => ipcRenderer.invoke('desktop:skills:changed'),
     preview: (url) => ipcRenderer.invoke('desktop:skills:preview', { url }),
     /* a folder dropped (its path), or null: one picked in the system's dialog, with the page's words { title, button } */

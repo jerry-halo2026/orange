@@ -213,7 +213,7 @@ test('unconfigured service stays disabled, recovered tasks are shown, and late c
     ];
     for(const [code,en] of scenarios){mode='code:'+code;await page.reload();await page.getByText(en,{exact:true}).waitFor();assert.doesNotMatch(await page.locator('body').innerText(),/C:\\private\\secret\.mp4/);}
     mode='auth';await page.reload();await page.getByText('Your sign-in has expired. Please sign in again.',{exact:false}).waitFor();
-    await page.evaluate(()=>localStorage.setItem('openfilm.language','zh-CN'));
+    await page.evaluate(()=>localStorage.setItem('orangefilm.language','zh-CN'));
     for(const [code,,cn] of scenarios){mode='code:'+code;await page.reload();await page.getByText(cn,{exact:true}).waitFor();assert.doesNotMatch(await page.locator('body').innerText(),/C:\\private\\secret\.mp4/);}
     mode='auth';await page.reload();await page.getByText('登录已失效，请重新登录。',{exact:false}).waitFor();
   }finally{releasePoll?.();releaseCancel?.();await browser?.close();if(http.listening)await new Promise(done=>http.close(done));await vite.close();}

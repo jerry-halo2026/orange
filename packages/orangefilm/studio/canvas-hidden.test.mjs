@@ -14,16 +14,16 @@ import { startStudio } from './server/server.mjs';
 test('back on the edit, nothing of the canvas shows over the panes, and it comes back as it was', { timeout: 90_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-canvas-hidden-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Board');
+    const root = join(process.env.ORANGE_LIBRARY, 'Board');
     await mkdir(join(root, '.film'), { recursive: true });
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: [] }));
     await writeFile(join(root, '.film', 'canvas.json'), JSON.stringify({ nodes: [{ id: 'n1', x: 0, y: 0, w: 350, h: 200, text: 'A note on the board' }], edges: [] }));
     const project = await openProject(root);
-    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, locale: 'en-US', reducedMotion: 'reduce' });
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);

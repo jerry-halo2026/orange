@@ -7,7 +7,7 @@
  * timeline, in its order. Nothing on it is in the film until it is put there. Kept in `.film/canvas.json` (lib/canvas,
  * studio/server/canvas.mjs), written a moment after each change.
  *
- * A node that makes something does it with the person's own services (`openfilm get`, as their agent does), asked its
+ * A node that makes something does it with the person's own services (`orangefilm get`, as their agent does), asked its
  * words and what is wired into it, in the wires' order. Each time it makes one, that is a new file in assets/ and a
  * new version of the node; when what goes into it changes, it says so. Being made goes on with the board closed.
  *
@@ -60,8 +60,8 @@ import { FRAME_COLOR, NODE_TYPES } from './nodes';
 const SAVE_AFTER_MS = 600;
 /** the project's first board, and the one shown last in this browser (a convenience: none kept, the first) */
 const MAIN_BOARD = 'main';
-const lastBoard = (project: string) => { try { return localStorage.getItem(`openfilm.canvas.board.${project}`) ?? MAIN_BOARD; } catch { return MAIN_BOARD; } };
-const keepLastBoard = (project: string, board: string) => { try { localStorage.setItem(`openfilm.canvas.board.${project}`, board); } catch { /* not kept */ } };
+const lastBoard = (project: string) => { try { return localStorage.getItem(`orangefilm.canvas.board.${project}`) ?? MAIN_BOARD; } catch { return MAIN_BOARD; } };
+const keepLastBoard = (project: string, board: string) => { try { localStorage.setItem(`orangefilm.canvas.board.${project}`, board); } catch { /* not kept */ } };
 /** a group's room around what is in it, and above it for its name */
 const GROUP_PAD = 32;
 const GROUP_HEAD = 40;
@@ -224,7 +224,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     return () => { live = false; };
   }, [projectId, boardId, loads]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* what an agent changed (`openfilm canvas apply`) comes onto the board at once, and ⌘Z takes it back as any change.
+  /* what an agent changed (`orangefilm canvas apply`) comes onto the board at once, and ⌘Z takes it back as any change.
      A turned-back turn (`reset`: the app put a chat turn's files back) is another matter: the board is read again as
      the files have it, nothing of it goes into the history (⌘Z would otherwise bring back the files the turn removed),
      and the boards are listed again, a turn having made or removed some. */
@@ -1259,7 +1259,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
           minZoom={0.1}
           maxZoom={4}
           proOptions={{ hideAttribution: true }}
-          className={`openfilm-canvas transition-opacity duration-150 ${fitted ? 'opacity-100' : 'opacity-0'} ${tool === 'hand' ? 'cursor-grab' : ''}`}
+          className={`orangefilm-canvas transition-opacity duration-150 ${fitted ? 'opacity-100' : 'opacity-0'} ${tool === 'hand' ? 'cursor-grab' : ''}`}
         >
           <Dots />
           {map ? (
@@ -1456,7 +1456,7 @@ function Preview({ doc, fileUrl }: { doc: CanvasDoc; fileUrl: (path: string) => 
         minZoom={0.1}
         maxZoom={4}
         proOptions={{ hideAttribution: true }}
-        className="openfilm-canvas"
+        className="orangefilm-canvas"
       >
         <Dots />
       </ReactFlow>

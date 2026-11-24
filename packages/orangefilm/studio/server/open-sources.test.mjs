@@ -13,13 +13,13 @@ import { startStudio } from './server.mjs';
 let studio, scratch;
 before(async () => {
   scratch = mkdtempSync(join(tmpdir(), 'of-sources-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  process.env.OPENFILM_EXAMPLES_INDEX = join(scratch, 'examples.json');
-  writeFileSync(process.env.OPENFILM_EXAMPLES_INDEX, JSON.stringify({ examples: [{ folder: 'one-prompt', title: 'One Prompt', duration: '1:29' }] }));
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_EXAMPLES_INDEX = join(scratch, 'examples.json');
+  writeFileSync(process.env.ORANGE_EXAMPLES_INDEX, JSON.stringify({ examples: [{ folder: 'one-prompt', title: 'One Prompt', duration: '1:29' }] }));
   studio = await startStudio({ port: 0, openBrowser: () => {} });
 });
-after(() => { delete process.env.OPENFILM_EXAMPLES_INDEX; return studio.close(); });
+after(() => { delete process.env.ORANGE_EXAMPLES_INDEX; return studio.close(); });
 
 const api = async (path, { method = 'GET', body } = {}) => {
   const res = await fetch(`${studio.origin}/api/${path}`, {
@@ -57,24 +57,24 @@ test('a fetch: a wrong address is refused at once, with its code; an unknown job
 
 test('the examples, from the index Studio is pointed at', async () => {
   const { body } = await api('examples');
-  assert.deepEqual(body.examples.map((e) => [e.id, e.duration, e.url]), [['one-prompt', 89, 'https://github.com/openfilm/examples/tree/main/one-prompt']]);
+  assert.deepEqual(body.examples.map((e) => [e.id, e.duration, e.url]), [['one-prompt', 89, 'https://github.com/orangefilm/examples/tree/main/one-prompt']]);
 });
 
-test('an examples.json on this computer, named by OPENFILM_EXAMPLES_INDEX, lists its examples', async () => {
+test('an examples.json on this computer, named by ORANGE_EXAMPLES_INDEX, lists its examples', async () => {
   const other = join(scratch, 'other-examples.json');
   writeFileSync(other, JSON.stringify({ examples: [
     { folder: 'orange-launch-15s', title: 'Orange launch', duration: '0:15' },
     { folder: 'orange-recap-30s', title: 'Orange recap', duration: 30 },
   ] }));
-  const was = process.env.OPENFILM_EXAMPLES_INDEX;
-  process.env.OPENFILM_EXAMPLES_INDEX = other;
+  const was = process.env.ORANGE_EXAMPLES_INDEX;
+  process.env.ORANGE_EXAMPLES_INDEX = other;
   try {
     const { body } = await api('examples');
     assert.deepEqual(body.examples.map((e) => [e.id, e.duration, e.poster]), [
       ['orange-launch-15s', 15, null],
       ['orange-recap-30s', 30, null],
     ], 'listed from the file, its posters served from beside it');
-  } finally { process.env.OPENFILM_EXAMPLES_INDEX = was; }
+  } finally { process.env.ORANGE_EXAMPLES_INDEX = was; }
 });
 
 test('a project whose folder moved is located, though its folder is gone; it opens again', async () => {

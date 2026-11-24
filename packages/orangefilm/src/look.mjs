@@ -1,7 +1,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-// openfilm look: the agent's eyes. Draws the film (or one frame, or a range), checks it while drawing, and prints
+// orangefilm look: the agent's eyes. Draws the film (or one frame, or a range), checks it while drawing, and prints
 // what is wrong before the path of the picture.
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -45,7 +45,7 @@ export async function look(args, opts = {}) {
   try {
     // The contract
     if (m.duration != null && !(Number.isFinite(m.duration) && m.duration > 0)) errors.push('film.duration, when set, must be a finite number of seconds > 0');
-    if (m.duration == null && at == null && !range) throw new UsageError('this page has no duration, so it has no end: say what to look at, a range (openfilm look 0-6) or a time (openfilm look 2)');
+    if (m.duration == null && at == null && !range) throw new UsageError('this page has no duration, so it has no end: say what to look at, a range (orangefilm look 0-6) or a time (orangefilm look 2)');
     if (!(Number.isInteger(m.width) && m.width > 0 && Number.isInteger(m.height) && m.height > 0)) errors.push('film.width and film.height, when set, must both be positive whole numbers of CSS pixels');
     for (const clip of m.sounds) if (!existsSync(fileOf(s.root, s.entry, clip.src))) errors.push(`sound not found: ${clip.src}`);
     /* a page plays no sound of its own: what it still lists in `audio` is heard nowhere until it is a clip */
@@ -359,7 +359,7 @@ async function lookRendered(target, at, range, opts) {
   const { dir, name, isFilm } = locate(target, opts.root);
   const made = ['.mp4', '.mov', '.webm'].map((ext) => join(dir, `${name}${ext}`)).filter((f) => existsSync(f))
     .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs);
-  if (!made.length) throw new UsageError(`${name} has not been rendered yet: look --full watches every frame of the rendered film, so render it first (openfilm render), or give look a video file with --full`);
+  if (!made.length) throw new UsageError(`${name} has not been rendered yet: look --full watches every frame of the rendered film, so render it first (orangefilm render), or give look a video file with --full`);
   const result = await lookMedia(made[0], at, range, opts);
   const source = join(dir, isFilm ? 'film.html' : 'index.html');
   /* the rendered film is the film as it was then */

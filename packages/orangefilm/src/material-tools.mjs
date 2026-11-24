@@ -17,7 +17,7 @@
  * takes the slot `material.batches` held — a batch's availability is what `material.collections({batch})` answers
  * anyway. `planMaterialToolSurface` writes the whole arithmetic down; see that function.
  *
- * Result envelope is the MCP server's own (`openfilm-mcp.mjs`): `content` for prose, `structuredContent` for the agent.
+ * Result envelope is the MCP server's own (`orangefilm-mcp.mjs`): `content` for prose, `structuredContent` for the agent.
  */
 import { defaultIndexDir, readMaterialIndex } from './material-index-build.mjs';
 import { MATERIAL_SEARCH_CAPS, MATERIAL_SEARCH_CAPS_CONTRACT, normaliseFilters } from './material-search.mjs';
@@ -25,9 +25,9 @@ import { MATERIAL_SEARCH_CAPS, MATERIAL_SEARCH_CAPS_CONTRACT, normaliseFilters }
 /** The hard cap on the MCP tool surface. */
 export const TOOL_BUDGET = 5;
 
-/** The names the desktop server's `TOOL_DEFINITIONS` carries today (`apps/desktop/src/openfilm-mcp.mjs`). */
+/** The names the desktop server's `TOOL_DEFINITIONS` carries today (`apps/desktop/src/orangefilm-mcp.mjs`). */
 export const EXISTING_TOOL_NAMES = Object.freeze([
-  'materials.search', 'materials.take', 'wiki.video', 'wiki.timeline', 'wiki.shot', 'timeline.insert_clip', 'openfilm.look',
+  'materials.search', 'materials.take', 'wiki.video', 'wiki.timeline', 'wiki.shot', 'timeline.insert_clip', 'orangefilm.look',
 ]);
 
 /** The tools this module adds, in the order a reader meets them. */
@@ -35,7 +35,7 @@ export const MATERIAL_TOOL_NAMES = Object.freeze(['material.search', 'material.c
 
 /**
  * The five slots as they are served, in the order an agent reads them: the three read-only tools, then the two write
- * verbs. `planMaterialToolSurface` returns this order, and `apps/desktop/src/openfilm-mcp.mjs` serves it — the same
+ * verbs. `planMaterialToolSurface` returns this order, and `apps/desktop/src/orangefilm-mcp.mjs` serves it — the same
  * list in both places is the whole point of writing it down once here.
  */
 export const MATERIAL_BUDGET_SURFACE = Object.freeze([...MATERIAL_TOOL_NAMES, 'materials.take', 'timeline.insert_clip']);
@@ -121,7 +121,7 @@ const entriesOf = (group) => {
   return (Array.isArray(group?.videoIds) ? group.videoIds : []).map((/** @type {any} */ id) => ({ videoId: String(id), name: '' }));
 };
 
-/** `~/.openfilm-dev/material-index/index.json`, or whatever `dir` names. */
+/** `~/.orangefilm-dev/material-index/index.json`, or whatever `dir` names. */
 const loadIndex = (readIndex, dir, home) => readIndex(dir ?? defaultIndexDir({ home }));
 
 const missing = (tool, dir) => answer({
@@ -180,7 +180,7 @@ export function createMaterialTools({
       if (typeof search !== 'function') {
         return answer({
           ok: false, code: 'not-configured', tool: 'material.search',
-          message: 'The material search is not configured on this machine (OPENFILM_MEDIA_TENANT).',
+          message: 'The material search is not configured on this machine (ORANGE_MEDIA_TENANT).',
         });
       }
       try {
@@ -302,8 +302,8 @@ export async function callMaterialTool(name, args = {}, options = {}) {
  *  1. **merged**: `wiki.video` + `wiki.timeline` + `wiki.shot` → `wiki.read` (one tool, `mode` picks), −2 slots.
  *  2. **absorbed**: `materials.search` → `material.search`, −1 slot: one search tool for the account's own documents,
  *     and it is the better one — vectors over the whole library instead of a name filter over one collection.
- *  3. **retired**: `wiki.read` and `openfilm.look` (+3 material tools + `materials.take` + `timeline.insert_clip` = 5).
- *     `openfilm.look` draws a PNG for a person, not for an agent; `wiki.read` belongs to the wiki surface, which this
+ *  3. **retired**: `wiki.read` and `orangefilm.look` (+3 material tools + `materials.take` + `timeline.insert_clip` = 5).
+ *     `orangefilm.look` draws a PNG for a person, not for an agent; `wiki.read` belongs to the wiki surface, which this
  *     branch does not serve.
  *
  * The third material slot was `material.batches` until this branch: a batch's own facts are what
@@ -315,7 +315,7 @@ export async function callMaterialTool(name, args = {}, options = {}) {
  * @param {readonly string[]} [existing] the names the server carries now
  * @param {{retire?: readonly string[]}} [options]
  */
-export function planMaterialToolSurface(existing = EXISTING_TOOL_NAMES, { retire = ['wiki.read', 'openfilm.look'] } = {}) {
+export function planMaterialToolSurface(existing = EXISTING_TOOL_NAMES, { retire = ['wiki.read', 'orangefilm.look'] } = {}) {
   const kept = [...existing];
   const applied = [];
   const drop = (name) => {

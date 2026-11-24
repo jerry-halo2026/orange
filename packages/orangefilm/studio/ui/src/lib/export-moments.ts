@@ -86,7 +86,7 @@ export function momentSeconds(list: readonly number[]): number[] {
   return list.map((ms) => Math.round(ms) / 1000);
 }
 
-const STORE_KEY = 'openfilm.exportMoments.v1';
+const STORE_KEY = 'orangefilm.exportMoments.v1';
 /** The projects whose picks are kept: the latest ones. */
 const PROJECTS_KEPT = 50;
 

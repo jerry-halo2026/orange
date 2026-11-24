@@ -19,9 +19,9 @@ export interface WorkspaceLayout {
   timelineHeight: number | null; chatWidth: number;
 }
 export interface SavedWorkspace { id: string; name: string; layout: WorkspaceLayout }
-export const WORKSPACES_KEY = 'openfilm.workspaces.v2';
-export const LEGACY_WORKSPACES_KEY = 'openfilm.workspaces.v1';
-export const CURRENT_WORKSPACE_KEY = 'openfilm.workspace.current.v2';
+export const WORKSPACES_KEY = 'orangefilm.workspaces.v2';
+export const LEGACY_WORKSPACES_KEY = 'orangefilm.workspaces.v1';
+export const CURRENT_WORKSPACE_KEY = 'orangefilm.workspace.current.v2';
 export const MAX_WORKSPACES = 24;
 export const DEFAULT_WORKSPACE: WorkspaceLayout = {
   mode: 'edit', tree: null, assets: false, layers: false, timeline: true, inspector: true, chat: true,
@@ -99,10 +99,10 @@ export function readWorkspaceProfiles(storage: Pick<Storage, 'getItem'>): Worksp
   try {
     const raw = JSON.parse(storage.getItem(CURRENT_WORKSPACE_KEY) ?? 'null');
     if (raw?.version === 2) return { edit: readWorkspaceLayout({ ...raw.edit, mode:'edit' }) ?? defaults.edit, canvas: readWorkspaceLayout({ ...raw.canvas, mode:'canvas' }) ?? defaults.canvas };
-    const flag = (key: string, fallback: boolean) => { const v = storage.getItem(`openfilm.project.${key}`); return v === null ? fallback : v !== '0'; };
-    const size = (key: string, fallback: number) => { const n = Number(storage.getItem(`openfilm.project.${key}`)); return Number.isFinite(n) && n > 0 ? n : fallback; };
+    const flag = (key: string, fallback: boolean) => { const v = storage.getItem(`orangefilm.project.${key}`); return v === null ? fallback : v !== '0'; };
+    const size = (key: string, fallback: number) => { const n = Number(storage.getItem(`orangefilm.project.${key}`)); return Number.isFinite(n) && n > 0 ? n : fallback; };
     const legacy = readWorkspaceLayout({ ...defaults.edit, assets: flag('assets', false), layers: flag('layers', false), timeline: flag('timeline', true), inspector: flag('inspector', true),
-      assetsWidth: size('assetsW', 320), layersWidth: size('layersW', 240), inspectorWidth: size('inspectorW', 360), timelineHeight: storage.getItem('openfilm.project.timelineH') ? size('timelineH', 200) : null });
+      assetsWidth: size('assetsW', 320), layersWidth: size('layersW', 240), inspectorWidth: size('inspectorW', 360), timelineHeight: storage.getItem('orangefilm.project.timelineH') ? size('timelineH', 200) : null });
     return { ...defaults, edit: legacy ?? defaults.edit };
   } catch { return defaults; }
 }

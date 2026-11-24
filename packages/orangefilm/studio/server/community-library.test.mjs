@@ -14,7 +14,7 @@ import { findInLibrary } from '../../src/library-search.mjs';
 const hex = (bytes) => createHash('sha256').update(bytes).digest('hex');
 
 test('community catalog makes approved items searchable, verifies bytes and stops serving withdrawn cache entries', async (t) => {
-  const cache = mkdtempSync(join(tmpdir(), 'openfilm-community-'));
+  const cache = mkdtempSync(join(tmpdir(), 'orangefilm-community-'));
   const requests = new Map();
   const wav = Buffer.from('published sound');
   const sound = 'community-sound-test-tone.m4a';
@@ -33,13 +33,13 @@ test('community catalog makes approved items searchable, verifies bytes and stop
     res.writeHead(404).end();
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-  const before = [process.env.OPENFILM_LIBRARY_CACHE, process.env.OPENFILM_COMMUNITY_LIBRARY_URL];
-  process.env.OPENFILM_LIBRARY_CACHE = cache;
-  process.env.OPENFILM_COMMUNITY_LIBRARY_URL = `http://127.0.0.1:${server.address().port}`;
+  const before = [process.env.ORANGE_LIBRARY_CACHE, process.env.ORANGE_COMMUNITY_LIBRARY_URL];
+  process.env.ORANGE_LIBRARY_CACHE = cache;
+  process.env.ORANGE_COMMUNITY_LIBRARY_URL = `http://127.0.0.1:${server.address().port}`;
   t.after(async () => {
     server.closeAllConnections();
     await new Promise((resolve) => server.close(resolve));
-    for (const [i, key] of ['OPENFILM_LIBRARY_CACHE', 'OPENFILM_COMMUNITY_LIBRARY_URL'].entries()) {
+    for (const [i, key] of ['ORANGE_LIBRARY_CACHE', 'ORANGE_COMMUNITY_LIBRARY_URL'].entries()) {
       if (before[i] == null) delete process.env[key]; else process.env[key] = before[i];
     }
     rmSync(cache, { recursive: true, force: true });

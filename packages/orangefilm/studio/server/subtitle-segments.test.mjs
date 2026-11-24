@@ -40,10 +40,10 @@ function wellFormed(line, pieces, cap = SUBTITLE_SEGMENT_RULES.maxCells) {
 }
 
 test('the two lines that started it: a clause per subtitle, its comma gone', () => {
-  assert.deepEqual(texts(cut('它叫 OpenFilm，免费开源，MIT 协议。', 3500)), ['它叫 OpenFilm', '免费开源', 'MIT 协议']);
+  assert.deepEqual(texts(cut('它叫 OrangeFilm，免费开源，MIT 协议。', 3500)), ['它叫 OrangeFilm', '免费开源', 'MIT 协议']);
   assert.deepEqual(texts(cut('为了不再剪视频，我做了一个通用的视频agent', 3500)), ['为了不再剪视频', '我做了一个通用的视频agent']);
   /* the same, timed by a voice: the same cuts, each starting with its first word */
-  for (const text of ['它叫 OpenFilm，免费开源，MIT 协议。', '为了不再剪视频，我做了一个通用的视频agent']) {
+  for (const text of ['它叫 OrangeFilm，免费开源，MIT 协议。', '为了不再剪视频，我做了一个通用的视频agent']) {
     const line = spoken(text);
     const pieces = segmentLine(line);
     wellFormed(line, pieces);
@@ -125,7 +125,7 @@ test('times: a subtitle holds 200 ms after its last word, never into the next; s
   const marks = [[0, 0], [4, 300], [8, 600], [15, 2000], [20, 2300], [25, 2600]].map(([index, startMs]) => ({ index, startMs }));
   assert.deepEqual(cut(text, 3200, marks).map((p) => [p.startMs, p.endMs]), [[0, 1152], [2000, 3200]]);
   /* untimed: the pieces share the line by length and a comma's pause, too short a gap to show: closed */
-  const shared = cut('它叫 OpenFilm，免费开源，MIT 协议。', 3500);
+  const shared = cut('它叫 OrangeFilm，免费开源，MIT 协议。', 3500);
   shared.slice(1).forEach((p, i) => assert.equal(p.startMs, shared[i].endMs));
   assert.equal(shared[0].startMs, 0);
   assert.equal(shared.at(-1).endMs, 3500, 'the last ends with the line');
@@ -133,7 +133,7 @@ test('times: a subtitle holds 200 ms after its last word, never into the next; s
   const slow = cut('这个非常慢的句子说了很久很久', 12000);
   assert.ok(slow.length >= 2 && slow.every((p) => p.endMs - p.startMs <= SUBTITLE_SEGMENT_RULES.maxMs), JSON.stringify(slow));
   /* each piece keeps its own timed words, from its start */
-  const line = spoken('它叫 OpenFilm，免费开源，MIT 协议。');
+  const line = spoken('它叫 OrangeFilm，免费开源，MIT 协议。');
   for (const p of segmentLine(line)) {
     assert.equal(p.marks[0].index, 0);
     assert.deepEqual(p.marks.map((m) => p.text.slice(m.index)[0]), line.marks.filter((m) => m.index >= p.from && m.index < p.to).map((m) => line.text[m.index]));
@@ -142,7 +142,7 @@ test('times: a subtitle holds 200 ms after its last word, never into the next; s
 
 test('the end of a subtitle: Chinese drops ，。、；：, keeps ？！… and quotes; Latin keeps its punctuation', () => {
   assert.equal(subtitleEnd('免费开源，'), '免费开源');
-  assert.equal(subtitleEnd('它叫 OpenFilm，'), '它叫 OpenFilm');
+  assert.equal(subtitleEnd('它叫 OrangeFilm，'), '它叫 OrangeFilm');
   assert.equal(subtitleEnd('真的吗？'), '真的吗？');
   assert.equal(subtitleEnd('等一下……'), '等一下……');
   assert.equal(subtitleEnd('他说：“走吧。”'), '他说：“走吧。”');
@@ -151,32 +151,32 @@ test('the end of a subtitle: Chinese drops ，。、；：, keeps ？！… and 
 });
 
 test('a translation is cut to follow the original\'s pieces, at its own clause marks, or spans them when it cannot be', () => {
-  const pieces = cut('它叫 OpenFilm，免费开源，MIT 协议。', 3500);
-  assert.deepEqual(alignTranslation('It\'s called OpenFilm, free and open source, MIT licensed.', pieces).map((p) => p.text),
-    ['It\'s called OpenFilm,', 'free and open source,', 'MIT licensed.']);
-  assert.deepEqual(alignTranslation('It is called OpenFilm and it is free open source software under the MIT license', pieces).map((p) => p.text),
-    ['It is called OpenFilm', 'and it is free open source software', 'under the MIT license']);
+  const pieces = cut('它叫 OrangeFilm，免费开源，MIT 协议。', 3500);
+  assert.deepEqual(alignTranslation('It\'s called OrangeFilm, free and open source, MIT licensed.', pieces).map((p) => p.text),
+    ['It\'s called OrangeFilm,', 'free and open source,', 'MIT licensed.']);
+  assert.deepEqual(alignTranslation('It is called OrangeFilm and it is free open source software under the MIT license', pieces).map((p) => p.text),
+    ['It is called OrangeFilm', 'and it is free open source software', 'under the MIT license']);
   /* too short to cut: the whole translation over every piece */
-  const one = alignTranslation('It\'s OpenFilm.', pieces);
-  assert.deepEqual(one.map((p) => p.text), ['It\'s OpenFilm.', 'It\'s OpenFilm.', 'It\'s OpenFilm.']);
-  assert.deepEqual(one[0], { text: 'It\'s OpenFilm.', from: 0, to: 14 });
+  const one = alignTranslation('It\'s OrangeFilm.', pieces);
+  assert.deepEqual(one.map((p) => p.text), ['It\'s OrangeFilm.', 'It\'s OrangeFilm.', 'It\'s OrangeFilm.']);
+  assert.deepEqual(one[0], { text: 'It\'s OrangeFilm.', from: 0, to: 16 });
   /* the other way: Chinese for English */
   const en = cut('To stop editing videos, I built a general video agent.', 4000);
   assert.deepEqual(alignTranslation('为了不再剪视频，我做了一个通用的视频 agent。', en).map((p) => subtitleEnd(p.text)), ['为了不再剪视频', '我做了一个通用的视频 agent']);
 });
 
 test('a correction of one piece goes into its words in the line; the other pieces keep their times', () => {
-  const line = spoken('它叫 OpenFilm，免费开源，MIT 协议。');
+  const line = spoken('它叫 OrangeFilm，免费开源，MIT 协议。');
   const pieces = segmentLine(line);
   const fixed = replacePiece(line, pieces[1], '完全免费', pieces[1].startMs);
-  assert.equal(fixed.text, '它叫 OpenFilm，完全免费，MIT 协议。', 'the comma the subtitle hid is put back');
+  assert.equal(fixed.text, '它叫 OrangeFilm，完全免费，MIT 协议。', 'the comma the subtitle hid is put back');
   const after = line.marks.filter((m) => m.index >= pieces[2].from);
   assert.deepEqual(fixed.marks.filter((m) => m.index >= fixed.text.indexOf('MIT')).map((m) => m.startMs), after.map((m) => m.startMs));
   assert.ok(fixed.marks.some((m) => m.index === pieces[1].from && m.startMs === pieces[1].startMs), 'the corrected words start when the piece did');
-  assert.deepEqual(texts(segmentLine({ ...line, ...fixed })), ['它叫 OpenFilm', '完全免费', 'MIT 协议']);
+  assert.deepEqual(texts(segmentLine({ ...line, ...fixed })), ['它叫 OrangeFilm', '完全免费', 'MIT 协议']);
   /* new words with their own mark keep it; emptied, the piece goes */
-  assert.equal(replacePiece(line, pieces[1], '免费？', 0).text, '它叫 OpenFilm，免费？MIT 协议。');
-  assert.equal(replacePiece(line, pieces[2], '').text, '它叫 OpenFilm，免费开源，');
+  assert.equal(replacePiece(line, pieces[1], '免费？', 0).text, '它叫 OrangeFilm，免费？MIT 协议。');
+  assert.equal(replacePiece(line, pieces[2], '').text, '它叫 OrangeFilm，免费开源，');
   assert.equal(replacePiece({ text: 'Hello there, how are you, my friend', startMs: 0, endMs: 3000 }, { from: 13, to: 25 }, '').text, 'Hello there, my friend');
 });
 

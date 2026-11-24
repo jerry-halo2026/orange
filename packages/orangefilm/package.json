@@ -24,12 +24,10 @@
   ],
   "type": "module",
   "bin": {
-    "openfilm": "bin/openfilm.mjs",
-    "orangefilm": "bin/openfilm.mjs"
+    "orangefilm": "bin/orangefilm.mjs"
   },
   "exports": {
     "./development-isolation": "./src/development-isolation.mjs",
-    "./orange-env": "./src/orange-env.mjs",
     "./home-migration": "./src/home-migration.mjs",
     "./locations": "./src/locations.mjs",
     "./film-doc": "./src/film-doc.mjs",

@@ -182,7 +182,7 @@ const en: Words = {
   },
   assetDrawer: {
     mineEmpty: 'Import one from the skills index or a folder on this computer; every project can use it.',
-    mineEmptyCli: 'Run openfilm skill add with a skill from the skills index, or a folder; every project can use it.',
+    mineEmptyCli: 'Run orangefilm skill add with a skill from the skills index, or a folder; every project can use it.',
   },
 };
 
@@ -350,7 +350,7 @@ const zhCN: Words = {
   },
   assetDrawer: {
     mineEmpty: '从技能索引或本地文件夹导入，导入后所有项目都能用。',
-    mineEmptyCli: '在终端运行 openfilm skill add，从技能索引或文件夹导入，所有项目都能用。',
+    mineEmptyCli: '在终端运行 orangefilm skill add，从技能索引或文件夹导入，所有项目都能用。',
   },
 };
 
@@ -372,7 +372,7 @@ const ja: Words = {
   },
   assetDrawer: {
     mineEmpty: 'スキル索引やこのパソコンのフォルダからインポートでき、すべてのプロジェクトで使えます。',
-    mineEmptyCli: 'openfilm skill add でスキル索引やフォルダからインポートでき、すべてのプロジェクトで使えます。',
+    mineEmptyCli: 'orangefilm skill add でスキル索引やフォルダからインポートでき、すべてのプロジェクトで使えます。',
   },
 };
 
@@ -393,7 +393,7 @@ const ko: Words = {
   },
   assetDrawer: {
     mineEmpty: '스킬 색인이나 이 컴퓨터의 폴더에서 가져오면 모든 프로젝트에서 쓸 수 있습니다.',
-    mineEmptyCli: 'openfilm skill add로 스킬 색인이나 폴더에서 가져오면 모든 프로젝트에서 쓸 수 있습니다.',
+    mineEmptyCli: 'orangefilm skill add로 스킬 색인이나 폴더에서 가져오면 모든 프로젝트에서 쓸 수 있습니다.',
   },
 };
 
@@ -415,7 +415,7 @@ const es: Words = {
   },
   assetDrawer: {
     mineEmpty: 'Importa una del índice de skills o de una carpeta de este equipo; todos los proyectos pueden usarla.',
-    mineEmptyCli: 'Ejecuta openfilm skill add con una skill del índice o una carpeta; todos los proyectos pueden usarla.',
+    mineEmptyCli: 'Ejecuta orangefilm skill add con una skill del índice o una carpeta; todos los proyectos pueden usarla.',
   },
 };
 

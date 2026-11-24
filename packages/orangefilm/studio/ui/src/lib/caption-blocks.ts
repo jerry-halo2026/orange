@@ -22,7 +22,7 @@ import type { TimelineBlock, TimelineTrack } from './timeline-layout.ts';
 
 const PREFIX = 'cue:';
 /** A stand-in's src: a still, which any length suits (ops.mjs reads it as one). */
-const STAND_IN = 'openfilm-cue.png';
+const STAND_IN = 'orangefilm-cue.png';
 
 /** A cue kept apart from its file (copied, then cut from it): its words, times and settings, and its own look. */
 export type KeptCue = { cue: VttCue; rule: Record<string, string> };

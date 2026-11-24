@@ -21,16 +21,16 @@ before(() => { fixture = mkdtempSync(join(testRoot('isolation'), 'desktop-isolat
 after(() => rmSync(fixture, { recursive: true, force: true }));
 function declaration() {
     const config = { baseRoot: join(fixture, 'approved'), instanceId: 'instance-a', taskId: 'T01', attemptId: 'attempt-1', ports: { studio: 18471, film: 18472 } };
-    return { OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(config)).toString('base64url'), OPENFILM_ISOLATION_ROOT: config.baseRoot };
+    return { ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(config)).toString('base64url'), ORANGE_ISOLATION_ROOT: config.baseRoot };
 }
 test('launcher and child environment carry identical isolated native paths despite legacy extras', () => {
     const source = declaration();
     const launched = launcherEnvironment(source, process.env.PATH);
-    assert.equal(launched.OPENFILM_ISOLATION_PROFILE, source.OPENFILM_ISOLATION_PROFILE);
-    const child = childEnvironment({ source: launched, shell: { PATH: process.env.PATH }, extra: { OPENFILM_HOME: 'legacy', OPENFILM_SHARED_HOME: 'official' } });
-    assert.equal(child.OPENFILM_HOME, join(source.OPENFILM_ISOLATION_ROOT, 'instance-a', 'T01', 'attempt-1', 'home'));
-    assert.equal(child.OPENFILM_SHARED_HOME, join(source.OPENFILM_ISOLATION_ROOT, 'instance-a', 'T01', 'attempt-1', 'shared-home'));
-    assert.equal(child.TEMP, join(source.OPENFILM_ISOLATION_ROOT, 'instance-a', 'T01', 'attempt-1', 'temp'));
+    assert.equal(launched.ORANGE_ISOLATION_PROFILE, source.ORANGE_ISOLATION_PROFILE);
+    const child = childEnvironment({ source: launched, shell: { PATH: process.env.PATH }, extra: { ORANGE_HOME: 'legacy', ORANGE_SHARED_HOME: 'official' } });
+    assert.equal(child.ORANGE_HOME, join(source.ORANGE_ISOLATION_ROOT, 'instance-a', 'T01', 'attempt-1', 'home'));
+    assert.equal(child.ORANGE_SHARED_HOME, join(source.ORANGE_ISOLATION_ROOT, 'instance-a', 'T01', 'attempt-1', 'shared-home'));
+    assert.equal(child.TEMP, join(source.ORANGE_ISOLATION_ROOT, 'instance-a', 'T01', 'attempt-1', 'temp'));
 });
 test('source launcher retains only the Orange auth file pointer needed by the isolated desktop', () => {
     const pointer = join(fixture, 'auth-config.json');
@@ -55,7 +55,7 @@ test('invalid or packaged profile creates no directories and changes no Electron
 });
 test('Electron validates derived appData aliases before the first directory creation', async () => {
     const { mkdirSync, symlinkSync } = await import('node:fs');
-    const { readIsolationProfile } = await import('openfilm/development-isolation');
+    const { readIsolationProfile } = await import('orangefilm/development-isolation');
     const env = declaration();
     const p = readIsolationProfile(env);
     mkdirSync(p.paths.userData, { recursive: true });

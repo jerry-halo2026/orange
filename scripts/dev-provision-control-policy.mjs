@@ -22,11 +22,11 @@
  *     install/update, never used in production;
  *   - one file per checkout (the path is derived from this script's location, exactly
  *     as `isolation-control-policy.mjs` derives it), not per user or per machine;
- *   - no defaults, no guessing: `--base-root` or `OPENFILM_ISOLATION_ROOT` is required.
+ *   - no defaults, no guessing: `--base-root` or `ORANGE_ISOLATION_ROOT` is required.
  *
  * Usage:
  *   node scripts/dev-provision-control-policy.mjs --base-root <absolute dir>
- *   OPENFILM_ISOLATION_ROOT=<absolute dir> node scripts/dev-provision-control-policy.mjs
+ *   ORANGE_ISOLATION_ROOT=<absolute dir> node scripts/dev-provision-control-policy.mjs
  *   node scripts/dev-provision-control-policy.mjs --check [--base-root <absolute dir>]
  *
  * Exit codes:
@@ -48,7 +48,7 @@ const fold = value => (process.platform === 'win32' ? value.toLowerCase() : valu
 
 const USAGE = `Usage:
   node scripts/dev-provision-control-policy.mjs --base-root <absolute dir>
-  OPENFILM_ISOLATION_ROOT=<absolute dir> node scripts/dev-provision-control-policy.mjs
+  ORANGE_ISOLATION_ROOT=<absolute dir> node scripts/dev-provision-control-policy.mjs
   node scripts/dev-provision-control-policy.mjs --check [--base-root <absolute dir>]
 
 Writes ${policyPath}
@@ -75,9 +75,9 @@ for (let i = 0; i < args.length; i++) {
     flagRoot = args[++i];
   } else fail(2, `unknown argument: ${arg}\n\n${USAGE}`);
 }
-const envRoot = process.env.OPENFILM_ISOLATION_ROOT ?? null;
+const envRoot = process.env.ORANGE_ISOLATION_ROOT ?? null;
 if (flagRoot !== null && envRoot !== null && flagRoot !== '' && fold(resolve(flagRoot)) !== fold(resolve(envRoot))) {
-  fail(2, `--base-root and OPENFILM_ISOLATION_ROOT disagree:\n  --base-root            ${flagRoot}\n  OPENFILM_ISOLATION_ROOT ${envRoot}\nNothing was written.`);
+  fail(2, `--base-root and ORANGE_ISOLATION_ROOT disagree:\n  --base-root            ${flagRoot}\n  ORANGE_ISOLATION_ROOT ${envRoot}\nNothing was written.`);
 }
 const requestedRoot = (flagRoot ?? envRoot) || null;
 if (requestedRoot === null && !checkOnly) {

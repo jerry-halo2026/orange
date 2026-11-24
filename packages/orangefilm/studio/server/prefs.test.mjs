@@ -17,10 +17,10 @@ test('the version whose notes were last shown: a version, else none', () => {
   assert.deepEqual(prefsOf({ seenVersion: '0.1.6' }).proxies, { on: true, height: 720 }, 'the rest as before');
 });
 
-test('what a newer OpenFilm keeps in prefs.json stays when this one writes it', () => {
+test('what a newer OrangeFilm keeps in prefs.json stays when this one writes it', () => {
   const home = mkdtempSync(join(tmpdir(), 'of-prefs-'));
-  const was = process.env.OPENFILM_HOME;
-  process.env.OPENFILM_HOME = home;
+  const was = process.env.ORANGE_HOME;
+  process.env.ORANGE_HOME = home;
   try {
     writeFileSync(join(home, 'prefs.json'), JSON.stringify({ proxies: { on: true, height: 720, codec: 'h265' }, seenVersion: null, theme: 'dark' }));
     writePrefs({ proxies: { on: false } });
@@ -29,7 +29,7 @@ test('what a newer OpenFilm keeps in prefs.json stays when this one writes it', 
     assert.equal(written.proxies.codec, 'h265');
     assert.equal(written.proxies.on, false);
   } finally {
-    if (was === undefined) delete process.env.OPENFILM_HOME; else process.env.OPENFILM_HOME = was;
+    if (was === undefined) delete process.env.ORANGE_HOME; else process.env.ORANGE_HOME = was;
   }
 });
 
@@ -45,8 +45,8 @@ test('the keyboard shortcuts are kept as given, in shape only; none is null', ()
 
 test('the keyboard shortcuts written are read back, and the rest of prefs.json stays', () => {
   const home = mkdtempSync(join(tmpdir(), 'of-prefs-'));
-  const was = process.env.OPENFILM_HOME;
-  process.env.OPENFILM_HOME = home;
+  const was = process.env.ORANGE_HOME;
+  process.env.ORANGE_HOME = home;
   try {
     writePrefs({ proxies: { on: false } });
     const keys = { scheme: 'custom2', custom: { custom2: { base: 'fcp', keys: { loop: ['shift+l'] } } } };
@@ -56,7 +56,7 @@ test('the keyboard shortcuts written are read back, and the rest of prefs.json s
     assert.equal(written.proxies.on, false);
     assert.deepEqual(writePrefs({ seenVersion: '0.2.3' }).keys, keys, 'another change leaves them');
   } finally {
-    if (was === undefined) delete process.env.OPENFILM_HOME; else process.env.OPENFILM_HOME = was;
+    if (was === undefined) delete process.env.ORANGE_HOME; else process.env.ORANGE_HOME = was;
   }
 });
 

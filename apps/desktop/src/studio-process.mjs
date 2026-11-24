@@ -2,9 +2,9 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * Studio, inside the app: an Electron utility process running the open-source Studio (the `openfilm` package's
+ * Studio, inside the app: an Electron utility process running the open-source Studio (the `orangefilm` package's
  * `startStudio`), serving the window's page (shell/) as its editor. It is the machine's Studio (`advertise`): an
- * agent's `openfilm open` finds it and shows its project in the app's window, not in a browser.
+ * agent's `orangefilm open` finds it and shows its project in the app's window, not in a browser.
  *
  * Talks to the main process over `process.parentPort`:
  *   → { type: 'ready', origin, filmOrigin, key }   listening
@@ -23,10 +23,10 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { mkdirSync } from 'node:fs';
 import { delimiter, dirname, join } from 'node:path';
-import { startStudio } from 'openfilm/studio';
-import { launch } from 'openfilm/host';
+import { startStudio } from 'orangefilm/studio';
+import { launch } from 'orangefilm/host';
 import { readIsolationProfile } from './isolation.mjs';
-import { assertIsolationPath } from 'openfilm/development-isolation';
+import { assertIsolationPath } from 'orangefilm/development-isolation';
 import { createDesktopAuth, migrateOwnerRoots, readDesktopAuthConfiguration } from './desktop-auth.mjs';
 import { createLocalFissionDraftService } from './fission-local-draft.mjs';
 import { pathToFileURL } from 'node:url';
@@ -67,10 +67,10 @@ parent.on('message', ({ data }) => {
   }
 });
 
-const nativeRoot=dirname(createRequire(import.meta.url).resolve('openfilm/package.json'));
+const nativeRoot=dirname(createRequire(import.meta.url).resolve('orangefilm/package.json'));
 const {libraryRoot:originalLibraryRoot,sharedHome:originalSharedHome,studioHomeDir,migrateProductFolder}=await import(pathToFileURL(join(nativeRoot,'src','locations.mjs')).href);
 /* First start after the product's folder was renamed (locations.mjs migrateProductFolder): the projects, Saved and
-   Skills under `…/Videos/OpenFilm` move to `…/Videos/OrangeFilm`, and the owner records (orange-project-owners.json)
+   Skills under `…/Videos/OrangeFilm` move to `…/Videos/OrangeFilm`, and the owner records (orange-project-owners.json)
    follow them, or every project already made would answer project-access-denied by its old root. Once: the new folder
    being there is what says it is done. */
 const movedFolder=migrateProductFolder();
@@ -79,7 +79,7 @@ const desktopAuth=createDesktopAuth({
   configuration:readDesktopAuthConfiguration(process.env),
   /* the main process resolved why there is none, when it did: an installed app whose installer lacks the environment
      must say that, not "provide local configuration" (auth-env-file.mjs `authEnvironmentReason`) */
-  configurationReason:process.env.OPENFILM_AUTH_ENV_REASON,
+  configurationReason:process.env.ORANGE_AUTH_ENV_REASON,
   home:studioHomeDir(),sharedHome:originalSharedHome(),projects:originalLibraryRoot(),
   coordinationRoot:join(isolation?.baseRoot ?? studioHomeDir(),'.orange-coordination'),instanceId:randomUUID(),
 },{
@@ -152,14 +152,14 @@ function askAgent(text, signal) {
   });
 }
 
-const port = Number(process.env.OPENFILM_STUDIO_PORT);
+const port = Number(process.env.ORANGE_STUDIO_PORT);
 try {
   studio = await startStudio({
     port: Number.isInteger(port) ? port : 0,
     advertise: true,
     isolation: Boolean(isolation),
     openBrowser: (url) => send({ type: 'open', url }),
-    /* another app (or `openfilm open`) asked this Studio to stop: the window still needs it, so it stays and says so */
+    /* another app (or `orangefilm open`) asked this Studio to stop: the window still needs it, so it stays and says so */
     stays: true,
     key:randomBytes(24).toString('hex'),
     desktopAuth,
@@ -168,7 +168,7 @@ try {
     working: () => working,
     askAgent,
     /* the window's page, Studio's editor with the chat beside it (shell/), in place of the editor alone */
-    ...(process.env.OPENFILM_EDITOR_DIR ? { editorDir: process.env.OPENFILM_EDITOR_DIR } : {}),
+    ...(process.env.ORANGE_EDITOR_DIR ? { editorDir: process.env.ORANGE_EDITOR_DIR } : {}),
   });
   send({ type: 'ready', origin: studio.origin, filmOrigin: studio.filmOrigin, key: studio.key });
   send({type:'auth',state:desktopAuth.getPublicState(),scope:null});
@@ -191,8 +191,8 @@ try {
   if (!/Executable doesn't exist/.test(e?.message ?? '')) send({ type: 'browser', state: 'failed', message: e?.message ?? String(e) });
   else {
     send({ type: 'browser', state: 'downloading' });
-    const openfilm = dirname(createRequire(import.meta.url).resolve('openfilm/package.json'));
-    const cli = join(dirname(createRequire(join(openfilm, 'package.json')).resolve('playwright-core/package.json')), 'cli.js');
+    const orangefilm = dirname(createRequire(import.meta.url).resolve('orangefilm/package.json'));
+    const cli = join(dirname(createRequire(join(orangefilm, 'package.json')).resolve('playwright-core/package.json')), 'cli.js');
     const child = spawn(process.execPath, [cli, 'install', 'chromium-headless-shell'], { env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' }, stdio: 'ignore', windowsHide: true });
     child.once('exit', (code) => send(code === 0 ? { type: 'browser', state: 'ready' } : { type: 'browser', state: 'failed', message: `the download stopped (${code})` }));
     child.once('error', (error) => send({ type: 'browser', state: 'failed', message: error.message }));

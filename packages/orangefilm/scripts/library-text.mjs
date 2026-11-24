@@ -152,7 +152,7 @@ if (!process.argv.includes('--no-pictures')) {
   for (const item of items) {
     if (asked.length && !asked.includes(item.id)) continue;
     const dir = join(LIB, item.id);
-    const work = mkdtempSync(join(tmpdir(), 'openfilm-text-'));
+    const work = mkdtempSync(join(tmpdir(), 'orangefilm-text-'));
     mkdirSync(dir, { recursive: true });
     try {
       cpSync(join(LIB, 'text', 'text', 'files'), join(work, 'item'), { recursive: true });

@@ -21,7 +21,7 @@ export const HOME_CONFIG_ENTRIES = Object.freeze([
   'orange-project-owners.json',
   'cloud-steward.json',
   'update.json',
-  '.openfilm-control.json',
+  '.orangefilm-control.json',
 ]);
 
 export const HOME_LIBRARY_ENTRY = 'library';

@@ -21,11 +21,11 @@ const card = `<!doctype html><body style="margin:0;background:#111"><h1 style="m
 test('the clip under the pointer, and it alone, has a fade dot just inside each end on the bottom of its picture (a sound: the top of its waveform) and a hairline across its sound for its volume, its waveform as loud as the volume makes it; no slope, no bars on its edges', { timeout: 90_000, skip: !hasFfmpeg && 'no ffmpeg' }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-fade-volume-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Levels');
+    const root = join(process.env.ORANGE_LIBRARY, 'Levels');
     await mkdir(join(root, 'assets'), { recursive: true });
     execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'testsrc=size=320x180:rate=25:duration=4', '-f', 'lavfi', '-i', 'sine=frequency=220:duration=4', '-shortest', '-pix_fmt', 'yuv420p', join(root, 'assets', 'clip.mp4')]);
     /* a loud tone, half of full scale: raised 6 dB it reaches the top, more and it clips */
@@ -44,7 +44,7 @@ test('the clip under the pointer, and it alone, has a fade dot just inside each 
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, locale: 'en-US', reducedMotion: 'reduce' });
     /* a timeline tall enough for both rows */
-    await page.addInitScript(() => { localStorage.setItem('openfilm.project.timelineH', '420'); });
+    await page.addInitScript(() => { localStorage.setItem('orangefilm.project.timelineH', '420'); });
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);
     const until = async (check, what) => {
       for (let i = 0; i < 50; i += 1) { if (await check()) return; await page.waitForTimeout(100); }

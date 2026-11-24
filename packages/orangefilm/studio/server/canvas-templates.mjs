@@ -5,7 +5,7 @@
 /**
  * The person's canvas templates: a group of a canvas kept to be laid down again on any project's canvas, as a way of
  * working (a beat, its picture, the clip made from it). Kept in the shared Studio home (`canvas-templates/<id>/`), so
- * every OpenFilm on this computer has them: `template.json` (its name and its board, the group's corner at 0, 0) and
+ * every OrangeFilm on this computer has them: `template.json` (its name and its board, the group's corner at 0, 0) and
  * `files/`, the files its file nodes show. What its making nodes made is not kept: a template keeps what they are asked.
  *
  *   GET    /api/canvas-templates                    → { templates: [{ id, name, nodes, created }] }

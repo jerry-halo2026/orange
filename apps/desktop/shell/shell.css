@@ -1,6 +1,6 @@
 /* Studio's styles, with Tailwind over both trees (the chat's own styles come scoped, chat/src/chat.css) */
-@import 'openfilm/studio-ui/globals.css';
-@source '../node_modules/openfilm/studio/ui/src';
+@import 'orangefilm/studio-ui/globals.css';
+@source '../node_modules/orangefilm/studio/ui/src';
 @source '../chat/src';
 
 /* the chat's column: left of Studio, under its top bar (bridge.ts places and sizes it); over Studio's panes and its

@@ -24,7 +24,7 @@ before(async () => {
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
   base = `http://127.0.0.1:${server.address().port}`;
-  process.env.OPENFILM_FAL_URL = base;
+  process.env.ORANGE_FAL_URL = base;
   polling.ms = { image: 5, audio: 5, video: 5 };
 });
 after(() => server.close());
@@ -182,7 +182,7 @@ function storage(next, { fails = false } = {}) {
 }
 
 test('a clip made from another (--video): put on fal\'s storage, each model its own way and fields', async () => {
-  process.env.OPENFILM_FAL_REST_URL = base;
+  process.env.ORANGE_FAL_REST_URL = base;
   const files = { 'references/shot.mp4': new Uint8Array(Buffer.from('a clip')), 'assets/image/me.png': new Uint8Array(png(16, 16)) };
   const run = async (model, args, endpoint) => {
     seen.length = 0;
@@ -218,7 +218,7 @@ test('a clip made from another (--video): put on fal\'s storage, each model its 
 });
 
 test('a person speaking a recording (--audio): from a picture or a clip, the lips following it, the clip its length; a voice for Seedance', async () => {
-  process.env.OPENFILM_FAL_REST_URL = base;
+  process.env.ORANGE_FAL_REST_URL = base;
   const files = { 'assets/audio/vo/line.wav': new Uint8Array(Buffer.from('speech')), 'assets/image/host.png': new Uint8Array(png(16, 16)), 'assets/video/talk.mp4': new Uint8Array(Buffer.from('clip')) };
   const run = async (model, args, endpoint) => {
     seen.length = 0;

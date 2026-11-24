@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * ffmpeg and ffprobe: Studio and `openfilm` need them for video pictures, sound and every export. The installer brings
+ * ffmpeg and ffprobe: Studio and `orangefilm` need them for video pictures, sound and every export. The installer brings
  * its own (scripts/release.mjs puts them in the app's resources, `runtime/ffmpeg`, with their license), so the app
  * works without a download. A build without them (from source) downloads them once into its data folder when the
  * computer has none on its PATH. Static builds (GPL-3.0, as published), each checked against the sha256 pinned here:

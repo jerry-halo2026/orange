@@ -3,7 +3,7 @@
 
 /**
  * Fission in the installer: the batch mixer Studio's Fission pane runs. It is a .NET 10 program
- * (workers/fission), and the computers people install OpenFilm on have no .NET, so the CLI is published
+ * (workers/fission), and the computers people install OrangeFilm on have no .NET, so the CLI is published
  * self-contained for win-x64 and shipped under the app's `resources/fission`.
  *
  * Why a host. Studio starts the CLI the way a framework-dependent .NET program starts —

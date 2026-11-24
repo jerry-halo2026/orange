@@ -3,13 +3,13 @@
 
 /**
  * The page and the Studio serving it are one version. When Studio comes back after it was away as another one (a
- * newer openfilm replaced it, or the desktop app took over from the one `openfilm open` started), this page's code
+ * newer orangefilm replaced it, or the desktop app took over from the one `orangefilm open` started), this page's code
  * may no longer match what the server answers: it reloads, once the edits it is writing have been written (every
  * edit is written to the folder as it is made, so nothing else is lost).
  */
 type Store = Pick<Storage, 'getItem' | 'setItem'>;
 
-const RELOADED_FOR = 'openfilm-studio:reloaded-for';
+const RELOADED_FOR = 'orangefilm-studio:reloaded-for';
 
 /**
  * `version`: what Studio's /api/health says now (null: no answer). `idle`: no edit is being written. `storage`

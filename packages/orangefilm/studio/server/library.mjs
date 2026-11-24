@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * OpenFilm's library: the transitions, effects, text, stickers, looks and sounds that come with OpenFilm (library/ in
+ * OrangeFilm's library: the transitions, effects, text, stickers, looks and sounds that come with OrangeFilm (library/ in
  * this package), read-only, shown in the assets drawer beside the project's media and Saved.
  *
  *   library/index.json   what is in it: each thing's id (its place in library/), its category and group, its name in
@@ -13,21 +13,21 @@
  *                          look   a CSS `filter`, written into a clip's style
  *                          fade   one of Studio's transitions (ui lib/transitions), made of fades
  *                        and, for a thing someone sent to the library, `by`: their GitHub name (the drawer shows it
- *                        as the community's; without it, a thing is OpenFilm's own)
+ *                        as the community's; without it, a thing is OrangeFilm's own)
  *   library/<id>/…       the things themselves
  *   library/stickers.json  emoji stickers, each a bundle under stickers/emoji/ (published with the library likewise)
  *   library/audio.json   more sounds and music, as index.json says its own (`audio/<sfx|music>/<name>.mp3`, each with its
  *                        waveform beside it in waves/), the files published with the library rather than kept in git
  *                        (fetchLibrary: fetched on first use, like the voices' samples and the emoji stickers)
- *   library/voices.json  the voices to speak a voice-over in: the ready-made voices of the voice-over services OpenFilm
+ *   library/voices.json  the voices to speak a voice-over in: the ready-made voices of the voice-over services OrangeFilm
  *                        offers, each with its service's own sample (voices/<service>/<voice>.m4a); made by
  *                        scripts/library-voices.mjs from those services' own lists
  *
- * The things the person starred are kept in the shared prefs.json (`libraryFavorites`, their ids), so every OpenFilm on
+ * The things the person starred are kept in the shared prefs.json (`libraryFavorites`, their ids), so every OrangeFilm on
  * this computer shows the same ones.
  *
- * A thing is taken into a project as a thing of Saved is (saved.mjs takeSaved), by its path `openfilm/<id>`: copied,
- * a bundle's files to `saved/openfilm/<id as one name>/` there (`effects-snow`), a file into assets/. Nothing here is
+ * A thing is taken into a project as a thing of Saved is (saved.mjs takeSaved), by its path `orangefilm/<id>`: copied,
+ * a bundle's files to `saved/orangefilm/<id as one name>/` there (`effects-snow`), a file into assets/. Nothing here is
  * ever written.
  */
 import { createWriteStream, existsSync, readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
@@ -41,28 +41,28 @@ import { setSharedPref, sharedHome, sharedPref } from '../../src/locations.mjs';
 
 export { refreshCommunity };
 
-/** What a path names the library by (`openfilm/<id>`), as `saved/` names Saved. */
-export const BUILT_IN = 'openfilm';
+/** What a path names the library by (`orangefilm/<id>`), as `saved/` names Saved. */
+export const BUILT_IN = 'orangefilm';
 
 /** The library's folder. */
-export const builtInRoot = () => process.env.OPENFILM_BUILT_IN_LIBRARY || fileURLToPath(new URL('../../library', import.meta.url));
+export const builtInRoot = () => process.env.ORANGE_BUILT_IN_LIBRARY || fileURLToPath(new URL('../../library', import.meta.url));
 
 /**
  * The library's parts too big to come with the package (git-ignored, left out of npm): its sounds and music (`audio/`),
  * its voices' samples (`voices/`), its emoji stickers (`stickers/emoji/`), the models Local services runs (`models/`,
  * src/local-models.mjs), each template's example with its music (`examples/`). Each is fetched on first use from the
- * library's host and kept in the shared home, once for every OpenFilm on this computer; a bundle (a sticker) comes
+ * library's host and kept in the shared home, once for every OrangeFilm on this computer; a bundle (a sticker) comes
  * with the list of its files, `files.json` beside it there, written when the library is published.
  */
 const PUBLISHED = ['audio/', 'voices/', 'stickers/emoji/', 'models/', 'examples/'];
 /** A place in the library: names of letters, digits, dots, dashes and underscores, between slashes. */
 const SAFE_PLACE = /^[\w.-]+(?:\/[\w.-]+)*$/;
 
-/** Where the published parts come from: openfilm.dev's library, which sends each person to the copy nearest them. */
-const libraryHost = () => (process.env.OPENFILM_LIBRARY_URL || 'https://openfilm.dev/library').replace(/\/+$/, '');
+/** Where the published parts come from: orangefilm.dev's library, which sends each person to the copy nearest them. */
+const libraryHost = () => (process.env.ORANGE_LIBRARY_URL || 'https://orangefilm.dev/library').replace(/\/+$/, '');
 
 /** Where the fetched ones are kept. */
-export const libraryCache = () => process.env.OPENFILM_LIBRARY_CACHE || join(sharedHome(), 'library');
+export const libraryCache = () => process.env.ORANGE_LIBRARY_CACHE || join(sharedHome(), 'library');
 
 /**
  * A place under one of the library's folders, as a path: never one that leaves it (`..`, an absolute path, a link out

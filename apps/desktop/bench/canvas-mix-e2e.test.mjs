@@ -40,7 +40,7 @@ test('画布混剪：面板写出的配方能发到渲染路由，并回显批�
   const { PATH } = await loginShellEnvironment();
   const app = await electron.launch({
     executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
-    env: { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir },
+    env: { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir },
   });
   /** @type {import('playwright-core').Page | null} */
   let page = null;

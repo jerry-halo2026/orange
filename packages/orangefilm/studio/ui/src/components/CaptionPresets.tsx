@@ -19,7 +19,7 @@ export function captionLookVars(id: string): Record<string, string> {
 }
 
 export interface SavedLook { id: string; vars: Record<string, string> }
-const SAVED_KEY = 'openfilm.captionPresets';
+const SAVED_KEY = 'orangefilm.captionPresets';
 const MAX_SAVED = 24;
 
 function readSaved(): SavedLook[] {

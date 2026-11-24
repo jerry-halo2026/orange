@@ -171,7 +171,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
     goneApp: 'Studio has stopped. Quit and reopen the {brand} app to bring it back.',
     copied: 'Copied',
     lockedTitle: 'This browser isn’t signed in to Studio',
-    lockedBody: 'Studio is running, but it only lets in a browser that opened it once with its key. Open the full address `openfilm open` (or `pnpm dev`) printed, the one with ?key= in it; after that, this browser can use Studio’s address as it is.',
+    lockedBody: 'Studio is running, but it only lets in a browser that opened it once with its key. Open the full address `orangefilm open` (or `pnpm dev`) printed, the one with ?key= in it; after that, this browser can use Studio’s address as it is.',
     lockedHow: 'To get it again, run',
   },
   projects: {
@@ -1027,7 +1027,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
     discoverNone: 'No skills to discover yet.',
     mineEmptyTitle: 'No imported skills yet',
     mineEmpty: 'Import one from the skills index or a folder on this computer; every project can use it.',
-    mineEmptyCli: 'Run openfilm skill add with a skill from the skills index, or a folder; every project can use it.',
+    mineEmptyCli: 'Run orangefilm skill add with a skill from the skills index, or a folder; every project can use it.',
     mineImport: 'Import skill',
     communityEmptyTitle: 'No community skills installed',
     communityEmpty: 'Ready-made ways of making a kind of film. Install one from Discover and agents follow it.',
@@ -2342,7 +2342,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
     delete: 'Delete',
     cancel: 'Cancel',
   },
-  /* what an agent's `openfilm get` asks before it spends (see SpendAsks) */
+  /* what an agent's `orangefilm get` asks before it spends (see SpendAsks) */
   asks: {
     videoTitle: 'Your agent wants to make a video clip',
     videoNote: 'Video is the most expensive kind of media to make.',
@@ -2436,7 +2436,7 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
       newer: '{brand} {version} is out.',
       upToDate: 'Up to date.',
       source: 'Running from source: git pull updates it.',
-      off: 'Update checks are off here (OPENFILM_NO_UPDATE_CHECK).',
+      off: 'Update checks are off here (ORANGE_NO_UPDATE_CHECK).',
       never: 'Not checked yet.',
       inApp: 'Updates come with the desktop app: {brand} → Check for Updates…',
       howTitle: 'Update',
@@ -2783,13 +2783,13 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
       downloaded: '{done} of {size}',
       count: '{n} installed',
       facts: { kind: 'For', size: 'Size', memory: 'Memory while running', memoryValue: 'About {n} MB', license: 'License', where: 'Where it is used' },
-      where: { asr: 'Transcripts and subtitles (Settings → Services → Transcription, and openfilm get asr for your agent): nothing is uploaded. About 2.5× faster than real time for Small on a recent computer.', cutout: 'Taking the background out of a picture (openfilm get cutout for your agent): what the picture is of is kept, the rest made transparent.' },
+      where: { asr: 'Transcripts and subtitles (Settings → Services → Transcription, and orangefilm get asr for your agent): nothing is uploaded. About 2.5× faster than real time for Small on a recent computer.', cutout: 'Taking the background out of a picture (orangefilm get cutout for your agent): what the picture is of is kept, the rest made transparent.' },
       about: { 'whisper-small': 'OpenAI\'s speech recognition model, small size: good accuracy in about 100 languages, each word timed for subtitles.', 'whisper-large-v3-turbo': 'The most accurate Whisper: fewer mistakes in names and mixed languages, and steadier in Chinese, but larger and about as slow as real time.', 'birefnet-lite': 'Finds what a picture is of — people, objects, animals — and cuts it out with clean edges, hair included.' },
     },
     providers: {
       included: 'Available',
       about: {
-        openfilm: '{brand}\'s own service. Connect your {brand} account once and make voice-over, music, sound, transcripts, pictures and video with leading models, paid from your {brand} balance: no other accounts or keys.',
+        orangefilm: '{brand}\'s own service. Connect your {brand} account once and make voice-over, music, sound, transcripts, pictures and video with leading models, paid from your {brand} balance: no other accounts or keys.',
         openai: 'The maker of ChatGPT. Its API makes pictures with GPT Image, speaks in its own voices and transcribes speech word by word.',
         google: 'Google\'s Gemini API, from Google AI Studio: Gemini voices and transcription, Nano Banana pictures and Veo video, with one key.',
         azure: 'Microsoft\'s cloud. Azure AI Speech speaks hundreds of natural voices across more than a hundred languages.',

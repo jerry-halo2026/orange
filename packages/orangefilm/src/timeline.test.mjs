@@ -836,8 +836,8 @@ test('look\'s check and a render of a film of many video clips: the same t draws
   writeFileSync(join(dir, 'film.html'), filmHtml(manyCuts()));
   const r = await look([dir], { count: 8 });
   /* a check that failed keeps what it drew for CI to upload: the two pictures of the t that differed */
-  if (r.ok === false && process.env.OPENFILM_TEST_ARTIFACTS) {
-    const kept = join(process.env.OPENFILM_TEST_ARTIFACTS, 'many-video-clips');
+  if (r.ok === false && process.env.ORANGE_TEST_ARTIFACTS) {
+    const kept = join(process.env.ORANGE_TEST_ARTIFACTS, 'many-video-clips');
     cpSync(join(dir, '.film/cache/look'), kept, { recursive: true });
     writeFileSync(join(kept, 'look.txt'), `${r.lines.join('\n')}\n`);
   }

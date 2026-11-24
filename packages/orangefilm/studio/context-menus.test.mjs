@@ -20,11 +20,11 @@ const hasFfmpeg = (() => { try { execFileSync('ffmpeg', ['-version'], { stdio: '
 test('a click only selects; a right click gives the whole menu, Reference first, the same in Layers and on the picture', { timeout: 90_000, skip: !hasFfmpeg && 'no ffmpeg' }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-context-menus-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Menus');
+    const root = join(process.env.ORANGE_LIBRARY, 'Menus');
     await mkdir(join(root, 'assets'), { recursive: true });
     execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i', 'testsrc=size=320x180:rate=25:duration=4', '-f', 'lavfi', '-i', 'sine=frequency=220:duration=4', '-shortest', '-pix_fmt', 'yuv420p', join(root, 'assets', 'clip.mp4')]);
     await writeFile(join(root, 'card.html'), `<!doctype html><body style="margin:0">
@@ -41,7 +41,7 @@ test('a click only selects; a right click gives the whole menu, Reference first,
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, locale: 'en-US', reducedMotion: 'reduce' });
     /* the app's chat, so the menus have "Reference in chat"; the Layers panel open */
     await page.addInitScript(() => {
-      localStorage.setItem('openfilm.project.layers', '1');
+      localStorage.setItem('orangefilm.project.layers', '1');
       window.referred = [];
       window.openfilmHost = { version: 1, refer: (ref) => window.referred.push(ref) };
     });

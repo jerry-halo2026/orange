@@ -5,28 +5,28 @@
 /**
  * Skills: ways of making a kind of film that an agent takes up when asked. A skill is a folder in the Agent Skills
  * format (agentskills.io): a `SKILL.md` whose front matter names it and says what it is for (`name`, `description`),
- * its body the way to work, and any files it brings (scripts, templates, libraries). A skill never changes OpenFilm
+ * its body the way to work, and any files it brings (scripts, templates, libraries). A skill never changes OrangeFilm
  * itself: what it makes is pages and media in the project, like anything else an agent writes.
  *
- * Each is told apart by its uid, whose it is and its name (`openfilm/keynote`, `river/keynote`, SKILL_UID), so two of a
+ * Each is told apart by its uid, whose it is and its name (`orangefilm/keynote`, `river/keynote`, SKILL_UID), so two of a
  * name are both had; an agent, which reads skills by name alone, is given the second as `owner-name` (agentNames).
  * Three places hold them, the first a uid is found in winning:
  *   project    `<project>/skills/<name>/`, kept with the project, so a film carries the ways it was made
  *   mine       `Skills/` beside the projects library (~/Movies/OrangeFilm/Skills on macOS, ~/Videos/OrangeFilm/Skills
- *              elsewhere; OPENFILM_SKILLS to name another): the person's own, and those they added. In sight beside
+ *              elsewhere; ORANGE_SKILLS to name another): the person's own, and those they added. In sight beside
  *              their Projects and Exports, backed up with them, and never in Studio's own folder, which a reset clears.
- *              Skills kept in Studio's home before (~/.openfilm/skills) are moved there (migrateMySkills).
- *   official   `skills-installed/` in the shared home (~/.openfilm): those installed from the openfilm/skills index
+ *              Skills kept in Studio's home before (~/.orangefilm/skills) are moved there (migrateMySkills).
+ *   official   `skills-installed/` in the shared home (~/.orangefilm): those installed from the orangefilm/skills index
  *              (studio/server/skill-catalog.mjs), each the commit it was installed at, with where it came from in its
- *              `.source.json`. Every OpenFilm on this computer has the same ones.
+ *              `.source.json`. Every OrangeFilm on this computer has the same ones.
  *
- * OpenFilm's own (coreSkills: `manual/` in this package) are how a film is made, its media and its canvas, which the
+ * OrangeFilm's own (coreSkills: `manual/` in this package) are how a film is made, its media and its canvas, which the
  * manual names: in every agent's hands unless the person turns one off (skillsOff), never installed or removed, so the
  * manual stays a page.
  *
  * Nothing here deletes a skill outright: one replaced or removed goes to the system's trash.
  *
- * `openfilm skills` lists them by uid and `openfilm skill <owner/name>` prints one, as `openfilm` prints the manual: that is how any
+ * `orangefilm skills` lists them by uid and `orangefilm skill <owner/name>` prints one, as `orangefilm` prints the manual: that is how any
  * agent reads a skill. The desktop app's chat offers the same list (apps/desktop).
  */
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -58,10 +58,10 @@ export const SKILL_SOURCES = /** @type {const} */ (['project', 'mine', 'official
 /** @typedef {typeof SKILL_SOURCES[number]} SkillSource */
 
 /**
- * The skills installed from the openfilm/skills index, each in a folder of its own (studio/server/skill-catalog.mjs).
- * OPENFILM_OFFICIAL_SKILLS names another folder of them.
+ * The skills installed from the orangefilm/skills index, each in a folder of its own (studio/server/skill-catalog.mjs).
+ * ORANGE_OFFICIAL_SKILLS names another folder of them.
  */
-export const officialSkillsDir = () => process.env.OPENFILM_OFFICIAL_SKILLS || join(sharedHome(), 'skills-installed');
+export const officialSkillsDir = () => process.env.ORANGE_OFFICIAL_SKILLS || join(sharedHome(), 'skills-installed');
 /** Where an installed skill came from, kept beside its files: its repository, its folder there, the commit and version. */
 export const SOURCE_FILE = '.source.json';
 /**
@@ -76,7 +76,7 @@ export function skillSource(folder) {
     return { repo: raw.repo, path: raw.path, commit: raw.commit, version: typeof raw.version === 'string' ? raw.version : null };
   } catch { return null; }
 }
-/** Where Discover keeps the skills the openfilm/skills index names, each at its commit (studio/server/skill-catalog.mjs). */
+/** Where Discover keeps the skills the orangefilm/skills index names, each at its commit (studio/server/skill-catalog.mjs). */
 export const discoverDir = () => join(sharedHome(), 'skill-catalog');
 /** Where Discover keeps one skill of the index. @param {{ name: string, repo: string, commit: string }} entry */
 export const discoverFolder = (entry) => join(discoverDir(), (/github\.com\/([\w.-]+)\//.exec(`${entry.repo}/`)?.[1] ?? 'unknown').toLowerCase(), `${entry.name}@${entry.commit}`);
@@ -93,16 +93,16 @@ export function discoverSkills() {
     return skill ? [skill] : [];
   });
 }
-/** OpenFilm's own skills, released with this package beside the manual. */
+/** OrangeFilm's own skills, released with this package beside the manual. */
 export const coreSkillsDir = () => join(dirname(fileURLToPath(import.meta.url)), '..', 'manual');
 /**
- * The person's own skills: OPENFILM_SKILLS, else `Skills/` beside the default projects library (OPENFILM_LIBRARY, else
+ * The person's own skills: ORANGE_SKILLS, else `Skills/` beside the default projects library (ORANGE_LIBRARY, else
  * ~/Movies/OrangeFilm/Projects on macOS, ~/Videos/OrangeFilm/Projects elsewhere: locations.mjs libraryDefault). They stay
  * there when new projects are set to go elsewhere.
  */
-export const mySkillsDir = () => process.env.OPENFILM_SKILLS || join(dirname(libraryDefault()), 'Skills');
+export const mySkillsDir = () => process.env.ORANGE_SKILLS || join(dirname(libraryDefault()), 'Skills');
 /** Where the person's own skills were kept before: `skills/` in Studio's home. */
-export const oldSkillsDir = () => join(process.env.OPENFILM_HOME || join(homedir(), '.openfilm'), 'skills');
+export const oldSkillsDir = () => join(process.env.ORANGE_HOME || join(homedir(), '.orangefilm'), 'skills');
 
 /** A note left where the skills were, saying where they went. */
 const MOVED_NOTE = 'README.txt';
@@ -128,7 +128,7 @@ export function migrateMySkills({ from = oldSkillsDir(), to = mySkillsDir() } = 
     try { renameSyncSafe(skill.folder, target); moved.push(skill.name); } catch { kept.push(basename(skill.folder)); }
   }
   try {
-    writeFileSync(join(from, MOVED_NOTE), `Your OpenFilm skills are kept in ${to} now.
+    writeFileSync(join(from, MOVED_NOTE), `Your OrangeFilm skills are kept in ${to} now.
 ${kept.length ? `These stayed here, as a skill of the same name is there: ${kept.join(', ')}.
 ` : ''}`);
   } catch { /* the note is only a courtesy */ }
@@ -139,16 +139,16 @@ ${kept.length ? `These stayed here, as a skill of the same name is there: ${kept
 export const SKILL_NAME = /^[a-z0-9][a-z0-9-]{0,63}$/;
 
 /**
- * A skill's uid: whose it is and its name, `owner/name`, the one way OpenFilm tells skills apart (two of the same name
+ * A skill's uid: whose it is and its name, `owner/name`, the one way OrangeFilm tells skills apart (two of the same name
  * can be had side by side), and how one is shared and searched. The owner is read from where the skill came from,
- * never from what it says of itself, so none can pass for another's: `openfilm` for OpenFilm's (released with it), the
+ * never from what it says of itself, so none can pass for another's: `orangefilm` for OrangeFilm's (released with it), the
  * GitHub account one of the person's was added from (`gitlab-<group>` on GitLab), `local` for one made here or added
  * from a folder, `project` for a project's own.
  */
 export const SKILL_UID = /^[a-z0-9][a-z0-9-]{0,63}\/[a-z0-9][a-z0-9-]{0,63}$/;
 
 /**
- * Namespaces that are never a GitHub account's: `openfilm` (OpenFilm's own, github.com/openfilm), `local` (the
+ * Namespaces that are never a GitHub account's: `orangefilm` (OrangeFilm's own, github.com/orangefilm), `local` (the
  * person's own, made or added from a folder here) and `project` (a project's). An account of one of those names is
  * `github-<name>`, so it is never taken for them.
  */
@@ -163,7 +163,7 @@ const uidPart = (name) => name.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replac
  * the person's came from
  */
 export function skillOwner(source, origin) {
-  /* an installed one is its repository's account's (OpenFilm's own, openfilm); OpenFilm's own skills, openfilm */
+  /* an installed one is its repository's account's (OrangeFilm's own, orangefilm); OrangeFilm's own skills, orangefilm */
   if (source === 'official') {
     const account = origin?.address ? /^https:\/\/github\.com\/([\w.-]+)\//.exec(`${origin.address}/`)?.[1] : null;
     return account ? accountSpace(uidPart(account)) : 'orangefilm';
@@ -222,31 +222,39 @@ export function parseSkillFile(text) {
  * @typedef {{ uid: string, name: string, description: string, folder: string, source: SkillSource, file: string,
  *   scripts: string[], over?: SkillSource[], shown?: SkillShown, version?: string } & SkillLook} Skill
  *   `uid`: whose it is and its name (SKILL_UID). `over`: the places that had the same skill (its uid), which this one
- *   takes the place of. `version`: its openfilm.json's, else its front matter's.
+ *   takes the place of. `version`: its orangefilm.json's, else its front matter's.
  * @typedef {{ title: Record<string, string>, summary: Record<string, string>, details?: Record<string, string> }} SkillShown
- *   how people see it in an app (openfilm.json beside SKILL.md, optional): a title, a one-line summary and a few lines
+ *   how people see it in an app (orangefilm.json beside SKILL.md, optional): a title, a one-line summary and a few lines
  *   on who it is for and what it does, by language (`en`, `zh-CN`…); the SKILL.md's description is for the agent
  * @typedef {{ kind?: 'workflow' | 'style', order?: number, icon?: string, cover?: string, preview?: string, repository?: string, needs?: Record<string, string>, platforms?: SkillPlatform[] }} SkillLook
- *   where an app shows it (openfilm.json, each optional): `kind` a way of working or a look, `order` among its kind,
+ *   where an app shows it (orangefilm.json, each optional): `kind` a way of working or a look, `order` among its kind,
  *   `icon` a mark's name, `cover` a picture and `preview` a video in its folder, `repository` where its source is read,
- *   `needs` what it needs beyond OpenFilm (by language), `platforms` the computers it runs on (none: every one)
+ *   `needs` what it needs beyond OrangeFilm (by language), `platforms` the computers it runs on (none: every one)
  */
 
-/** The words of an openfilm.json field: a string (any language), or one per language; anything else is none. */
+/** The words of an orangefilm.json field: a string (any language), or one per language; anything else is none. */
 const byLanguage = (/** @type {unknown} */ v, max = 200) => (typeof v === 'string' && v.trim() ? { en: v.trim().slice(0, max) }
   : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).filter(([k, w]) => /^[a-z]{2}(-[A-Za-z]{2,4})?$/.test(k) && typeof w === 'string' && w.trim()).map(([k, w]) => [k, String(w).trim().slice(0, max)])) : {});
 
-/** A file named by openfilm.json, when it is one in the skill's folder. @param {string} folder @param {unknown} name */
+/** A skill's metadata file: `orangefilm.json`, or the `openfilm.json` a skill made before the rename still carries.
+ * @param {string} folder */
+const metadataPath = (folder) => {
+  const next = join(folder, 'orangefilm.json');
+  return existsSync(next) ? next : join(folder, 'openfilm.json');
+};
+
+/** A file named by orangefilm.json, when it is one in the skill's folder. @param {string} folder @param {unknown} name */
 const fileIn = (folder, name) => (typeof name === 'string' && /^[\w./-]{1,200}$/.test(name) && !name.split('/').includes('..')
   && existsSync(join(folder, name)) ? name : undefined);
 
 /**
- * A skill's openfilm.json: how people see it and where an app shows it (anything missing or wrong left out).
+ * A skill's orangefilm.json: how people see it and where an app shows it (anything missing or wrong left out).
+ * A skill made before the rename still carries `orangefilm.json`; it is read, and the next write uses the new name.
  * @param {string} folder @returns {{ shown?: SkillShown, version?: string } & SkillLook}
  */
-function openfilmJson(folder) {
+function orangefilmJson(folder) {
   let raw;
-  try { raw = JSON.parse(readFileSync(join(folder, 'openfilm.json'), 'utf8')); } catch { return {}; }
+  try { raw = JSON.parse(readFileSync(metadataPath(folder), 'utf8')); } catch { return {}; }
   const details = byLanguage(raw?.details, 1000);
   /** @type {SkillShown} */
   const shown = { title: byLanguage(raw?.title), summary: byLanguage(raw?.summary), ...(Object.keys(details).length ? { details } : {}) };
@@ -270,7 +278,7 @@ function openfilmJson(folder) {
 
 const VERSION = /^\d+\.\d+(\.\d+)?([-+][\w.]+)?$/;
 
-/** The computers a skill can say it runs on (openfilm.json `platforms`). @typedef {'macos' | 'windows' | 'linux'} SkillPlatform */
+/** The computers a skill can say it runs on (orangefilm.json `platforms`). @typedef {'macos' | 'windows' | 'linux'} SkillPlatform */
 export const SKILL_PLATFORMS = /** @type {const} */ (['macos', 'windows', 'linux']);
 
 /** This computer, as a skill's `platforms` names it. @returns {SkillPlatform} */
@@ -286,7 +294,7 @@ export function readSkill(folder, source) {
   try { text = readFileSync(file, 'utf8'); } catch { return null; }
   const { fields } = parseSkillFile(text);
   const name = (fields.name || basename(folder)).trim();
-  const extra = openfilmJson(folder);
+  const extra = orangefilmJson(folder);
   if (!extra.version && fields.version && VERSION.test(fields.version.trim())) extra.version = fields.version.trim();
   /* one of the person's is whose its origin says (kept beside it, skillOrigins) */
   const from = source === 'official' ? skillSource(folder) : null;
@@ -327,7 +335,7 @@ export function skillsIn(dir, source) {
 
 /**
  * Every skill available to a project (or none: only the person's own and the official ones), by uid, the first place
- * holding a uid winning (one of the person's added from OpenFilm's own repository is that official one); sorted by
+ * holding a uid winning (one of the person's added from OrangeFilm's own repository is that official one); sorted by
  * name, then the project's, the person's, the official ones. Two of the same name and other owners are both there.
  * @param {{ project?: string | null, mine?: string, official?: string }} [where]
  * @returns {Skill[]}
@@ -351,7 +359,7 @@ export function listSkills({ project = null, mine = mySkillsDir(), official = of
 
 /**
  * Which skills agents get: the person's own, a project's and those installed, all of them unless turned off
- * (`skillsOff`), offered to no agent until turned on again. Kept in the shared prefs.json, so every OpenFilm on this
+ * (`skillsOff`), offered to no agent until turned on again. Kept in the shared prefs.json, so every OrangeFilm on this
  * computer agrees; `home`: the Studio home that holds it.
  */
 const namesIn = (/** @type {unknown} */ value) => (Array.isArray(value) ? [...new Set(value.filter((n) => typeof n === 'string' && (SKILL_UID.test(n) || SKILL_NAME.test(n))))].sort() : []);
@@ -361,7 +369,7 @@ const namesIn = (/** @type {unknown} */ value) => (Array.isArray(value) ? [...ne
  * @param {Set<string>} kept @param {{ uid: string, name: string }} skill
  */
 export const keeps = (kept, skill) => kept.has(skill.uid)
-  || (skill.uid.startsWith('orangefilm/') && kept.has(`openfilm/${skill.uid.slice('orangefilm/'.length)}`))
+  || (skill.uid.startsWith('orangefilm/') && kept.has(`orangefilm/${skill.uid.slice('orangefilm/'.length)}`))
   || kept.has(skill.name);
 
 /** The skills the person turned off, by uid (by name, as kept before). @param {string} [home] @returns {string[]} */
@@ -383,17 +391,17 @@ export function usableSkills({ home, ...where } = {}) {
   return listSkills(where).filter((s) => !keeps(off, s));
 }
 
-/** OpenFilm's own skills by name, in the order agents are given them: how a film is made, its media, its canvas. */
+/** OrangeFilm's own skills by name, in the order agents are given them: how a film is made, its media, its canvas. */
 export const CORE_SKILLS = Object.freeze(['edit', 'media', 'canvas']);
 
-/** OpenFilm's own skills (coreSkillsDir), which every agent has unless turned off, in CORE_SKILLS's order. @returns {Skill[]} */
+/** OrangeFilm's own skills (coreSkillsDir), which every agent has unless turned off, in CORE_SKILLS's order. @returns {Skill[]} */
 export function coreSkills() {
   const rank = (/** @type {Skill} */ s) => (CORE_SKILLS.includes(s.name) ? CORE_SKILLS.indexOf(s.name) : CORE_SKILLS.length);
   return skillsIn(coreSkillsDir(), 'official').sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
 }
 
 /**
- * One skill by its uid (`owner/name`), or by its name (OpenFilm's own first, else the first listSkills has), or null.
+ * One skill by its uid (`owner/name`), or by its name (OrangeFilm's own first, else the first listSkills has), or null.
  * @param {string} key @param {Parameters<typeof listSkills>[0]} [where]
  */
 export function findSkill(key, where) {
@@ -403,7 +411,7 @@ export function findSkill(key, where) {
 
 /**
  * Every skill a key names, one each: by its full name (`owner/name`, or as an agent is given it, `owner:name` in a
- * Claude Code plugin or `owner-name` elsewhere), else by its name alone, which two owners may share. OpenFilm's own and
+ * Claude Code plugin or `owner-name` elsewhere), else by its name alone, which two owners may share. OrangeFilm's own and
  * the library's first, then Discover's not installed (tried in a conversation before it is installed).
  * @param {string} key @param {Parameters<typeof listSkills>[0]} [where] @returns {Skill[]}
  */
@@ -415,17 +423,17 @@ export function skillsNamed(key, where) {
   if (full) {
     const exact = all.filter((s) => s.uid === full).slice(0, 1);
     if (exact.length) return exact;
-    /* uids written before the rename: `openfilm/edit` is the official one's `orangefilm/edit` */
-    if (full.startsWith('openfilm/')) {
-      const renamed = `orangefilm/${full.slice('openfilm/'.length)}`;
+    /* uids written before the rename: `orangefilm/edit` is the official one's `orangefilm/edit` */
+    if (full.startsWith('orangefilm/')) {
+      const renamed = `orangefilm/${full.slice('orangefilm/'.length)}`;
       return all.filter((s) => s.uid === renamed).slice(0, 1);
     }
     return [];
   }
   const asGiven = all.filter((s) => agentName(s) === k);
   if (asGiven.length) return asGiven.slice(0, 1);
-  if (k.startsWith('openfilm-')) {
-    const renamed = `orangefilm-${k.slice('openfilm-'.length)}`;
+  if (k.startsWith('orangefilm-')) {
+    const renamed = `orangefilm-${k.slice('orangefilm-'.length)}`;
     const before = all.filter((s) => agentName(s) === renamed);
     if (before.length) return before.slice(0, 1);
   }
@@ -435,7 +443,7 @@ export function skillsNamed(key, where) {
 
 /**
  * The name an agent reading a skills folder knows a skill by: whose it is and its name, `owner-name`
- * (`openfilm-replicate`, `webgrs-borrow-style`, `local-my-brand`), as Agent Skills names go (lowercase letters, digits,
+ * (`orangefilm-replicate`, `webgrs-borrow-style`, `local-my-brand`), as Agent Skills names go (lowercase letters, digits,
  * single dashes, 64 at most). A Claude Code plugin names it `owner:name` itself (one plugin for each owner).
  * @param {{ uid: string }} skill
  */
@@ -458,7 +466,7 @@ export function agentNames(skills) {
 }
 
 /**
- * OpenFilm's skills as agents are offered them, each with the name it is given by (agentNames), in this order: its own
+ * OrangeFilm's skills as agents are offered them, each with the name it is given by (agentNames), in this order: its own
  * not turned off (`core`), those installed and on (`usable`), then the rest of the library but those off, which a
  * message can still name (Try now). `given`: the first two, what a session has.
  * @param {Parameters<typeof usableSkills>[0]} [where]
@@ -479,12 +487,12 @@ export function offeredSkills({ home, ...where } = {}) {
 }
 
 /**
- * Text for an agent with OpenFilm's commands as `run` types them here (`npx -y openfilm@latest`, the app's own by its
- * path): the manual's and OpenFilm's own skills' `openfilm …`, and the official ones' `npx openfilm …`. A skill read
- * from its file says `openfilm`, which is the command on the PATH where OpenFilm is installed and in the desktop app.
+ * Text for an agent with OrangeFilm's commands as `run` types them here (`npx -y orangefilm@latest`, the app's own by its
+ * path): the manual's and OrangeFilm's own skills' `orangefilm …`, and the official ones' `npx orangefilm …`. A skill read
+ * from its file says `orangefilm`, which is the command on the PATH where OrangeFilm is installed and in the desktop app.
  * @param {string} text @param {string} run
  */
-export const asRun = (text, run) => text.replaceAll('npx openfilm', run).replace(/`openfilm(?=[\s`])/g, `\`${run}`);
+export const asRun = (text, run) => text.replaceAll('npx orangefilm', run).replace(/`orangefilm(?=[\s`])/g, `\`${run}`);
 
 /**
  * A skill as an agent reads it: its name, where its files are (only read: what a film uses is copied into the
@@ -556,23 +564,24 @@ function coverPicture(data) {
   return { bytes, extension };
 }
 
-/* the name a cover chosen in OpenFilm is saved under: only such a file is removed when the cover changes */
-const CHOSEN_COVER = /^openfilm-cover-[0-9a-f-]{36}\.(?:png|jpg|webp)$/;
+/* the name a cover chosen in OrangeFilm is saved under: only such a file is removed when the cover changes */
+const CHOSEN_COVER = /^orangefilm-cover-[0-9a-f-]{36}\.(?:png|jpg|webp)$/;
 
-/** Replace the metadata atomically. The previous cover's file goes only when OpenFilm saved it (CHOSEN_COVER); a
+/** Replace the metadata atomically. The previous cover's file goes only when OrangeFilm saved it (CHOSEN_COVER); a
  * picture of the skill's own stays, as its content may use it.
  * @param {string} folder @param {{ bytes: Buffer, extension: string } | null} picture */
 function writeSkillCover(folder, picture) {
-  const metadataFile = join(folder, 'openfilm.json');
+  /* a skill made before the rename keeps its fields: they are read from its openfilm.json, written to orangefilm.json */
+  const metadataFile = join(folder, 'orangefilm.json');
   /** @type {Record<string, unknown>} */
   let metadata = {};
-  try { metadata = JSON.parse(readFileSync(metadataFile, 'utf8')); } catch (e) {
-    if (/** @type {any} */ (e).code !== 'ENOENT') throw new Error('Cannot update the skill\'s openfilm.json.', { cause: e });
+  try { metadata = JSON.parse(readFileSync(metadataPath(folder), 'utf8')); } catch (e) {
+    if (/** @type {any} */ (e).code !== 'ENOENT') throw new Error("Cannot update the skill's orangefilm.json.", { cause: e });
   }
-  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) throw new Error('Cannot update the skill\'s openfilm.json.');
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) throw new Error("Cannot update the skill's orangefilm.json.");
   const previous = metadata.cover;
-  const file = picture ? `openfilm-cover-${randomUUID()}.${picture.extension}` : null;
-  const temporary = join(folder, `.openfilm-${randomUUID()}.json`);
+  const file = picture ? `orangefilm-cover-${randomUUID()}.${picture.extension}` : null;
+  const temporary = join(folder, `.orangefilm-${randomUUID()}.json`);
   let wrotePicture = false;
   try {
     if (picture && file) { writeFileSync(join(folder, file), picture.bytes, { flag: 'wx' }); wrotePicture = true; metadata.cover = file; }

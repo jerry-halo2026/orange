@@ -17,11 +17,11 @@ test('a canvas video uploads in place and keeps its frame while playing, renamin
 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-canvas-video-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser, releaseUpload;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Video');
+    const root = join(process.env.ORANGE_LIBRARY, 'Video');
     await mkdir(root, { recursive: true });
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: [] }));
     const input = join(scratch, 'clip.webm');
@@ -29,7 +29,7 @@ test('a canvas video uploads in place and keeps its frame while playing, renamin
       '-f', 'lavfi', '-i', 'color=blue:s=160x90:r=10:d=3.5', '-f', 'lavfi', '-i', 'sine=frequency=440:duration=4',
       '-filter_complex', '[0:v][1:v]concat=n=2:v=1:a=0[clip]', '-map', '[clip]', '-map', '2:a', '-c:v', 'libvpx', '-c:a', 'libopus', input]);
     const project = await openProject(root);
-    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--autoplay-policy=no-user-gesture-required'] });
     const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, locale: 'en-US', reducedMotion: 'reduce' });
     page.setDefaultTimeout(8000);

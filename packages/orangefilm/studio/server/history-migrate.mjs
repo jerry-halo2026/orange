@@ -32,7 +32,7 @@ import { moveToTrash } from './trash.mjs';
 
 /** The format of a history Studio made: 2 kept the film's files only, media outside git; 3 keeps the project's files. */
 export const FORMAT = 3;
-const MARKER = 'openfilm.json';
+const MARKER = 'orangefilm.json';
 /** The message of the version that adds what an earlier history did not keep (history.mjs Kind 'upgrade'). */
 export const UPGRADE_MESSAGE = 'Kept all the project\'s files\n\nOpenfilm-Version: upgrade\n';
 
@@ -131,7 +131,7 @@ export async function migrateHistory(root, gitDir, files, progress) {
   const stashes = [];
   for (const line of stashList.split('\n')) {
     const [sha, subject] = line.split('\x1f');
-    const branch = /: openfilm:(.+)$/.exec(subject ?? '')?.[1];
+    const branch = /: orangefilm:(.+)$/.exec(subject ?? '')?.[1];
     if (sha && branch && !stashes.some((s) => s.branch === branch)) stashes.push({ sha, branch });
   }
   if (!refLines.length) { await markFormat(gitDir); return; }
@@ -183,7 +183,7 @@ export async function migrateHistory(root, gitDir, files, progress) {
       if (!sha) { sha = await fromFolder(path, e) ?? /** @type {string} */ (await extract(old, storeDir, e.oid)); extracted.set(e.oid, sha); }
       const size = e.size ?? 0;
       const text = pointerText(sha, size);
-      const file = join(next, `openfilm-ptr-${sha}`);
+      const file = join(next, `orangefilm-ptr-${sha}`);
       if (!pointers.has(text)) { await writeFile(file, text); fresh.push(file); pointers.add(text); }
       out.set(path, { oid: pointerId(neu, sha, size), mode: e.mode, media: { sha256: sha, size }, size });
     }
@@ -232,7 +232,7 @@ export async function migrateHistory(root, gitDir, files, progress) {
     const tree = await convert(new Map([...tracked, ...untracked]));
     const parent = mapped.get((await old.git(['rev-parse', `${sha}^1`])).trim());
     const made = (await git(['commit-tree', tree, ...(parent ? ['-p', parent] : []), '-m', `parked: ${branch}`])).trim();
-    await git(['update-ref', `refs/openfilm/parked/${branch}`, made]);
+    await git(['update-ref', `refs/orangefilm/parked/${branch}`, made]);
     progress?.({ phase: 'migrate', done: ++done, total });
   }
 

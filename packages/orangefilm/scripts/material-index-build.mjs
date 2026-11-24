@@ -11,7 +11,7 @@
  *   node packages/orangefilm/scripts/material-index-build.mjs --dir D:\\work\\idx --json
  *   node packages/orangefilm/scripts/material-index-build.mjs --dry-run --video-types 2,4
  *
- * The dev Studio writes where it listens and its launch key to `~/.openfilm-dev/run.json` (`origin`, `key`); this reads
+ * The dev Studio writes where it listens and its launch key to `~/.orangefilm-dev/run.json` (`origin`, `key`); this reads
  * them, asks `/api/materials/list` once per page, and hands the pages to `buildMaterialIndexFromApi`.
  *
  * `--scope` defaults to `company`, not `own`: this account's `own` list answers every row as `dropped` (the supplier's
@@ -33,7 +33,7 @@ import {
 /** The scopes the Studio's material list accepts; `company` is the one this account's materials live in. */
 export const SCOPES = Object.freeze(['company', 'own']);
 
-/** `~/.openfilm-dev/run.json`, as the dev Studio leaves it: `{pid, origin, filmOrigin, key}`. */
+/** `~/.orangefilm-dev/run.json`, as the dev Studio leaves it: `{pid, origin, filmOrigin, key}`. */
 export const runFile = (home) => join(openfilmDevHome(home), 'run.json');
 
 /**

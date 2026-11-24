@@ -300,7 +300,7 @@ export function ContextMenu({
           maxHeight: `calc(100vh - ${2 * MENU_EDGE}px)`,
           /* Hidden until measured: the first frame would be painted at the un-adjusted position, and it would be seen flashing off screen. */
           visibility: pos ? 'visible' : 'hidden',
-          animation: pos ? 'openfilm-rise 0.12s ease-out both' : undefined,
+          animation: pos ? 'orangefilm-rise 0.12s ease-out both' : undefined,
         }}
       >
         {items.map((entry) => {

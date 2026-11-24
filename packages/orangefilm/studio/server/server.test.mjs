@@ -18,10 +18,10 @@ import { filmHtml } from '../../src/film-doc.mjs';
 let studio, scratch, opened;
 before(async () => {
   scratch = mkdtempSync(join(tmpdir(), 'of-server-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  process.env.OPENFILM_TRASH_DIR = join(scratch, 'trash');
-  mkdirSync(process.env.OPENFILM_TRASH_DIR);
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_TRASH_DIR = join(scratch, 'trash');
+  mkdirSync(process.env.ORANGE_TRASH_DIR);
   opened = [];
   studio = await startStudio({ port: 0, openBrowser: (url) => opened.push(url), quietMs: 150 });
 });
@@ -88,7 +88,7 @@ test('a page\'s address with the key signs a browser in (a copied address opens 
   assert.deepEqual((await api('/projects/x?key=wrong', { key: null })).headers.getSetCookie(), []);
 });
 
-test('openfilm open: with no editor page, the person\'s browser gets the address after the fallback', async () => {
+test('orangefilm open: with no editor page, the person\'s browser gets the address after the fallback', async () => {
   assert.equal((await api('/api/open', { method: 'POST', body: { path: 'Launch', fallback: 0 } })).status, 400, 'a relative folder would be Studio\'s own, not the caller\'s');
   const res = await api('/api/open', { method: 'POST', body: { path: join(scratch, 'Launch'), fallback: 0.05 } });
   const { project, url, pages } = await res.json();
@@ -98,7 +98,7 @@ test('openfilm open: with no editor page, the person\'s browser gets the address
   assert.deepEqual(opened, [url]);
 });
 
-test('openfilm open: an editor page that is open switches to the project, and nothing more opens', async () => {
+test('orangefilm open: an editor page that is open switches to the project, and nothing more opens', async () => {
   opened.length = 0;
   const events = collect('/api/events', (e) => e.length >= 1);
   await new Promise((r) => setTimeout(r, 50));
@@ -110,7 +110,7 @@ test('openfilm open: an editor page that is open switches to the project, and no
   assert.deepEqual(opened, []);
 });
 
-test('openfilm open: a page that opens the address within the fallback (an agent\'s own browser) keeps the person\'s closed', async () => {
+test('orangefilm open: a page that opens the address within the fallback (an agent\'s own browser) keeps the person\'s closed', async () => {
   opened.length = 0;
   await api('/api/open', { method: 'POST', body: { path: join(scratch, 'Third'), fallback: 0.15 } });
   const page = new WebSocket(`${studio.origin.replace(/^http/, 'ws')}/api/events`, { headers: { 'x-studio-key': studio.key } });
@@ -120,7 +120,7 @@ test('openfilm open: a page that opens the address within the fallback (an agent
   page.close();
 });
 
-test('openfilm open: a page out of sight (a tab behind others, a hidden browser) switches too, and the browser opens', async () => {
+test('orangefilm open: a page out of sight (a tab behind others, a hidden browser) switches too, and the browser opens', async () => {
   opened.length = 0;
   const ws = (visible) => new WebSocket(`${studio.origin.replace(/^http/, 'ws')}/api/events?visible=${visible}`, { headers: { 'x-studio-key': studio.key } });
   const hidden = ws(0);
@@ -141,7 +141,7 @@ test('openfilm open: a page out of sight (a tab behind others, a hidden browser)
   hidden.close();
 });
 
-test('openfilm open after a restart waits a moment for the pages of the Studio before to come back', async () => {
+test('orangefilm open after a restart waits a moment for the pages of the Studio before to come back', async () => {
   opened.length = 0;
   const t0 = Date.now();
   const answer = api('/api/open', { method: 'POST', body: { path: join(scratch, 'Back'), now: true, pages: 1 } }).then((r) => r.json());
@@ -154,7 +154,7 @@ test('openfilm open after a restart waits a moment for the pages of the Studio b
   page.close();
 });
 
-test('openfilm open: `now` opens the person\'s browser at once (a person at a terminal)', async () => {
+test('orangefilm open: `now` opens the person\'s browser at once (a person at a terminal)', async () => {
   opened.length = 0;
   const { url } = await (await api('/api/open', { method: 'POST', body: { path: join(scratch, 'Fourth'), now: true } })).json();
   assert.deepEqual(opened, [url]);
@@ -376,7 +376,7 @@ test('rename renames the folder and tells the pages showing it; delete moves it 
   assert.equal((await api(`/api/projects/${project.id}`, { method: 'DELETE' })).status, 200);
   assert.equal((await api(`/api/projects/${project.id}`)).status, 404);
   assert.ok(!existsSync(renamed.project.path), 'the folder went to the Trash');
-  assert.ok(readdirSync(process.env.OPENFILM_TRASH_DIR).some((n) => n.startsWith('Final')));
+  assert.ok(readdirSync(process.env.ORANGE_TRASH_DIR).some((n) => n.startsWith('Final')));
 });
 
 test('the preview plays heavy footage from its proxy once made; what the file is (film-facts), an export and proxies off read the original', { skip: !(() => { try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); return true; } catch { return false; } })() && 'no ffmpeg' }, async () => {
@@ -485,7 +485,7 @@ test('the film origin serves a project\'s files, with ranges, never .film/, and 
 });
 
 test('files over the API: import a body of any size, list, move with film.html following, trash', async () => {
-  process.env.OPENFILM_TRASH_DIR = join(scratch, 'trash');
+  process.env.ORANGE_TRASH_DIR = join(scratch, 'trash');
   const { project } = await (await api('/api/projects', { method: 'POST', body: { path: join(scratch, 'Media') } })).json();
   const big = Buffer.alloc(3 << 20, 7);
   const put = await api(`/api/projects/${project.id}/files?path=${encodeURIComponent('assets/footage/a.mp4')}`, { method: 'PUT' });
@@ -792,19 +792,19 @@ test('an advertised Studio writes run.json, quits when asked by a key holder, an
   let quit;
   const asked = new Promise((done) => { quit = done; });
   const other = await startStudio({ port: 0, advertise: true, onQuit: () => quit(), quietMs: 150 });
-  const run = join(process.env.OPENFILM_HOME, 'run.json');
+  const run = join(process.env.ORANGE_HOME, 'run.json');
   try {
     const written = JSON.parse(readFileSync(run, 'utf8'));
     assert.equal(written.origin, other.origin);
     assert.equal(written.key, other.key);
     /* Windows has no file modes: the profile's own permissions keep it */
     if (process.platform !== 'win32') assert.equal((statSync(run).mode & 0o777).toString(8), '600');
-    assert.equal(other.key, readFileSync(join(process.env.OPENFILM_HOME, 'key'), 'utf8'), 'the machine\'s key, the same every launch');
+    assert.equal(other.key, readFileSync(join(process.env.ORANGE_HOME, 'key'), 'utf8'), 'the machine\'s key, the same every launch');
     const health = await (await fetch(`${other.origin}/api/health`)).json();
     /* its home only as a digest, and no process id: anyone may ask */
-    assert.deepEqual(health, { product: 'openfilm-studio', products: ['openfilm-studio', 'orangefilm-studio'],
+    assert.deepEqual(health, { product: 'orangefilm-studio', products: ['orangefilm-studio', 'orangefilm-studio'],
       version: JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version,
-      home: createHash('sha256').update(process.env.OPENFILM_HOME).digest('hex'), filmOrigin: other.filmOrigin });
+      home: createHash('sha256').update(process.env.ORANGE_HOME).digest('hex'), filmOrigin: other.filmOrigin });
     assert.equal((await fetch(`${other.origin}/api/quit`, { method: 'POST' })).status, 401);
     assert.equal((await fetch(`${other.origin}/api/quit`, { method: 'POST', headers: { 'x-studio-key': other.key } })).status, 200);
     await asked;
@@ -844,7 +844,7 @@ test('a project an app\'s agent is working in is marked so, and is neither renam
   }
 });
 
-test('an app\'s Studio (`stays`) is not stopped by `openfilm open`, and says why at once', async () => {
+test('an app\'s Studio (`stays`) is not stopped by `orangefilm open`, and says why at once', async () => {
   const kept = await startStudio({ port: 0, stays: true, openBrowser: () => {} });
   try {
     const res = await fetch(`${kept.origin}/api/quit`, { method: 'POST', headers: { 'x-studio-key': kept.key, 'content-type': 'application/json' }, body: '{"whenIdle":true}' });
@@ -852,7 +852,7 @@ test('an app\'s Studio (`stays`) is not stopped by `openfilm open`, and says why
     assert.equal(res.status, 423);
     assert.match((await res.json()).error, /app/);
     assert.equal((await fetch(`${kept.origin}/api/health`)).status, 200, 'still there');
-    /* it says it is the app's, so `openfilm update` says the app updates it */
+    /* it says it is the app's, so `orangefilm update` says the app updates it */
     assert.equal((await (await fetch(`${kept.origin}/api/health`)).json()).app, true);
     const update = await fetch(`${kept.origin}/api/update`, { method: 'POST', headers: { 'x-studio-key': kept.key, 'content-type': 'application/json' }, body: '{}' });
     assert.deepEqual([update.status, (await update.json()).code], [409, 'app'], 'it does not update itself');
@@ -869,7 +869,7 @@ test('Update is not run from a source checkout (git pull updates it), nor withou
   assert.equal((await (await api('/api/version')).json()).update, undefined, 'no update running');
 });
 
-test('`openfilm open` without a folder opens the project opened last, and makes none', async () => {
+test('`orangefilm open` without a folder opens the project opened last, and makes none', async () => {
   const before = (await (await api('/api/projects')).json()).projects;
   const last = before.find((p) => !p.missing && existsSync(join(p.path, 'film.html')));
   const res = await api('/api/open', { method: 'POST', body: { fallback: 0 } });
@@ -880,7 +880,7 @@ test('`openfilm open` without a folder opens the project opened last, and makes 
   assert.equal((await (await api('/api/projects')).json()).projects.length, before.length, 'no project was made');
 });
 
-test('a film opened in Studio is the one opened last: `openfilm open` alone comes back to it', async () => {
+test('a film opened in Studio is the one opened last: `orangefilm open` alone comes back to it', async () => {
   const a = (await (await api('/api/projects', { method: 'POST', body: { path: join(scratch, 'Opened A') } })).json()).project;
   const b = (await (await api('/api/projects', { method: 'POST', body: { path: join(scratch, 'Opened B') } })).json()).project;
   assert.equal((await (await api('/api/projects')).json()).projects[0].id, b.id);
@@ -933,8 +933,8 @@ test('a page\'s stream is a WebSocket: only with the key, and from the editor\'s
   const outcome = (socket) => new Promise((done) => { socket.onopen = () => done('open'); socket.onerror = () => done('refused'); });
   assert.equal(await outcome(ws({})), 'refused', 'no key');
   /* the cookie is named for the port, so another Studio's cookie on the same host is not this one's */
-  const named = `openfilm_studio_${new URL(studio.origin).port}`;
-  assert.equal(await outcome(ws({ cookie: `openfilm_studio_1=${studio.key}`, origin: studio.origin })), 'refused', 'another port\'s cookie');
+  const named = `orangefilm_studio_${new URL(studio.origin).port}`;
+  assert.equal(await outcome(ws({ cookie: `orangefilm_studio_1=${studio.key}`, origin: studio.origin })), 'refused', 'another port\'s cookie');
   assert.equal(await outcome(ws({ cookie: `${named}=${studio.key}`, origin: 'http://evil.test' })), 'refused', 'another site\'s page');
   const page = ws({ cookie: `${named}=${studio.key}`, origin: studio.origin });
   assert.equal(await outcome(page), 'open');

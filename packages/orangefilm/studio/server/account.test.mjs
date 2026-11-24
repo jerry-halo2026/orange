@@ -13,7 +13,7 @@ import { providersRoute } from './providers/index.mjs';
 
 test('the private desktop account reads the exact Services key, account, disconnect and environment override', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'of-shared-account-'));
-  const names = ['OPENFILM_HOME', 'OPENFILM_SHARED_HOME', 'OPENFILM_API_URL', 'OPENFILM_API_KEY'];
+  const names = ['ORANGE_HOME', 'ORANGE_SHARED_HOME', 'ORANGE_API_URL', 'ORANGE_API_KEY'];
   const previous = Object.fromEntries(names.map((n) => [n, process.env[n]]));
   let revoked = false;
   const requests = [];
@@ -27,20 +27,20 @@ test('the private desktop account reads the exact Services key, account, disconn
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
   const origin = `http://127.0.0.1:${server.address().port}`;
-  Object.assign(process.env, { OPENFILM_HOME: dir, OPENFILM_SHARED_HOME: dir, OPENFILM_API_URL: origin });
-  delete process.env.OPENFILM_API_KEY;
+  Object.assign(process.env, { ORANGE_HOME: dir, ORANGE_SHARED_HOME: dir, ORANGE_API_URL: origin });
+  delete process.env.ORANGE_API_KEY;
   try {
     assert.equal((await desktopAccount()).key, null);
-    await changeSettings((s) => { s.keys.openfilm = 'ofk-shared'; s.accounts.openfilm = 'shared@example.com'; });
+    await changeSettings((s) => { s.keys.orangefilm = 'ofk-shared'; s.accounts.orangefilm = 'shared@example.com'; });
     assert.deepEqual(await desktopAccount(), { key: 'ofk-shared', email: 'shared@example.com', baseUrl: `${origin}/v1/agent`, connection: { status: 200, catalog, error: null }, signingIn: false, error: null });
     const settingsState = async () => {
       let output;
       await providersRoute({ method: 'GET' }, { writeHead() {}, end(body) { output = JSON.parse(body); } }, [], { openBrowser: () => {} });
       return output;
     };
-    /* The account is not a service: providers/openfilm.mjs carries `hideInServices`, so Settings → Services has no
-       OpenFilm row to show as connected — not with a saved key, and not with a revoked one. */
-    const board = (state) => state.providers.find((p) => p.id === 'openfilm');
+    /* The account is not a service: providers/orangefilm.mjs carries `hideInServices`, so Settings → Services has no
+       OrangeFilm row to show as connected — not with a saved key, and not with a revoked one. */
+    const board = (state) => state.providers.find((p) => p.id === 'orangefilm');
     assert.equal(board(await settingsState()), undefined, 'the private desktop account is not listed as a service');
     const before = requests.filter((path) => path === '/v1/agent/models').length;
     await desktopAccount();
@@ -51,11 +51,11 @@ test('the private desktop account reads the exact Services key, account, disconn
     assert.equal(invalid.connection.error, 'Invalid key', 'Nest authentication errors use a top-level message');
     assert.equal(board(await settingsState()), undefined, 'a revoked key is not presented as Connected in Services either');
     revoked = false;
-    await changeSettings((s) => { s.keys.openfilm = 'ofk-new'; });
+    await changeSettings((s) => { s.keys.orangefilm = 'ofk-new'; });
     assert.equal((await desktopAccount()).connection.status, 200, 'a new login invalidates the old cached rejection');
-    process.env.OPENFILM_API_KEY = 'ofk-environment';
+    process.env.ORANGE_API_KEY = 'ofk-environment';
     assert.equal((await desktopAccount()).key, 'ofk-new', 'Services prefers the saved login to an environment key');
-    await changeSettings((s) => { delete s.keys.openfilm; delete s.accounts.openfilm; s.off.push('openfilm'); });
+    await changeSettings((s) => { delete s.keys.orangefilm; delete s.accounts.orangefilm; s.off.push('orangefilm'); });
     assert.equal((await desktopAccount()).key, null, 'Services disconnected an environment key: Agents respects it');
     await changeSettings((s) => { s.off = []; });
     assert.equal((await desktopAccount()).key, 'ofk-environment');

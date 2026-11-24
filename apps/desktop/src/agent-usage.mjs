@@ -63,7 +63,7 @@ export function readCodexUsage(account, limits) {
 /** A promise that gives up (null) after `ms`. @template T @param {Promise<T>} p @param {number} ms */
 const within = (p, ms) => Promise.race([p, new Promise((done) => setTimeout(() => done(null), ms).unref?.())]);
 
-/** Codex's usage, on OpenFilm's sign-in: its app server asked twice, then stopped. @param {string} cli */
+/** Codex's usage, on OrangeFilm's sign-in: its app server asked twice, then stopped. @param {string} cli */
 async function codexUsage(cli) {
   const shell = await loginShellVariables();
   const child = spawn(cli, ['app-server'], { env: childEnvironment({ shell }), stdio: ['pipe', 'pipe', 'ignore'], windowsHide: true });
@@ -90,7 +90,7 @@ async function codexUsage(cli) {
   });
   try {
     return await within((async () => {
-      await call('initialize', { clientInfo: { name: 'openfilm-desktop', title: PRODUCT, version: '1' }, capabilities: null });
+      await call('initialize', { clientInfo: { name: 'orangefilm-desktop', title: PRODUCT, version: '1' }, capabilities: null });
       child.stdin.write(`${JSON.stringify({ method: 'initialized' })}\n`);
       const account = await call('account/read', { refreshToken: false });
       const limits = await call('account/rateLimits/read', undefined);

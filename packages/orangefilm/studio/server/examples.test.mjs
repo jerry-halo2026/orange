@@ -18,16 +18,16 @@ test('an index\'s examples: each with the address that fetches its folder, its p
       { folder: 'untitled' },
       { folder: 'abs', title: 'Abs', poster: 'https://example.com/p.png', duration: 12 },
     ],
-  }, 'https://raw.githubusercontent.com/openfilm/examples/main/examples.json');
+  }, 'https://raw.githubusercontent.com/orangefilm/examples/main/examples.json');
   assert.deepEqual(examples, [
     {
       id: 'one-prompt', title: 'One Prompt', description: 'Every frame is code.', duration: 89,
-      poster: 'https://raw.githubusercontent.com/openfilm/examples/main/one-prompt/look.png',
-      video: 'https://raw.githubusercontent.com/openfilm/examples/main/one-prompt/preview.mp4',
-      url: 'https://github.com/openfilm/examples/tree/main/one-prompt',
+      poster: 'https://raw.githubusercontent.com/orangefilm/examples/main/one-prompt/look.png',
+      video: 'https://raw.githubusercontent.com/orangefilm/examples/main/one-prompt/preview.mp4',
+      url: 'https://github.com/orangefilm/examples/tree/main/one-prompt',
       category: 'music', segments: [{ title: 'S1-Open', from: 0, to: 12 }],
     },
-    { id: 'abs', title: 'Abs', description: '', duration: 12, poster: 'https://example.com/p.png', video: null, url: 'https://github.com/openfilm/examples/tree/main/abs', category: null, segments: [] },
+    { id: 'abs', title: 'Abs', description: '', duration: 12, poster: 'https://example.com/p.png', video: null, url: 'https://github.com/orangefilm/examples/tree/main/abs', category: null, segments: [] },
   ]);
   /* another repository: named by the index, or the one it is read from */
   assert.equal(readExamples({ repo: 'https://github.com/a/b', branch: 'dev', examples: [{ folder: 'x', title: 'X' }] })[0].url, 'https://github.com/a/b/tree/dev/x');
@@ -93,10 +93,10 @@ test('the index that ships with Studio shows at once, its posters from the packa
   assert.ok(shipped.length > 0, 'examples at once');
   assert.ok(shipped.every((e) => e.poster?.startsWith('/api/examples/file/')), 'posters from the package');
 
-  /* an index somewhere else (OPENFILM_EXAMPLES_INDEX) is read where it is */
-  const remote = 'https://raw.githubusercontent.com/openfilm/examples/main/examples.json';
-  const newer = { repo: 'https://github.com/openfilm/examples', branch: 'main', examples: [{ folder: 'fresh-one', title: 'Fresh one', poster: 'fresh-one/look.jpg' }] };
+  /* an index somewhere else (ORANGE_EXAMPLES_INDEX) is read where it is */
+  const remote = 'https://raw.githubusercontent.com/orangefilm/examples/main/examples.json';
+  const newer = { repo: 'https://github.com/orangefilm/examples', branch: 'main', examples: [{ folder: 'fresh-one', title: 'Fresh one', poster: 'fresh-one/look.jpg' }] };
   const read = await listExamples({ source: remote, fetchImpl: async () => ({ ok: true, json: async () => newer }), home });
   assert.deepEqual(read.map((e) => e.id), ['fresh-one']);
-  assert.equal(read[0].poster, 'https://raw.githubusercontent.com/openfilm/examples/main/fresh-one/look.jpg');
+  assert.equal(read[0].poster, 'https://raw.githubusercontent.com/orangefilm/examples/main/fresh-one/look.jpg');
 });

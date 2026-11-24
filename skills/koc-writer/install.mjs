@@ -4,7 +4,7 @@
 
 // 把 KOC 文案技能装到本机技能目录，并把依赖模块一起带过去（装完之后不依赖仓库路径）。
 //
-//   node skills/koc-writer/install.mjs                  # 通用层 → ~/.openfilm/skills/koc-writer
+//   node skills/koc-writer/install.mjs                  # 通用层 → ~/.orangefilm/skills/koc-writer
 //   node skills/koc-writer/install.mjs --layer tea      # 只装茶饮层
 //   node skills/koc-writer/install.mjs --layer both     # 两层一起（各自一个目录）
 //   node skills/koc-writer/install.mjs --to DIR         # 装到别处
@@ -37,13 +37,13 @@ if (!['writer', 'tea', 'both'].includes(layer)) {
 }
 const wanted = layer === 'both' ? ['koc-writer', 'koc-tea'] : [layer === 'tea' ? 'koc-tea' : 'koc-writer'];
 
-const skillsHome = process.env.OPENFILM_HOME || join(homedir(), '.openfilm');
+const skillsHome = process.env.ORANGE_HOME || join(homedir(), '.orangefilm');
 const baseTarget = value('to') || join(skillsHome, 'skills');
 const dryRun = flag('dry-run');
 
 const deps = {
-  'claim-check.mjs': resolve(here, '..', '..', 'packages', 'openfilm', 'src', 'claim-check.mjs'),
-  'copy-rewrite.mjs': resolve(here, '..', '..', 'packages', 'openfilm', 'src', 'copy-rewrite.mjs'),
+  'claim-check.mjs': resolve(here, '..', '..', 'packages', 'orangefilm', 'src', 'claim-check.mjs'),
+  'copy-rewrite.mjs': resolve(here, '..', '..', 'packages', 'orangefilm', 'src', 'copy-rewrite.mjs'),
 };
 for (const [name, file] of Object.entries(deps)) {
   if (!existsSync(file)) throw new Error(`找不到依赖模块 ${name}：${file}`);

@@ -122,7 +122,7 @@ export function OperationHistory({
         top: anchor.bottom + 6,
         maxHeight: Math.max(0, below - 18),
         width: PANEL_W,
-        animation: 'openfilm-rise 0.14s ease-out both',
+        animation: 'orangefilm-rise 0.14s ease-out both',
       }}
     >
       <div className="flex shrink-0 items-baseline justify-between gap-2 border-b border-[var(--border)] px-3 py-2">

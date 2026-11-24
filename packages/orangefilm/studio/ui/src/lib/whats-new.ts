@@ -188,7 +188,7 @@ export function releaseNotes(version: string, release: ReleaseNotes = RELEASE): 
 }
 
 /** Said on the window to show this release's notes again (Settings → About, Developer's preview). */
-export const WHATS_NEW_EVENT = 'openfilm:whats-new';
+export const WHATS_NEW_EVENT = 'orangefilm:whats-new';
 export function showWhatsNew(): void {
   window.dispatchEvent(new CustomEvent(WHATS_NEW_EVENT));
 }

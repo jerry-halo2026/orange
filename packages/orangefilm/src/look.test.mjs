@@ -193,8 +193,8 @@ test('a page without a duration has no end: look and render of it alone need a r
   const { render } = await import('./render.mjs');
   const dir = mkdtempSync(join(tmpdir(), 'of-look-endless-'));
   writeFileSync(join(dir, 'index.html'), '<!doctype html><body style="margin:0;background:#123"><script>window.film = { width: 320, height: 180, frame(t) { document.body.style.opacity = String(0.5 + Math.sin(t) / 4); } };</script>');
-  await assert.rejects(look([dir], {}), /this page has no duration, so it has no end: say what to look at, a range \(openfilm look 0-6\) or a time \(openfilm look 2\)/);
-  await assert.rejects(render([dir], {}), /this page has no duration, so it has no end: give a range to render, e\.g\. openfilm render 0-6/);
+  await assert.rejects(look([dir], {}), /this page has no duration, so it has no end: say what to look at, a range \(orangefilm look 0-6\) or a time \(orangefilm look 2\)/);
+  await assert.rejects(render([dir], {}), /this page has no duration, so it has no end: give a range to render, e\.g\. orangefilm render 0-6/);
   const r = await look([dir, '0-6'], { count: 2 });
   assert.ok(r.ok !== false, r.lines.join('\n'));
   assert.match(r.lines[0], /^film {2}320×180 · no duration · 0 sounds/);

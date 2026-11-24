@@ -21,9 +21,9 @@ let root, trash;
 beforeEach(() => {
   root = mkdtempSync(join(tmpdir(), 'of-files-'));
   trash = mkdtempSync(join(tmpdir(), 'of-trash-'));
-  process.env.OPENFILM_TRASH_DIR = trash;
+  process.env.ORANGE_TRASH_DIR = trash;
   /* the places the person linked are kept in Studio's home: one of each test's own */
-  process.env.OPENFILM_HOME = mkdtempSync(join(tmpdir(), 'of-home-'));
+  process.env.ORANGE_HOME = mkdtempSync(join(tmpdir(), 'of-home-'));
 });
 const put = (rel, text = 'x') => { mkdirSync(join(root, rel, '..'), { recursive: true }); writeFileSync(join(root, rel), text); };
 

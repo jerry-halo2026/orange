@@ -14,21 +14,21 @@ import { startStudio } from './server/server.mjs';
 test('editing-project exports keep effects automatically and always copy complete media', { timeout: 60_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-export-original-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Originals');
+    const root = join(process.env.ORANGE_LIBRARY, 'Originals');
     await mkdir(join(root, 'assets'), { recursive: true });
     await writeFile(join(root, 'assets', 'card.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"><rect width="320" height="180" fill="#486b8e"/></svg>');
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 320, h: 180 }, tracks: [{ clips: [{ id: 'card', src: 'assets/card.svg', time: [0, 4] }] }] }));
     const project = await openProject(root);
-    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.OPENFILM_TEST_EDITOR_DIR });
+    studio = await startStudio({ port: 0, openBrowser: () => {}, editorDir: process.env.ORANGE_TEST_EDITOR_DIR });
     browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader'] });
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, locale: 'en-US', reducedMotion: 'reduce' });
     page.setDefaultTimeout(8000);
     await page.addInitScript(() => {
-      localStorage.setItem('openfilm.exportCenter.v1', JSON.stringify({ dest: 'nle', nle: { app: 'premiere', footage: 'source', media: 'invalid' } }));
+      localStorage.setItem('orangefilm.exportCenter.v1', JSON.stringify({ dest: 'nle', nle: { app: 'premiere', footage: 'source', media: 'invalid' } }));
     });
     const queued = [];
     await page.route(`**/api/projects/${project.id}/exports`, async (route) => {
@@ -66,7 +66,7 @@ test('editing-project exports keep effects automatically and always copy complet
     /* The seed survives in the browser's storage as inert text (loadSettings spreads what it read), and nothing reads it:
        every job above was built with `media: 'copy'` and no `footage` while the seed said `footage: 'source'` and
        `media: 'invalid'`. So the check is that the dialog offers no such choice and that the seed is not turned into one. */
-    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('openfilm.exportCenter.v1')).nle);
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('orangefilm.exportCenter.v1')).nle);
     assert.equal(stored.media, 'invalid', 'the leftover choice is left as it was, and nothing applies it');
   } finally {
     await browser?.close();

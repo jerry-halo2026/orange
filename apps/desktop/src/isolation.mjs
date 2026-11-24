@@ -4,7 +4,7 @@
 /** Native development startup adapter. Importing it performs no writes/spawns. */
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { assertIsolationPath, isolationEnvironment, readIsolationProfile } from 'openfilm/development-isolation';
+import { assertIsolationPath, isolationEnvironment, readIsolationProfile } from 'orangefilm/development-isolation';
 export { readIsolationProfile, isolationEnvironment };
 export function prepareIsolationDirectories(profile, mkdir = mkdirSync) {
     const p = profile.paths;

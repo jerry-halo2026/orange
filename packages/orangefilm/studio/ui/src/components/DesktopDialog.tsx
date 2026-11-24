@@ -124,7 +124,7 @@ export function DesktopDialog({ open, onClose }: { open: boolean; onClose: () =>
   return createPortal(
     <div
       className="fixed inset-0 z-[10100] flex items-center justify-center bg-black/55 p-4 backdrop-blur-[3px]"
-      style={{ animation: 'openfilm-rise 0.18s ease-out both' }}
+      style={{ animation: 'orangefilm-rise 0.18s ease-out both' }}
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
@@ -239,7 +239,7 @@ function AppPicture() {
               className="flex aspect-video w-[78%] flex-col justify-end rounded-[4px] p-[8%]"
               style={{ background: 'linear-gradient(135deg, #5ecb92, #7fd3e4)' }}
             >
-              <span className="openfilm-desktop-pulse h-[7px] w-[58%] rounded-full bg-white/90" />
+              <span className="orangefilm-desktop-pulse h-[7px] w-[58%] rounded-full bg-white/90" />
               <span className="mt-[4px] h-[4px] w-[36%] rounded-full bg-white/60" />
             </div>
           </div>
@@ -247,7 +247,7 @@ function AppPicture() {
             <div className="flex flex-col gap-[4px]">
               <div className="flex gap-[3px]">
                 <span className="h-[10px] w-[30%] rounded-[2px] bg-white/[0.13]" />
-                <span className="openfilm-desktop-pulse h-[10px] w-[28%] rounded-[2px] outline outline-[1.5px] outline-offset-[1px]" style={{ background: 'color-mix(in srgb, var(--accent) 45%, transparent)', outlineColor: 'var(--accent)' }} />
+                <span className="orangefilm-desktop-pulse h-[10px] w-[28%] rounded-[2px] outline outline-[1.5px] outline-offset-[1px]" style={{ background: 'color-mix(in srgb, var(--accent) 45%, transparent)', outlineColor: 'var(--accent)' }} />
                 <span className="h-[10px] w-[34%] rounded-[2px] bg-white/[0.13]" />
               </div>
               <div className="flex gap-[3px] pl-[18%]">
@@ -255,14 +255,14 @@ function AppPicture() {
               </div>
               <span className="h-[8px] w-[92%] rounded-[2px] bg-[color-mix(in_srgb,var(--clip-audio)_90%,transparent)]" />
             </div>
-            <span className="openfilm-desktop-playhead absolute bottom-[4px] top-[3px] w-[1.5px] rounded-full bg-[var(--tl-playhead)]" />
+            <span className="orangefilm-desktop-playhead absolute bottom-[4px] top-[3px] w-[1.5px] rounded-full bg-[var(--tl-playhead)]" />
           </div>
         </div>
         {/* the chat beside it */}
         <div className="flex min-w-0 flex-col gap-[6px] rounded-[6px] bg-[var(--bg-raised)] p-[6px]">
           <div className="ml-auto max-w-[96%] rounded-[6px] bg-[var(--bg-field)] px-[6px] py-[5px]">
             <span
-              className="openfilm-desktop-pulse mb-[4px] inline-flex max-w-full items-center truncate rounded-[3px] px-[4px] py-[1px] text-[7.5px] font-medium leading-tight"
+              className="orangefilm-desktop-pulse mb-[4px] inline-flex max-w-full items-center truncate rounded-[3px] px-[4px] py-[1px] text-[7.5px] font-medium leading-tight"
               style={{ background: 'color-mix(in srgb, var(--accent) 18%, transparent)', color: 'var(--accent)', boxShadow: 'inset 0 0 0 1px var(--accent)' }}
             >
               {t('desktop.picture.clip')}

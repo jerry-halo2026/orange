@@ -41,7 +41,7 @@ test('the turn log has what the agent was started with and each message as it go
     agent: 'qwen',
     cwd: mkdtempSync(join(tmpdir(), 'of-project-')),
     binDir: '/app/bin',
-    env: { OPENFILM_HOME: '/data', SOME_API_KEY: 'sk-secret' },
+    env: { ORANGE_HOME: '/data', SOME_API_KEY: 'sk-secret' },
     onSend: (message) => sent.push(message),
   });
   const told = agentInstructions(openfilmCommand('/app/bin'));
@@ -50,8 +50,8 @@ test('the turn log has what the agent was started with and each message as it go
     const opened = session.opened;
     assert.deepEqual(opened.command.slice(-3), ['--acp', '--approval-mode', 'yolo'], 'started as the registry starts it');
     assert.equal(opened.firstMessage, told, 'an agent with no place for them is told in its first message');
-    if (process.platform !== 'win32') assert.ok(told.includes("`'/app/bin/openfilm' look`"), "the app's openfilm by its whole path");
-    assert.equal(opened.env.OPENFILM_HOME, '/data');
+    if (process.platform !== 'win32') assert.ok(told.includes("`'/app/bin/orangefilm' look`"), "the app's orangefilm by its whole path");
+    assert.equal(opened.env.ORANGE_HOME, '/data');
     assert.equal(opened.env.SOME_API_KEY, '(hidden)', 'a key is named, never its value');
     assert.ok(!JSON.stringify(opened).includes('sk-secret'));
     assert.equal(opened.path.first, '/app/bin');

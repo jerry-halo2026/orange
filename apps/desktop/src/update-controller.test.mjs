@@ -108,7 +108,7 @@ test('an installer that fails leaves the update ready, with a code and nothing o
 
 test('a failed check is an error, not "up to date", and never carries the updater\'s message', async () => {
   const f = fixture();
-  f.updater.checkForUpdates = async () => { throw new Error('https://openfilm.dev/private-feed-detail'); };
+  f.updater.checkForUpdates = async () => { throw new Error('https://orangefilm.dev/private-feed-detail'); };
   const state = await f.controller.check();
   assert.deepEqual([state.status, state.error, state.checkedAt], ['error', 'failed', null]);
   assert.doesNotMatch(JSON.stringify(f.calls.changes), /private-feed-detail/);

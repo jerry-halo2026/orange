@@ -16,7 +16,7 @@ import { devToolsView, isDevToolsShortcut, toggleDevTools } from './dev-tools.mj
 
 const noop = () => {};
 const menu = (packaged, language = 'en') => applicationMenuTemplate({
-  productName: 'OpenFilm', packaged, language, toggleChat: noop, openProject: noop, reload: noop, devTools: noop,
+  productName: 'OrangeFilm', packaged, language, toggleChat: noop, openProject: noop, reload: noop, devTools: noop,
   openSettings: noop, tabs: { open: noop, close: noop, reopen: noop, step: noop, pick: noop },
 });
 /** The View submenu, named in the language the menu was built in. */
@@ -47,7 +47,7 @@ test('a packaged build keeps the developer tools item (debugging a black window)
 test('the menu callback opens the tools on the page in front', () => {
   let opened = 0;
   const template = applicationMenuTemplate({
-    productName: 'OpenFilm', packaged: false, language: 'en', toggleChat: noop, openProject: noop, reload: noop,
+    productName: 'OrangeFilm', packaged: false, language: 'en', toggleChat: noop, openProject: noop, reload: noop,
     devTools: () => { opened += 1; }, openSettings: noop, tabs: { open: noop, close: noop, reopen: noop, step: noop, pick: noop },
   });
   devToolsItem(template).click();

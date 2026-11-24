@@ -30,9 +30,9 @@ const packagedAt = (() => {
 
 /** 应用的数据目录：Windows 是 %APPDATA%，macOS 是 ~/Library/Application Support。 */
 export function appDataDir(platform = process.platform, env = process.env) {
-  const explicit = String(env.OPENFILM_DATA_DIR ?? '').trim();
+  const explicit = String(env.ORANGE_DATA_DIR ?? '').trim();
   if (explicit) return explicit;
-  const product = 'OpenFilm Dev';
+  const product = 'OrangeFilm Dev';
   if (platform === 'win32') return join(env.APPDATA ?? join(homedir(), 'AppData', 'Roaming'), product);
   if (platform === 'darwin') return join(homedir(), 'Library', 'Application Support', product);
   return join(env.XDG_DATA_HOME ?? join(homedir(), '.local', 'share'), product);

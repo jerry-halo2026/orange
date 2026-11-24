@@ -14,11 +14,11 @@ import { startStudio } from './server/server.mjs';
 test('with the app\'s chat, a ruler click moves the playhead and a ⌘-click (Ctrl-click) refers the moment', { timeout: 60_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-ruler-refer-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Ruler');
+    const root = join(process.env.ORANGE_LIBRARY, 'Ruler');
     await mkdir(join(root, 'assets'), { recursive: true });
     await writeFile(join(root, 'assets', 'card.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"><rect width="320" height="180" fill="#486b8e"/></svg>');
     await writeFile(join(root, 'film.html'), filmHtml({
@@ -31,7 +31,7 @@ test('with the app\'s chat, a ruler click moves the playhead and a ⌘-click (Ct
     /* the app's chat, as far as the ruler sees it: what is referred to it */
     await page.addInitScript(() => {
       // A choice saved by an older version must not bring back hover preview.
-      localStorage.setItem('openfilm.timeline.previewAxis', '1');
+      localStorage.setItem('orangefilm.timeline.previewAxis', '1');
       window.referred = [];
       window.openfilmHost = {
         version: 1, refer: (ref) => window.referred.push(ref),

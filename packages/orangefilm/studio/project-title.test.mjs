@@ -22,16 +22,16 @@ import { startStudio } from './server/server.mjs';
 test('the project title opens Projects on click and its arrow keeps the card; rename happens in place', { timeout: 60_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-project-title-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS', 'TRASH_DIR'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Title alignment');
+    const root = join(process.env.ORANGE_LIBRARY, 'Title alignment');
     await mkdir(root, { recursive: true });
     await writeFile(join(root, 'card.html'), '<!doctype html><body style="background:#123"><script>window.film={duration:4,frame(){}}</script></body>');
     await writeFile(join(root, 'film.html'), filmHtml({ stage: { w: 720, h: 1280 }, tracks: [{ clips: [{ id: 'card', src: 'card.html', time: [0, 4] }] }] }));
     const project = await openProject(root);
-    const recentRoot = join(process.env.OPENFILM_LIBRARY, 'Recent only');
+    const recentRoot = join(process.env.ORANGE_LIBRARY, 'Recent only');
     await mkdir(recentRoot, { recursive: true });
     await writeFile(join(recentRoot, 'film.html'), filmHtml({ stage: { w: 1280, h: 720 }, tracks: [] }));
     await openProject(recentRoot);

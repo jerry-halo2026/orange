@@ -3,10 +3,10 @@
 
 // @ts-check
 /**
- * Which provider serves each verb of `openfilm get`, and the API of Studio's Settings → Services.
+ * Which provider serves each verb of `orangefilm get`, and the API of Studio's Settings → Services.
  *
  * A person's own key for ElevenLabs, Inworld, Cartesia, OpenAI, Google (the Gemini API), fal.ai, OpenRouter, Groq, Microsoft Azure (Azure AI Speech), Pexels,
- * Pixabay, Brave Search, Tavily or OpenFilm pays that service directly for what it can do. Each makes a kind of media with the model the person chose for
+ * Pixabay, Brave Search, Tavily or OrangeFilm pays that service directly for what it can do. Each makes a kind of media with the model the person chose for
  * it (the provider's first unless they did). Keenable also works with no key: connected with one click, a key lifts its limits.
  * Who serves a verb: `--via <provider>` on the command, else the person's choice for that kind of media in Settings (`use`),
  * while it can; else nothing does. Every provider is treated alike: a kind with no choice goes to the first provider,
@@ -37,7 +37,7 @@ import qwen from './qwen.mjs';
 import minimax from './minimax.mjs';
 import mimo from './mimo.mjs';
 import keenable from './keenable.mjs';
-import openfilm from './openfilm.mjs';
+import orangefilm from './orangefilm.mjs';
 import local from './local.mjs';
 import { addedProblems, addedProviders } from './added.mjs';
 
@@ -48,7 +48,7 @@ import { addedProblems, addedProviders } from './added.mjs';
  */
 
 /** The providers paid with the person's own key, and Local services, which takes none. */
-const BUILT_IN = [elevenlabs, inworld, cartesia, openai, google, fal, openrouter, pexels, pixabay, brave, tavily, groq, azure, doubao, qwen, minimax, mimo, keenable, openfilm, local];
+const BUILT_IN = [elevenlabs, inworld, cartesia, openai, google, fal, openrouter, pexels, pixabay, brave, tavily, groq, azure, doubao, qwen, minimax, mimo, keenable, orangefilm, local];
 /** Those, then the ones the person added (added.mjs), as last read (changed in place). */
 const OWN = [...BUILT_IN];
 
@@ -74,7 +74,7 @@ export async function freshProviders(/** @type {{ force?: boolean }} */ options 
  * @param {string} id @param {Verb} verb @param {ProviderSettings} settings @param {boolean} strict
  */
 async function named(id, verb, settings, strict) {
-  const provider = OWN.find((p) => p.id === (id === 'orangefilm' ? 'openfilm' : id));
+  const provider = OWN.find((p) => p.id === (id === 'orangefilm' ? 'orangefilm' : id));
   const fail = (/** @type {string} */ why) => { if (strict) throw new Error(why); return null; };
   if (!provider) return fail(`There is no provider "${id}": use ${OWN.map((p) => p.id).join(', ')}.`);
   if (provider.ready && !provider.verbs.includes(verb)) {
@@ -234,7 +234,7 @@ async function state() {
   await freshProviders();
   const settings = await readSettings();
   return {
-    /* 账号（openfilm）不是"服务"：它不出现在这块板子里，只在 providerKey / 登录那条路上被用到 */
+    /* 账号（orangefilm）不是"服务"：它不出现在这块板子里，只在 providerKey / 登录那条路上被用到 */
     providers: OWN.filter((p) => !/** @type {any} */ (p).hideInServices).map((p) => {
       const key = providerKey(p, settings);
       /* `envKey`: the environment has one (connected or not), so connecting can use it */
@@ -254,7 +254,7 @@ async function state() {
     signingIn: signInState(),
     ...shownChoices(settings),
     custom: settings.custom.map(shownService),
-    /* the library searched by meaning at OpenFilm's service, or by its words alone */
+    /* the library searched by meaning at OrangeFilm's service, or by its words alone */
     librarySearch: settings.libraryOff ? null : 'local',
   };
 }
@@ -273,7 +273,7 @@ async function state() {
  *                                                         not used (until it is connected again)
  *   PUT    /api/providers/use       { verb, provider, model? }  who serves that kind of media (an id, or null: none),
  *                                       and with which of its models (its first when none is given)
- *   PUT    /api/providers/library-search { on }  the library searched by meaning at OpenFilm's service (on, the
+ *   PUT    /api/providers/library-search { on }  the library searched by meaning at OrangeFilm's service (on, the
  *                                       default) or by its words alone
  *   POST   /api/providers/:id/billing → {}, the provider's own page for its balance opened in the person's browser
  *   POST   /api/providers/:id/sign-in         a provider with `signIn`: its website opened in the person's browser to
@@ -309,13 +309,13 @@ export async function providersRoute(req, res, parts, { openBrowser, isolated = 
     return json(res, 200, await state());
   }
   if (parts.length === 2 && parts[1] === 'billing' && req.method === 'POST') {
-    const provider = OWN.find((p) => p.id === (parts[0] === 'orangefilm' ? 'openfilm' : parts[0]));
+    const provider = OWN.find((p) => p.id === (parts[0] === 'orangefilm' ? 'orangefilm' : parts[0]));
     if (!provider) throw new HttpError(404, 'no such provider');
     openBrowser(provider.billingUrl);
     return json(res, 200, {});
   }
   if (parts[1] === 'sign-in' && req.method === 'POST' && parts.length <= 3) {
-    const provider = OWN.find((p) => p.id === (parts[0] === 'orangefilm' ? 'openfilm' : parts[0]));
+    const provider = OWN.find((p) => p.id === (parts[0] === 'orangefilm' ? 'orangefilm' : parts[0]));
     if (!provider?.signIn) throw new HttpError(404, 'no such provider to sign in to');
     if (parts[2] === 'cancel') cancelSignIn();
     else if (parts.length === 2) {

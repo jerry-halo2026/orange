@@ -12,13 +12,13 @@ const look: LibraryItem = { id: 'filters/bw', cat: 'filter', group: 'mono', name
 
 test('a page or a sound is dragged as a thing to take into the project; a look as what goes on a clip', () => {
   assert.deepEqual(libraryDragItem(page, 'Snow'), {
-    path: 'openfilm/effects/snow/files/snow.html', name: 'Snow', kind: 'mg', durationMs: 4000, reflows: true, saved: 'openfilm/effects/snow',
+    path: 'orangefilm/effects/snow/files/snow.html', name: 'Snow', kind: 'mg', durationMs: 4000, reflows: true, saved: 'orangefilm/effects/snow',
   });
   const sticker = libraryDragItem({ ...page, id: 'stickers/heart', src: 'heart.html', w: 400, h: 400 }, 'Heart');
   assert.equal(sticker?.w, 400);
   assert.equal(sticker?.reflows, undefined);
-  assert.deepEqual(libraryDragItem(sound, 'Whoosh'), { path: 'openfilm/sounds/whoosh.m4a', name: 'Whoosh', kind: 'audio', durationMs: 700, saved: 'openfilm/sounds/whoosh.m4a' });
-  assert.deepEqual(libraryDragItem(look, 'B&W'), { path: 'openfilm/filters/bw', name: 'B&W', kind: 'other', saved: 'openfilm/filters/bw', apply: 'look' });
+  assert.deepEqual(libraryDragItem(sound, 'Whoosh'), { path: 'orangefilm/sounds/whoosh.m4a', name: 'Whoosh', kind: 'audio', durationMs: 700, saved: 'orangefilm/sounds/whoosh.m4a' });
+  assert.deepEqual(libraryDragItem(look, 'B&W'), { path: 'orangefilm/filters/bw', name: 'B&W', kind: 'other', saved: 'orangefilm/filters/bw', apply: 'look' });
 });
 
 test('a transition page put down near a cut has its middle on the cut; far from one it stays', () => {
@@ -50,7 +50,7 @@ test('a transition page goes on the track dropped on when it has room, else on a
 });
 
 test('a project file came from the library when it is a page taken from it, or one of its sounds by its name', () => {
-  assert.ok(fromLibrary('saved/openfilm/effects-snow/snow.html', [page, sound]));
+  assert.ok(fromLibrary('saved/orangefilm/effects-snow/snow.html', [page, sound]));
   assert.ok(fromLibrary('assets/whoosh.m4a', [page, sound]));
   assert.ok(!fromLibrary('assets/voice/whoosh.m4a', [page, sound]));
   assert.ok(!fromLibrary('assets/talk.mp4', [page, sound]));
@@ -75,8 +75,8 @@ test('a sound\'s tile and a track\'s cover are its own, the same each time, in i
 });
 
 test('a text style or motion is the text component\'s variables, set in its clip\'s :root entry beside the rest', () => {
-  assert.ok(isTextClip('saved/openfilm/text-text/text.html'));
-  assert.ok(!isTextClip('saved/openfilm/text-title-bold/title-bold.html'));
+  assert.ok(isTextClip('saved/orangefilm/text-text/text.html'));
+  assert.ok(!isTextClip('saved/orangefilm/text-title-bold/title-bold.html'));
   assert.deepEqual(withRootVars(undefined, { '--color': 'red' }), [{ at: ':root', style: { '--color': 'red' } }]);
   assert.deepEqual(
     withRootVars([{ fade: [0.2, 0] }, { at: ':root', style: { '--clip-length': '3s', '--color': 'blue' } }, { at: '.t', text: 'Hi' }], { '--color': 'red', '--in': 'pop' }),
@@ -109,8 +109,8 @@ test('a template\'s clip with a place of its own is laid out for the picture, wi
 });
 
 test('a filter on a track of its own is its layer page under the filter\'s name; an effect its own page', () => {
-  assert.equal(isFilterLayer('saved/openfilm/filters-warm-film/layer.html#t=0,3'), true);
-  assert.equal(isFilterLayer('saved/openfilm/filters-warm-film/other.html'), false);
-  assert.equal(isFilterLayer('saved/openfilm/effects-grain/grain.html'), false);
-  assert.equal(isLibraryEffect('saved/openfilm/effects-grain/grain.html#t=0,4'), true);
+  assert.equal(isFilterLayer('saved/orangefilm/filters-warm-film/layer.html#t=0,3'), true);
+  assert.equal(isFilterLayer('saved/orangefilm/filters-warm-film/other.html'), false);
+  assert.equal(isFilterLayer('saved/orangefilm/effects-grain/grain.html'), false);
+  assert.equal(isLibraryEffect('saved/orangefilm/effects-grain/grain.html#t=0,4'), true);
 });

@@ -42,7 +42,7 @@ async function transformers() {
   ort.env.wasm.numThreads = threads();
   /** @type {any} */ (globalThis)[Symbol.for('onnxruntime')] = ort;
   const release = process.release;
-  Object.defineProperty(process, 'release', { value: { name: 'openfilm' }, configurable: true, writable: true });
+  Object.defineProperty(process, 'release', { value: { name: 'orangefilm' }, configurable: true, writable: true });
   try {
     const lib = await import(pathToFileURL(modelFile(TRANSFORMERS)).href);
     lib.env.allowRemoteModels = false;

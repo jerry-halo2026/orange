@@ -159,13 +159,13 @@ function newTrackSpot(tracks: readonly TimelineTrack[], docAt: number): AssetDro
 }
 
 /** A text of the library (a line of words, a name card, a callout…): it goes on a row of text (TimelineTrack `text`). */
-const libraryText = (file: { saved?: string | undefined }) => Boolean(file.saved?.startsWith('openfilm/text/'));
+const libraryText = (file: { saved?: string | undefined }) => Boolean(file.saved?.startsWith('orangefilm/text/'));
 
 /**
  * A thing of the library laid over the film (a sticker, a text, an effect): never on the main track, where it would
  * cut the film it goes over; on a track above it.
  */
-export const libraryOverlay = (file: { saved?: string | undefined }) => /^openfilm\/(stickers|text|effects)\//.test(file.saved ?? '');
+export const libraryOverlay = (file: { saved?: string | undefined }) => /^orangefilm\/(stickers|text|effects)\//.test(file.saved ?? '');
 
 /** A track with no film on it: things of the library laid over it only (stickers, text, effects), or nothing yet. */
 const overlayOnly = (track: TimelineTrack) => Boolean(track.overlay || track.text) || !track.blocks.length;
@@ -385,7 +385,7 @@ export function assetDropPreview(
   const durMs = dropDurMsOf(file);
   const startMs = Math.max(0, atMs);
   /* drawn as it will be: a line of words its words, a sticker as a sticker (the timeline's own looks for them) */
-  const look = file.words ? 'text' as const : file.saved?.startsWith('openfilm/stickers/') ? 'sticker' as const : undefined;
+  const look = file.words ? 'text' as const : file.saved?.startsWith('orangefilm/stickers/') ? 'sticker' as const : undefined;
   const base = { kind, blockKind, title: file.words ?? clipTitleOf(file), startMs, endMs: startMs + durMs, ...(look ? { look } : {}) };
   if (spot.action === 'new-track') {
     return { ...base, laneIndex: spot.laneIndex, newTrack: true, docAt: spot.docAt, lane: null, error: null };

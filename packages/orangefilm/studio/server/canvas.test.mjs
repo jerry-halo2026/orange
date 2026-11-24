@@ -247,8 +247,8 @@ test("a text node's words are written by the person's agent, from what they ask 
 test('a project has as many canvases as are made: named, copied, renamed, the first one stays first, deleted into the trash', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-boards-'));
   const trash = mkdtempSync(join(tmpdir(), 'of-trash-'));
-  const before = process.env.OPENFILM_TRASH_DIR;
-  process.env.OPENFILM_TRASH_DIR = trash;
+  const before = process.env.ORANGE_TRASH_DIR;
+  process.env.ORANGE_TRASH_DIR = trash;
   const call = async (method, rest, body) => {
     const req = Object.assign(Readable.from(body === undefined ? [] : [Buffer.from(JSON.stringify(body))]), { method });
     const res = { status: 0, body: '', writeHead(s) { res.status = s; }, end(b) { res.body = b; } };
@@ -283,7 +283,7 @@ test('a project has as many canvases as are made: named, copied, renamed, the fi
     await call('DELETE', `canvases/${empty.id}`);
     await assert.rejects(call('DELETE', 'canvases/main'), (e) => e.status === 409);
   } finally {
-    if (before === undefined) delete process.env.OPENFILM_TRASH_DIR; else process.env.OPENFILM_TRASH_DIR = before;
+    if (before === undefined) delete process.env.ORANGE_TRASH_DIR; else process.env.ORANGE_TRASH_DIR = before;
     rmSync(root, { recursive: true, force: true });
     rmSync(trash, { recursive: true, force: true });
   }

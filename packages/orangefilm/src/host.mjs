@@ -341,7 +341,7 @@ export async function launch({ headed = false, channel = headed ? 'chromium' : n
   const args = ['--ignore-gpu-blocklist', '--enable-gpu-rasterization', '--disable-skia-graphite', '--autoplay-policy=no-user-gesture-required', '--hide-scrollbars', '--enable-blink-features=CanvasDrawElement', ...extra];
   const open = async (/** @type {string[]} */ angle) => {
     /* a switch of no meaning to Chromium, so its process (and every one it starts) is found to be watched */
-    const marker = `--openfilm-browser=${randomUUID()}`;
+    const marker = `--orangefilm-browser=${randomUUID()}`;
     const browser = await chromium.launch({ ...(channel ? { channel } : {}), headless: !headed, args: [...args, ...angle, marker], ...(env ? { env } : {}) });
     guard(browser, marker);
     return browser;

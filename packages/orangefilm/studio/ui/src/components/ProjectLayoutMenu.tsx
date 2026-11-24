@@ -46,7 +46,7 @@ export function ProjectLayoutMenu({ className, value, onChange, onReset, hasChat
   const exportLayouts = () => {
     const rows = saved.length ? saved : [{ id: crypto.randomUUID(), name: t('layout.untitled').replace('{n}','1'), layout: value }];
     const url = URL.createObjectURL(new Blob([serializeWorkspaces(rows)], { type: 'application/json' }));
-    const a = document.createElement('a'); a.href = url; a.download = 'openfilm-layouts.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url),1000);
+    const a = document.createElement('a'); a.href = url; a.download = 'orangefilm-layouts.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url),1000);
   };
   const importLayouts = async (file?: File) => {
     if (!file) return;

@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The one client for the OpenFilm index: PostgREST `/rest/v1/rpc/<fn>`, nothing else.
+ * The one client for the OrangeFilm index: PostgREST `/rest/v1/rpc/<fn>`, nothing else.
  *
  * Zero dependencies on purpose (global `fetch`, `TextDecoder`), so the same file runs in Node, in Electron's
  * renderer/utility process and inside an asar, where `apps/api`'s TypeScript is not resolvable.

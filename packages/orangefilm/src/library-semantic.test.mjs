@@ -15,9 +15,9 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-process.env.OPENFILM_HOME = mkdtempSync(join(tmpdir(), 'semantic-home-'));
+process.env.ORANGE_HOME = mkdtempSync(join(tmpdir(), 'semantic-home-'));
 /* 指向一个不存在的服务：如果实现偷偷去问，这里会立刻失败（而不是等 2.5s 超时） */
-process.env.OPENFILM_API_URL = 'http://127.0.0.1:9';
+process.env.ORANGE_API_URL = 'http://127.0.0.1:9';
 
 const { nearest, passageOf } = await import('./library-semantic.mjs');
 const { packVocabulary, readPacked, readVocabulary, tokenize } = await import('./sentence-model.mjs');
@@ -49,7 +49,7 @@ test('what a thing is, in the words of its vector: names, about, group, tags in 
 });
 
 test('本机向量就是答案：不问云端，返回排好序的本地结果', async () => {
-  /* OPENFILM_API_URL 指向一个不存在的端口：如果实现偷偷去问，这里会超时失败而不是通过 */
+  /* ORANGE_API_URL 指向一个不存在的端口：如果实现偷偷去问，这里会超时失败而不是通过 */
   const answer = await nearest('a bright bell', 'sound', 20);
   assert.ok(Array.isArray(answer), '本地有向量包就该给出结果');
   assert.ok(answer.length > 0 && answer.length <= 20);
@@ -63,6 +63,6 @@ test('本机向量就是答案：不问云端，返回排好序的本地结果',
 
 test('Settings → Services 关掉库检索：不查，交回关键词', async () => {
   const { writeFileSync } = await import('node:fs');
-  writeFileSync(join(String(process.env.OPENFILM_HOME), 'providers.json'), JSON.stringify({ libraryOff: true }), { mode: 0o600 });
+  writeFileSync(join(String(process.env.ORANGE_HOME), 'providers.json'), JSON.stringify({ libraryOff: true }), { mode: 0o600 });
   assert.equal(await nearest('a bright bell', 'sound', 20), null);
 });

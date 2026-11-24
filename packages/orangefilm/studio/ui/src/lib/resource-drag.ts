@@ -14,7 +14,7 @@
  * Media pane: on `dragstart` call `setResourceDragData(e.dataTransfer, file)` (and `dragPicture(e)`), on `dragend`
  * `clearResourceDrag()`.
  */
-export const RESOURCE_DRAG_TYPE = 'application/x-openfilm-resource';
+export const RESOURCE_DRAG_TYPE = 'application/x-orangefilm-resource';
 
 export type ResourceKind = 'video' | 'image' | 'audio' | 'mg' | 'other';
 

@@ -6,7 +6,7 @@
  * right as a page of titled groups. General (the theme and the language), Agents (in an app with a chat: the agents
  * it can use), Services (which model makes each kind of media, and the services connected for it), the keyboard
  * shortcuts, Advanced and Developer; the search finds a section by any phrase on it. Nothing at its foot leads out of
- * Studio: skills come from its skill index (studio/server/skill-catalog.mjs, OPENFILM_SKILLS_INDEX).
+ * Studio: skills come from its skill index (studio/server/skill-catalog.mjs, ORANGE_SKILLS_INDEX).
  */
 import React from 'react';
 import { createPortal } from 'react-dom';
@@ -399,7 +399,7 @@ function AdvancedSection() {
 }
 
 /**
- * This Studio's version and whether npm has a newer openfilm. In the desktop app, Studio comes with the app and is
+ * This Studio's version and whether npm has a newer orangefilm. In the desktop app, Studio comes with the app and is
  * updated with it; anywhere else the person (or their agent) runs the latest, and the CLI restarts Studio on it.
  */
 function AboutGroup() {
@@ -445,7 +445,7 @@ function AboutGroup() {
             : t('settings.about.how')}
           control={(
             <>
-              <code className="select-all rounded-md bg-[var(--bg-field)] px-2 py-1 font-mono text-[12px] text-[var(--text)]">npx -y openfilm@latest update</code>
+              <code className="select-all rounded-md bg-[var(--bg-field)] px-2 py-1 font-mono text-[12px] text-[var(--text)]">npx -y orangefilm@latest update</code>
               <SettingsButton variant="primary" disabled={!web.update || web.update.status === 'updating'} onClick={web.start}>
                 {web.update?.status === 'updating' ? <Loader2 size={14} className="animate-spin" aria-hidden /> : null}
                 {t('update.webUpdate')}

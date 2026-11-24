@@ -24,8 +24,8 @@ import { downloadFiles, listFiles, resolveCommit } from './fetch-github.mjs';
 
 export { FetchError };
 
-/** Biggest fetch, unless OPENFILM_FETCH_MAX_MB says otherwise. */
-export const MAX_BYTES = (Number(process.env.OPENFILM_FETCH_MAX_MB) || 500) * 1024 * 1024;
+/** Biggest fetch, unless ORANGE_FETCH_MAX_MB says otherwise. */
+export const MAX_BYTES = (Number(process.env.ORANGE_FETCH_MAX_MB) || 500) * 1024 * 1024;
 /** Longest wait for anything to come: a fetch that gets nothing for this long is stopped. */
 export const TIMEOUT_MS = 2 * 60 * 1000;
 

@@ -4,32 +4,29 @@
 
 import { setPriority } from 'node:os';
 import { parseArgs } from 'node:util';
-import { bridgeOrangeEnv } from '../src/orange-env.mjs';
 
-bridgeOrangeEnv();
+const USAGE = `orangefilm — a film is a function of time: given t, it draws that moment
 
-const USAGE = `openfilm — a film is a function of time: given t, it draws that moment
+  orangefilm open    [folder | url]      start or open a project; Studio shows it to the person
+  orangefilm look    [what] [t | a-b]    check the film and draw it: a contact sheet with its sound and loudness
+  orangefilm render  [a-b]               the MP4, saved beside film.html
+  orangefilm get     [what] [--options]  media: free from OrangeFilm's library (music, sounds, transitions…), else a connected service
+  orangefilm canvas  [apply <steps>]     the canvas beside the edit: read it, or lay out notes, files and what to make on it
+  orangefilm material search <query>    the company's cloud materials: id, name and whether it can be downloaded
+  orangefilm analyze <media>             analyse a clip: frames, a description, OCR, speech, a card, a vector (exit 4: component missing)
+  orangefilm skills                      the skills this film can be made with; \`orangefilm skill <name>\` prints one
+  orangefilm update                      the newest OrangeFilm; Studio starts again on it
+  orangefilm doctor                      what this computer has for OrangeFilm, to paste into an issue
+  orangefilm home status                 the old ~/.orangefilm and the new ~/.orangefilm
+  orangefilm home migrate [--check|--dry-run|--include-library]  copy the old Studio settings into the new home
 
-  openfilm open    [folder | url]      start or open a project; Studio shows it to the person
-  openfilm look    [what] [t | a-b]    check the film and draw it: a contact sheet with its sound and loudness
-  openfilm render  [a-b]               the MP4, saved beside film.html
-  openfilm get     [what] [--options]  media: free from OrangeFilm's library (music, sounds, transitions…), else a connected service
-  openfilm canvas  [apply <steps>]     the canvas beside the edit: read it, or lay out notes, files and what to make on it
-  openfilm material search <query>    the company's cloud materials: id, name and whether it can be downloaded
-  openfilm analyze <media>             analyse a clip: frames, a description, OCR, speech, a card, a vector (exit 4: component missing)
-  openfilm skills                      the skills this film can be made with; \`openfilm skill <name>\` prints one
-  openfilm update                      the newest OrangeFilm; Studio starts again on it
-  openfilm doctor                      what this computer has for OrangeFilm, to paste into an issue
-  openfilm home status                 the old ~/.openfilm and the new ~/.orangefilm
-  openfilm home migrate [--check|--dry-run|--include-library]  copy the old Studio settings into the new home
-
-  Run with no arguments for the manual; \`openfilm <command> --help\` for one command's options; --version for the version.
+  Run with no arguments for the manual; \`orangefilm <command> --help\` for one command's options; --version for the version.
   look, render, get and canvas work on the project around the current folder.
   Exit status: 0 done, 1 the film or the command failed (the output says why), 2 not a project or a wrong command.`;
 
 /* one command's help: what it does, what it takes, where its output goes */
 const COMMAND_HELP = {
-  open: `openfilm open [folder | url]
+  open: `orangefilm open [folder | url]
 
   folder   a new film: a folder named after it (made if missing); or an existing project
            A folder that is not a project yet gets an empty film.html, 1920 × 1080 (its viewport <meta>) with no
@@ -42,52 +39,52 @@ const COMMAND_HELP = {
 
   Starts OrangeFilm Studio if it is not running and prints its address. A Studio page already open, in any browser,
   switches to the project, and nothing more opens; otherwise open the address in your built-in browser, and if no
-  page connects within 15 s, Studio opens the person's browser (OPENFILM_NO_BROWSER=1: never).`,
-  skills: `openfilm skills
+  page connects within 15 s, Studio opens the person's browser (ORANGE_NO_BROWSER=1: never).`,
+  skills: `orangefilm skills
 
   The skills the project around the current folder can be made with: ways of making a kind of film, each a folder with
   a SKILL.md (its name, what it is for, how to work) and the files it brings. Looked for in the project's skills/,
   then yours (Skills/ beside the projects, ~/Movies/OrangeFilm/Skills on macOS), then the official ones; the first
   holding a name wins.`,
-  skill: `openfilm skill <name>
-openfilm skill add <GitHub address | folder>
-openfilm skill remove <name>
+  skill: `orangefilm skill <name>
+orangefilm skill add <GitHub address | folder>
+orangefilm skill remove <name>
 
   <name>   print the skill: where its files are, and its SKILL.md whole
   add      add a skill (or a folder of skills) to yours: a folder on this computer, or a repository or a folder in one
            on github.com or gitlab.com, fetched without its git history. One of the same name goes to the trash.
   remove   move one of yours to the trash, where you can take it back
 
-  Yours are kept in Skills/ beside the projects (~/Movies/OrangeFilm/Skills on macOS; OPENFILM_SKILLS names another).`,
-  update: `openfilm update
+  Yours are kept in Skills/ beside the projects (~/Movies/OrangeFilm/Skills on macOS; ORANGE_SKILLS names another).`,
+  update: `orangefilm update
 
   The newest OrangeFilm from npm, and Studio started again on it once nothing is being exported or made; pages open on
   it come back on the new version. The desktop app's Studio updates with the app, a source checkout with git pull:
   each is said instead.`,
-  doctor: `openfilm doctor
+  doctor: `orangefilm doctor
 
   Checks what OrangeFilm needs here and prints a report to paste into an issue: OrangeFilm's and Node's versions, the
   system, which agent ran the command, Studio, ffmpeg, the browser films are drawn in and its graphics, the data and
   projects folders, how much the projects' .film folders hold, npm, and the last errors in Studio's log. Paths under
   your home folder read ~; no keys, accounts or projects are in it. Exit status 1 when something needs fixing; the
   report says what.`,
-  home: `openfilm home status
-openfilm home migrate [--check] [--dry-run] [--include-library]
+  home: `orangefilm home status
+orangefilm home migrate [--check] [--dry-run] [--include-library]
 
-  The Studio home before the rename is ~/.openfilm; new installs use ~/.orangefilm. migrate copies the settings,
+  The Studio home before the rename is ~/.orangefilm; new installs use ~/.orangefilm. migrate copies the settings,
   accounts and saved ownership records into the new home, writes a completion marker, and keeps the old home as it was.
   It does not copy the material cache or the person's projects unless --include-library is given. A target that already
   has data and no marker is not merged; run --check or --dry-run first.`,
-  material: `openfilm material search <query>
+  material: `orangefilm material search <query>
 
   Searches the company's cloud materials through a running Studio and prints one line per hit:
   videoId, name, and (not downloadable) when the supplier says it cannot be fetched.`,
-  analyze: `openfilm analyze <media> [--video-id <id>] [--project <dir>] [--frames 6] [--long-edge 512] [--json]
+  analyze: `orangefilm analyze <media> [--video-id <id>] [--project <dir>] [--frames 6] [--long-edge 512] [--json]
 
 media        a video or sound to analyse (frames, a description, OCR, speech, a card, a vector)
 --video-id   the index's video id this analysis is about. The result is keyed by it, so it is what makes a
              run publishable; without one the command answers video-id-required (exit 5) before reading a frame
---project    the folder the result belongs to; its cache goes to <dir>/.openfilm/analysis (default: .)
+--project    the folder the result belongs to; its cache goes to <dir>/.orangefilm/analysis (default: .)
 --frames     how many frames to look at (1-64; default 6)
 --long-edge  the long edge each frame is scaled to before it is sent (128-4096; default 512: about
              4 s a frame on the machine this was measured on, where 1280 was about 20 s)
@@ -98,7 +95,7 @@ Exit: 0 analysed, 2 the command was wrong, 4 the analysis component is not insta
 installed on first use, never shipped in the installer), 5 the analysis ran and failed (code: frames-empty,
 analyzer-malformed, ...). The answer of a run that was not published to an index is still 0: the local
 result is worth having.`,
-  look: `openfilm look [what] [t | a-b]
+  look: `orangefilm look [what] [t | a-b]
 
   what   the project (default), a web page (.html), or a media file (video, image, sound)
   t      one frame at full size, e.g. 4.5
@@ -114,7 +111,7 @@ result is worth having.`,
                   given: white flashes, frames unlike those on both sides, still pictures (6 s or more) and
                   black, each with its time
   --loudness=<n>  say how far the mix is from n LUFS and -1 dBTP, the target render --loudness brings it to`,
-  canvas: `openfilm canvas [apply <steps>]
+  canvas: `orangefilm canvas [apply <steps>]
 
   The project's canvas: a board beside the edit where the person lays out notes, the project's files and nodes that
   make a picture, a clip or a sound, wired into each other. Nothing on it is in the film until it is put on the timeline.
@@ -130,16 +127,16 @@ result is worth having.`,
                          it in that order), else below the rest. A group made around nodes holds them. A cut is
                          the order what is wired into it goes onto the timeline in, when the person sends it there.
     {"op":"set","id":"…", …}   {"op":"remove","id":"…"}   {"op":"wire","from":"…","to":"…"}   {"op":"unwire",…}
-    {"op":"version","id":"…","path":"assets/…"}   a file made with \`openfilm get\` as a making node's newest version
+    {"op":"version","id":"…","path":"assets/…"}   a file made with \`orangefilm get\` as a making node's newest version
 
   A making node is asked its prompt with the notes wired into it first; a tts node speaks it in opts.voice (a voiceId
-  from \`openfilm get voice\`; none: its service's first voice in the person's language). How a video uses the
+  from \`orangefilm get voice\`; none: its service's first voice in the person's language). How a video uses the
   pictures wired in is its opts.mode: text, first (the first picture is its first frame), firstLast (first and last
   frame), refs (references for people and places) or omni (pictures, a voice or a clip). A picture's preset puts
   ready words first: portrait, fullBody, expressions, turnaround16 (a character), storyboard, cameras9, scene,
-  product… The person presses Make (a group's Make all makes it in wire order), or you make it with \`openfilm get\`
+  product… The person presses Make (a group's Make all makes it in wire order), or you make it with \`orangefilm get\`
   and add the file as a version. The person sees each change on the board at once.`,
-  render: `openfilm render [a-b]
+  render: `orangefilm render [a-b]
 
   Render the project around the current folder to video.
   The whole film goes to <project>/<folder name>.mp4, beside film.html; a range (a-b) goes to .film/cache/render/.
@@ -155,20 +152,20 @@ result is worth having.`,
                   picture is not touched. Write it with = so the minus sign is read as the value`,
 };
 
-/* `openfilm` alone: the manual, the whole of what an agent needs to know. `get` takes any options its verb has,
+/* `orangefilm` alone: the manual, the whole of what an agent needs to know. `get` takes any options its verb has,
    so it goes to Studio (studio/client.mjs) before the fixed options below are parsed. */
 const RAW = process.argv.slice(2);
-/* the command as the agent can type it here: the one that ran it when it says so (OPENFILM_RUN: the development
-   checkout's .dev/bin/openfilm), through npx always the newest (npx keeps the first one it fetched for a bare name),
-   else `openfilm` where it is installed */
-const RUN = process.env.ORANGE_RUN || process.env.OPENFILM_RUN || (process.env.npm_command === 'exec' ? 'npx -y openfilm@latest' : 'openfilm');
+/* the command as the agent can type it here: the one that ran it when it says so (ORANGE_RUN: the development
+   checkout's .dev/bin/orangefilm), through npx always the newest (npx keeps the first one it fetched for a bare name),
+   else `orangefilm` where it is installed */
+const RUN = process.env.ORANGE_RUN || process.env.ORANGE_RUN || (process.env.npm_command === 'exec' ? 'npx -y orangefilm@latest' : 'orangefilm');
 /**
- * A newer openfilm, said once in a line before what the command prints: looked up on npm (at most daily, briefly) when
+ * A newer orangefilm, said once in a line before what the command prints: looked up on npm (at most daily, briefly) when
  * a session starts (the manual, open), else only as learnt before, so look, render and get never wait for it.
  */
 const updateNotice = async (network) => {
   const latest = await (await import('../studio/client.mjs')).newerOpenfilm({ network }).catch(() => null);
-  if (latest) console.error(`openfilm ${latest} is out (this is an older one): \`${RUN} update\` updates it, and Studio with it.`);
+  if (latest) console.error(`orangefilm ${latest} is out (this is an older one): \`${RUN} update\` updates it, and Studio with it.`);
 };
 if (RAW.length === 0) {
   const { readFileSync } = await import('node:fs');
@@ -199,14 +196,14 @@ if (RAW[0] === 'get') {
   await keptNotice();
   let result;
   try { result = await (await import('../studio/client.mjs')).getMedia(RAW.slice(1), (line) => console.error(line)); }
-  catch (e) { result = { code: 1, lines: [`openfilm get: ${e.message}`] }; }
+  catch (e) { result = { code: 1, lines: [`orangefilm get: ${e.message}`] }; }
   for (const line of result.lines) console.log(line);
   /* the process ends by itself, as after the other commands: process.exit() here, after the answer is printed,
      aborts Node 24.17 on Windows (`Assertion failed: !(handle->flags & UV_HANDLE_CLOSING)`, exit status 127) */
   process.exitCode = result.code;
 } else {
-  /* the help speaks the name this was run as: `openfilm` or `npx openfilm` */
-  const named = (text) => text.replace(/^( {2})?openfilm(?= )/gm, `$1${RUN}`).replace('`openfilm <command>', `\`${RUN} <command>`);
+  /* the help speaks the name this was run as: `orangefilm` or `npx orangefilm` */
+  const named = (text) => text.replace(/^( {2})?orangefilm(?= )/gm, `$1${RUN}`).replace('`orangefilm <command>', `\`${RUN} <command>`);
   let parsed;
   try {
     parsed = parseArgs({
@@ -252,7 +249,7 @@ if (RAW[0] === 'get') {
       /* a film whose video this browser never showed is drawn once more, in browsers that show video another way */
       return import('../src/render.mjs').then((m) => m.render(args, opts).catch(async (e) => {
         if (!(e instanceof (await import('../src/host.mjs')).VideoNotShown)) throw e;
-        console.error(`openfilm: ${e.message}: drawn again`);
+        console.error(`orangefilm: ${e.message}: drawn again`);
         return m.render(args, opts);
       }));
     },
@@ -283,9 +280,9 @@ if (RAW[0] === 'get') {
     const { openInStudio } = await import('../studio/client.mjs');
     const { existsSync, mkdirSync, statSync, writeFileSync } = await import('node:fs');
     const { dirname, join, resolve } = await import('node:path');
-    const fallback = process.env.OPENFILM_NO_BROWSER ? 0 : 15;
+    const fallback = process.env.ORANGE_NO_BROWSER ? 0 : 15;
     /* a person at a terminal has no browser of an agent's: theirs opens at once */
-    const now = !process.env.OPENFILM_NO_BROWSER && Boolean(process.stdout.isTTY && process.stdin.isTTY);
+    const now = !process.env.ORANGE_NO_BROWSER && Boolean(process.stdout.isTTY && process.stdin.isTTY);
     /* a checkout whose editor was never built (npm install builds it): Studio would show only that it is missing */
     if (!existsSync(new URL('../studio/ui/dist/index.html', import.meta.url))) {
       console.error('Studio\'s editor is not built in this checkout: run `npm run build:ui` (npm install does it).');
@@ -318,7 +315,7 @@ if (RAW[0] === 'get') {
     } catch (e) { return { ok: false, lines: [`${RUN} open: ${e.message}`] }; }
   }
   /**
-   * `openfilm open <url>`: the repository or folder fetched into the projects library (studio/server/fetch-repo.mjs),
+   * `orangefilm open <url>`: the repository or folder fetched into the projects library (studio/server/fetch-repo.mjs),
    * its progress on stderr.
    * @param {string} url
    */

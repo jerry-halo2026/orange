@@ -531,7 +531,7 @@ export function LibraryDrawer({ media, mediaScope, onMediaScope, actions, tried,
 }
 
 /** How wide the side bar may be dragged, and where its width is kept on this computer. */
-const RAIL = { min: 88, max: 220, start: 112, key: 'openfilm.library.rail' };
+const RAIL = { min: 88, max: 220, start: 112, key: 'orangefilm.library.rail' };
 const clampRail = (w: number) => Math.round(Math.min(RAIL.max, Math.max(RAIL.min, w)));
 function railWidth(): number {
   try { const w = Number(localStorage.getItem(RAIL.key)); return w ? clampRail(w) : RAIL.start; } catch { return RAIL.start; }

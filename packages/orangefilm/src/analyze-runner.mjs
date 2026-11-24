@@ -255,7 +255,7 @@ export function framesFailure(result, pass) {
  * `image_url` mishandles webp). `not-configured` when nothing answers there.
  * @param {{ baseUrl?: string, model?: string, fetch?: typeof fetch }} [options]
  */
-export function lmStudioDescriber({ baseUrl = process.env.OPENFILM_VISION_URL ?? DEFAULT_VISION_BASE, model = process.env.OPENFILM_VISION_MODEL ?? DEFAULT_VISION_MODEL, fetch: fetchImpl = fetch } = {}) {
+export function lmStudioDescriber({ baseUrl = process.env.ORANGE_VISION_URL ?? DEFAULT_VISION_BASE, model = process.env.ORANGE_VISION_MODEL ?? DEFAULT_VISION_MODEL, fetch: fetchImpl = fetch } = {}) {
   return async (/** @type {{ jpeg: Buffer, at?: number, prompt?: string }} */ ask) => {
     const body = {
       model,
@@ -283,7 +283,7 @@ export function lmStudioDescriber({ baseUrl = process.env.OPENFILM_VISION_URL ??
 }
 
 /** Text embeddings through the same server. */
-export function lmStudioEmbedder({ baseUrl = process.env.OPENFILM_VISION_URL ?? DEFAULT_VISION_BASE, model = process.env.OPENFILM_EMBED_MODEL ?? DEFAULT_EMBED_MODEL, fetch: fetchImpl = fetch } = {}) {
+export function lmStudioEmbedder({ baseUrl = process.env.ORANGE_VISION_URL ?? DEFAULT_VISION_BASE, model = process.env.ORANGE_EMBED_MODEL ?? DEFAULT_EMBED_MODEL, fetch: fetchImpl = fetch } = {}) {
   return async (/** @type {string} */ input) => {
     let response;
     try {
@@ -300,7 +300,7 @@ export function lmStudioEmbedder({ baseUrl = process.env.OPENFILM_VISION_URL ?? 
 }
 
 /** OCR: a command when one is installed, `not-configured` otherwise. */
-export function commandOcr({ command = process.env.OPENFILM_OCR_COMMAND ?? '' } = {}) {
+export function commandOcr({ command = process.env.ORANGE_OCR_COMMAND ?? '' } = {}) {
   return async (/** @type {{ jpeg: Buffer }} */ ask) => {
     if (!command) throw new NotConfigured('OCR');
     const { spawnSync } = await import('node:child_process');
@@ -312,7 +312,7 @@ export function commandOcr({ command = process.env.OPENFILM_OCR_COMMAND ?? '' } 
 }
 
 /** Speech: faster-whisper when it is installed, `not-configured` otherwise. */
-export function fasterWhisper({ command = process.env.OPENFILM_WHISPER_COMMAND ?? '' } = {}) {
+export function fasterWhisper({ command = process.env.ORANGE_WHISPER_COMMAND ?? '' } = {}) {
   return async (/** @type {{ media: { path?: string, url?: string } }} */ ask) => {
     if (!command) throw new NotConfigured('speech transcription');
     const { spawnSync } = await import('node:child_process');
@@ -324,7 +324,7 @@ export function fasterWhisper({ command = process.env.OPENFILM_WHISPER_COMMAND ?
 }
 
 /** The decision maker (Jev): a key, or the VLM's own judgement as a weaker fallback. */
-export function jevJudge({ key = process.env.OPENFILM_JEV_KEY ?? '', baseUrl = process.env.OPENFILM_JEV_URL ?? '' } = {}) {
+export function jevJudge({ key = process.env.ORANGE_JEV_KEY ?? '', baseUrl = process.env.ORANGE_JEV_URL ?? '' } = {}) {
   return async (/** @type {{ summary: any, frames: any[] }} */ ask) => {
     if (!key || !baseUrl) throw new NotConfigured('the decision model');
     const response = await fetch(`${baseUrl}/v1/judge`, { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` }, body: JSON.stringify({ scenes: ask.frames.length }) });

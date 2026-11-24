@@ -7,7 +7,7 @@ import { useState, type FormEvent } from 'react';
  * brand.json into ordinary source (scripts/brand-codegen.mjs), so the sign-in renders under `node --test` too.
  */
 import { brand as brandData } from '../../../brand.generated.ts';
-import { BrandMark } from 'openfilm/studio-ui/components/BrandLogo.tsx';
+import { BrandMark } from 'orangefilm/studio-ui/components/BrandLogo.tsx';
 
 /*
  * The brand's two names, from brand.json: OrangeFilm in English, 橙子创作中心 in Chinese. The mark is the three

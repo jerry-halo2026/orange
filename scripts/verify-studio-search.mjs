@@ -20,7 +20,7 @@
 //   - 冷启动与热查询的耗时、返回的形状（mediaKey + score + availability）。
 //
 // 退出码：0 = 全部通过；1 = 有一步不对（打印出来）。
-process.env.OPENFILM_MEDIA_TENANT = process.env.OPENFILM_MEDIA_TENANT || 'tenant-a';
+process.env.ORANGE_MEDIA_TENANT = process.env.ORANGE_MEDIA_TENANT || 'tenant-a';
 
 const argv = process.argv.slice(2);
 const arg = (/** @type {string} */ name, /** @type {string} */ fallback) => {

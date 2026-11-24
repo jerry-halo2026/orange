@@ -16,7 +16,7 @@ test('a folder is placed by the folder it sits in, the home folder as ~', () => 
 });
 
 test('a deep folder keeps only the last two folders above it', () => {
-  assert.equal(attachmentPlace('/Users/me/Movies/OpenFilm/Projects/2026/temp'), '…/Projects/2026');
+  assert.equal(attachmentPlace('/Users/me/Movies/OrangeFilm/Projects/2026/temp'), '…/Projects/2026');
   assert.equal(attachmentPlace('/srv/a/b/c/temp'), '…/b/c');
 });
 

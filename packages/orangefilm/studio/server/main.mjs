@@ -3,11 +3,11 @@
 
 // @ts-check
 /**
- * Studio's process: `openfilm open` starts it in the background when none is running. It writes where it listens and
- * its launch key to ~/.openfilm/run.json (readable by this user only), which is how the CLI finds it, and removes the
+ * Studio's process: `orangefilm open` starts it in the background when none is running. It writes where it listens and
+ * its launch key to ~/.orangefilm/run.json (readable by this user only), which is how the CLI finds it, and removes the
  * file when it stops.
  *
- * Started this way, the process is a small supervisor and Studio runs in a child of it (OPENFILM_STUDIO_WORKER): a
+ * Started this way, the process is a small supervisor and Studio runs in a child of it (ORANGE_STUDIO_WORKER): a
  * Studio that ends unexpectedly (a crash, the system ending it) is started again a second later, on the same port with
  * the same key, so the pages open on it reconnect by themselves. It is not started again when it stopped because it
  * was asked to (exit 0: replaced by a newer one, or quit), when another Studio has taken over the machine (run.json
@@ -33,7 +33,7 @@ for (const level of /** @type {const} */ (['log', 'warn', 'error'])) {
   console[level] = (...args) => write(new Date().toISOString(), ...args);
 }
 
-if (process.env.OPENFILM_STUDIO_WORKER !== '1') await supervise();
+if (process.env.ORANGE_STUDIO_WORKER !== '1') await supervise();
 
 const { startStudio } = await import('./server.mjs');
 const { closePageFrames } = await import('./pageframes.mjs');
@@ -54,7 +54,7 @@ process.on('unhandledRejection', (e) => {
   recordProblem({ area: 'studio', step: 'unhandled rejection', what: String(/** @type {any} */ (e)?.message ?? e) });
 });
 
-const given = process.env.OPENFILM_STUDIO_PORT;
+const given = process.env.ORANGE_STUDIO_PORT;
 const port = given != null && given !== '' && Number.isInteger(Number(given)) ? Number(given) : 4747;
 /** @type {Awaited<ReturnType<typeof startStudio>> | undefined} */
 let studio;
@@ -72,7 +72,7 @@ try {
   studio = await startStudio({ port, advertise: true, onQuit: stop }).catch((e) => {
     if (!port || !taken(e)) throw e;
     /* started again after an end: another Studio took the port meanwhile, and it is the one to use */
-    if (process.env.OPENFILM_STUDIO_RESTARTED === '1') {
+    if (process.env.ORANGE_STUDIO_RESTARTED === '1') {
       console.error(`port ${port} is taken by another Studio now; this one stops`);
       process.exit(0);
     }
@@ -101,8 +101,8 @@ async function supervise() {
   let stopping = false;
   const start = (/** @type {boolean} */ restarted) => {
     /** @type {NodeJS.ProcessEnv} */
-    const env = { ...process.env, OPENFILM_STUDIO_WORKER: '1', OPENFILM_STUDIO_SUPERVISOR: String(process.pid) };
-    if (restarted) env.OPENFILM_STUDIO_RESTARTED = '1';
+    const env = { ...process.env, ORANGE_STUDIO_WORKER: '1', ORANGE_STUDIO_SUPERVISOR: String(process.pid) };
+    if (restarted) env.ORANGE_STUDIO_RESTARTED = '1';
     const worker = spawn(process.execPath, [fileURLToPath(import.meta.url)], { env, stdio: 'inherit', windowsHide: true });
     child = worker;
     worker.once('exit', (code, signal) => {

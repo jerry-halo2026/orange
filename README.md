@@ -1,6 +1,6 @@
 # OrangeFilm
 
-OrangeFilm is a proprietary video production workspace: a desktop app (Electron), Studio (the editor), the `openfilm`
+OrangeFilm is a proprietary video production workspace: a desktop app (Electron), Studio (the editor), the `orangefilm`
 format and CLI, and a .NET batch-mixing worker under `workers/fission`.
 
 **Proprietary and confidential.** Copyright (c) 2026 OrangeFilm. All rights reserved. Read, run and modify only with

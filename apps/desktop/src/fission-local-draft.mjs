@@ -23,7 +23,7 @@ async function ordinary(p,directory){
  if(!same(await realpath(p),p))fail();
 }
 async function nativeImporter(){
- const entry=pathToFileURL(createRequire(import.meta.url).resolve('openfilm/studio'));
+ const entry=pathToFileURL(createRequire(import.meta.url).resolve('orangefilm/studio'));
  return (await import(new URL('./fission-import.mjs',entry))).importFissionEditPlan;
 }
 

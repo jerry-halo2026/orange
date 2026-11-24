@@ -12,8 +12,8 @@ import { useT } from '@/i18n';
 import type { ProjectSessionItem } from '@/lib/project-sessions';
 import { useLocalAgentTurn } from '@/lib/local-agent-run';
 import { PANE_BAR, PANE_TITLE } from './dock-pane-bar';
-import { useClickOpen } from 'openfilm/studio-ui/lib/click-open.ts';
-import menu from 'openfilm/studio-ui/components/WorkspaceMenu.module.css';
+import { useClickOpen } from 'orangefilm/studio-ui/lib/click-open.ts';
+import menu from 'orangefilm/studio-ui/components/WorkspaceMenu.module.css';
 
 /** What a conversation's menus do: rename, pin, archive. */
 interface SessionActions {

@@ -226,7 +226,7 @@ function interactionText(body) {
   return direct || interactionContents(body).map((/** @type {any} */ part) => text(part?.text)).filter(Boolean).join(' ').trim();
 }
 
-/** Gemini word annotations as OpenFilm's provider word contract. @param {any} body */
+/** Gemini word annotations as OrangeFilm's provider word contract. @param {any} body */
 function interactionWords(body) {
   return interactionContents(body).flatMap((/** @type {any} */ part) => Array.isArray(part?.annotations) ? part.annotations : [])
     .filter((/** @type {any} */ a) => a?.type === 'word_info' && text(a?.text))

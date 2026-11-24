@@ -86,7 +86,7 @@ const asked = process.argv.slice(2);
 const unknown = asked.filter((n) => !(n in SOUNDS));
 if (unknown.length) { console.error(`no such sound: ${unknown.join(', ')} (there are ${Object.keys(SOUNDS).join(', ')})`); process.exit(2); }
 mkdirSync(OUT, { recursive: true });
-const tmp = join(tmpdir(), `openfilm-sounds-${process.pid}.wav`);
+const tmp = join(tmpdir(), `orangefilm-sounds-${process.pid}.wav`);
 for (const [name, fn] of Object.entries(SOUNDS)) {
   if (asked.length && !asked.includes(name)) continue;
   writeFileSync(tmp, wav(fn()));

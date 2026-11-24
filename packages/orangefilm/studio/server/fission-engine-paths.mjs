@@ -58,14 +58,14 @@ export function ffmpegRuntimeDir(dataDir) {
 export function resolveEnginePaths({ dataDir, project, env = process.env, mkdirs = true }) {
   /** @type {string[]} */
   const problems = [];
-  const runtime = ffmpegRuntimeDir(String(env.OPENFILM_FFMPEG_DIR ?? '').trim() || dataDir || join(homedir(), '.openfilm'));
+  const runtime = ffmpegRuntimeDir(String(env.ORANGE_FFMPEG_DIR ?? '').trim() || dataDir || join(homedir(), '.orangefilm'));
   if (!runtime) {
     problems.push('找不到 app 自带的 ffmpeg（<dataDir>/runtime/ffmpeg-<version>/）：先让 `ffmpeg-runtime` 把它下下来');
   }
   const ffmpeg = runtime ? join(runtime, exe('ffmpeg')) : '';
   const ffprobe = runtime ? join(runtime, exe('ffprobe')) : '';
 
-  const transitions = String(env.OPENFILM_TRANSITIONS_DIR ?? '').trim() || join(dataDir, 'runtime', 'transitions');
+  const transitions = String(env.ORANGE_TRANSITIONS_DIR ?? '').trim() || join(dataDir, 'runtime', 'transitions');
   const assets = join(project, 'assets');
   const localAssets = join(dataDir, 'material-cache', 'content');
   const work = join(project, '.film', 'fission', 'work');

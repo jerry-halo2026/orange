@@ -128,7 +128,7 @@ const DEFAULTS: Settings = {
   folder: '',
 };
 
-const STORE_KEY = 'openfilm.exportCenter.v1';
+const STORE_KEY = 'orangefilm.exportCenter.v1';
 
 /** Retain previous settings, including projects last exported from the former social-platform page. */
 function loadSettings(language: string, projectFps: number): Settings {
@@ -597,7 +597,7 @@ export function ExportCenter(props: ExportCenterProps) {
         aria-modal="true"
         aria-label={t('exportCenter.title')}
         className={LARGE_DIALOG}
-        style={{ animation: 'openfilm-rise 0.16s ease-out both' }}
+        style={{ animation: 'orangefilm-rise 0.16s ease-out both' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* left: destinations */}

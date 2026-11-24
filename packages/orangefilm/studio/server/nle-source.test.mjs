@@ -100,9 +100,9 @@ let ffmpeg = true;
 try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); } catch { ffmpeg = false; }
 test('actual XML, FCPXML and drafts link originals or copy byte-identical complete media, retaining source handles', { skip: !ffmpeg, timeout: 120_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-nle-source-'));
-  const saved = { home: process.env.OPENFILM_HOME, exports: process.env.OPENFILM_EXPORTS };
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_EXPORTS = join(scratch, 'exports');
+  const saved = { home: process.env.ORANGE_HOME, exports: process.env.ORANGE_EXPORTS };
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_EXPORTS = join(scratch, 'exports');
   const root = join(scratch, 'project');
   try {
     await mkdir(join(root, 'assets'), { recursive: true });
@@ -153,7 +153,7 @@ test('actual XML, FCPXML and drafts link originals or copy byte-identical comple
     assert.equal(await digest(original), hash, 'export never alters the original');
     assert.deepEqual(await readdir(join(root, 'assets')), ['Camera Original.mp4']);
   } finally {
-    for (const [key, value] of [['OPENFILM_HOME', saved.home], ['OPENFILM_EXPORTS', saved.exports]]) {
+    for (const [key, value] of [['ORANGE_HOME', saved.home], ['ORANGE_EXPORTS', saved.exports]]) {
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
     }
     await rm(scratch, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });

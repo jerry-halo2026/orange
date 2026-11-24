@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { KEEP_MAX, problemLine, problemLines, recentProblems, recordProblem, redact, trimProblems } from './problems.mjs';
 
-const fileIn = () => join(mkdtempSync(join(tmpdir(), 'openfilm-problems-')), 'logs', 'problems.jsonl');
+const fileIn = () => join(mkdtempSync(join(tmpdir(), 'orangefilm-problems-')), 'logs', 'problems.jsonl');
 
 test('a problem is kept as a line, tidied: the home folder as ~, no keys, tokens or email addresses', () => {
   const file = fileIn();

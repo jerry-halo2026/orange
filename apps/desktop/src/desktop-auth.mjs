@@ -8,8 +8,8 @@ import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { createAuthService } from './auth-service.mjs';
-// Resolve the app's existing bundled OpenFilm, not source-checkout-relative paths or a global package.
-const nativeServer=pathToFileURL(createRequire(import.meta.url).resolve('openfilm/studio'));
+// Resolve the app's existing bundled OrangeFilm, not source-checkout-relative paths or a global package.
+const nativeServer=pathToFileURL(createRequire(import.meta.url).resolve('orangefilm/studio'));
 const {createProjectAccessPolicy}=await import(new URL('./project-access.mjs',nativeServer));
 const {createProjectControlGuard,ordinaryControlPath}=await import(new URL('./project-control-guard.mjs',nativeServer));
 const {withProjectAuthority,withProjectControlGuard,withProjectControlGuardAllowingRead}=await import(new URL('./projects.mjs',nativeServer));
@@ -155,7 +155,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
      development reason 鈥?a free-form string must never reach the window. */
   const offlineReason = CONFIGURATION_REASONS.includes(configurationReason) ? configurationReason : 'configuration-required';
   service=makeService();
-  /* 浠呭紑鍙戞満锛歄PENFILM_DEV_AUTH=off 涓旈潪鎵撳寘杩涚▼鏃讹紝缁欏嚭涓€涓湰鍦?dev 涓讳綋锛岀渷鎺夌櫥褰曘€?     鎵撳寘鏋勫缓鍦?main.mjs 閲屽啓 OPENFILM_APP_PACKAGED=1锛屽洜姝ゅ彂甯冨寘姘歌繙涓嶄細璧拌繖閲屻€?*/
+  /* 浠呭紑鍙戞満锛歄PENFILM_DEV_AUTH=off 涓旈潪鎵撳寘杩涚▼鏃讹紝缁欏嚭涓€涓湰鍦?dev 涓讳綋锛岀渷鎺夌櫥褰曘€?     鎵撳寘鏋勫缓鍦?main.mjs 閲屽啓 ORANGE_APP_PACKAGED=1锛屽洜姝ゅ彂甯冨寘姘歌繙涓嶄細璧拌繖閲屻€?*/
   function getPublicState() {
     if(failed)return safeState('locked','preservation-failed');
     if(disposed)return safeState('disposed','disposed');
@@ -222,7 +222,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
       // Durable deny markers keep a separately started native CLI out after logout/restart too.
       step='markers';
       for(const root of [...homes,roots[1]]) {
-        const marker=ordinaryControlPath(join(root,'.openfilm-control.json'));
+        const marker=ordinaryControlPath(join(root,'.orangefilm-control.json'));
         verifyMarker(marker,true);
       }
       step='policy';

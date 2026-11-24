@@ -18,17 +18,17 @@ import { startStudio } from './server.mjs';
 const root = mkdtempSync(join(tmpdir(), 'of-machine-stores-'));
 const home = join(root, 'home');
 const variables = {
-  OPENFILM_HOME: home, OPENFILM_SHARED_HOME: home, OPENFILM_LIBRARY: join(root, 'library'),
-  OPENFILM_SKILLS: join(root, 'mine'), OPENFILM_SKILLS_INDEX: join(root, 'index.json'),
+  ORANGE_HOME: home, ORANGE_SHARED_HOME: home, ORANGE_LIBRARY: join(root, 'library'),
+  ORANGE_SKILLS: join(root, 'mine'), ORANGE_SKILLS_INDEX: join(root, 'index.json'),
 };
 const previous = Object.fromEntries(Object.keys(variables).map((key) => [key, process.env[key]]));
 Object.assign(process.env, variables);
 mkdirSync(home, { recursive: true });
-mkdirSync(join(variables.OPENFILM_LIBRARY), { recursive: true });
+mkdirSync(join(variables.ORANGE_LIBRARY), { recursive: true });
 
 /** one of the person's own skills, as a folder of the skills library */
-mkdirSync(join(variables.OPENFILM_SKILLS, 'quiet'), { recursive: true });
-writeFileSync(join(variables.OPENFILM_SKILLS, 'quiet', 'SKILL.md'), '---\nname: quiet\ndescription: A skill of mine, on this computer.\n---\n\n# Quiet\n');
+mkdirSync(join(variables.ORANGE_SKILLS, 'quiet'), { recursive: true });
+writeFileSync(join(variables.ORANGE_SKILLS, 'quiet', 'SKILL.md'), '---\nname: quiet\ndescription: A skill of mine, on this computer.\n---\n\n# Quiet\n');
 
 /** an account session, as the desktop app gives Studio one (nothing of it is needed by these stores) */
 const auth = {
@@ -51,7 +51,7 @@ test('a signed-in Studio lists the skills on this computer: an empty store is an
   assert.equal(res.status, 200, 'the skills installed here are no account\'s');
   const body = await res.json();
   assert.equal(body.catalog, null, 'Discover\'s index was never read here');
-  assert.deepEqual(body.skills.slice(0, 3).map((s) => s.uid), ['orangefilm/edit', 'orangefilm/media', 'orangefilm/canvas'], 'OpenFilm\'s own first');
+  assert.deepEqual(body.skills.slice(0, 3).map((s) => s.uid), ['orangefilm/edit', 'orangefilm/media', 'orangefilm/canvas'], 'OrangeFilm\'s own first');
   const mine = body.skills.find((s) => s.uid === 'local/quiet');
   assert.deepEqual([mine?.source, mine?.installed], ['mine', true], 'the person\'s own, listed as it is');
 });
@@ -73,14 +73,14 @@ test('the boards kept from canvases are listed, and a store that cannot be read 
 });
 
 test('Discover\'s index: what was read before is answered with why it could not be read again; never read, it says so', async () => {
-  writeFileSync(variables.OPENFILM_SKILLS_INDEX, JSON.stringify({ version: 1, skills: [] }));
+  writeFileSync(variables.ORANGE_SKILLS_INDEX, JSON.stringify({ version: 1, skills: [] }));
   const first = await api('/api/skills/catalog', { method: 'POST', body: { fresh: 0 } });
   assert.equal(first.status, 200);
   const read = (await first.json()).catalog.read;
   assert.equal(typeof read, 'string', 'when the index was read');
 
   /* the index is not there any more (off the network, renamed, not published yet) */
-  rmSync(variables.OPENFILM_SKILLS_INDEX, { force: true });
+  rmSync(variables.ORANGE_SKILLS_INDEX, { force: true });
   const stale = await api('/api/skills/catalog', { method: 'POST', body: { fresh: 0 } });
   assert.equal(stale.status, 200, 'Discover still shows what it read before');
   const kept = await stale.json();
@@ -98,9 +98,9 @@ test('a store that cannot be read at all: the empty state, said in the log once,
   const lines = [];
   const logged = console.error;
   console.error = (...args) => { lines.push(args.join(' ')); };
-  const before = process.env.OPENFILM_ISOLATION_PROFILE;
+  const before = process.env.ORANGE_ISOLATION_PROFILE;
   /* a profile that is not one: every location of this computer cannot be named, so the stores throw */
-  process.env.OPENFILM_ISOLATION_PROFILE = Buffer.from('{}').toString('base64url');
+  process.env.ORANGE_ISOLATION_PROFILE = Buffer.from('{}').toString('base64url');
   try {
     const skills = await api('/api/skills');
     assert.equal(skills.status, 200);
@@ -111,7 +111,7 @@ test('a store that cannot be read at all: the empty state, said in the log once,
     assert.equal(templates.status, 200);
     assert.deepEqual(await templates.json(), { templates: [] });
   } finally {
-    if (before === undefined) delete process.env.OPENFILM_ISOLATION_PROFILE; else process.env.OPENFILM_ISOLATION_PROFILE = before;
+    if (before === undefined) delete process.env.ORANGE_ISOLATION_PROFILE; else process.env.ORANGE_ISOLATION_PROFILE = before;
     console.error = logged;
   }
   assert.equal(lines.filter((line) => line.includes('the skills could not be read')).length, 1, 'said once, however often asked');

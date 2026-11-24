@@ -16,20 +16,20 @@ import { downloadFiles } from './fetch-github.mjs';
 const refused = (input, code) => assert.throws(() => parseRepoUrl(input), (e) => e instanceof FetchError && e.code === code, String(input));
 
 test('a repository address, with or without .git, a slash or the scheme', () => {
-  for (const input of ['https://github.com/openfilm/examples', 'https://github.com/openfilm/examples.git', 'https://github.com/openfilm/examples/', 'github.com/openfilm/examples']) {
+  for (const input of ['https://github.com/orangefilm/examples', 'https://github.com/orangefilm/examples.git', 'https://github.com/orangefilm/examples/', 'github.com/orangefilm/examples']) {
     const source = parseRepoUrl(input);
-    assert.equal(source.cloneUrl, 'https://github.com/openfilm/examples.git', input);
+    assert.equal(source.cloneUrl, 'https://github.com/orangefilm/examples.git', input);
     assert.equal(source.name, 'examples');
     assert.equal(source.tree, null);
-    assert.deepEqual(source.github, { owner: 'openfilm', repo: 'examples' }, 'GitHub: over https');
+    assert.deepEqual(source.github, { owner: 'orangefilm', repo: 'examples' }, 'GitHub: over https');
   }
 });
 
 test('a folder\'s address: what follows /tree/ is the ref and the folder, told apart later; a file\'s means its folder', () => {
-  const folder = parseRepoUrl('https://github.com/openfilm/examples/tree/main/one-prompt');
+  const folder = parseRepoUrl('https://github.com/orangefilm/examples/tree/main/one-prompt');
   assert.deepEqual(folder.tree, ['main', 'one-prompt']);
   assert.equal(folder.blob, false);
-  const file = parseRepoUrl('https://github.com/openfilm/examples/blob/main/one-prompt/film.html');
+  const file = parseRepoUrl('https://github.com/orangefilm/examples/blob/main/one-prompt/film.html');
   assert.deepEqual(file.tree, ['main', 'one-prompt', 'film.html']);
   assert.equal(file.blob, true);
   assert.deepEqual(parseRepoUrl('https://github.com/o/r/tree/main/a%20b').tree, ['main', 'a b']);
@@ -167,7 +167,7 @@ test('the job list: a wrong address is refused at once; a job says how it went',
   assert.throws(() => fetches.start('https://example.com/o/r'), (e) => e.code === 'host');
   assert.throws(() => fetches.get('nope'), (e) => e.status === 404);
   /* stopped at once, before anything is asked (no network): it reports how it ended */
-  const job = fetches.start('https://github.com/openfilm/examples/tree/main/x');
+  const job = fetches.start('https://github.com/orangefilm/examples/tree/main/x');
   assert.equal(job.state, 'running');
   fetches.cancel(job.id);
   for (let i = 0; i < 100 && fetches.get(job.id).state === 'running'; i++) await new Promise((r) => setTimeout(r, 20));

@@ -1,6 +1,6 @@
 # OrangeFilm
 
-OrangeFilm 是自有的视频生产工作台：桌面应用（Electron）、Studio 编辑器、`openfilm` 格式与 CLI，以及 `workers/fission`
+OrangeFilm 是自有的视频生产工作台：桌面应用（Electron）、Studio 编辑器、`orangefilm` 格式与 CLI，以及 `workers/fission`
 下的 .NET 批量混剪 worker。
 
 **专有软件，未经书面授权禁止修改与分发。** 版权归 OrangeFilm 所有；许可与授权范围见 [LICENSE](LICENSE)，名称与标识见

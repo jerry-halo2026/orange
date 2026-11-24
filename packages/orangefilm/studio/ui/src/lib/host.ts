@@ -121,7 +121,7 @@ export interface StudioHost {
     /** Codex: what is left of its plan, as it says for the account signed in (null: it can't say; other agents, null) */
     usage?: (id: HostAgentId, fresh?: boolean) => Promise<HostAgentUsage | null>;
     setShown: (id: HostAgentId, shown: boolean) => Promise<unknown>;
-    saveOpenFilmModels?: (config: { order: string[]; hidden: string[] }) => Promise<{ ok: boolean; error?: string }>;
+    saveOrangeFilmModels?: (config: { order: string[]; hidden: string[] }) => Promise<{ ok: boolean; error?: string }>;
     locate?: (id: HostAgentId, words?: { title?: string; button?: string; kind?: 'file' | 'folder' }) => Promise<{ ok: boolean; error?: string; path?: string; version?: string; code?: 'not-a-program' | 'did-not-start' | 'app' | 'not-cursor-agent' | string }>;
     install?: (id: HostAgentId) => Promise<{ ok: boolean; error?: string }>;
     useAutomatic?: (id: HostAgentId) => Promise<unknown>;
@@ -148,7 +148,7 @@ export interface StudioHost {
     onChange: (listener: (agents: HostAgent[]) => void) => () => void;
   };
   /**
-   * Questions an agent's `openfilm get` asks the person before it spends (a video clip), and what it tells them (a
+   * Questions an agent's `orangefilm get` asks the person before it spends (a video clip), and what it tells them (a
    * provider with no balance left: "Manage" opens its page), for an app with a chat to show where the person talks to
    * the agent, above its composer, instead of Studio's own card: the agent's command waits for a question's answer. Studio calls `show` with every question waiting in the project shown (an
    * empty list when none is left), worded in the language shown; `answer` gives the person's answer.
@@ -249,7 +249,7 @@ export interface HostUpdateState {
 /** An update of the app, ready to install or installing; `waiting`: why the last Restart did not go ahead. */
 export type HostUpdate = { status: 'ready' | 'installing'; version: string; waiting?: 'agent-busy' | 'exporting' | 'install-failed' | null };
 
-export type HostAgentId = 'openfilm' | 'codex' | 'claude' | 'antigravity' | 'copilot' | 'cursor' | 'opencode' | 'codebuddy' | 'qwen' | 'kimi' | 'minimax' | 'deepseek' | 'byok';
+export type HostAgentId = 'orangefilm' | 'codex' | 'claude' | 'antigravity' | 'copilot' | 'cursor' | 'opencode' | 'codebuddy' | 'qwen' | 'kimi' | 'minimax' | 'deepseek' | 'byok';
 /**
  * What was searched for an agent (`agents.diagnose`): the report to copy, the program's name, where it was found, and
  * when it was not, why: chosen-missing (the program chosen is gone) · wsl (only inside WSL, which the app cannot use) ·
@@ -296,10 +296,10 @@ export interface HostAgent {
   signOut?: boolean;
   /** The own key's models, each set up on its own; the first is the one a conversation starts on. */
   byok?: { models: HostOwnModel[] };
-  openfilm?: { order: string[]; hidden: string[]; defaultOrder: string[]; model?: string; models: HostOpenFilmModel[] };
+  orangefilm?: { order: string[]; hidden: string[]; defaultOrder: string[]; model?: string; models: HostOrangeFilmModel[] };
 }
 
-export interface HostOpenFilmModel { id: string; name: string; shown: boolean; available: boolean; levels?: string[]; effort?: string }
+export interface HostOrangeFilmModel { id: string; name: string; shown: boolean; available: boolean; levels?: string[]; effort?: string }
 
 /**
  * One of the person's own models: its `id` (the app's), the `name` the chat's menu shows, its service (API `format`
@@ -371,7 +371,7 @@ export interface StudioRefImage { src?: string; viewer?: boolean; crop?: StageBo
  *             (`index`, from 1), and each word's own span when the transcript has word times (`words`)
  *
  *   · voice    a voice of the library (the assets drawer's Voices) to speak a voice-over in: its service (`provider`,
- *             named `service`), its `id` there, and how the agent speaks in it now (`via`: the provider `openfilm get tts`
+ *             named `service`), its `id` there, and how the agent speaks in it now (`via`: the provider `orangefilm get tts`
  *             runs, `models`: those it may name; none: not connected yet)
  *
  * `image` is the picture its pill shows and the agent is given (see StudioRefImage): a clip's own frame, the viewer as
@@ -396,7 +396,7 @@ export type StudioRef = (
  * a subtitle line or the words picked in it):
  * a JSON array of StudioRef. The app's composer takes them as references.
  */
-export const STUDIO_REF_TYPE = 'application/x-openfilm-ref';
+export const STUDIO_REF_TYPE = 'application/x-orangefilm-ref';
 
 export interface StudioSelection {
   projectId: string;

@@ -17,7 +17,7 @@
  * can use it.
  */
 import { execFile, spawn } from 'node:child_process';
-import { readIsolationProfile, isolationEnvironment } from 'openfilm/development-isolation';
+import { readIsolationProfile, isolationEnvironment } from 'orangefilm/development-isolation';
 import { existsSync, readdirSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
 import { isAbsolute, join } from 'node:path';
@@ -43,8 +43,8 @@ const AGENT_HOME_KEYS = ['CLAUDE_CONFIG_DIR', 'CODEX_HOME'];
 const SESSION_KEYS = new Set(['PWD', 'OLDPWD', 'SHLVL', '_', 'TERM', 'TERM_PROGRAM', 'TERM_PROGRAM_VERSION', 'TERM_SESSION_ID',
   'COLORTERM', 'ITERM_SESSION_ID', 'ITERM_PROFILE', 'LC_TERMINAL', 'LC_TERMINAL_VERSION', 'TMUX', 'TMUX_PANE', 'STY', 'WINDOWID',
   'SECURITYSESSIONID', 'XPC_SERVICE_NAME', 'XPC_FLAGS', 'PS1', 'PS2', 'PROMPT']);
-const SESSION_PREFIXES = ['__CF', 'ELECTRON_', 'VSCODE_', 'OPENFILM_'];
-const ENV_MARKER = '__OPENFILM_LOGIN_ENV__';
+const SESSION_PREFIXES = ['__CF', 'ELECTRON_', 'VSCODE_', 'ORANGE_'];
+const ENV_MARKER = '__ORANGE_LOGIN_ENV__';
 
 function accountShell() {
   try { return userInfo().shell || null; } catch { return null; }
@@ -457,7 +457,7 @@ export async function loginShellEnvironment(options = {}) {
 }
 
 /** What scripts/start.mjs passes on to Electron besides the OS identity: this app's own switches. */
-export const LAUNCHER_FLAGS = ['OPENFILM_DESKTOP_FLAVOR', 'OPENFILM_DESKTOP_CAPTURE', 'OPENFILM_EXAMPLES_INDEX', 'OPENFILM_API_URL', 'ORANGE_AUTH_CONFIG_FILE', 'ORANGE_FISSION_CONFIG_FILE', 'ELECTRON_ENABLE_LOGGING', 'ELECTRON_ENABLE_STACK_DUMPING'];
+export const LAUNCHER_FLAGS = ['ORANGE_DESKTOP_FLAVOR', 'ORANGE_DESKTOP_CAPTURE', 'ORANGE_EXAMPLES_INDEX', 'ORANGE_API_URL', 'ORANGE_AUTH_CONFIG_FILE', 'ORANGE_FISSION_CONFIG_FILE', 'ELECTRON_ENABLE_LOGGING', 'ELECTRON_ENABLE_STACK_DUMPING'];
 
 /** Electron's environment when run from source: the OS identity, the login shell's PATH, LAUNCHER_FLAGS. */
 export function launcherEnvironment(source, path) {

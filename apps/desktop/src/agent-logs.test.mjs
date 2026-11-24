@@ -53,7 +53,7 @@ test("Qwen Code's log: one request a file, its system message as the system prom
   file('1', 2, { sessionId: sid, promptId: `${sid}########1` }, {
     model: 'qwen-x', stream: true, tools,
     messages: [{ role: 'system', content: 'You are Qwen Code.' }, { role: 'user', content: [{ type: 'text', text: '<system-reminder>today</system-reminder>' }, { type: 'text', text: 'Make a title' }] }],
-  }, { model: 'qwen-x', choices: [{ message: { role: 'assistant', content: null, reasoning_content: 'plan', tool_calls: [{ id: 'c1', type: 'function', function: { name: 'run_shell_command', arguments: '{"command":"openfilm look"}' } }] }, finish_reason: 'tool_calls' }], usage: { prompt_tokens: 120, completion_tokens: 9, prompt_tokens_details: { cached_tokens: 100 } } });
+  }, { model: 'qwen-x', choices: [{ message: { role: 'assistant', content: null, reasoning_content: 'plan', tool_calls: [{ id: 'c1', type: 'function', function: { name: 'run_shell_command', arguments: '{"command":"orangefilm look"}' } }] }, finish_reason: 'tool_calls' }], usage: { prompt_tokens: 120, completion_tokens: 9, prompt_tokens_details: { cached_tokens: 100 } } });
   file('2', 5, { sessionId: sid, promptId: `${sid}########1` }, {
     model: 'qwen-x', tools,
     messages: [{ role: 'system', content: 'You are Qwen Code.' }, { role: 'user', content: 'Make a title' },
@@ -73,7 +73,7 @@ test("Qwen Code's log: one request a file, its system message as the system prom
     { role: 'context', as: 'user', label: 'system-reminder', content: [{ type: 'text', text: '<system-reminder>today</system-reminder>' }] },
     { role: 'user', content: [{ type: 'text', text: 'Make a title' }] },
   ], 'what it put in the person\'s message by itself, apart');
-  assert.deepEqual(first.answer.content, [{ type: 'thinking', thinking: 'plan' }, { type: 'toolCall', id: 'c1', name: 'run_shell_command', arguments: { command: 'openfilm look' } }]);
+  assert.deepEqual(first.answer.content, [{ type: 'thinking', thinking: 'plan' }, { type: 'toolCall', id: 'c1', name: 'run_shell_command', arguments: { command: 'orangefilm look' } }]);
   assert.deepEqual(first.answer.usage, { input: 20, cacheRead: 100, cacheWrite: 0, output: 9, reasoning: 0 });
   assert.equal(first.ms, null, 'how long is not in the log');
   assert.deepEqual(first.settings, { model: 'qwen-x', stream: true });
@@ -136,7 +136,7 @@ test("OpenCode's telemetry: the app's receiver on 127.0.0.1 keeps only its model
       { role: 'system', content: 'You are opencode.' },
       { role: 'system', content: 'Here is some useful information.' },
       { role: 'user', content: [{ type: 'text', text: 'Make a title' }] },
-      { role: 'assistant', content: [{ type: 'reasoning', text: 'look' }, { type: 'tool-call', toolCallId: 'o1', toolName: 'bash', input: { command: 'openfilm look' } }] },
+      { role: 'assistant', content: [{ type: 'reasoning', text: 'look' }, { type: 'tool-call', toolCallId: 'o1', toolName: 'bash', input: { command: 'orangefilm look' } }] },
       { role: 'tool', content: [{ type: 'tool-result', toolCallId: 'o1', toolName: 'bash', output: { type: 'text', value: 'frames saved' } }] },
     ];
     assert.equal(await post(receiver.url, exportOf([
@@ -157,7 +157,7 @@ test("OpenCode's telemetry: the app's receiver on 127.0.0.1 keeps only its model
     assert.equal(call.systemPrompt, 'You are opencode.\n\nHere is some useful information.');
     assert.deepEqual(call.messages, [
       { role: 'user', content: [{ type: 'text', text: 'Make a title' }] },
-      { role: 'assistant', content: [{ type: 'thinking', thinking: 'look' }, { type: 'toolCall', id: 'o1', name: 'bash', arguments: { command: 'openfilm look' } }] },
+      { role: 'assistant', content: [{ type: 'thinking', thinking: 'look' }, { type: 'toolCall', id: 'o1', name: 'bash', arguments: { command: 'orangefilm look' } }] },
       { role: 'toolResult', toolCallId: 'o1', toolName: 'bash', content: [{ type: 'text', text: 'frames saved' }], isError: false },
     ]);
     assert.deepEqual(call.tools, [{ name: 'bash', description: 'Run', parameters: { type: 'object' } }]);

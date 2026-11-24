@@ -94,7 +94,7 @@ const FILTERS: readonly Filter[] = ['all', 'video', 'image', 'audio', 'page', 'o
 const useMaterial = createMaterialUse();
 const SORTS: readonly SortKey[] = ['name', 'time', 'duration', 'type'];
 /** Tiles dragged inside the pane, to be moved into a folder: their paths, a line each (a name has no line break). */
-const FOLDER_DRAG = 'application/x-openfilm-media';
+const FOLDER_DRAG = 'application/x-orangefilm-media';
 /** Files dragged in from the computer, not a tile of this pane (the browser adds a dragged picture as a file). */
 const fromComputer = (dt: DataTransfer) => dt.types.includes('Files') && !dt.types.includes(FOLDER_DRAG);
 /** The open folder per project, kept across remounts (the layout re-mounts the pane). */
@@ -110,8 +110,8 @@ const filterOf = (f: WorkspaceResource): Filter => (f.kind === 'mg' ? 'page' : f
 interface ViewState { sort: SortKey; filter: Filter; layout: 'grid' | 'list' }
 /* v2: the order became "as added" by default. A view kept before it (saved whether chosen or not) keeps its filter and
    layout, not its order */
-const viewKey = (projectId: string) => `openfilm.media.v2.${projectId}`;
-const oldViewKey = (projectId: string) => `openfilm.media.${projectId}`;
+const viewKey = (projectId: string) => `orangefilm.media.v2.${projectId}`;
+const oldViewKey = (projectId: string) => `orangefilm.media.${projectId}`;
 function loadView(projectId: string): ViewState {
   try {
     const kept = window.localStorage.getItem(viewKey(projectId));

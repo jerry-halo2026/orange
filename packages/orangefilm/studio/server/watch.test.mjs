@@ -137,6 +137,8 @@ test('film.html changes come with their revision, other files as one files event
   assert.deepEqual(seen.find((e) => e.type === 'film'), { type: 'film', rev: revOf(text) });
   assert.equal(seen.filter((e) => e.type === 'files').length, 1, 'several files settle into one event');
 
+  /* a watcher reports asynchronously: let the previous step's last event land before counting this one */
+  await settle(200);
   seen.length = 0;
   writeFileSync(join(root, 'film.html'), text);
   writeFileSync(join(root, '.film', 'cache'), 'z');
@@ -146,7 +148,7 @@ test('film.html changes come with their revision, other files as one files event
   /* Studio's own half-written siblings (atomic.mjs, the asset index) */
   writeFileSync(join(root, 'film.html.0123456789ab.tmp'), text);
   writeFileSync(join(root, 'assets', 'index.jsonl.123e4567-e89b-12d3-a456-426614174000.tmp'), '');
-  await settle();
+  await settle(200);
   assert.deepEqual(seen, [], 'Studio\'s own half-written files are no change');
   } finally {
     await stop();

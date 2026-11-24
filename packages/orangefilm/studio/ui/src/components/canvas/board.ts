@@ -250,7 +250,7 @@ export const runErrors = new Map<string, string>();
  * How long a model takes, as this person's own runs with it took (the middle of the last few that made something):
  * kept in this browser, shown by the model in the panel's list. None run yet: nothing said.
  */
-const TIMES_KEY = 'openfilm.canvas.times';
+const TIMES_KEY = 'orangefilm.canvas.times';
 const TIMES_KEPT = 5;
 const readTimes = (): Record<string, number[]> => { try { return JSON.parse(localStorage.getItem(TIMES_KEY) ?? '{}') as Record<string, number[]>; } catch { return {}; } };
 export function modelTime(via: string, model?: string): number | null {

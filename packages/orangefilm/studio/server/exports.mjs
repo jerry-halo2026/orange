@@ -7,10 +7,10 @@ import { readIsolationProfile, assertIsolationPath } from '../../src/development
 /**
  * Exports: the film as a video (any codec this machine's ffmpeg encodes, any delivery frame), a GIF, its sound (the
  * mix and stems), a poster or scene stills, its subtitles as files, slides, or its timeline for an editing program.
- * One at a time, in the order asked, each cancellable. A video export is `openfilm render` itself and the sound is the
+ * One at a time, in the order asked, each cancellable. A video export is `orangefilm render` itself and the sound is the
  * same mix, so what Studio exports is what the agent checked with `look` and `render`.
  *
- * Files go to the exports folder (the Desktop, <OPENFILM_HOME>/exports when that is set, or OPENFILM_EXPORTS), or a
+ * Files go to the exports folder (the Desktop, <ORANGE_HOME>/exports when that is set, or ORANGE_EXPORTS), or a
  * folder the person chose, named after the project, never over an earlier one.
  *
  * What an export asks (POST exports, one ask or `{ jobs: [ask…], folder? }`):
@@ -216,7 +216,7 @@ export function framing(stage, frame, fill, out, alpha) {
 
 const safeName = (/** @type {string} */ text) => {
   /* no dot or space at the end (Windows drops them, and the file is not found under the name it was made with) */
-  const name = text.replace(/[\\/:*?"<>|\u0000-\u001f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80).replace(/[. ]+$/, '') || 'OpenFilm';
+  const name = text.replace(/[\\/:*?"<>|\u0000-\u001f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80).replace(/[. ]+$/, '') || 'OrangeFilm';
   /* names Windows keeps for devices, whatever follows their first dot */
   return /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\..*)?$/i.test(name) ? name.replace(/^[^.]*/, (m) => `${m} film`) : name;
 };
@@ -500,7 +500,7 @@ export async function projectSizes(root) {
 /**
  * Below the person's own apps: an export's processes (its renderer, and through it its browsers and encoders, which
  * start below too; its ffmpeg runs) give way to what the person is doing, and take the computer whole when it is
- * idle. Studio started by `openfilm open` runs below already (main.mjs); the desktop app's does not.
+ * idle. Studio started by `orangefilm open` runs below already (main.mjs); the desktop app's does not.
  * @param {import('node:child_process').ChildProcess} proc
  */
 const below = (proc) => { try { if (proc.pid) setPriority(proc.pid, 10); } catch { /* not allowed here: as it is */ } };
@@ -804,7 +804,7 @@ export async function writableFolder(dir) {
   const profile = readIsolationProfile();
   if (profile) assertIsolationPath(profile,dir,'exports');
   try {
-    await rmdir(await mkdtemp(join(dir, '.openfilm-')));
+    await rmdir(await mkdtemp(join(dir, '.orangefilm-')));
     return true;
   } catch {
     return false;
@@ -879,7 +879,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
     const alpha = ALPHA_CODECS.has(codec);
     const clip = ask.clip ? await clipFilm(root, ask.clip) : null;
     const burn = clip ? null : await burnedOf(root, ask, alpha);
-    const scratch = codec === 'png' || codec === 'hevc_alpha' ? await mkdtemp(join(tmpdir(), 'openfilm-export-')) : null;
+    const scratch = codec === 'png' || codec === 'hevc_alpha' ? await mkdtemp(join(tmpdir(), 'orangefilm-export-')) : null;
     try {
       const stage = clip?.stage ?? await stageOf(root);
       let size, place;
@@ -984,7 +984,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
   /** @param {ExportJob} job @param {string} root @param {string} dir @param {AbortSignal} signal */
   async function exportGif(job, root, dir, signal) {
     const ask = /** @type {GifAsk} */ (job.ask);
-    const scratch = await mkdtemp(join(tmpdir(), 'openfilm-export-'));
+    const scratch = await mkdtemp(join(tmpdir(), 'orangefilm-export-'));
     const burn = await burnedOf(root, ask);
     try {
       /* with subtitles, the frame is the page drawn */
@@ -1131,7 +1131,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
   async function exportStills(job, root, dir, signal) {
     const ask = /** @type {StillsAsk | PosterAsk} */ (job.ask);
     const ext = ask.format === 'jpg' ? '.jpg' : '.png';
-    const scratch = await mkdtemp(join(tmpdir(), 'openfilm-export-'));
+    const scratch = await mkdtemp(join(tmpdir(), 'orangefilm-export-'));
     update(job, { encoder: ext === '.jpg' ? 'mjpeg' : 'png' });
     try {
       const { files } = await stillFrames(job, root, ask, ext, scratch, signal);
@@ -1169,7 +1169,7 @@ export function createExports({ onChange = () => {}, captions = subtitlesForExpo
   async function exportSlides(job, root, dir, signal) {
     const ask = /** @type {SlidesAsk} */ (job.ask);
     const pdf = ask.format === 'pdf';
-    const scratch = await mkdtemp(join(tmpdir(), 'openfilm-export-'));
+    const scratch = await mkdtemp(join(tmpdir(), 'orangefilm-export-'));
     update(job, { encoder: pdf ? 'pdf' : 'pptx' });
     try {
       const { files, size } = await stillFrames(job, root, { ...ask, shortEdge: ask.shortEdge ?? 1080 }, '.jpg', scratch, signal);

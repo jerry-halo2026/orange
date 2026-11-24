@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * OpenFilm Studio's server: one process for the whole editor. Two origins, so a web page can never reach the editor:
+ * OrangeFilm Studio's server: one process for the whole editor. Two origins, so a web page can never reach the editor:
  *
  *   http://127.0.0.1:<port>      the editor's pages and its API. The API needs the launch key: as a cookie, set by
  *                                any page's address with ?key=… (/open?key=… too), or as `x-studio-key` (the CLI).
@@ -93,7 +93,7 @@ import { createOrangeRoutes } from './orange-routes.mjs';
 
 /* the session cookie's name carries the port: cookies are per host, not per port, so two Studios on 127.0.0.1 (an
    installed one and a checkout, say) would otherwise sign each other's pages out */
-const cookieName = (/** @type {number} */ port) => `openfilm_studio_${port}`;
+const cookieName = (/** @type {number} */ port) => `orangefilm_studio_${port}`;
 /* and its twin for a page shown inside another site's frame (an agent's preview pane): a SameSite=Strict cookie is
    neither kept nor sent there, so Studio would say "open it from the address…" however it was opened. This one is
    Partitioned (CHIPS): kept for that frame's top-level site only, so a page elsewhere never has it unless it framed the
@@ -120,7 +120,7 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
 
 /**
  * Start Studio. `port` 0 picks a free one. `advertise`:
- * write where it listens to ~/.openfilm/run.json (removed on close), which is how the CLI finds this machine's Studio,
+ * write where it listens to ~/.orangefilm/run.json (removed on close), which is how the CLI finds this machine's Studio,
  * and open with the machine's key (see studioKey); otherwise the key is new each launch.
  * `onQuit`: what `POST /api/quit` does (by default, close); `stays`: it does nothing and says so (an app's Studio,
  * which its window needs). `editorDir`: the built editor to serve (by default studio/ui/dist); an app that builds
@@ -177,7 +177,7 @@ const savedAccess = createSavedAccess({
   const editorPages = new Map();
   /** a page connected: what `/open` waits on after a restart, while the pages of the Studio before come back */
   let pageCame = () => {};
-  /** media being made for an agent's `openfilm get` right now (it would be lost, and paid for, if Studio stopped) */
+  /** media being made for an agent's `orangefilm get` right now (it would be lost, and paid for, if Studio stopped) */
   let making = 0;
   /** the update run from the top bar: `{ status: 'updating' | 'failed', version, error? }` (see /api/update) */
   let updating = /** @type {{ status: 'updating' | 'failed', version: string, error?: string } | null} */ (null);
@@ -232,7 +232,7 @@ const savedAccess = createSavedAccess({
   /** The caller holds the key; a browser write must also come from the editor's own origin. */
   function authorize(/** @type {Req} */ req) {
     if (sameKey(/** @type {string | undefined} */ (req.headers['x-studio-key']))) return;
-    if (!sameKey(cookieKey(req))) throw new HttpError(401, 'open Studio from the address `openfilm open` prints');
+    if (!sameKey(cookieKey(req))) throw new HttpError(401, 'open Studio from the address `orangefilm open` prints');
     if (req.method !== 'GET' && req.method !== 'HEAD' && req.headers.origin !== origin) throw new HttpError(403, 'not from Studio');
   }
 
@@ -300,8 +300,8 @@ const savedAccess = createSavedAccess({
 
     /* which Studio this is: the CLI replaces an older one, and finds its own home's when run.json is gone. Asked
        without the key, so it says nothing of the machine: its home only as a digest (homeTag), no process id */
-    /* `app`: the desktop app's Studio, which updates with the app (`openfilm update` says so instead) */
-    if (path === '/api/health') return json(res, 200, { product: 'openfilm-studio', products: ['openfilm-studio', 'orangefilm-studio'], version: VERSION, home: homeTag(), filmOrigin, ...(stays ? { app: true } : {}) });
+    /* `app`: the desktop app's Studio, which updates with the app (`orangefilm update` says so instead) */
+    if (path === '/api/health') return json(res, 200, { product: 'orangefilm-studio', products: ['orangefilm-studio', 'orangefilm-studio'], version: VERSION, home: homeTag(), filmOrigin, ...(stays ? { app: true } : {}) });
     const signIn = [`${COOKIE}=${key}; Path=/; HttpOnly; SameSite=Strict`, `${FRAMED}=${key}; Path=/; HttpOnly; Secure; SameSite=None; Partitioned`];
     /** A page's address with the key in it (the address bar is what a person copies). */
     const keyed = (/** @type {string} */ to) => {
@@ -310,7 +310,7 @@ const savedAccess = createSavedAccess({
       return at.pathname + at.search;
     };
     if (path === '/open') {
-      if (!sameKey(url.searchParams.get('key'))) throw new HttpError(403, 'this link is from another Studio launch; use the one `openfilm open` printed');
+      if (!sameKey(url.searchParams.get('key'))) throw new HttpError(403, 'this link is from another Studio launch; use the one `orangefilm open` printed');
       const to = url.searchParams.get('to') ?? '/';
       res.writeHead(302, { location: keyed(/^\/(?!\/)[^\s\\]*$/.test(to) ? to : '/'), 'set-cookie': signIn, 'referrer-policy': 'no-referrer' });
       return res.end();
@@ -355,7 +355,7 @@ const savedAccess = createSavedAccess({
       // answering the empty state (machineStore) rather than a 503 for something that is merely not made yet.
     }
     if (await orangeRoutes(req, res, parts)) return;
-    /* The old ~/.openfilm home, copied into ~/.orangefilm only when asked: the settings UI reads the plan first
+    /* The old ~/.orangefilm home, copied into ~/.orangefilm only when asked: the settings UI reads the plan first
        and sends { confirm: true } for the copy. The old home is never removed by this route. */
     if (parts[0] === 'home' && parts[1] === 'migration') {
       if (req.method === 'GET' && parts.length === 2) return json(res, 200, planHomeMigration());
@@ -368,7 +368,7 @@ const savedAccess = createSavedAccess({
     }
     const run = () => isolationResourceCall(isolation,parts,req.method,async () => {
 
-    /* stop: another app is taking over this machine's Studio, or `openfilm open` starts it afresh (`whenIdle`: not
+    /* stop: another app is taking over this machine's Studio, or `orangefilm open` starts it afresh (`whenIdle`: not
        while an export runs or media is made — it would be lost). `pages`: how many were open, to come back */
     if (parts[0] === 'quit' && parts.length === 1 && req.method === 'POST') {
       const { whenIdle = false } = /** @type {{ whenIdle?: boolean }} */ ((await readJson(req).catch(() => null)) ?? {});
@@ -384,7 +384,7 @@ const savedAccess = createSavedAccess({
       }))());
       return;
     }
-    /* `openfilm open [folder]`: open it (no folder: the project opened last, else the Projects window) and show it.
+    /* `orangefilm open [folder]`: open it (no folder: the project opened last, else the Projects window) and show it.
        Every Studio page open already switches to it; when one is in sight (not a tab behind others, a window
        minimized, an agent's hidden browser), nothing more opens: one window is enough. Else in a browser: the
        agent's own when it opens the address within `fallback` seconds, else the person's (`now`: at once, for a
@@ -418,10 +418,10 @@ const savedAccess = createSavedAccess({
     if (parts[0] === 'version' && parts.length === 1 && req.method === 'GET') {
       const now = url.searchParams.get('check') === '1';
       const { latest, checkedAt } = await npmOpenfilm({ force: now, waitMs: 4000 });
-      return json(res, 200, { version: VERSION, latest, newer: Boolean(latest && olderThanThis(VERSION, latest)), checkedAt, checking: !process.env.OPENFILM_NO_UPDATE_CHECK && !FROM_SOURCE, source: FROM_SOURCE,
+      return json(res, 200, { version: VERSION, latest, newer: Boolean(latest && olderThanThis(VERSION, latest)), checkedAt, checking: !process.env.ORANGE_NO_UPDATE_CHECK && !FROM_SOURCE, source: FROM_SOURCE,
         ...(updating ? { update: updating } : {}) });
     }
-    /* Settings → Developer's diagnostic report: `openfilm doctor` (src/doctor.mjs), as this Studio sees the computer */
+    /* Settings → Developer's diagnostic report: `orangefilm doctor` (src/doctor.mjs), as this Studio sees the computer */
     if (parts[0] === 'doctor' && parts.length === 1 && req.method === 'GET') {
       const report = await doctor({ studio: { origin, version: VERSION, ...(stays ? { app: true } : {}) } });
       return json(res, 200, { ok: report.ok, text: report.text });
@@ -440,8 +440,8 @@ const savedAccess = createSavedAccess({
       reveal(made.path);
       return json(res, 200, made);
     }
-    /* the top bar's Update (Studio run with npm, not the app's nor a checkout): the newest openfilm run in the
-       background as `openfilm update` (client.mjs updateOpenfilm), which starts Studio again on it; the pages come back
+    /* the top bar's Update (Studio run with npm, not the app's nor a checkout): the newest orangefilm run in the
+       background as `orangefilm update` (client.mjs updateOpenfilm), which starts Studio again on it; the pages come back
        on the new version and reload. Not while an export runs or media is made. `/api/version` says how it goes */
     if (parts[0] === 'update' && parts.length === 1 && req.method === 'POST') {
       if (stays || FROM_SOURCE) return json(res, 409, { error: 'this Studio does not update itself', code: stays ? 'app' : 'source' });
@@ -449,7 +449,7 @@ const savedAccess = createSavedAccess({
       if (making) return json(res, 409, { error: 'media is being made', code: 'making' });
       if (updating?.status === 'updating') return json(res, 202, { update: updating });
       const { latest } = await npmOpenfilm({ waitMs: 4000 });
-      if (!latest || !olderThanThis(VERSION, latest)) return json(res, 409, { error: 'this is the newest openfilm', code: 'newest' });
+      if (!latest || !olderThanThis(VERSION, latest)) return json(res, 409, { error: 'this is the newest orangefilm', code: 'newest' });
       updating = runUpdate(latest, (next) => { updating = next; });
       return json(res, 202, { update: updating });
     }
@@ -467,7 +467,7 @@ const savedAccess = createSavedAccess({
     /* ── own keys and who makes each kind of media (Settings → Services): never a key back; see providers/index.mjs ── */
     if (parts[0] === 'providers') {
       /* An installed Studio keeps Services per account: the same provider logic, the person's own file behind it.
-         A checkout with no accounts at all (npx openfilm) keeps its shared providers.json, exactly as before. */
+         A checkout with no accounts at all (npx orangefilm) keeps its shared providers.json, exactly as before. */
       if (!isolation) return desktopAuth
         ? withAccountServices(desktopAuth, () => providersRoute(req, res, parts.slice(1), { openBrowser }))
         : providersRoute(req, res, parts.slice(1), { openBrowser });
@@ -485,7 +485,7 @@ const savedAccess = createSavedAccess({
       return localModelsRoute(req,res,parts.slice(1),{readOnly:Boolean(isolation)});
     }
     /* what the person changed in a project while an agent worked, kept over its writes: the note for the agent named
-       `agent`, which its `openfilm` command prints, answered at once ({ id, line }, line null when nothing); it counts
+       `agent`, which its `orangefilm` command prints, answered at once ({ id, line }, line null when nothing); it counts
        as told once the command says it printed it (POST kept/said { id }; person-edits.mjs) */
     if (parts[0] === 'kept' && parts.length === 1 && req.method === 'GET') {
       const folder = url.searchParams.get('folder');
@@ -499,13 +499,13 @@ const savedAccess = createSavedAccess({
       const { id } = /** @type {{ id?: unknown }} */ (await readJson(req));
       return json(res, 200, { ok: typeof id === 'string' && personEdits.noteSaid(id) });
     }
-    /* ── `openfilm get`: media from a provider, landed in the project; spending is asked here first (see get.mjs) ── */
+    /* ── `orangefilm get`: media from a provider, landed in the project; spending is asked here first (see get.mjs) ── */
     if (parts[0] === 'get') {
       making += req.method === 'POST' ? 1 : 0;
       try { return await getRoute(req, res, parts.slice(1), asks); } finally { making -= req.method === 'POST' ? 1 : 0; }
     }
 
-    /* ── `openfilm canvas`: an agent's steps on a project's canvas, shown on the board at once (canvas.mjs) ── */
+    /* ── `orangefilm canvas`: an agent's steps on a project's canvas, shown on the board at once (canvas.mjs) ── */
     if (parts[0] === 'canvas' && parts.length === 1) return agentCanvasRoute(req, res, (root) => /** @type {ReturnType<typeof createWatchers>} */ (watchers).emit(root, { type: 'canvas' }));
     /* the person's canvas templates, the same for every project (canvas-templates.mjs); kept on this computer, so a
        store that cannot be read answers the empty list rather than a page's error */
@@ -600,7 +600,7 @@ const savedAccess = createSavedAccess({
         return res.end(jpeg);
       }
     }
-    /* OpenFilm's library (library.mjs): what is in it, its voices, its files (a poster, a preview, a page, a sound, a waveform, a voice's sample), and
+    /* OrangeFilm's library (library.mjs): what is in it, its voices, its files (a poster, a preview, a page, a sound, a waveform, a voice's sample), and
        the things the person starred */
     if (parts[0] === 'library') {
       if (parts.length === 1 && req.method === 'GET') return json(res, 200, libraryIndex());
@@ -712,7 +712,7 @@ const savedAccess = createSavedAccess({
       const folder = await exampleFolderHere(decodeURIComponent(parts[1]));
       return sendMedia(req, res, inside(folder, parts.slice(3).map(decodeURIComponent).join('/')), { keep: true });
     }
-    /* the skills a project can be made with (../../src/skills.mjs): OpenFilm's own first (`core`, which can only be
+    /* the skills a project can be made with (../../src/skills.mjs): OrangeFilm's own first (`core`, which can only be
        turned off), then the project's, the person's, those installed, then Discover's not installed (skill-catalog.mjs,
        `installed: false`). Each is told by its uid (owner/name) here and in every route below, so two of the same name
        are both there; `as` is the name agents are given it by. An installed one says when Discover has a newer commit
@@ -741,7 +741,7 @@ const savedAccess = createSavedAccess({
             ...(agentsCall.has(k.uid) ? { as: agentsCall.get(k.uid) } : {}),
             ...(k.shown ? { shown: k.shown } : {}), ...(k.version ? { version: k.version } : {}), ...(k.kind ? { kind: k.kind } : {}),
             ...(k.order != null ? { order: k.order } : {}), ...(k.icon ? { icon: k.icon } : {}), ...(k.repository ? { repository: k.repository } : {}),
-            /* what it needs beyond OpenFilm, the computers it runs on, and whether this one is not among them */
+            /* what it needs beyond OrangeFilm, the computers it runs on, and whether this one is not among them */
             ...(k.needs ? { needs: k.needs } : {}), ...(k.platforms ? { platforms: k.platforms, ...(k.platforms.includes(thisPlatform()) ? {} : { elsewhere: true }) } : {}),
             ...(k.cover ? { cover: `${media(k.uid, 'cover')}${id ? '&' : '?'}v=${encodeURIComponent(k.cover)}` } : {}), ...(k.preview ? { preview: media(k.uid, 'preview') } : {}),
             /* the person's own: where it came from (none kept: made where it is) */
@@ -773,7 +773,7 @@ const savedAccess = createSavedAccess({
         return json(res, 200, { catalog: { read: kept.read }, stale: true, error: why });
       }
     }
-    /* a skill of the project shown (`?project=`), or the library's, by its uid; OpenFilm's own with `core` */
+    /* a skill of the project shown (`?project=`), or the library's, by its uid; OrangeFilm's own with `core` */
     const skillAt = async (/** @type {string} */ uid, { core = false } = {}) => {
       const id = url.searchParams.get('project');
       const project = id ? (await listProjects()).find((p) => p.id === id && !p.missing) : null;
@@ -826,7 +826,7 @@ const savedAccess = createSavedAccess({
         return json(res, 200, { cover: updated?.cover ? `/api/skills/${encodeURIComponent(skill.uid)}/cover?v=${encodeURIComponent(updated.cover)}` : null });
       } catch (e) { throw new HttpError(400, e instanceof Error ? e.message : String(e)); }
     }
-    /* a skill's cover picture or preview video (its openfilm.json's `cover`, `preview`) */
+    /* a skill's cover picture or preview video (its orangefilm.json's `cover`, `preview`) */
     if (parts[0] === 'skills' && parts.length === 3 && (parts[2] === 'cover' || parts[2] === 'preview') && req.method === 'GET') {
       const skill = await skillAt(decodeURIComponent(parts[1]), { core: true });
       const file = skill?.[parts[2]];
@@ -986,7 +986,7 @@ const savedAccess = createSavedAccess({
         return json(res, 200, {});
       }
     }
-    /* an editor page shows it: the person opened it, so it is the one `openfilm open` alone comes back to */
+    /* an editor page shows it: the person opened it, so it is the one `orangefilm open` alone comes back to */
     if (rest === 'opened' && req.method === 'POST') return json(res, 200, { project: await markOpened(project.id) });
     /* the fonts its pages declare with @font-face, and with `page` (a project path) the families that page can draw with
        and names (project-fonts.mjs): the font menu's "In this project" */
@@ -1257,7 +1257,7 @@ const savedAccess = createSavedAccess({
     if (rest === 'saved/take' && req.method === 'POST') {
       const { path: from } = /** @type {{ path?: unknown }} */ (await readJson(req) ?? {});
       /* built-in material is read from the packaged library, not the person's Saved: ownership does not apply. */
-      const builtIn = typeof from === 'string' && /^openfilm[\\/]/.test(from);
+      const builtIn = typeof from === 'string' && /^orangefilm[\\/]/.test(from);
       if (!builtIn) savedAccess.assertOwned();
       const takeFence = builtIn ? () => {} : savedAccess.fence();
       const taken = await savedCall(() => takeSaved(project.path, from));
@@ -1566,7 +1566,7 @@ const savedAccess = createSavedAccess({
   await listenLocal(editor, port).catch(failedStart);
   /* the examples index is asked for as Studio starts, so the Examples tab has GitHub's newest when it opens */
   void bootstrapStudioResources(isolation || desktopAuth,{examples:listExamples,providers:freshProviders,discover:readDiscover},advertise);
-  /* and what each service offers (OpenFilm's models are its service's to say), so Settings → Services opens with them */
+  /* and what each service offers (OrangeFilm's models are its service's to say), so Settings → Services opens with them */
   // Resource bootstrap above respects the opt-in isolation policy.
   const address = /** @type {import('node:net').AddressInfo} */ (editor.address());
   origin = `http://127.0.0.1:${address.port}`;
@@ -1581,7 +1581,7 @@ const savedAccess = createSavedAccess({
       // Discover is refreshed by the same admitted bootstrap, not separately.
       mkdirSync(studioHome(), { recursive: true });
       /* `supervisor`: the process that starts this one again if it ends unexpectedly (main.mjs), stopped with it */
-      const supervisor = Number(process.env.OPENFILM_STUDIO_SUPERVISOR) || undefined;
+      const supervisor = Number(process.env.ORANGE_STUDIO_SUPERVISOR) || undefined;
       writeFileSync(runFile(), `${JSON.stringify({ pid: process.pid, ...(supervisor ? { supervisor } : {}), origin, filmOrigin: pages.origin, key })}\n`, { mode: 0o600 });
     }
   } catch (error) {
@@ -1633,7 +1633,7 @@ async function outerProject(path) {
 }
 
 /**
- * `npx -y openfilm@<version> update` in the background (its words in logs/update.log), as the person would run it: the
+ * `npx -y orangefilm@<version> update` in the background (its words in logs/update.log), as the person would run it: the
  * newest stops this Studio and starts itself in its place. `then` hears it failed later, with its last words, if this
  * Studio is still here to hear it; one that cannot start is said at once.
  * @param {string} version @param {(state: { status: 'failed', version: string, error: string }) => void} then
@@ -1647,8 +1647,8 @@ function runUpdate(version, then) {
   const failed = (/** @type {string} */ error) => then({ status: 'failed', version, error });
   try {
     const out = openSync(file, 'a');
-    const child = spawn('npx', ['-y', `openfilm@${version}`, 'update'], {
-      detached: true, stdio: ['ignore', out, out], windowsHide: true, shell: process.platform === 'win32', env: { ...process.env, OPENFILM_NO_BROWSER: '1' },
+    const child = spawn('npx', ['-y', `orangefilm@${version}`, 'update'], {
+      detached: true, stdio: ['ignore', out, out], windowsHide: true, shell: process.platform === 'win32', env: { ...process.env, ORANGE_NO_BROWSER: '1' },
     });
     child.once('error', (e) => failed(`npx did not start (it comes with Node.js): ${e.message}`));
     child.once('exit', (code) => {

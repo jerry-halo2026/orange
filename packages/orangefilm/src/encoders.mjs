@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * The graphics chip's encoders and decoders, for everything that writes video: Studio's exports, `openfilm render`,
+ * The graphics chip's encoders and decoders, for everything that writes video: Studio's exports, `orangefilm render`,
  * the fast-seeking copies a render makes (seekable.mjs) and the preview's proxies. Which ones this machine's ffmpeg
  * has, whether each works here (a moment of video goes through it first, once a launch), and the options each takes.
  * A caller uses the processor's own encoder when the chip has none, and when the chip's fails partway (`broken`).

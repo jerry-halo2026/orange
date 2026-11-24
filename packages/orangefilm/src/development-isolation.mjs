@@ -116,12 +116,12 @@ export function resolveIsolationProfile(config, policy) {
 }
 /** An isolation opt-in (including a malformed one) requires fail-closed remote operations. */
 export function isolationRequested(env = process.env) {
-    return env.OPENFILM_ISOLATION_PROFILE !== undefined || env.OPENFILM_ISOLATION_ROOT !== undefined;
+    return env.ORANGE_ISOLATION_PROFILE !== undefined || env.ORANGE_ISOLATION_ROOT !== undefined;
 }
 /** Read only the explicit development opt-in; no account/authorization meaning. */
 export function readIsolationProfile(env = process.env, { packaged = false } = {}) {
-    const encoded = env.OPENFILM_ISOLATION_PROFILE;
-    const approvedBaseRoot = env.OPENFILM_ISOLATION_ROOT;
+    const encoded = env.ORANGE_ISOLATION_PROFILE;
+    const approvedBaseRoot = env.ORANGE_ISOLATION_ROOT;
     if (encoded === undefined && approvedBaseRoot === undefined)
         return null;
     if (packaged)
@@ -140,7 +140,7 @@ export function readIsolationProfile(env = process.env, { packaged = false } = {
         throw new Error('The native film port must be the next port in the Studio pair.');
     const mapped = isolationEnvironment(profile);
     for (const [key, value] of Object.entries(mapped)) {
-        if (key.startsWith('OPENFILM_') && !key.startsWith('OPENFILM_ISOLATION_') && env[key] !== undefined && env[key] !== value)
+        if (key.startsWith('ORANGE_') && !key.startsWith('ORANGE_ISOLATION_') && env[key] !== undefined && env[key] !== value)
             throw new Error(`Isolated ${key} conflicts with the approved profile.`);
     }
     return profile;
@@ -149,13 +149,13 @@ export function readIsolationProfile(env = process.env, { packaged = false } = {
 export function isolationEnvironment(profile) {
     const { baseRoot, instanceId, taskId, attemptId, ports, paths: p } = profile;
     return {
-        OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify({ baseRoot, instanceId, taskId, attemptId, ports })).toString('base64url'),
-        OPENFILM_ISOLATION_ROOT: baseRoot,
-        OPENFILM_HOME: p.home, OPENFILM_SHARED_HOME: p.sharedHome, OPENFILM_LIBRARY: p.projects,
-        OPENFILM_SAVED: p.saved, OPENFILM_LIBRARY_CACHE: p.library, OPENFILM_EXPORTS: p.exports,
-        OPENFILM_SKILLS: p.skills, OPENFILM_OFFICIAL_SKILLS: path.join(p.skills, 'installed'),
-        OPENFILM_TRASH_DIR: path.join(p.temp, 'trash'), OPENFILM_APP_LOGS: p.logs,
-        OPENFILM_STUDIO_PORT: String(ports.studio), OPENFILM_NO_UPDATE_CHECK: '1',
+        ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify({ baseRoot, instanceId, taskId, attemptId, ports })).toString('base64url'),
+        ORANGE_ISOLATION_ROOT: baseRoot,
+        ORANGE_HOME: p.home, ORANGE_SHARED_HOME: p.sharedHome, ORANGE_LIBRARY: p.projects,
+        ORANGE_SAVED: p.saved, ORANGE_LIBRARY_CACHE: p.library, ORANGE_EXPORTS: p.exports,
+        ORANGE_SKILLS: p.skills, ORANGE_OFFICIAL_SKILLS: path.join(p.skills, 'installed'),
+        ORANGE_TRASH_DIR: path.join(p.temp, 'trash'), ORANGE_APP_LOGS: p.logs,
+        ORANGE_STUDIO_PORT: String(ports.studio), ORANGE_NO_UPDATE_CHECK: '1',
         PLAYWRIGHT_BROWSERS_PATH: path.join(p.cache, 'browsers'), PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1',
         HOME: p.home, USERPROFILE: p.home, APPDATA: path.join(p.userData, 'appdata'), LOCALAPPDATA: path.join(p.cache, 'appdata'),
         TEMP: p.temp, TMP: p.temp, TMPDIR: p.temp, XDG_CACHE_HOME: p.cache,

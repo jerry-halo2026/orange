@@ -7,7 +7,7 @@
  * `src/orangefilm-mcp.mjs` runs the editor's code for its tools (`film-doc.mjs` reads and writes
  * film.html, `ops.mjs` applies an edit, `clip-motion.mjs` is what `ops.mjs` imports). In the checkout
  * it reaches them by relative path; in an installed app there is no checkout, so `scripts/release.mjs`
- * copies exactly these files to `resources/openfilm` and the MCP server loads them from there.
+ * copies exactly these files to `resources/orangefilm` and the MCP server loads them from there.
  *
  * The list is data, not prose: the release copies it, the tests check it, and a module added to the
  * editor's side has one place to be added here.
@@ -37,7 +37,7 @@ export const PACKED_MATERIAL_MODULES = Object.freeze([
   'packages/orangefilm/scripts/material-index-bootstrap.mjs',
 ]);
 
-/** The modules, by their path in the repository (which is also their path under `resources/openfilm`). */
+/** The modules, by their path in the repository (which is also their path under `resources/orangefilm`). */
 export const PACKED_EDITOR_MODULES = Object.freeze([
   'packages/orangefilm/src/film-doc.mjs',
   'packages/orangefilm/src/clip-motion.mjs',
@@ -51,6 +51,4 @@ export const PACKED_EDITOR_MODULES = Object.freeze([
  * Where the packed modules sit, relative to the app's resources folder. The MCP server computes the
  * same path; both read this constant so they cannot drift.
  */
-export const PACKED_EDITOR_ROOT = 'openfilm';
-/** The same modules under the new product name; the MCP server prefers it and falls back to openfilm. */
-export const PACKED_EDITOR_ROOT_ALIAS = 'orangefilm';
+export const PACKED_EDITOR_ROOT = 'orangefilm';

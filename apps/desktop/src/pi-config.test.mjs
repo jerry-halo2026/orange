@@ -45,7 +45,7 @@ test("the chat's menu reads the person's models by their names, each picked by i
 });
 
 test('what Pi does reads in the chat as Codex\'s did: a command\'s kind and title, a file\'s path, the result\'s text and pictures', () => {
-  assert.deepEqual(toolCall('bash', { command: 'openfilm look' }), { kind: 'execute', title: 'openfilm look', rawInput: { command: 'openfilm look' } });
+  assert.deepEqual(toolCall('bash', { command: 'orangefilm look' }), { kind: 'execute', title: 'orangefilm look', rawInput: { command: 'orangefilm look' } });
   assert.deepEqual(toolCall('read', { path: 'film.html' }), { kind: 'read', title: 'Read film.html', rawInput: { path: 'film.html' } });
   assert.equal(toolCall('write', { path: 'a.html' }).kind, 'edit');
   assert.deepEqual(toolContent({ content: [{ type: 'text', text: 'ok' }, { type: 'image', data: 'AA', mimeType: 'image/png' }] }), [

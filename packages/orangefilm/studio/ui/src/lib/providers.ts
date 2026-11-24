@@ -39,7 +39,7 @@ export interface OwnProvider {
 
 /**
  * One of the person's custom services (studio/server/custom-services.mjs): any service at an address, reached by their
- * agent with `openfilm get call`. `auth`: the header its key goes in when the agent does not place it ({key}).
+ * agent with `orangefilm get call`. `auth`: the header its key goes in when the agent does not place it ({key}).
  */
 export interface OwnService {
   id: string;
@@ -64,12 +64,12 @@ export interface ProvidersState {
   model: Record<string, string | null>;
   /** a sign-in waiting for the person's browser (`provider`), and why the last one failed */
   signingIn: { provider: string | null; error: string | null; errorFor: string | null };
-  /** who searches the library by meaning: OrangeFilm's service ('openfilm', the default), or none (its words alone) */
+  /** who searches the library by meaning: OrangeFilm's service ('orangefilm', the default), or none (its words alone) */
   librarySearch: string | null;
 }
 
 /** The providers Settings › Services shows first, in this order: OrangeFilm's own, then the large media services. */
-export const RECOMMENDED_PROVIDERS = ['openfilm', 'openai', 'google', 'azure', 'elevenlabs', 'openrouter'];
+export const RECOMMENDED_PROVIDERS = ['orangefilm', 'openai', 'google', 'azure', 'elevenlabs', 'openrouter'];
 
 /**
  * The providers in the order Services lists them: the connected ones first, then the others; within each, the

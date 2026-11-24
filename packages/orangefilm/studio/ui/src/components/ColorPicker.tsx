@@ -38,7 +38,7 @@ function hsvToHex(c: Hsv): string {
   return `#${hex2(r)}${hex2(g)}${hex2(b)}${c.a < 1 ? hex2(Math.round(c.a * 255)) : ''}`;
 }
 
-const RECENT_KEY = 'openfilm.colors.recent';
+const RECENT_KEY = 'orangefilm.colors.recent';
 const STARTERS = ['#ffffff', '#111111', '#e5432d', '#ff7a1a', '#ffd166', '#2f9f64', '#1a93fe', '#7c5cff'];
 
 function readRecent(): string[] {

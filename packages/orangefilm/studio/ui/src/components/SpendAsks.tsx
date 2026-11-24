@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * What an agent's `openfilm get` asks before it spends (studio/server/get.mjs): a video clip, with what it will make,
+ * What an agent's `orangefilm get` asks before it spends (studio/server/get.mjs): a video clip, with what it will make,
  * whoever makes it. The agent's command waits for the answer, and closing the question is no. Every page showing the
  * project gets it; the first answer wins and the others drop it.
  *

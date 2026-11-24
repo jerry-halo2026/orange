@@ -133,7 +133,7 @@ test('mix e2e: a recipe dry-runs into its job, the engine renders from it, and S
      engine-path resolution is left to its own folders, so a media variable in this shell is not passed on. */
   process.env.ORANGE_FISSION_CONFIG_FILE = runtime.configFile;
 
-  const launchEnv = { ...launcherEnvironment(process.env, pathWithMedia), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir, FISSION_CLI_DLL: config.cli };
+  const launchEnv = { ...launcherEnvironment(process.env, pathWithMedia), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir, FISSION_CLI_DLL: config.cli };
   delete launchEnv.ORANGE_FISSION_FFMPEG_DIR;
 
   const app = await electron.launch({
@@ -225,7 +225,7 @@ test('mix e2e: a recipe dry-runs into its job, the engine renders from it, and S
       assert.ok(page, 'the app never showed Studio');
       const card = page.getByRole('button').filter({ has: page.getByRole('heading', { name: FISSION_CARD, exact: true }) });
       await card.first().waitFor({ timeout: 90_000 });
-      await page.evaluate(() => localStorage.setItem('openfilm.language', 'zh-CN'));
+      await page.evaluate(() => localStorage.setItem('orangefilm.language', 'zh-CN'));
       await page.reload({ waitUntil: 'domcontentloaded' });
       await card.first().waitFor({ timeout: 90_000 });
       return 'Studio home on screen, zh-CN';
@@ -344,7 +344,7 @@ test('mix e2e: a recipe dry-runs into its job, the engine renders from it, and S
            media, the engine and the job mapping are fine and only the route's project lookup is not. */
     if (routeBlocked) {
       await link('engine-fallback', async () => {
-        const modules = join(REPO, 'packages', 'openfilm', 'studio', 'server');
+        const modules = join(REPO, 'packages', 'orangefilm', 'studio', 'server');
         const { normalizeRecipe, prepareRecipeRun } = await import(pathToFileURL(join(modules, 'fission-recipe.mjs')).href);
         const { resolveEnginePaths } = await import(pathToFileURL(join(modules, 'fission-engine-paths.mjs')).href);
         const { runFissionJob } = await import(pathToFileURL(join(modules, 'fission-runner.mjs')).href);

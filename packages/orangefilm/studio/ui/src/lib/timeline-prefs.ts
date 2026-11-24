@@ -23,11 +23,11 @@ type Pref = keyof TimelinePrefs;
 
 const DEFAULTS: TimelinePrefs = { snap: true, magnet: true, linkage: true };
 const KEY: Record<Pref, string> = {
-  snap: 'openfilm.timeline.snap',
+  snap: 'orangefilm.timeline.snap',
   /* new keys: the main track came back on 10-19 with its magnet and linkage, so choices made for the switches before
      do not carry over */
-  magnet: 'openfilm.timeline.mainTrackMagnet',
-  linkage: 'openfilm.timeline.mainTrackLinkage',
+  magnet: 'orangefilm.timeline.mainTrackMagnet',
+  linkage: 'orangefilm.timeline.mainTrackLinkage',
 };
 
 /** Without localStorage (private window), the choices last this session. */

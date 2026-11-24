@@ -177,7 +177,7 @@ export const Preview = forwardRef<PreviewHandle, Props>(function Preview({ folde
 
   const post = (key: number | undefined, message: object) => {
     if (key == null) return;
-    elements.current.get(key)?.contentWindow?.postMessage({ source: 'openfilm-studio', ...message }, origin);
+    elements.current.get(key)?.contentWindow?.postMessage({ source: 'orangefilm-studio', ...message }, origin);
   };
   /*
    * Playing: the line the film plays on (null while still), told to the frame shown, and to a frame that comes up
@@ -377,7 +377,7 @@ export const Preview = forwardRef<PreviewHandle, Props>(function Preview({ folde
 
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
-      if (e.origin !== origin || e.data?.source !== 'openfilm-film') return;
+      if (e.origin !== origin || e.data?.source !== 'orangefilm-film') return;
       const key = [...elements.current].find(([, el]) => el.contentWindow === e.source)?.[0];
       if (key == null) return;
       const m = e.data;

@@ -19,7 +19,7 @@ import type { FilmOverride } from './film.ts';
 export const TEMPLATE_ATTR = 'data-template';
 
 /** A template's place for a picture, as the library has it, until one is put in its place. */
-export const isSlotSrc = (src: string | undefined): boolean => /^saved\/openfilm\/templates-[^/]+\/slot\.html$/.test(src?.split('#')[0] ?? '');
+export const isSlotSrc = (src: string | undefined): boolean => /^saved\/orangefilm\/templates-[^/]+\/slot\.html$/.test(src?.split('#')[0] ?? '');
 
 const PAGE = /\.html?$/i;
 const SOUND = /\.(mp3|m4a|wav|aac|ogg|oga|opus|flac|aif|aiff|weba)$/i;

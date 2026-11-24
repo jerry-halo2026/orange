@@ -48,7 +48,7 @@ export function defaultOptions() {
     packDir: path.join('.dev', 'vector-pack'),
     dryRun: false,
     only: '',
-    indexFile: path.join(process.env.USERPROFILE ?? process.env.HOME ?? '.', '.openfilm-dev', 'material-index', 'index.json'),
+    indexFile: path.join(process.env.USERPROFILE ?? process.env.HOME ?? '.', '.orangefilm-dev', 'material-index', 'index.json'),
   };
 }
 

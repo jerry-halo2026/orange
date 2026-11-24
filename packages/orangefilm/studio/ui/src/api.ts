@@ -124,9 +124,9 @@ export interface HomeMigrationPlan {
   error?: string;
 }
 /** Said on the window when they change, for what plays by them (the preview's proxies). */
-export const PREFS_EVENT = 'openfilm:prefs';
+export const PREFS_EVENT = 'orangefilm:prefs';
 /** Said on the window when the library moved, for the Projects list. */
-export const LIBRARY_EVENT = 'openfilm:library';
+export const LIBRARY_EVENT = 'orangefilm:library';
 
 /** A problem as Studio keeps it (src/problems.mjs): when, what it was about, what it said. */
 export interface StudioProblem {
@@ -138,11 +138,11 @@ export interface StudioProblem {
 }
 
 export const api = {
-  /** this Studio's version and the latest openfilm on npm; `check`: ask npm now */
+  /** this Studio's version and the latest orangefilm on npm; `check`: ask npm now */
   version: (check = false) => call<StudioVersion>(`version${check ? '?check=1' : ''}`),
-  /** the newest openfilm, run in the background (`openfilm update`): Studio starts again on it; refused (ApiError, `body.code`) while busy */
+  /** the newest orangefilm, run in the background (`orangefilm update`): Studio starts again on it; refused (ApiError, `body.code`) while busy */
   update: () => call<{ update: NonNullable<StudioVersion['update']> }>('update', { method: 'POST', json: {} }),
-  /** `openfilm doctor`, run by this Studio: the report to paste into an issue (src/doctor.mjs) */
+  /** `orangefilm doctor`, run by this Studio: the report to paste into an issue (src/doctor.mjs) */
   doctor: () => call<{ ok: boolean; text: string }>('doctor'),
   /** what went wrong in the last two weeks, newest first (src/problems.mjs) */
   problems: () => call<{ problems: StudioProblem[] }>('diagnostics/problems').then((r) => r.problems),
@@ -152,7 +152,7 @@ export const api = {
   prefs: () => call<StudioPrefs>('prefs'),
   /** where new projects and exports go, and the free space there */
   locations: () => call<StudioLocations>('locations'),
-  /** the old ~/.openfilm → ~/.orangefilm plan; copy only with `confirm` */
+  /** the old ~/.orangefilm → ~/.orangefilm plan; copy only with `confirm` */
   homeMigration: () => call<HomeMigrationPlan>('home/migration'),
   migrateHome: (includeLibrary = false, dryRun = false) => call<HomeMigrationPlan>('home/migration', { method: 'POST', json: { confirm: true, includeLibrary, dryRun } }),
   /** move the library to `path` (null: the default); with `move`, its projects go too (those that could not are in `failed`) */
@@ -188,7 +188,7 @@ export const api = {
     if (typeof film?.rev !== 'string' || !film.project) throw new Error('Studio did not return the project film.');
     return film;
   },
-  /** the person opened it here: the one `openfilm open` alone comes back to */
+  /** the person opened it here: the one `orangefilm open` alone comes back to */
   opened: (id: string) => call<{ project: Project }>(`${p(id)}/opened`, { method: 'POST' }),
   /* `undo`: the edit puts back an earlier one (Studio keeps the person's edits over an agent's writes until then) */
   /** A compound clip's film written in a folder of its own under parts/ (studio/server/parts.mjs): that folder. */
@@ -251,7 +251,7 @@ export const api = {
     'file' in from ? { method: 'PUT', body: from.file, headers: { 'content-type': 'application/octet-stream' } } : { method: 'POST', json: from }).then((r) => r.cover),
   clearCover: (id: string) => call<{ cover: null }>(`${p(id)}/cover`, { method: 'DELETE' }).then(() => null),
   /**
-   * Something made with the person's services, as `openfilm get <verb>` makes it (studio/server/get.mjs): answered
+   * Something made with the person's services, as `orangefilm get <verb>` makes it (studio/server/get.mjs): answered
    * once it is made, with its receipt (JSON, as text), or why not. A video asks the person first (SpendAsks), unless
    * `yes`: the person asked for it themselves (a node's Make). Not a write a reload waits for: it may take minutes,
    * and aborting it (`signal`) stops it. A run the service's account had too little for throws with `reason: 'balance'`.
@@ -307,7 +307,7 @@ export type SavedListing = { files: SavedFile[]; folders: string[]; made?: strin
 /** What is said of a thing put in Saved: a clip's id (a file's path beside it), a name, and how long and big it is. */
 export type SavedAsk = { id?: string; name?: string; durationMs?: number; w?: number; h?: number };
 
-/** What an agent's `openfilm get` asks the person before it spends (studio/server/get.mjs). */
+/** What an agent's `orangefilm get` asks the person before it spends (studio/server/get.mjs). */
 export type SpendAsk = {
   id: string; kind: 'video'; provider: string; model?: string; seconds?: number; prompt?: string;
 };
@@ -318,7 +318,7 @@ export type StudioNotice = { id: string; kind: 'balance'; provider: string; prov
 export type FolderEvent = { type: 'film'; rev: string } | { type: 'files'; paths?: string[] } | { type: 'history' } | { type: 'export'; job: ExportJob } | { type: 'open'; to: string }
   | { type: 'history-progress'; op: string; phase: string; done: number; total: number }
   | { type: 'ask'; ask: SpendAsk } | { type: 'asked'; id: string } | { type: 'notice'; notice: StudioNotice } | { type: 'project'; project: Project }
-  /* an agent changed the canvas (`openfilm canvas apply`) */
+  /* an agent changed the canvas (`orangefilm canvas apply`) */
   | { type: 'canvas', reset?: boolean }
   /* its folder is there but film.html is not (an agent writing it again, or it lost): the project stays open and
      says so, until a `film` event says it is back */
@@ -332,7 +332,7 @@ export type FolderEvent = { type: 'film'; rev: string } | { type: 'files'; paths
  * `onBack` runs when it does (Studio stopped and started again: what changed meanwhile was not told). `watch`: this
  * stream says whether Studio answers (studioConnection), and reloads the page when Studio comes back as another
  * version (lib/studio-version); the page's own one does. It also tells Studio whether the page is in sight, so
- * `openfilm open` opens a browser when no page is (a tab behind others, a minimized window).
+ * `orangefilm open` opens a browser when no page is (a tab behind others, a minimized window).
  * `onOpen` runs the first time the stream is open: a page reads what it shows before it listens, and a write that
  * lands in between is in neither (a page of a film being rewritten by an agent opened a second too early showed the
  * film from before that write until something else changed).
@@ -361,7 +361,7 @@ export function listen(path: string, on: (event: FolderEvent) => void, { onBack,
       if (lost) {
         lost = false;
         onBack?.();
-        /* back as another version (a newer openfilm, or the desktop app's): this page's code is reloaded to match */
+        /* back as another version (a newer orangefilm, or the desktop app's): this page's code is reloaded to match */
         if (watch) void studioVersion?.back();
       } else if (!opened) {
         opened = true;
@@ -375,7 +375,7 @@ export function listen(path: string, on: (event: FolderEvent) => void, { onBack,
       watcher?.down();
       /* refused, not gone: Studio is there but this browser has no key (the stream says no reason, a request does) */
       if (watch && tries === 0) void fetch('/api/version', { cache: 'no-store' }).then((r) => { if (r.status === 401) markLocked(); }, () => {});
-      /* soon at first, then every second: Studio restarting (`openfilm open` starts it afresh) is back within one
+      /* soon at first, then every second: Studio restarting (`orangefilm open` starts it afresh) is back within one
          or two, and waits a few for the pages before it */
       again = setTimeout(connect, Math.min(1000, 250 * 2 ** tries++));
       /* refused again and again while Studio answers: what it streams may be gone (a project deleted, its folder
@@ -400,7 +400,7 @@ let studioVersion: ReturnType<typeof watchStudioVersion> | null = null;
 /**
  * Whether Studio answers, for the notice when it does not: 'up', 'lost' (stopped a moment ago, reconnecting), 'gone'
  * (still not back), or 'locked': Studio answers but not this browser, which was never let in (its address was typed
- * or pasted without the key `openfilm open` prints, or its key is another launch's). Waiting does not fix that one.
+ * or pasted without the key `orangefilm open` prints, or its key is another launch's). Waiting does not fix that one.
  */
 export type Connection = 'up' | 'lost' | 'gone' | 'locked';
 let connection: Connection = 'up';

@@ -16,7 +16,7 @@ import { mkdir, mkdtemp, readFile, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const base = process.env.ORANGE_SERVICES_TEST_ROOT ?? join(process.env.TEMP ?? '.', 'openfilm-tests');
+const base = process.env.ORANGE_SERVICES_TEST_ROOT ?? join(process.env.TEMP ?? '.', 'orangefilm-tests');
 const root = await mkdtemp(join(base, 'services-store-'));
 const SECRET = 'fixture-key-1234-abcdef';
 
@@ -24,9 +24,9 @@ const SECRET = 'fixture-key-1234-abcdef';
 async function studio() {
     const home = join(root, `home-${Math.random().toString(16).slice(2)}`);
     const env = {
-        OPENFILM_HOME: home, OPENFILM_SHARED_HOME: join(home, 'shared'), OPENFILM_LIBRARY: join(home, 'projects'),
-        OPENFILM_LIBRARY_CACHE: join(home, 'cache'), OPENFILM_SAVED: join(home, 'Saved'), OPENFILM_SKILLS: join(home, 'skills'),
-        OPENFILM_EXPORTS: join(home, 'exports'), OPENFILM_ISOLATION_PROFILE: undefined, OPENFILM_ISOLATION_ROOT: undefined,
+        ORANGE_HOME: home, ORANGE_SHARED_HOME: join(home, 'shared'), ORANGE_LIBRARY: join(home, 'projects'),
+        ORANGE_LIBRARY_CACHE: join(home, 'cache'), ORANGE_SAVED: join(home, 'Saved'), ORANGE_SKILLS: join(home, 'skills'),
+        ORANGE_EXPORTS: join(home, 'exports'), ORANGE_ISOLATION_PROFILE: undefined, ORANGE_ISOLATION_ROOT: undefined,
     };
     for (const [key, value] of Object.entries(env)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
     for (const path of Object.values(env).filter(Boolean)) await mkdir(path, { recursive: true });

@@ -44,7 +44,7 @@ const QUARANTINE = [
   { file: 'studio/server/fission-import-tail-real.test.mjs', needs: 'a published Fission worker sidecar and an isolated root' },
   { file: 'studio/server/fission-local-export-real.test.mjs', needs: 'a published Fission worker sidecar, an isolated root and a headless browser' },
   { file: 'studio/server/person-edits-worker-lifecycle.test.mjs', needs: 'a scratch directory under this checkout and the seven HOME/TEMP variables pointed at it' },
-  { file: 'studio/server/exports-isolation.test.mjs', needs: 'an approved isolation profile (OPENFILM_ISOLATION_PROFILE)' },
+  { file: 'studio/server/exports-isolation.test.mjs', needs: 'an approved isolation profile (ORANGE_ISOLATION_PROFILE)' },
   { file: 'studio/server/desktop-auth-entry.test.mjs', needs: 'the desktop entry environment (a Studio home and a launch key)' },
   { file: 'studio/server/server-request-drain.test.mjs', needs: 'an isolated server harness the suite starts itself; under investigation' },
   /* the four below are product drift, not environment: each names the file and the fact that moved, so the next person

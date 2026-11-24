@@ -1,10 +1,10 @@
-# OpenFilm 原生接口与平台对齐
+# OrangeFilm 原生接口与平台对齐
 
 文档集：U1（2026-11-07）。当前执行口径，不包含历史指令。
 
 ## 1. 对齐原则（最新用户确认）
 
-**先原生、再必要扩展，最后才是OpenFilm没有的业务。** 原UI、IO、API、CLI、类型、ID、单位、错误、状态和资源闭包必须一起复用，不能只是外观像原版。原生接口事实以固定源码/类型/测试为准；07只登记橙子业务增量和明确映射，不覆盖原生定义。
+**先原生、再必要扩展，最后才是OrangeFilm没有的业务。** 原UI、IO、API、CLI、类型、ID、单位、错误、状态和资源闭包必须一起复用，不能只是外观像原版。原生接口事实以固定源码/类型/测试为准；07只登记橙子业务增量和明确映射，不覆盖原生定义。
 
 | 分类 | 允许做法 | 禁止 |
 | --- | --- | --- |
@@ -44,7 +44,7 @@
 | 字幕轨 | GET/PUT caption-tracks/file；POST from-subtitles/new/sync/translate；GET speech只算不写 | [caption-tracks](../../packages/orangefilm/studio/server/caption-tracks.mjs):64–138 | 多文件协调/恢复/一次Undo；不把原逐文件writeAtomic视为跨资源事务 |
 | 项目文件 | `/api/projects/:id/files`及bring/relink/collect；路径为项目相对正斜线，上传有文件流 | [files](../../packages/orangefilm/studio/server/files.mjs)、server | 绑定业务资产版本和授权解析，不把大媒体塞JSON或路径当所有权 |
 | Saved | GET `/api/saved/files`；项目POST saved和saved/take；原bundle内部VERSION=2、clip/group/page | [saved](../../packages/orangefilm/studio/server/saved.mjs) | 原跨项目副本语义保持；业务归属/公司留存额外关联 |
-| Library | `/api/library`、voices/missing/fetch/favorites；openfilm/id内置资源，复制到工程 | [library](../../packages/orangefilm/studio/server/library.mjs) | 智尚经业务适配接原素材UI，不塞内置只读Library当第二业务源 |
+| Library | `/api/library`、voices/missing/fetch/favorites；orangefilm/id内置资源，复制到工程 | [library](../../packages/orangefilm/studio/server/library.mjs) | 智尚经业务适配接原素材UI，不塞内置只读Library当第二业务源 |
 | 素材视图 | WorkspaceResource是派生UI视图；MediaSources提供资源URL；不存在由本计划发明的`/api/sources` | workspace-resources、[project-sources](../../packages/orangefilm/studio/ui/src/lib/project-sources.ts) | 只加必要provider适配，不复制浏览器/资产库 |
 | 导出 | ExportAsk原联合video/gif/audio/stills/poster/subtitles/slides/nle/project；nle含jianying/capcut；POST单ask→export或jobs→exports；DELETE job取消 | exports.mjs、server:1073–1104 | 原Job waiting/running/done/failed/cancelled保留；业务交付/计数状态另映射，不覆盖原枚举 |
 | desktop桥接 | openfilmNative→openfilmHost(version:1)/openfilmDesktop(bridgeVersion:'1')；原HOME view/项目view切换 | [preload](../../apps/desktop/src/preload.cjs)、[bridge](../../apps/desktop/shell/bridge.ts)、[host](../../packages/orangefilm/studio/ui/src/lib/host.ts)、[main](../../apps/desktop/src/main.mjs) | 窄HOME/业务方法；保活原工程，不给任意shell/文件直通 |
@@ -53,9 +53,9 @@
 
 ## 4. CLI与Skill
 
-真实入口[openfilm.mjs](../../packages/orangefilm/bin/openfilm.mjs)：open/look/render/get/canvas/skills/skill/update/doctor；canvas apply是画布，不是剪时间线。退出码0完成、1命令/film失败、2错误命令/非工程。原look/render/get/canvas按当前目录定位工程；不要把文档中不存在的edit/剪口播命令当已实现。
+真实入口[orangefilm.mjs](../../packages/orangefilm/bin/orangefilm.mjs)：open/look/render/get/canvas/skills/skill/update/doctor；canvas apply是画布，不是剪时间线。退出码0完成、1命令/film失败、2错误命令/非工程。原look/render/get/canvas按当前目录定位工程；不要把文档中不存在的edit/剪口播命令当已实现。
 
-desktop通过[openfilm-command.mjs](../../apps/desktop/src/openfilm-command.mjs)生成自带版本命令，不能绕到全局最新版npx。确需剪口播CLI时扩此注册入口，绑定确切实例/工程和能力，复用原Op/编辑服务与同一权限/恢复边界；名称、输入/输出、错误/退出码、help、Skill文档与测试同一变更，不另造Orange CLI。未完成相应最小N1前只记能力缺口。
+desktop通过[orangefilm-command.mjs](../../apps/desktop/src/orangefilm-command.mjs)生成自带版本命令，不能绕到全局最新版npx。确需剪口播CLI时扩此注册入口，绑定确切实例/工程和能力，复用原Op/编辑服务与同一权限/恢复边界；名称、输入/输出、错误/退出码、help、Skill文档与测试同一变更，不另造Orange CLI。未完成相应最小N1前只记能力缺口。
 
 ## 5. 平台与构建矩阵
 

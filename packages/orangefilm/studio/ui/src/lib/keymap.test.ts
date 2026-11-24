@@ -16,10 +16,10 @@ import { ko } from '../i18n/ko.ts';
 import { zhCN } from '../i18n/zh-CN.ts';
 
 const press = (key: string, mods: Partial<KeyPress> = {}): KeyPress => ({ key, metaKey: false, ctrlKey: false, shiftKey: false, altKey: false, ...mods });
-const OPENFILM_MAC = schemeKeymap('openfilm', true);
-const OPENFILM_WIN = schemeKeymap('openfilm', false);
-const mac = (key: string, mods: Partial<KeyPress> = {}) => actionOf(press(key, mods), OPENFILM_MAC, true);
-const win = (key: string, mods: Partial<KeyPress> = {}) => actionOf(press(key, mods), OPENFILM_WIN, false);
+const ORANGE_MAC = schemeKeymap('orangefilm', true);
+const ORANGE_WIN = schemeKeymap('orangefilm', false);
+const mac = (key: string, mods: Partial<KeyPress> = {}) => actionOf(press(key, mods), ORANGE_MAC, true);
+const win = (key: string, mods: Partial<KeyPress> = {}) => actionOf(press(key, mods), ORANGE_WIN, false);
 
 /** Every combination a keymap uses, and whether any is used twice (on that platform). */
 function twice(keymap: Keymap, isMac: boolean): string[] {
@@ -37,8 +37,8 @@ test('the action table: each action once, in a tab, with keys that are combinati
   assert.equal(new Set(ACTION_IDS).size, ACTIONS.length, 'no action twice');
   for (const tab of KEY_TABS) assert.ok(ACTIONS.some((a) => a.tab === tab), `${tab} has actions`);
   for (const a of ACTIONS) for (const combo of a.keys) assert.ok(isCombo(combo), `${a.id}: ${combo}`);
-  assert.deepEqual(twice(OPENFILM_MAC, true), []);
-  assert.deepEqual(twice(OPENFILM_WIN, false), []);
+  assert.deepEqual(twice(ORANGE_MAC, true), []);
+  assert.deepEqual(twice(ORANGE_WIN, false), []);
 });
 
 test('every action is named in the five languages', () => {
@@ -83,7 +83,7 @@ test('OrangeFilm\'s keys are the keys Studio had', () => {
   assert.equal(mac('p'), 'toggle-magnet');
   assert.equal(mac('`'), 'toggle-linkage');
   assert.equal(mac('~', { shiftKey: true }), 'toggle-linkage');
-  assert.equal(actionOf({ ...press('`'), code: 'Backquote' }, OPENFILM_MAC, true), 'toggle-linkage');
+  assert.equal(actionOf({ ...press('`'), code: 'Backquote' }, ORANGE_MAC, true), 'toggle-linkage');
   assert.equal(mac('s'), null);
   assert.equal(win('s'), null);
   assert.equal(mac('S', { shiftKey: true, ctrlKey: true }), 'detach-audio');
@@ -101,16 +101,16 @@ test('OrangeFilm\'s keys are the keys Studio had', () => {
   assert.equal(mac('Delete'), 'remove');
   assert.equal(mac('Backspace', { shiftKey: true }), 'ripple-delete');
   assert.equal(mac('X', { shiftKey: true }), 'range-clip');
-  assert.equal(actionOf({ ...press('≈', { altKey: true }), code: 'KeyX' }, OPENFILM_MAC, true), 'clear-range', '⌥X types ≈ on a Mac');
+  assert.equal(actionOf({ ...press('≈', { altKey: true }), code: 'KeyX' }, ORANGE_MAC, true), 'clear-range', '⌥X types ≈ on a Mac');
   assert.equal(mac('r', { metaKey: true }), 'speed');
   assert.equal(mac('C', { metaKey: true, shiftKey: true }), 'copy-attrs');
   assert.equal(mac('V', { metaKey: true, shiftKey: true }), 'paste-attrs');
-  assert.equal(actionOf({ ...press('['), code: 'BracketLeft' }, OPENFILM_MAC, true), 'select-left');
-  assert.equal(actionOf({ ...press(']'), code: 'BracketRight' }, OPENFILM_MAC, true), 'select-right');
+  assert.equal(actionOf({ ...press('['), code: 'BracketLeft' }, ORANGE_MAC, true), 'select-left');
+  assert.equal(actionOf({ ...press(']'), code: 'BracketRight' }, ORANGE_MAC, true), 'select-right');
   /* zoom: ⌘= and ⌘+ (⇧= on a US keyboard, or the keypad's), ⌘-, ⌘0 */
   assert.equal(mac('=', { metaKey: true }), 'zoom-in');
-  assert.equal(actionOf({ ...press('+', { metaKey: true, shiftKey: true }), code: 'Equal' }, OPENFILM_MAC, true), 'zoom-in');
-  assert.equal(actionOf({ ...press('+', { ctrlKey: true }), code: 'NumpadAdd' }, OPENFILM_WIN, false), 'zoom-in');
+  assert.equal(actionOf({ ...press('+', { metaKey: true, shiftKey: true }), code: 'Equal' }, ORANGE_MAC, true), 'zoom-in');
+  assert.equal(actionOf({ ...press('+', { ctrlKey: true }), code: 'NumpadAdd' }, ORANGE_WIN, false), 'zoom-in');
   assert.equal(mac('-', { metaKey: true }), 'zoom-out');
   assert.equal(mac('0', { metaKey: true }), 'zoom-reset');
 });
@@ -118,7 +118,7 @@ test('OrangeFilm\'s keys are the keys Studio had', () => {
 test('M adds a marker, ⇧M and ⌥M go to the next and the one before (⌥M types µ on a Mac)', () => {
   assert.equal(mac('m'), 'add-marker');
   assert.equal(mac('M', { shiftKey: true }), 'next-marker');
-  assert.equal(actionOf({ ...press('µ', { altKey: true }), code: 'KeyM' }, OPENFILM_MAC, true), 'prev-marker');
+  assert.equal(actionOf({ ...press('µ', { altKey: true }), code: 'KeyM' }, ORANGE_MAC, true), 'prev-marker');
   assert.equal(win('m', { altKey: true }), 'prev-marker');
   assert.equal(mac('m', { metaKey: true }), null);
   assert.equal(mac('m', { altKey: true, shiftKey: true }), 'prev-marker', '⌥⇧M too');
@@ -138,9 +138,9 @@ test('keys that are not the editor\'s stay the browser\'s, and Ctrl is the modif
 
 test('a letter is read by what it types, or where it sits when it types no Latin letter', () => {
   /* a French keyboard's A is where Q is on a US one: the letter it types counts */
-  assert.equal(actionOf({ ...press('a'), code: 'KeyQ' }, OPENFILM_MAC, true), 'select-mode');
+  assert.equal(actionOf({ ...press('a'), code: 'KeyQ' }, ORANGE_MAC, true), 'select-mode');
   /* Korean: ㅓ is on J */
-  assert.equal(actionOf({ ...press('ㅓ'), code: 'KeyJ' }, OPENFILM_MAC, true), 'shuttle-back');
+  assert.equal(actionOf({ ...press('ㅓ'), code: 'KeyJ' }, ORANGE_MAC, true), 'shuttle-back');
 });
 
 test('a key press as a combination, for recording a new key', () => {
@@ -158,17 +158,17 @@ test('a key press as a combination, for recording a new key', () => {
 });
 
 test('hints and key caps follow the platform', () => {
-  assert.equal(hintOf(OPENFILM_MAC, 'split', true), '⌘B');
-  assert.equal(hintOf(OPENFILM_WIN, 'split', false), 'Ctrl+B');
-  assert.equal(hintOf(OPENFILM_MAC, 'redo', true), '⌘⇧Z');
-  assert.equal(hintOf(OPENFILM_WIN, 'redo', false), 'Ctrl+Shift+Z');
-  assert.equal(hintOf(OPENFILM_MAC, 'zoom-in', true), '⌘+');
+  assert.equal(hintOf(ORANGE_MAC, 'split', true), '⌘B');
+  assert.equal(hintOf(ORANGE_WIN, 'split', false), 'Ctrl+B');
+  assert.equal(hintOf(ORANGE_MAC, 'redo', true), '⌘⇧Z');
+  assert.equal(hintOf(ORANGE_WIN, 'redo', false), 'Ctrl+Shift+Z');
+  assert.equal(hintOf(ORANGE_MAC, 'zoom-in', true), '⌘+');
   assert.deepEqual(comboCaps('ctrl+shift+s', true), ['⌃', '⇧', 'S']);
   assert.deepEqual(comboCaps('ctrl+shift+s', false), ['Ctrl', 'Shift', 'S']);
   assert.deepEqual(comboCaps('Backspace', true), ['⌫']);
   assert.deepEqual(comboCaps('Backspace', false), ['Backspace']);
   assert.deepEqual(comboCaps('alt+', true), ['⌥'], 'a modifier held alone');
-  assert.equal(hintOf({ ...OPENFILM_MAC, split: [] }, 'split', true), undefined, 'no key, no hint');
+  assert.equal(hintOf({ ...ORANGE_MAC, split: [] }, 'split', true), undefined, 'no key, no hint');
 });
 
 test('the built-in schemes: each app\'s keys where Studio has the action, OrangeFilm\'s for the rest, no key twice', () => {
@@ -203,16 +203,16 @@ test('the built-in schemes: each app\'s keys where Studio has the action, Orange
 });
 
 test('a key that another action has is a conflict, and replacing takes it from that action', () => {
-  assert.equal(conflictOf(OPENFILM_MAC, 'split', 'mod+k', true), 'split-all');
-  assert.equal(conflictOf(OPENFILM_MAC, 'split', 'mod+b', true), null, 'its own key');
-  assert.equal(conflictOf(OPENFILM_MAC, 'split', 'mod+shift+y', true), null);
+  assert.equal(conflictOf(ORANGE_MAC, 'split', 'mod+k', true), 'split-all');
+  assert.equal(conflictOf(ORANGE_MAC, 'split', 'mod+b', true), null, 'its own key');
+  assert.equal(conflictOf(ORANGE_MAC, 'split', 'mod+shift+y', true), null);
   /* off a Mac, Control and the modifier are one key */
-  assert.equal(conflictOf(OPENFILM_WIN, 'split', 'ctrl+shift+s', false), 'detach-audio');
-  assert.equal(conflictOf(OPENFILM_MAC, 'split', 'mod+shift+s', true), null, 'on a Mac ⌘ is not ⌃');
-  const next = assignKey(OPENFILM_MAC, 'split', 'mod+k', true);
+  assert.equal(conflictOf(ORANGE_WIN, 'split', 'ctrl+shift+s', false), 'detach-audio');
+  assert.equal(conflictOf(ORANGE_MAC, 'split', 'mod+shift+s', true), null, 'on a Mac ⌘ is not ⌃');
+  const next = assignKey(ORANGE_MAC, 'split', 'mod+k', true);
   assert.deepEqual(next.split, ['mod+k']);
   assert.deepEqual(next['split-all'], ['mod+shift+b']);
-  assert.deepEqual(OPENFILM_MAC['split-all'], ['mod+shift+b', 'mod+k'], 'the keymap given is left as it was');
+  assert.deepEqual(ORANGE_MAC['split-all'], ['mod+shift+b', 'mod+k'], 'the keymap given is left as it was');
 });
 
 test('changing a built-in scheme copies it into a free custom slot first; a full set of slots says so', () => {
@@ -231,7 +231,7 @@ test('changing a built-in scheme copies it into a free custom slot first; a full
   const again = editable({ ...changed, scheme: 'fcp' }, true);
   assert.equal(again?.copiedTo, 'custom2');
   assert.equal(editable(changed, true)?.copiedTo, null);
-  const full: KeyPrefs = { scheme: 'openfilm', custom: Object.fromEntries(CUSTOM_SLOTS.map((slot) => [slot, copyOf(start, 'openfilm', true)])) };
+  const full: KeyPrefs = { scheme: 'orangefilm', custom: Object.fromEntries(CUSTOM_SLOTS.map((slot) => [slot, copyOf(start, 'orangefilm', true)])) };
   assert.equal(editable(full, true), null);
 
   /* keys taken away, then the scheme it came from restored */
@@ -243,9 +243,9 @@ test('changing a built-in scheme copies it into a free custom slot first; a full
 });
 
 test('an action added after a custom scheme was made takes its base\'s keys, unless they are used', () => {
-  const keys = Object.fromEntries(ACTION_IDS.filter((id) => id !== 'refer' && id !== 'loop').map((id) => [id, [...OPENFILM_MAC[id]]]));
+  const keys = Object.fromEntries(ACTION_IDS.filter((id) => id !== 'refer' && id !== 'loop').map((id) => [id, [...ORANGE_MAC[id]]]));
   keys.split = ['shift+l'];
-  const keymap = customKeymap({ base: 'openfilm', keys }, true);
+  const keymap = customKeymap({ base: 'orangefilm', keys }, true);
   assert.deepEqual(keymap.refer, ['mod+l']);
   assert.deepEqual(keymap.loop, [], '⇧L is split\'s now');
 });
@@ -258,13 +258,13 @@ test('what is kept: the scheme and the custom ones, checked when read', () => {
 
   assert.deepEqual(keyPrefsOf(null), DEFAULT_KEY_PREFS);
   assert.deepEqual(keyPrefsOf({ scheme: 'nope' }), DEFAULT_KEY_PREFS);
-  assert.equal(keyPrefsOf({ scheme: 'custom2', custom: {} }).scheme, 'openfilm', 'an empty slot is no scheme');
+  assert.equal(keyPrefsOf({ scheme: 'custom2', custom: {} }).scheme, 'orangefilm', 'an empty slot is no scheme');
   const odd = keyPrefsOf({
     scheme: 'custom1',
-    custom: { custom1: { base: 'someday', keys: { split: ['mod+e', 'Mod+E', 7], 'beam-me-up': ['x'] } }, custom9: { base: 'openfilm', keys: {} } },
+    custom: { custom1: { base: 'someday', keys: { split: ['mod+e', 'Mod+E', 7], 'beam-me-up': ['x'] } }, custom9: { base: 'orangefilm', keys: {} } },
   });
   assert.equal(odd.scheme, 'custom1');
-  assert.equal(odd.custom.custom1?.base, 'openfilm', 'an unknown base is OrangeFilm');
+  assert.equal(odd.custom.custom1?.base, 'orangefilm', 'an unknown base is OrangeFilm');
   assert.deepEqual(odd.custom.custom1?.keys, { split: ['mod+e'] }, 'unknown actions and keys that are none are left out');
   assert.deepEqual(Object.keys(odd.custom), ['custom1']);
   assert.deepEqual(keymapOf(odd, true).split, ['mod+e']);

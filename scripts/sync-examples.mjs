@@ -3,7 +3,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * `pnpm examples:sync`: the examples index and the posters it names, copied from a checkout of openfilm/examples into
+ * `pnpm examples:sync`: the examples index and the posters it names, copied from a checkout of orangefilm/examples into
  * packages/orangefilm/examples-index, which the npm package and the desktop app take with them. Studio shows these at
  * once, before the index on GitHub is read (studio/server/examples.mjs): the films themselves are fetched when one is
  * opened. This folder is replaced whole, and its SOURCE file says which commit it came from.
@@ -18,8 +18,8 @@ import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-const TO = join(ROOT, 'packages', 'openfilm', 'examples-index');
-const REPO = 'https://github.com/openfilm/examples';
+const TO = join(ROOT, 'packages', 'orangefilm', 'examples-index');
+const REPO = 'https://github.com/orangefilm/examples';
 
 const args = process.argv.slice(2);
 const check = args.includes('--check');

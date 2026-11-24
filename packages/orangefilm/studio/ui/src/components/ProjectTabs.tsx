@@ -65,9 +65,9 @@ export function ProjectTabs({ current, onProjects, onRenameCurrent, onCoverCurre
         if (next) { event.preventDefault(); host.show(next.id); }
       }}>
         {tabs.map(tab => <div key={tab.id} data-project-tab={tab.id} className={`${styles.tab} ${tab.id === self ? styles.active : ''} ${dragOver === tab.id ? styles.dragOver : ''}`}
-          draggable={!editing} onDragStart={event => { event.dataTransfer.setData('application/x-openfilm-tab', tab.id); event.dataTransfer.effectAllowed = 'move'; }}
-          onDragEnd={() => setDragOver(null)} onDragLeave={() => setDragOver(null)} onDragOver={event => { if (event.dataTransfer.types.includes('application/x-openfilm-tab')) { event.preventDefault(); setDragOver(tab.id); } }}
-          onDrop={event => { const from = event.dataTransfer.getData('application/x-openfilm-tab'); if (!from) return; event.preventDefault(); host.move(from, tabs.indexOf(tab)); setDragOver(null); }}
+          draggable={!editing} onDragStart={event => { event.dataTransfer.setData('application/x-orangefilm-tab', tab.id); event.dataTransfer.effectAllowed = 'move'; }}
+          onDragEnd={() => setDragOver(null)} onDragLeave={() => setDragOver(null)} onDragOver={event => { if (event.dataTransfer.types.includes('application/x-orangefilm-tab')) { event.preventDefault(); setDragOver(tab.id); } }}
+          onDrop={event => { const from = event.dataTransfer.getData('application/x-orangefilm-tab'); if (!from) return; event.preventDefault(); host.move(from, tabs.indexOf(tab)); setDragOver(null); }}
           onContextMenu={event => { if ((event.target as HTMLElement).tagName === 'INPUT') return; event.preventDefault(); event.stopPropagation(); setContext({ id: tab.id, x: event.clientX, y: event.currentTarget.getBoundingClientRect().bottom + 4 }); }}>
           {tab.id === self && current ? current : <button type="button" role="tab" aria-selected={tab.id === self} aria-hidden={editing?.tab.id === tab.id || undefined} tabIndex={editing?.tab.id === tab.id ? -1 : self === null || tab.id === self ? 0 : -1} className={styles.select}
             onClick={event => { if (event.detail < 2) host.show(tab.id); }} onDoubleClick={event => { event.preventDefault(); event.stopPropagation(); beginRename(tab); }}

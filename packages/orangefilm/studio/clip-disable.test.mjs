@@ -21,11 +21,11 @@ import { startStudio } from './server/server.mjs';
 test('the film format carries disabled clips and the runtime leaves them out, while the UI offers no way to set one', { timeout: 60_000 }, async () => {
   const scratch = await mkdtemp(join(tmpdir(), 'of-clip-disable-'));
   const names = ['HOME', 'SHARED_HOME', 'LIBRARY', 'SAVED', 'EXPORTS'];
-  const saved = new Map(names.map((name) => [`OPENFILM_${name}`, process.env[`OPENFILM_${name}`]]));
-  for (const name of names) process.env[`OPENFILM_${name}`] = join(scratch, name.toLowerCase());
+  const saved = new Map(names.map((name) => [`ORANGE_${name}`, process.env[`ORANGE_${name}`]]));
+  for (const name of names) process.env[`ORANGE_${name}`] = join(scratch, name.toLowerCase());
   let studio, browser;
   try {
-    const root = join(process.env.OPENFILM_LIBRARY, 'Disable');
+    const root = join(process.env.ORANGE_LIBRARY, 'Disable');
     await mkdir(root, { recursive: true });
     await writeFile(join(root, 'card.html'), '<!doctype html><body style="margin:0;background:red"><script>window.film={duration:2,width:320,height:180,frame(){}}</script>');
     const film = filmHtml({ stage: { w: 320, h: 180 }, tracks: [

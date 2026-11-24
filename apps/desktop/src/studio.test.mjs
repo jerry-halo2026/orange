@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import { EventEmitter } from 'node:events';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { readIsolationProfile, isolationEnvironment } from 'openfilm/development-isolation';
+import { readIsolationProfile, isolationEnvironment } from 'orangefilm/development-isolation';
 import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
 let api = {};
 try {
@@ -19,7 +19,7 @@ catch (e) {
 function entry() { assert.equal(typeof api.startWindowStudio, 'function', 'Studio must be importable without Electron and accept injected process adapters'); return api.startWindowStudio; }
 async function fixture(run) { const root = mkdtempSync(join(testRoot('studio'), 'studio-profile-')); try {
     const cfg = { baseRoot: join(root, 'approved'), instanceId: 'instance-a', taskId: 'T01', attemptId: 'attempt-1', ports: { studio: 18471, film: 18472 } };
-    const profile = readIsolationProfile({ OPENFILM_ISOLATION_PROFILE: Buffer.from(JSON.stringify(cfg)).toString('base64url'), OPENFILM_ISOLATION_ROOT: cfg.baseRoot });
+    const profile = readIsolationProfile({ ORANGE_ISOLATION_PROFILE: Buffer.from(JSON.stringify(cfg)).toString('base64url'), ORANGE_ISOLATION_ROOT: cfg.baseRoot });
     await run(profile);
 }
 finally {

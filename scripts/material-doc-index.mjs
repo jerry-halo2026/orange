@@ -12,7 +12,7 @@
 //   node scripts/material-doc-index.mjs --dims 4096 --spread --limit 5000 --all \
 //        --progress .dev/material-doc/progress-4096.json           # 8B/4096 那一列，按产品轮转取样
 //
-// 链路：`~/.openfilm-dev/material-index/index.json`
+// 链路：`~/.orangefilm-dev/material-index/index.json`
 //      → `mediaDocRow(entry)`（packages/orangefilm/src/material-doc.mjs：14 个键，不含向量）
 //      → `POST /v1/embeddings`（768 维，超时 20 s，并发 ≤ 4，失败重试 3 次带退避）
 //      → 每 `--batch` 条一个 psql 会话：`set app.company_key` → 逐条 `select public.upsert_media_doc($json$…$json$::jsonb)`
@@ -172,7 +172,7 @@ export function defaultOptions() {
     /* 取代：默认关。`--dims 4096` 默认 coexist（同 analyzer_ver、同一行两列并存，768 不动）；
        `--supersede` 才回到 014 那一批的行为（新 analyzer_ver = 新行 → 768 行被取代）。 */
     supersede: false,
-    indexFile: path.join(homedir(), '.openfilm-dev', 'material-index', 'index.json'),
+    indexFile: path.join(homedir(), '.orangefilm-dev', 'material-index', 'index.json'),
     progressFile: DEFAULT_PROGRESS_LOCAL,
     /* 质量闸：这些 media_key 连嵌入都不做（`scripts/material-quality-plan.mjs` 产出的 quarantined 清单）。 */
     excludeFile: null,

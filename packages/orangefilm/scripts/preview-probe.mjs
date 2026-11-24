@@ -5,7 +5,7 @@
 // @ts-check
 /**
  * Does Studio's picture ever go black, or show a wrong frame, while a person edits? A Studio of its own (a scratch
- * OPENFILM_HOME, a free port) opens a scratch film of two videos under a page, in headless Chromium. For each step
+ * ORANGE_HOME, a free port) opens a scratch film of two videos under a page, in headless Chromium. For each step
  * below, from the same film each time: the editor is opened, the playhead put on the second video, the step done, and
  * the picture taken every 50 ms for 3 s. A picture is
  *
@@ -84,8 +84,8 @@ reset();
 const port = await new Promise((done) => {
   const s = createServer().listen(0, '127.0.0.1', () => { const p = /** @type {import('node:net').AddressInfo} */ (s.address()).port; s.close(() => done(p)); });
 });
-const env = { ...process.env, OPENFILM_HOME: home, OPENFILM_STUDIO_PORT: String(port), OPENFILM_NO_BROWSER: '1', OPENFILM_NO_UPDATE_CHECK: '1' };
-const opened = spawnSync(process.execPath, [join(ROOT, 'bin/openfilm.mjs'), 'open', dir], { env, encoding: 'utf8' });
+const env = { ...process.env, ORANGE_HOME: home, ORANGE_STUDIO_PORT: String(port), ORANGE_NO_BROWSER: '1', ORANGE_NO_UPDATE_CHECK: '1' };
+const opened = spawnSync(process.execPath, [join(ROOT, 'bin/orangefilm.mjs'), 'open', dir], { env, encoding: 'utf8' });
 const url = /Studio\s+(http\S+)/.exec(opened.stdout)?.[1];
 if (!url) throw new Error(`Studio did not open the film:\n${opened.stdout}${opened.stderr}`);
 const stopStudio = () => {

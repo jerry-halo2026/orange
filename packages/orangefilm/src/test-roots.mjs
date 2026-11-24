@@ -1,7 +1,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-// Owned, isolated test fixture roots for the desktop/OpenFilm suites.
+// Owned, isolated test fixture roots for the desktop/OrangeFilm suites.
 //
 // Why this exists: `development-isolation.mjs` (rootPath) refuses any approved
 // base root that is on `C:`, is a filesystem root, contains an 8.3 alias (`~`),

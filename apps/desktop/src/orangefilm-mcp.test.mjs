@@ -14,7 +14,7 @@ import { join } from 'node:path';
 import { PassThrough } from 'node:stream';
 import {
   AUDIT_FILE, BUDGET_SURFACE, COMPAT_SURFACE, DEFAULT_SURFACE, MATERIAL_TOOL_NAMES, SURFACE_CHANGES, TOOL_BUDGET,
-  TOOL_DEFINITIONS, TOOL_SURFACES, WRITE_GATE_FILE, createOpenFilmMcpServer, openfilmMcpServerConfig, readWriteGate,
+  TOOL_DEFINITIONS, TOOL_SURFACES, WRITE_GATE_FILE, createOrangeFilmMcpServer, orangefilmMcpServerConfig, readWriteGate,
   serveStdio, surfaceArithmetic, writeFileAtomic,
 } from './orangefilm-mcp.mjs';
 import { MATERIAL_TOOL_CAPS, MATERIAL_TOOL_CAPS_CONTRACT, planMaterialToolSurface } from '../../../packages/orangefilm/src/material-tools.mjs';
@@ -24,15 +24,15 @@ import { filmHtml } from '../../../packages/orangefilm/src/film-doc.mjs';
 
 /** A project whose film.html the editor itself wrote, so the fixture cannot drift from the format. */
 const project = () => {
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-mcp-'));
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-mcp-'));
   writeFileSync(join(root, 'film.html'), filmHtml({ stage: { w: 1920, h: 1080 }, tracks: [{ clips: [{ id: 'a', src: 'assets/a.mp4' }] }] }));
   mkdirSync(join(root, 'assets'), { recursive: true });
   return root;
 };
 const homeWith = (gate) => {
-  const home = mkdtempSync(join(tmpdir(), 'openfilm-mcp-home-'));
-  mkdirSync(join(home, '.openfilm-dev'), { recursive: true });
-  if (gate) writeFileSync(join(home, '.openfilm-dev', 'mcp-write.json'), JSON.stringify(gate));
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-mcp-home-'));
+  mkdirSync(join(home, '.orangefilm-dev'), { recursive: true });
+  if (gate) writeFileSync(join(home, '.orangefilm-dev', 'mcp-write.json'), JSON.stringify(gate));
   return home;
 };
 const auditLines = (home) => {
@@ -48,7 +48,7 @@ const auditLines = (home) => {
  * than the caps without a network call and without a 200 000-row fixture.
  */
 const writtenIndex = ({ batches = 1, collections = 1, groups = 1, entries = 1 } = {}) => {
-  const dir = join(mkdtempSync(join(tmpdir(), 'openfilm-mcp-index-')), 'material-index');
+  const dir = join(mkdtempSync(join(tmpdir(), 'orangefilm-mcp-index-')), 'material-index');
   mkdirSync(dir, { recursive: true });
   const land = [];
   for (let b = 0; b < batches; b += 1) {
@@ -76,7 +76,7 @@ const writtenIndex = ({ batches = 1, collections = 1, groups = 1, entries = 1 } 
 const call = async (server, name, args) => (await server.handle({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } })).result;
 
 test('the handshake and the tool list are what an agent expects, before anything is configured', async () => {
-  const server = createOpenFilmMcpServer({ cwd: tmpdir() });
+  const server = createOrangeFilmMcpServer({ cwd: tmpdir() });
   const hello = await server.handle({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', clientInfo: { name: 'test' } } });
   assert.equal(hello.result.protocolVersion, '2025-06-18');
   assert.equal(hello.result.serverInfo.name, 'orangefilm');
@@ -100,8 +100,8 @@ test('the handshake and the tool list are what an agent expects, before anything
 test('nothing behind a tool is an answer, not a crash: no RPC, no material source, no look', async () => {
   /* the compat surface on purpose: these are the four read tools of the seven-name face, and what each says when the
      thing behind it was never configured on this machine */
-  const server = createOpenFilmMcpServer({ cwd: project(), surface: 'compat', log: () => {} });
-  for (const [name, args] of [['materials.search', { query: 'kitten' }], ['wiki.video', { videoId: 'v1' }], ['wiki.timeline', { videoId: 'v1' }], ['wiki.shot', { videoId: 'v1', index: 0 }], ['openfilm.look', {}]]) {
+  const server = createOrangeFilmMcpServer({ cwd: project(), surface: 'compat', log: () => {} });
+  for (const [name, args] of [['materials.search', { query: 'kitten' }], ['wiki.video', { videoId: 'v1' }], ['wiki.timeline', { videoId: 'v1' }], ['wiki.shot', { videoId: 'v1', index: 0 }], ['orangefilm.look', {}]]) {
     const result = await call(server, name, args);
     assert.equal(result.isError ?? false, false, name + ' must not be reported as a failure');
     assert.equal(result.structuredContent.code, 'not-configured', name + ' says what is missing');
@@ -115,7 +115,7 @@ test('a write without permission is refused before a byte is read, and leaves no
   const root = project();
   const before = readFileSync(join(root, 'film.html'), 'utf8');
   const home = homeWith(null);
-  const server = createOpenFilmMcpServer({ cwd: root, home });
+  const server = createOrangeFilmMcpServer({ cwd: root, home });
   const refused = await call(server, 'timeline.insert_clip', { src: 'assets/a.mp4', at: 1 });
   assert.equal(refused.isError, true);
   assert.equal(refused.structuredContent.code, 'write-not-authorized');
@@ -123,7 +123,7 @@ test('a write without permission is refused before a byte is read, and leaves no
   assert.deepEqual(auditLines(home), [], 'nothing was audited because nothing was written');
 
   const elsewhere = homeWith({ version: 1, allowWrite: true, projects: [join(tmpdir(), 'some-other-project')] });
-  const notListed = await call(createOpenFilmMcpServer({ cwd: root, home: elsewhere }), 'timeline.insert_clip', { src: 'assets/a.mp4', at: 1 });
+  const notListed = await call(createOrangeFilmMcpServer({ cwd: root, home: elsewhere }), 'timeline.insert_clip', { src: 'assets/a.mp4', at: 1 });
   assert.equal(notListed.structuredContent.code, 'project-not-allowlisted', 'a project outside the allowlist is not written either');
   assert.equal(readFileSync(join(root, 'film.html'), 'utf8'), before);
 });
@@ -131,7 +131,7 @@ test('a write without permission is refused before a byte is read, and leaves no
 test('with the project allowlisted the clip is written into film.html, and one audit line says so', async () => {
   const root = project();
   const home = homeWith({ version: 1, allowWrite: true, projects: [root] });
-  const server = createOpenFilmMcpServer({ cwd: root, home });
+  const server = createOrangeFilmMcpServer({ cwd: root, home });
   const written = await call(server, 'timeline.insert_clip', { src: 'assets/a.mp4', at: 2.5, track: 0 });
   assert.equal(written.isError ?? false, false);
   assert.equal(written.structuredContent.ok, true);
@@ -157,9 +157,9 @@ test('a write that fails mid-way leaves the film as it was and no temporary file
 test('taking a material puts its file in assets/ and answers the clip tag that uses it', async () => {
   const root = project();
   const home = homeWith({ version: 1, allowWrite: true, projects: [root] });
-  const source = join(mkdtempSync(join(tmpdir(), 'openfilm-mcp-src-')), 'clip.mp4');
+  const source = join(mkdtempSync(join(tmpdir(), 'orangefilm-mcp-src-')), 'clip.mp4');
   writeFileSync(source, 'not really a video');
-  const server = createOpenFilmMcpServer({ cwd: root, home, takeMaterial: async () => ({ source, name: 'clip.mp4' }) });
+  const server = createOrangeFilmMcpServer({ cwd: root, home, takeMaterial: async () => ({ source, name: 'clip.mp4' }) });
   const taken = await call(server, 'materials.take', { videoId: 'v1' });
   assert.equal(taken.isError ?? false, false);
   assert.equal(taken.structuredContent.path, 'assets/clip.mp4');
@@ -173,10 +173,10 @@ test('the write gate is exactly the file it says: absent, malformed, unallowed a
   const absent = readWriteGate({ home: homeWith(null), project: root });
   assert.equal(absent.allowed, false);
   assert.equal(absent.code, 'write-not-authorized');
-  assert.ok(absent.file.endsWith(join('.openfilm-dev', 'mcp-write.json')), 'the file is the documented one');
+  assert.ok(absent.file.endsWith(join('.orangefilm-dev', 'mcp-write.json')), 'the file is the documented one');
 
   const home = homeWith(null);
-  writeFileSync(join(home, '.openfilm-dev', 'mcp-write.json'), '{ not json');
+  writeFileSync(join(home, '.orangefilm-dev', 'mcp-write.json'), '{ not json');
   assert.equal(readWriteGate({ home, project: root }).allowed, false);
 
   const allowed = readWriteGate({ home: homeWith({ version: 1, allowWrite: true, projects: [root] }), project: root });
@@ -188,22 +188,22 @@ test('the write gate is exactly the file it says: absent, malformed, unallowed a
   assert.equal(readWriteGate({ home: homeWith({ version: 1, allowWrite: false, projects: [root] }), project: root }).allowed, false);
   assert.equal(readWriteGate({ home: homeWith({ version: 1, allowWrite: true, projects: ['relative/path'] }), project: root }).allowed, false,
     'a relative allowlist entry allows nothing');
-  assert.ok(WRITE_GATE_FILE.join('/').endsWith('.openfilm-dev/mcp-write.json'));
+  assert.ok(WRITE_GATE_FILE.join('/').endsWith('.orangefilm-dev/mcp-write.json'));
 });
 
 test('the agent is told to start the server with an absolute command and Electron as Node', () => {
-  const config = openfilmMcpServerConfig({ command: process.execPath, script: '/abs/orangefilm-mcp.mjs' });
+  const config = orangefilmMcpServerConfig({ command: process.execPath, script: '/abs/orangefilm-mcp.mjs' });
   assert.equal(config.name, 'orangefilm');
   assert.equal(config.command, process.execPath);
   assert.ok(config.command.startsWith('/') || /^[A-Za-z]:\\/.test(config.command), 'the command is an absolute path');
   assert.equal(config.args.at(-1), '/abs/orangefilm-mcp.mjs');
   assert.deepEqual(config.env, [{ name: 'ELECTRON_RUN_AS_NODE', value: '1' }]);
-  assert.throws(() => openfilmMcpServerConfig({ command: 'node', script: '/abs/x.mjs' }), /absolute/);
+  assert.throws(() => orangefilmMcpServerConfig({ command: 'node', script: '/abs/x.mjs' }), /absolute/);
 
   const agents = readFileSync(new URL('./agents.mjs', import.meta.url), 'utf8');
   assert.match(agents, /mcpServers: \[openfilmMcpServer\(\)\]/, 'the session is offered the server');
   assert(!/mcpServers: \[\]/.test(agents), 'and no longer an empty list');
-  assert.match(agents, /openfilmMcpServer = \(\) => openfilmMcpServerConfig\(\{ command: nodeBinary\(\), script: OPENFILM_MCP_SCRIPT/);
+  assert.match(agents, /openfilmMcpServer = \(\) => orangefilmMcpServerConfig\(\{ command: nodeBinary\(\), script: ORANGE_MCP_SCRIPT/);
 });
 
 test('the stdio transport answers line-delimited JSON-RPC and survives silence', async () => {
@@ -211,7 +211,7 @@ test('the stdio transport answers line-delimited JSON-RPC and survives silence',
   const output = new PassThrough();
   const chunks = [];
   output.on('data', (chunk) => chunks.push(String(chunk)));
-  const server = createOpenFilmMcpServer({ cwd: tmpdir() });
+  const server = createOrangeFilmMcpServer({ cwd: tmpdir() });
   const served = serveStdio({ handle: server.handle, input, output });
   input.write(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: {} }) + '\n');
   input.write('not json\n');
@@ -227,7 +227,7 @@ test('the stdio transport answers line-delimited JSON-RPC and survives silence',
 test('a packaged build’s menu has nothing to do with this, and the tool list stays a list of plain objects', () => {
   const noop = () => {};
   const packaged = applicationMenuTemplate({
-    productName: 'OpenFilm', packaged: true, language: 'en', toggleChat: noop, openProject: noop, reload: noop, devTools: noop,
+    productName: 'OrangeFilm', packaged: true, language: 'en', toggleChat: noop, openProject: noop, reload: noop, devTools: noop,
     openSettings: noop, tabs: { open: noop, close: noop, reopen: noop, step: noop, pick: noop },
   });
   assert.equal(packaged.length > 0, true);
@@ -242,7 +242,7 @@ test('the default surface is the five slots, and compat is the whole way back to
   assert.equal(DEFAULT_SURFACE, 'materials');
   assert.deepEqual(Object.keys(TOOL_SURFACES), ['materials', 'compat']);
 
-  const server = createOpenFilmMcpServer({ cwd: tmpdir(), log: () => {} });
+  const server = createOrangeFilmMcpServer({ cwd: tmpdir(), log: () => {} });
   assert.equal(server.surface, 'materials', 'nothing has to be asked for');
   assert.equal(server.surfaceNames, TOOL_SURFACES.materials);
   const listed = await server.handle({ jsonrpc: '2.0', id: 1, method: 'tools/list' });
@@ -255,11 +255,11 @@ test('the default surface is the five slots, and compat is the whole way back to
   const old = await server.handle({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'wiki.video', arguments: { videoId: 'v1' } } });
   assert.equal(old.error.code, -32602);
 
-  const compat = createOpenFilmMcpServer({ cwd: tmpdir(), surface: 'compat', log: () => {} });
+  const compat = createOrangeFilmMcpServer({ cwd: tmpdir(), surface: 'compat', log: () => {} });
   const wayBack = await compat.handle({ jsonrpc: '2.0', id: 3, method: 'tools/list' });
   const oldNames = wayBack.result.tools.map((tool) => tool.name);
   assert.deepEqual(oldNames, [...COMPAT_SURFACE]);
-  assert.deepEqual(oldNames, ['library.search', 'plan.create', 'plan.apply', 'caption.write', 'timeline.check', 'plan.expand', 'dedupe.check', 'plan.render', 'materials.search', 'materials.take', 'wiki.video', 'wiki.timeline', 'wiki.shot', 'timeline.insert_clip', 'openfilm.look']);
+  assert.deepEqual(oldNames, ['library.search', 'plan.create', 'plan.apply', 'caption.write', 'timeline.check', 'plan.expand', 'dedupe.check', 'plan.render', 'materials.search', 'materials.take', 'wiki.video', 'wiki.timeline', 'wiki.shot', 'timeline.insert_clip', 'orangefilm.look']);
   assert.equal(oldNames.length, 15, 'compat 是池子：旧七个 + 元素检索 + 剪辑链七个');
   const fresh = await compat.handle({ jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'material.search', arguments: { query: '茶' } } });
   assert.equal(fresh.error.code, -32602, 'compat does not list the new names either: a surface is a whole face');
@@ -268,14 +268,14 @@ test('the default surface is the five slots, and compat is the whole way back to
   assert.equal(replaced.error.code, -32602);
 
   /* a name that is not a surface falls back to the default — never to an empty list */
-  const typo = createOpenFilmMcpServer({ cwd: tmpdir(), surface: 'material', log: () => {} });
+  const typo = createOrangeFilmMcpServer({ cwd: tmpdir(), surface: 'material', log: () => {} });
   assert.equal(typo.surface, DEFAULT_SURFACE);
   assert.equal((await typo.listedTools()).length, 13);
 });
 
 test('an index that was never built is index-missing, not not-configured', async () => {
-  const absent = join(mkdtempSync(join(tmpdir(), 'openfilm-mcp-noindex-')), 'material-index');
-  const server = createOpenFilmMcpServer({ cwd: tmpdir(), materialIndexDir: absent, log: () => {} });
+  const absent = join(mkdtempSync(join(tmpdir(), 'orangefilm-mcp-noindex-')), 'material-index');
+  const server = createOrangeFilmMcpServer({ cwd: tmpdir(), materialIndexDir: absent, log: () => {} });
   for (const [name, args] of [['material.collections', {}], ['material.items', { collection: 'x' }]]) {
     const result = await call(server, name, args);
     assert.equal(result.isError ?? false, false, name + ' is a state, not a failure');
@@ -287,24 +287,24 @@ test('an index that was never built is index-missing, not not-configured', async
   }
 
   /* the other code is reserved for the other thing: the module itself not being where the server looks */
-  const before = process.env.OPENFILM_EDITOR_MODULES;
-  process.env.OPENFILM_EDITOR_MODULES = mkdtempSync(join(tmpdir(), 'openfilm-mcp-nomodule-'));
+  const before = process.env.ORANGE_EDITOR_MODULES;
+  process.env.ORANGE_EDITOR_MODULES = mkdtempSync(join(tmpdir(), 'orangefilm-mcp-nomodule-'));
   try {
-    const bare = createOpenFilmMcpServer({ cwd: tmpdir(), log: () => {} });
+    const bare = createOrangeFilmMcpServer({ cwd: tmpdir(), log: () => {} });
     const result = await call(bare, 'material.collections', {});
     assert.equal(result.structuredContent.code, 'not-configured', 'no module is a different answer');
   } finally {
-    if (before === undefined) delete process.env.OPENFILM_EDITOR_MODULES;
-    else process.env.OPENFILM_EDITOR_MODULES = before;
+    if (before === undefined) delete process.env.ORANGE_EDITOR_MODULES;
+    else process.env.ORANGE_EDITOR_MODULES = before;
   }
 });
 
 test('material.search answers what the search answered, and says not-configured when no tenant is set', async () => {
-  /* no `OPENFILM_MEDIA_TENANT` on this machine: a state naming the setting, not an empty library */
-  const before = process.env.OPENFILM_MEDIA_TENANT;
-  delete process.env.OPENFILM_MEDIA_TENANT;
+  /* no `ORANGE_MEDIA_TENANT` on this machine: a state naming the setting, not an empty library */
+  const before = process.env.ORANGE_MEDIA_TENANT;
+  delete process.env.ORANGE_MEDIA_TENANT;
   try {
-    const bare = createOpenFilmMcpServer({ cwd: tmpdir(), log: () => {} });
+    const bare = createOrangeFilmMcpServer({ cwd: tmpdir(), log: () => {} });
     const result = await call(bare, 'material.search', { query: '柠檬宝藏茶 外包装' });
     assert.equal(result.isError ?? false, false);
     assert.equal(result.structuredContent.ok, true);
@@ -312,14 +312,14 @@ test('material.search answers what the search answered, and says not-configured 
     const noQuery = await call(bare, 'material.search', {});
     assert.equal(noQuery.structuredContent.code, 'invalid-arguments');
   } finally {
-    if (before === undefined) delete process.env.OPENFILM_MEDIA_TENANT;
-    else process.env.OPENFILM_MEDIA_TENANT = before;
+    if (before === undefined) delete process.env.ORANGE_MEDIA_TENANT;
+    else process.env.ORANGE_MEDIA_TENANT = before;
   }
 
   /* the injected seam is what a configured machine answers through — the same shape the route answers */
   /** @type {any[]} */
   const asked = [];
-  const server = createOpenFilmMcpServer({
+  const server = createOrangeFilmMcpServer({
     cwd: tmpdir(),
     log: () => {},
     materialSearch: async (request) => {
@@ -346,13 +346,13 @@ test('material.search answers what the search answered, and says not-configured 
 test('a bigger index than the caps is cut at the caps and says truncated, it does not fail', async () => {
   const count = (payload, key) => payload.structuredContent[key].length;
 
-  const many = createOpenFilmMcpServer({ cwd: tmpdir(), materialIndexDir: writtenIndex({ collections: 51 }), log: () => {} });
+  const many = createOrangeFilmMcpServer({ cwd: tmpdir(), materialIndexDir: writtenIndex({ collections: 51 }), log: () => {} });
   const collections = await call(many, 'material.collections', {});
   assert.equal(count(collections, 'collections'), MATERIAL_TOOL_CAPS.collections, '50 of 51 collections');
   assert.equal(collections.structuredContent.truncated, true);
 
   const deep = writtenIndex({ groups: 201, entries: 2 });
-  const server = createOpenFilmMcpServer({ cwd: tmpdir(), materialIndexDir: deep, log: () => {} });
+  const server = createOrangeFilmMcpServer({ cwd: tmpdir(), materialIndexDir: deep, log: () => {} });
   const grouped = await call(server, 'material.collections', {});
   assert.equal(grouped.structuredContent.collections[0].groups.length, MATERIAL_TOOL_CAPS.groupsPerCollection, '200 of 201 groups');
   const defaultRows = await call(server, 'material.items', { collection: '20261106-合集0' });
@@ -406,7 +406,7 @@ test('the contract, the served surface and both planners do the same arithmetic'
   assert.equal(math.added.length, 3, '素材检索那一批（元素检索与剪辑链是另外的槽）');
   assert.deepEqual(math.added, ['material.search', 'material.collections', 'material.items'], 'the search takes the batches slot');
   assert.deepEqual(math.introduced, ['wiki.read'], 'the merged name is retired in the same decision, so it never lands');
-  assert.deepEqual(math.retired, ['wiki.read', 'openfilm.look']);
+  assert.deepEqual(math.retired, ['wiki.read', 'orangefilm.look']);
   assert.deepEqual(math.after, [...BUDGET_SURFACE]);
   assert.equal(math.count, 13);
   /* 8 - 5 + 3 = 6：kept 里的 library.search 与两个写动词各占一槽 */
@@ -437,12 +437,12 @@ test('the contract, the served surface and both planners do the same arithmetic'
   assert.ok(plan.after.every((name) => BUDGET_SURFACE.includes(name)), '素材面是窗口的子集');
   assert.ok(plan.after.every((name) => contractNames.includes(name)), '素材面在契约里也有位置');
   assert.ok(contractNames.includes('library.search'), '契约里另有元素检索这一槽');
-  const keepWiki = planMaterialToolSurface(undefined, { retire: ['openfilm.look'] });
+  const keepWiki = planMaterialToolSurface(undefined, { retire: ['orangefilm.look'] });
   assert.equal(keepWiki.slots.after, 6);
   assert.equal(keepWiki.slots.balanced, true);
   assert.equal(keepWiki.fits, false);
 
   /* and what tools/list answers with is that same contract, name for name */
-  const server = createOpenFilmMcpServer({ cwd: tmpdir(), log: () => {} });
+  const server = createOrangeFilmMcpServer({ cwd: tmpdir(), log: () => {} });
   assert.deepEqual((await server.listedTools()).map((tool) => tool.name), contractNames);
 });

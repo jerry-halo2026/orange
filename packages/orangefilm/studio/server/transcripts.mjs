@@ -7,7 +7,7 @@
  * translations beside that (`1.zh.vtt`). Its times are the file's own seconds. A cue is a subtitle line; the times of
  * its words are WebVTT timestamp tags inside it (`<00:00:01.250>`); a voice tag (`<v Name>`) says who speaks.
  *
- * `openfilm get tts` writes one when its service times the words, `get asr` for any speech, an agent for speech it
+ * `orangefilm get tts` writes one when its service times the words, `get asr` for any speech, an agent for speech it
  * makes itself, and the person's edits in Studio go back into it. The film's subtitles are made from these (captions.mjs).
  *
  * `src` comes from film.html or a request: a transcript is read or written only inside the project (files.mjs inside),
@@ -429,7 +429,7 @@ function firstAfter(marks, at) {
 
 /**
  * Chinese and Japanese as they are written: no space beside a full-width mark, none between two characters of a
- * script written without them (`OpenFilm， 说一 句话` → `OpenFilm，说一句话`); a space between Han and Latin, or in
+ * script written without them (`OrangeFilm， 说一 句话` → `OrangeFilm，说一句话`); a space between Han and Latin, or in
  * Korean, stays. Services that transcribe put spaces where the speaker paused. Full-width marks: CJK symbols and
  * full-width forms; written without spaces: Han and kana.
  * @param {string} t

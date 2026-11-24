@@ -16,8 +16,8 @@ const ffmpeg = { skip: !haveFfmpeg, timeout: 180_000 };
 let scratch;
 before(() => {
   scratch = mkdtempSync(join(tmpdir(), 'of-export-regression-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_EXPORTS = join(scratch, 'exports');
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_EXPORTS = join(scratch, 'exports');
 });
 after(() => rmSync(scratch, { recursive: true, force: true }));
 async function exported(root, ask) {

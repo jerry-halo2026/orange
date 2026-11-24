@@ -74,48 +74,48 @@ test('only files inside the library are given out', () => {
   assert.equal(libraryFile(null), null);
 });
 
-test('a page of the library is taken into a project as a copy under saved/openfilm/, a sound into assets/', async () => {
+test('a page of the library is taken into a project as a copy under saved/orangefilm/, a sound into assets/', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-library-project-'));
-  const taken = await takeSaved(root, 'openfilm/effects/snow');
+  const taken = await takeSaved(root, 'orangefilm/effects/snow');
   assert.ok('clip' in taken);
-  assert.equal(taken.clip.src, 'saved/openfilm/effects-snow/snow.html');
+  assert.equal(taken.clip.src, 'saved/orangefilm/effects-snow/snow.html');
   assert.deepEqual(/** @type {any} */ (taken.clip).time, [0, 4]);
-  assert.ok(existsSync(join(root, 'saved/openfilm/effects-snow/snow.html')));
+  assert.ok(existsSync(join(root, 'saved/orangefilm/effects-snow/snow.html')));
   assert.ok(JSON.parse(String(/** @type {any} */ (taken.clip).attrs['data-props'])).some((p) => p.var === '--color'));
-  const sound = await takeSaved(root, 'openfilm/sounds/whoosh.m4a');
+  const sound = await takeSaved(root, 'orangefilm/sounds/whoosh.m4a');
   assert.deepEqual(sound, { path: 'assets/whoosh.m4a' });
-  await assert.rejects(() => takeSaved(root, 'openfilm/../package.json'));
+  await assert.rejects(() => takeSaved(root, 'orangefilm/../package.json'));
 });
 
 test('a project\'s copy of the line of words follows the library\'s; another thing\'s copy is kept as it is', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-library-text-'));
-  await takeSaved(root, 'openfilm/text/text');
-  const page = join(root, 'saved/openfilm/text-text/text.html');
+  await takeSaved(root, 'orangefilm/text/text');
+  const page = join(root, 'saved/orangefilm/text-text/text.html');
   const now = readFileSync(page, 'utf8');
   writeFileSync(page, 'an older text page');
-  await takeSaved(root, 'openfilm/text/text');
+  await takeSaved(root, 'orangefilm/text/text');
   assert.equal(readFileSync(page, 'utf8'), now, 'written again as the library has it');
-  await takeSaved(root, 'openfilm/effects/snow');
-  const snow = join(root, 'saved/openfilm/effects-snow/snow.html');
+  await takeSaved(root, 'orangefilm/effects/snow');
+  const snow = join(root, 'saved/orangefilm/effects-snow/snow.html');
   writeFileSync(snow, 'changed here');
-  await takeSaved(root, 'openfilm/effects/snow');
+  await takeSaved(root, 'orangefilm/effects/snow');
   assert.equal(readFileSync(snow, 'utf8'), 'changed here', 'kept');
 });
 
 test('the starred things are kept in the shared prefs, those of the library only, each once', () => {
-  const before = process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SHARED_HOME = mkdtempSync(join(tmpdir(), 'of-library-home-'));
+  const before = process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SHARED_HOME = mkdtempSync(join(tmpdir(), 'of-library-home-'));
   try {
     assert.deepEqual(libraryFavorites(), []);
     assert.deepEqual(setLibraryFavorites(['effects/snow', 'nope/none', 'effects/snow', 7, 'filters/bw']), ['effects/snow', 'filters/bw']);
     assert.deepEqual(libraryFavorites(), ['effects/snow', 'filters/bw']);
     assert.deepEqual(setLibraryFavorites('all'), []);
   } finally {
-    if (before === undefined) delete process.env.OPENFILM_SHARED_HOME; else process.env.OPENFILM_SHARED_HOME = before;
+    if (before === undefined) delete process.env.ORANGE_SHARED_HOME; else process.env.ORANGE_SHARED_HOME = before;
   }
 });
 
-test('the voices are the voice-over services\' own, each once, said as `openfilm get tts` takes them; a star can be on one', async () => {
+test('the voices are the voice-over services\' own, each once, said as `orangefilm get tts` takes them; a star can be on one', async () => {
   const { providers, voices } = /** @type {{ providers: any[], voices: any[] }} */ (libraryVoices());
   assert.deepEqual(providers.map((p) => p.id), ['elevenlabs', 'inworld', 'cartesia', 'minimax', 'qwen']);
   assert.ok(providers.every((p) => p.models.length && p.models.every((/** @type {any} */ m) => m.id && m.name)));
@@ -138,12 +138,12 @@ test('the voices are the voice-over services\' own, each once, said as `openfilm
   assert.ok(eleven.length > 300 && eleven.filter((v) => v.featured).length >= 50);
   assert.ok(eleven.findIndex((v) => !v.featured) > eleven.findLastIndex((v) => v.featured));
   const home = mkdtempSync(join(tmpdir(), 'of-voices-'));
-  const was = process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SHARED_HOME = home;
+  const was = process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SHARED_HOME = home;
   try {
     assert.deepEqual(setLibraryFavorites([voiceKey(voices[0]), 'voice:nobody/none']), [voiceKey(voices[0])]);
     assert.deepEqual(libraryFavorites(), [voiceKey(voices[0])]);
   } finally {
-    if (was === undefined) delete process.env.OPENFILM_SHARED_HOME; else process.env.OPENFILM_SHARED_HOME = was;
+    if (was === undefined) delete process.env.ORANGE_SHARED_HOME; else process.env.ORANGE_SHARED_HOME = was;
   }
 });

@@ -22,10 +22,10 @@ const tell = (root, agent = 'pid:1') => {
 let studio, scratch;
 before(async () => {
   scratch = mkdtempSync(join(tmpdir(), 'of-person-edits-'));
-  process.env.OPENFILM_HOME = join(scratch, 'home');
-  process.env.OPENFILM_LIBRARY = join(scratch, 'library');
-  process.env.OPENFILM_TRASH_DIR = join(scratch, 'trash');
-  mkdirSync(process.env.OPENFILM_TRASH_DIR);
+  process.env.ORANGE_HOME = join(scratch, 'home');
+  process.env.ORANGE_LIBRARY = join(scratch, 'library');
+  process.env.ORANGE_TRASH_DIR = join(scratch, 'trash');
+  mkdirSync(process.env.ORANGE_TRASH_DIR);
   studio = await startStudio({ port: 0, openBrowser: () => {} });
 });
 after(async () => { await studio.close(); rmSync(scratch, { recursive: true, force: true }); });
@@ -67,7 +67,7 @@ test('in Studio: the person edits while the agent writes film.html whole from an
   await new Promise((r) => { shown.onopen = r; });
   await pause(300);
 
-  /* the agent's `openfilm look`, before it writes, as `pid:42` */
+  /* the agent's `orangefilm look`, before it writes, as `pid:42` */
   const kept = async () => (await api(`/api/kept?folder=${encodeURIComponent(made.path)}&agent=pid:42`)).json();
   assert.equal((await kept()).line, null);
   const now = await (await api(`/api/projects/${made.id}`)).json();
@@ -100,7 +100,7 @@ test('in Studio: the person edits while the agent writes film.html whole from an
 
   /* what the agent wrote and the merge are kept aside in the history, in no list of versions */
   const git = (...args) => execFileSync('git', ['--git-dir', join(made.path, '.film', 'history'), ...args], { encoding: 'utf8' });
-  const ref = git('for-each-ref', '--format=%(refname)', 'refs/openfilm/merges/').trim();
+  const ref = git('for-each-ref', '--format=%(refname)', 'refs/orangefilm/merges/').trim();
   assert.equal(git('show', `${ref}:agent.html`), filmHtml(theirs));
   assert.equal(git('show', `${ref}:merged.html`), readFileSync(join(made.path, 'film.html'), 'utf8'));
   const history = await api(`/api/projects/${made.id}/history`);
@@ -225,7 +225,7 @@ test('F, attack 3: the person\'s own revert outside Studio is put right too, als
   await settleProjectFilm(root);
   assert.equal(clip(read(root), 'title').at, 1);
 });
-test('attacks 1, 2: an agent in a terminal that never ran `openfilm` before its stale write, or not for 11 minutes, loses nothing of the person\'s', async () => {
+test('attacks 1, 2: an agent in a terminal that never ran `orangefilm` before its stale write, or not for 11 minutes, loses nothing of the person\'s', async () => {
   const start = F([page('t', { at: 1 }), page('u', { at: 5 })]);
   const root = await project(start);
   await editProjectFilm(root, null, [{ op: 'set', clip: 't', field: 'at', value: 4 }]);

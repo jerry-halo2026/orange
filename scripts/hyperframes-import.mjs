@@ -3,7 +3,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * Bring a HyperFrames registry snippet into OpenFilm's library, as the first half of the work: the file is
+ * Bring a HyperFrames registry snippet into OrangeFilm's library, as the first half of the work: the file is
  * fetched and made offline (no CDN, no web font), the loop of `data-*`/GSAP is reported line by line for the
  * `frame(t)` that must replace it, and the bundle's `saved.json` and the library entry are written. The registry's
  * keywords are said as the library's own tags (`TAG_BY_KEYWORD`, ids of library/tags.json only); a keyword no tag
@@ -131,7 +131,7 @@ const shell = `<!doctype html>
     <meta name="viewport" content="width=${width}, height=${height}" />
     <title>${item.title ?? name}</title>
     <!--
-      OpenFilm page made from HyperFrames' ${kind} \`${name}\` (github.com/heygen-com/hyperframes, Apache-2.0,
+      OrangeFilm page made from HyperFrames' ${kind} \`${name}\` (github.com/heygen-com/hyperframes, Apache-2.0,
       pinned ${COMMIT}). The CDN and the web font are gone; the source's GSAP timeline is not written yet: its
       lines are listed in docs/execution/hyperframes-import-log.md and must become frame(t) below (SPEC §3).
     -->
@@ -178,7 +178,7 @@ writeFileSync(join(out, 'saved.json'), `${JSON.stringify(saved, null, 2)}\n`);
 const catalogFile = join(LIB, 'catalogs', 'hyperframes.json');
 const catalog = existsSync(catalogFile)
   ? JSON.parse(readFileSync(catalogFile, 'utf8'))
-  : { version: 1, about: 'Pages and pieces from HyperFrames\' registry, rewritten for OpenFilm.', groups: {}, items: [] };
+  : { version: 1, about: 'Pages and pieces from HyperFrames\' registry, rewritten for OrangeFilm.', groups: {}, items: [] };
 /* the registry's own keywords said as the library's tags (only ids library/tags.json has); the rest kept apart */
 const vocabulary = new Set(JSON.parse(readFileSync(join(LIB, 'tags.json'), 'utf8')).tags.map((t) => t.id));
 const said = (item.tags ?? []).map((t) => (vocabulary.has(t) ? t : TAG_BY_KEYWORD[t])).filter((t) => t && vocabulary.has(t));
@@ -203,5 +203,5 @@ console.log(`  removed ${removed.length} lines that reached outside the project:
 for (const line of removed) console.log(`    ${line.slice(0, 120)}`);
 console.log(`  the source's timeline, ${timelines.length} calls to port into frame(t):`);
 for (const line of timelines.slice(0, 24)) console.log(`    ${line.slice(0, 140)}`);
-console.log(`\nnext: openfilm look ${join(out, 'files', `hf-${name}.html`)} 1`);
+console.log(`\nnext: orangefilm look ${join(out, 'files', `hf-${name}.html`)} 1`);
 console.log('      node scripts/library-previews.mjs (from packages/orangefilm) then node scripts/library-search-index.mjs');

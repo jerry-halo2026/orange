@@ -226,19 +226,19 @@ test("the person's own developer_instructions in Codex's config, read as TOML wr
   assert.equal(codexDeveloperInstructions(''), null);
 });
 
-test("an agent is told to run the app's openfilm by its whole path: its shell may find another one first on the PATH", () => {
-  const command = openfilmCommand('/Users/me/Library/Application Support/OpenFilm/bin', 'darwin');
-  assert.equal(command, "'/Users/me/Library/Application Support/OpenFilm/bin/openfilm'", 'quoted, for the space in it');
+test("an agent is told to run the app's orangefilm by its whole path: its shell may find another one first on the PATH", () => {
+  const command = openfilmCommand('/Users/me/Library/Application Support/OrangeFilm/bin', 'darwin');
+  assert.equal(command, "'/Users/me/Library/Application Support/OrangeFilm/bin/orangefilm'", 'quoted, for the space in it');
   const told = agentInstructions(command);
   for (const run of [`\`${command}\` with no arguments`, `\`${command} open\``, `\`${command} look\``]) assert.ok(told.includes(run), run);
-  assert.match(told, /not as `openfilm` \(your shell may find another one first\)/);
+  assert.match(told, /not as `orangefilm` \(your shell may find another one first\)/);
   assert.ok(!told.includes('on your PATH'));
-  assert.equal(openfilmCommand('C:\\Users\\me\\AppData\\Roaming\\OpenFilm\\bin', 'win32'), null, 'on Windows the name on the PATH');
+  assert.equal(openfilmCommand('C:\\Users\\me\\AppData\\Roaming\\OrangeFilm\\bin', 'win32'), null, 'on Windows the name on the PATH');
   assert.equal(agentInstructions(null), INSTRUCTIONS);
-  assert.match(INSTRUCTIONS, /Use the `openfilm` command on your PATH/);
+  assert.match(INSTRUCTIONS, /Use the `orangefilm` command on your PATH/);
 });
 
-test("Codex keeps the session's PATH for each command, the app's openfilm first, after the person's own instructions", () => {
+test("Codex keeps the session's PATH for each command, the app's orangefilm first, after the person's own instructions", () => {
   const config = codexSessionConfig('Told.', { theirs: 'Be brief.', path: '/app/bin:/usr/bin', platform: 'darwin' });
   assert.deepEqual(config, { developer_instructions: 'Be brief.\n\nTold.', 'shell_environment_policy.set.PATH': '/app/bin:/usr/bin' });
   assert.deepEqual(codexSessionConfig('Told.', { path: 'C:\\app\\bin;C:\\Windows', platform: 'win32' }), { developer_instructions: 'Told.' });
@@ -278,12 +278,12 @@ test("a sign-in in Terminal runs in a folder of the app's own, not the home fold
 });
 
 test('a Windows sign-in is a PowerShell script: each path whole however it is spelled, read as UTF-8', () => {
-  const script = powerShellScript('Claude Code sign-in', 'C:\\Program Files\\OpenFilm\\OpenFilm.exe',
-    ['C:\\Program Files\\OpenFilm\\app.asar\\src\\as-node.mjs', 'D:\\用户\\it\'s\\index.js', '--cli', 'auth', 'login', '--claudeai']);
+  const script = powerShellScript('Claude Code sign-in', 'C:\\Program Files\\OrangeFilm\\OrangeFilm.exe',
+    ['C:\\Program Files\\OrangeFilm\\app.asar\\src\\as-node.mjs', 'D:\\用户\\it\'s\\index.js', '--cli', 'auth', 'login', '--claudeai']);
   assert.ok(script.startsWith('\ufeff'), 'a BOM: Windows PowerShell reads it as UTF-8');
   const lines = script.slice(1).split('\r\n');
   assert.equal(lines[0], "$Host.UI.RawUI.WindowTitle = 'Claude Code sign-in'");
-  assert.equal(lines[1], "& 'C:\\Program Files\\OpenFilm\\OpenFilm.exe' 'C:\\Program Files\\OpenFilm\\app.asar\\src\\as-node.mjs' "
+  assert.equal(lines[1], "& 'C:\\Program Files\\OrangeFilm\\OrangeFilm.exe' 'C:\\Program Files\\OrangeFilm\\app.asar\\src\\as-node.mjs' "
     + "'D:\\用户\\it''s\\index.js' '--cli' 'auth' 'login' '--claudeai'");
 });
 
@@ -295,9 +295,9 @@ test('on Windows, Codex is started through a script that turns the console to UT
   assert.deepEqual(codexLaunchEnv('/usr/local/bin/codex', { win: false }), { CODEX_PATH: '/usr/local/bin/codex' });
   const dir = join(mkdtempSync(join(tmpdir(), 'of-codex-')), 'launch');
   const env = codexLaunchEnv(exe, { win: true, dir });
-  assert.deepEqual(env, { CODEX_PATH: join(dir, 'codex-utf8.cmd'), OPENFILM_CODEX: exe });
+  assert.deepEqual(env, { CODEX_PATH: join(dir, 'codex-utf8.cmd'), ORANGE_CODEX: exe });
   assert.equal(readFileSync(env.CODEX_PATH, 'utf8'), CODEX_UTF8_CMD);
-  assert.match(CODEX_UTF8_CMD, /^@echo off\r\nchcp 65001 >nul\r\n"%OPENFILM_CODEX%" %\*\r\n$/, 'UTF-8 first, then Codex with what the adapter asks (app-server, login)');
+  assert.match(CODEX_UTF8_CMD, /^@echo off\r\nchcp 65001 >nul\r\n"%ORANGE_CODEX%" %\*\r\n$/, 'UTF-8 first, then Codex with what the adapter asks (app-server, login)');
   /* a script changed since: written again */
   writeFileSync(env.CODEX_PATH, 'echo old');
   codexLaunchEnv(exe, { win: true, dir });
@@ -450,7 +450,7 @@ test('DeepSeek Harness: each step reaches the chat as it happens, with the kind 
     if (m.method !== 'session/prompt') return;
     const update = (u) => send({ jsonrpc: '2.0', method: 'session/update', params: { sessionId: 's1', update: u } });
     update({ sessionUpdate: 'agent_message_chunk', messageId: 'm1', content: { type: 'text', text: 'Reading the manual first.' } });
-    const tools = [['bash', { command: 'openfilm' }], ['read', { file_path: 'film.html' }], ['write', { file_path: 'a.html', content: '' }],
+    const tools = [['bash', { command: 'orangefilm' }], ['read', { file_path: 'film.html' }], ['write', { file_path: 'a.html', content: '' }],
       ['grep', { pattern: 'fill' }], ['web_search', { query: 'Alibaba 1999' }], ['todo_write', { todos: [] }]];
     tools.forEach(([title, rawInput], i) => {
       update({ sessionUpdate: 'tool_call', toolCallId: `c${i}`, title, kind: 'other', status: 'in_progress', rawInput });
@@ -470,7 +470,7 @@ test('DeepSeek Harness: each step reaches the chat as it happens, with the kind 
     assert.equal(heard[0].content.text, 'Reading the manual first.');
     const kinds = heard.filter((u) => u.sessionUpdate === 'tool_call').map((u) => [u.title, u.kind]);
     assert.deepEqual(kinds, [['bash', 'execute'], ['read', 'read'], ['write', 'edit'], ['grep', 'search'], ['web_search', 'fetch'], ['todo_write', 'other']]);
-    assert.deepEqual(heard.find((u) => u.toolCallId === 'c0' && u.sessionUpdate === 'tool_call').rawInput, { command: 'openfilm' }, 'otherwise as it came');
+    assert.deepEqual(heard.find((u) => u.toolCallId === 'c0' && u.sessionUpdate === 'tool_call').rawInput, { command: 'orangefilm' }, 'otherwise as it came');
   } finally {
     session.close();
     setChosenPaths({});

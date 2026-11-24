@@ -14,8 +14,8 @@ import { chooseProvider } from './index.mjs';
 import { runGet } from '../get.mjs';
 import { readTranscript } from '../transcripts.mjs';
 
-/* OpenFilm's service is asked what it offers: nowhere here (a port that refuses at once) */
-process.env.OPENFILM_API_URL ??= 'http://127.0.0.1:9';
+/* OrangeFilm's service is asked what it offers: nowhere here (a port that refuses at once) */
+process.env.ORANGE_API_URL ??= 'http://127.0.0.1:9';
 
 /* The two end-to-end tests read media ffmpeg makes, and the client cuts the sound out with it: no ffmpeg is a machine
    without the prerequisite, not a failure (the rest of the suite guards on it the same way). */
@@ -30,7 +30,7 @@ const fixture = () => ({ audio_info: { duration: 2000 }, result: { text: '你好
 let server;
 let reply = (_req, res) => res.writeHead(200, { 'Content-Type': 'application/json', 'X-Api-Status-Code': '20000000' }).end(JSON.stringify(fixture()));
 const seen = [];
-const oldUrl = process.env.OPENFILM_DOUBAO_URL;
+const oldUrl = process.env.ORANGE_DOUBAO_URL;
 before(async () => {
   server = createServer(async (req, res) => {
     const chunks = [];
@@ -39,12 +39,12 @@ before(async () => {
     reply(req, res);
   });
   await new Promise(done => server.listen(0, '127.0.0.1', done));
-  process.env.OPENFILM_DOUBAO_URL = `http://127.0.0.1:${server.address().port}/recognize/flash`;
+  process.env.ORANGE_DOUBAO_URL = `http://127.0.0.1:${server.address().port}/recognize/flash`;
 });
 after(async () => {
   await new Promise(done => server.close(done));
-  if (oldUrl === undefined) delete process.env.OPENFILM_DOUBAO_URL;
-  else process.env.OPENFILM_DOUBAO_URL = oldUrl;
+  if (oldUrl === undefined) delete process.env.ORANGE_DOUBAO_URL;
+  else process.env.ORANGE_DOUBAO_URL = oldUrl;
 });
 
 test('word timings are real and numeric; whitespace-only tokens are ignored', () => {
@@ -100,10 +100,10 @@ test('native key settings honor explicit keys, environment keys and disconnect',
 
 test('MP4 to fake Doubao to word-timed VTT; cache reuse, HTTP failures and uncertain requests', needsFfmpeg, async () => {
   // Retain this isolated synthetic project for inspection; never use an installed Studio or real credentials.
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-doubao-test-'));
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-doubao-test-'));
   mkdirSync(join(root, 'assets'));
-  const oldHome = process.env.OPENFILM_HOME;
-  process.env.OPENFILM_HOME = join(root, 'settings');
+  const oldHome = process.env.ORANGE_HOME;
+  process.env.ORANGE_HOME = join(root, 'settings');
   try {
     execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-f', 'lavfi', '-i', 'sine=frequency=440:duration=2', '-c:a', 'aac', join(root, 'assets', 'speech.mp4')], { windowsHide: true });
     await changeSettings(s => { s.keys.doubao = 'fake-test-key'; s.use.asr = 'doubao'; });
@@ -136,7 +136,7 @@ test('MP4 to fake Doubao to word-timed VTT; cache reuse, HTTP failures and uncer
     }
     reply = (_req, res) => res.writeHead(402).end();
     await assert.rejects(force(), /balance/);
-    reply = (_req, res) => res.writeHead(302, { location: process.env.OPENFILM_DOUBAO_URL }).end();
+    reply = (_req, res) => res.writeHead(302, { location: process.env.ORANGE_DOUBAO_URL }).end();
     const beforeRedirect = seen.length;
     await assert.rejects(force(), /Request id: [0-9a-f-]+\. Not retried/);
     assert.equal(seen.length, beforeRedirect + 1, 'redirects do not resend credentials');
@@ -149,8 +149,8 @@ test('MP4 to fake Doubao to word-timed VTT; cache reuse, HTTP failures and uncer
     assert.equal(readFileSync(join(root, 'assets', 'speech.vtt'), 'utf8'), vtt);
     assert.equal(existsSync(join(root, 'assets', 'asr')), false);
   } finally {
-    if (oldHome === undefined) delete process.env.OPENFILM_HOME;
-    else process.env.OPENFILM_HOME = oldHome;
+    if (oldHome === undefined) delete process.env.ORANGE_HOME;
+    else process.env.ORANGE_HOME = oldHome;
   }
 });
 
@@ -168,10 +168,10 @@ test('a real mixed-language response lands a VTT whose cues contain all timed wo
     text, start_time: 180, end_time: 7860,
     words: tokens.map(([text, start_time, end_time]) => ({ text, start_time, end_time })),
   }] } };
-  const root = mkdtempSync(join(tmpdir(), 'openfilm-doubao-mixed-'));
+  const root = mkdtempSync(join(tmpdir(), 'orangefilm-doubao-mixed-'));
   mkdirSync(join(root, 'assets'));
-  const oldHome = process.env.OPENFILM_HOME, oldReply = reply;
-  process.env.OPENFILM_HOME = join(root, 'settings');
+  const oldHome = process.env.ORANGE_HOME, oldReply = reply;
+  process.env.ORANGE_HOME = join(root, 'settings');
   try {
     execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-f', 'lavfi', '-i', 'sine=frequency=440:duration=9', '-c:a', 'aac', join(root, 'assets', 'speech.mp4')], { windowsHide: true });
     await changeSettings(s => { s.keys.doubao = 'fake-test-key'; s.use.asr = 'doubao'; });
@@ -188,7 +188,7 @@ test('a real mixed-language response lands a VTT whose cues contain all timed wo
     assert.deepEqual(readdirSync(join(root, 'assets')).sort(), ['speech.mp4', 'speech.vtt']);
   } finally {
     reply = oldReply;
-    if (oldHome === undefined) delete process.env.OPENFILM_HOME;
-    else process.env.OPENFILM_HOME = oldHome;
+    if (oldHome === undefined) delete process.env.ORANGE_HOME;
+    else process.env.ORANGE_HOME = oldHome;
   }
 });

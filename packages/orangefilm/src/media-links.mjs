@@ -16,8 +16,8 @@ import { randomUUID } from 'node:crypto';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, relative, sep } from 'node:path';
 
-/** Studio's home: OPENFILM_HOME, else ~/.openfilm (studio/server/projects.mjs studioHome). */
-const home = () => process.env.OPENFILM_HOME || join(homedir(), '.openfilm');
+/** Studio's home: ORANGE_HOME, else ~/.orangefilm (studio/server/projects.mjs studioHome). */
+const home = () => process.env.ORANGE_HOME || join(homedir(), '.orangefilm');
 const file = () => join(home(), 'links.json');
 
 /** @type {{ at: string, mtime: number, places: string[] } | null} */
@@ -166,7 +166,7 @@ export function assertSourceAccess(source, operation = 'read') {
   let real = source;
   try { real = realpathSync.native(source); } catch { /* lexical ancestors still checked */ }
   for (const start of new Set([source, real])) for (let at = start; ; at = dirname(at)) {
-    if (existsSync(join(at, '.openfilm-control.json')) || existsSync(join(at, '.film', 'control.json'))) throw sourceAccessError();
+    if (existsSync(join(at, '.orangefilm-control.json')) || existsSync(join(at, '.film', 'control.json'))) throw sourceAccessError();
     if (at === dirname(at)) break;
   }
   return null;

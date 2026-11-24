@@ -10,11 +10,11 @@ const base=process.env.ORANGE_SERVICES_TEST_ROOT;
 assert.ok(base&&resolve(base)===base,'explicit owned test root required');
 await mkdir(base,{recursive:true});
 const root=await mkdtemp(join(base,'installed-services-'));
-const env={OPENFILM_HOME:join(root,'home'),OPENFILM_SHARED_HOME:join(root,'shared'),OPENFILM_LIBRARY:join(root,'projects'),OPENFILM_LIBRARY_CACHE:join(root,'cache'),OPENFILM_SAVED:join(root,'saved'),OPENFILM_SKILLS:join(root,'skills'),OPENFILM_EXPORTS:join(root,'exports'),OPENFILM_ISOLATION_PROFILE:undefined,OPENFILM_ISOLATION_ROOT:undefined};
+const env={ORANGE_HOME:join(root,'home'),ORANGE_SHARED_HOME:join(root,'shared'),ORANGE_LIBRARY:join(root,'projects'),ORANGE_LIBRARY_CACHE:join(root,'cache'),ORANGE_SAVED:join(root,'saved'),ORANGE_SKILLS:join(root,'skills'),ORANGE_EXPORTS:join(root,'exports'),ORANGE_ISOLATION_PROFILE:undefined,ORANGE_ISOLATION_ROOT:undefined};
 for(const [key,value] of Object.entries(env)){if(value===undefined)delete process.env[key];else process.env[key]=value;}
 for(const path of Object.values(env).filter(Boolean))await mkdir(path,{recursive:true});
 const editorDir=join(root,'editor');await mkdir(editorDir);await writeFile(join(editorDir,'index.html'),'<html>fixture</html>');
-const shared=join(env.OPENFILM_HOME,'providers.json');const original=JSON.stringify({keys:{openai:'fixture-global-1234'}});await writeFile(shared,original);
+const shared=join(env.ORANGE_HOME,'providers.json');const original=JSON.stringify({keys:{openai:'fixture-global-1234'}});await writeFile(shared,original);
 const {startStudio}=await import('./server.mjs');
 const {createProject}=await import('./projects.mjs');
 const project=await createProject('Synthetic account boundary');

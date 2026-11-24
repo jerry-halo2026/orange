@@ -75,7 +75,7 @@ export interface ProjectFontsState {
 }
 
 const EMPTY: ProjectFontsState = { fonts: [], page: null, ready: false };
-const STYLE_ID = 'openfilm-project-fonts';
+const STYLE_ID = 'orangefilm-project-fonts';
 
 /* one request for every field that asks for the same page at the same files (the menu, the weight menu) */
 let projectAsked: { key: string; answer: Promise<{ fonts: ProjectFont[]; page: PageFonts | null }> } | null = null;
@@ -131,7 +131,7 @@ function setProjectFaces(fonts: readonly ProjectFont[], folder: string) {
 
 /* ── recent ── */
 
-const RECENT_KEY = 'openfilm.recentFonts';
+const RECENT_KEY = 'orangefilm.recentFonts';
 
 export function readRecentFonts(): string[] {
   try {

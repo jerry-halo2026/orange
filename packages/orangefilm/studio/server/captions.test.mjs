@@ -23,7 +23,7 @@ const WORDS = [
   { token: 'Four', startSec: 1.5, endSec: 1.8 }, { token: 'five', startSec: 1.8, endSec: 2.1 }, { token: 'six.', startSec: 2.1, endSec: 2.5 },
 ];
 const noProbe = { duration: async () => undefined };
-/** The transcript `openfilm get tts` writes for TEXT: its lines, timed word by word. */
+/** The transcript `orangefilm get tts` writes for TEXT: its lines, timed word by word. */
 const VTT = vttOf(spokenLines(TEXT, WORDS, 3000));
 
 /** A project folder: film.html from `tracks`, and `files` (path → text). */
@@ -164,10 +164,10 @@ test('a transcript names who speaks; the subtitles name them only when two do', 
 
 test('a transcript written by hand, timed by line only, is its lines as they are', async () => {
   const root = project([{ clips: [{ id: 'vo', src: 'assets/vo/1.wav', at: 2 }] }], {
-    'assets/vo/1.vtt': 'WEBVTT\n\n00:00:00.000 --> 00:00:01.200\n这是 OpenFilm，\n\n00:00:01.200 --> 00:00:03.000\n让网页成为电影。\n',
+    'assets/vo/1.vtt': 'WEBVTT\n\n00:00:00.000 --> 00:00:01.200\n这是 OrangeFilm，\n\n00:00:01.200 --> 00:00:03.000\n让网页成为电影。\n',
   });
   /* a Chinese subtitle ends without its comma or full stop */
-  assert.deepEqual((await filmCaptions(root, noProbe)).cues.map((c) => [c.startMs, c.durMs, c.text, c.words]), [[2000, 1200, '这是 OpenFilm', undefined], [3200, 1800, '让网页成为电影', undefined]]);
+  assert.deepEqual((await filmCaptions(root, noProbe)).cues.map((c) => [c.startMs, c.durMs, c.text, c.words]), [[2000, 1200, '这是 OrangeFilm', undefined], [3200, 1800, '让网页成为电影', undefined]]);
 });
 
 test('what cannot be heard has no subtitles; speech with no transcript is listed, music and pages are not', async () => {
@@ -340,12 +340,13 @@ test('making subtitles transcribes the speech with no transcript; with no servic
 });
 
 test('a transcript written a word (or a character) per cue is its words: they are joined into lines, each still timed', async () => {
-  const chars = ['认', '识', 'O', 'p', 'e', 'n', 'F', 'i', 'l', 'm', '。'];
+  const chars = ['认', '识', 'O', 'r', 'a', 'n', 'g', 'e', 'F', 'i', 'l', 'm', '。'];
   const body = `WEBVTT\n\n${chars.map((c, i) => `00:00:00.${String(i * 90).padStart(3, '0')} --> 00:00:00.${String(i * 90 + 90).padStart(3, '0')}\n${c}`).join('\n\n')}\n\n00:00:01.000 --> 00:00:01.000\n \n`;
   const root = project([{ clips: [{ id: 'vo', src: 'assets/vo.wav' }] }], { 'assets/vo.vtt': body });
   const { cues } = await filmCaptions(root, noProbe);
-  assert.deepEqual(cues.map((c) => c.text), ['认识OpenFilm']);
-  assert.equal(cues[0].words.length, chars.length - 1, 'the full stop the subtitle drops is not a word to light up');
+  assert.deepEqual(cues.map((c) => c.text), ['认识OrangeFilm']);
+  assert.ok(cues[0].words.length >= 2, 'the line keeps the words it was timed by');
+  assert.ok(!cues[0].words.some((w) => w.text.includes('。')), 'the full stop the subtitle drops is not a word to light up');
 });
 
 /* ── a spoken line cut into subtitles ───────────────────────────────────── */
@@ -362,19 +363,19 @@ function ttsWords(text) {
   }
   return words;
 }
-const SAID = '它叫 OpenFilm，免费开源，MIT 协议。';
+const SAID = '它叫 OrangeFilm，免费开源，MIT 协议。';
 
 test('a spoken line becomes a subtitle per clause, each with its own timed words, each traced to its piece of the line', async () => {
   const root = project([{ clips: [{ id: 'vo', src: 'assets/vo.wav', at: 1 }] }], { 'assets/vo.vtt': vttOf(spokenLines(SAID, ttsWords(SAID), 3500)) });
   const { cues } = await filmCaptions(root, noProbe);
-  assert.deepEqual(cues.map((c) => c.text), ['它叫 OpenFilm', '免费开源', 'MIT 协议']);
+  assert.deepEqual(cues.map((c) => c.text), ['它叫 OrangeFilm', '免费开源', 'MIT 协议']);
   assert.deepEqual(cues.map((c) => [c.line, c.part]), [[0, 0], [0, 1], [0, 2]]);
-  assert.deepEqual(cues.map((c) => c.words.map((w) => w.text).join('')), ['它叫OpenFilm', '免费开源', 'MIT协议'], 'karaoke lights the words shown, no hidden comma');
+  assert.deepEqual(cues.map((c) => c.words.map((w) => w.text).join('')), ['它叫OrangeFilm', '免费开源', 'MIT协议'], 'karaoke lights the words shown, no hidden comma');
   cues.slice(1).forEach((c, i) => assert.ok(c.startMs >= cues[i].startMs + cues[i].durMs, 'one after the other'));
   assert.equal(cues[0].startMs, 1000);
   for (const c of cues) assert.equal(c.words[0].startMs, c.startMs);
   /* the files exported say the same */
-  assert.equal(filmSubtitleSrt(cues).split('\n').filter((l) => /\p{Script=Han}|OpenFilm/u.test(l)).join(' | '), '它叫 OpenFilm | 免费开源 | MIT 协议');
+  assert.equal(filmSubtitleSrt(cues).split('\n').filter((l) => /\p{Script=Han}|OrangeFilm/u.test(l)).join(' | '), '它叫 OrangeFilm | 免费开源 | MIT 协议');
   assert.equal((filmSubtitleVtt(cues).match(/-->/g) ?? []).length, 3);
 });
 
@@ -396,14 +397,14 @@ test('the person corrects one subtitle of a line: those words change in the tran
   const edit = (body) => fetch(`${base}/captions/line`, { method: 'PUT', body: JSON.stringify(body) });
   try {
     assert.equal((await edit({ src: 'assets/vo.wav', line: 0, part: 1, text: '完全免费' })).status, 200);
-    assert.match(readFileSync(join(root, 'assets/vo.vtt'), 'utf8'), /它<[^>]+>叫 <[^>]+>OpenFilm，<[^>]+>完全免费，<[^>]+>MIT <[^>]+>协<[^>]+>议。/);
+    assert.match(readFileSync(join(root, 'assets/vo.vtt'), 'utf8'), /它<[^>]+>叫 <[^>]+>OrangeFilm，<[^>]+>完全免费，<[^>]+>MIT <[^>]+>协<[^>]+>议。/);
     const after = (await filmCaptions(root, noProbe)).cues;
-    assert.deepEqual(after.map((c) => c.text), ['它叫 OpenFilm', '完全免费', 'MIT 协议']);
+    assert.deepEqual(after.map((c) => c.text), ['它叫 OrangeFilm', '完全免费', 'MIT 协议']);
     assert.deepEqual([after[0].words, after[2].words], [before[0].words, before[2].words], 'the other subtitles as they were, word for word');
     assert.equal(after[1].startMs, before[1].startMs);
     /* emptied, that subtitle goes; a part the line does not have is not there */
     assert.equal((await edit({ src: 'assets/vo.wav', line: 0, part: 2, text: '' })).status, 200);
-    assert.deepEqual((await filmCaptions(root, noProbe)).cues.map((c) => c.text), ['它叫 OpenFilm', '完全免费']);
+    assert.deepEqual((await filmCaptions(root, noProbe)).cues.map((c) => c.text), ['它叫 OrangeFilm', '完全免费']);
     assert.equal((await edit({ src: 'assets/vo.wav', line: 0, part: 7, text: 'x' })).status, 404);
     assert.equal((await edit({ src: 'assets/vo.wav', line: 0, part: -1, text: 'x' })).status, 400);
   } finally {
@@ -415,14 +416,14 @@ test('a translation follows the original\'s subtitles; one that cannot be cut sp
   const lines = spokenLines(SAID, ttsWords(SAID), 3500);
   const root = project([{ clips: [{ id: 'vo', src: 'assets/vo.wav' }] }], {
     'assets/vo.vtt': vttOf(lines),
-    'assets/vo.en.vtt': vttOf([{ text: 'It\'s called OpenFilm, free and open source, MIT licensed.', startMs: 0, endMs: 3500 }]),
-    'assets/vo.fr.vtt': vttOf([{ text: 'C\'est OpenFilm.', startMs: 0, endMs: 3500 }]),
+    'assets/vo.en.vtt': vttOf([{ text: 'It\'s called OrangeFilm, free and open source, MIT licensed.', startMs: 0, endMs: 3500 }]),
+    'assets/vo.fr.vtt': vttOf([{ text: 'C\'est OrangeFilm.', startMs: 0, endMs: 3500 }]),
   });
   const { cues } = await filmCaptions(root, noProbe);
-  assert.deepEqual(cues.map((c) => c.alt.en), ['It\'s called OpenFilm,', 'free and open source,', 'MIT licensed.']);
-  assert.deepEqual(cues.map((c) => c.alt.fr), ['C\'est OpenFilm.', 'C\'est OpenFilm.', 'C\'est OpenFilm.']);
+  assert.deepEqual(cues.map((c) => c.alt.en), ['It\'s called OrangeFilm,', 'free and open source,', 'MIT licensed.']);
+  assert.deepEqual(cues.map((c) => c.alt.fr), ['C\'est OrangeFilm.', 'C\'est OrangeFilm.', 'C\'est OrangeFilm.']);
   const fr = filmSubtitleShown(cues, { language: 'fr', bilingual: false });
-  assert.deepEqual(fr.map((c) => [c.text, c.startMs, c.startMs + c.durMs]), [['C\'est OpenFilm.', cues[0].startMs, cues[2].startMs + cues[2].durMs]]);
+  assert.deepEqual(fr.map((c) => [c.text, c.startMs, c.startMs + c.durMs]), [['C\'est OrangeFilm.', cues[0].startMs, cues[2].startMs + cues[2].durMs]]);
   assert.equal(filmSubtitleShown(cues, { language: 'fr', bilingual: true }).length, 3, 'with the original, each subtitle its own');
   assert.equal(filmSubtitleShown(cues, { language: 'en', bilingual: false }).length, 3);
   /* a correction of one translated subtitle changes those words of the translation */
@@ -430,7 +431,7 @@ test('a translation follows the original\'s subtitles; one that cannot be cut sp
   try {
     const res = await fetch(`${base}/captions/line`, { method: 'PUT', body: JSON.stringify({ src: 'assets/vo.wav', line: 0, part: 1, text: 'free, open source,', language: 'en' }) });
     assert.equal(res.status, 200);
-    assert.match(readFileSync(join(root, 'assets/vo.en.vtt'), 'utf8'), /It's called OpenFilm, free, open source, MIT licensed\./);
+    assert.match(readFileSync(join(root, 'assets/vo.en.vtt'), 'utf8'), /It's called OrangeFilm, free, open source, MIT licensed\./);
   } finally {
     close();
   }

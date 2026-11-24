@@ -299,7 +299,7 @@ test('an absent or unparseable file reads as no index, never as an empty one', a
   writeFileSync(materialIndexPath(broken), '{ not json');
   assert.equal(readMaterialIndex(broken), null, 'bytes that do not parse are not an index');
 
-  assert.equal(defaultIndexDir({ home: join(tmp(), 'home') }).endsWith(join('.openfilm-dev', 'material-index')), true);
+  assert.equal(defaultIndexDir({ home: join(tmp(), 'home') }).endsWith(join('.orangefilm-dev', 'material-index')), true);
 });
 
 test('the CLI dry-run reads the feed, prints the four counts and the first three of each batch, and lands nothing', async () => {
@@ -345,8 +345,8 @@ test('the CLI reads the dev Studio\'s run.json, and says which file is missing i
   assert.throws(() => readRunFile({ home: join(home, 'nope') }),
     (error) => /** @type {any} */ (error).code === 'run-file-missing');
 
-  mkdirSync(join(home, '.openfilm-dev'), { recursive: true });
-  writeFileSync(join(home, '.openfilm-dev', 'run.json'), JSON.stringify({ pid: 1, origin: 'http://127.0.0.1:4747', key: 'k' }));
+  mkdirSync(join(home, '.orangefilm-dev'), { recursive: true });
+  writeFileSync(join(home, '.orangefilm-dev', 'run.json'), JSON.stringify({ pid: 1, origin: 'http://127.0.0.1:4747', key: 'k' }));
   const run = readRunFile({ home });
   assert.deepEqual([run.origin, run.key], ['http://127.0.0.1:4747', 'k']);
   assert.match(run.file, /run\.json$/);

@@ -89,12 +89,12 @@ export function createOrangeRoutes({
     }),
     auth,
     /* `GET /api/materials/index`: the 批次/合集 index material-index-build.mjs landed on this computer, read as it is.
-       It is a file read (`$OPENFILM_MATERIAL_INDEX_DIR`, else ~/.openfilm-dev/material-index), never a supplier call,
+       It is a file read (`$ORANGE_MATERIAL_INDEX_DIR`, else ~/.orangefilm-dev/material-index), never a supplier call,
        so it is handed in beside the service instead of through it. Read on every request: a rebuild lands a new file
        and the next read sees it, with no restart and no cache of ours in between. */
     index: () => landedIndex(),
     /* `POST /api/materials/search`: the account's own search (`media_search` over this computer's `media_doc`) with the
-       availability only this disk knows. It needs no supplier service — a tenant (`OPENFILM_MEDIA_TENANT`), the local
+       availability only this disk knows. It needs no supplier service — a tenant (`ORANGE_MEDIA_TENANT`), the local
        embedder and the local database are what it reads — so it is built beside the service, from the same environment.
        The content library and the digest index are opened on the first search, from the same owned root the covers use. */
     search: createMaterialSearchAnswer({

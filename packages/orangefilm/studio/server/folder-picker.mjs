@@ -76,13 +76,13 @@ export function folderPickerCommand(platform, { title, at }, has = () => true) {
       '[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding',
       'Add-Type -AssemblyName System.Windows.Forms',
       '$d = New-Object System.Windows.Forms.FolderBrowserDialog',
-      '$d.Description = $env:OPENFILM_PICK_TITLE',
+      '$d.Description = $env:ORANGE_PICK_TITLE',
       '$d.UseDescriptionForTitle = $true',
-      'if ($env:OPENFILM_PICK_AT) { $d.SelectedPath = $env:OPENFILM_PICK_AT }',
+      'if ($env:ORANGE_PICK_AT) { $d.SelectedPath = $env:ORANGE_PICK_AT }',
       '$w = New-Object System.Windows.Forms.Form -Property @{ TopMost = $true }',
       'if ($d.ShowDialog($w) -eq [System.Windows.Forms.DialogResult]::OK) { [Console]::Out.Write($d.SelectedPath) }',
     ].join('; ');
-    return { cmd: 'powershell.exe', args: ['-NoProfile', '-STA', '-Command', script], env: { OPENFILM_PICK_TITLE: title, OPENFILM_PICK_AT: start } };
+    return { cmd: 'powershell.exe', args: ['-NoProfile', '-STA', '-Command', script], env: { ORANGE_PICK_TITLE: title, ORANGE_PICK_AT: start } };
   }
   if (has('zenity')) {
     return { cmd: 'zenity', args: ['--file-selection', '--directory', `--title=${title}`, ...(start ? [`--filename=${start}/`] : [])] };
@@ -121,13 +121,13 @@ export function filePickerCommand(platform, { title, at }, has = () => true) {
       '[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding',
       'Add-Type -AssemblyName System.Windows.Forms',
       '$d = New-Object System.Windows.Forms.OpenFileDialog',
-      '$d.Title = $env:OPENFILM_PICK_TITLE',
+      '$d.Title = $env:ORANGE_PICK_TITLE',
       '$d.Multiselect = $true',
-      'if ($env:OPENFILM_PICK_AT) { $d.InitialDirectory = $env:OPENFILM_PICK_AT }',
+      'if ($env:ORANGE_PICK_AT) { $d.InitialDirectory = $env:ORANGE_PICK_AT }',
       '$w = New-Object System.Windows.Forms.Form -Property @{ TopMost = $true }',
       'if ($d.ShowDialog($w) -eq [System.Windows.Forms.DialogResult]::OK) { [Console]::Out.Write(($d.FileNames -join "`n")) }',
     ].join('; ');
-    return { cmd: 'powershell.exe', args: ['-NoProfile', '-STA', '-Command', script], env: { OPENFILM_PICK_TITLE: title, OPENFILM_PICK_AT: start } };
+    return { cmd: 'powershell.exe', args: ['-NoProfile', '-STA', '-Command', script], env: { ORANGE_PICK_TITLE: title, ORANGE_PICK_AT: start } };
   }
   if (has('zenity')) {
     return { cmd: 'zenity', args: ['--file-selection', '--multiple', '--separator=\n', `--title=${title}`, ...(start ? [`--filename=${start}/`] : [])] };

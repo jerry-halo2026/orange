@@ -1,7 +1,7 @@
 {
-  "repo": "https://github.com/openfilm/examples",
+  "repo": "https://github.com/jerry-halo2026/orange",
   "branch": "main",
-  "about": "The examples this checkout offers: the film beside this index, read from this computer, and the two that come with OpenFilm (their posters are the bundled ones; their films are fetched from GitHub).",
+  "about": "The examples this checkout offers: the film beside this index, read from this computer, and the two that come with OrangeFilm (their posters are the bundled ones; their films are fetched from GitHub).",
   "examples": [
     {
       "folder": "talk-lowerthird-captions",

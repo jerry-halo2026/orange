@@ -342,7 +342,7 @@ const decodeName = (/** @type {string} */ tag) => (tag.startsWith('v-') ? Buffer
 
 /* where the versions are: every branch, what HEAD is on, the line a commit on a checked-out version moved aside
    (`kept`), and what an earlier edition parked */
-const ALL_VERSIONS = ['HEAD', '--branches', '--glob=refs/openfilm/kept/*', '--glob=refs/openfilm/parked/*'];
+const ALL_VERSIONS = ['HEAD', '--branches', '--glob=refs/orangefilm/kept/*', '--glob=refs/orangefilm/parked/*'];
 
 /**
  * The versions of the project, newest first, `limit` of them (more: there are older ones), each with its parents, so
@@ -500,7 +500,7 @@ const isAncestor = (/** @type {string} */ root, /** @type {string} */ a, /** @ty
 /**
  * Commit the folder as a version. On a branch, it goes on it. On a version checked out on its own (detached), it goes
  * on main from there, as the newest; main's versions after that one stay in the history, on a line of their own
- * (`refs/openfilm/kept/<its tip>`), and main is checked out again. Null when the folder holds the version checked out.
+ * (`refs/orangefilm/kept/<its tip>`), and main is checked out again. Null when the folder holds the version checked out.
  * Not queued: the caller is.
  * @param {import('./history-store.mjs').Repo} repo @param {Kind} kind @param {string} text @param {Progress} [progress]
  */
@@ -515,7 +515,7 @@ async function commitFolder(repo, kind, text, progress) {
     await git(root, ['update-ref', '-m', `${kind}: ${text || kind}`, branch || 'refs/heads/main', commit, head ?? '']);
   } else {
     const main = (await git(root, ['rev-parse', '--verify', '--quiet', 'refs/heads/main']).catch(() => '')).trim();
-    if (main && !(await isAncestor(root, main, commit))) await git(root, ['update-ref', `refs/openfilm/kept/${main}`, main]);
+    if (main && !(await isAncestor(root, main, commit))) await git(root, ['update-ref', `refs/orangefilm/kept/${main}`, main]);
     await git(root, ['update-ref', '-m', `${kind}: ${text || kind}`, 'refs/heads/main', commit]);
     await git(root, ['symbolic-ref', 'HEAD', 'refs/heads/main']);
   }
@@ -658,7 +658,7 @@ export function restoreFilm(root, commit, { onProgress } = {}) {
 }
 
 /** Where the texts of merges are kept aside, one ref each: no list of versions reads them (ALL_VERSIONS). */
-export const MERGES_REFS = 'refs/openfilm/merges/';
+export const MERGES_REFS = 'refs/orangefilm/merges/';
 /** How many are kept per project: the oldest go (and their texts, once git tidies the history). */
 export const MERGES_KEPT = 50;
 
@@ -666,7 +666,7 @@ export const MERGES_KEPT = 50;
  * Keep `files` (a name and its text or bytes each) aside in the history, out of every list of versions: a commit of its own
  * with `message`, under MERGES_REFS by the time it was made, the last MERGES_KEPT kept. What a merge of the person's
  * edits over an agent's write read and wrote (person-edits.mjs), so a merge can always be undone by hand:
- * `git --git-dir .film/history for-each-ref refs/openfilm/merges`, then `git show <ref>:agent.html`. It waits for no
+ * `git --git-dir .film/history for-each-ref refs/orangefilm/merges`, then `git show <ref>:agent.html`. It waits for no
  * history action (git writes objects and refs of its own safely beside one); a history not made yet is made first,
  * in turn, as opening the project's versions would.
  * @param {string} root @param {Record<string, string | Buffer>} files @param {string} message

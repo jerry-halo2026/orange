@@ -14,7 +14,7 @@
  * kept with its size, time and inode (`.film/cache/history-files.json`) and read again only when one of them changed.
  *
  * git runs on the history only, never on the folder as its work tree: every read and write of the folder's files is
- * here, so nothing outside a version's files is ever looked at or touched. Set NODE_DEBUG=openfilm-history to see
+ * here, so nothing outside a version's files is ever looked at or touched. Set NODE_DEBUG=orangefilm-history to see
  * every git command and how long it took.
  */
 import { execFile, spawn } from 'node:child_process';
@@ -34,7 +34,7 @@ const sourcePath = (/** @type {string} */ root, /** @type {string} */ rel) => {
 };
 
 const run = promisify(execFile);
-const debug = debuglog('openfilm-history');
+const debug = debuglog('orangefilm-history');
 
 /** Larger than this, any file is kept by its content outside git. */
 export const BIG = 1 << 20;
@@ -72,8 +72,8 @@ const gitEnv = (/** @type {string} */ root, /** @type {string} */ gitDir, /** @t
   ...process.env,
   GIT_DIR: gitDir,
   GIT_WORK_TREE: root,
-  GIT_AUTHOR_NAME: 'OrangeFilm Studio', GIT_AUTHOR_EMAIL: 'studio@openfilm.local',
-  GIT_COMMITTER_NAME: 'OrangeFilm Studio', GIT_COMMITTER_EMAIL: 'studio@openfilm.local',
+  GIT_AUTHOR_NAME: 'OrangeFilm Studio', GIT_AUTHOR_EMAIL: 'studio@orangefilm.local',
+  GIT_COMMITTER_NAME: 'OrangeFilm Studio', GIT_COMMITTER_EMAIL: 'studio@orangefilm.local',
   GIT_CONFIG_NOSYSTEM: '1', GIT_TERMINAL_PROMPT: '0',
   ...extra,
 });
@@ -262,8 +262,8 @@ function hashesOf(/** @type {string} */ root, /** @type {'sha1' | 'sha256'} */ a
  */
 
 /** What stands in a tree for a media file kept outside git. */
-export const pointerText = (/** @type {string} */ sha256, /** @type {number} */ size) => `openfilm-media 1\nsha256 ${sha256}\nsize ${size}\n`;
-const POINTER = /^openfilm-media 1\nsha256 ([0-9a-f]{64})\nsize (\d+)\n$/;
+export const pointerText = (/** @type {string} */ sha256, /** @type {number} */ size) => `orangefilm-media 1\nsha256 ${sha256}\nsize ${size}\n`;
+const POINTER = /^orangefilm-media 1\nsha256 ([0-9a-f]{64})\nsize (\d+)\n$/;
 export const pointerId = (/** @type {Repo} */ repo, /** @type {string} */ sha256, /** @type {number} */ size) => blobId(repo.algo, Buffer.from(pointerText(sha256, size)));
 
 /** Where the store keeps a media file. */
@@ -313,7 +313,7 @@ export async function readVersion(repo, rev) {
 
 /** A tree of `version`, written through a scratch index (the history's own index is never used). */
 export async function writeTree(/** @type {Repo} */ repo, /** @type {Version} */ version) {
-  const index = join(repo.gitDir, `openfilm-index-${process.pid}-${randomBytes(4).toString('hex')}`);
+  const index = join(repo.gitDir, `orangefilm-index-${process.pid}-${randomBytes(4).toString('hex')}`);
   try {
     const lines = [...version].map(([path, e]) => `${e.mode} ${e.oid}\t${path}`).join('\n');
     await repo.git(['update-index', '--add', '--index-info'], { input: `${lines}\n`, env: { GIT_INDEX_FILE: index } });
@@ -412,7 +412,7 @@ export async function keepFiles(repo, files, head, progress) {
     await keepMedia(repo, rel, /** @type {{ sha256: string, size: number }} */ (e.media));
     progress?.({ phase: 'store', done: ++done, total: media.length });
   }
-  const tmpDir = join(repo.gitDir, 'openfilm-tmp');
+  const tmpDir = join(repo.gitDir, 'orangefilm-tmp');
   const paths = [];
   /** @type {string[]} */
   const expected = [];

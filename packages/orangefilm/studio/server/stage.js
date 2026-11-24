@@ -10,8 +10,8 @@
  * Nothing here writes film.html: a change is only shown (as a preview of the clip's `overrides`, or a clip placed in a
  * box) until the editor keeps it, and the film's next update takes the shown change back.
  *
- *   editor → { source: 'openfilm-studio', type: 'stage', seq, op, ...args }    (ops below, at `ops`)
- *   film   → { source: 'openfilm-film', type: 'stage', seq, result }           the answer (null when nothing)
+ *   editor → { source: 'orangefilm-studio', type: 'stage', seq, op, ...args }    (ops below, at `ops`)
+ *   film   → { source: 'orangefilm-film', type: 'stage', seq, result }           the answer (null when nothing)
  *            { type: 'stage-event', event: 'typing', handle, value }   the words of an in-place edit as they are typed
  *            { type: 'stage-event', event: 'text', handle, commit, value?, before? }   an in-place edit ended
  *            { type: 'stage-event', event: 'key', key, code, repeat, metaKey, ctrlKey, shiftKey, altKey }
@@ -28,7 +28,7 @@
 (() => {
   const EDITOR = __EDITOR__;
   const BLUE = '#0d99ff';
-  const post = (message) => parent.postMessage({ source: 'openfilm-film', ...message }, EDITOR);
+  const post = (message) => parent.postMessage({ source: 'orangefilm-film', ...message }, EDITOR);
   const editor = () => window.__filmEditor;
   const hooks = () => window.__filmEditor?.stage;
   const clips = () => hooks()?.clips() ?? [];
@@ -129,7 +129,7 @@
   const SVG_TEXT_TAGS = new Set(['text', 'tspan', 'textpath']);
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const INLINE = new Set(['BR', 'WBR', 'EM', 'STRONG', 'B', 'I', 'U', 'S', 'SPAN', 'SMALL', 'SUP', 'SUB', 'A', 'MARK', 'CODE', 'ABBR', 'Q', 'TIME']);
-  const EDITOR_ATTR = 'data-openfilm-text-editor';
+  const EDITOR_ATTR = 'data-orangefilm-text-editor';
   const LIMIT = 1500;
   /** At most this many custom properties, and as many words, as a page's template controls. */
   const CONTROLS = 40;
@@ -978,7 +978,7 @@
    * press on its words moves the caret or selects them, though the page draws something over it there (a number still
    * to come in, at opacity 0; a grain) or another clip lies on top; a press anywhere else blurs it, which keeps it.
    */
-  const TYPING_ATTR = 'data-openfilm-typing';
+  const TYPING_ATTR = 'data-orangefilm-typing';
   const onlyHit = (el) => {
     const doc = el.ownerDocument;
     const style = doc.createElement('style');
@@ -1978,7 +1978,7 @@
       const before = list.map((o) => (o.at === undefined ? null : matches(doc, o)));
       const view = doc.defaultView;
       const LOOKED = ['color', 'background-color', 'display', 'position', 'width', 'height', 'margin', 'font-size', 'opacity', 'transform', 'visibility', 'order', 'border-color'];
-      const COPY = 'data-openfilm-copy';
+      const COPY = 'data-orangefilm-copy';
       const looks = (parent) => [...parent.querySelectorAll(`:scope > :not([${COPY}]), :scope > :not([${COPY}]) *`)]
         .filter((x) => !x.closest(`[${COPY}]`))
         .map((x) => [...LOOKED.map((p) => view.getComputedStyle(x).getPropertyValue(p)), ...['::before', '::after'].map((pe) => view.getComputedStyle(x, pe).getPropertyValue('content'))].join('|')).join('\n');
@@ -1990,7 +1990,7 @@
         copy.setAttribute(COPY, '');
         const all = [copy, ...copy.querySelectorAll('*')];
         const ids = new Set(all.map((n) => n.id).filter(Boolean));
-        const renamed = (id) => (ids.has(id) ? `${id}-openfilm-copy` : id);
+        const renamed = (id) => (ids.has(id) ? `${id}-orangefilm-copy` : id);
         for (const n of all) {
           if (n.id) n.id = renamed(n.id);
           for (const a of [...n.attributes]) {
@@ -2301,7 +2301,7 @@
   });
 
   window.addEventListener('message', async (e) => {
-    if (e.origin !== EDITOR || e.source !== parent || e.data?.source !== 'openfilm-studio' || e.data.type !== 'stage') return;
+    if (e.origin !== EDITOR || e.source !== parent || e.data?.source !== 'orangefilm-studio' || e.data.type !== 'stage') return;
     const { seq, op, ...args } = e.data;
     const fn = Object.hasOwn(ops, op) ? ops[op] : null;
     let result = null;

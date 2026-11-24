@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 import { after, before, test } from 'node:test';
 
-/* the library's host: a folder served as openfilm.dev/library serves the published parts, counting what is asked */
+/* the library's host: a folder served as orangefilm.dev/library serves the published parts, counting what is asked */
 const host = mkdtempSync(join(tmpdir(), 'library-host-'));
 const put = (rel, body) => { mkdirSync(join(host, rel, '..'), { recursive: true }); writeFileSync(join(host, rel), body); };
 put('audio/music/calm-piano-1a2b3c.mp3', 'mp3 bytes');
@@ -31,9 +31,9 @@ const server = createServer((req, res) => {
 before(async () => {
   await new Promise((done) => server.listen(0, '127.0.0.1', () => done(undefined)));
   const address = /** @type {import('node:net').AddressInfo} */ (server.address());
-  process.env.OPENFILM_LIBRARY_URL = `http://127.0.0.1:${address.port}/library`;
-  process.env.OPENFILM_LIBRARY_CACHE = mkdtempSync(join(tmpdir(), 'library-cache-'));
-  process.env.OPENFILM_BUILT_IN_LIBRARY = mkdtempSync(join(tmpdir(), 'library-package-'));
+  process.env.ORANGE_LIBRARY_URL = `http://127.0.0.1:${address.port}/library`;
+  process.env.ORANGE_LIBRARY_CACHE = mkdtempSync(join(tmpdir(), 'library-cache-'));
+  process.env.ORANGE_BUILT_IN_LIBRARY = mkdtempSync(join(tmpdir(), 'library-package-'));
 });
 after(() => server.close());
 
@@ -104,7 +104,7 @@ test('nothing is fetched for what is not published, missing, or outside the libr
 
 test('which things still need fetching before they go in (a sound, a template\'s music), and fetching one', async () => {
   const { notHere, fetchItem } = await import('./library.mjs');
-  writeFileSync(join(/** @type {string} */ (process.env.OPENFILM_BUILT_IN_LIBRARY), 'index.json'), JSON.stringify({ version: 1, groups: {}, items: [
+  writeFileSync(join(/** @type {string} */ (process.env.ORANGE_BUILT_IN_LIBRARY), 'index.json'), JSON.stringify({ version: 1, groups: {}, items: [
     { id: 'templates/trip', cat: 'template', kind: 'group', music: 'audio/music/tune-9f9f9f.mp3' },
     { id: 'effects/snow', cat: 'effect', kind: 'page' },
     { id: 'audio/music/calm-piano-1a2b3c.mp3', cat: 'music', kind: 'sound' },

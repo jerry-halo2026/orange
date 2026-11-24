@@ -52,7 +52,7 @@ test('the edges of a row and the space around the rows open a track there', () =
   assert.deepEqual(assetDropSpot(video, tracks, { lane: 1, band: 'above' }, 2000), { action: 'new-track', laneIndex: 1, docAt: 1 });
   assert.deepEqual(assetDropSpot(sound, tracks, { lane: 2, band: 'below' }, 2000), { action: 'new-track', laneIndex: 3, docAt: 3 });
   /* a text of the library: onto a row of text where there is room, else a row of text of its own just above */
-  const text = { path: 'openfilm/text/name/files/name.html', kind: 'mg' as const, durationMs: 1000, saved: 'openfilm/text/name' };
+  const text = { path: 'orangefilm/text/name/files/name.html', kind: 'mg' as const, durationMs: 1000, saved: 'orangefilm/text/name' };
   assert.deepEqual(assetDropSpot(text, tracks, { lane: 1, band: 'body' }, 10_000), { action: 'new-track', laneIndex: 1, docAt: 1 });
   const words = tracks.map((tr, i) => (i === 1 ? { ...tr, text: true } : tr));
   assert.equal(assetDropSpot(text, words, { lane: 1, band: 'body' }, 10_000)?.action, 'into');
@@ -166,18 +166,18 @@ test('a page the pane names one without its ending (a bundle of Saved) is an mg 
 });
 
 test('the preview of a drop looks as it will land: a line of words its words, a sticker as a sticker', () => {
-  const words = { path: 'openfilm/text/text/files/text.html', name: 'Candy', kind: 'mg' as const, durationMs: 3000, saved: 'openfilm/text/looks/candy', words: '默认文本' };
+  const words = { path: 'orangefilm/text/text/files/text.html', name: 'Candy', kind: 'mg' as const, durationMs: 3000, saved: 'orangefilm/text/looks/candy', words: '默认文本' };
   const text = assetDropPreview(words, tracks, { lane: 0, band: 'body' }, 12_000);
   assert.equal(text?.title, '默认文本');
   assert.equal(text?.look, 'text');
-  const sticker = assetDropPreview({ path: 'openfilm/stickers/tap/files/tap.html', name: 'Tap', kind: 'mg', durationMs: 3000, saved: 'openfilm/stickers/tap' }, tracks, { lane: 0, band: 'body' }, 12_000);
+  const sticker = assetDropPreview({ path: 'orangefilm/stickers/tap/files/tap.html', name: 'Tap', kind: 'mg', durationMs: 3000, saved: 'orangefilm/stickers/tap' }, tracks, { lane: 0, band: 'body' }, 12_000);
   assert.equal(sticker?.look, 'sticker');
   assert.equal(assetDropPreview(video, tracks, { lane: 0, band: 'body' }, 12_000)?.look, undefined);
 });
 
 test('a sticker, text or effect of the library let go on the main track goes over it, never cutting the film', () => {
   const withMain = tracks.map((tr, i) => (i === 1 ? { ...tr, main: true } : tr));
-  const sticker = { path: 'openfilm/stickers/tap/files/tap.html', name: 'Tap', kind: 'mg' as const, durationMs: 3000, saved: 'openfilm/stickers/tap' };
+  const sticker = { path: 'orangefilm/stickers/tap/files/tap.html', name: 'Tap', kind: 'mg' as const, durationMs: 3000, saved: 'orangefilm/stickers/tap' };
   /* free on the page track above: there */
   assert.deepEqual(assetDropSpot(sticker, withMain, { lane: 1, band: 'body' }, 12_000, 'insert'), { action: 'into', laneIndex: 0, lane: 'doc-0', docIndex: 0, locked: false });
   /* taken there too: a new track right above the main one */
@@ -188,6 +188,6 @@ test('a sticker, text or effect of the library let go on the main track goes ove
 
 test('a main track with no film on it, only stickers, takes another sticker in its gap', () => {
   const stickers = tracks.map((tr, i) => (i === 1 ? { ...tr, main: true, overlay: true } : tr));
-  const sticker = { path: 'openfilm/stickers/tap/files/tap.html', name: 'Tap', kind: 'mg' as const, durationMs: 3000, saved: 'openfilm/stickers/tap' };
+  const sticker = { path: 'orangefilm/stickers/tap/files/tap.html', name: 'Tap', kind: 'mg' as const, durationMs: 3000, saved: 'orangefilm/stickers/tap' };
   assert.deepEqual(assetDropSpot(sticker, stickers, { lane: 1, band: 'body' }, 12_000), { action: 'into', laneIndex: 1, lane: stickers[1]!.lane, docIndex: stickers[1]!.docIndex ?? null, locked: false });
 });

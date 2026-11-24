@@ -2,9 +2,9 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The newest openfilm for a Studio run with npm (not the desktop app's, which updates with the app, nor a source
+ * The newest orangefilm for a Studio run with npm (not the desktop app's, which updates with the app, nor a source
  * checkout): what Studio's /api/version says of it, and the top bar's Update, which Studio runs in the background as
- * `openfilm update`. Studio then starts again on the new version and the page reloads on it by itself (api.ts listen).
+ * `orangefilm update`. Studio then starts again on the new version and the page reloads on it by itself (api.ts listen).
  */
 
 /** What Studio says of its version and the newest (api.ts StudioVersion). */

@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * OpenFilm's MCP server, as the coding agents beside the window see it: a stdio JSON-RPC endpoint with a handful of
+ * OrangeFilm's MCP server, as the coding agents beside the window see it: a stdio JSON-RPC endpoint with a handful of
  * tools — search the material library, take one into the project, read the wiki's RPCs, insert a clip, take a look.
  *
  * Three rules shape the whole file:
@@ -10,17 +10,17 @@
  *  - **Starting never throws.** The agent client runs with `failOnStartupError`, so a server that dies while starting
  *    takes the session with it. Every tool answers, even when nothing behind it is configured: the answer is a
  *    structured `not-configured` result, not an exception.
- *  - **Reading is free, writing is not.** MCP reaches the project without passing OpenFilm's own approve step, so this
- *    server carries its own gate: read tools always work, write tools need `~/.openfilm-dev/mcp-write.json` to say
+ *  - **Reading is free, writing is not.** MCP reaches the project without passing OrangeFilm's own approve step, so this
+ *    server carries its own gate: read tools always work, write tools need `~/.orangefilm-dev/mcp-write.json` to say
  *    `allowWrite: true` for a project that contains the one being edited. No file, no write.
- *  - **Every write leaves one line.** `~/.openfilm-dev/mcp-audit.log` gets the tool, the project, a summary of the
+ *  - **Every write leaves one line.** `~/.orangefilm-dev/mcp-audit.log` gets the tool, the project, a summary of the
  *    arguments and the clip id — never a whole media path.
  *  - **Five tools, one of them the search.** `docs/contracts/mcp-tools.schema.json` caps the surface at five names. The
  *    three read-only `material.*` tools (`packages/orangefilm/src/material-tools.mjs`) are what an agent browses the cloud
  *    library with — `material.search` (the account's own documents, `material-search.mjs`) beside the index's
  *    `material.collections` / `material.items` — so two of the seven old names gave up their slots: `SURFACE_CHANGES`
  *    says which and why, and the `compat` surface still carries every one of them for a client that has not moved yet.
- *    **The default is the five slots** (`DEFAULT_SURFACE`); `OPENFILM_MCP_SURFACE=compat` is the whole way back to the
+ *    **The default is the five slots** (`DEFAULT_SURFACE`); `ORANGE_MCP_SURFACE=compat` is the whole way back to the
  *    seven, and `surfaceArithmetic` is the arithmetic the surface obeys.
  *
  * The tools themselves reuse the editor's own code (`film-doc.mjs` reads and writes film.html, `ops.mjs` applies an
@@ -34,13 +34,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createInterface } from 'node:readline';
 
 export const PROTOCOL_VERSION = '2025-06-18';
-export const SERVER_NAME = (process.env.ORANGE_MCP_SERVER_NAME ?? process.env.OPENFILM_MCP_SERVER_NAME ?? '').trim() || 'orangefilm';
+export const SERVER_NAME = (process.env.ORANGE_MCP_SERVER_NAME ?? process.env.ORANGE_MCP_SERVER_NAME ?? '').trim() || 'orangefilm';
 export const SERVER_VERSION = '0.3.0';
 
 /** The file that says whether this machine lets an agent write, and where. */
-export const WRITE_GATE_FILE = ['.openfilm-dev', 'mcp-write.json'];
+export const WRITE_GATE_FILE = ['.orangefilm-dev', 'mcp-write.json'];
 /** One line per write, beside it. */
-export const AUDIT_FILE = ['.openfilm-dev', 'mcp-audit.log'];
+export const AUDIT_FILE = ['.orangefilm-dev', 'mcp-audit.log'];
 
 /** The tools `tools/list` answers with. Read tools first: the list is also the documentation an agent reads. */
 export const TOOL_DEFINITIONS = Object.freeze([
@@ -242,7 +242,7 @@ export const TOOL_DEFINITIONS = Object.freeze([
   },
   {
     name: 'timeline.insert_clip',
-    description: 'Insert a clip into film.html. Needs write permission for this project (see ~/.openfilm-dev/mcp-write.json).',
+    description: 'Insert a clip into film.html. Needs write permission for this project (see ~/.orangefilm-dev/mcp-write.json).',
     inputSchema: {
       type: 'object',
       properties: {
@@ -260,7 +260,7 @@ export const TOOL_DEFINITIONS = Object.freeze([
     },
   },
   {
-    name: 'openfilm.look',
+    name: 'orangefilm.look',
     description: 'Draw what the film looks like (a PNG on disk) and return its path. Read-only.',
     inputSchema: { type: 'object', properties: { target: { type: 'string' }, range: { type: 'string' } }, additionalProperties: false },
   },
@@ -292,8 +292,8 @@ export const TOOL_SURFACES = Object.freeze({ materials: BUDGET_SURFACE, compat: 
 
 /**
  * The surface an instance answers `tools/list` with unless it is told another. The budgeted five is the default —
- * that is what the contract declares and what an agent started by this file gets. `OPENFILM_MCP_SURFACE=compat` (or
- * `createOpenFilmMcpServer({ surface: 'compat' })`) is the whole way back to the seven old names; a name this object
+ * that is what the contract declares and what an agent started by this file gets. `ORANGE_MCP_SURFACE=compat` (or
+ * `createOrangeFilmMcpServer({ surface: 'compat' })`) is the whole way back to the seven old names; a name this object
  * does not carry is not a surface, and falls back here rather than listing nothing.
  */
 export const DEFAULT_SURFACE = 'materials';
@@ -331,7 +331,7 @@ export const SURFACE_CHANGES = Object.freeze([
     why: '合并后仍要一个名额，而 wiki 面依赖 index RPC（本机未配置时只会答 not-configured）。三个素材工具把五个名额占满，而云管家素材是当前 agent 真正检索不到的东西 —— 先给能用的，wiki.read 留在 compat 面，配置好 RPC 再谈换位。',
   },
   {
-    name: 'openfilm.look', mode: 'retired',
+    name: 'orangefilm.look', mode: 'retired',
     why: '它画一张 PNG 给人看（deps.look 不在 agent 侧注入时只会答 not-configured），不是 agent 的检索/写作能力；把名额让给 material.search 的收益更大。',
   },
 ]);
@@ -379,15 +379,15 @@ const notConfigured = (tool, what) => answer({ ok: false, code: 'not-configured'
 const refused = (tool, code, message, extra = {}) => answer({ ok: false, code, tool, message, ...extra }, { isError: true });
 const badArguments = (tool, message) => answer({ ok: false, code: 'invalid-arguments', tool, message }, { isError: true });
 
-/** `~/.openfilm-dev/…`, made on demand. `home` is injected in tests; nothing else reads the person's home. */
-export function openfilmDevPath(home, parts) {
+/** `~/.orangefilm-dev/…`, made on demand. `home` is injected in tests; nothing else reads the person's home. */
+export function orangefilmDevPath(home, parts) {
   const directory = join(home ?? homedir(), ...parts.slice(0, -1));
   mkdirSync(directory, { recursive: true });
   return join(directory, parts[parts.length - 1]);
 }
 
 /**
- * The write gate: `~/.openfilm-dev/mcp-write.json`, exactly
+ * The write gate: `~/.orangefilm-dev/mcp-write.json`, exactly
  *
  *     { "version": 1, "allowWrite": true, "projects": ["C:\\work\\a-film", "/home/me/b-film"] }
  *
@@ -431,7 +431,7 @@ function defaultRead(path) {
 export function appendAudit({ home, tool, project, params, clipId, at = new Date(), write = appendFileSync }) {
   const line = [at.toISOString(), tool, 'project=' + resolve(project), 'clipId=' + (clipId ?? '-'), 'params=' + params].join('\t') + '\n';
   try {
-    write(openfilmDevPath(home, AUDIT_FILE), line);
+    write(orangefilmDevPath(home, AUDIT_FILE), line);
   } catch {
     /* an audit that cannot be written must not become a failed edit */
   }
@@ -439,18 +439,16 @@ export function appendAudit({ home, tool, project, params, clipId, at = new Date
 }
 
 /**
- * Where the editor's own modules are: the checkout (a source run), or `resources/openfilm` in an
+ * Where the editor's own modules are: the checkout (a source run), or `resources/orangefilm` in an
  * installed app — `scripts/release.mjs` copies exactly the modules `editorModules` loads (the list
  * lives in scripts/packed-editor-modules.mjs, so the copy and the load cannot drift).
- * `OPENFILM_EDITOR_MODULES` names a folder outright (tests, and a moved install).
+ * `ORANGE_EDITOR_MODULES` names a folder outright (tests, and a moved install).
  * @param {{ resources?: string | undefined, env?: NodeJS.ProcessEnv, here?: string }} [options]
  */
 export function editorModulesDir({ resources = process.resourcesPath, env = process.env, here = fileURLToPath(import.meta.url) } = {}) {
-  const named = (env.ORANGE_EDITOR_MODULES ?? env.OPENFILM_EDITOR_MODULES ?? '').trim();
+  const named = (env.ORANGE_EDITOR_MODULES ?? '').trim();
   if (named) return resolve(named);
-  const alias = resources ? join(resources, 'orangefilm') : '';
-  if (alias && existsSync(join(alias, 'packages/orangefilm/src/film-doc.mjs'))) return alias;
-  const packed = resources ? join(resources, 'openfilm') : '';
+  const packed = resources ? join(resources, 'orangefilm') : '';
   if (packed && existsSync(join(packed, 'packages/orangefilm/src/film-doc.mjs'))) return packed;
   return resolve(dirname(here), '..', '..', '..');
 }
@@ -517,7 +515,7 @@ function auditParams(tool, args) {
  *          surface?: keyof typeof TOOL_SURFACES, materialIndexDir?: string, materialTools?: object,
  *          materialSearch?: (request: {query: string, filters: Record<string, string | number>, limit: number}) => Promise<any>}} [deps]
  */
-export function createOpenFilmMcpServer(deps = {}) {
+export function createOrangeFilmMcpServer(deps = {}) {
   const cwd = deps.cwd ?? process.cwd();
   const home = deps.home ?? homedir();
   const now = deps.now ?? (() => new Date());
@@ -561,7 +559,7 @@ export function createOpenFilmMcpServer(deps = {}) {
    * The search the agent asks (`packages/orangefilm/src/material-search.mjs`): the account's own documents through
    * `media_search`, or the landed index when the database cannot be asked. `deps.materialSearch` is the seam a test
    * (or an app that runs the search elsewhere, e.g. Studio's own route) hands in; otherwise the module builds it from
-   * this machine's settings (`OPENFILM_MEDIA_TENANT`, `OPENFILM_EMBED_ENDPOINT`, `OPENFILM_EMBED_MODEL`) and answers
+   * this machine's settings (`ORANGE_MEDIA_TENANT`, `ORANGE_EMBED_ENDPOINT`, `ORANGE_EMBED_MODEL`) and answers
    * `null` when there is no tenant to search — a stated absence, never a search of somebody else's library.
    */
   let searchPromise = null;
@@ -579,7 +577,7 @@ export function createOpenFilmMcpServer(deps = {}) {
           return async (request = {}) => {
             /* 公司可见性只有供应商 list 知道：MCP 先问 Studio 的公司列表，再退回本地检索。 */
             try {
-              const run = JSON.parse(readFileSync(join(home, '.openfilm-dev', 'run.json'), 'utf8'));
+              const run = JSON.parse(readFileSync(join(home, '.orangefilm-dev', 'run.json'), 'utf8'));
               if (run?.origin && run?.key) {
                 const url = new URL(`${run.origin}/api/materials/list`);
                 url.searchParams.set('name', String(request.query ?? ''));
@@ -952,7 +950,7 @@ export function createOpenFilmMcpServer(deps = {}) {
         }
 
         const engine = await import(pathToFileURL(join(editorModulesDir(), 'packages/orangefilm/studio/server/fission-engine-paths.mjs')).href);
-        const dataDir = String(process.env.ORANGE_DATA_DIR ?? process.env.OPENFILM_DATA_DIR ?? '').trim() || home;
+        const dataDir = String(process.env.ORANGE_DATA_DIR ?? process.env.ORANGE_DATA_DIR ?? '').trim() || home;
         const resolved = engine.resolveEnginePaths({ dataDir, project: root });
         if (!resolved.ok) {
           return answer({ ok: false, code: 'engine-paths', tool, problems: resolved.problems,
@@ -1113,7 +1111,7 @@ export function createOpenFilmMcpServer(deps = {}) {
           if (!videoId.startsWith('saved/')) {
             try {
               /* the MCP child's home is the person's, not Studio's; run.json in the app's dev home names the Studio. */
-              const run = JSON.parse(readFileSync(join(home, '.openfilm-dev', 'run.json'), 'utf8'));
+              const run = JSON.parse(readFileSync(join(home, '.orangefilm-dev', 'run.json'), 'utf8'));
               const studio = run?.origin && run?.key ? run : null;
               if (studio) {
                 const headers = { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin };
@@ -1173,7 +1171,7 @@ export function createOpenFilmMcpServer(deps = {}) {
       if (!root) return refused(tool, 'project-required', 'No project folder with a film.html was found.');
       /* the gate comes before a single byte is read: an unauthorized agent learns nothing but the refusal */
       const gate = readWriteGate({ home, project: root, ...(deps.read ? { read: deps.read } : {}) });
-      if (!gate.allowed) return refused(tool, gate.code, 'Writing needs permission: ~/.openfilm-dev/mcp-write.json must list this project.', { gate: gate.file });
+      if (!gate.allowed) return refused(tool, gate.code, 'Writing needs permission: ~/.orangefilm-dev/mcp-write.json must list this project.', { gate: gate.file });
       const file = join(root, 'film.html');
       const text = readFileSync(file, 'utf8');
       const { readFilmFile, filmHtml, applyOps } = await editor();
@@ -1191,7 +1189,7 @@ export function createOpenFilmMcpServer(deps = {}) {
       return answer({ ok: true, tool, project: root, clipId, at: insert.clip.at ?? null, track: args.track ?? 0 });
     },
 
-    async 'openfilm.look'(args, tool) {
+    async 'orangefilm.look'(args, tool) {
       if (typeof deps.look !== 'function') return notConfigured(tool, 'Drawing a look');
       const root = projectOf(args, cwd);
       if (!root) return refused(tool, 'project-required', 'No project folder with a film.html was found.');
@@ -1318,7 +1316,7 @@ export function serveStdio({ handle, input = process.stdin, output = process.std
  * one variable that makes an Electron binary behave as Node. `env` is the `[{name, value}]` shape ACP expects.
  * @param {{command: string, script?: string, nodeArgs?: readonly string[]}} options
  */
-export function openfilmMcpServerConfig({ command, script = fileURLToPath(import.meta.url), nodeArgs = [] }) {
+export function orangefilmMcpServerConfig({ command, script = fileURLToPath(import.meta.url), nodeArgs = [] }) {
   if (!isAbsolute(String(command))) throw new Error('The MCP server needs an absolute command: ' + String(command));
   if (!isAbsolute(String(script))) throw new Error('The MCP server needs an absolute script: ' + String(script));
   return {
@@ -1328,8 +1326,8 @@ export function openfilmMcpServerConfig({ command, script = fileURLToPath(import
     env: [
       { name: 'ELECTRON_RUN_AS_NODE', value: '1' },
       /* the material tenant lives in the app's account store; the MCP child searches the same company library. */
-      ...((process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT)?.trim()
-        ? [{ name: process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'OPENFILM_MEDIA_TENANT', value: (process.env.ORANGE_MEDIA_TENANT ?? process.env.OPENFILM_MEDIA_TENANT).trim() }] : []),
+      ...((process.env.ORANGE_MEDIA_TENANT ?? process.env.ORANGE_MEDIA_TENANT)?.trim()
+        ? [{ name: process.env.ORANGE_MEDIA_TENANT ? 'ORANGE_MEDIA_TENANT' : 'ORANGE_MEDIA_TENANT', value: (process.env.ORANGE_MEDIA_TENANT ?? process.env.ORANGE_MEDIA_TENANT).trim() }] : []),
     ],
   };
 }
@@ -1352,10 +1350,10 @@ if (isEntryPoint) {
   try {
     /* the agent the window starts is offered the budgeted surface: the three index tools beside the two write verbs,
        which is also `DEFAULT_SURFACE` — the variable only has to name another one to move; anything it names that is
-       not a surface is ignored, never a way to list nothing. `OPENFILM_MCP_SURFACE=compat` is the way back to the seven
+       not a surface is ignored, never a way to list nothing. `ORANGE_MCP_SURFACE=compat` is the way back to the seven
        names this file used to list. */
     serveStdio({
-      handle: createOpenFilmMcpServer({ surface: process.env.ORANGE_MCP_SURFACE ?? process.env.OPENFILM_MCP_SURFACE }).handle,
+      handle: createOrangeFilmMcpServer({ surface: process.env.ORANGE_MCP_SURFACE ?? process.env.ORANGE_MCP_SURFACE }).handle,
       log: (line) => {
         try {
           process.stderr.write(line + '\n');
@@ -1366,7 +1364,7 @@ if (isEntryPoint) {
     });
   } catch (error) {
     try {
-      process.stderr.write('openfilm mcp: could not start: ' + String(error?.message ?? error) + '\n');
+      process.stderr.write('orangefilm mcp: could not start: ' + String(error?.message ?? error) + '\n');
     } catch {
       /* nothing to report it to */
     }

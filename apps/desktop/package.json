@@ -24,7 +24,6 @@
     "@earendil-works/pi-coding-agent": "1.1.0",
     "diff": "9.0.0",
     "electron-updater": "6.8.9",
-    "openfilm": "link:../../packages/orangefilm",
     "undici": "8.12.2",
     "orangefilm": "workspace:*"
   },

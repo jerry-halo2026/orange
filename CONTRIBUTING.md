@@ -9,9 +9,9 @@ You need Node 22.18 or later (the tests run TypeScript directly), pnpm 9 (`corep
 this repository names in package.json), ffmpeg on the PATH, and git.
 
 ```sh
-git clone https://github.com/openfilm/openfilm && cd openfilm
+git clone https://github.com/jerry-halo2026/orange && cd orangefilm
 pnpm install                 # also builds Studio's editor (packages/orangefilm: build:ui)
-pnpm --filter openfilm exec playwright-core install chromium-headless-shell
+pnpm --filter orangefilm exec playwright-core install chromium-headless-shell
 pnpm dev                     # Studio from this checkout, with a sample film
 pnpm test
 ```
@@ -20,25 +20,25 @@ From the root:
 
 | Command | What it does |
 | --- | --- |
-| `pnpm dev` | Studio from source (packages/orangefilm's `dev`), apart from an installed OpenFilm |
-| `pnpm dev:desktop` | the desktop app from source, as "OpenFilm Dev" |
+| `pnpm dev` | Studio from source (packages/orangefilm's `dev`), apart from an installed OrangeFilm |
+| `pnpm dev:desktop` | the desktop app from source, as "OrangeFilm Dev" |
 | `pnpm test` | every package's tests |
 | `pnpm typecheck` | every package's types |
 | `pnpm build` | Studio's editor and the desktop app's window |
 | `pnpm audit:public` | what must not be in a public repository: secrets (gitleaks), home folders, paths out of the repository, prose in another language than English outside the translations, dependencies outside this workspace |
-| `pnpm check:pack` | packs `openfilm` as npm would get it, lists its files and checks them |
+| `pnpm check:pack` | packs `orangefilm` as npm would get it, lists its files and checks them |
 | `pnpm changeset` | adds a changeset to your pull request (below, Releases) |
 
-`pnpm --filter <package> <script>` runs one package's script; the packages are `openfilm`, `@orange/shared` and
+`pnpm --filter <package> <script>` runs one package's script; the packages are `orangefilm`, `@orange/shared` and
 `@orange/desktop`.
 
 ## Layout
 
 ```
-packages/orangefilm/   npm `openfilm`: the format, the CLI and Studio
-  SPEC.md, MANUAL.md   the film format; the manual `openfilm` prints for agents
-  manual/              OpenFilm's own skills, which the manual names: how a film is made, its media, its canvas
-  bin/                 the `openfilm` command
+packages/orangefilm/   npm `orangefilm`: the format, the CLI and Studio
+  SPEC.md, MANUAL.md   the film format; the manual `orangefilm` prints for agents
+  manual/              OrangeFilm's own skills, which the manual names: how a film is made, its media, its canvas
+  bin/                 the `orangefilm` command
   src/                 reading film.html, the host that draws frames in a headless browser, look and render
   studio/server/       Studio's server: projects, edits, history, exports, media providers
   studio/ui/           Studio's editor (React, built with Vite into studio/ui/dist, which the server serves)
@@ -59,10 +59,10 @@ docs/                pictures for the README
 ## packages/orangefilm: the format, the CLI and Studio
 
 `pnpm dev` runs Studio on port 4848, with its state and exports in `packages/orangefilm/.dev/` (git-ignored), beside an
-OpenFilm you have installed; its projects are in the library every OpenFilm shares. It opens a sample film in your browser, rebuilds the editor
+OrangeFilm you have installed; its projects are in the library every OrangeFilm shares. It opens a sample film in your browser, rebuilds the editor
 when `studio/ui` changes (reload the page), and restarts Studio when `studio/server` or `src` change. Ctrl+C stops it.
 
-`pnpm --filter openfilm test` runs its tests and `pnpm --filter openfilm typecheck` checks the server's and the
+`pnpm --filter orangefilm test` runs its tests and `pnpm --filter orangefilm typecheck` checks the server's and the
 editor's types. One file, or one test in it, from `packages/orangefilm`:
 
 ```sh
@@ -72,17 +72,17 @@ node --test --test-name-pattern="split" studio/server/film.test.mjs
 
 ### Trying a change with a coding agent
 
-While `pnpm dev` runs, `packages/orangefilm/.dev/bin/openfilm` (`openfilm.cmd` on Windows) is your checkout's command
+While `pnpm dev` runs, `packages/orangefilm/.dev/bin/orangefilm` (`orangefilm.cmd` on Windows) is your checkout's command
 on that Studio. Ask Codex, Claude Code or any coding agent for a film and tell it to run that command instead of the
-skill's `npx -y openfilm@latest` (the release); the manual names the same command, so it keeps using it. Your films
+skill's `npx -y orangefilm@latest` (the release); the manual names the same command, so it keeps using it. Your films
 appear in the Studio `pnpm dev` opened. Its state is in `packages/orangefilm/.dev/` and its port is its own, so an
-installed OpenFilm, its Studio on port 4747 and `~/.openfilm` are left alone; projects are the one thing they share:
-every OpenFilm uses the same library, the one Studio's Settings chose (kept in `~/.openfilm/prefs.json`, which
-`OPENFILM_SHARED_HOME` points it at), by default `~/Movies/OpenFilm/Projects` on macOS. A test that must stay apart
-sets `OPENFILM_LIBRARY` and leaves `OPENFILM_SHARED_HOME` unset.
+installed OrangeFilm, its Studio on port 4747 and `~/.orangefilm` are left alone; projects are the one thing they share:
+every OrangeFilm uses the same library, the one Studio's Settings chose (kept in `~/.orangefilm/prefs.json`, which
+`ORANGE_SHARED_HOME` points it at), by default `~/Movies/OrangeFilm/Projects` on macOS. A test that must stay apart
+sets `ORANGE_LIBRARY` and leaves `ORANGE_SHARED_HOME` unset.
 
-To make your checkout the `openfilm` your agents use everywhere, `npm link` in `packages/orangefilm` (`npm unlink -g
-openfilm` undoes it). That one shares `~/.openfilm` and port 4747 with an installed OpenFilm; of two Studios, the
+To make your checkout the `orangefilm` your agents use everywhere, `npm link` in `packages/orangefilm` (`npm unlink -g
+orangefilm` undoes it). That one shares `~/.orangefilm` and port 4747 with an installed OrangeFilm; of two Studios, the
 newer version replaces the older.
 
 ## packages/shared: what the clients share
@@ -96,19 +96,19 @@ workspace reads its TypeScript in `src/` as it is, and the desktop app bundles i
 ## apps/desktop: the desktop app
 
 ```sh
-pnpm dev:desktop                              # builds the window's page, then runs the app as "OpenFilm Dev"
+pnpm dev:desktop                              # builds the window's page, then runs the app as "OrangeFilm Dev"
 pnpm --filter @orange/desktop test
 pnpm --filter @orange/desktop typecheck
 ```
 
-Run from source, the app is its own "OpenFilm Dev": its own name, data folder, Studio home and port, so it never
-shares a window or a Studio with an installed OpenFilm. Its projects are in the same library as every OpenFilm's.
+Run from source, the app is its own "OrangeFilm Dev": its own name, data folder, Studio home and port, so it never
+shares a window or a Studio with an installed OrangeFilm. Its projects are in the same library as every OrangeFilm's.
 Its renamed copy of Electron lives in `apps/desktop/.dev/` (git-ignored), signed only for this machine: you need no
 certificate to run or change it. Its window's page imports Studio's editor
 from `packages/orangefilm` as source, so a change to Studio shows in the app at its next start.
 
 `pnpm --filter @orange/desktop release` builds an installable app into `apps/desktop/.release/` (git-ignored),
-unsigned unless `OPENFILM_SIGN_IDENTITY` and `APPLE_TEAM_ID` are set. A build you make is yours to try; before you
+unsigned unless `ORANGE_SIGN_IDENTITY` and `APPLE_TEAM_ID` are set. A build you make is yours to try; before you
 distribute one, read [TRADEMARK.md](TRADEMARK.md): a fork published as its own needs its own name and icon.
 
 ## The update feed and product.json
@@ -121,13 +121,13 @@ Settings → Services, or each service's variable in the environment (`ELEVENLAB
 ## Releases
 
 Every pull request that changes what a package's users get carries a **changeset**: run `pnpm changeset`, pick the
-packages it changes (`openfilm`, `@orange/desktop`, `@orange/shared`) and how much (`patch` for a fix, `minor`
+packages it changes (`orangefilm`, `@orange/desktop`, `@orange/shared`) and how much (`patch` for a fix, `minor`
 for something new; `major` only by agreement), and write a line for the changelog, as a user would read it. Commit the
 file it writes in `.changeset/`. A change to tests, docs or CI alone needs none (`pnpm changeset --empty` says so).
 Each line in the changelog links its pull request and thanks its author.
 
 All the packages share one version. When changesets reach `main`, the release workflow opens a "Version packages"
-pull request that bumps it and writes the changelogs; merging it publishes `openfilm` to npm (with provenance, from CI
+pull request that bumps it and writes the changelogs; merging it publishes `orangefilm` to npm (with provenance, from CI
 only). Then a maintainer pushes the tag `v<version>`: the desktop workflow builds the app, signs and notarizes it, and
 makes a draft GitHub release with the installers. Publishing that release makes it the latest, which the website's
 download links and the apps' update checks follow.
@@ -136,13 +136,13 @@ download links and the apps' update checks follow.
 
 Issues labeled `good first issue` are small and say what is needed; `help wanted` ones are bigger. Say on the issue
 that you are taking it, and open one before starting a large change, so nobody does it twice. Questions go to
-[Discussions](https://github.com/openfilm/openfilm/discussions).
+[Discussions](https://github.com/jerry-halo2026/orange/discussions).
 
 ## What we keep small
 
-- **The manual** ([MANUAL.md](packages/orangefilm/MANUAL.md)), what `openfilm` prints for agents, is a page: what a
-  film is and OpenFilm's own skills ([manual/](packages/orangefilm/manual)), which hold the rest: how a film is made and
-  seen (the one rule: the picture depends only on t), its media, its canvas. A new part of OpenFilm an agent works with
+- **The manual** ([MANUAL.md](packages/orangefilm/MANUAL.md)), what `orangefilm` prints for agents, is a page: what a
+  film is and OrangeFilm's own skills ([manual/](packages/orangefilm/manual)), which hold the rest: how a film is made and
+  seen (the one rule: the picture depends only on t), its media, its canvas. A new part of OrangeFilm an agent works with
   gets a skill of its own there, never more words in the manual. No style advice or methods. If an agent gets
   something wrong, a word is added only when the manual or a skill was ambiguous; if a tool behaved
   oddly, the tool is fixed.
@@ -154,7 +154,7 @@ that you are taking it, and open one before starting a large change, so nobody d
 
 ### Which services are built in
 
-A built-in provider reads as a service OpenFilm vouches for: people hand it their keys, their prompts and their
+A built-in provider reads as a service OrangeFilm vouches for: people hand it their keys, their prompts and their
 footage. So we hold one standard for every one:
 
 - **An internationally known company, or a leading name in its field**, offering **its own** service (its own models,
@@ -167,9 +167,9 @@ footage. So we hold one standard for every one:
 
   We look at it with you, and say yes or no with the reason before you spend time on a pull request.
 - **A service that resells or routes other companies' models** is not built in, however good its API: those models
-  reach OpenFilm through their makers, or through a provider that is already built in.
+  reach OrangeFilm through their makers, or through a provider that is already built in.
 
-Every service, built in or not, works with OpenFilm today through **Settings › Services › Custom services**: any
+Every service, built in or not, works with OrangeFilm today through **Settings › Services › Custom services**: any
 HTTP service with its address, a key if it has one, and a few words about it; the agent calls it from there, and the
 key stays on the computer.
 

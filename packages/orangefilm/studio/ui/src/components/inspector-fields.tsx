@@ -47,7 +47,7 @@ const round3 = (n: number) => Math.round(n * 1000) / 1000;
 
 /* ───────────────────────────── section ───────────────────────────── */
 
-const CLOSED_KEY = 'openfilm.inspector.closed';
+const CLOSED_KEY = 'orangefilm.inspector.closed';
 const closedListeners = new Set<() => void>();
 let closedCache: Record<string, boolean> | null = null;
 
@@ -805,7 +805,7 @@ export function ColorField({
 
 /* ───────────────────────────── time ───────────────────────────── */
 
-const TIME_KEY = 'openfilm.inspector.time';
+const TIME_KEY = 'orangefilm.inspector.time';
 type TimeUnit = 'timecode' | 'seconds';
 const timeListeners = new Set<() => void>();
 

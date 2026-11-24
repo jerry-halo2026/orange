@@ -97,7 +97,7 @@ test('401 说清是区域问题（北京 key 打新加坡端点）', async () =>
   const saved = globalThis.fetch;
   globalThis.fetch = /** @type {any} */ (async () => ({ ok: false, status: 401, text: async () => 'bad key' }));
   try {
-    await assert.rejects(() => qwen.run('tts', { text: 'x' }, ctx()), /401.*OPENFILM_QWEN_URL/s);
+    await assert.rejects(() => qwen.run('tts', { text: 'x' }, ctx()), /401.*ORANGE_QWEN_URL/s);
   } finally {
     globalThis.fetch = saved;
   }

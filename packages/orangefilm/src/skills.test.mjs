@@ -28,30 +28,30 @@ test('cover edits do not follow a personal skill folder outside its library or w
   const outside = skill(join(root, 'outside'), 'linked', 'Outside');
   symlinkSync(outside, join(mine, 'linked'), 'junction');
   assert.throws(() => setSkillCover('linked', coverPng, { mine }), /inside your skills folder/);
-  assert.equal(existsSync(join(outside, 'openfilm.json')), false);
+  assert.equal(existsSync(join(outside, 'orangefilm.json')), false);
   const own = skill(join(mine, 'own'), 'own', 'Own');
   const metadata = join(root, 'shared.json');
   writeFileSync(metadata, '{"custom":"original"}');
   /* A file symlink needs privileges on Windows; the folder-junction boundary above still runs there. */
   if (process.platform === 'win32') return;
-  symlinkSync(metadata, join(own, 'openfilm.json'));
+  symlinkSync(metadata, join(own, 'orangefilm.json'));
   setSkillCover('own', coverPng, { mine });
   assert.equal(readFileSync(metadata, 'utf8'), '{"custom":"original"}');
-  assert.equal(lstatSync(join(own, 'openfilm.json')).isSymbolicLink(), false);
+  assert.equal(lstatSync(join(own, 'orangefilm.json')).isSymbolicLink(), false);
   setSkillCover('own', null, { mine });
-  assert.deepEqual(JSON.parse(readFileSync(join(own, 'openfilm.json'), 'utf8')), { custom: 'original' });
+  assert.deepEqual(JSON.parse(readFileSync(join(own, 'orangefilm.json'), 'utf8')), { custom: 'original' });
 });
 
 test('a chosen cover is kept with the copied skill, preserving its metadata and source', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-cover-'));
   const meta = { title: { en: 'A title' }, kind: 'style', custom: 'kept' };
-  const from = skill(join(root, 'source'), 'covered', 'Covered skill', 'Steps', { 'openfilm.json': JSON.stringify(meta) });
+  const from = skill(join(root, 'source'), 'covered', 'Covered skill', 'Steps', { 'orangefilm.json': JSON.stringify(meta) });
   const [kept] = await addSkills(from, { mine: join(root, 'mine'), covers: { covered: coverPng } });
   assert.ok(kept.cover);
   assert.deepEqual(readFileSync(join(kept.folder, kept.cover)), Buffer.from(coverPng.split(',')[1], 'base64'));
-  const saved = JSON.parse(readFileSync(join(kept.folder, 'openfilm.json'), 'utf8'));
+  const saved = JSON.parse(readFileSync(join(kept.folder, 'orangefilm.json'), 'utf8'));
   assert.deepEqual(saved, { ...meta, cover: kept.cover });
-  assert.deepEqual(JSON.parse(readFileSync(join(from, 'openfilm.json'), 'utf8')), meta);
+  assert.deepEqual(JSON.parse(readFileSync(join(from, 'orangefilm.json'), 'utf8')), meta);
   assert.equal(existsSync(join(from, kept.cover)), false);
   assert.equal(readSkill(kept.folder, 'mine').cover, kept.cover, 'cover persists when read again');
 });
@@ -62,7 +62,7 @@ test('covers follow each skill through a fetched collection; unselected covers r
   const { staging } = await previewSkills('https://github.com/x/y', { mine, fetch: async (_url, into) => {
     const pack = join(into, 'pack');
     skill(join(pack, 'one'), 'one', 'One');
-    skill(join(pack, 'two'), 'two', 'Two', 'Steps', { 'openfilm.json': '{"cover":"original.png"}', 'original.png': Buffer.from(coverPng.split(',')[1], 'base64') });
+    skill(join(pack, 'two'), 'two', 'Two', 'Steps', { 'orangefilm.json': '{"cover":"original.png"}', 'original.png': Buffer.from(coverPng.split(',')[1], 'base64') });
     return pack;
   } });
   const kept = await commitSkills(staging, { mine, covers: { one: coverPng } });
@@ -116,46 +116,46 @@ test('skills are listed from the project, yours and the official ones, each by i
   skill(join(mine, 'lyric-pv'), 'lyric-pv', 'Lyric videos', 'Use the engine.', { 'scripts/build.sh': 'echo', 'lib/engine.js': '' });
   skill(join(official, 'brand'), 'brand', 'Official brand');
   skill(join(official, 'kinetic'), 'kinetic', 'Official kinetic');
-  /* the person's kinetic, added from OpenFilm's own repository: that official one */
-  skill(join(mine, 'kinetic'), 'kinetic', 'Kinetic from OpenFilm');
-  writeFileSync(join(mine, '.origins.json'), JSON.stringify({ kinetic: { from: 'link', address: 'https://github.com/openfilm/skills' } }));
+  /* the person's kinetic, added from OrangeFilm's own repository: that official one */
+  skill(join(mine, 'kinetic'), 'kinetic', 'Kinetic from OrangeFilm');
+  writeFileSync(join(mine, '.origins.json'), JSON.stringify({ kinetic: { from: 'link', address: 'https://github.com/orangefilm/skills' } }));
   mkdirSync(join(mine, 'not-a-skill'), { recursive: true });
   const all = listSkills({ project, mine, official });
   assert.deepEqual(all.map((s) => [s.uid, s.source, s.description]), [
     ['project/brand', 'project', 'This film\'s brand'], ['local/brand', 'mine', 'My brand'], ['orangefilm/brand', 'official', 'Official brand'],
-    ['openfilm/kinetic', 'mine', 'Kinetic from OpenFilm'], ['orangefilm/kinetic', 'official', 'Official kinetic'], ['local/lyric-pv', 'mine', 'Lyric videos'],
-  ]);
-  assert.deepEqual(all[3].over, undefined);
-  const lyric = all[5];
+    ['orangefilm/kinetic', 'mine', 'Kinetic from OrangeFilm'], ['local/lyric-pv', 'mine', 'Lyric videos'],
+  ], 'the person\'s kinetic came from OrangeFilm\'s own repository, so it holds the official uid: the official one is the same skill');
+  assert.deepEqual(all[3].over, ['official'], 'the person\'s copy holds the official uid, so it stands over the official one');
+  const lyric = all[4];
   assert.deepEqual(lyric.scripts, ['lib/engine.js', 'scripts/build.sh'], 'what an agent could run, for the person to see');
   /* by its name alone, two owners have one: none chosen, both named */
   assert.equal(findSkill('brand', { mine, official }), null, 'two of the name: none chosen for the agent');
   assert.deepEqual(skillsNamed('brand', { mine, official }).map((s) => s.uid).sort(), ['local/brand', 'orangefilm/brand']);
   assert.equal(findSkill('local-brand', { mine, official }).uid, 'local/brand', 'as an agent is given it');
-  assert.equal(findSkill('openfilm:brand', { mine, official }).uid, 'orangefilm/brand', 'as Claude Code names it in a plugin');
-  assert.equal(findSkill('openfilm/brand', { mine, official }).description, 'Official brand', 'by uid: that one');
+  assert.equal(findSkill('orangefilm:brand', { mine, official }).uid, 'orangefilm/brand', 'as Claude Code names it in a plugin');
+  assert.equal(findSkill('orangefilm/brand', { mine, official }).description, 'Official brand', 'by uid: that one');
   assert.equal(findSkill('nothing', { mine, official }), null);
   const text = skillText(lyric);
   assert.match(text, /^<skill name="local-lyric-pv" full-name="local\/lyric-pv" folder=".*mine[\\/]lyric-pv">\n---/);
   assert.match(text, /Use the engine\.\n<\/skill>$/);
 });
 
-test('openfilm.json says what a skill needs and the computers it runs on; anything else there is left out', () => {
+test('orangefilm.json says what a skill needs and the computers it runs on; anything else there is left out', () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-needs-'));
-  const folder = skill(join(root, 'demo'), 'app-demo', 'Films a program', 'Steps', { 'openfilm.json': JSON.stringify({
+  const folder = skill(join(root, 'demo'), 'app-demo', 'Films a program', 'Steps', { 'orangefilm.json': JSON.stringify({
     needs: { en: 'Windows 10 or 11, FFmpeg 8', 'zh-CN': 'Windows 10 �?11，FFmpeg 8', 'x y': 'not a language' },
     platforms: ['windows', 'amiga'],
   }) });
   const read = readSkill(folder, 'mine');
   assert.deepEqual(read.needs, { en: 'Windows 10 or 11, FFmpeg 8', 'zh-CN': 'Windows 10 �?11，FFmpeg 8' });
   assert.deepEqual(read.platforms, ['windows']);
-  const plain = readSkill(skill(join(root, 'plain'), 'plain', 'Plain', 'Steps', { 'openfilm.json': JSON.stringify({ platforms: ['amiga'], needs: 7 }) }), 'mine');
+  const plain = readSkill(skill(join(root, 'plain'), 'plain', 'Plain', 'Steps', { 'orangefilm.json': JSON.stringify({ platforms: ['amiga'], needs: 7 }) }), 'mine');
   assert.equal(plain.platforms, undefined, 'no computer it names is one: none said, so every one');
   assert.equal(plain.needs, undefined);
   assert.ok(SKILL_PLATFORMS.includes(thisPlatform()));
 });
 
-test('openfilm skill by a name two owners share names neither, and lists each by its full name', async () => {
+test('orangefilm skill by a name two owners share names neither, and lists each by its full name', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-two-'));
   const mine = join(root, 'mine');
   skill(join(mine, 'brand'), 'brand', 'Mine');
@@ -163,10 +163,10 @@ test('openfilm skill by a name two owners share names neither, and lists each by
   mkdirSync(film);
   writeFileSync(join(film, 'film.html'), '<!doctype html>');
   skill(join(film, 'skills', 'brand'), 'brand', 'This film\'s');
-  const both = await skillCommand(['brand'], 'openfilm', { cwd: film, mine });
+  const both = await skillCommand(['brand'], 'orangefilm', { cwd: film, mine });
   assert.equal(both.ok, false);
-  assert.deepEqual(both.lines.slice(1), ['  openfilm skill project/brand', '  openfilm skill local/brand']);
-  const one = await skillCommand(['local/brand'], 'openfilm', { cwd: film, mine });
+  assert.deepEqual(both.lines.slice(1), ['  orangefilm skill project/brand', '  orangefilm skill local/brand']);
+  const one = await skillCommand(['local/brand'], 'orangefilm', { cwd: film, mine });
   assert.ok(one.ok && /full-name="local\/brand"/.test(one.lines[0]));
 });
 
@@ -180,7 +180,7 @@ test('a skill is named by its front matter, else its folder', () => {
 test('adding a skill copies it into yours (a folder of skills adds each), the one of the same name to the trash', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-add-'));
   const mine = join(root, 'mine');
-  process.env.OPENFILM_TRASH_DIR = join(root, 'trash');
+  process.env.ORANGE_TRASH_DIR = join(root, 'trash');
   skill(join(mine, 'brand'), 'brand', 'Old');
   const one = skill(join(root, 'src', 'brand-kit'), 'brand', 'New', 'b', { '.git/HEAD': 'x' });
   const added = await addSkills(one, { mine });
@@ -198,28 +198,28 @@ test('adding a skill copies it into yours (a folder of skills adds each), the on
   skill(join(pack, 'skills', 'b'), 'b', 'B');
   assert.deepEqual((await addSkills(pack, { mine })).map((s) => s.name).sort(), ['a', 'b']);
   await assert.rejects(addSkills(join(root, 'src'), { mine: join(root, 'other') }).then(() => addSkills(mkdtempSync(join(tmpdir(), 'empty-')), { mine })), /not a skill/);
-  delete process.env.OPENFILM_TRASH_DIR;
+  delete process.env.ORANGE_TRASH_DIR;
 });
 
 test('yours are kept beside the projects, and those kept in Studio\'s home before move there', () => {
-  const before = { library: process.env.OPENFILM_LIBRARY, skills: process.env.OPENFILM_SKILLS };
+  const before = { library: process.env.ORANGE_LIBRARY, skills: process.env.ORANGE_SKILLS };
   const root = mkdtempSync(join(tmpdir(), 'of-mine-'));
-  delete process.env.OPENFILM_SKILLS;
-  process.env.OPENFILM_LIBRARY = join(root, 'OpenFilm', 'Projects');
+  delete process.env.ORANGE_SKILLS;
+  process.env.ORANGE_LIBRARY = join(root, 'OrangeFilm', 'Projects');
   try {
-    assert.equal(mySkillsDir(), join(root, 'OpenFilm', 'Skills'));
+    assert.equal(mySkillsDir(), join(root, 'OrangeFilm', 'Skills'));
     const old = join(root, 'home', 'skills');
     skill(join(old, 'brand'), 'brand', 'Mine');
     skill(join(old, 'kinetic'), 'kinetic', 'Old copy');
-    skill(join(root, 'OpenFilm', 'Skills', 'kinetic'), 'kinetic', 'Already there');
+    skill(join(root, 'OrangeFilm', 'Skills', 'kinetic'), 'kinetic', 'Already there');
     assert.deepEqual(migrateMySkills({ from: old, to: mySkillsDir() }), ['brand']);
     assert.ok(existsSync(join(mySkillsDir(), 'brand', 'SKILL.md')));
     assert.match(readFileSync(join(mySkillsDir(), 'kinetic', 'SKILL.md'), 'utf8'), /Already there/, 'one there already is not overwritten');
     assert.match(readFileSync(join(old, 'README.txt'), 'utf8'), /kept in .*Skills now[\s\S]*kinetic/);
     assert.deepEqual(migrateMySkills({ from: old, to: mySkillsDir() }), [], 'once moved, nothing more');
   } finally {
-    if (before.library === undefined) delete process.env.OPENFILM_LIBRARY; else process.env.OPENFILM_LIBRARY = before.library;
-    if (before.skills !== undefined) process.env.OPENFILM_SKILLS = before.skills;
+    if (before.library === undefined) delete process.env.ORANGE_LIBRARY; else process.env.ORANGE_LIBRARY = before.library;
+    if (before.skills !== undefined) process.env.ORANGE_SKILLS = before.skills;
   }
 });
 
@@ -234,9 +234,9 @@ test('adding from an address is looked at first: kept, or let go', async () => {
   assert.deepEqual(seen.skills.map((s) => [s.name, s.replaces, s.scripts.length]).sort(), [['charts', false, 0], ['lyric-pv', true, 1]]);
   assert.ok(seen.skills.every((s) => s.size > 0));
   assert.deepEqual(listSkills({ mine, official: join(root, 'none') }).map((s) => s.description), ['Mine'], 'nothing kept yet');
-  process.env.OPENFILM_TRASH_DIR = join(root, 'trash');
+  process.env.ORANGE_TRASH_DIR = join(root, 'trash');
   const kept = await commitSkills(seen.staging, { mine });
-  delete process.env.OPENFILM_TRASH_DIR;
+  delete process.env.ORANGE_TRASH_DIR;
   assert.deepEqual(kept.map((s) => s.name).sort(), ['charts', 'lyric-pv']);
   assert.ok(!existsSync(seen.staging), 'the fetch is cleared');
   const again = await previewSkills('https://github.com/x/y', { mine, fetch });
@@ -264,44 +264,44 @@ test('a folder on this computer looked at where it is; one already among the per
   assert.throws(() => previewFolder(join(root, 'empty'), { mine }), /no SKILL\.md/);
 });
 
-test('openfilm skills and skill: the list, one printed whole, one added from an address', async () => {
+test('orangefilm skills and skill: the list, one printed whole, one added from an address', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-cli-'));
   const home = join(root, 'home');
   const film = join(root, 'film');
   mkdirSync(film);
   writeFileSync(join(film, 'film.html'), '<!doctype html>');
   skill(join(film, 'skills', 'brand'), 'brand', 'This film\'s brand');
-  const before = process.env.OPENFILM_SKILLS;
-  const beforeHome = process.env.OPENFILM_HOME;
-  const beforeShared = process.env.OPENFILM_SHARED_HOME;
-  delete process.env.OPENFILM_SHARED_HOME;
-  process.env.OPENFILM_SKILLS = join(home, 'skills');
+  const before = process.env.ORANGE_SKILLS;
+  const beforeHome = process.env.ORANGE_HOME;
+  const beforeShared = process.env.ORANGE_SHARED_HOME;
+  delete process.env.ORANGE_SHARED_HOME;
+  process.env.ORANGE_SKILLS = join(home, 'skills');
   /* the skills kept in Studio's home before, moved as the commands run: a scratch home, never the person's */
-  process.env.OPENFILM_HOME = join(root, 'studio-home');
+  process.env.ORANGE_HOME = join(root, 'studio-home');
   try {
-    const listed = skillsCommand('openfilm', { cwd: film });
+    const listed = skillsCommand('orangefilm', { cwd: film });
     assert.ok(listed.lines.some((l) => /project\/brand\s+this project/.test(l)));
     assert.ok(listed.lines.some((l) => l.includes('This film\'s brand')));
-    /* outside a project: none of this film's; OpenFilm's own once installed, and not while off */
-    assert.match(skillsCommand('openfilm', { cwd: root }).lines[0], /^No skills installed\./);
+    /* outside a project: none of this film's; OrangeFilm's own once installed, and not while off */
+    assert.match(skillsCommand('orangefilm', { cwd: root }).lines[0], /^No skills installed\./);
     /* one installed from Discover (studio/server/skill-catalog.mjs): its folder, with where it came from */
-    const installed = skill(join(root, 'studio-home', 'skills-installed', 'openfilm-replicate'), 'replicate', 'Remake a video');
-    writeFileSync(join(installed, '.source.json'), JSON.stringify({ repo: 'https://github.com/openfilm/skill-replicate', path: 'skills/replicate', commit: 'a'.repeat(40), version: '0.1.0' }));
-    const outside = skillsCommand('openfilm', { cwd: root }).lines;
+    const installed = skill(join(root, 'studio-home', 'skills-installed', 'orangefilm-replicate'), 'replicate', 'Remake a video');
+    writeFileSync(join(installed, '.source.json'), JSON.stringify({ repo: 'https://github.com/orangefilm/skill-replicate', path: 'skills/replicate', commit: 'a'.repeat(40), version: '0.1.0' }));
+    const outside = skillsCommand('orangefilm', { cwd: root }).lines;
     assert.match(outside[0], /^Skills\. /);
-    assert.ok(!outside.some((l) => /this project/.test(l)) && outside.some((l) => /openfilm\/replicate\s+installed/.test(l)));
-    setSkillOn('openfilm/replicate', false);
-    assert.ok(!skillsCommand('openfilm', { cwd: root }).lines.some((l) => /replicate/.test(l)), 'off: offered to no agent');
-    setSkillOn('openfilm/replicate', true);
+    assert.ok(!outside.some((l) => /this project/.test(l)) && outside.some((l) => /orangefilm\/replicate\s+installed/.test(l)));
+    setSkillOn('orangefilm/replicate', false);
+    assert.ok(!skillsCommand('orangefilm', { cwd: root }).lines.some((l) => /replicate/.test(l)), 'off: offered to no agent');
+    setSkillOn('orangefilm/replicate', true);
 
-    const printed = await skillCommand(['brand'], 'openfilm', { cwd: film });
+    const printed = await skillCommand(['brand'], 'orangefilm', { cwd: film });
     assert.ok(printed.ok);
     assert.match(printed.lines[0], /^<skill name="project-brand" full-name="project\/brand"/);
-    const missing = await skillCommand(['nope'], 'openfilm', { cwd: film });
+    const missing = await skillCommand(['nope'], 'orangefilm', { cwd: film });
     assert.deepEqual([missing.ok, missing.usage], [false, true]);
 
     /* an address: fetched (here, made) into a folder of the one it is given */
-    const fetched = await skillCommand(['add', 'https://github.com/someone/skills/tree/main/lyric-pv'], 'openfilm', {
+    const fetched = await skillCommand(['add', 'https://github.com/someone/skills/tree/main/lyric-pv'], 'orangefilm', {
       cwd: film,
       fetch: async (_url, into) => skill(join(into, 'lyric-pv'), 'lyric-pv', 'Lyric videos', 'x', { 'scripts/make.py': '' }),
     });
@@ -310,31 +310,31 @@ test('openfilm skills and skill: the list, one printed whole, one added from an 
     assert.ok(readFileSync(join(home, 'skills', 'lyric-pv', 'SKILL.md'), 'utf8').includes('Lyric videos'));
     assert.deepEqual(listSkills({ mine: join(home, 'skills'), official: join(root, 'none') }).map((s) => s.name), ['lyric-pv'], 'nothing left from the fetch');
   } finally {
-    if (before === undefined) delete process.env.OPENFILM_SKILLS; else process.env.OPENFILM_SKILLS = before;
-    if (beforeHome === undefined) delete process.env.OPENFILM_HOME; else process.env.OPENFILM_HOME = beforeHome;
-    if (beforeShared !== undefined) process.env.OPENFILM_SHARED_HOME = beforeShared;
+    if (before === undefined) delete process.env.ORANGE_SKILLS; else process.env.ORANGE_SKILLS = before;
+    if (beforeHome === undefined) delete process.env.ORANGE_HOME; else process.env.ORANGE_HOME = beforeHome;
+    if (beforeShared !== undefined) process.env.ORANGE_SHARED_HOME = beforeShared;
   }
 });
 
-test('a skill as people see it: its openfilm.json title and summary by language; none, or not one, read as nothing', () => {
+test('a skill as people see it: its orangefilm.json title and summary by language; none, or not one, read as nothing', () => {
   const root = mkdtempSync(join(tmpdir(), 'of-shown-'));
   const dir = skill(join(root, 'replicate'), 'replicate', 'For the agent.');
-  writeFileSync(join(dir, 'openfilm.json'), JSON.stringify({ title: { en: 'Replicate a video', 'zh-CN': '复刻视频', bad: 1, 'not a lang': 'x' }, summary: 'One line.' }));
+  writeFileSync(join(dir, 'orangefilm.json'), JSON.stringify({ title: { en: 'Replicate a video', 'zh-CN': '复刻视频', bad: 1, 'not a lang': 'x' }, summary: 'One line.' }));
   assert.deepEqual(readSkill(dir, 'official').shown, { title: { en: 'Replicate a video', 'zh-CN': '复刻视频' }, summary: { en: 'One line.' } });
-  writeFileSync(join(dir, 'openfilm.json'), '{ not json');
+  writeFileSync(join(dir, 'orangefilm.json'), '{ not json');
   assert.equal(readSkill(dir, 'official').shown, undefined);
   assert.equal(readSkill(skill(join(root, 'plain'), 'plain', 'x'), 'mine').shown, undefined);
 });
 
-test("a skill's openfilm.json: its version, kind, order, mark and media; anything wrong left out; else the front matter's version", () => {
+test("a skill's orangefilm.json: its version, kind, order, mark and media; anything wrong left out; else the front matter's version", () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-look-'));
   const a = skill(join(root, 'a'), 'a', 'Does a.', 'How.', {
-    'openfilm.json': JSON.stringify({ version: '0.2.0', kind: 'style', order: 3, icon: 'film', cover: 'cover.jpg', preview: 'none.mp4' }),
+    'orangefilm.json': JSON.stringify({ version: '0.2.0', kind: 'style', order: 3, icon: 'film', cover: 'cover.jpg', preview: 'none.mp4' }),
     'cover.jpg': 'jpeg',
   });
   assert.deepEqual((({ version, kind, order, icon, cover, preview }) => ({ version, kind, order, icon, cover, preview }))(readSkill(a, 'official')),
     { version: '0.2.0', kind: 'style', order: 3, icon: 'film', cover: 'cover.jpg', preview: undefined });
-  const b = skill(join(root, 'b'), 'b', 'Does b.', 'How.', { 'openfilm.json': JSON.stringify({ version: 'latest', kind: 'other', order: 'first', icon: 'Big Icon', cover: '../x.jpg' }) });
+  const b = skill(join(root, 'b'), 'b', 'Does b.', 'How.', { 'orangefilm.json': JSON.stringify({ version: 'latest', kind: 'other', order: 'first', icon: 'Big Icon', cover: '../x.jpg' }) });
   const read = readSkill(b, 'mine');
   for (const key of ['version', 'kind', 'order', 'icon', 'cover']) assert.equal(read?.[key], undefined, key);
   mkdirSync(join(root, 'c'));
@@ -360,11 +360,11 @@ test('where the person\'s skills came from: a folder, or the address commitSkill
 test("a cover's format is what its bytes are, and a cover chosen before goes when it is replaced; the skill's own picture stays", () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-cover-swap-'));
   const mine = join(root, 'mine');
-  skill(join(mine, 'own'), 'own', 'Own', 'Steps', { 'openfilm.json': '{"cover":"original.png"}', 'original.png': Buffer.from(coverPng.split(',')[1], 'base64') });
+  skill(join(mine, 'own'), 'own', 'Own', 'Steps', { 'orangefilm.json': '{"cover":"original.png"}', 'original.png': Buffer.from(coverPng.split(',')[1], 'base64') });
   /* a JPEG the browser called a PNG, from its file's name */
   const jpeg = `data:image/png;base64,${Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46]).toString('base64')}`;
   const first = setSkillCover('own', jpeg, { mine }).cover;
-  assert.match(first, /^openfilm-cover-.+\.jpg$/);
+  assert.match(first, /^orangefilm-cover-.+\.jpg$/);
   const second = setSkillCover('own', coverPng, { mine }).cover;
   assert.match(second, /\.png$/);
   assert.equal(existsSync(join(mine, 'own', first)), false, 'the cover chosen before is gone');
@@ -375,7 +375,7 @@ test("a cover's format is what its bytes are, and a cover chosen before goes whe
   assert.throws(() => setSkillCover('own', `data:image/png;base64,${Buffer.from('GIF89a......').toString('base64')}`, { mine }), /PNG, JPEG or WebP/);
 });
 
-test("OpenFilm's own skills: in order, each named by the manual, printed with the command as run here, never in the library", async () => {
+test("OrangeFilm's own skills: in order, each named by the manual, printed with the command as run here, never in the library", async () => {
   const manual = readFileSync(new URL('../MANUAL.md', import.meta.url), 'utf8');
   const core = coreSkills();
   assert.deepEqual(core.map((s) => s.uid), ['orangefilm/edit', 'orangefilm/media', 'orangefilm/canvas', 'orangefilm/replicate'], 'in the order agents are given them');
@@ -391,13 +391,13 @@ test("OpenFilm's own skills: in order, each named by the manual, printed with th
   assert.match(text('canvas'), /canvas apply/);
   assert.match(text('replicate'), /frame for frame/);
   /* read from their files, they say the command on the PATH (the app's own, or the one installed) */
-  for (const s of core) assert.ok(!readFileSync(s.file, 'utf8').includes('npx openfilm'), `${s.name} says \`openfilm\``);
-  assert.equal(asRun('`openfilm-edit`: `openfilm look`, and `openfilm skill <name>`', 'npx -y openfilm@latest'),
-    '`openfilm-edit`: `npx -y openfilm@latest look`, and `npx -y openfilm@latest skill <name>`', 'a skill\'s name stays');
-  const printed = await skillCommand(['openfilm/edit'], 'npx -y openfilm@latest', { cwd: tmpdir() });
+  for (const s of core) assert.ok(!readFileSync(s.file, 'utf8').includes('npx orangefilm'), `${s.name} says \`orangefilm\``);
+  assert.equal(asRun('`orangefilm-edit`: `orangefilm look`, and `orangefilm skill <name>`', 'npx -y orangefilm@latest'),
+    '`orangefilm-edit`: `npx -y orangefilm@latest look`, and `npx -y orangefilm@latest skill <name>`', 'a skill\'s name stays');
+  const printed = await skillCommand(['orangefilm/edit'], 'npx -y orangefilm@latest', { cwd: tmpdir() });
   assert.ok(printed.ok);
-  assert.ok(printed.lines[0].includes('`npx -y openfilm@latest look`') && !/npx openfilm /.test(printed.lines[0]));
-  assert.equal(findSkill('openfilm-media')?.uid, 'orangefilm/media', 'as an agent is given it');
+  assert.ok(printed.lines[0].includes('`npx -y orangefilm@latest look`') && !/npx orangefilm /.test(printed.lines[0]));
+  assert.equal(findSkill('orangefilm-media')?.uid, 'orangefilm/media', 'as an agent is given it');
   assert.equal(agentName(core[0]), 'orangefilm-edit');
   assert.ok(!listSkills().some((s) => core.some((c) => c.name === s.name)), 'in no library');
 });
@@ -410,14 +410,14 @@ test("a skill's uid, owner/name: whose it is read from where it came from, never
   assert.equal(skillUid('mine', 'look'), 'local/look', 'made here');
   assert.equal(skillUid('mine', 'x', { from: 'link', address: 'not an address' }), 'local/x');
   assert.equal(skillUid('project', 'brand'), 'project/brand');
-  assert.ok(SKILL_UID.test('openfilm/edit') && !SKILL_UID.test('openfilm') && !SKILL_UID.test('a/b/c'));
+  assert.ok(SKILL_UID.test('orangefilm/edit') && !SKILL_UID.test('orangefilm') && !SKILL_UID.test('a/b/c'));
 });
 
 test('two skills of a name are both had, each by its uid; an agent is given the second as owner-name', async () => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-uids-'));
   const mine = join(root, 'mine'), official = join(root, 'official'), project = join(root, 'project');
   const write = (dir, name, body = 'Steps.') => { mkdirSync(dir, { recursive: true }); writeFileSync(join(dir, 'SKILL.md'), `---\nname: ${name}\ndescription: ${body}\n---\n${body}`); };
-  write(join(official, 'keynote'), 'keynote', 'OpenFilm');
+  write(join(official, 'keynote'), 'keynote', 'OrangeFilm');
   write(join(project, 'skills', 'keynote'), 'keynote', 'The project');
   write(join(root, 'from-river', 'keynote'), 'keynote', 'River');
   write(join(root, 'from-ana', 'keynote'), 'keynote', 'Ana');
@@ -437,13 +437,13 @@ test('two skills of a name are both had, each by its uid; an agent is given the 
   rmSync(root, { recursive: true, force: true });
 });
 
-test('an installed skill is its repository\'s account\'s: OpenFilm\'s own is openfilm, anyone else\'s is theirs', () => {
+test('an installed skill is its repository\'s account\'s: OrangeFilm\'s own is orangefilm, anyone else\'s is theirs', () => {
   const root = mkdtempSync(join(tmpdir(), 'of-installed-owner-'));
-  const ours = skill(join(root, 'openfilm-replicate'), 'replicate', 'Ours');
-  writeFileSync(join(ours, '.source.json'), JSON.stringify({ repo: 'https://github.com/openfilm/skill-replicate', path: 'skills/replicate', commit: 'a'.repeat(40), version: '0.1.0' }));
+  const ours = skill(join(root, 'orangefilm-replicate'), 'replicate', 'Ours');
+  writeFileSync(join(ours, '.source.json'), JSON.stringify({ repo: 'https://github.com/orangefilm/skill-replicate', path: 'skills/replicate', commit: 'a'.repeat(40), version: '0.1.0' }));
   const theirs = skill(join(root, 'ana-lyrics'), 'lyrics', 'Theirs');
   writeFileSync(join(theirs, '.source.json'), JSON.stringify({ repo: 'https://github.com/Ana/lyric-skills', path: 'skills/lyrics', commit: 'b'.repeat(40), version: '1.0.0' }));
-  assert.deepEqual([readSkill(ours, 'official').uid, readSkill(theirs, 'official').uid], ['openfilm/replicate', 'ana/lyrics']);
+  assert.deepEqual([readSkill(ours, 'official').uid, readSkill(theirs, 'official').uid], ['orangefilm/replicate', 'ana/lyrics']);
 });
 
 test('the folder walk reads asynchronously: same bytes, and Studio still runs while the disk is read', async (t) => {

@@ -10,7 +10,7 @@
  *   <root>/content/<md5>.json                that file's identity (sha256, bytes, extension), written beside it
  *
  * `root` is the material cache root Studio already owns (`materials-cache-root.mjs`): in a dev Studio that is
- * `~/.openfilm-dev/material-cache`, and the two folders above sit beside the answers `materials-cache.mjs` keeps.
+ * `~/.orangefilm-dev/material-cache`, and the two folders above sit beside the answers `materials-cache.mjs` keeps.
  * Nothing here is served to anyone but the loopback page: the server holds no media of its own, it holds a copy of
  * what the person already looked at, and a file the person already downloaded.
  *
@@ -585,7 +585,7 @@ export function materialCacheStats({ root = '', kind = CONTENT_DIR, env = proces
 
 /**
  * The supplier's md5 for one video id, read from the index this computer already landed
- * (`~/.openfilm-dev/material-index/index.json`, `material-index-build.mjs`): the digest the supplier itself put on the
+ * (`~/.orangefilm-dev/material-index/index.json`, `material-index-build.mjs`): the digest the supplier itself put on the
  * row, so a download can ask "is this already here?" before it asks the supplier anything.
  *
  * The index is re-read when the file changes (a rebuild), never on every call: 78k rows are read once per build.

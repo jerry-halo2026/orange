@@ -1,6 +1,6 @@
 ---
 name: canvas
-description: The project's canvas in OpenFilm, the board beside the edit. Read it when the person asks for the canvas or points at a canvas node (`canvas node `ID``), asks for a storyboard, shots, a character, or to lay out ideas, references and shots before they go into the film.
+description: The project's canvas in OrangeFilm, the board beside the edit. Read it when the person asks for the canvas or points at a canvas node (`canvas node `ID``), asks for a storyboard, shots, a character, or to lay out ideas, references and shots before they go into the film.
 ---
 
 # The canvas
@@ -9,7 +9,7 @@ The canvas is the board beside the edit where the person lays out notes, files a
 a sound, wired into each other. Nothing on it is in the film until it is put on the timeline. A node the person points
 at (`canvas node `ID``) is there. A project can have several canvases; your steps go to the one the person has open.
 
-`openfilm canvas` prints the board; `openfilm canvas apply '<steps>'` adds, changes, wires and removes nodes, all at
+`orangefilm canvas` prints the board; `orangefilm canvas apply '<steps>'` adds, changes, wires and removes nodes, all at
 once, and the person sees it at once. Its `--help` lists the steps.
 
 ## Laying out what the person asks for
@@ -23,9 +23,9 @@ once, and the person sees it at once. Its `--help` lists the steps.
   portrait, in a group named after them. Wire the portrait into every shot's picture and video (`opts.mode: "refs"`
   or as a reference) so they stay the same person.
 - **A voice-over**: a `tts` node whose prompt is the line to speak, with `opts.voice` a voiceId from
-  `openfilm get voice` that suits the speaker (none: the service's first voice in the person's language).
+  `orangefilm get voice` that suits the speaker (none: the service's first voice in the person's language).
 - **Words for a node**: write the prompt in English unless the person writes otherwise; describe what is seen, the
   light and the camera, not the story's meaning.
 
 Lay things out and leave the making to the person (they press Make, or a group's Make all) unless they ask you to make
-them: then make each with `openfilm get` and add it as the node's version. Say what you laid out and what to press.
+them: then make each with `orangefilm get` and add it as the node's version. Say what you laid out and what to press.

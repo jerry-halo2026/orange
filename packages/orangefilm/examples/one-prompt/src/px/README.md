@@ -18,7 +18,7 @@ file lists what differs here. The plates in `src/plates` and the edit in `src/pl
 
 ## Differences from the reference
 
-- `SCALE` follows the device pixel ratio: 1 at 1920×1080, 2 for a 4K render (`openfilm render --4k`).
+- `SCALE` follows the device pixel ratio: 1 at 1920×1080, 2 for a 4K render (`orangefilm render --4k`).
 - Fonts are loaded from `assets/fonts`:
   - `F.archivo(width 62–125, weight 300/500/700/900)`: variable Archivo, instanced at widths 62/75/87.5/100/112.5/125.
   - `F.mono(300–700)`: IBM Plex Mono.
@@ -39,11 +39,11 @@ file lists what differs here. The plates in `src/plates` and the edit in `src/pl
   - `acid` is a **violet** `#8B5CFF`, only for "purple words" (46.7–50 s).
   - Only signal and ember may exceed ~0.85 linear. Bone type must stay crisp; the default bloom knee is 0.12.
 - The engine can average motion-blur sub-frames itself (`Engine.render`'s `samples`), but the pages draw one sample
-  per frame, so Studio plays them in real time; a render's motion blur is OpenFilm's (`openfilm render --blur`).
+  per frame, so Studio plays them in real time; a render's motion blur is OrangeFilm's (`orangefilm render --blur`).
 
 ## Checking your work
 
-- `npx openfilm look 12.4` draws one frame at full size; `npx openfilm look 12-16` a dense sheet of a stretch.
+- `npx orangefilm look 12.4` draws one frame at full size; `npx orangefilm look 12-16` a dense sheet of a stretch.
 - A plate that throws renders dark red, and the error is in the page's console.
 - A plate must be a **pure function of `f.t`**: no `Math.random`, no state carried from one frame to the next.
   - Flicker keyed to frames uses `frameIdx(t)`.

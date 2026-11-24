@@ -4,14 +4,14 @@
 /**
  * Runs Studio for the window (src/studio-process.mjs, in a utility process) and keeps it running.
  *
- * One Studio per machine: when `openfilm open` already started one, it is asked to stop (`POST /api/quit`, after it
+ * One Studio per machine: when `orangefilm open` already started one, it is asked to stop (`POST /api/quit`, after it
  * has written its history) and the app's takes its place, on the same port, so the address agents and bookmarks
  * know keeps working. When the port is held by something else, Studio takes any free one.
  *
  * Asked to stop only once nothing is being exported or made (`whenIdle`): either cut off is lost. While one runs, that
  * Studio says no; the window does not wait for it (an export can take many minutes) but starts its own on another
  * port, and the other one is asked again every few seconds until it has stopped. Its pages lose their Studio then;
- * the window, agents' `openfilm` commands and run.json are the app's from the start.
+ * the window, agents' `orangefilm` commands and run.json are the app's from the start.
  */
 import { readIsolationProfile } from './isolation.mjs';
 import { brandProductName } from './brand.mjs';
@@ -32,13 +32,13 @@ export function windowEditorDirectory({packaged,isolated,explicit,bundled}) {
   return explicit;
 }
 
-/** The Studio `openfilm open` started, if it answers. */
+/** The Studio `orangefilm open` started, if it answers. */
 async function advertised(home) {
   let run;
   try { run = JSON.parse(readFileSync(join(home, 'run.json'), 'utf8')); } catch { return null; }
   try {
     const health = await (await fetch(`${run.origin}/api/health`, { signal: AbortSignal.timeout(1500) })).json();
-    return health.product === 'openfilm-studio' || health.product === 'orangefilm-studio'
+    return health.product === 'orangefilm-studio' || health.product === 'orangefilm-studio'
       || (Array.isArray(health.products) && health.products.includes('orangefilm-studio')) ? run : null;
   } catch { return null; }
 }
@@ -81,7 +81,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(ENTRY, [], {
       serviceName: `${PRODUCT} Studio`,
-      env: { ...env, OPENFILM_STUDIO_PORT: String(port) },
+      env: { ...env, ORANGE_STUDIO_PORT: String(port) },
       stdio: 'pipe',
     });
     child.stdout?.on('data', (d) => log(String(d)));

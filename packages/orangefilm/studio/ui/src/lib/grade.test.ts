@@ -9,13 +9,13 @@ const grade = { mix: [1.1, 0, -0.1, 0, 0, 1, 0, 0, -0.1, 0, 1.1, 0.02], sat: 0.8
 
 test('a grade is one SVG filter that says which it is and how strong', () => {
   const f = gradeFilter('filters/teal', grade, 0.6);
-  assert.match(f, /^url\("data:image\/svg\+xml,.*#openfilm-look"\)$/);
+  assert.match(f, /^url\("data:image\/svg\+xml,.*#orangefilm-look"\)$/);
   assert.deepEqual(gradeOf(`brightness(1.1) ${f}`), { id: 'filters/teal', amount: 0.6 });
   assert.equal(gradeOf('brightness(1.1)'), null);
 });
 
 test('at nothing it leaves the picture as it is; at full it is the grade', () => {
-  const svg = decodeURIComponent(gradeFilter('x', grade, 0).slice('url("data:image/svg+xml,'.length, -'#openfilm-look")'.length));
+  const svg = decodeURIComponent(gradeFilter('x', grade, 0).slice('url("data:image/svg+xml,'.length, -'#orangefilm-look")'.length));
   assert.match(svg, /values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0'/);
   assert.match(svg, /type='saturate' values='1'/);
   assert.match(svg, /feFuncR type='table' tableValues='0 0.063 0.125/);

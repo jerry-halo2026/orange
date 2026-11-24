@@ -50,7 +50,7 @@ export function Toast({ toast }: { toast: ToastMessage | null }) {
       className={`pointer-events-none fixed bottom-6 left-1/2 z-[10200] -translate-x-1/2 rounded-full border bg-[var(--bg-raised)] px-4 py-2 text-[12.5px] font-medium shadow-[var(--shadow-lg)] ${
         toast.error ? 'border-[var(--err)]/40 text-[var(--err)]' : 'border-[var(--border)] text-[var(--text)]'
       }`}
-      style={{ animation: 'openfilm-rise 0.16s ease-out both' }}
+      style={{ animation: 'orangefilm-rise 0.16s ease-out both' }}
     >
       {toast.text}
     </div>

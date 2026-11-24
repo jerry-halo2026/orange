@@ -2,7 +2,7 @@
 
 ## The song
 
-`assets/one-prompt.mp3`, "One Prompt", was made with [ElevenLabs Music](https://elevenlabs.io/music) by the OpenFilm
+`assets/one-prompt.mp3`, "One Prompt", was made with [ElevenLabs Music](https://elevenlabs.io/music) by the OrangeFilm
 contributors for this film; the word timings in `src/lyrics.js` come from that generation. Like the rest of this
 example, it is under the MIT license: use it, change it, put it in your own films.
 
@@ -31,8 +31,8 @@ The Hershey Fonts were originally created by Dr. A. V. Hershey while working at 
 Standards. The format of the font data in this distribution was originally created by James Hurt, Cognition, Inc.,
 900 Technology Park Drive, Billerica, MA 01821. The full notice is in the font file's metadata.
 
-## The OpenFilm mark
+## The OrangeFilm mark
 
-The mark and wordmark at the end are OpenFilm's logo; see
-[TRADEMARK.md](https://github.com/openfilm/openfilm/blob/main/TRADEMARK.md) for how they may be
+The mark and wordmark at the end are OrangeFilm's logo; see
+[TRADEMARK.md](https://github.com/jerry-halo2026/orange/blob/main/TRADEMARK.md) for how they may be
 used.

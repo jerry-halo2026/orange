@@ -10,15 +10,15 @@ drawn in the browser by WebGL and Canvas 2D. Nothing is pre-rendered; the only m
 From a clone of this repository:
 
 ```sh
-npx -y openfilm@latest open one-prompt
+npx -y orangefilm@latest open one-prompt
 ```
 
 Studio opens the film: eight sections on the picture track, the song below them. To make the MP4:
 
 ```sh
 cd one-prompt
-npx openfilm render          # one-prompt.mp4, 1920×1080 at 30 fps
-npx openfilm render --blur   # with motion blur, as the film was meant to be seen
+npx orangefilm render          # one-prompt.mp4, 1920×1080 at 30 fps
+npx orangefilm render --blur   # with motion blur, as the film was meant to be seen
 ```
 
 The pages load three.js from jsDelivr, so the first open needs a connection.
@@ -36,7 +36,7 @@ The pages load three.js from jsDelivr, so the first open needs a connection.
 | `verse-2.html` | 46.3 – 60.6 s | the painted sky, the mixing desk, the stadium |
 | `drop.html` | 60.6 – 68.5 s | the edit timeline: "Cut! Cut! On the beat!" |
 | `final-chorus.html` | 68.5 – 85.2 s | the hook again, the globe at night, the premiere |
-| `outro.html` | 85.2 – 90.9 s | "All it took was one line", then the OpenFilm mark |
+| `outro.html` | 85.2 – 90.9 s | "All it took was one line", then the OrangeFilm mark |
 
 Each page is the same few lines: it calls `section('…')` from `src/section.js`, which makes a WebGL canvas, runs the
 film engine (`src/px/`) on that section's plates, and draws song time `start + t` for the page's own time `t`. Every
@@ -61,8 +61,8 @@ plate is a pure function of the song's time, so the same moment always draws the
   word times.
 - **The colors.** The palette is `HEX` in `src/px/palette.js`: ink, bone, and one signal color, `signal`, the
   caret's orange. Shaders and Canvas 2D both read it, so changing `signal` there recolors the whole film.
-- **A shot.** Edit its plate and save; Studio redraws the frame. `npx openfilm look 33.5` draws one moment at full
-  size, `npx openfilm look 30-34` a stretch.
+- **A shot.** Edit its plate and save; Studio redraws the frame. `npx orangefilm look 33.5` draws one moment at full
+  size, `npx orangefilm look 30-34` a stretch.
 - **The cut.** A section's page draws the song's time from where its clip starts, so a clip moved in film.html no
   longer matches the song. To move a cut, change it in `src/plates/handoff.js` and the clip's `at` with it (the
   section times in film.html are those of `sectionSpan` in `src/plates/timeline.js`, to the millisecond).

@@ -22,7 +22,7 @@ const hasFfmpeg = (() => { try { execFileSync(process.env.ORANGE_TEST_FFMPEG ?? 
 test('the render command accepts decimal frame rates and still rejects invalid rates', () => {
   const dir = mkdtempSync(join(tmpdir(), 'of-render-fps-options-'));
   try {
-    const cli = fileURLToPath(new URL('../bin/openfilm.mjs', import.meta.url));
+    const cli = fileURLToPath(new URL('../bin/orangefilm.mjs', import.meta.url));
     for (const fps of ['1', '23.976', '29.97', '59.94', String(30000 / 1001), '240']) {
       const result = spawnSync(process.execPath, [cli, 'render', `--fps=${fps}`], { cwd: dir, encoding: 'utf8' });
       assert.equal(result.status, 2, result.stderr);
@@ -46,7 +46,7 @@ test('the render command renders 29.97 as exactly 30000/1001, and keeps another 
     writeFileSync(join(dir, 'film.html'), filmHtml({ stage: { w: 320, h: 180 }, tracks: [{ clips: [{ id: 'p', src: 'p.html', at: 0, time: [0, 0.5] }] }] }));
     mkdirSync(join(dir, '.film'));
     writeFileSync(join(dir, '.film', 'opened'), '');
-    const cli = fileURLToPath(new URL('../bin/openfilm.mjs', import.meta.url));
+    const cli = fileURLToPath(new URL('../bin/orangefilm.mjs', import.meta.url));
     for (const [fps, rate, workers, samples] of [[29.97, '30000/1001', 1, 1], [30000 / 1001, '30000/1001', 2, 2], [12.5, '25/2', 1, 1]]) {
       const out = join(dir, `${fps}.mp4`);
       execFileSync(process.execPath, [cli, 'render', '--fps', String(fps), '--workers', String(workers), '--samples', String(samples), '--out', out], { cwd: dir, timeout: 60_000, stdio: 'pipe' });
@@ -241,7 +241,7 @@ test('a render runs below the person\'s own apps, with every process it starts',
     writeFileSync(join(dir, 'film.html'), filmHtml({ stage: { w: 320, h: 180 }, tracks: [{ clips: [{ id: 'p', src: 'p.html', at: 0, time: [0, 3] }] }] }));
     mkdirSync(join(dir, '.film'));
     writeFileSync(join(dir, '.film', 'opened'), '');
-    const child = spawn(process.execPath, [fileURLToPath(new URL('../bin/openfilm.mjs', import.meta.url)), 'render', '0-3', '--workers', '1', '--out', join(dir, 'out.mp4')], { cwd: dir, stdio: 'ignore' });
+    const child = spawn(process.execPath, [fileURLToPath(new URL('../bin/orangefilm.mjs', import.meta.url)), 'render', '0-3', '--workers', '1', '--out', join(dir, 'out.mp4')], { cwd: dir, stdio: 'ignore' });
     const ended = new Promise((done) => child.on('exit', done));
     /* read until it is lowered: the process may start at another nice value (a CI runner's is not 0) */
     let priority = null;

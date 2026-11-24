@@ -3,7 +3,7 @@
 
 // @ts-check
 /**
- * The CLI's side of Studio: find the Studio running on this machine (~/.openfilm/run.json), or start one in the
+ * The CLI's side of Studio: find the Studio running on this machine (~/.orangefilm/run.json), or start one in the
  * background, and ask it to open a folder or get media for one. One Studio per machine, like one editor window per
  * project.
  */
@@ -27,7 +27,7 @@ export const FROM_SOURCE = existsSync(new URL('./ui/src', import.meta.url));
 async function health(/** @type {string} */ origin, ms = 1500) {
   try {
     const said = await (await fetch(`${origin}/api/health`, { signal: AbortSignal.timeout(ms) })).json();
-    return said?.product === 'openfilm-studio' || said?.product === 'orangefilm-studio'
+    return said?.product === 'orangefilm-studio'
       || (Array.isArray(said?.products) && said.products.includes('orangefilm-studio')) ? said : null;
   } catch { return null; }
 }
@@ -62,7 +62,7 @@ export async function running() {
     const said = await health(run.origin);
     if (said) return { ...run, version: said.version, ...(said.app ? { app: true } : {}) };
   }
-  const given = Number(process.env.OPENFILM_STUDIO_PORT);
+  const given = Number(process.env.ORANGE_STUDIO_PORT);
   const origin = `http://127.0.0.1:${Number.isInteger(given) && given > 0 ? given : 4747}`;
   const said = await health(origin);
   /* it says which home it serves as a hash of the path (the path itself is not told to anyone who asks) */
@@ -101,22 +101,22 @@ export function olderThanThis(/** @type {string | undefined} */ version, mine = 
 }
 
 /**
- * What npm has: the latest openfilm (null when it was never learnt) and when it was asked. Asked of the registry at
+ * What npm has: the latest orangefilm (null when it was never learnt) and when it was asked. Asked of the registry at
  * most once a day (the answer kept in Studio's folder) unless `force`, never for more than `waitMs`, and never with
  * `network` false (only what was learnt before). A check that fails is no answer, and nothing else waits on it.
- * OPENFILM_NO_UPDATE_CHECK=1: never asked.
+ * ORANGE_NO_UPDATE_CHECK=1: never asked.
  * @param {{ network?: boolean, waitMs?: number, force?: boolean }} [options]
  * @returns {Promise<{ latest: string | null, checkedAt: number | null }>}
  */
 export async function npmOpenfilm({ network = true, waitMs = 1500, force = false } = {}) {
-  if (readIsolationProfile() || process.env.OPENFILM_NO_UPDATE_CHECK) return { latest: null, checkedAt: null };
+  if (readIsolationProfile() || process.env.ORANGE_NO_UPDATE_CHECK) return { latest: null, checkedAt: null };
   const file = join(studioHome(), 'update.json');
   /** @type {{ checkedAt?: number, latest?: string }} */
   let known = {};
   try { known = JSON.parse(readFileSync(file, 'utf8')); } catch { /* never asked */ }
   if (network && (force || !(Date.now() - (known.checkedAt ?? 0) < 24 * 3_600_000))) {
     try {
-      const res = await fetch('https://registry.npmjs.org/openfilm/latest', { signal: AbortSignal.timeout(waitMs), headers: { accept: 'application/json' } });
+      const res = await fetch('https://registry.npmjs.org/orangefilm/latest', { signal: AbortSignal.timeout(waitMs), headers: { accept: 'application/json' } });
       const latest = res.ok ? String((await res.json()).version ?? '') : '';
       if (/^\d+\.\d+\.\d+/.test(latest)) {
         known = { checkedAt: Date.now(), latest };
@@ -128,7 +128,7 @@ export async function npmOpenfilm({ network = true, waitMs = 1500, force = false
   return { latest: known.latest ?? null, checkedAt: known.checkedAt ?? null };
 }
 
-/** A newer openfilm on npm than this one, or null (see npmOpenfilm). @param {{ network?: boolean, waitMs?: number }} [options] */
+/** A newer orangefilm on npm than this one, or null (see npmOpenfilm). @param {{ network?: boolean, waitMs?: number }} [options] */
 export async function newerOpenfilm(options) {
   const { latest } = await npmOpenfilm(options);
   return latest && olderThanThis(VERSION, latest) ? latest : null;
@@ -183,10 +183,10 @@ export async function ensureStudio(say = () => {}, { fresh = false } = {}) {
   let pages = 0;
   if (found) {
     const older = olderThanThis(found.version);
-    say(older ? `Updating OpenFilm Studio to ${VERSION}…` : 'Restarting OpenFilm Studio…');
+    say(older ? `Updating OrangeFilm Studio to ${VERSION}…` : 'Restarting OrangeFilm Studio…');
     const replaced = await replace(found);
     if ('stays' in replaced) {
-      say(`OpenFilm Studio keeps running: ${replaced.stays}`);
+      say(`OrangeFilm Studio keeps running: ${replaced.stays}`);
       return found;
     }
     pages = replaced.pages;
@@ -198,7 +198,7 @@ export async function ensureStudio(say = () => {}, { fresh = false } = {}) {
   let exited = /** @type {number | null} */ (null);
   child.once('exit', (code) => { exited = code ?? 1; });
   child.unref();
-  if (!found) say('Starting OpenFilm Studio…');
+  if (!found) say('Starting OrangeFilm Studio…');
   const deadline = Date.now() + 20_000;
   while (Date.now() < deadline) {
     const up = await running();
@@ -215,38 +215,38 @@ export async function ensureStudio(say = () => {}, { fresh = false } = {}) {
 }
 
 /**
- * `openfilm update`: the newest openfilm, and Studio on it. This one is the newest, or the newest is run to do it
- * (`npx -y openfilm@<latest> update` fetches it); then a Studio on an older one is started again on it once it is
+ * `orangefilm update`: the newest orangefilm, and Studio on it. This one is the newest, or the newest is run to do it
+ * (`npx -y orangefilm@<latest> update` fetches it); then a Studio on an older one is started again on it once it is
  * idle, and the pages open on it come back on the new version. The desktop app's Studio updates with the app, and a
  * source checkout with git pull: each is said instead. `ok` false when it could not be done (offline, Studio busy).
  * @param {(line: string) => void} [say] @returns {Promise<{ ok: boolean, lines: string[] }>}
  */
 export async function updateOpenfilm(say = () => {}) {
   if (readIsolationProfile()) throw new Error('Updates are unavailable in isolated development.');
-  if (FROM_SOURCE) return { ok: true, lines: [`openfilm ${VERSION} runs from a source checkout: git pull updates it.`] };
+  if (FROM_SOURCE) return { ok: true, lines: [`orangefilm ${VERSION} runs from a source checkout: git pull updates it.`] };
   const found = (await running()) ?? (await restarting());
-  if (found?.app) return { ok: true, lines: ['Studio is the OpenFilm app\'s: it updates with the app (OpenFilm → Check for Updates…).'] };
+  if (found?.app) return { ok: true, lines: ['Studio is the OrangeFilm app\'s: it updates with the app (OrangeFilm → Check for Updates…).'] };
   const { latest } = await npmOpenfilm({ force: true, waitMs: 8000 });
-  if (!latest) return { ok: false, lines: ['Could not reach npm to learn the newest openfilm: try again when online.'] };
+  if (!latest) return { ok: false, lines: ['Could not reach npm to learn the newest orangefilm: try again when online.'] };
   if (olderThanThis(VERSION, latest)) {
     /* the newest does it, fetched by npx; it ran already and is still not the newest: npx gave another */
-    if (process.env.OPENFILM_UPDATING) return { ok: false, lines: [`npx ran openfilm ${VERSION}, not ${latest}.`] };
-    say(`Getting openfilm ${latest}…`);
-    const r = spawnSync('npx', ['-y', `openfilm@${latest}`, 'update'], {
-      stdio: 'inherit', env: { ...process.env, OPENFILM_UPDATING: '1' }, shell: process.platform === 'win32', windowsHide: true,
+    if (process.env.ORANGE_UPDATING) return { ok: false, lines: [`npx ran orangefilm ${VERSION}, not ${latest}.`] };
+    say(`Getting orangefilm ${latest}…`);
+    const r = spawnSync('npx', ['-y', `orangefilm@${latest}`, 'update'], {
+      stdio: 'inherit', env: { ...process.env, ORANGE_UPDATING: '1' }, shell: process.platform === 'win32', windowsHide: true,
     });
     if (r.error) return { ok: false, lines: [`Could not run npx (it comes with Node.js): ${r.error.message}`] };
-    /* an `openfilm` installed with npm -g is not npx's: it stays as it is until npm updates it */
-    const installed = process.env.npm_command !== 'exec' && !(process.env.ORANGE_RUN || process.env.OPENFILM_RUN);
-    return { ok: r.status === 0, lines: installed && r.status === 0 ? [`The \`openfilm\` command installed here is still ${VERSION}: \`npm install -g openfilm@latest\` updates it.`] : [] };
+    /* an `orangefilm` installed with npm -g is not npx's: it stays as it is until npm updates it */
+    const installed = process.env.npm_command !== 'exec' && !(process.env.ORANGE_RUN || process.env.ORANGE_RUN);
+    return { ok: r.status === 0, lines: installed && r.status === 0 ? [`The \`orangefilm\` command installed here is still ${VERSION}: \`npm install -g orangefilm@latest\` updates it.`] : [] };
   }
-  if (!found) return { ok: true, lines: [`openfilm ${VERSION} is the newest. Studio starts on it the next time it opens.`] };
-  if (!olderThanThis(found.version)) return { ok: true, lines: [`openfilm ${VERSION} is the newest, and Studio runs it.`] };
-  say(`Updating OpenFilm Studio from ${found.version} to ${VERSION}…`);
+  if (!found) return { ok: true, lines: [`orangefilm ${VERSION} is the newest. Studio starts on it the next time it opens.`] };
+  if (!olderThanThis(found.version)) return { ok: true, lines: [`orangefilm ${VERSION} is the newest, and Studio runs it.`] };
+  say(`Updating OrangeFilm Studio from ${found.version} to ${VERSION}…`);
   const replaced = await replace(found);
   if ('stays' in replaced) return { ok: false, lines: [`Studio keeps running ${found.version} for now: ${replaced.stays}. Update again once that is done.`] };
   await ensureStudio(say);
-  return { ok: true, lines: [`Studio runs openfilm ${VERSION} now${replaced.pages ? `: the ${replaced.pages === 1 ? 'page' : `${replaced.pages} pages`} open on it come back on it` : ''}.`] };
+  return { ok: true, lines: [`Studio runs orangefilm ${VERSION} now${replaced.pages ? `: the ${replaced.pages === 1 ? 'page' : `${replaced.pages} pages`} open on it come back on it` : ''}.`] };
 }
 
 /**
@@ -299,17 +299,17 @@ function projectAround(from) {
   }
 }
 
-/** Programs between an agent and its command: shells, package runners, openfilm's own launchers. */
-const BETWEEN = /^(\S*\/)?-?(sh|bash|zsh|fish|dash|ksh|tcsh|csh|env|login|sudo)(\s|$)|(^|[/\s])(npm|npx|pnpm|pnpx|yarn|bunx?|corepack)(\s|$)|npm-cli\.js|npx-cli\.js|\/\.bin\/openfilm(\s|$)|\/bin\/openfilm(\.mjs)?(\s|$)/;
+/** Programs between an agent and its command: shells, package runners, orangefilm's own launchers. */
+const BETWEEN = /^(\S*\/)?-?(sh|bash|zsh|fish|dash|ksh|tcsh|csh|env|login|sudo)(\s|$)|(^|[/\s])(npm|npx|pnpm|pnpx|yarn|bunx?|corepack)(\s|$)|npm-cli\.js|npx-cli\.js|\/\.bin\/orangefilm(\s|$)|\/bin\/orangefilm(\.mjs)?(\s|$)/;
 
 /**
  * The agent running this command, as Studio names agents to give each its notes once (studio/server/person-edits.mjs):
- * the desktop app's by its chat conversation (OPENFILM_AGENT, which the app sets), else the program that ran the
+ * the desktop app's by its chat conversation (ORANGE_AGENT, which the app sets), else the program that ran the
  * command, past the shells and package runners between: `pid:<its process id>`. On Windows, the process that started
  * this one. A name that changes from command to command only means a note is given again.
  */
 export function agentName() {
-  if (process.env.OPENFILM_AGENT) return process.env.OPENFILM_AGENT;
+  if (process.env.ORANGE_AGENT) return process.env.ORANGE_AGENT;
   let pid = process.ppid;
   if (process.platform === 'win32') return `pid:${pid}`;
   for (let up = 0; up < 12 && pid > 1; up++) {
@@ -343,37 +343,37 @@ export async function keptNote(from = '.') {
 }
 
 /**
- * `openfilm canvas`: the canvas of the project around the current folder, as JSON; `openfilm canvas apply <steps>`
+ * `orangefilm canvas`: the canvas of the project around the current folder, as JSON; `orangefilm canvas apply <steps>`
  * takes an agent's steps on it (a JSON list, a .json file, or - for standard input; see applyCanvasOps in
  * server/canvas.mjs), all or none, and Studio shows them on the board at once. What it adds is the agent's that runs it
- * (OPENFILM_AGENT, and OPENFILM_SESSION when it says which conversation).
+ * (ORANGE_AGENT, and ORANGE_SESSION when it says which conversation).
  * @param {string[]} args @param {(line: string) => void} [say] @returns {Promise<{ ok: boolean, usage?: boolean, lines: string[] }>}
  */
 export async function canvasCommand(args, say) {
   const [verb, given] = args;
-  if (verb !== undefined && verb !== 'apply') return { ok: false, usage: true, lines: ['openfilm canvas: `canvas` shows the board, `canvas apply <steps>` changes it'] };
+  if (verb !== undefined && verb !== 'apply') return { ok: false, usage: true, lines: ['orangefilm canvas: `canvas` shows the board, `canvas apply <steps>` changes it'] };
   const folder = projectAround('.');
-  if (!folder) return { ok: false, usage: true, lines: [`openfilm canvas: ${resolve('.')} is not in a project; \`openfilm open\` makes one`] };
+  if (!folder) return { ok: false, usage: true, lines: [`orangefilm canvas: ${resolve('.')} is not in a project; \`orangefilm open\` makes one`] };
   /** @type {unknown} */
   let ops;
   if (verb === 'apply') {
-    if (given === undefined) return { ok: false, usage: true, lines: ['openfilm canvas apply: the steps, as JSON: [{"op":"add","kind":"note","text":"…"}], a .json file, or - to read them'] };
+    if (given === undefined) return { ok: false, usage: true, lines: ['orangefilm canvas apply: the steps, as JSON: [{"op":"add","kind":"note","text":"…"}], a .json file, or - to read them'] };
     const text = given === '-' ? readFileSync(0, 'utf8') : given.trim().startsWith('[') ? given : readFileSync(given, 'utf8');
-    try { ops = JSON.parse(text); } catch (e) { return { ok: false, usage: true, lines: [`openfilm canvas apply: the steps are not JSON: ${/** @type {Error} */ (e).message}`] }; }
+    try { ops = JSON.parse(text); } catch (e) { return { ok: false, usage: true, lines: [`orangefilm canvas apply: the steps are not JSON: ${/** @type {Error} */ (e).message}`] }; }
   }
-  const agent = process.env.OPENFILM_AGENT;
-  const by = agent ? { agent, ...(process.env.OPENFILM_SESSION ? { session: process.env.OPENFILM_SESSION } : {}) } : undefined;
+  const agent = process.env.ORANGE_AGENT;
+  const by = agent ? { agent, ...(process.env.ORANGE_SESSION ? { session: process.env.ORANGE_SESSION } : {}) } : undefined;
   const run = await ensureStudio(say);
   const answer = await post(run, '/api/canvas', { folder, ...(ops === undefined ? {} : { ops }), ...(by ? { by } : {}) });
-  if (!answer?.ok) return { ok: false, usage: answer?.code === 2, lines: [`openfilm canvas: ${answer?.text ?? answer?.error ?? 'Studio did not say how it went'}`] };
+  if (!answer?.ok) return { ok: false, usage: answer?.code === 2, lines: [`orangefilm canvas: ${answer?.text ?? answer?.error ?? 'Studio did not say how it went'}`] };
   if (ops === undefined) return { ok: true, lines: [JSON.stringify(answer.canvas, null, 1)] };
   const { nodes, edges } = answer.canvas;
   return { ok: true, lines: [`Done${answer.added.length ? `: added ${answer.added.join(', ')}` : ''}. The board has ${nodes.length} nodes and ${edges.length} wires; the person sees it now.`] };
 }
 
 /**
- * `openfilm get [verb] [--option value …] [--yes]`: media for the project around the current folder, made by Studio
- * (started when needed), or found in OpenFilm's own library here (src/library-search.mjs LIBRARY_VERBS, offline and
+ * `orangefilm get [verb] [--option value …] [--yes]`: media for the project around the current folder, made by Studio
+ * (started when needed), or found in OrangeFilm's own library here (src/library-search.mjs LIBRARY_VERBS, offline and
  * free). Without a verb (or with --help): what can be got here now, the library first. `--via <provider>` and
  * `--model <id>` override the person's choices in Studio's Settings (Models) for one run; the listing leaves them
  * out, as it leaves out who makes what. `code` is the exit status: 0 done, 1 it did not run, 2 not a project or a wrong
@@ -382,25 +382,25 @@ export async function canvasCommand(args, say) {
  */
 export async function materialCommand(argv, { json = false, project = process.cwd() } = {}) {
   const [action, ...rest] = argv;
-  if (action !== 'search' && action !== 'take') return { code: 2, lines: ['openfilm material search <query> | openfilm material take <videoId>'] };
-  if (action === 'search' && !rest.join(' ').trim()) return { code: 2, lines: ['openfilm material search <query>'] };
-  if (action === 'take' && !rest[0]?.trim()) return { code: 2, lines: ['openfilm material take <videoId>'] };
+  if (action !== 'search' && action !== 'take') return { code: 2, lines: ['orangefilm material search <query> | orangefilm material take <videoId>'] };
+  if (action === 'search' && !rest.join(' ').trim()) return { code: 2, lines: ['orangefilm material search <query>'] };
+  if (action === 'take' && !rest[0]?.trim()) return { code: 2, lines: ['orangefilm material take <videoId>'] };
   const studio = await running();
-  if (!studio) return { code: 1, lines: ['openfilm material: Studio is not running'] };
+  if (!studio) return { code: 1, lines: ['orangefilm material: Studio is not running'] };
   const headers = { 'content-type': 'application/json', 'x-studio-key': studio.key, origin: studio.origin };
   if (action === 'take') {
     const videoId = rest[0].trim();
     const raw = await fetch(`${studio.origin}/api/materials/raw`, { method: 'POST', headers, body: JSON.stringify({ videoId }) }).then((r) => r.json()).catch(() => null);
-    if (!raw?.path) return { code: 1, lines: [`openfilm material: ${raw?.message ?? 'the raw file could not be fetched'}`] };
+    if (!raw?.path) return { code: 1, lines: [`orangefilm material: ${raw?.message ?? 'the raw file could not be fetched'}`] };
     const projects = await fetch(`${studio.origin}/api/projects`, { headers }).then((r) => r.json()).catch(() => null);
     const root = resolve(project);
     const found = (projects?.projects ?? []).find((entry) => resolve(entry.path).toLowerCase() === root.toLowerCase());
-    if (!found?.id) return { code: 1, lines: [`openfilm material: ${root} is not a project Studio knows`] };
+    if (!found?.id) return { code: 1, lines: [`orangefilm material: ${root} is not a project Studio knows`] };
     const brought = await fetch(`${studio.origin}/api/projects/${encodeURIComponent(found.id)}/files/bring`, {
       method: 'POST', headers, body: JSON.stringify({ paths: [raw.path], into: 'assets/materials', mode: 'copy' }),
     }).then((r) => r.json()).catch(() => null);
     const landed = Array.isArray(brought?.landed) ? brought.landed[0] : brought?.landed;
-    if (typeof landed !== 'string') return { code: 1, lines: ['openfilm material: the file was fetched but not brought into the project'] };
+    if (typeof landed !== 'string') return { code: 1, lines: ['orangefilm material: the file was fetched but not brought into the project'] };
     return { code: 0, lines: [json ? JSON.stringify({ ok: true, assetPath: landed }, null, 2) : landed] };
   }
   const query = rest.join(' ').trim();
@@ -410,7 +410,7 @@ export async function materialCommand(argv, { json = false, project = process.cw
   url.searchParams.set('pageSize', '20');
   const response = await fetch(url, { headers: { 'x-studio-key': studio.key, origin: studio.origin } });
   const body = await response.json().catch(() => null);
-  if (!response.ok) return { code: 1, lines: [`openfilm material: ${body?.code === 'authentication-required' ? 'sign in to Studio first' : body?.message ?? `HTTP ${response.status}`}`] };
+  if (!response.ok) return { code: 1, lines: [`orangefilm material: ${body?.code === 'authentication-required' ? 'sign in to Studio first' : body?.message ?? `HTTP ${response.status}`}`] };
   const rows = Array.isArray(body?.items) ? body.items : [];
   const valueOf = (value) => (value && typeof value === 'object' && 'source' in value ? value.source : value);
   const items = rows.map((row) => {
@@ -436,7 +436,7 @@ export async function getMedia(argv, say, {postLibrary = post} = {}) {
     const a = argv[i];
     if (a === '-h') { flags.help = true; continue; }
     if (!a.startsWith('--')) {
-      if (verb !== null) return { code: 2, lines: [`openfilm get: unexpected ${a}: options are written --name value`] };
+      if (verb !== null) return { code: 2, lines: [`orangefilm get: unexpected ${a}: options are written --name value`] };
       verb = a;
       continue;
     }
@@ -447,9 +447,9 @@ export async function getMedia(argv, say, {postLibrary = post} = {}) {
     flags[name] = had === undefined ? value : [...[had].flat(), value];
   }
   const { help, via, model, yes, ...args } = flags;
-  if (via !== undefined && typeof via !== 'string') return { code: 2, lines: ['openfilm get: --via names a provider, e.g. --via elevenlabs'] };
-  if (model !== undefined && typeof model !== 'string') return { code: 2, lines: ['openfilm get: --model names a model, e.g. --model eleven_v4'] };
-  /* OpenFilm's own library: searched here, offline and free, with no Studio (src/library-search.mjs) */
+  if (via !== undefined && typeof via !== 'string') return { code: 2, lines: ['orangefilm get: --via names a provider, e.g. --via elevenlabs'] };
+  if (model !== undefined && typeof model !== 'string') return { code: 2, lines: ['orangefilm get: --model names a model, e.g. --model eleven_v4'] };
+  /* OrangeFilm's own library: searched here, offline and free, with no Studio (src/library-search.mjs) */
   const library = await import('../src/library-search.mjs');
   if (verb && verb in library.LIBRARY_VERBS && help === undefined) {
     /* a Studio running keeps the library and its model loaded: it answers a search in milliseconds; asked only when
@@ -473,12 +473,12 @@ export async function getMedia(argv, say, {postLibrary = post} = {}) {
     ] };
   }
   const folder = projectAround('.');
-  if (!folder && !listing) return { code: 2, lines: [`openfilm get: ${resolve('.')} is not in a project; \`openfilm open\` makes one`] };
+  if (!folder && !listing) return { code: 2, lines: [`orangefilm get: ${resolve('.')} is not in a project; \`orangefilm open\` makes one`] };
   /* the listing is read from a Studio already running, else here: asking what there is starts nothing */
   const run = listing ? await running() : await ensureStudio(say);
   if (!listing && run) {
     const answer = await post(run, '/api/get', { folder, verb, args, ...(via ? { via } : {}), ...(model ? { model } : {}), yes: yes === true });
-    if (typeof answer?.text !== 'string') return { code: 1, lines: [`openfilm get: ${answer?.error ?? 'Studio did not say how it went'}`] };
+    if (typeof answer?.text !== 'string') return { code: 1, lines: [`orangefilm get: ${answer?.error ?? 'Studio did not say how it went'}`] };
     return { code: answer.ok ? 0 : answer.code === 2 ? 2 : 1, lines: [answer.text] };
   }
   const one = verb && verb !== 'help' ? verb : null;
@@ -494,29 +494,29 @@ export async function getMedia(argv, say, {postLibrary = post} = {}) {
   });
   if (one && free.length) return { code: 0, lines: lines(free, one.length) };
   /* web search and web pages, for an agent without web tools of its own (the app's own agents say so) */
-  const web = process.env.OPENFILM_GET_WEB === '1';
+  const web = process.env.ORANGE_GET_WEB === '1';
   /** @type {{ verbs: { verb: string, help: string, dir?: string, options: Record<string, { value?: string, required?: boolean, choices?: string[] }> }[], note: string | null, services?: string, error?: string }} */
   let listed;
   if (run) {
     const query = new URLSearchParams({ ...(one ? { verb: one } : {}), ...(web ? { web: '1' } : {}) }).toString();
     const res = await fetch(`${run.origin}/api/get${query ? `?${query}` : ''}`, { headers: { 'x-studio-key': run.key } });
     listed = await res.json();
-    if (!res.ok) return { code: 2, lines: [`openfilm get: ${listed.error ?? `Studio answered ${res.status}`}`] };
+    if (!res.ok) return { code: 2, lines: [`orangefilm get: ${listed.error ?? `Studio answered ${res.status}`}`] };
   } else {
     const { catalog } = await import('./server/get.mjs');
-    try { listed = await catalog(one ?? undefined, { web }); } catch (e) { return { code: 2, lines: [`openfilm get: ${/** @type {Error} */ (e).message}`] }; }
+    try { listed = await catalog(one ?? undefined, { web }); } catch (e) { return { code: 2, lines: [`orangefilm get: ${/** @type {Error} */ (e).message}`] }; }
   }
   const { verbs, note, services } = listed;
   const where = one || !services ? [] : ['', services];
   const width = Math.max(...[...free, ...verbs].map((v) => v.verb.length));
   const first = one ? [] : [
-    'Free, offline, from OpenFilm\'s own library (CC0): search it first, and make only what it does not have.',
+    'Free, offline, from OrangeFilm\'s own library (CC0): search it first, and make only what it does not have.',
     ...lines(free, width), '',
   ];
   /* nothing connected: what to do instead, and which services there are */
   if (!verbs.length) return { code: 0, lines: [...first, ...(note ? [note] : []), ...where] };
   return { code: 0, lines: [
-    'openfilm get <what> [--option value …]   media for this project, saved under assets/',
+    'orangefilm get <what> [--option value …]   media for this project, saved under assets/',
     '  --yes              the person already agreed to what it spends',
     '',
     ...first,

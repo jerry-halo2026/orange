@@ -16,7 +16,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { runAnalysis } from './analyze-runner.mjs';
 
-const image = process.argv[2] ?? join(import.meta.dirname, '..', 'examples-index', 'openfilm-intro', 'look.jpg');
+const image = process.argv[2] ?? join(import.meta.dirname, '..', 'examples-index', 'orangefilm-intro', 'look.jpg');
 const jpeg = readFileSync(image);
 const frames = async () => [0, 1, 2].map((at) => ({ at, jpeg, mime: 'image/jpeg' }));
 

@@ -6,9 +6,9 @@ import assert from 'node:assert/strict';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { agentOffer, createOpenFilmAgent } from './orangefilm-agent.mjs';
+import { agentOffer, createOrangeFilmAgent } from './orangefilm-agent.mjs';
 import { createRoster } from './agent-roster.mjs';
-import { OPENFILM_MODELS } from './orangefilm-models.mjs';
+import { ORANGE_MODELS } from './orangefilm-models.mjs';
 
 const deepseek = 'deepseek/deepseek-v4.1-flash-1017';
 const catalog = { default: deepseek, data: [
@@ -17,13 +17,13 @@ const catalog = { default: deepseek, data: [
 ] };
 
 function setup(dataDir = mkdtempSync(join(tmpdir(), 'of-account-agent-'))) {
-  const account = { key: null, email: null, baseUrl: 'https://openfilm.test/v1/agent', signingIn: false, error: null };
+  const account = { key: null, email: null, baseUrl: 'https://orangefilm.test/v1/agent', signingIn: false, error: null };
   const calls = [];
   let closed = 0;
   let updates = 0;
   let renewed = 0;
   let answer = () => Response.json(catalog);
-  const agent = createOpenFilmAgent({ dataDir, readAccount: async () => ({ ...account }),
+  const agent = createOrangeFilmAgent({ dataDir, readAccount: async () => ({ ...account }),
     signIn: async () => { calls.push('sign-in'); account.signingIn = true; },
     cancelSignIn: async () => { account.signingIn = false; },
     signOut: async () => { account.key = null; account.email = null; account.signingIn = false; calls.push('sign-out'); },
@@ -48,12 +48,12 @@ test('the Services account signs in once, exposes no credential in state, and su
   assert.equal(s.agent.state().account.email, 'a@example.com');
   assert.equal(JSON.stringify(s.agent.state()).includes(s.account.key), false);
   const harness = await s.agent.harness();
-  assert.deepEqual(harness.env, { OPENFILM_ACCOUNT_KEY: 'ofk-shared' });
+  assert.deepEqual(harness.env, { ORANGE_ACCOUNT_KEY: 'ofk-shared' });
   assert.equal(harness.model, deepseek);
   assert.equal(harness.models[0].baseUrl, s.account.baseUrl);
   assert.equal(harness.models.find((m) => m.id === deepseek).context, 1_048_576);
   assert.equal(harness.models[0].compat.thinkingFormat, 'openrouter');
-  assert.equal(harness.home, join(s.dataDir, 'agents/openfilm/pi'));
+  assert.equal(harness.home, join(s.dataDir, 'agents/orangefilm/pi'));
   const requests = s.calls.length;
   const updates = s.updates();
   await s.agent.refresh();
@@ -70,7 +70,7 @@ test('account switches and signing out in Services invalidate agent sessions and
   await s.agent.refresh();
   assert.equal(s.closed(), 1);
   assert.ok(s.agent.state().configurationRevision > revision);
-  assert.equal((await s.agent.harness()).env.OPENFILM_ACCOUNT_KEY, 'ofk-second');
+  assert.equal((await s.agent.harness()).env.ORANGE_ACCOUNT_KEY, 'ofk-second');
   s.account.key = null;
   await s.agent.refresh();
   assert.equal(s.closed(), 2);
@@ -97,35 +97,35 @@ test('an unavailable relay can be refreshed; a revoked account needs sign-in and
   assert.equal(s.calls.at(-1), 'sign-in');
 });
 
-test('the OpenFilm roster entry follows Claude, shares auth actions, and never invokes a local CLI', async () => {
+test('the OrangeFilm roster entry follows Claude, shares auth actions, and never invokes a local CLI', async () => {
   const s = setup();
-  const roster = createRoster({ dataDir: s.dataDir, openfilm: s.agent,
+  const roster = createRoster({ dataDir: s.dataDir, orangefilm: s.agent,
     localAgents: async () => [], localAgent: async () => { throw new Error('not a CLI'); },
     openSignIn: async () => { throw new Error('not a CLI'); }, closeSessions: () => {},
     seal: (t) => Buffer.from(t), unseal: (b) => String(b), onChange: () => {},
   });
-  assert.deepEqual(roster.list().slice(0, 3).map((a) => a.id), ['codex', 'claude', 'openfilm']);
-  const entry = () => roster.list().find((a) => a.id === 'openfilm');
+  assert.deepEqual(roster.list().slice(0, 3).map((a) => a.id), ['codex', 'claude', 'orangefilm']);
+  const entry = () => roster.list().find((a) => a.id === 'orangefilm');
   assert.equal(entry().shown, true);
-  await roster.connect('openfilm');
+  await roster.connect('orangefilm');
   assert.equal(entry().status, 'waiting');
-  await roster.cancelSignIn('openfilm');
+  await roster.cancelSignIn('orangefilm');
   assert.equal(entry().status, 'sign-in');
   Object.assign(s.account, { key: 'ofk-shared', email: 'a@example.com' });
   await roster.refresh();
-  roster.setShown('openfilm', false);
+  roster.setShown('orangefilm', false);
   assert.equal(s.account.key, 'ofk-shared', 'hiding the agent keeps Services signed in');
-  roster.setShown('openfilm', true);
-  assert.equal((await roster.harness('openfilm')).env.OPENFILM_ACCOUNT_KEY, 'ofk-shared');
+  roster.setShown('orangefilm', true);
+  assert.equal((await roster.harness('orangefilm')).env.ORANGE_ACCOUNT_KEY, 'ofk-shared');
   assert.equal(JSON.stringify(roster.list()).includes('ofk-shared'), false);
-  await roster.switchAccount('openfilm');
+  await roster.switchAccount('orangefilm');
   assert.deepEqual(s.calls.filter((c) => typeof c === 'string').slice(-2), ['sign-out', 'sign-in']);
-  await roster.disconnect('openfilm');
+  await roster.disconnect('orangefilm');
   assert.equal(s.account.key, null, 'disconnect signs the shared account out');
 });
 
 test('catalogs tolerate duplicate and malformed entries, and translate on/off reasoning for Pi', () => {
-  const offer = agentOffer({ data: [null, {}, { id: 'm', efforts: ['off', 'on'], default_effort: 'on' }, { id: 'm' }] }, 'https://openfilm.test/v1/agent');
+  const offer = agentOffer({ data: [null, {}, { id: 'm', efforts: ['off', 'on'], default_effort: 'on' }, { id: 'm' }] }, 'https://orangefilm.test/v1/agent');
   assert.equal(offer.models.length, 1);
   assert.deepEqual(offer.models[0].levels, ['off', 'high']);
   assert.equal(offer.models[0].effort, 'high');
@@ -152,8 +152,8 @@ test('model order and visibility persist, update the harness and default, and ke
   const s = setup();
   s.account.key = 'ofk-account';
   await s.agent.refresh();
-  const defaults = OPENFILM_MODELS.map((m) => m.id);
-  assert.deepEqual(s.agent.state().openfilm.models.map((m) => m.id), defaults);
+  const defaults = ORANGE_MODELS.map((m) => m.id);
+  assert.deepEqual(s.agent.state().orangefilm.models.map((m) => m.id), defaults);
   const order = [...defaults].reverse();
   const before = s.calls.length;
   assert.deepEqual(s.agent.saveModels({ order, hidden: [deepseek] }), { ok: true });
@@ -166,7 +166,7 @@ test('model order and visibility persist, update the harness and default, and ke
   const restarted = setup(s.dataDir);
   restarted.account.key = 'ofk-account';
   await restarted.agent.refresh();
-  assert.deepEqual(restarted.agent.state().openfilm.order, order);
-  assert.deepEqual(restarted.agent.state().openfilm.hidden, [deepseek]);
+  assert.deepEqual(restarted.agent.state().orangefilm.order, order);
+  assert.deepEqual(restarted.agent.state().orangefilm.hidden, [deepseek]);
   assert.deepEqual(restarted.agent.saveModels({ hidden: defaults }).ok, false, 'at least one model must remain visible');
 });

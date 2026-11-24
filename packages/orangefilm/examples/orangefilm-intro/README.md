@@ -1,8 +1,8 @@
-# OpenFilm intro
+# OrangeFilm intro
 
 ![The end card of section 3](look.jpg)
 
-The 1:42 film that introduces OpenFilm, made with OpenFilm: what it is, what it can make, how you change a film by
+The 1:42 film that introduces OrangeFilm, made with OrangeFilm: what it is, what it can make, how you change a film by
 clicking it or asking your agent, and how to start. The narration and its subtitles are in Chinese.
 
 ## Open it
@@ -10,15 +10,15 @@ clicking it or asking your agent, and how to start. The narration and its subtit
 From a clone of this repository:
 
 ```sh
-cd openfilm-intro
-npx -y openfilm@latest open
+cd orangefilm-intro
+npx -y orangefilm@latest open
 ```
 
 Or, in Studio: Projects → Import from → GitHub, with
-`https://github.com/openfilm/examples/tree/main/openfilm-intro`.
+`https://github.com/jerry-halo2026/orange/tree/main/packages/orangefilm/examples/orangefilm-intro`.
 
 Studio opens the film: the sections on the picture track, the voice, the music and the sound effects below them. To
-make the MP4, run `npx openfilm render` in the folder.
+make the MP4, run `npx orangefilm render` in the folder.
 
 ## How it is built
 
@@ -28,7 +28,7 @@ make the MP4, run `npx openfilm render` in the folder.
 | --- | --- | --- |
 | 1 | 0 – 5 s | A desk at night (`assets/video/s1-room.mp4`), into the app (`hero-dark.mp4`) |
 | `s2.html` | 5 – 12 s | Any agent becomes an editor: the agents' marks on a bright stage (`s2-cast.mp4`) |
-| `s3.html` | 12 – 16.1 s | The OpenFilm mark: free, open source, MIT (`s3-mark.mp4`) |
+| `s3.html` | 12 – 16.1 s | The OrangeFilm mark: free, open source, MIT (`s3-mark.mp4`) |
 | `s4.html` | 16.1 – 31.6 s | What it does and what it makes, on a timeline cut on the words |
 | `s5.html` | 31.6 – 49.8 s | Click anything in the picture to change it (`s5-ui.mp4`) |
 | `s6.html` | 49.8 – 70.8 s | How you use it: a terminal, the agent, Studio, the export (`s6-ui.mp4`) |

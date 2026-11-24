@@ -170,7 +170,7 @@ export async function mixedWaveform(root, sounds, duration) {
   let pending = mixingWaves.get(id);
   if (!pending) {
     pending = cached(root, 'waves', name, async () => {
-      const scratch = await mkdtemp(join(tmpdir(), 'openfilm-wave-'));
+      const scratch = await mkdtemp(join(tmpdir(), 'orangefilm-wave-'));
       const pcm = join(scratch, 'mix.pcm');
       try {
         await mix(clips, duration, pcm, ['-ac', '1', '-ar', String(RATE), '-f', 's16le']);

@@ -15,7 +15,7 @@ import type { OwnProvider, ProvidersState } from './providers';
 
 export interface LibraryVoice {
   provider: string;
-  /** its id at its service, as `openfilm get tts --voice` takes it */
+  /** its id at its service, as `orangefilm get tts --voice` takes it */
   id: string;
   name: string;
   description: string | null;
@@ -36,7 +36,7 @@ export interface LibraryVoice {
 export interface VoiceService { id: string; name: string; models: { id: string; name: string }[] }
 export interface LibraryVoices { version: number; providers: VoiceService[]; voices: LibraryVoice[] }
 
-/** How the person reaches a service now: `via` the provider `openfilm get` runs (its own, or OrangeFilm), with these models. */
+/** How the person reaches a service now: `via` the provider `orangefilm get` runs (its own, or OrangeFilm), with these models. */
 export interface VoiceAccess { via: string; models: string[] }
 
 let voices: LibraryVoices | null = null;
@@ -78,10 +78,10 @@ export function voiceAccess(services: readonly VoiceService[], state: Pick<Provi
   const out: Record<string, VoiceAccess> = {};
   if (!state) return out;
   const own = (id: string): OwnProvider | undefined => state.providers.find((p) => p.id === id && p.source);
-  const openfilm = own('openfilm');
+  const orangefilm = own('orangefilm');
   for (const service of services) {
-    const through = openfilm?.models.tts?.map((m) => m.id).filter((id) => id.startsWith(`${service.id}/`)) ?? [];
-    if (through.length) { out[service.id] = { via: 'openfilm', models: through }; continue; }
+    const through = orangefilm?.models.tts?.map((m) => m.id).filter((id) => id.startsWith(`${service.id}/`)) ?? [];
+    if (through.length) { out[service.id] = { via: 'orangefilm', models: through }; continue; }
     const direct = own(service.id);
     const offered = direct?.models.tts?.map((m) => m.id).filter((id) => service.models.some((m) => m.id === id)) ?? [];
     if (direct && offered.length) out[service.id] = { via: service.id, models: offered };

@@ -5,12 +5,12 @@
 // @ts-check
 /**
  * `npm run dev`: Studio from this checkout, beside an installed OrangeFilm. Its state and exports are in .dev/
- * (git-ignored), its projects in the same library as every OpenFilm's (the one ~/.openfilm says, by default
- * ~/Movies/OrangeFilm/Projects on macOS), and it listens on port 4848 (OPENFILM_STUDIO_PORT for another). The editor is rebuilt when
+ * (git-ignored), its projects in the same library as every OrangeFilm's (the one ~/.orangefilm says, by default
+ * ~/Movies/OrangeFilm/Projects on macOS), and it listens on port 4848 (ORANGE_STUDIO_PORT for another). The editor is rebuilt when
  * studio/ui changes (reload the page); Studio restarts when studio/server or src change. It opens a sample project in
- * your browser (OPENFILM_NO_BROWSER=1: it only prints the address). Ctrl+C stops it all.
+ * your browser (ORANGE_NO_BROWSER=1: it only prints the address). Ctrl+C stops it all.
  *
- * It also writes .dev/bin/openfilm (and openfilm.cmd on Windows): this checkout's command on this Studio, for your own
+ * It also writes .dev/bin/orangefilm (and orangefilm.cmd on Windows): this checkout's command on this Studio, for your own
  * agent to try your changes with.
  */
 import { spawn } from 'node:child_process';
@@ -23,18 +23,18 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const DEV = join(ROOT, '.dev');
 const env = {
   ...process.env,
-  OPENFILM_HOME: join(DEV, 'home'),
-  OPENFILM_EXPORTS: join(DEV, 'exports'),
+  ORANGE_HOME: join(DEV, 'home'),
+  ORANGE_EXPORTS: join(DEV, 'exports'),
   /* the person's library, wherever they chose to keep it (src/locations.mjs) */
-  OPENFILM_SHARED_HOME: process.env.OPENFILM_SHARED_HOME || join(homedir(), '.openfilm'),
-  OPENFILM_STUDIO_PORT: process.env.OPENFILM_STUDIO_PORT || '4848',
-  OPENFILM_NO_UPDATE_CHECK: '1',
-  /* Studio itself, without the supervisor `openfilm open` gives it: this script starts it again when its code changes */
-  OPENFILM_STUDIO_WORKER: '1',
+  ORANGE_SHARED_HOME: process.env.ORANGE_SHARED_HOME || join(homedir(), '.orangefilm'),
+  ORANGE_STUDIO_PORT: process.env.ORANGE_STUDIO_PORT || '4848',
+  ORANGE_NO_UPDATE_CHECK: '1',
+  /* Studio itself, without the supervisor `orangefilm open` gives it: this script starts it again when its code changes */
+  ORANGE_STUDIO_WORKER: '1',
 };
 
 /* one `pnpm dev` per checkout: two would share .dev/home and fight over the port, the loser taking another one and
-   writing it into run.json, so the agent's `openfilm` (and its browser) would point at a Studio that moves on every
+   writing it into run.json, so the agent's `orangefilm` (and its browser) would point at a Studio that moves on every
    restart and is refused in between */
 mkdirSync(DEV, { recursive: true });
 const LOCK = join(DEV, 'dev.pid');
@@ -49,19 +49,19 @@ process.on('exit', () => {
   try { if (Number(readFileSync(LOCK, 'utf8').trim()) === process.pid) rmSync(LOCK); } catch { /* gone already */ }
 });
 
-/* this checkout's `openfilm` on this Studio, for your agent: the same environment, and it names itself in the manual */
+/* this checkout's `orangefilm` on this Studio, for your agent: the same environment, and it names itself in the manual */
 const BIN = join(DEV, 'bin');
 mkdirSync(BIN, { recursive: true });
-const CLI = join(ROOT, 'bin', 'openfilm.mjs');
-const SHARED = ['OPENFILM_HOME', 'OPENFILM_LIBRARY', 'OPENFILM_SHARED_HOME', 'OPENFILM_EXPORTS', 'OPENFILM_STUDIO_PORT', 'OPENFILM_NO_UPDATE_CHECK', 'OPENFILM_SKILLS_INDEX'].filter((k) => env[k]);
-const sh = join(BIN, 'openfilm');
-writeFileSync(sh, `#!/bin/sh\n${SHARED.map((k) => `export ${k}='${env[k]}'`).join('\n')}\nOPENFILM_RUN="${sh}" exec '${process.execPath}' '${CLI}' "$@"\n`);
+const CLI = join(ROOT, 'bin', 'orangefilm.mjs');
+const SHARED = ['ORANGE_HOME', 'ORANGE_LIBRARY', 'ORANGE_SHARED_HOME', 'ORANGE_EXPORTS', 'ORANGE_STUDIO_PORT', 'ORANGE_NO_UPDATE_CHECK', 'ORANGE_SKILLS_INDEX'].filter((k) => env[k]);
+const sh = join(BIN, 'orangefilm');
+writeFileSync(sh, `#!/bin/sh\n${SHARED.map((k) => `export ${k}='${env[k]}'`).join('\n')}\nORANGE_RUN="${sh}" exec '${process.execPath}' '${CLI}' "$@"\n`);
 chmodSync(sh, 0o755);
 if (process.platform === 'win32') {
-  writeFileSync(join(BIN, 'openfilm.cmd'), `@echo off\r\n${SHARED.map((k) => `set "${k}=${env[k]}"`).join('\r\n')}\r\nset "OPENFILM_RUN=%~f0"\r\n"${process.execPath}" "${CLI}" %*\r\n`);
+  writeFileSync(join(BIN, 'orangefilm.cmd'), `@echo off\r\n${SHARED.map((k) => `set "${k}=${env[k]}"`).join('\r\n')}\r\nset "ORANGE_RUN=%~f0"\r\n"${process.execPath}" "${CLI}" %*\r\n`);
 }
 
-const command = process.platform === 'win32' ? join(BIN, 'openfilm.cmd') : sh;
+const command = process.platform === 'win32' ? join(BIN, 'orangefilm.cmd') : sh;
 
 /* a small film to open: one page, drawn by frame(t) */
 const SAMPLE = join(DEV, 'sample');
@@ -77,7 +77,7 @@ if (!existsSync(join(SAMPLE, 'film.html'))) {
   body { margin: 0; width: 1920px; height: 1080px; background: #0b0d12; display: grid; place-items: center; }
   h1 { font: 700 120px system-ui, sans-serif; color: #fff; }
 </style>
-<h1 id="title">Hello, OpenFilm</h1>
+<h1 id="title">Hello, OrangeFilm</h1>
 <script type="module">
 const title = document.getElementById('title');
 window.film = {
@@ -121,19 +121,19 @@ const restart = (/** @type {string | null} */ file) => {
 for (const dir of ['studio/server', 'src']) watch(join(ROOT, dir), { recursive: true }, (_, file) => restart(file && `${dir}/${file}`));
 
 /* once Studio says where it listens (run.json), open the sample in it */
-const runFile = join(env.OPENFILM_HOME, 'run.json');
+const runFile = join(env.ORANGE_HOME, 'run.json');
 for (const end = Date.now() + 30_000; Date.now() < end; await new Promise((r) => setTimeout(r, 250))) {
   let up;
   try { up = JSON.parse(readFileSync(runFile, 'utf8')); } catch { continue; }
   if (up.pid !== server.pid) continue;
-  const quiet = Boolean(process.env.OPENFILM_NO_BROWSER);
+  const quiet = Boolean(process.env.ORANGE_NO_BROWSER);
   const res = await fetch(`${up.origin}/api/open`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-studio-key': up.key },
     body: JSON.stringify({ path: SAMPLE, now: !quiet, fallback: 0 }),
   }).catch((e) => ({ ok: false, json: async () => ({ error: e.message }) }));
   const said = await res.json();
-  console.log(res.ok ? `\nStudio (dev)  ${said.url}\nhome          ${env.OPENFILM_HOME}\nyour agent    tell it to run ${command}: this checkout, on this Studio\n` : `\ncould not open the sample: ${said.error}\n`);
+  console.log(res.ok ? `\nStudio (dev)  ${said.url}\nhome          ${env.ORANGE_HOME}\nyour agent    tell it to run ${command}: this checkout, on this Studio\n` : `\ncould not open the sample: ${said.error}\n`);
   break;
 }
 

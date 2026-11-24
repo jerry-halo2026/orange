@@ -29,7 +29,7 @@
  *   PATCH canvases/<id> { name }      → { id, name }
  *   DELETE canvases/<id>              → { boards }: into the trash; the first gone, the next one made first
  *
- * An agent changes it a step at a time (`openfilm canvas`, studio/client.mjs), each step checked and all of them kept
+ * An agent changes it a step at a time (`orangefilm canvas`, studio/client.mjs), each step checked and all of them kept
  * or none (applyCanvasOps): the board shown in Studio takes them at once (a `canvas` event).
  *
  *   POST /api/canvas { folder, ops?, by? } → { ok: true, canvas, added } or { ok: false, text }
@@ -689,7 +689,7 @@ export async function agentCanvasRoute(req, res, changed) {
   if (req.method !== 'POST') throw new HttpError(404, 'no such API');
   const body = /** @type {{ folder?: unknown, ops?: unknown, by?: unknown }} */ (await readJson(req));
   const root = resolve(String(body.folder ?? ''));
-  if (!(await stat(join(root, FILM_FILE)).catch(() => null))?.isFile()) return json(res, 200, { ok: false, code: 2, text: `${root} is not a project; \`openfilm open\` makes one` });
+  if (!(await stat(join(root, FILM_FILE)).catch(() => null))?.isFile()) return json(res, 200, { ok: false, code: 2, text: `${root} is not a project; \`orangefilm open\` makes one` });
   /* the board the person has in front of them */
   const showing = shown.get(root);
   const board = showing && (await isBoard(root, showing)) ? showing : MAIN_BOARD;

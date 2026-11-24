@@ -367,7 +367,7 @@ function PagePreview({ file, sources, onClose, onPlace }: SourcePreviewProps) {
 
   const post = React.useCallback((message: object) => {
     if (!origin) return;
-    frameRef.current?.contentWindow?.postMessage({ source: 'openfilm-studio', ...message }, origin);
+    frameRef.current?.contentWindow?.postMessage({ source: 'orangefilm-studio', ...message }, origin);
   }, [origin]);
   /* the picture at t: at the very end of a page with a duration its last frame (it draws below its duration) */
   const end = size?.duration ? size.duration - 1e-3 : Infinity;
@@ -393,7 +393,7 @@ function PagePreview({ file, sources, onClose, onPlace }: SourcePreviewProps) {
       const data = event.data as {
         source?: unknown; type?: unknown; duration?: unknown; width?: unknown; height?: unknown; origin?: unknown; ping?: unknown; now?: unknown;
       } | null;
-      if (event.source !== frameRef.current?.contentWindow || event.origin !== origin || data?.source !== 'openfilm-film') return;
+      if (event.source !== frameRef.current?.contentWindow || event.origin !== origin || data?.source !== 'orangefilm-film') return;
       if (data.type === 'error') { setFailed(true); return; }
       if (data.type === 'clock') {
         const rtt = performance.now() - Number(data.ping);

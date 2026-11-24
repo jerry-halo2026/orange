@@ -10,12 +10,12 @@ import { addSkills } from '../../src/skills.mjs';
 import { skillsCommand } from '../../src/skills-cli.mjs';
 import { startStudio } from './server.mjs';
 
-/** Discover as last read (skill-catalog.mjs): the index naming one skill of OpenFilm's, kept at its commit.
- *  It is not `replicate`: OpenFilm ships that one built in (manual/replicate), and a built-in skill shadows a Discover
+/** Discover as last read (skill-catalog.mjs): the index naming one skill of OrangeFilm's, kept at its commit.
+ *  It is not `replicate`: OrangeFilm ships that one built in (manual/replicate), and a built-in skill shadows a Discover
  *  copy of its name, so the catalog entry this test needs must be one Studio does not ship. */
 function discover(/** @type {string} */ home) {
-  const entry = { name: 'borrow-style', repo: 'https://github.com/openfilm/skill-borrow-style', path: 'skills/borrow-style', version: '0.1.0', commit: 'a'.repeat(40) };
-  const folder = join(home, 'skill-catalog', 'openfilm', `borrow-style@${entry.commit}`);
+  const entry = { name: 'borrow-style', repo: 'https://github.com/orangefilm/skill-borrow-style', path: 'skills/borrow-style', version: '0.1.0', commit: 'a'.repeat(40) };
+  const folder = join(home, 'skill-catalog', 'orangefilm', `borrow-style@${entry.commit}`);
   mkdirSync(folder, { recursive: true });
   writeFileSync(join(folder, 'SKILL.md'), '---\nname: borrow-style\ndescription: Borrow a picture\'s style\n---\nSteps.');
   writeFileSync(join(folder, '.source.json'), JSON.stringify(entry));
@@ -24,11 +24,11 @@ function discover(/** @type {string} */ home) {
 
 test('a replacement skill cover has a new gallery URL and serves the chosen bytes', async (t) => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-gallery-'));
-  const variables = { OPENFILM_HOME: join(root, 'home'), OPENFILM_LIBRARY: join(root, 'library'), OPENFILM_SKILLS: join(root, 'mine'), OPENFILM_TRASH_DIR: join(root, 'trash'), OPENFILM_SHARED_HOME: join(root, 'home') };
+  const variables = { ORANGE_HOME: join(root, 'home'), ORANGE_LIBRARY: join(root, 'library'), ORANGE_SKILLS: join(root, 'mine'), ORANGE_TRASH_DIR: join(root, 'trash'), ORANGE_SHARED_HOME: join(root, 'home') };
   const previous = Object.fromEntries(Object.keys(variables).map((key) => [key, process.env[key]]));
   Object.assign(process.env, variables);
-  mkdirSync(variables.OPENFILM_TRASH_DIR);
-  discover(variables.OPENFILM_SHARED_HOME);
+  mkdirSync(variables.ORANGE_TRASH_DIR);
+  discover(variables.ORANGE_SHARED_HOME);
   t.after(() => {
     for (const [key, value] of Object.entries(previous)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
     rmSync(root, { recursive: true, force: true });
@@ -36,7 +36,7 @@ test('a replacement skill cover has a new gallery URL and serves the chosen byte
   const source = join(root, 'source');
   mkdirSync(source);
   writeFileSync(join(source, 'SKILL.md'), '---\nname: covered\ndescription: A cover\n---\nSteps.');
-  writeFileSync(join(source, 'openfilm.json'), '{"cover":"original.png","custom":"keep me"}');
+  writeFileSync(join(source, 'orangefilm.json'), '{"cover":"original.png","custom":"keep me"}');
   writeFileSync(join(source, 'original.png'), 'original asset');
   const studio = await startStudio({ port: 0, openBrowser: () => {} });
   t.after(() => studio.close());
@@ -74,8 +74,8 @@ test('a replacement skill cover has a new gallery URL and serves the chosen byte
   assert.equal(removed.status, 200);
   assert.equal((await removed.json()).cover, null);
   assert.equal((await api(endpoint)).status, 404);
-  const installed = join(variables.OPENFILM_SKILLS, 'covered');
-  assert.deepEqual(JSON.parse(readFileSync(join(installed, 'openfilm.json'), 'utf8')), { custom: 'keep me' });
+  const installed = join(variables.ORANGE_SKILLS, 'covered');
+  assert.deepEqual(JSON.parse(readFileSync(join(installed, 'orangefilm.json'), 'utf8')), { custom: 'keep me' });
   assert.ok(existsSync(join(installed, 'original.png')), 'removal preserves the original asset');
   assert.equal(readFileSync(join(installed, 'SKILL.md'), 'utf8'), readFileSync(join(source, 'SKILL.md'), 'utf8'));
   const { skills } = await (await api('/api/skills')).json();
@@ -92,11 +92,11 @@ test('a replacement skill cover has a new gallery URL and serves the chosen byte
 
 test('skills: turned off and on, an official one installed and uninstalled, one of the person\'s removed to the trash', async (t) => {
   const root = mkdtempSync(join(tmpdir(), 'of-skill-off-'));
-  const variables = { OPENFILM_HOME: join(root, 'home'), OPENFILM_LIBRARY: join(root, 'library'), OPENFILM_SKILLS: join(root, 'mine'), OPENFILM_TRASH_DIR: join(root, 'trash'), OPENFILM_SHARED_HOME: join(root, 'home') };
+  const variables = { ORANGE_HOME: join(root, 'home'), ORANGE_LIBRARY: join(root, 'library'), ORANGE_SKILLS: join(root, 'mine'), ORANGE_TRASH_DIR: join(root, 'trash'), ORANGE_SHARED_HOME: join(root, 'home') };
   const previous = Object.fromEntries(Object.keys(variables).map((key) => [key, process.env[key]]));
   Object.assign(process.env, variables);
-  mkdirSync(variables.OPENFILM_TRASH_DIR);
-  discover(variables.OPENFILM_SHARED_HOME);
+  mkdirSync(variables.ORANGE_TRASH_DIR);
+  discover(variables.ORANGE_SHARED_HOME);
   t.after(() => {
     for (const [key, value] of Object.entries(previous)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
     rmSync(root, { recursive: true, force: true });
@@ -105,8 +105,8 @@ test('skills: turned off and on, an official one installed and uninstalled, one 
   mkdirSync(source);
   writeFileSync(join(source, 'SKILL.md'), '---\nname: quiet\ndescription: One to turn off\n---\nSteps.');
   await addSkills(source);
-  mkdirSync(variables.OPENFILM_HOME, { recursive: true });
-  writeFileSync(join(variables.OPENFILM_HOME, 'prefs.json'), '{"projectsFolder":null,"kept":"as it was"}');
+  mkdirSync(variables.ORANGE_HOME, { recursive: true });
+  writeFileSync(join(variables.ORANGE_HOME, 'prefs.json'), '{"projectsFolder":null,"kept":"as it was"}');
   const studio = await startStudio({ port: 0, openBrowser: () => {} });
   t.after(() => studio.close());
   const api = (path, { method = 'GET', body } = {}) => fetch(studio.origin + path, {
@@ -114,14 +114,14 @@ test('skills: turned off and on, an official one installed and uninstalled, one 
     body: body ? JSON.stringify(body) : undefined,
   });
   const listed = async () => (await (await api('/api/skills')).json()).skills.find((s) => s.name === 'quiet');
-  const command = () => skillsCommand('openfilm', { cwd: root }).lines.join('\n');
+  const command = () => skillsCommand('orangefilm', { cwd: root }).lines.join('\n');
   assert.equal((await listed()).off, undefined);
   assert.match(command(), /quiet/);
 
   assert.equal((await api('/api/skills/local%2Fquiet/on', { method: 'PUT', body: { on: false } })).status, 200);
   assert.equal((await listed()).off, true, 'still in the gallery, to turn on again');
   assert.doesNotMatch(command(), /quiet/, 'offered to no agent');
-  assert.equal(JSON.parse(readFileSync(join(variables.OPENFILM_HOME, 'prefs.json'), 'utf8')).kept, 'as it was', 'the rest of prefs.json kept');
+  assert.equal(JSON.parse(readFileSync(join(variables.ORANGE_HOME, 'prefs.json'), 'utf8')).kept, 'as it was', 'the rest of prefs.json kept');
 
   assert.equal((await api('/api/skills/local%2Fquiet/on', { method: 'PUT', body: { on: true } })).status, 200);
   assert.equal((await listed()).off, undefined);
@@ -134,16 +134,16 @@ test('skills: turned off and on, an official one installed and uninstalled, one 
   const officialSkill = async () => (await (await api('/api/skills')).json()).skills.find((s) => s.name === 'borrow-style');
   assert.equal((await officialSkill()).installed, false);
   assert.doesNotMatch(command(), /borrow-style/);
-  assert.equal((await api('/api/skills/openfilm%2Fborrow-style/installed', { method: 'PUT', body: { installed: true } })).status, 200);
+  assert.equal((await api('/api/skills/orangefilm%2Fborrow-style/installed', { method: 'PUT', body: { installed: true } })).status, 200);
   assert.equal((await officialSkill()).installed, true);
   assert.match(command(), /borrow-style/);
-  assert.equal((await api('/api/skills/openfilm%2Fborrow-style', { method: 'DELETE' })).status, 400, 'uninstalled, not removed');
-  assert.equal((await api('/api/skills/openfilm%2Fborrow-style/installed', { method: 'PUT', body: { installed: false } })).status, 200);
+  assert.equal((await api('/api/skills/orangefilm%2Fborrow-style', { method: 'DELETE' })).status, 400, 'uninstalled, not removed');
+  assert.equal((await api('/api/skills/orangefilm%2Fborrow-style/installed', { method: 'PUT', body: { installed: false } })).status, 200);
   assert.doesNotMatch(command(), /borrow-style/);
   assert.equal((await api('/api/skills/local%2Fquiet/installed', { method: 'PUT', body: { installed: false } })).status, 404, 'only an official one');
 
   /* one of the person's own removed: to the trash */
   assert.equal((await api('/api/skills/local%2Fquiet', { method: 'DELETE' })).status, 200);
   assert.equal(await listed(), undefined);
-  assert.ok(existsSync(join(variables.OPENFILM_TRASH_DIR, 'quiet')) || readdirSync(variables.OPENFILM_TRASH_DIR).length > 0, 'in the trash');
+  assert.ok(existsSync(join(variables.ORANGE_TRASH_DIR, 'quiet')) || readdirSync(variables.ORANGE_TRASH_DIR).length > 0, 'in the trash');
 });

@@ -21,7 +21,7 @@ export function section(name) {
   renderer.setSize(W, H, false);
   const engine = new Engine(renderer, makeTimeline(name), () => Lyrics.fromTables(WORDS, LINES));
 
-  /** draw song time t: one sample per frame (a render's motion blur is the host's: `openfilm render --blur`) */
+  /** draw song time t: one sample per frame (a render's motion blur is the host's: `orangefilm render --blur`) */
   const draw = (t) => {
     engine.lastT = -1; // every frame is drawn as if seeked to: nothing carries over from the frame before
     engine.render(Math.min(Math.max(t, start), end - 1e-3), 1 / 60, true, 1);

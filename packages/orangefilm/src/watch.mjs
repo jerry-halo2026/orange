@@ -1,7 +1,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-// openfilm look --full: a rendered film watched frame by frame, for what a look at a dozen frames misses. White
+// orangefilm look --full: a rendered film watched frame by frame, for what a look at a dozen frames misses. White
 // flashes, frames unlike those on both sides, stretches where the picture stands still, and near-black frames, each
 // with its time. One decode by ffmpeg at the film's rate, the picture at two small sizes, gray, in one stream.
 import { spawn } from 'node:child_process';

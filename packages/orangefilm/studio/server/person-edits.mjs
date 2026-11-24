@@ -9,7 +9,7 @@
  * has seen on disk, its own writes and others', and merges a write of someone else's three ways, as git does
  * (person-merge.mjs): from the version the writer's copy is inferred to be (the one closest to it), with what Studio
  * has now. What only the writer changed is the writer's; what only the person (or Studio) changed since stays; where
- * both changed a thing differently, the person's stands, and the agent is told, in its next `openfilm` command or the
+ * both changed a thing differently, the person's stands, and the agent is told, in its next `orangefilm` command or the
  * chat's next message. The person is asked nothing.
  *
  * Which copy a writer had is inferred, never known. A write that changes exactly what the person changed since an
@@ -19,8 +19,8 @@
  * (and then from each write of its taken so). With two (each that asked for notes since the person's edit), a write
  * is not signed, so no write but one only the told agent knows is taken as its: the write Studio kept out, sent again
  * unchanged while the note's version is the one Studio has. A writer that has not asked Studio since the person's
- * edit cannot be told apart from the one agent that was told: an agent that never runs `openfilm`, or the desktop
- * agent mid-turn (it asks when its turn starts, and when it runs `openfilm`). Either way, what the note named that
+ * edit cannot be told apart from the one agent that was told: an agent that never runs `orangefilm`, or the desktop
+ * agent mid-turn (it asks when its turn starts, and when it runs `orangefilm`). Either way, what the note named that
  * Studio's film changed again since stays.
  *
  * Where versions were let go (past the caps) before the one a write is nearest, its copy may have been one of them:

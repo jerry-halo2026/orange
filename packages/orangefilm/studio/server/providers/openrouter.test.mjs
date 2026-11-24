@@ -31,7 +31,7 @@ before(async () => {
   });
   await new Promise((done) => server.listen(0, '127.0.0.1', done));
   base = `http://127.0.0.1:${server.address().port}`;
-  process.env.OPENFILM_OPENROUTER_URL = base;
+  process.env.ORANGE_OPENROUTER_URL = base;
   polling.ms = 5;
 });
 after(() => server.close());

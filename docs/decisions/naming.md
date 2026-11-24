@@ -1,6 +1,9 @@
 # Naming: OpenFilm → OrangeFilm
 
-Status: approved migration outline (2026-11-23).
+Status: **clean break approved (2026-11-24)**. The earlier phased, read-old compatibility outline is
+superseded: no compatibility layer is kept for the retired `openfilm` runtime, old configs, or old
+installs. Execution plan: [plan.md](../execution/2026-11-24-orangefilm-clean-break/plan.md);
+inventory: [inventory.md](../execution/2026-11-24-orangefilm-clean-break/inventory.md).
 
 ## Product identity
 
@@ -35,17 +38,20 @@ Status: approved migration outline (2026-11-23).
 
 ## Phases
 
-- **P0** decision + naming guard.
-- **P1** human text and internal symbols only.
-- **P2** read-old/write-new: env, Studio protocol, home, CLI, localStorage, provider, skills.
-- **P3** packages/resources/MCP, with old stubs for one release.
-- **P4** bundle id + data migration + updater.
-- **P5** remove aliases after two releases.
+- **P0** decision + naming guard (`scripts/inventory-openfilm.mjs`, `scripts/rename-guard.mjs`).
+- **P1** env `OPENFILM_*` → `ORANGE_*`, module specifiers, package bin/alias.
+- **P2** Studio home `~/.orangefilm` only; old home becomes an explicit import.
+- **P3** MCP prefix, provider id, skill metadata `orangefilm.json`, localStorage keys.
+- **P4** `resources/orangefilm`, CSS class prefix, packaging, CI gates and secrets.
+- **P5** product text and external links.
+- **P6** machine cleanup (`scripts/cleanup-legacy-openfilm.mjs`, dry run first).
+
+No read-old compatibility layer: the old runtime name is not a supported input after each phase lands.
 
 ## Never by global replace
 
-- `npx -y openfilm@latest`;
-- `dev.openfilm.desktop*`;
-- `github.com/openfilm` provenance;
-- `docs/execution/**`;
-- MCP 13-tool contract without a compatibility plan.
+- `npx -y openfilm@latest` (upstream package; we do not publish under that name);
+- `dev.openfilm.desktop*` provenance in historical docs;
+- `github.com/openfilm` provenance and upstream attribution;
+- `docs/history/**` and `docs/execution/2026-1*/**` evidence;
+- MCP 13-tool contract: rename the server, keep the tool set.

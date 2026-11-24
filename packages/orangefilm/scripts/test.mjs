@@ -58,6 +58,7 @@ const QUARANTINE = [
   { file: 'studio/server/machine-stores.test.mjs', needs: 'Discover catalog product drift: an unread catalog answers 200 with an error instead of the 502 this test pins; the rest of the file passes' },
   { file: 'studio/ui/src/components/fission-workbench-steps.test.ts', needs: 'the workbench now owns one checkbox where the test pins none; the browser label contract needs a product decision before the assertion is changed' },
   { file: 'studio/ui/src/lib/projects-page.test.ts', needs: 'the Launcher no longer renders homeCards.studio while the test still requires all four home entries' },
+  { file: 'studio/server/library.test.mjs', needs: 'the travel-vlog template is indexed under group vlog, but the template category\'s group list no longer names vlog; either the template metadata or the group list needs a product decision' },
 ];
 
 const includeQuarantined = process.argv.includes('--include-quarantined');

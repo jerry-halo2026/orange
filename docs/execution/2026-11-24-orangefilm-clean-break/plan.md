@@ -271,3 +271,49 @@
   再 `node scripts/cleanup-legacy-openfilm.mjs --apply`（482.9 MB 安装+配置+缓存）；
   1.3 GB 素材库要走 `--include-library`，需要单独点头。
 - npm 发布保持关闭（`vars.NPM_PUBLISH` 未设为 `true` 时 release.yml 不跑）。
+
+---
+
+## 8. 打包验证（2026-11-24，分支推送后）
+
+分支 `orangefilm-clean-break` 已推到 `jerry-halo2026/orange`，用 `workflow_dispatch` 跑
+`packaging-check`（不发布、不签名，只上传产物）。
+
+### Windows：通过
+
+- 运行 `45402321134`，`windows` 作业 success；产物 `OrangeFilm-Setup-x64.exe`（1068.8 MB）+ `win-unpacked`。
+- `win-unpacked/resources`：`orangefilm/`、`runtime/`（ffmpeg、ms-playwright）、`fission/`、`brand.json`、
+  `auth-environment.json`；**没有 `openfilm/`**。
+- `resources/app.asar.unpacked/node_modules`：`orangefilm`、`@agentclientprotocol`、`playwright-core`、
+  `esbuild`、`quickjs-wasi`、`@earendil-works`；**没有 `openfilm`**。整棵 unpacked 树按名字搜 `openfilm` 为 0。
+- `resources/orangefilm` 内是 `packages/orangefilm/src/*.mjs` 与 `scripts/material-index-{bootstrap,build}.mjs`，
+  与 `PACKED_MATERIAL_MODULES` 一致。
+- 包内 `brand.json`：`productName OrangeFilm`、`appId com.orange.studio`、`installerName OrangeFilm`、
+  `updaterChannel orange-latest`。
+- `OrangeFilm.exe` 的版本资源仍是 Electron 默认（ProductName=Electron）：旧安装包同样如此，属既有行为，不是本次改动。
+
+### macOS：被 GitHub 的 runner 排队卡住
+
+- 同一晚三次 `mac-arm64` 派发（`45402321134` 的 macos 作业、`45407962171`、`45411975598`）：作业从未拿到 runner
+  （`runner_name` 为空、`steps` 为空），15 分钟后被 GitHub 的排队上限取消。没有一步执行过，不是构建失败。
+- 今天中午同一工作流在这个分支的祖先上跑通过 macOS，所以是容量问题，不是配置问题。需要换个时段重试。
+
+### 本机直接运行打包产物：未验证
+
+- 从当前 shell 启动 `win-unpacked\OrangeFilm.exe` 会立即退出（无 stderr、无新日志、连 userData 目录都没建）；
+  用同一 shell 启动机器上已安装的旧 `OrangeFilmTest\OrangeFilm.exe` 行为相同。说明是这个会话启动 GUI 子进程的环境限制，
+  不能用来判断新构建是否有问题。需要人在桌面双击安装包验证。
+
+### `ci.yml`（测试）在基线上就是红的
+
+`workflow_dispatch` 跑 `ci`（`45402467266`）：`audit`、`test (windows-latest)`、`pack` 失败，`engine (windows-latest)` 通过，
+两个 macOS 作业同样因排队被取消。三处失败都能在基线上复现，不是改名引入：
+
+- `pnpm typecheck` → `apps/api/src/raw.ts(214,27)` `'row' is possibly 'undefined'`：`denial()` 未被推断为 `never`，
+  该文件本次未改动。
+- `pnpm check:pack` → `scripts/check-pack.mjs` 的 `^scripts/` 规则与 `packages/orangefilm/package.json` 的
+  `files: ["scripts"]` 直接冲突，两边在基线上一模一样。
+- gitleaks 历史扫描 → `apps/api/src/*.test.ts` 在提交 `a0578192` 的夹具命中 `generic-api-key`，属既有历史。
+  本次新增的一处在 `providers-isolation.test.mjs`，已把夹具值 `ofk_fixture`/`fixture-owned-key` 加进 `.gitleaks.toml` 允许列表（`07f668d`）。
+
+要这三项变绿，需要单独修这三个既有问题；它们与 OrangeFilm 改名无关。

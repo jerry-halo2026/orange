@@ -254,14 +254,20 @@
 ### 验证
 
 - `node scripts/rename-guard.mjs`：0 命中（历史证据、许可、旧主目录导入、清理脚本按规则豁免）。
-- `pnpm test`：`packages/orangefilm` 全绿；`packages/shared` 全绿；`apps/desktop` 剩 2 个用例失败，
-  经基线复核（`git stash` 后在同一基线跑）同样失败，与本次改名无关：
-  `src/display-name.test.mjs`（react ESM 的 require）、`src/material-draft-main-lifecycle.test.mjs`（沙箱缺 `startMaterialIndexBootstrap`）。
+- `pnpm test`：`packages/orangefilm` 与 `packages/shared` 全绿；`apps/desktop` **777 用例 / 764 通过 / 6 失败**，
+  与基线逐条对照（`git stash` 后在 `909f1dc` 上跑同一套命令，同样 777/764/6，失败用例名一致）——
+  这 6 条是既有问题，不是本次改名引入：lockfile 夹具、打包模块闭包期望、两处 react ESM 的 `require`、
+  devtools 菜单回调断言、main.mjs 沙箱缺 `startMaterialIndexBootstrap`。
+- `pnpm --filter @orange/desktop build:shell`：通过（`@import 'orangefilm/studio-ui/globals.css'` 能解析）。
+- `node scripts/check-pack.mjs`：tarball 只列 `bin/orangefilm.mjs`；它另外报的 `scripts/*` 属既有告警。
 - `pnpm audit:public --no-secrets`：删除 `_scratch` 后 0 findings。
-- 期间修掉两个自己引入的问题：`skills.mjs` 的 `metadataPath` 未定义（技能封面读不到）、Studio UI 用了中间态构建产物。
+- 期间修掉三个自己引入的问题：`skills.mjs` 的 `metadataPath` 未定义（技能封面读不到）、Studio UI 用了中间态
+  构建产物、`watch.test.mjs` 的异步事件竞态（加了 settle）。
 
 ### 未做（需要单独决定）
 
-- P6 本机清理：`node scripts/cleanup-legacy-openfilm.mjs --apply`（先跑 dry-run）。`~/.openfilm` 现有 1.6 GB，
-  library 1.3 GB 属用户数据，默认不删。
+- P6 本机清理：脚本已就绪，**故意没有执行**——机器上现装的 `OrangeFilmTest` 是旧代码构建的，仍以
+  `~/.openfilm` 为 Studio 主目录；先删会让当前唯一的可用客户端失效。正确顺序是：新构建装好并确认能起，
+  再 `node scripts/cleanup-legacy-openfilm.mjs --apply`（482.9 MB 安装+配置+缓存）；
+  1.3 GB 素材库要走 `--include-library`，需要单独点头。
 - npm 发布保持关闭（`vars.NPM_PUBLISH` 未设为 `true` 时 release.yml 不跑）。

@@ -157,6 +157,7 @@ import { idsIn, pastedElsewhere, pastedPage, withoutPaste, withPaste, type Paste
 import { pasteTargets, targetById } from '@/lib/layer-paste-target';
 import type { PropsHost } from './PropertiesSection';
 import type { LayerPropsActions } from './FilmInspector';
+import { takeSavedWithClaim } from '@/lib/saved-claim';
 import { SAVED, refreshSaved, savedActions, savedSources, useSavedListing } from '@/lib/saved';
 import { batchMap } from '@/lib/batch-map';
 import { groupInsertAt, groupInsertOps } from '@/lib/saved-insert';
@@ -1895,7 +1896,14 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
    */
   const placeSaved = React.useCallback(async (file: WorkspaceResource, how: { mode?: EditMode; range?: SourceRange | null; atPlayhead?: boolean; follow?: boolean } = {}) => {
     let taken: Awaited<ReturnType<typeof api.takeSaved>>;
-    try { taken = await api.takeSaved(projectId, file.path); } catch (e) { toast.show(e instanceof Error ? e.message : String(e)); return; }
+    try {
+      taken = await takeSavedWithClaim(file.path, {
+        take: (path) => api.takeSaved(projectId, path),
+        ownership: () => api.savedOwnership(),
+        claim: (ref) => api.claimSaved(ref),
+        confirm: (message) => window.confirm(message),
+      });
+    } catch (e) { toast.show(e instanceof Error ? e.message : String(e)); return; }
     if ('path' in taken) {
       const { bundle: _bundle, ...rest } = file;
       await addMedia({ ...rest, path: taken.path }, how);

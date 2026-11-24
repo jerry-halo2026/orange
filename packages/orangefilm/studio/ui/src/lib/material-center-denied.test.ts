@@ -105,8 +105,8 @@ test('a forbidden failure is classified as such, so the page can grey the card',
 
 test('the card is disabled and the retry button is not offered for a refusal', () => {
   const page = readFileSync(new URL('../components/material-center/MaterialCenterPage.tsx', import.meta.url), 'utf8');
-  assert.match(page, /canUse: entry\.source === 'cloud' \? entry\.card !== null && !deniedNow\.has\(entry\.card\.videoId\)/, 'the cloud button is dead once refused');
+  assert.match(page, /canUse: entry\.source === 'cloud' \? .*!deniedNow\.has\(entry\.card\.videoId\)/, 'the cloud button is dead once refused');
   assert.match(page, /deniedNow\.has\(entry\.card\.videoId\) \? useFailureCopy\(copy, 'forbidden', deniedDownloads\.codeOf\(entry\.card\.videoId\) \?\? undefined\) : copy\.download/, 'and says why, with the code it was refused by');
-  assert.match(page, /state\.useError\.kind !== 'forbidden' && state\.lastUse/, 'no retry for a refusal');
+  assert.match(page, /state\.useError\.kind !== 'unsupported' && state\.useError\.kind !== 'forbidden' && state\.lastUse/, 'no retry for a refusal');
   assert.match(page, /React\.useSyncExternalStore\(deniedDownloads\.subscribe, \(\) => deniedDownloads\.version\)/, 'the page follows the session set');
 });

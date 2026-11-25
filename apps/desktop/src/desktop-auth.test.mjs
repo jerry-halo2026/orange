@@ -3,12 +3,17 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
+/* TSX 编成 CJS 后 require 不了两个 .ts/.tsx 依赖（见 display-name.test.mjs 的同名垫片） */
+const repoBrand = JSON.parse(readFileSync(new URL('../../../brand.json', import.meta.url), 'utf8'));
+const shimFor = (req) => (id) => (id.endsWith('brand.generated.ts') ? { brand: repoBrand }
+  : id.startsWith('orangefilm/studio-ui/') ? { BrandMark: () => null }
+  : req(id));
 
 // The controller's home/projects roots must be an owned, absolute, canonical
 // directory: `testRoot()` returns the long form so `resolve(root) === root`.
@@ -128,7 +133,8 @@ test('original desktop Login component renders accessible native account fields 
   assert.ok(source.length>0,'the original desktop shell has an actual Login component');
   const ts=require('typescript'),React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
   const compiled=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}}).outputText;
-  const module={exports:{}};new Function('require','module','exports',compiled)(require,module,module.exports);
+  const module={exports:{}};
+new Function('require','module','exports',compiled)(shimFor(require),module,module.exports);
   assert.equal(typeof module.exports.Login,'function');
   const html=renderToStaticMarkup(React.createElement(module.exports.Login,{state:{kind:'signed-out',reason:null},onSignedIn(){}}));
   assert.match(html,/type="email"/);assert.match(html,/type="password"/);assert.match(html,/autocomplete="current-password"/i);assert.match(html,/登录/);

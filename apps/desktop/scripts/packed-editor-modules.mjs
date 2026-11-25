@@ -27,6 +27,8 @@ export const PACKED_MATERIAL_MODULES = Object.freeze([
   'packages/orangefilm/src/material-tools.mjs',
   'packages/orangefilm/src/material-index-build.mjs',
   'packages/orangefilm/src/material-index.mjs',
+  /* material-index.mjs imports it for a product's name: without it every material.* tool answers not-configured */
+  'packages/orangefilm/src/material-product.mjs',
   'packages/orangefilm/src/material-index-bootstrap.mjs',
   'packages/orangefilm/src/material-search.mjs',
   'packages/orangefilm/src/material-pack.mjs',

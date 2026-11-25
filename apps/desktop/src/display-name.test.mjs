@@ -3,11 +3,18 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { brandProductName, brandWindowTitle } from './brand.mjs';
 
 const read=relative=>readFile(new URL(relative,import.meta.url),'utf8');
+/* TSX 编成 CJS 后 require 不了两个 .ts/.tsx 依赖（Node 的类型擦除不认 JSX，react/jsx-runtime 又是 ESM）：
+   brand.generated.ts 用仓库根同一份 brand.json 顶上，BrandMark 只是图标，渲染断言与它无关 */
+const repoBrand = JSON.parse(readFileSync(new URL('../../../brand.json', import.meta.url), 'utf8'));
+const shimFor = (req) => (id) => (id.endsWith('brand.generated.ts') ? { brand: repoBrand }
+  : id.startsWith('orangefilm/studio-ui/') ? { BrandMark: () => null }
+  : req(id));
 /* brand.json's own windowTitle: what the window, the launcher's page and the editor's page are titled (kept as it was) */
 const expected='\u6a59\u5b50\u521b\u4f5c\u4e2d\u5fc3';
 /* brand.json's own productName: the name every word a person reads in the app uses */
@@ -17,7 +24,8 @@ const fallback='Orange \u6a59\u5b50\u521b\u4f5c\u4e2d\u5fc3';
 test('login renders the creation center name and native account inputs',async()=>{
  const source=await read('../shell/Login.tsx'),require=createRequire(import.meta.url),ts=require('typescript'),React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
  const compiled=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}}).outputText;
- const module={exports:{}};new Function('require','module','exports',compiled)(require,module,module.exports);
+ const module={exports:{}};
+new Function('require','module','exports',compiled)(shimFor(require),module,module.exports);
  const html=renderToStaticMarkup(React.createElement(module.exports.Login,{state:{kind:'signed-out',reason:null},onSignedIn(){}}));
  /* the product's name, brand.json's own: the sign-in page names the app a person just opened */
  assert.ok(html.includes(product));assert.match(html,/type="email"/);assert.match(html,/type="password"/);assert.doesNotMatch(html,/OrangeFilm Studio|orangeflim/);

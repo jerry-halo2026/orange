@@ -210,7 +210,7 @@ export function createRawService(dependencies:RawDependencies):RawService {
           if(row)break;
         }
       }
-      if(!row)denial('video-not-visible');
+      if(!row)return denial('video-not-visible');
       const author=typeof row.observation.accountKey==='string'?row.observation.accountKey:null;
       if(!visible(author,decision.authorization.layer,view))denial('video-author-not-visible');
 

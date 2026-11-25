@@ -15,7 +15,7 @@ test('actual main Auth callbacks seal drafts on lock and refuse a different scop
   const onAuth=source.slice(start,end).trim().replace(/^onAuth:\s*/,'').replace(/,\s*$/,'');
   const setup="const materialDraftStore=store,DATA='fixture',HOME='home';"+
     "let draftSessionOpen=false,authUiGeneration=0,desktopAuthActive=false,accountStateDir=null,state={},agentRetirement=null,authRetirementConfirmed=false,studio=null,win=null;"+
-    "const events=[],resumeAgentAdmission=()=>{},localAgents={resume(){}},readWindowState=()=>({tabs:[]}),openTabs=()=>{},saveState=()=>{},broadcast=(name,value)=>events.push({name,value}),showPage=()=>{};";
+    "const events=[],resumeAgentAdmission=()=>{},localAgents={resume(){}},readWindowState=()=>({tabs:[]}),openTabs=()=>{},saveState=()=>{},broadcast=(name,value)=>events.push({name,value}),showPage=()=>{},startMaterialIndexBootstrap=()=>{};";
   const build=new Function('store','join',setup+'const auth='+onAuth+';const retire='+retired[1]+';return {auth,retire,events,current:()=>({desktopAuthActive,authUiGeneration})};');
   let n=0;const store=createMaterialDraftStore({createLease:()=>('fixture-'+(++n))}),h=build(store,join),a='a'.repeat(64),b='b'.repeat(64);
   h.auth({kind:'active',reason:null},a);

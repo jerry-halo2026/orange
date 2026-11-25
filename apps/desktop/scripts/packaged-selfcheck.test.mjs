@@ -92,10 +92,14 @@ test('the material index modules are the closure of what the tools load, and one
     'packages/orangefilm/src/material-tools.mjs',
     'packages/orangefilm/src/material-index-build.mjs',
     'packages/orangefilm/src/material-index.mjs',
+    'packages/orangefilm/src/material-product.mjs',
+    'packages/orangefilm/src/material-index-bootstrap.mjs',
     'packages/orangefilm/src/material-search.mjs',
     'packages/orangefilm/src/material-pack.mjs',
     'packages/orangefilm/src/locations.mjs',
     'packages/orangefilm/src/development-isolation.mjs',
+    'packages/orangefilm/scripts/material-index-build.mjs',
+    'packages/orangefilm/scripts/material-index-bootstrap.mjs',
   ]);
   for (const relative of PACKED_MATERIAL_MODULES) {
     assert.ok(PACKED_EDITOR_MODULES.includes(relative), relative + ' is packed');

@@ -91,7 +91,7 @@ test('F12 and Alt+CmdOrCtrl+I both ask for the tools; nothing else does', () => 
 test('the window keeps the flag, binds both keys in every build, and uses the fallback callback', () => {
   const main = readFileSync(new URL('./main.mjs', import.meta.url), 'utf8');
   assert.match(main, /devTools: true,/, 'the pages keep their developer tools');
-  assert.match(main, /devTools: \(\) => toggleDevTools\(activeView\(\), views\.get\(HOME\)\)/, 'the menu callback falls back to home');
+  assert.match(main, /devTools: \(\) => \{ if \(readPreferences\(DATA\)\.devtools !== false\) toggleDevTools\(activeView\(\), views\.get\(HOME\)\); \}/, 'the menu callback honours the preference and falls back to home');
   assert.match(main, /v\.webContents\.on\('before-input-event'/, 'the second key is bound');
   assert.match(main, /event\.preventDefault\(\);\s*toggleDevTools\(v, v\);/, 'the page that saw the key opens the tools itself');
 });

@@ -30,6 +30,12 @@
  * log says when no font travelled with the package ("未随包字体，macOS 字幕将不可用"). A missing folder is not a failed
  * build — the Windows release burns subtitles with the system fonts it always used.
  *
+ * The font is pinned by sha256 and fetched from GitHub, which on some networks takes half an hour for 16 MB (2026-11-25:
+ * 6.9 KB/s on the LAN Mac, 26 minutes of a 31-minute build). So a folder that already holds both pinned files — the font
+ * and its license — may be named in `ORANGE_FISSION_FONT_CACHE`; its bytes are checked (`fontCacheProblems`) and it is
+ * copied instead of downloaded. A cache that is not the pinned pair is refused with the reason and the download happens
+ * as before: the wrong font in a package would render macOS subtitles in a face nobody chose.
+ *
  * `TransitionsDir`/`AssetsRoot`/`LocalAssetsRoot` must exist as directories before Studio will accept the
  * configuration (readLocalFissionConfiguration) and before the engine reads them (EnginePaths.ValidateEngines):
  * they are carried as real folders with a README saying what belongs in them. The asset corpora themselves are
@@ -72,6 +78,8 @@ export const FISSION_FOLDERS = Object.freeze(['transitions', 'assets', 'local-as
 export const FISSION_FONTS = 'fonts';
 /** 随包的 CJK 字体（libass 在 macOS 上没有系统字体目录可用，必须自带一份）。OFL，可再分发。 */
 export const FISSION_FONT = 'NotoSansSC-Regular.otf';
+/** 一处已经下好的随包字体（字体本身与它的许可证），免得每次构建都从 GitHub 上下 16 MB。 */
+export const FONT_CACHE_ENV = 'ORANGE_FISSION_FONT_CACHE';
 const FONT_SOURCE = Object.freeze({
   font: {
     url: 'https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf',
@@ -83,6 +91,29 @@ const FONT_SOURCE = Object.freeze({
     name: 'OFL.txt',
   },
 });
+
+/**
+ * 一个目录能不能当字体缓存用：两份文件都在，且是 pin 的那两个字节。空数组表示可用。
+ *
+ * 与 ffmpeg 的缓存同一个道理（src/ffmpeg-runtime.mjs 的 `ffmpegCacheProblems`）：缓存不校验就把别的版本打进包，
+ * 而这份字体只能从 `raw.githubusercontent.com` 现下——2026-11-25 在局域网 Mac 上实测 6.9 KB/s，16.4 MB 花了
+ * 26 分钟，构建时间全在等它。机上本来就有哈希正确的一份，却没有地方告诉构建"用这个"。
+ * @param {string} dir @returns {string[]}
+ */
+export function fontCacheProblems(dir) {
+  const problems = [];
+  for (const [name, pinned] of /** @type {const} */ ([[FISSION_FONT, FONT_SOURCE.font], [FONT_SOURCE.license.name, FONT_SOURCE.license]])) {
+    const file = join(dir, name);
+    if (!existsSync(file)) {
+      problems.push(`${name} is missing`);
+      continue;
+    }
+    const got = createHash('sha256').update(readFileSync(file)).digest('hex');
+    if (got !== pinned.sha256) problems.push(`${name} is not the pinned copy (sha256 ${got.slice(0, 12)}…)`);
+  }
+  return problems;
+}
+
 /** The build folder the host's sources and output live in, under the release work folder. */
 const HOST_WORK = 'fission-host';
 
@@ -325,7 +356,7 @@ async function pinnedFile(url, sha256, file, fetchImpl) {
   renameSync(`${file}.part`, file);
 }
 
-export async function publishFission({ repoRoot, work, platform = 'win32', arch = 'x64', run = (cmd, args, options = {}) => execFileSync(cmd, args, { stdio: 'inherit', ...options }), log = console.log, warn = console.warn, font = true, fetch: fetchImpl = fetch }) {
+export async function publishFission({ repoRoot, work, platform = 'win32', arch = 'x64', run = (cmd, args, options = {}) => execFileSync(cmd, args, { stdio: 'inherit', ...options }), log = console.log, warn = console.warn, font = true, fontCache = String(process.env[FONT_CACHE_ENV] ?? '').trim(), fetch: fetchImpl = fetch }) {
   const rid = fissionRid(platform, arch);
   if (!rid) throw new Error(`Fission is not published for ${platform}-${arch}: the app ships without it on that platform.`);
   const target = join(work, 'fission');
@@ -373,21 +404,36 @@ export async function publishFission({ repoRoot, work, platform = 'win32', arch 
 
   /* the fonts are not in this repository: the key is written anyway, and the log says what that costs (the header) */
   /* 字体：libass 在 macOS 上没有可用的系统字体目录，所以随包一份 CJK 字体（OFL）与它的许可证。
-     下载失败不阻断打包，只 warning：Windows 仍可用系统字体，macOS 字幕会不可用。 */
+     先看缓存（ORANGE_FISSION_FONT_CACHE，字节要对得上 pin），没有才下载；下载失败不阻断打包，只 warning：
+     Windows 仍可用系统字体，macOS 字幕会不可用。 */
   const fonts = join(target, FISSION_FONTS);
   mkdirSync(fonts, { recursive: true });
   if (font && !existsSync(join(fonts, FISSION_FONT))) {
-    try {
-      await pinnedFile(FONT_SOURCE.font.url, FONT_SOURCE.font.sha256, join(fonts, FISSION_FONT), fetchImpl);
-      await pinnedFile(FONT_SOURCE.license.url, FONT_SOURCE.license.sha256, join(fonts, FONT_SOURCE.license.name), fetchImpl);
-      log(`Fission: 随包字体 ${FISSION_FONT}（OFL）与 ${FONT_SOURCE.license.name}`);
-    } catch (error) {
-      warn(`Fission: 字体下载失败（${/** @type {any} */ (error)?.message ?? error}）——macOS 字幕将不可用`);
+    const cacheProblems = fontCache ? fontCacheProblems(fontCache) : [];
+    if (fontCache && !cacheProblems.length) {
+      cpSync(join(fontCache, FISSION_FONT), join(fonts, FISSION_FONT));
+      cpSync(join(fontCache, FONT_SOURCE.license.name), join(fonts, FONT_SOURCE.license.name));
+      log(`Fission: 随包字体 ${FISSION_FONT}（OFL）与 ${FONT_SOURCE.license.name} 来自 ${FONT_CACHE_ENV}=${fontCache}`);
+    } else {
+      if (fontCache) warn(`Fission: ${FONT_CACHE_ENV}=${fontCache} 不可用（${cacheProblems.join('; ')}）——照旧下载`);
+      try {
+        /* 许可证先取：它是两个下载里小的那个（4 KB），先做它，字体那一步失败时包里不会留下"有字体、没许可证"
+           的不合规状态。反过来（字体先下完、许可证失败）曾经把一份没有许可证的字体打进了 mac 包（2026-11-25）。 */
+        await pinnedFile(FONT_SOURCE.license.url, FONT_SOURCE.license.sha256, join(fonts, FONT_SOURCE.license.name), fetchImpl);
+        await pinnedFile(FONT_SOURCE.font.url, FONT_SOURCE.font.sha256, join(fonts, FISSION_FONT), fetchImpl);
+        log(`Fission: 随包字体 ${FISSION_FONT}（OFL）与 ${FONT_SOURCE.license.name}`);
+      } catch (error) {
+        warn(`Fission: 字体下载失败（${/** @type {any} */ (error)?.message ?? error}）——macOS 字幕将不可用`);
+      }
     }
   }
   const hasFonts = existsSync(join(fonts, FISSION_FONT));
   if (!hasFonts) {
     warn(`Fission: 未随包字体（${fonts} 不存在）——macOS 字幕将不可用（FontsDir 指向的目录没有字体），Windows 仍用系统字体目录`);
+  } else if (font && !existsSync(join(fonts, FONT_SOURCE.license.name))) {
+    /* 字体在、许可证不在：缓存与下载都各自保证了这两件事，但一份手放进去的字体、或旧的构建目录会是这样，
+       而 OFL 要求两者一起分发 */
+    warn(`Fission: 随包字体没有许可证 ${FONT_SOURCE.license.name}（${fonts}）——OFL 要求两者一起分发，这个包不合规`);
   }
 
   const problems = publishedProblems(target, { platform });

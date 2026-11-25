@@ -317,3 +317,112 @@
   本次新增的一处在 `providers-isolation.test.mjs`，已把夹具值 `ofk_fixture`/`fixture-owned-key` 加进 `.gitleaks.toml` 允许列表（`07f668d`）。
 
 要这三项变绿，需要单独修这三个既有问题；它们与 OrangeFilm 改名无关。
+
+---
+
+## 9. 本机双端构建验证（2026-11-25）
+
+两条线各自独立：Windows 在本工作树（`D:\dev\orange\.agents\worktrees\dsh-68d45102-2b0a`，
+`HEAD=29e34f2`），macOS 在局域网的 Apple Silicon 真机（`halo@192.168.110.96`，macOS 27.0.1 / arm64 /
+Mac mini）。没有跑 `pnpm install`（本工作树的 `apps/desktop/node_modules` 是指向主检出的 junction，
+workspace 链接已重指回本工作树的 `packages/orangefilm`，因此构建用的是本工作树源码）。
+
+### 9.1 Windows x64：本机构建通过
+
+| 项 | 结果 |
+|---|---|
+| 环境 | node 26.13.0、pnpm 9.15.9、electron 44.9.3、electron-builder 26.15.3、.NET SDK 10.0.300、Windows 10.0.26200 |
+| `--dir`（先跑，快速失败） | exit 0，四项自检全 `ok` |
+| 整包（NSIS） | exit 0，`out/OrangeFilm-Setup-x64.exe` **1068.7 MB**（CI `45402321134` 的产物为 1068.8 MB），sha256 `EDA50CFA DD A6EAF1E56F68C8AFDE0E0DFCCF8FE4836A043A0DED3084AF32A6A2` |
+| `resources/` | `orangefilm/`、`runtime/`、`fission/`、`app.asar(.unpacked)`、`brand.json`、`auth-environment.json`、`elevate.exe`；按名字搜 `openfilm` 为 0 |
+| `runtime/ffmpeg/` | `ffmpeg.exe` 100.5 MB + `ffprobe.exe` 100.3 MB（gyan.dev 9.0.2 pin，走默认下载路径） |
+| `runtime/ms-playwright/` | `chromium_headless_shell-1228`、`ffmpeg-1011`、`winldd-1007` |
+| 版本线 `latest.yml` | 无（`product.json` 的 `desktop.updates` 为空 → `FEED` 为 null）——预期 |
+| 冒烟 1 | `ELECTRON_RUN_AS_NODE=1 OrangeFilm.exe -e …` → `electron 44.9.3 / node 24.22.0 / x64` |
+| 冒烟 2 | 同法跑打包 CLI `resources/app.asar.unpacked/node_modules/orangefilm/bin/orangefilm.mjs --version` → `0.3.0`，exit 0 |
+| GUI 启动 | `Start-Process` 后 8 秒内 exit 0、userData 无写入、`studio.log` 未更新 —— 与 §8 记录一致，仍是**本会话启动 GUI 的限制**，需人在桌面双击安装包 |
+
+`OrangeFilm.exe` 的版本资源仍是 Electron 默认（`ProductName=Electron`、`CompanyName=GitHub, Inc.`），与 §8 记录的既有行为一致。
+
+新发现两个问题（都不拦构建，但影响产物正确性与诊断）：
+
+1. **`ORANGE_FFMPEG_CACHE` 在 Windows 上是陷阱。** `release.mjs` 用 `existsSync(join(cache, 'ffmpeg'))` 判断缓存是否可用，
+   而 Windows 上的程序名是 `ffmpeg.exe`，要满足这个判断只能在缓存目录下建一个 `ffmpeg/` 子目录；随后
+   `cpSync(cache, join(runtime, 'ffmpeg'))` 又把该子目录拷进 `runtime/ffmpeg/`，于是成了
+   `resources/runtime/ffmpeg/ffmpeg/ffmpeg.exe`。自检报 `MISSING ffmpeg`，产物缺 ffmpeg。第一次整包构建就是这样失败的
+   （产物被移进 `out/incomplete/`，见 `out/incomplete/OrangeFilm-Setup-x64.exe` 1068.7 MB）。去掉该变量、走默认下载后通过。
+   macOS 侧同一行恰好能工作，因为 arm64 的程序名本来就是 `ffmpeg`（无 `.exe`），缓存目录里直接放两个可执行文件即可。
+2. **自检失败的分支本身会抛异常。** `release.mjs` 末尾 `report.checks.filter(...)`（约 503 行）里 `report` 是
+   `reportSelfCheck()` 的返回值，只有 `{lines, ok}`，没有 `checks`；一旦构建不完整，就先抛
+   `TypeError: Cannot read properties of undefined (reading 'filter')`，把"缺哪个文件"的结论吞掉。
+   本次是先看到这个 TypeError，再人工比对目录才定位到 ffmpeg 嵌套。
+
+### 9.2 macOS arm64：局域网真机构建通过（改名后的源码第一次真正构建）
+
+| 项 | 结果 |
+|---|---|
+| 目标机 | `halo@192.168.110.96`，macOS 27.0.1 / arm64 / Mac mini；node v22.23.5、pnpm 10.34.9（按 `packageManager` 落到 9.15.9）、.NET SDK 10.0.404、Xcode CLT |
+| 源码 | 本工作树的 tar（排除 `node_modules`/`.git`/`.dev`/`.release`/`.agents`）解到 `~/orange-break`，`release.mjs`/`package.json`/`brand.json` 的 sha256 与本工作树逐字节一致；复用机上既有 arm64 `node_modules`，**没有重跑 `pnpm install`** |
+| 缓存 | `ORANGE_FFMPEG_CACHE=$HOME/ffmpeg-cache-9.0.2`（9.0.2 arm64 pin，`6deb2860…`）、`ORANGE_PLAYWRIGHT_CACHE=…/ms-playwright`；唯一慢点是 Fission 的 CJK 字体只能从 `raw.githubusercontent.com` 现下（实测 6.9 KB/s，16.4 MB 约 26 分钟） |
+| 结果 | exit 0，四项自检全 `ok`；产物 `OrangeFilm-arm64.dmg` 1,180,026,214 B（sha256 `4b6b8d1b…`）、`OrangeFilm-0.1.0-arm64-mac.zip` 1,181,327,726 B（sha256 `6b1b83d4…`）+ 两个 blockmap |
+| 包身 | `com.orange.studio` / `OrangeFilm` / `0.1.0`；ad-hoc 签名（`Signature=adhoc`、`TeamIdentifier` 空，`--unsigned` 的预期）；app 内 ffmpeg 是 9.0.2 arm64（`6deb2860…`）；dmg 挂载后 `.app` 的 bundle id 与 ffmpeg 一致 |
+| 启动冒烟（真机） | `open -a` 后 25 秒进程仍存活；Studio 服务 `127.0.0.1:4747` 回 **HTTP 200**，materials 服务 `127.0.0.1:63295` `ready`，AppleScript 数到 **1 个窗口**且 app 为 frontmost；`~/.orangefilm` **首次创建**（`fission-jobs`/`material-cache`/`run.json`）→ §1 的 A3/A4 与 A8 的核心面在 mac 上成立 |
+| 收尾 | `quit app` 后无残留进程；测试前退掉的 `/Applications/OrangeFilmTest.app` 已重新拉起，机器恢复原状 |
+| 截图 | 未取到：`screencapture` 在 SSH 会话里没有屏幕录制权限（`could not create image from display`），改用进程/端口/窗口计数作证 |
+
+另外，00:11 起就在跑的那次构建（`break-dmg3.sh`）是被本次替换掉的卡点：输出被 `| tail -n 16` 吞掉、没有设 ffmpeg 缓存，
+卡在 osxexperts.net 的 13 KB/s 上二十多分钟，`runtime/ffmpeg` 一直是空的。换缓存重跑后，除字体下载外的实际构建约 5 分钟。
+
+### 9.3 遗留问题（本次只记录，未改源码）
+
+1. **mac CI 拿不到 runner，真机能构建。** `packaging-check` 的 `macos` 作业在 GitHub 上是容量问题（注解：`not acquired by Runner of type hosted`），
+   不是构建失败；改名后的代码在 CI 上从未跑过 mac，本次真机构建补上了这个缺口。建议把 mac 验证固定到这台真机，
+   并把 `packaging.yml` 的 `push.branches`（现在只写 `dsh-68d45102-2b0a`）与实际开发分支对齐，或只保留 `workflow_dispatch`。
+2. **`ORANGE_FFMPEG_CACHE` 在 Windows 上语义错位**（见 9.1 第 1 条）：带缓存会产出缺 ffmpeg 的安装包。
+3. **`release.mjs` 的"构建不完整"分支自己抛 TypeError**（见 9.1 第 2 条），把缺件清单吞掉。
+4. **mac 侧两个外网依赖很慢**：osxexperts.net 13 KB/s、raw.githubusercontent.com 6.9 KB/s。机上已有哈希正确的
+   `~/ffmpeg-candidates/osxexperts/{ffmpeg,ffprobe}`（`6deb2860…`/`8d56278e…`）与 `~/fonts/NotoSansSC-Regular.otf`（`2c76254f…`），
+   建议纳入固定的构建缓存并校验 sha，否则每次构建都可能再等半小时。
+5. **`~/ffmpeg-cache/ffmpeg` 是错误版本**（x64 8.1.2，`e7b9fcd9…`），与 `darwin-arm64` 的 9.0.2 pin 不符，而 `release.mjs` 拷缓存不校验 → 建议改名或加校验。
+6. `OrangeFilm.exe` 的版本资源仍是 Electron 默认（既有行为，见 §8）。
+7. `ci.yml` 三个基线红灯（`typecheck` / `check:pack` / gitleaks 历史）与本次构建无关，仍未修。
+8. 本工作树 `docs/execution/2026-11-17-ui-batch/*.png` 三个改动与构建无关，继续不提交。
+
+其中第 2、3、5 条已在 §10 修掉；第 4 条部分解决（两类外网依赖都能走缓存，Electron 走镜像）。
+
+---
+
+## 10. 修复与复验（2026-11-25，第二轮）
+
+### 10.1 改了什么
+
+| # | 位置 | 改动 |
+|---|---|---|
+| 1 | `src/ffmpeg-runtime.mjs`、`scripts/release.mjs` | 新增 `ffmpegCacheProblems(dir, {platform, arch})`：缓存必须是 `resources/runtime/ffmpeg` 的样子（两个程序在同一层），并且——pin 给了每个程序 sha256 的平台上（macOS 的两个构建）——字节要是 pin 的那一份；Windows 的 pin 是一个 zip，没有逐文件 sha256，就只查两个程序在不在。`release.mjs` 用它判断 `ORANGE_FFMPEG_CACHE`：不合用就说清原因、走下载；缓存里没有 `LICENSE` 时另给一条 warning（GPL 要求随程序分发） |
+| 2 | `scripts/release.mjs` | 构建不完整时改打 `reportSelfCheck()` 真正返回的 `lines` 里的 `MISSING …` 行，并写明缺的是哪几件；不再读那个不存在的 `checks`（原来会抛 `TypeError`，把缺件清单吞掉） |
+| 3 | `scripts/fission-publish.mjs` | 新增 `ORANGE_FISSION_FONT_CACHE` 与 `fontCacheProblems(dir)`：缓存目录里必须是 pin 的那份字体**和**它的 `OFL.txt`（两者都比 sha256），合用时直接拷、不下载；不合用时说明原因再下载。另外把许可证改成先取（两个下载里小的那个），避免"字体下完了、许可证失败"留下有字体没许可证的包；字体在而许可证不在时给一条"OFL 要求两者一起分发"的 warning |
+
+新增/扩充的测试共 9 条：`src/ffmpeg-runtime.test.mjs` 4 条（可用、多一层、版本不对、平台没有构建），`scripts/release.test.mjs` 2 条（缓存判据、缺件分支不读 `checks`），
+`scripts/fission-publish.test.mjs` 3 条（许可证先取、字体缓存的两份文件与 sha、缓存不合用则退回下载）。
+
+### 10.2 复验
+
+- `pnpm --filter @orange/desktop test`：**786 用例 / 773 通过 / 6 失败**（基线 777/764/6 加这 9 条测试，失败的仍是同样那 6 条既有问题，名字逐条一致）。
+- Windows（本工作树，带修好的缓存路径）：`--dir` 构建 exit 0，日志 `ffmpeg: …\.dev\win-ffmpeg-cache2 (no download)`，自检 `ok ffmpeg: …\resources\runtime\ffmpeg\ffmpeg.exe`——就是上次失败的那一处，现在既走缓存又落在对的位置。
+  用修好的源码重打整包也 exit 0：`out\OrangeFilm-Setup-x64.exe` **1068.7 MB**，sha256 `B5831D72 D87974993D8CAD4C176622903AA9836882D872098B29676B6E0E9B10`；
+  包内 `runtime/ffmpeg/` 两份程序带 `LICENSE`/`README`/`SOURCE`，`runtime/ms-playwright/` 三个目录齐，`ELECTRON_RUN_AS_NODE=1 OrangeFilm.exe -e …` → `electron 44.9.3 / node 24.22.0`，打包内 CLI `--version` → `0.3.0`。
+- macOS（真机）：修完的源码同步过去后重跑，`BUILD_EXIT=0`，四项自检 `ok`；日志里 `ffmpeg: /Users/halo/ffmpeg-cache-9.0.2 (no download)`、`随包字体 … 来自 ORANGE_FISSION_FONT_CACHE=/Users/halo/fission-font-cache`，没有任何 license 警告。
+  产物 `OrangeFilm-arm64.dmg` 1,180,027,893 B（sha256 `88c278f7…`）、`OrangeFilm-0.1.0-arm64-mac.zip` 1,181,331,110 B（`1a9163be…`）。
+  包内 `runtime/ffmpeg/` 有 `ffmpeg`、`ffprobe`、`LICENSE`、`SOURCE`；`fission/fonts/` 有字体与 `OFL.txt`——上一版缺的正是这两张许可证文件。
+  启动复验：`open -a` 后进程存活、Studio `127.0.0.1:4747` 回 **200**、窗口 1 个、`~/.orangefilm` 就位；`quit` 干净，旧 `/Applications/OrangeFilmTest.app` 已恢复。
+- 构建耗时：第一次（无 ffmpeg 缓存、字体现下）31 分钟；三个缓存都到位后整套 **约 6 分钟**，其中打包本身约 4 分钟。
+
+### 10.3 这一轮新发现的一条
+
+**mac 打包还会下载 Electron 本体，而它不走那三个缓存。** `electron-builder` 按 `~/Library/Caches/electron/<hash>/electron-v<ver>-darwin-arm64.zip` 取，
+GitHub 抖的时候这一下载会静默停在 0 字节（本轮实测卡了 10 分钟没有任何输出，进程 STAT=S、CPU 2.3 秒）。同一时刻实测：
+GitHub 2.6 MB/s、`https://npmmirror.com/mirrors/electron/` 6.4 MB/s，卡住的那条是 0 B/s。
+设 `ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/`（`@electron/get` 认这个变量，`v<ver>/` 目录布局与该镜像一致）即可，
+本轮就是加上它之后一次过。CI 上（GitHub runner 在本机网络）不需要它。
+
+

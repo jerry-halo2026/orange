@@ -16,7 +16,7 @@
  */
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdirSync, renameSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { inflateRawSync } from 'node:zlib';
 
@@ -73,6 +73,39 @@ export function ffmpegOnPath(path) {
 
 /** Whether this machine has a build to download. */
 export const ffmpegDownloadable = (platform = process.platform, arch = process.arch) => Object.hasOwn(BUILDS, `${platform}-${arch}`);
+
+/**
+ * What is wrong with a folder offered as `ORANGE_FFMPEG_CACHE` — the folder `scripts/release.mjs` copies into the build
+ * as the app's `resources/runtime/ffmpeg`, so its shape is that folder's: the two programs beside each other.
+ *
+ * The check is the one the copy cannot make for itself. A folder that merely *looks* like a cache — a parent holding an
+ * `ffmpeg/` folder, which is what an `existsSync(dir + '/ffmpeg')` gate invites on Windows, where the program is
+ * `ffmpeg.exe` — was copied whole and left the installer without `resources/runtime/ffmpeg/ffmpeg.exe`; the build then
+ * failed its own self-check, on a machine whose only problem was the cache's layout (2026-11-25).
+ *
+ * Where the pin names each program's sha256 (the Mac builds ship one file per program), the bytes are checked too, so a
+ * cache of another version — an old 8.1.2 folder beside a 9.0.2 pin — is refused instead of shipped. The Windows pin is
+ * one zip of both programs and has no per-file sha256; there the check is that both programs are there.
+ * @param {string} dir @param {{ platform?: string, arch?: string }} [options] @returns {string[]} empty when usable
+ */
+export function ffmpegCacheProblems(dir, { platform = process.platform, arch = process.arch } = {}) {
+  const key = `${platform}-${arch}`;
+  const build = BUILDS[key];
+  if (!build) return [`there is no ${key} build to compare the cache with`];
+  const problems = [];
+  for (const name of /** @type {const} */ (['ffmpeg', 'ffprobe'])) {
+    const file = join(dir, exe(name, platform));
+    if (!existsSync(file)) {
+      problems.push(`${exe(name, platform)} is missing`);
+      continue;
+    }
+    const from = build[name];
+    if (!from || !('sha256' in from)) continue;
+    const got = createHash('sha256').update(readFileSync(file)).digest('hex');
+    if (got !== from.sha256) problems.push(`${exe(name, platform)} is not the pinned ${build.version} program (sha256 ${got.slice(0, 12)}…)`);
+  }
+  return problems;
+}
 
 let downloading = null;
 

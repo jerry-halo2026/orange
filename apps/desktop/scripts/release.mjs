@@ -222,7 +222,7 @@ const api = resolve(desktop, '../api');
 /* the platform built for, and where ffmpeg comes from (2b): read here, because `--verify` asks the same question before
    anything is built */
 const platform = win ? 'win32' : 'darwin';
-const { ffmpegDownloadable, fetchFfmpeg } = await import(pathToFileURL(join(desktop, 'src/ffmpeg-runtime.mjs')).href);
+const { ffmpegCacheProblems, ffmpegDownloadable, fetchFfmpeg } = await import(pathToFileURL(join(desktop, 'src/ffmpeg-runtime.mjs')).href);
 
 /* --verify: the `--dir` checks against the build already made, and nothing else — no page to build, no package to
    install. It is how a build that lost a file is looked at again (and how a hand-deleted file is shown to fail). */
@@ -292,10 +292,22 @@ for (const part of ['models', 'project-templates']) {
 /* 2b. ffmpeg and the headless browser, for the platform and chip built for */
 const runtime = join(work, 'runtime');
 if (ffmpegDownloadable(platform, arch)) {
-  /* 离线/慢网：用已下载好的同一版本 ffmpeg 目录，跳过发布时的再下载（内容与 pin 一致，license 也带）。 */
+  /* 离线/慢网：用已下载好的同一版本 ffmpeg 目录，跳过发布时的再下载。缓存的模样就是它要被拷成的那份
+     `resources/runtime/ffmpeg`：两个程序在同一层，并且（pin 给了每个程序 sha256 的平台上）字节要是 pin 的那一份。
+     判据原来只看缓存里有没有 `ffmpeg`，于是 Windows 上要“凑”出这个判断就得在缓存下再放一层 `ffmpeg/`，
+     拷完成了 `runtime/ffmpeg/ffmpeg/ffmpeg.exe`，包缺 ffmpeg、构建在自检处失败（2026-11-25）。现在不合用的缓存
+     只说原因、走下载，不会产出缺件的包。 */
   const cachedFfmpeg = String(process.env.ORANGE_FFMPEG_CACHE ?? '').trim();
-  if (cachedFfmpeg && existsSync(join(cachedFfmpeg, 'ffmpeg'))) cpSync(cachedFfmpeg, join(runtime, 'ffmpeg'), { recursive: true });
-  else await fetchFfmpeg(join(runtime, 'ffmpeg'), { platform, arch, license: true });
+  const cacheProblems = cachedFfmpeg ? ffmpegCacheProblems(cachedFfmpeg, { platform, arch }) : [];
+  if (cachedFfmpeg && !cacheProblems.length) {
+    cpSync(cachedFfmpeg, join(runtime, 'ffmpeg'), { recursive: true });
+    console.log(`ffmpeg: ${cachedFfmpeg} (no download)`);
+    /* 程序是 GPL 的：随包的许可证不在这份缓存里，装出来的包就没有它 */
+    if (!existsSync(join(runtime, 'ffmpeg', 'LICENSE'))) console.warn(`ffmpeg: ${cachedFfmpeg} carries no LICENSE — this build ships the programs without their license`);
+  } else {
+    if (cachedFfmpeg) console.warn(`ORANGE_FFMPEG_CACHE ${cachedFfmpeg} is not usable for ${platform}-${arch}: ${cacheProblems.join('; ')} — downloading instead`);
+    await fetchFfmpeg(join(runtime, 'ffmpeg'), { platform, arch, license: true });
+  }
 } else console.warn(`No ffmpeg build for ${platform}-${arch}: this app downloads none either; people install their own.`);
 /* 同理：已装好的 Playwright 浏览器目录直接复制，安装器在目录已存在时不再联网。 */
 const cachedBrowsers = String(process.env.ORANGE_PLAYWRIGHT_CACHE ?? '').trim();
@@ -500,7 +512,11 @@ if (!unpacked && !unsigned && !win && FEED) {
     for (const file of readdirSync(out).filter((name) => /\.(dmg|zip|exe|yml|blockmap)$/.test(name))) {
       renameSync(join(out, file), join(incomplete, file));
     }
-    console.error(`the build is incomplete (${report.checks.filter((check) => !check.ok).map((check) => check.label).join(', ')}): its installers are in ${incomplete}`);
+    /* 这行原来从 `reportSelfCheck()` 的返回值里读了一个它并不给的 `checks` 列表：返回值只有 `{lines, ok}`，
+       所以一个缺文件的构建是先抛 `TypeError: …reading 'filter'` 才退出的，缺哪一件只有人工比对目录才知道（2026-11-25）。
+       缺件清单本来就在 `lines` 里（每行 `MISSING <label>: <file>`），照打即可。 */
+    console.error(report.lines.filter((line) => line.startsWith('MISSING ')).join('\n'));
+    console.error(`the build is incomplete (${report.lines.filter((line) => line.startsWith('MISSING ')).map((line) => line.slice('MISSING '.length).split(':')[0]).join(', ')}): its installers are in ${incomplete}`);
     process.exitCode = 1;
   }
 }

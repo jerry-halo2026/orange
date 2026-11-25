@@ -15,8 +15,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import {
-  FISSION_CONFIG_TEMPLATE, FISSION_FOLDERS, FISSION_FONTS, FISSION_FONT, fissionCliEntry, fissionCliName, fissionHostName,
-  fissionRid, configurationProblems, publishedProblems, publishFission, shippedConfiguration, hostSources,
+  FISSION_CONFIG_TEMPLATE, FISSION_FOLDERS, FISSION_FONTS, FISSION_FONT, FONT_CACHE_ENV, fissionCliEntry, fissionCliName,
+  fissionHostName, fissionRid, configurationProblems, fontCacheProblems, publishedProblems, publishFission,
+  shippedConfiguration, hostSources,
 } from './fission-publish.mjs';
 
 test('host 丢掉 host 与 cli 两个参数：Windows 的 dll 与 macOS 的 apphost 一致（不按 .dll 分支）', () => {
@@ -174,5 +175,47 @@ test('publishFission：字体下载失败只 warning（不阻断打包），并�
     font: true, fetch: async () => { throw new Error('offline'); },
   });
   assert.ok(warnings.some((line) => /字体下载失败/.test(line)), warnings.join(' | '));
+  assert.equal(result.fonts, false);
+});
+
+test('publishFission：许可证先取，字体拿不到时不会留下"有字体、没许可证"的包', async () => {
+  /* 2026-11-25 的 mac 构建就是反过来的顺序：字体下完了，许可证那一步失败，包里只剩字体——OFL 要求两者一起分发 */
+  const asked = [];
+  const warnings = [];
+  await publishFission({
+    repoRoot: process.cwd(), work: mkdtempSync(join(tmpdir(), 'fission-work-')), platform: 'win32', arch: 'x64',
+    run: fakePublish(), log: () => {}, warn: (line) => warnings.push(line), font: true, fontCache: '',
+    fetch: async (url) => { asked.push(url); throw new Error('offline'); },
+  });
+  assert.match(asked[0], /\/Sans\/LICENSE$/, `第一个请求应当是许可证，实际是 ${asked.join(' | ')}`);
+  assert.ok(warnings.some((line) => /字体下载失败/.test(line)), warnings.join(' | '));
+});
+
+test('字体缓存：不在、或有不是 pin 的那一份，都说清是哪一件', () => {
+  const empty = mkdtempSync(join(tmpdir(), 'fission-fonts-'));
+  assert.deepEqual(fontCacheProblems(empty), ['NotoSansSC-Regular.otf is missing', 'OFL.txt is missing']);
+  writeFileSync(join(empty, 'NotoSansSC-Regular.otf'), 'not the pinned font');
+  writeFileSync(join(empty, 'OFL.txt'), 'not the pinned license');
+  const problems = fontCacheProblems(empty);
+  assert.equal(problems.length, 2, problems.join(' | '));
+  assert.match(problems[0], /NotoSansSC-Regular\.otf is not the pinned copy \(sha256 [0-9a-f]{12}…\)/);
+  assert.match(problems[1], /OFL\.txt is not the pinned copy/);
+});
+
+test('publishFission：缓存不合用时说清原因，再照旧下载（失败仍然只 warning）', async () => {
+  /* 2026-11-25：这份字体只能从 GitHub 拿，局域网 Mac 上 6.9 KB/s，16 MB 要 26 分钟；缓存是为了不必再等，
+     但"缓存里有东西"不等于"缓存是对的"，所以这条路必须自己说明并退回下载 */
+  const cache = mkdtempSync(join(tmpdir(), 'fission-fonts-'));
+  writeFileSync(join(cache, 'NotoSansSC-Regular.otf'), 'an 8.1.2-era font nobody pinned');
+  const warnings = [];
+  const asked = [];
+  const result = await publishFission({
+    repoRoot: process.cwd(), work: mkdtempSync(join(tmpdir(), 'fission-work-')), platform: 'win32', arch: 'x64',
+    run: fakePublish(), log: () => {}, warn: (line) => warnings.push(line),
+    font: true, fontCache: cache,
+    fetch: async (url) => { asked.push(url); throw new Error('offline'); },
+  });
+  assert.ok(warnings.some((line) => new RegExp(`${FONT_CACHE_ENV}=`).test(line) && /不可用/.test(line)), warnings.join(' | '));
+  assert.ok(asked.some((url) => /notofonts\/noto-cjk/.test(url)), `缓存不可用后应当照旧下载，实际请求：${asked.join(' | ')}`);
   assert.equal(result.fonts, false);
 });

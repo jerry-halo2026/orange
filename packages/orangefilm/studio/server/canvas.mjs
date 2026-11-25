@@ -98,6 +98,14 @@ const projectPath = (v) => typeof v === 'string' && v.length > 0 && v.length <= 
 /** 拓扑输入可以指向本机任意目录/文件（素材文件夹、配音），只限绝对路径与长度。 */
 const externalPath = (v) => typeof v === 'string' && v.length > 0 && v.length <= 1024 && isAbsolute(v);
 
+/** A path as a node keeps it: an absolute one (a folder picked outside the project), or one inside the project —
+ *  `assets/x.srt`, which is what `board.importFiles` hands back and what the page's own reader keeps (ui/lib/canvas.ts).
+ *  A relative path that climbs out of the project is not one. */
+const nodePath = (v) => (typeof v === 'string' && v.length > 0 && v.length <= 400 && !/[\u0000-\u001f]/.test(v)
+  ? (externalPath(v) ? v : (isAbsolute(v) || v.split(/[\\/]/).includes('..') ? null : v))
+  : null);
+
+
 /**
  * A source node's `settings`, read off a record that is not trusted: what is not one of the four fields, or out of
  * range, becomes the default. Typed here so the node the parser pushes is a `CanvasNode` and not an unknown bag.
@@ -133,8 +141,8 @@ export function parseCanvas(raw) {
     /* 拓扑输入：素材文件夹 / 配音 / 字幕，只存绝对路径与设置，不展开文件。 */
     else if (n.source === true) {
       const path = typeof n.path === 'string' ? n.path : '';
-      if (path && !externalPath(path)) continue;
-      out.nodes.push({ ...box, ...parent, ...named, source: true, path,
+      if (path && !nodePath(path)) continue;
+      out.nodes.push(/** @type {CanvasNode} */ ({ ...box, ...parent, ...named, source: true, ...(nodePath(path) ? { path } : {}),
         ...(Array.isArray(n.groups) ? { groups: n.groups.slice(0, 200).filter((g) => isRecord(g) && typeof g.name === 'string' && g.name.trim())
           .map((g) => ({ name: String(g.name).trim().slice(0, NAME_MAX), videos: Number.isInteger(g.videos) ? g.videos : 0, images: Number.isInteger(g.images) ? g.images : 0,
             take: Number.isInteger(g.take) && g.take > 0 && g.take <= 100 ? g.take : undefined,
@@ -142,15 +150,15 @@ export function parseCanvas(raw) {
             speed: typeof g.speed === 'number' && g.speed >= 0.5 && g.speed <= 4 ? g.speed : undefined,
             useThenDelete: typeof g.useThenDelete === 'boolean' ? g.useThenDelete : undefined,
             allowReuse: typeof g.allowReuse === 'boolean' ? g.allowReuse : undefined })) } : {}),
-        ...(isRecord(n.settings) ? { settings: settingsOf(n.settings) } : {}) });
+        ...(isRecord(n.settings) ? { settings: settingsOf(n.settings) } : {}) }));
     } else if (n.voice === true) {
-      out.nodes.push({ ...box, ...parent, ...named, voice: true, ...(externalPath(n.path) ? { path: String(n.path) } : {}),
+      out.nodes.push({ ...box, ...parent, ...named, voice: true, ...(nodePath(n.path) ? { path: String(n.path) } : {}),
         mode: n.mode === 'tts' ? 'tts' : n.mode === 'none' ? 'none' : 'upload',
-        files: Array.isArray(n.files) ? n.files.slice(0, 200).filter((f) => isRecord(f) && externalPath(f.path))
+        files: Array.isArray(n.files) ? n.files.slice(0, 200).filter((f) => isRecord(f) && nodePath(f.path))
           .map((f) => ({ path: String(f.path), ...(typeof f.text === 'string' ? { text: f.text.slice(0, 4000) } : {}), mode: f.mode === 'srt' ? 'srt' : f.mode === 'none' ? 'none' : 'recognize' })) : [] });
     } else if (n.subtitle === true) {
       out.nodes.push({ ...box, ...parent, ...named, subtitle: true, mode: n.mode === 'upload' ? 'upload' : n.mode === 'recognize' ? 'recognize' : 'none',
-        ...(externalPath(n.path) ? { path: String(n.path) } : {}) });
+        ...(nodePath(n.path) ? { path: String(n.path) } : {}) });
     }
     /* a mix, before a file: it has no `path` of its own, and a recipe that is not one leaves the node out */
     else if (n.mix === true) {

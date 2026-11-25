@@ -3,7 +3,7 @@
 
 /** First-party authentication in the existing Studio utility. Never expose this object to a renderer. */
 import { createHash, randomBytes } from 'node:crypto';
-import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
@@ -39,6 +39,10 @@ const CONFIGURATION_REASONS = ['configuration-required', 'install-incomplete', '
 export function createDesktopAuth({configuration,home,sharedHome=home,projects,coordinationRoot,instanceId,configurationReason},dependencies) {
   if(!isAbsolute(home)||!isAbsolute(projects)||!isAbsolute(coordinationRoot))throw deny();
   const guard=createProjectControlGuard({coordinationRoot});
+  /* The refresh token sealed for the next start: injected by the app (Electron's safeStorage: Keychain on macOS, DPAPI on
+     Windows). Absent — tests, a system with no keystore — nothing is sealed and every start is a fresh sign-in. */
+  const sealText=typeof dependencies?.seal==='function'?dependencies.seal:null;
+  const unsealText=typeof dependencies?.unseal==='function'?dependencies.unseal:null;
   const roots=[resolve(home),resolve(projects)];
   const homes=[...new Set([resolve(home),resolve(sharedHome)])];
   const domainId=createHash('sha256').update('orange-desktop\0'+(configuration?.environmentId??'unconfigured')).digest('hex').slice(0,24);
@@ -145,20 +149,61 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     if(!policy.decide({environmentId,subjectId,instanceId,epoch,projectId:project.id},handle,'restricted').allowed)throw deny('project-access-denied');
     return true;
   }
-  async function signIn(input) {
-    if(disposed||failed||retiring)return Object.freeze({ok:false,code:disposed?'disposed':failed?'preservation-failed':'preservation-pending',state:getPublicState()});
-    if(retired){service?.dispose();service=makeService();verified=null;retired=false;}
+
+  /** Where the sealed refresh token lives: this device's account data, never the project tree. */
+  const sealedFile=join(home,'session','refresh.bin');
+  /**
+   * Keep the session's rotating refresh token, sealed, so the next start can restore it. Never throws into an
+   * activation: a keystore that refuses must not turn a good sign-in into a failure.
+   */
+  function sealSession(){
+    try {
+      const token=service?.refreshTokenOf?.();
+      if(typeof token!=='string'||!token)return;
+      mkdirSync(dirname(sealedFile),{recursive:true,mode:0o700});
+      const record=JSON.stringify({version:1,refreshToken:token,sealedAtMs:Date.now()});
+      /* A keystore when the app hands one in (Electron's safeStorage); otherwise this app's own rule for its secrets on a
+         Mac without a signed build — a 0600 file, which is what the own key uses (main.mjs keychainSealing). */
+      const bytes=sealText?sealText(record):Buffer.from(`plain:${record}`);
+      writeFileSync(sealedFile,bytes,{mode:0o600});
+    } catch { /* no keystore, no stored session: the person signs in next time */ }
+  }
+  /** Forget what was sealed: signed out, retired, or a token the upstream refused. */
+  function clearSealed(){
+    try { unlinkSync(sealedFile); } catch { /* already gone */ }
+  }
+  /** The refresh token sealed last time this machine was signed in (null: none, unreadable, or no keystore). */
+  function sewnRefreshToken(){
+    try {
+      const sealed=readFileSync(sealedFile);
+      const text=sealed.subarray(0,6).toString()==='plain:'?sealed.subarray(6).toString():(unsealText?unsealText(sealed):'');
+      const record=JSON.parse(text);
+      const token=record&&record.version===1?record.refreshToken:null;
+      return typeof token==='string'&&token?token:null;
+    } catch { clearSealed(); return null; }
+  }
+  /**
+   * The session sealed the last time this machine was signed in, resumed at startup: the refresh token exchanged
+   * for a new session, which is then activated exactly as a sign-in would be. A token the upstream refuses is
+   * forgotten and the app starts signed out — never a half state. Nothing here loosens a check: no token on
+   * disk, no session.
+   */
+  async function restore(){
+    if(disposed||failed||retiring)return Object.freeze({ok:false,code:disposed?'disposed':'preservation-pending',state:getPublicState()});
     if(!service)return Object.freeze({ok:false,code:'configuration-required',state:getPublicState()});
-    let result=await service.signIn(input);
-    /* The environment may already have been activated on this machine (its activation state survives a restart), and
-       the service then answers `switch-required` instead of signing in. On a single-user machine that is exactly the
-       case the service's own retirement is for: retire the previous activation, then sign in once more. Nothing is
-       loosened 鈥?a still-refused sign-in is returned as it is. */
-    if(result&&result.code==='switch-required'){
-      try{ await service.signOut(); }catch{ /* retirement is best effort; the retry below decides */ }
-      result=await service.signIn(input);
-    }
-    if(!result.ok){notify(result.state);return result;}
+    const token=sewnRefreshToken();
+    if(!token)return Object.freeze({ok:false,code:'no-sealed-session',state:getPublicState()});
+    const result=await service.refresh(token);
+    if(!result.ok){clearSealed();notify(result.state);return Object.freeze({ok:false,code:result.code,state:getPublicState()});}
+    return await activate();
+  }
+
+  /**
+   * The session the service has, made this device's authority: the marker, the reservation, the policy — and the
+   * refresh token sealed for the next start. Shared by `signIn` and `restore`: a session that came back from disk is
+   * activated exactly the way a signed-in one is, so nothing is loosened for it.
+   */
+  async function activate() {
     let step='evidence';let evidence=null;
     try {
       evidence=service.getVerifiedEvidence();if(!evidence)throw deny();
@@ -185,7 +230,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
       }
       step='policy';
       verified=evidence;policy=createProjectAccessPolicy(evidence,{monotonicNow:dependencies.monotonicNow});sealed=false;
-      notify(getPublicState());return Object.freeze({ok:true,code:'ok',state:getPublicState()});
+      sealSession();notify(getPublicState());return Object.freeze({ok:true,code:'ok',state:getPublicState()});
     } catch (error) {
       /* The workspace seal is ours, not the identity layer's: a marker or reservation that cannot be written must not
          turn a successful Supabase sign-in into "this sign-in is not active". The step and cause are recorded, the
@@ -200,7 +245,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
       if(evidence){
         verified=evidence;
         try { policy=createProjectAccessPolicy(evidence,{monotonicNow:dependencies.monotonicNow}); } catch { policy=null; }
-        sealed=false;notify(getPublicState());
+        sealed=false;sealSession();notify(getPublicState());
         return Object.freeze({ok:true,code:'ok',state:getPublicState()});
       }
       sealed=true;
@@ -209,14 +254,30 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
       return Object.freeze({ok:false,code:'project-access-denied',state:getPublicState()});
     }
   }
+  async function signIn(input) {
+    if(disposed||failed||retiring)return Object.freeze({ok:false,code:disposed?'disposed':failed?'preservation-failed':'preservation-pending',state:getPublicState()});
+    if(retired){service?.dispose();service=makeService();verified=null;retired=false;clearSealed();}
+    if(!service)return Object.freeze({ok:false,code:'configuration-required',state:getPublicState()});
+    let result=await service.signIn(input);
+    /* The environment may already have been activated on this machine (its activation state survives a restart), and
+       the service then answers `switch-required` instead of signing in. On a single-user machine that is exactly the
+       case the service's own retirement is for: retire the previous activation, then sign in once more. Nothing is
+       loosened 鈥?a still-refused sign-in is returned as it is. */
+    if(result&&result.code==='switch-required'){
+      try{ await service.signOut(); }catch{ /* retirement is best effort; the retry below decides */ }
+      result=await service.signIn(input);
+    }
+    if(!result.ok){notify(result.state);return result;}
+    return await activate();
+  }
   async function signOut() {
-    sealed=true;policy?.dispose();handles.clear();notify(safeState('signed-out'));
+    sealed=true;clearSealed();policy?.dispose();handles.clear();notify(safeState('signed-out'));
     const remote=service?.signOut();
     if(verified)await beginRetirement();
     await remote;return Object.freeze({state:getPublicState()});
   }
   const controller={
-    getPublicState,assertActive,signIn,signOut,
+    getPublicState,assertActive,signIn,restore,signOut,
     onState(listener){if(typeof listener!=='function')throw deny();listeners.add(listener);return()=>listeners.delete(listener);},
     windowScope(){const evidence=assertActive();return createHash('sha256').update(evidence.environmentId+'\0'+evidence.subjectId).digest('hex');},
     revalidate:async()=>service?service.revalidate():{ok:false,code:'configuration-required',state:getPublicState()},

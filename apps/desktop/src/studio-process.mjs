@@ -124,6 +124,11 @@ const desktopAuth=createDesktopAuth({
     setImmediate(()=>process.exit(0));
   },
 });
+/* A session sealed the last time this machine was signed in, resumed before Studio starts: the window's first question
+   about who is signed in already gets the real answer, and the app's own CLI and agents see the account without waiting
+   for someone to sign in again. A refusal (no sealed token, an expired one, no keystore) leaves the app signed out — the
+   controller says so on `onState`, which is the same path a sign-in takes. */
+try { await desktopAuth.restore(); } catch { /* a restore that fails is a signed-out start, never a failed start */ }
 // An explicit configuration is the opt-in, whether an isolated development run or the installed app supplies it
 // (main.mjs writes it from the package's own resources: src/fission-config.mjs).
 // A missing or invalid configuration leaves only this feature unavailable.

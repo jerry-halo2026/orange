@@ -5,6 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -273,4 +274,70 @@ test('a sign-in without its reservation lists and opens this device\'s projects,
     assert.equal(registry.readers.length,0);assert.equal(registry.reservations.length,1);
     await degraded.dispose();await resident.dispose();
   } finally { f.restore(); }
+});
+
+/* 2026-11-26: the session outlives the process. A sign-in seals the rotating refresh token under the home; the next
+   controller exchanges it at start-up and is active without a password — activated exactly as a sign-in is. */
+test('a sealed session resumes at the next start, and signing out forgets it', async () => {
+  const s = await setup();
+  assert.equal((await s.controller.signIn(input)).ok, true);
+  const sealed = join(s.home, 'session', 'refresh.bin');
+  assert.ok(existsSync(sealed), 'the refresh token is sealed under the home');
+  assert.equal((readFileSync(sealed, 'utf8')).includes('synthetic-refresh'), true, 'the fixture seals its own token');
+  await s.controller.dispose();
+
+  /* the next start: same home, a fresh controller, a fetch that only answers a refresh exchange */
+  const resumed = mod.createDesktopAuth({configuration, home: s.home, projects: s.projects, coordinationRoot: join(s.home, 'coord2'), instanceId: 'next-instance'}, {
+    fetch: async (url) => {
+      if (url.endsWith('/auth/v1/token?grant_type=refresh_token')) return Response.json({access_token: 'next-access', refresh_token: 'next-refresh', token_type: 'bearer', expires_in: 60, user: {id: A}});
+      if (url.endsWith('/auth/v1/user')) return Response.json({id: A, is_anonymous: false});
+      throw Error('unexpected endpoint');
+    },
+    monotonicNow: () => 30, retire: async () => {}, onState: () => {},
+  });
+  const restored = await resumed.restore();
+  assert.equal(restored.ok, true, 'the sealed session resumes');
+  assert.equal(resumed.getPublicState().kind, 'active');
+  /* the restored session holds the project authority a signed-in one holds: it can take a project into its care */
+  const project = { id: 'resumed-project-1', path: join(s.projects, 'resumed') };
+  await mkdir(project.path, { recursive: true });
+  await writeFile(join(project.path, 'film.html'), '{"stage":{"w":1920,"h":1080},"tracks":[]}');
+  await resumed.registerCreatedProject(project);
+  assert.equal(resumed.authorizeProject(project), true, 'the restored session owns what it registers');
+  await resumed.dispose();
+
+  /* a controller that signs out leaves nothing for the next start */
+  const s2 = await setup();
+  assert.equal((await s2.controller.signIn(input)).ok, true);
+  assert.ok(existsSync(join(s2.home, 'session', 'refresh.bin')));
+  await s2.controller.signOut();
+  assert.equal(existsSync(join(s2.home, 'session', 'refresh.bin')), false, 'signing out forgets the sealed session');
+  await s2.controller.dispose();
+});
+
+test('a sealed session the upstream refuses is forgotten, and an unreadable one never throws', async () => {
+  const s = await setup();
+  assert.equal((await s.controller.signIn(input)).ok, true);
+  await s.controller.dispose();
+  const refused = mod.createDesktopAuth({configuration, home: s.home, projects: s.projects, coordinationRoot: join(s.home, 'coord3'), instanceId: 'refused-instance'}, {
+    fetch: async () => Response.json({error_code: 'refresh_token_not_found'}, {status: 400}),
+    monotonicNow: () => 40, retire: async () => {}, onState: () => {},
+  });
+  const result = await refused.restore();
+  assert.equal(result.ok, false);
+  assert.equal(refused.getPublicState().kind, 'signed-out', 'a refused token is a signed-out start, not a half state');
+  assert.equal(existsSync(join(s.home, 'session', 'refresh.bin')), false, 'the refused token is forgotten');
+  await refused.dispose();
+
+  /* a blob that is not ours: signed out, no throw */
+  const home = await mkdtemp(join(root, 'corrupt-'));
+  const projects = join(home, 'projects'); await mkdir(projects);
+  mkdirSync(join(home, 'session'), {recursive: true});
+  writeFileSync(join(home, 'session', 'refresh.bin'), 'garbage-not-a-sealed-record');
+  const corrupt = mod.createDesktopAuth({configuration, home, projects, coordinationRoot: join(home, 'coord'), instanceId: 'corrupt-instance'}, {
+    fetch: () => { throw Error('must not transport for an unreadable blob'); }, monotonicNow: () => 50, retire: async () => {}, onState: () => {},
+  });
+  assert.equal((await corrupt.restore()).ok, false);
+  assert.equal(corrupt.getPublicState().kind, 'signed-out');
+  await corrupt.dispose();
 });

@@ -158,6 +158,8 @@ test('04 happy chain uses fixed endpoints, preserves password, and feeds actual 
     'dispose',
     'getPublicState',
     'getVerifiedEvidence',
+    'refresh',
+    'refreshTokenOf',
     'revalidate',
     'signIn',
     'signOut',
@@ -1008,4 +1010,41 @@ test('26 nested dispose during signOut prevents remote launch and preserves stro
   assert.equal(r.remote, 'not-attempted');
   assert.equal(h.calls.length, 2);
   assert.equal(notifications, 1);
+});
+
+/* 2026-11-26: the session survives a restart by exchanging the refresh token the app sealed. The exchange is the same
+   identity check as a sign-in, with no password, and the token it hands back is the one to seal next time. */
+test('refresh: a sealed token resumes the session, and the rotated token is what is kept', async () => {
+  const h = setup([() => json(session({ refresh_token: 'rotated-refresh', access_token: 'fresh-access' })), () => json(user())]);
+  exactResult(await h.service.refresh('sealed-refresh'), true, 'ok', 'active');
+  assert.equal(h.calls[0].url, 'https://auth.invalid/auth/v1/token?grant_type=refresh_token');
+  assert.equal(JSON.parse(h.calls[0].init.body).refresh_token, 'sealed-refresh');
+  assert.equal(h.calls[1].url, 'https://auth.invalid/auth/v1/user');
+  assert.equal(h.service.refreshTokenOf(), 'rotated-refresh');
+  exactState(h.service.getPublicState(), 'active');
+});
+
+test('refresh: a token the upstream refuses signs in nobody, and nothing is kept', async () => {
+  const h = setup([() => json({ error_code: 'refresh_token_not_found' }, 400)]);
+  const result = await h.service.refresh('revoked-refresh');
+  assert.equal(result.ok, false);
+  assert.equal(h.service.refreshTokenOf(), null);
+  exactState(h.service.getPublicState(), 'signed-out', result.code);
+});
+
+test('refresh: an empty, oversized or control-character token is refused before any transport', async () => {
+  for (const bad of ['', 'x'.repeat(4097), 'tok\u0000en']) {
+    const h = setup([]);
+    const result = await h.service.refresh(bad);
+    assert.equal(result.ok, false);
+    assert.equal(h.calls.length, 0, 'no request for an impossible token');
+  }
+});
+
+test('refresh: a sign-in keeps its refresh token for the controller that seals it, and never in a result', async () => {
+  const h = setup();
+  const result = await h.service.signIn(credentials());
+  assert.deepEqual(Object.keys(result).sort(), ['code', 'ok', 'state']);
+  assert.equal(h.service.refreshTokenOf(), 'synthetic-refresh-sentinel');
+  assert.ok(!JSON.stringify(result).includes('sentinel'));
 });

@@ -366,7 +366,8 @@ export function createAuthService(configuration, dependencies) {
       fail('invalid-response');
     const deadline = m0 + 1000 * data.expires_in;
     if (!finiteTime(deadline) || deadline <= m0) fail('invalid-response');
-    return { token: data.access_token, subjectId: data.user.id, deadline };
+    /* the rotating refresh token is kept for the trusted controller (desktop-auth seals it); no public result carries it */
+    return { token: data.access_token, refreshToken: data.refresh_token, subjectId: data.user.id, deadline };
   }
 
   async function signIn(input) {
@@ -426,7 +427,7 @@ export function createAuthService(configuration, dependencies) {
         establishedAtMs: m0,
         expiresAtMs: candidate.deadline,
       });
-      session = { token: candidate.token, evidence: verified };
+      session = { token: candidate.token, refreshToken: candidate.refreshToken, evidence: verified };
       everActivated = true;
       setState('active');
       return result(true, 'ok');
@@ -440,6 +441,79 @@ export function createAuthService(configuration, dependencies) {
     }
   }
 
+  /**
+   * A session renewed from a refresh token the trusted controller sealed the last time this machine was signed in:
+   * the same identity checks as `signIn`, without a password, and a new rotating token in the session. A token the
+   * upstream refuses is `authentication-rejected`; the caller forgets what it sealed. Called once at startup, never on
+   * a timer — process-local, no background refresh.
+   * @param {unknown} refreshToken
+   */
+  async function refresh(refreshToken) {
+    if (notifying) return result(false, 'busy');
+    tick();
+    if (hardTerminal()) return result(false, state.kind);
+    if (everActivated) return result(false, 'switch-required');
+    if (flight) return result(false, 'busy');
+    const operation = { generation: ++generation };
+    flight = operation;
+    try {
+      if (typeof refreshToken !== 'string' || refreshToken.length === 0 || refreshToken.length > 4096 ||
+        /[\x00-\x1f\x7f]/.test(refreshToken))
+        fail('invalid-input');
+      const m0 = lastNow;
+      setState('signing-in');
+      const response = await request(
+        operation,
+        '/auth/v1/token?grant_type=refresh_token',
+        'POST',
+        null,
+        JSON.stringify({ refresh_token: refreshToken })
+      );
+      check(operation);
+      const candidate = exchangeData(response, m0);
+      if (lastNow >= candidate.deadline) {
+        invalidate('expired', 'expired');
+        fail('expired');
+      }
+      const online = await request(operation, '/auth/v1/user', 'GET', candidate.token);
+      check(operation);
+      if (online.status === 401 || online.status === 403) fail('authentication-rejected');
+      if (online.status < 200 || online.status >= 300)
+        fail(unsupportedCode(online.data) ? 'unsupported-auth-flow' : 'verification-unconfirmed');
+      const error = online.malformed ? 'invalid-response' : inspectUser(online.data);
+      if (error) fail(error);
+      if (online.data.id !== candidate.subjectId) fail('identity-mismatch');
+      if (lastNow >= candidate.deadline) {
+        invalidate('expired', 'expired');
+        fail('expired');
+      }
+      const verified = Object.freeze({
+        environmentId: config.environmentId,
+        subjectId: candidate.subjectId,
+        instanceId: config.instanceId,
+        epoch: config.epoch,
+        establishedAtMs: m0,
+        expiresAtMs: candidate.deadline,
+      });
+      session = { token: candidate.token, refreshToken: candidate.refreshToken, evidence: verified };
+      everActivated = true;
+      setState('active');
+      return result(true, 'ok');
+    } catch (error) {
+      const code = stopped(operation) || (error instanceof Failure ? error.code : 'invalid-input');
+      if (operation.generation === generation && !hardTerminal() && state.kind !== 'expired')
+        setState('signed-out', code);
+      return result(false, code);
+    } finally {
+      if (flight === operation) flight = null;
+    }
+  }
+
+  /** The session's rotating refresh token, for the trusted controller that seals it; null unless active. */
+  function refreshTokenOf() {
+    tick();
+    return state.kind === 'active' && session ? (session.refreshToken ?? null) : null;
+  }
   async function revalidate() {
     if (notifying) return result(false, 'busy');
     tick();
@@ -517,6 +591,8 @@ export function createAuthService(configuration, dependencies) {
   return Object.freeze({
     getPublicState: publicState,
     signIn,
+    refresh,
+    refreshTokenOf,
     revalidate,
     getVerifiedEvidence: evidence,
     signOut,

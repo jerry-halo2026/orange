@@ -27,14 +27,14 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  MATERIAL_VIDEO_TYPES, PAGE_SIZE, buildMaterialIndexFromApi, defaultIndexDir, openfilmDevHome, writeMaterialIndex,
+  MATERIAL_VIDEO_TYPES, PAGE_SIZE, buildMaterialIndexFromApi, defaultIndexDir, orangefilmDevHome, writeMaterialIndex,
 } from '../src/material-index-build.mjs';
 
 /** The scopes the Studio's material list accepts; `company` is the one this account's materials live in. */
 export const SCOPES = Object.freeze(['company', 'own']);
 
 /** `~/.orangefilm-dev/run.json`, as the dev Studio leaves it: `{pid, origin, filmOrigin, key}`. */
-export const runFile = (home) => join(openfilmDevHome(home), 'run.json');
+export const runFile = (home) => join(orangefilmDevHome(home), 'run.json');
 
 /**
  * What the Studio says about itself, or an error saying which file was missing/why it cannot be used. The key is

@@ -29,7 +29,7 @@ test('a marked timeline range can be cleared from the ruler menu, and Escape cle
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, locale: 'en-US', reducedMotion: 'reduce' });
     page.setDefaultTimeout(5000);
     await page.addInitScript(() => {
-      window.openfilmHost = { version: 1, onSelection: (selection) => { window.lastSelection = selection; } };
+      window.orangefilmHost = { version: 1, onSelection: (selection) => { window.lastSelection = selection; } };
     });
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);
     const block = page.locator('[data-block-id]').first();

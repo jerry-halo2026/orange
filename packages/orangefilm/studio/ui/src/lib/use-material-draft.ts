@@ -14,7 +14,7 @@ export function useMaterialDraft(generation?:number) {
   const [record,setRecord]=React.useState<{generation:number|undefined;state:MaterialDraftState}>(()=>({generation,state:empty()}));
   const current=React.useRef<{generation:number;client:ReturnType<typeof createMaterialDraftClient>}|null>(null);
   React.useEffect(()=>{
-    const native=typeof window==='undefined'?undefined:(window as unknown as {openfilmNative?:NativeDraft}).openfilmNative;
+    const native=typeof window==='undefined'?undefined:(window as unknown as {orangefilmNative?:NativeDraft}).orangefilmNative;
     if(!Number.isSafeInteger(generation)||(generation??-1)<0||!native?.materialDraft){
       setRecord({generation,state:empty()});return;
     }

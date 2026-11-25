@@ -39,7 +39,7 @@ const orangeChannel = (channel) => {
 const orangeInvoke = (channel) => { orangeChannel(channel); return invoke(channel); };
 const orangeOn = (channel) => { orangeChannel(channel); return on(channel); };
 
-contextBridge.exposeInMainWorld('openfilmNative', {
+contextBridge.exposeInMainWorld('orangefilmNative', {
   platform: process.platform,
   /* the app: its flavour and version, the layout it kept, ffmpeg and updates as they are */
   hello: () => ipcRenderer.invoke('desktop:hello'),

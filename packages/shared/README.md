@@ -8,4 +8,4 @@ import { buildPromptDisplay, type Turn } from '@orange/shared';
 import { scanMarkdownBlocks } from '@orange/shared/markdown';
 ```
 
-Part of [OrangeFilm](https://github.com/openfilm/orangefilm). MIT licensed.
+Part of OrangeFilm. Proprietary and confidential — see the repository LICENSE.

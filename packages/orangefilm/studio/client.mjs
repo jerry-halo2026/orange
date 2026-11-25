@@ -108,7 +108,7 @@ export function olderThanThis(/** @type {string | undefined} */ version, mine = 
  * @param {{ network?: boolean, waitMs?: number, force?: boolean }} [options]
  * @returns {Promise<{ latest: string | null, checkedAt: number | null }>}
  */
-export async function npmOpenfilm({ network = true, waitMs = 1500, force = false } = {}) {
+export async function npmOrangefilm({ network = true, waitMs = 1500, force = false } = {}) {
   if (readIsolationProfile() || process.env.ORANGE_NO_UPDATE_CHECK) return { latest: null, checkedAt: null };
   const file = join(studioHome(), 'update.json');
   /** @type {{ checkedAt?: number, latest?: string }} */
@@ -128,9 +128,9 @@ export async function npmOpenfilm({ network = true, waitMs = 1500, force = false
   return { latest: known.latest ?? null, checkedAt: known.checkedAt ?? null };
 }
 
-/** A newer orangefilm on npm than this one, or null (see npmOpenfilm). @param {{ network?: boolean, waitMs?: number }} [options] */
-export async function newerOpenfilm(options) {
-  const { latest } = await npmOpenfilm(options);
+/** A newer orangefilm on npm than this one, or null (see npmOrangefilm). @param {{ network?: boolean, waitMs?: number }} [options] */
+export async function newerOrangefilm(options) {
+  const { latest } = await npmOrangefilm(options);
   return latest && olderThanThis(VERSION, latest) ? latest : null;
 }
 
@@ -221,12 +221,12 @@ export async function ensureStudio(say = () => {}, { fresh = false } = {}) {
  * source checkout with git pull: each is said instead. `ok` false when it could not be done (offline, Studio busy).
  * @param {(line: string) => void} [say] @returns {Promise<{ ok: boolean, lines: string[] }>}
  */
-export async function updateOpenfilm(say = () => {}) {
+export async function updateOrangefilm(say = () => {}) {
   if (readIsolationProfile()) throw new Error('Updates are unavailable in isolated development.');
   if (FROM_SOURCE) return { ok: true, lines: [`orangefilm ${VERSION} runs from a source checkout: git pull updates it.`] };
   const found = (await running()) ?? (await restarting());
   if (found?.app) return { ok: true, lines: ['Studio is the OrangeFilm app\'s: it updates with the app (OrangeFilm → Check for Updates…).'] };
-  const { latest } = await npmOpenfilm({ force: true, waitMs: 8000 });
+  const { latest } = await npmOrangefilm({ force: true, waitMs: 8000 });
   if (!latest) return { ok: false, lines: ['Could not reach npm to learn the newest orangefilm: try again when online.'] };
   if (olderThanThis(VERSION, latest)) {
     /* the newest does it, fetched by npx; it ran already and is still not the newest: npx gave another */

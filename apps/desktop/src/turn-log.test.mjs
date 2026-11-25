@@ -7,7 +7,7 @@ import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { AgentSession, agentInstructions, setChosenPaths } from './agents.mjs';
-import { openfilmCommand } from './orangefilm-command.mjs';
+import { orangefilmCommand } from './orangefilm-command.mjs';
 import { loggedBlocks, readLog, writeModelLog } from './chat-store.mjs';
 
 /** An agent speaking ACP that keeps every prompt it is sent in `out`, one JSON line each. */
@@ -44,7 +44,7 @@ test('the turn log has what the agent was started with and each message as it go
     env: { ORANGE_HOME: '/data', SOME_API_KEY: 'sk-secret' },
     onSend: (message) => sent.push(message),
   });
-  const told = agentInstructions(openfilmCommand('/app/bin'));
+  const told = agentInstructions(orangefilmCommand('/app/bin'));
   try {
     await session.start();
     const opened = session.opened;

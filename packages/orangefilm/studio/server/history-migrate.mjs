@@ -34,7 +34,7 @@ import { moveToTrash } from './trash.mjs';
 export const FORMAT = 3;
 const MARKER = 'orangefilm.json';
 /** The message of the version that adds what an earlier history did not keep (history.mjs Kind 'upgrade'). */
-export const UPGRADE_MESSAGE = 'Kept all the project\'s files\n\nOpenfilm-Version: upgrade\n';
+export const UPGRADE_MESSAGE = 'Kept all the project\'s files\n\nOrangeFilm-Version: upgrade\n';
 
 /** The format of the history in `gitDir`: 1 for one an earlier Studio made (no marker), else what its marker says. */
 export function formatOf(/** @type {string} */ gitDir) {

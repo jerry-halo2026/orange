@@ -22,4 +22,4 @@ know what comes from the OrangeFilm project and what does not.
 
 ## Questions
 
-Write to support@openfilm.dev. If you are not sure whether a use is fine, ask: most are.
+Write to support@orangefilm.example. If you are not sure whether a use is fine, ask: most are.

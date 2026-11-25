@@ -34,7 +34,7 @@ import { registerSkillsIpc } from './skills-ipc.mjs';
 import { createRoster } from './agent-roster.mjs';
 import { checkAgentProgram, closeEverySession, sealAgentAdmission, resumeAgentAdmission, diagnoseAgent, forgetAgentStatus, listAgents, localAgent, openAgentInstaller, openAgentSignIn, setChosenPaths, signOutAgent } from './agents.mjs';
 import { agentUsage, forgetAgentUsage } from './agent-usage.mjs';
-import { installOpenfilmCommand } from './orangefilm-command.mjs';
+import { installOrangefilmCommand } from './orangefilm-command.mjs';
 import { startUpdates } from './updates.mjs';
 import { stepAside } from './update-launch.mjs';
 import { ensureFfmpeg, ffmpegDir, ffmpegDownloadable, ffmpegIn, ffmpegOnPath } from './ffmpeg-runtime.mjs';
@@ -893,7 +893,7 @@ async function start() {
     onConnectionResult: (id, error) => roster?.recordConnectionResult(id, error),
     /* the `orangefilm` command first (with the app's ffmpeg and browser in it); the app's ffmpeg last, for a computer
        that has none of its own: the person's own ffmpeg and browsers are what the agent's commands use */
-    binDir: installOpenfilmCommand(DATA, { ffmpeg: ffmpegHere, env: { ...browsers, ...(isolation ? isolationEnvironment(isolation) : {}) } }),
+    binDir: installOrangefilmCommand(DATA, { ffmpeg: ffmpegHere, env: { ...browsers, ...(isolation ? isolationEnvironment(isolation) : {}) } }),
     fallbackDir: ffmpegHere,
     env: {
       ...(isolation ? isolationEnvironment(isolation) : {}),

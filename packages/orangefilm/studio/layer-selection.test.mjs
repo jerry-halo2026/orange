@@ -51,7 +51,7 @@ async function withCard(name, run, { chat = false, again = false, mixed = false 
     const page = await browser.newPage({ viewport: { width: 1400, height: 1000 }, locale: 'en-US', reducedMotion: 'reduce' });
     await page.addInitScript((withChat) => {
       localStorage.setItem('orangefilm.project.layers', '1');
-      if (withChat) window.openfilmHost = { version: 1, refer: () => {} };
+      if (withChat) window.orangefilmHost = { version: 1, refer: () => {} };
     }, chat);
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);
     const film = page.locator('[data-viewer-picture] iframe').first();

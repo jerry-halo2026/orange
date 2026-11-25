@@ -28,7 +28,7 @@ const hasFfmpeg = (() => { try { execFileSync('ffmpeg', ['-version'], { stdio: '
 process.env.ORANGE_API_URL ??= 'http://127.0.0.1:9';
 
 /**
- * A fake ElevenLabs, fal.ai and OpenAI on 127.0.0.1 (each provider's OPENFILM_<NAME>_URL points here), answering as
+ * A fake ElevenLabs, fal.ai and OpenAI on 127.0.0.1 (each provider's ORANGE_<NAME>_URL points here), answering as
  * each service does. `refuse`, when set, answers every request instead. `calls` records every request.
  */
 let service, base, scratch;

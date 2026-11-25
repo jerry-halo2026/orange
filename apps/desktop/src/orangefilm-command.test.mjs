@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { commandScript, commandScriptWindows, installOpenfilmCommand, openfilmCommand } from './orangefilm-command.mjs';
+import { commandScript, commandScriptWindows, installOrangefilmCommand, orangefilmCommand } from './orangefilm-command.mjs';
 import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
 
 test("the orangefilm command alone has the app's ffmpeg first and its browser; the agent's PATH is left as it is", () => {
@@ -26,9 +26,9 @@ test('the installed command names itself by its whole path in all it prints (ORA
     const node = join(dir, 'node');
     writeFileSync(node, '#!/bin/sh\nprintf %s "$ORANGE_RUN"\n');
     chmodSync(node, 0o755);
-    const bin = installOpenfilmCommand(dir, { node });
-    assert.equal(execFileSync(join(bin, 'orangefilm'), { encoding: 'utf8' }), openfilmCommand(bin));
-    assert.equal(execFileSync('/bin/sh', ['-c', `${openfilmCommand(bin)} --version`], { encoding: 'utf8' }), openfilmCommand(bin), 'runs as the agent types it');
+    const bin = installOrangefilmCommand(dir, { node });
+    assert.equal(execFileSync(join(bin, 'orangefilm'), { encoding: 'utf8' }), orangefilmCommand(bin));
+    assert.equal(execFileSync('/bin/sh', ['-c', `${orangefilmCommand(bin)} --version`], { encoding: 'utf8' }), orangefilmCommand(bin), 'runs as the agent types it');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -54,7 +54,7 @@ test('isolated installed CLI retains all approved paths even when the invoking s
     const probe=join(dir,process.platform==='win32'?'probe.cmd':'probe');
     writeFileSync(probe,process.platform==='win32'?`@echo off\r\n"${process.execPath}" -e "process.stdout.write(JSON.stringify(process.env))"\r\n`:`#!/bin/sh\nexec '${process.execPath}' -e 'process.stdout.write(JSON.stringify(process.env))'\n`);
     if(process.platform!=='win32')chmodSync(probe,0o755);
-    const bin=installOpenfilmCommand(profile.paths.userData,{node:probe,env:declared});
+    const bin=installOrangefilmCommand(profile.paths.userData,{node:probe,env:declared});
     const out=process.platform==='win32'?execFileSync(process.env.ComSpec??'cmd.exe',['/d','/c','orangefilm.cmd'],{encoding:'utf8',cwd:bin}):execFileSync(join(bin,'orangefilm'),{encoding:'utf8'});
     const actual=JSON.parse(out);const expected=isolationEnvironment(profile);
     for(const[key,want]of Object.entries(expected))assert.equal(actual[key],want,key);
@@ -67,6 +67,6 @@ test('isolated CLI installer refuses a linked bin directory before writing a com
   try{const c={baseRoot:join(root,'approved'),instanceId:'instance-a',taskId:'T01',attemptId:'attempt-1',ports:{studio:18471,film:18472}};
     const env={ORANGE_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),ORANGE_ISOLATION_ROOT:c.baseRoot};const p=readIsolationProfile(env);
     mkdirSync(p.paths.userData,{recursive:true});const outside=join(root,'outside');mkdirSync(outside);symlinkSync(outside,join(p.paths.userData,'bin'),'junction');
-    assert.throws(()=>installOpenfilmCommand(p.paths.userData,{env}),/link|alias/);assert.equal(existsSync(join(outside,'orangefilm.cmd')),false);
+    assert.throws(()=>installOrangefilmCommand(p.paths.userData,{env}),/link|alias/);assert.equal(existsSync(join(outside,'orangefilm.cmd')),false);
   }finally{rmSync(root,{recursive:true,force:true})}
 });

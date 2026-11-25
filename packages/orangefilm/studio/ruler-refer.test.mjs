@@ -33,7 +33,7 @@ test('with the app\'s chat, a ruler click moves the playhead and a ⌘-click (Ct
       // A choice saved by an older version must not bring back hover preview.
       localStorage.setItem('orangefilm.timeline.previewAxis', '1');
       window.referred = [];
-      window.openfilmHost = {
+      window.orangefilmHost = {
         version: 1, refer: (ref) => window.referred.push(ref),
         onCommand: (receive) => { window.studioCommand = receive; },
       };

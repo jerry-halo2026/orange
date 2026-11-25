@@ -44,7 +44,7 @@ test('agent setup guides desktop-only installs, folder selection and model failu
         const calls = { setup: [], locate: [], connect: [], install: [], refresh: 0, parentEscape: 0, diagnose: 0 };
         window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !event.defaultPrevented) calls.parentEscape++; });
         const publish = (id, patch) => { agents = agents.map((a) => a.id === id ? { ...a, ...patch } : a); for (const listener of listeners) listener(agents); };
-        window.openfilmHost = { version: 1, agents: {
+        window.orangefilmHost = { version: 1, agents: {
           list: async () => agents,
           refresh: async () => { calls.refresh++; publish('opencode', { connectionIssue: undefined }); publish('deepseek', { connectionIssue: undefined }); return agents; },
           connect: async (id) => { calls.connect.push(id); return { ok: true }; },

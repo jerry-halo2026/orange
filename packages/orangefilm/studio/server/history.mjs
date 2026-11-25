@@ -22,7 +22,7 @@
  * whether one is saved on its own.
  *
  * Each version is a commit. Its message is the person's (or what kind of version it is) and a trailer saying its
- * kind: `Openfilm-Version: named` and so on (Kind). Histories of earlier editions had branches, names as tags and
+ * kind: `OrangeFilm-Version: named` and so on (Kind). Histories of earlier editions had branches, names as tags and
  * changes parked on branches: their versions are listed too, and any of them can be checked out.
  *
  * Every action takes an optional `onProgress` (history-store.mjs Progress) to say how far it is; a history an earlier
@@ -329,7 +329,7 @@ const SUBJECT = { saved: 'Saved version', auto: 'Auto-saved', agent: 'Before age
 
 /** A version's message: its subject, then the trailer saying its kind. */
 const messageOf = (/** @type {Kind} */ kind, /** @type {string} */ text) =>
-  `${text || SUBJECT[/** @type {keyof typeof SUBJECT} */ (kind)] || kind}\n\nOpenfilm-Version: ${kind}\n`;
+  `${text || SUBJECT[/** @type {keyof typeof SUBJECT} */ (kind)] || kind}\n\nOrangeFilm-Version: ${kind}\n`;
 
 /* a name an earlier edition gave a version: a tag on it, `v-<the name, base64url>[.<the version's first hex>]` */
 const decodeName = (/** @type {string} */ tag) => (tag.startsWith('v-') ? Buffer.from(tag.slice(2).split('.')[0], 'base64url').toString('utf8') : tag);
@@ -379,13 +379,13 @@ export function log(root, { limit = 50, deleted = false, includeDeletedCount = f
       if (!commit) continue;
       if (!deleted && removed.has(commit)) continue;
       if (deleted && !removed.has(commit)) continue;
-      const said = /^Openfilm-Version: (\S+)$/m.exec(body)?.[1] ?? '';
+      const said = /^OrangeFilm-Version: (\S+)$/m.exec(body)?.[1] ?? '';
       const parked = /^parked: (.*)$/.exec(subject);
       const kind = /** @type {Kind} */ (KINDS.has(said) ? said : parked ? 'parked' : 'named');
       const own = kind === 'named' ? shownMessage(subject) : kind === 'parked' ? (parked?.[1] ?? '') : '';
       versions.push({
         commit, parents: parents.split(' ').filter(Boolean), at: Number(at) * 1000, kind, name: names.get(commit) ?? own,
-        restored: /^Openfilm-Restored: ([0-9a-f]+)$/m.exec(body)?.[1] ?? null,
+        restored: /^OrangeFilm-Restored: ([0-9a-f]+)$/m.exec(body)?.[1] ?? null,
       });
     }
     /** @param {string} id @returns {string[]} */

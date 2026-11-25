@@ -108,14 +108,10 @@ test('isolated effective projects preferences and folder selection cannot escape
   }finally{for(const[k,v]of Object.entries(old)){if(v===undefined)delete process.env[k];else process.env[k]=v}}
 });
 
-test('a migrated home wins only after its completion marker', () => {
+test('there is one Studio home, and no old one to prefer', () => {
   const base = mkdtempSync(join(testRoot('locations'), 'of-home-'));
-  const old = join(base, '.orangefilm');
-  const next = join(base, '.orangefilm');
-  mkdirSync(old, { recursive: true });
-  assert.equal(defaultStudioHome(base), old, 'an existing old home wins before migration');
-  mkdirSync(next, { recursive: true });
-  assert.equal(defaultStudioHome(base), old, 'an empty target is not a migration');
-  writeFileSync(join(next, '.orangefilm-home-migration.json'), '{}\n');
-  assert.equal(defaultStudioHome(base), next, 'the marker switches the desktop to the new home');
+  /* 只认 ~/.orangefilm：旧的主目录不再被读，也没有"完成标记"来决定用哪一个 */
+  assert.equal(defaultStudioHome(base), join(base, '.orangefilm'));
+  mkdirSync(join(base, '.orangefilm'), { recursive: true });
+  assert.equal(defaultStudioHome(base), join(base, '.orangefilm'), 'the same home whether or not it exists yet');
 });

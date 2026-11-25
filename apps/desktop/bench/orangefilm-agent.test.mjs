@@ -47,7 +47,7 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
           agents = agents.map((a) => a.id === 'orangefilm' ? { ...a, ...patch } : a);
           for (const listener of listeners) listener(agents);
         };
-        window.openfilmHost = { version: 1, agents: {
+        window.orangefilmHost = { version: 1, agents: {
           list: async () => agents,
           connect: async (id) => { calls.push(['connect', id]); publish({ status: 'waiting' }); return { ok: true }; },
           cancelSignIn: async (id) => { calls.push(['cancel', id]); publish({ status: 'sign-in' }); return { ok: true }; },
@@ -62,8 +62,8 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
           },
           onChange: (listener) => { listeners.add(listener); return () => listeners.delete(listener); },
         } };
-        window.openfilmDesktop = { agents: window.openfilmHost.agents, localAgents: { probe: async () => { throw new Error('the model catalog is already known'); } } };
-        window.openfilmAgentFixture = { calls, publish, saved, available: (ids) => publish({ orangefilm: { ...modelSettings,
+        window.orangefilmDesktop = { agents: window.orangefilmHost.agents, localAgents: { probe: async () => { throw new Error('the model catalog is already known'); } } };
+        window.orangefilmAgentFixture = { calls, publish, saved, available: (ids) => publish({ orangefilm: { ...modelSettings,
           models: modelSettings.models.map((m) => ({ ...m, available: ids.includes(m.id) })) } }) };
       }, { locale, models: ORANGE_MODELS });
       await page.goto(`http://127.0.0.1:${server.httpServer.address().port}/orangefilm-agent-ui`);
@@ -78,15 +78,15 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
       const info = row.getByRole('button', { name: zh ? 'OrangeFilm 信息与模型' : 'OrangeFilm info and models', exact: true });
       await row.getByText(zh ? '未连接' : 'Not connected', { exact: true }).waitFor();
       assert.equal(await info.isVisible(), true);
-      await page.evaluate(() => window.openfilmAgentFixture.publish({ error: 'API answered 401' }));
+      await page.evaluate(() => window.orangefilmAgentFixture.publish({ error: 'API answered 401' }));
       assert.equal(await row.getByRole('alert').count(), 0, 'the agent list presents sign-in status without technical details');
-      await page.evaluate(() => window.openfilmAgentFixture.publish({ error: undefined }));
+      await page.evaluate(() => window.orangefilmAgentFixture.publish({ error: undefined }));
       const login = row.getByRole('button', { name: zh ? '连接' : 'Connect', exact: true });
       const cancel = row.getByRole('button', { name: zh ? '取消' : 'Cancel', exact: true });
       await login.click();
       await cancel.click();
       await login.waitFor();
-      await page.evaluate(() => window.openfilmAgentFixture.publish({ status: 'ready', account: { method: 'other', email: 'shared@example.com' } }));
+      await page.evaluate(() => window.orangefilmAgentFixture.publish({ status: 'ready', account: { method: 'other', email: 'shared@example.com' } }));
       await row.getByText(/shared@example.com/).waitFor();
       await info.click();
       const dialog = page.getByRole('dialog', { name: 'OrangeFilm', exact: true });
@@ -128,7 +128,7 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
       assert.equal(expectedOrder[1], 'deepseek/deepseek-v4.1-flash-1017');
       await dialog.getByRole('button', { name: zh ? '保存' : 'Save', exact: true }).click();
       await dialog.waitFor({ state: 'hidden' });
-      assert.deepEqual(await page.evaluate(() => window.openfilmAgentFixture.saved.at(-1)), { order: expectedOrder, hidden: ['openai/gpt-6-luna'] });
+      assert.deepEqual(await page.evaluate(() => window.orangefilmAgentFixture.saved.at(-1)), { order: expectedOrder, hidden: ['openai/gpt-6-luna'] });
       await page.locator('[data-model-picker] button').first().click();
       await page.getByRole('button', { name: /^(Model|模型) DeepSeek V4\.1 Flash$/ }).hover();
       const menu = page.getByRole('button', { name: 'Claude Sonnet 5.5', exact: true }).locator('..');
@@ -142,7 +142,7 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
       assert.deepEqual(await rows.evaluateAll((items) => items.map((item) => item.dataset.modelId)), ORANGE_MODELS.map((m) => m.id));
       await page.keyboard.press('Escape');
       // A temporarily old cloud catalog must not silently hide enabled models.
-      await page.evaluate(() => window.openfilmAgentFixture.available(['anthropic/claude-opus-5.5', 'anthropic/claude-sonnet-5.5', 'openai/gpt-6.1-sol']));
+      await page.evaluate(() => window.orangefilmAgentFixture.available(['anthropic/claude-opus-5.5', 'anthropic/claude-sonnet-5.5', 'openai/gpt-6.1-sol']));
       await page.locator('[data-model-picker] button').first().click();
       await page.getByRole('button', { name: /^(Model|模型) / }).hover();
       const partial = page.getByRole('button', { name: 'Claude Opus 5.5', exact: true }).locator('..');
@@ -167,7 +167,7 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
       await page.screenshot({ path: `/tmp/orangefilm-agent-settings-${locale}.png`, fullPage: true });
       await info.click();
       const header = dialog.locator('header');
-      const savedCount = await page.evaluate(() => window.openfilmAgentFixture.saved.length);
+      const savedCount = await page.evaluate(() => window.orangefilmAgentFixture.saved.length);
       const accountLink = header.getByRole('link', { name: zh ? '查看账户' : 'View account', exact: true });
       assert.equal(await accountLink.getAttribute('href'), 'https://orangefilm.dev/account');
       assert.match(await header.innerText(), /shared@example.com/);
@@ -175,10 +175,10 @@ test('OrangeFilm follows Claude under Your agents, shares account actions and ne
       await header.getByRole('button', { name: zh ? '连接' : 'Connect', exact: true }).click();
       await header.getByRole('button', { name: zh ? '取消' : 'Cancel', exact: true }).click();
       await header.getByRole('button', { name: zh ? '连接' : 'Connect', exact: true }).waitFor();
-      assert.equal(await page.evaluate(() => window.openfilmAgentFixture.saved.length), savedCount, 'account actions do not save model preference drafts');
+      assert.equal(await page.evaluate(() => window.orangefilmAgentFixture.saved.length), savedCount, 'account actions do not save model preference drafts');
       await dialog.getByRole('button', { name: zh ? '关闭' : 'Close', exact: true }).click();
       await login.waitFor();
-      assert.deepEqual(await page.evaluate(() => window.openfilmAgentFixture.calls), [
+      assert.deepEqual(await page.evaluate(() => window.orangefilmAgentFixture.calls), [
         ['connect', 'orangefilm'], ['cancel', 'orangefilm'], ['shown', 'orangefilm', false], ['shown', 'orangefilm', true],
         ['disconnect', 'orangefilm'], ['connect', 'orangefilm'], ['cancel', 'orangefilm'],
       ]);

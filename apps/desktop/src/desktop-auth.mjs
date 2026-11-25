@@ -20,48 +20,6 @@ const deny = (code = 'authentication-required') => Object.assign(new Error(code 
 const samePath = (a,b) => (process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b);
 const below = (root,path) => samePath(root,path) || (process.platform === 'win32' ? path.toLowerCase().startsWith(root.toLowerCase()+sep) : path.startsWith(root+sep));
 
-/** `path` under `to` where it was under `from` (the same separators both sides), or null when it is not under `from`. */
-function rebase(path,from,to) {
-  const a=process.platform==='win32'?path.toLowerCase():path;
-  const b=process.platform==='win32'?from.toLowerCase():from;
-  if(a===b)return to;
-  if(!a.startsWith(b+sep))return null;
-  return to+path.slice(from.length);
-}
-
-/**
- * The owner records whose project root moved with the product's folder (locations.mjs `migrateProductFolder`): every
- * `root` that was under the old folder is rewritten under the new one, so the projects a person already has stay
- * theirs after the rename. `registerCreatedProject` wrote those roots as real paths when the projects were made, and
- * `projectRecord` matches a project by its real path: without this, every one of them would answer
- * `project-access-denied`.
- *
- * Only `root` changes: the environment, subject and project ids, and every other key, are written back as they were.
- * A file this does not know (another version, not the shape loadOwners reads) is left exactly as it was 鈥?the migration
- * of a folder must not be the reason a person's records are dropped. Returns how many records moved.
- *
- * @param {{ home: string, from: string, to: string }} options
- */
-export function migrateOwnerRoots({home,from,to}) {
-  const file=join(home,'orange-project-owners.json');
-  try {
-    if(!existsSync(file))return 0;
-    const stat=lstatSync(file);if(!stat.isFile()||stat.nlink!==1||stat.size>1024*1024)return 0;
-    const raw=JSON.parse(readFileSync(file,'utf8'));
-    if(!raw||raw.version!==1||!Array.isArray(raw.projects))return 0;
-    let moved=0;
-    const projects=raw.projects.map(item=>{
-      const root=item&&typeof item.root==='string'?rebase(item.root,from,to):null;
-      if(!root)return item;
-      moved+=1;return {...item,root};
-    });
-    if(!moved)return 0;
-    const temp=join(home,`orange-owners-${randomBytes(12).toString('hex')}.tmp`);
-    writeFileSync(temp,JSON.stringify({version:1,projects})+'\n',{flag:'wx',mode:0o600});renameSync(temp,file);
-    return moved;
-  } catch { return 0; }
-}
-
 /** Explicit pointer only. Missing/invalid configuration is an actionable signed-out state, never a legacy fallback. */
 export function readDesktopAuthConfiguration(environment) {
   try {

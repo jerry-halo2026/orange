@@ -51,7 +51,7 @@ import { pickFiles, pickFolder } from './folder-picker.mjs';
 import { readPrefs, writePrefs } from './prefs.mjs';
 import { ensureProxies, playChecks } from './proxies.mjs';
 import { ensurePreviews, knownLate } from './preview-cache.mjs';
-import { npmOpenfilm, olderThanThis } from '../client.mjs';
+import { npmOrangefilm, olderThanThis } from '../client.mjs';
 import { createWatchers } from './watch.mjs';
 import { projectMissing } from './project-presence.mjs';
 import { installedFonts } from './fonts.mjs';
@@ -80,7 +80,6 @@ import { charactersRoute, listCharacters, projectCharactersRoute } from './canva
 import { transitionPageRoutes } from './transition-pages.mjs';
 import { createAsks, getRoute, subtitleTranscriber, subtitleTranslator } from './get.mjs';
 import { LOCATION_KEYS, chooseFolder, locations, studioHomeDir, usableFolder } from '../../src/locations.mjs';
-import { migrateHome, planHomeMigration } from '../../src/home-migration.mjs';
 import { doctor } from '../../src/doctor.mjs';
 import { recentProblems } from '../../src/problems.mjs';
 import { exportDiagnostics } from './diagnostics.mjs';
@@ -355,17 +354,6 @@ const savedAccess = createSavedAccess({
       // answering the empty state (machineStore) rather than a 503 for something that is merely not made yet.
     }
     if (await orangeRoutes(req, res, parts)) return;
-    /* The old ~/.orangefilm home, copied into ~/.orangefilm only when asked: the settings UI reads the plan first
-       and sends { confirm: true } for the copy. The old home is never removed by this route. */
-    if (parts[0] === 'home' && parts[1] === 'migration') {
-      if (req.method === 'GET' && parts.length === 2) return json(res, 200, planHomeMigration());
-      if (req.method === 'POST' && parts.length === 2) {
-        const body = /** @type {{ confirm?: boolean, dryRun?: boolean, includeLibrary?: boolean }} */ (await readJson(req));
-        if (body?.confirm !== true) throw new HttpError(400, 'confirm the home migration', { code: 'migration-confirmation-required' });
-        return json(res, 200, migrateHome({ dryRun: body.dryRun === true, includeLibrary: body.includeLibrary === true }));
-      }
-      throw new HttpError(405, 'Use GET for the plan or POST with { confirm: true } to migrate.');
-    }
     const run = () => isolationResourceCall(isolation,parts,req.method,async () => {
 
     /* stop: another app is taking over this machine's Studio, or `orangefilm open` starts it afresh (`whenIdle`: not
@@ -417,7 +405,7 @@ const savedAccess = createSavedAccess({
     /* this Studio's version, and the latest on npm (Settings → General; `?check=1` asks npm now) */
     if (parts[0] === 'version' && parts.length === 1 && req.method === 'GET') {
       const now = url.searchParams.get('check') === '1';
-      const { latest, checkedAt } = await npmOpenfilm({ force: now, waitMs: 4000 });
+      const { latest, checkedAt } = await npmOrangefilm({ force: now, waitMs: 4000 });
       return json(res, 200, { version: VERSION, latest, newer: Boolean(latest && olderThanThis(VERSION, latest)), checkedAt, checking: !process.env.ORANGE_NO_UPDATE_CHECK && !FROM_SOURCE, source: FROM_SOURCE,
         ...(updating ? { update: updating } : {}) });
     }
@@ -441,14 +429,14 @@ const savedAccess = createSavedAccess({
       return json(res, 200, made);
     }
     /* the top bar's Update (Studio run with npm, not the app's nor a checkout): the newest orangefilm run in the
-       background as `orangefilm update` (client.mjs updateOpenfilm), which starts Studio again on it; the pages come back
+       background as `orangefilm update` (client.mjs updateOrangefilm), which starts Studio again on it; the pages come back
        on the new version and reload. Not while an export runs or media is made. `/api/version` says how it goes */
     if (parts[0] === 'update' && parts.length === 1 && req.method === 'POST') {
       if (stays || FROM_SOURCE) return json(res, 409, { error: 'this Studio does not update itself', code: stays ? 'app' : 'source' });
       if (exports.busy()) return json(res, 409, { error: 'an export is running', code: 'exporting' });
       if (making) return json(res, 409, { error: 'media is being made', code: 'making' });
       if (updating?.status === 'updating') return json(res, 202, { update: updating });
-      const { latest } = await npmOpenfilm({ waitMs: 4000 });
+      const { latest } = await npmOrangefilm({ waitMs: 4000 });
       if (!latest || !olderThanThis(VERSION, latest)) return json(res, 409, { error: 'this is the newest orangefilm', code: 'newest' });
       updating = runUpdate(latest, (next) => { updating = next; });
       return json(res, 202, { update: updating });

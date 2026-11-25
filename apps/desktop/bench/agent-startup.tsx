@@ -24,7 +24,7 @@ let release: (list: RosterAgent[]) => void = () => {};
 let released = false;
 const oldList = new Promise<RosterAgent[]>((done) => { release = done; });
 const publish = () => { for (const listener of listeners) listener(roster); };
-(window as any).openfilmDesktop = {
+(window as any).orangefilmDesktop = {
   agents: {
     list: async () => released ? roster : oldList,
     onChange: (listener: (list: RosterAgent[]) => void) => { listeners.add(listener); return () => listeners.delete(listener); },

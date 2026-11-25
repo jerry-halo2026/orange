@@ -178,7 +178,7 @@ export function MaterialCenter({draft,draftReady,draftReason,onDraftOperation,on
     return()=>abort.abort();
   },[fixedProjectId]);
   return <section className={'flex min-h-0 flex-col gap-3 '+(compact?'h-full overflow-y-auto p-3':'space-y-1')} aria-label={t('homeCards.catalog')}>
-    {(!draftReady||draftReason==='conflict')&&<p role="status" className="text-[12px] text-[var(--text-muted)]">{t(draftReason==='conflict'?'workspace.draftConflict':'workspace.draftUnavailable')} {!draftReady&&authGeneration!==undefined&&Boolean((window as unknown as {openfilmNative?:{materialDraft?:unknown}}).openfilmNative?.materialDraft)&&<button type="button" onClick={()=>void onDraftRetry()} className="underline">{t('workspace.draftRetry')}</button>}</p>}
+    {(!draftReady||draftReason==='conflict')&&<p role="status" className="text-[12px] text-[var(--text-muted)]">{t(draftReason==='conflict'?'workspace.draftConflict':'workspace.draftUnavailable')} {!draftReady&&authGeneration!==undefined&&Boolean((window as unknown as {orangefilmNative?:{materialDraft?:unknown}}).orangefilmNative?.materialDraft)&&<button type="button" onClick={()=>void onDraftRetry()} className="underline">{t('workspace.draftRetry')}</button>}</p>}
     <MaterialCenterPage
       controller={controller}
       copy={copy}

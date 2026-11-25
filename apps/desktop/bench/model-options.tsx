@@ -33,7 +33,7 @@ const options = (model = 'plain') => [
   ] }] : []),
 ];
 let sessionOptions = options();
-(window as any).openfilmDesktop = {
+(window as any).orangefilmDesktop = {
   agents: { list: async () => roster, onChange: () => () => {} },
   localAgents: {
     onEvent: (receive: typeof onEvent) => { onEvent = receive; return () => {}; },

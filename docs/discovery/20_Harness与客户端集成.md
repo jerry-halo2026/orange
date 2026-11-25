@@ -11,7 +11,7 @@
 | 1 | 桌面端是 ACP **客户端**，对外只声明最小能力：`fs.readTextFile/writeTextFile=false`、`terminal=false` | `[代码]` `apps/desktop/src/agents.mjs:929-938`（`CLIENT_CAPABILITIES`） |
 | 2 | 会话流程 `initialize → session/new → session/prompt`，权限询问走 `session/request_permission`（在聊天里问人） | `[代码]` `agents.mjs:5`（模块注释）、`:1380`（initialize）、`:1398`（`step='session/new'`）、`:1078` |
 | 3 | 原实现没有 MCP：`mcpServers: []` | `[代码]` 历史提交 `21f73a7`（OrangeFilm 0.1.3）；现由 `b9104e6` 注入 |
-| 4 | 现在注入一个自建 stdio MCP 服务：`mcpServers: [openfilmMcpServer()]` | `[代码]` `agents.mjs:1388` |
+| 4 | 现在注入一个自建 stdio MCP 服务：`mcpServers: [orangefilmMcpServer()]` | `[代码]` `agents.mjs:1388` |
 | 5 | dsh 支持 stdio / http 两种 MCP，工具名为 `mcp__<server>__<tool>` | 外部事实（dsh 侧），本仓库不实现 |
 | 6 | 该 MCP 暴露 7 个工具，读 5 写 2 | `[代码]` `apps/desktop/src/orangefilm-mcp.mjs:38-102` |
 | 7 | MCP 调用**不受** OrangeFilm 自身的 approve 管辖，因此自带写闸门 | `[代码]` `orangefilm-mcp.mjs:11-12`、`:126-146`、`:362` |
@@ -53,7 +53,7 @@ export const CLIENT_CAPABILITIES = {
 
 ```js
 // agents.mjs:1388
-mcpServers: [openfilmMcpServer()],
+mcpServers: [orangefilmMcpServer()],
 ```
 
 历史对比：`21f73a7`（OrangeFilm 0.1.3）时这里是 `mcpServers: []`；`b9104e6` 起注入。原始 0.1.x 的行为因此**没有**任何 MCP 工具可用。

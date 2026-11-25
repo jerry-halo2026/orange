@@ -24,7 +24,7 @@ const LABEL = 'mb-2 text-[11.5px] font-medium text-[var(--text-faint)]';
 /** A folder dragged from the file manager, by its path (the desktop app's bridge), or ''. */
 const droppedPath = (e: React.DragEvent) => {
   const file = e.dataTransfer.files[0];
-  return file ? (window as unknown as { openfilmDesktop?: { pathForFile?: (f: File) => string } }).openfilmDesktop?.pathForFile?.(file) ?? '' : '';
+  return file ? (window as unknown as { orangefilmDesktop?: { pathForFile?: (f: File) => string } }).orangefilmDesktop?.pathForFile?.(file) ?? '' : '';
 };
 const dragsFiles = (e: React.DragEvent) => e.dataTransfer.types.includes('Files');
 

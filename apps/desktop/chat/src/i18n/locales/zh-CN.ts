@@ -313,7 +313,7 @@ export const zhCN: Words = {
   turnLog: {
     thoughtNotKept: 'agent 的记录里没有保存思考内容',
     skills: 'Skills 和 MCP',
-    skillsOpenfilm: `{brand} 的 skill`,
+    skillsOrangefilm: `{brand} 的 skill`,
     skillsHidden: '你自己的 skill（已关闭）',
     skillsUnfiltered: '这个 agent 带着你自己的全部 skill，和它自己的应用里一样',
     mcpHidden: '你自己的 MCP 服务（已关闭）',

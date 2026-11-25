@@ -14,7 +14,7 @@ export function LocalVideoPreview(props:{src:string|null;poster:string|null;gene
 function LocalVideoPreviewSession({src,poster,generation}:{src:string|null;poster:string|null;generation?:number}) {
   const t=useT(),video=React.useRef<HTMLVideoElement>(null),pending=React.useRef(false);
   const [enabled,setEnabled]=React.useState(false),[failed,setFailed]=React.useState(false),[playing,setPlaying]=React.useState(false);
-  const native=typeof window==='undefined'?undefined:(window as unknown as {openfilmNative?:NativeAuth}).openfilmNative;
+  const native=typeof window==='undefined'?undefined:(window as unknown as {orangefilmNative?:NativeAuth}).orangefilmNative;
   const controller=React.useMemo(()=>createPreviewController(()=>video.current,()=>setFailed(true)),[]);
   const attestation=React.useMemo(()=>createPreviewAttestation(async()=>await native?.authUiState?.(),generation),[native,generation]);
   const stop=React.useCallback(()=>{attestation.cancel();pending.current=false;controller.stop();},[attestation,controller]);

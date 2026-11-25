@@ -35,7 +35,7 @@ test('a Claude Code older than the chat was tried with says so in Settings › A
             outdated: { version: '2.1.288', tested: '2.1.308', update: 'npm i -g @anthropic-ai/claude-code@latest' } },
           { id: 'codex', name: 'Codex', shown: true, status: 'ready', path: '/opt/homebrew/bin/codex' },
         ];
-        window.openfilmHost = { version: 1, agents: {
+        window.orangefilmHost = { version: 1, agents: {
           list: async () => agents, refresh: async () => agents, connect: async () => ({ ok: true }),
           disconnect: async () => {}, setShown: async () => {}, onChange: () => () => {},
         } };

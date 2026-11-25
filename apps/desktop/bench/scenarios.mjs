@@ -98,10 +98,10 @@ const press = async (page, code, key) => {
 
 /** The own-key agent on the fake model, the only one the chat offers. */
 async function useFakeAgent(studio, chat, model) {
-  const done = await studio.evaluate((baseUrl) => window.openfilmHost.agents.saveOwnModel({ format: 'responses', baseUrl, model: 'bench', key: 'bench-key', levels: ['auto'], effort: 'auto' }), model.baseUrl);
+  const done = await studio.evaluate((baseUrl) => window.orangefilmHost.agents.saveOwnModel({ format: 'responses', baseUrl, model: 'bench', key: 'bench-key', levels: ['auto'], effort: 'auto' }), model.baseUrl);
   if (!done?.ok) throw new Error(`setting up the agent: ${done?.error ?? 'no answer'}`);
-  for (const id of ['codex', 'claude']) await studio.evaluate((x) => window.openfilmHost.agents.setShown(x, false), id);
-  await until('the own-key agent ready', () => studio.evaluate(async () => (await window.openfilmHost.agents.list()).find((a) => a.id === 'byok')?.status === 'ready'), 120_000, 500);
+  for (const id of ['codex', 'claude']) await studio.evaluate((x) => window.orangefilmHost.agents.setShown(x, false), id);
+  await until('the own-key agent ready', () => studio.evaluate(async () => (await window.orangefilmHost.agents.list()).find((a) => a.id === 'byok')?.status === 'ready'), 120_000, 500);
   await chat.evaluate(() => localStorage.setItem('orangefilm.local-agents.v2', JSON.stringify({ picked: 'byok', prefs: {}, options: {} })));
   await chat.reload();
   await until('the chat back', () => chat.evaluate(() => Boolean(document.querySelector('[data-prompt-editor]'))), 60_000);
@@ -193,7 +193,7 @@ export async function benchRun({ dir, log }) {
     /* divider: the chat 420 → 760 → 420 px wide, a width a frame, as the divider sets it while it is dragged */
     figures.divider = await measured(pages, async () => {
       const lag = await pages.chat.evaluate(async () => {
-        const set = window.openfilmDesktop.setChatWidth;
+        const set = window.orangefilmDesktop.setChatWidth;
         const frame = () => new Promise((done) => requestAnimationFrame(done));
         const out = [];
         const widths = [];

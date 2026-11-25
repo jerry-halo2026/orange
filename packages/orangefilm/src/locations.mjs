@@ -58,13 +58,9 @@ export function setSharedPref(key, value, home = sharedHome()) {
 
 /** The product's folder in the person's own folders: brand.json's `productName` (…/Videos/OrangeFilm). */
 const PRODUCT_FOLDER = 'OrangeFilm';
-/** The folder it was before the product was renamed: what a first start moves, once (…/Videos/OrangeFilm). */
-const LEGACY_PRODUCT_FOLDER = 'OpenFilm';
 
 /** The folder the product keeps its projects, saved things and skills in: ~/Movies/<product>, or ~/Videos/<product>. */
 export const productFolder = () => join(homedir(), process.platform === 'darwin' ? 'Movies' : 'Videos', PRODUCT_FOLDER);
-/** Where that folder was before the rename (migrateProductFolder). */
-export const legacyProductFolder = () => join(homedir(), process.platform === 'darwin' ? 'Movies' : 'Videos', LEGACY_PRODUCT_FOLDER);
 
 /** Where new projects go unless the person chose: ORANGE_LIBRARY, else ~/Movies/OrangeFilm/Projects on macOS, ~/Videos/OrangeFilm/Projects elsewhere. */
 export const libraryDefault = () => isolatedLocation('projects', () => envText('LIBRARY')
@@ -85,43 +81,6 @@ export const exportsDefault = () => isolatedLocation('exports', () => envText('E
  * projects folder: what was saved stays where it was found.
  */
 export const savedRoot = () => isolatedLocation('saved', () => envText('SAVED') || join(dirname(libraryDefault()), 'Saved'));
-
-/**
- * The product's folder under its new name, moving the one it had before (`…/Videos/OrangeFilm` → `…/Videos/OrangeFilm`),
- * so the person's projects — and `Saved` and `Skills` beside them — keep being theirs after the rename.
- *
- * The whole product folder moves, not just `Projects`: the three live side by side, and a `Saved` left behind under the
- * old name would be a second library nothing points at. It moves only when the new folder is not there yet: two
- * folders are never merged, and nothing is ever overwritten. `rename` keeps every byte, permission and date, and is the
- * one step that cannot leave a half-moved folder behind; when the two are on different disks (or a file is open and
- * Windows refuses) it is copied instead, the old folder is kept as it was, and the reason is logged — a lost project is
- * worse than a stray folder.
- *
- * Under an isolation profile (development-isolation.mjs) the person's own folders are not touched at all.
- *
- * @param {{ from?: string, to?: string, log?: (line: string) => void }} [options]
- * @returns {{ status: 'none' | 'already' | 'moved' | 'failed', from: string, to: string, method: 'rename' | 'copy' | null, keptOld: boolean }}
- */
-export function migrateProductFolder({ from = legacyProductFolder(), to = productFolder(), log = (line) => process.stderr.write(`${line}\n`) } = {}) {
-  if (readIsolationProfile()) return { status: 'none', from, to, method: null, keptOld: false };
-  if (existsSync(to)) return { status: 'already', from, to, method: null, keptOld: false };
-  if (!existsSync(from)) return { status: 'none', from, to, method: null, keptOld: false };
-  try {
-    mkdirSync(dirname(to), { recursive: true });
-    renameSync(from, to);
-    log(`[library] moved ${from} to ${to}`);
-    return { status: 'moved', from, to, method: 'rename', keptOld: false };
-  } catch (error) {
-    try {
-      cpSync(from, to, { recursive: true, verbatimSymlinks: true });
-    } catch (copyError) {
-      log(`[library] could not move ${from} to ${to}: ${error?.message ?? error}; copying it failed too: ${copyError?.message ?? copyError}`);
-      return { status: 'failed', from, to, method: null, keptOld: false };
-    }
-    log(`[library] copied ${from} to ${to} (${error?.code ?? error?.message ?? error}); the old folder is kept as it was`);
-    return { status: 'moved', from, to, method: 'copy', keptOld: true };
-  }
-}
 
 /** The folders the person can choose, by their key in prefs.json. */
 export const LOCATION_KEYS = /** @type {const} */ ({ projects: 'projectsFolder' });

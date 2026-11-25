@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The parts of `window.openfilmDesktop` that are this app's own (src/preload-chat.cjs); the parts the copied chat code
+ * The parts of `window.orangefilmDesktop` that are this app's own (src/preload-chat.cjs); the parts the copied chat code
  * uses (localAgents, pathForFile) are typed in lib/desktop-bridge.ts.
  */
 import type { CommunityItem, StudioRef, StudioSelection } from 'orangefilm/studio-ui/lib/host.ts';
@@ -175,4 +175,4 @@ export interface TurnLog {
   at: TurnLogAt;
 }
 
-export const app = (window as unknown as { openfilmDesktop: AppBridge }).openfilmDesktop;
+export const app = (window as unknown as { orangefilmDesktop: AppBridge }).orangefilmDesktop;

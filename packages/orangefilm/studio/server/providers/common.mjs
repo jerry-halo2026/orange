@@ -11,7 +11,7 @@ import { basename, extname, join } from 'node:path';
 
 /** @typedef {import('./contract.mjs').RunContext} RunContext */
 
-/** A service's address: the public one, or `OPENFILM_<NAME>_URL` (a test server, a proxy). */
+/** A service's address: the public one, or `ORANGE_<NAME>_URL` (a test server, a proxy). */
 export const serviceUrl = (/** @type {string} */ name, /** @type {string} */ fallback) =>
   (process.env[`ORANGE_${name}_URL`]?.trim() || fallback).replace(/\/+$/, '');
 

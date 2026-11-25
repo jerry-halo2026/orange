@@ -201,9 +201,9 @@ test('the agent is told to start the server with an absolute command and Electro
   assert.throws(() => orangefilmMcpServerConfig({ command: 'node', script: '/abs/x.mjs' }), /absolute/);
 
   const agents = readFileSync(new URL('./agents.mjs', import.meta.url), 'utf8');
-  assert.match(agents, /mcpServers: \[openfilmMcpServer\(\)\]/, 'the session is offered the server');
+  assert.match(agents, /mcpServers: \[orangefilmMcpServer\(\)\]/, 'the session is offered the server');
   assert(!/mcpServers: \[\]/.test(agents), 'and no longer an empty list');
-  assert.match(agents, /openfilmMcpServer = \(\) => orangefilmMcpServerConfig\(\{ command: nodeBinary\(\), script: ORANGE_MCP_SCRIPT/);
+  assert.match(agents, /orangefilmMcpServer = \(\) => orangefilmMcpServerConfig\(\{ command: nodeBinary\(\), script: ORANGE_MCP_SCRIPT/);
 });
 
 test('the stdio transport answers line-delimited JSON-RPC and survives silence', async () => {

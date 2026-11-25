@@ -3,7 +3,7 @@
 
 /**
  * The desktop shell's bridge. In the OrangeFilm app (Electron) the window's page puts it on
- * `window.openfilmDesktop`; in a plain browser there is no such object.
+ * `window.orangefilmDesktop`; in a plain browser there is no such object.
  *
  * It holds only what a web page cannot do by itself, such as a system folder picker or showing a path
  * in Finder.
@@ -275,7 +275,7 @@ export interface DesktopAgentStatus {
 
 declare global {
   interface Window {
-    openfilmDesktop?: DesktopBridge;
+    orangefilmDesktop?: DesktopBridge;
   }
 }
 
@@ -288,9 +288,9 @@ export const LOCAL_PUT_MAX_BYTES = 15 * 1024 * 1024;
 
 /** Whether this runs in the desktop shell. Always false during SSR. */
 export function isDesktop(): boolean {
-  return typeof window !== 'undefined' && !!window.openfilmDesktop;
+  return typeof window !== 'undefined' && !!window.orangefilmDesktop;
 }
 
 export function desktopBridge(): DesktopBridge | null {
-  return typeof window !== 'undefined' ? window.openfilmDesktop ?? null : null;
+  return typeof window !== 'undefined' ? window.orangefilmDesktop ?? null : null;
 }

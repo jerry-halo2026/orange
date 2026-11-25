@@ -24,7 +24,7 @@ const PRODUCT = brandProductName();
 const require = createRequire(import.meta.url);
 
 /** The package's CLI. */
-export function openfilmCli() {
+export function orangefilmCli() {
   const manifest = require.resolve('orangefilm/package.json');
   const bin = JSON.parse(readFileSync(manifest, 'utf8')).bin.orangefilm;
   return join(dirname(manifest), bin);
@@ -51,16 +51,16 @@ export function commandScriptWindows(node, cli, { ffmpeg = null, env = {} } = {}
  * shell profile again (Codex, Cursor, CodeBuddy), and a PATH set there can put another `orangefilm` before the app's: an
  * older one installed globally, on the person's own Studio. Null on Windows, where the name on the PATH is kept.
  */
-export function openfilmCommand(bin, platform = process.platform) {
+export function orangefilmCommand(bin, platform = process.platform) {
   return platform === 'win32' ? null : sq(`${bin}/orangefilm`);
 }
 
 /**
  * Write the command into `<dir>/bin` and answer that folder, for PATH. `ffmpeg`: the app's ffmpeg folder, first on the
- * command's PATH; `env`: what else it runs with. It names itself by its whole path (ORANGE_RUN, openfilmCommand) in
+ * command's PATH; `env`: what else it runs with. It names itself by its whole path (ORANGE_RUN, orangefilmCommand) in
  * all it prints, the manual too.
  */
-export function installOpenfilmCommand(dir, { node = nodeBinary(), platform = process.platform, ffmpeg = null, env = {} } = {}) {
+export function installOrangefilmCommand(dir, { node = nodeBinary(), platform = process.platform, ffmpeg = null, env = {} } = {}) {
   const profile = readIsolationProfile(env);
   if (profile) {
     assertIsolationPath(profile,dir,'userData');
@@ -75,15 +75,15 @@ export function installOpenfilmCommand(dir, { node = nodeBinary(), platform = pr
   }
   mkdirSync(bin, { recursive: true });
   if (platform === 'win32') {
-    writeFileSync(join(bin, 'orangefilm.cmd'), commandScriptWindows(node, openfilmCli(), { ffmpeg, env }));
-    writeFileSync(join(bin, 'orangefilm.cmd'), commandScriptWindows(node, openfilmCli(), { ffmpeg, env }));
+    writeFileSync(join(bin, 'orangefilm.cmd'), commandScriptWindows(node, orangefilmCli(), { ffmpeg, env }));
+    writeFileSync(join(bin, 'orangefilm.cmd'), commandScriptWindows(node, orangefilmCli(), { ffmpeg, env }));
     return bin;
   }
   const file = join(bin, 'orangefilm');
-  writeFileSync(file, commandScript(node, openfilmCli(), { ffmpeg, env: { ...env, ORANGE_RUN: openfilmCommand(bin, platform) } }));
+  writeFileSync(file, commandScript(node, orangefilmCli(), { ffmpeg, env: { ...env, ORANGE_RUN: orangefilmCommand(bin, platform) } }));
   chmodSync(file, 0o755);
   const alias = join(bin, 'orangefilm');
-  writeFileSync(alias, commandScript(node, openfilmCli(), { ffmpeg, env: { ...env, ORANGE_RUN: openfilmCommand(bin, platform) } }));
+  writeFileSync(alias, commandScript(node, orangefilmCli(), { ffmpeg, env: { ...env, ORANGE_RUN: orangefilmCommand(bin, platform) } }));
   chmodSync(alias, 0o755);
   return bin;
 }

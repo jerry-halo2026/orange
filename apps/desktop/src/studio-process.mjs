@@ -68,13 +68,7 @@ parent.on('message', ({ data }) => {
 });
 
 const nativeRoot=dirname(createRequire(import.meta.url).resolve('orangefilm/package.json'));
-const {libraryRoot:originalLibraryRoot,sharedHome:originalSharedHome,studioHomeDir,migrateProductFolder}=await import(pathToFileURL(join(nativeRoot,'src','locations.mjs')).href);
-/* First start after the product's folder was renamed (locations.mjs migrateProductFolder): the projects, Saved and
-   Skills under `…/Videos/OrangeFilm` move to `…/Videos/OrangeFilm`, and the owner records (orange-project-owners.json)
-   follow them, or every project already made would answer project-access-denied by its old root. Once: the new folder
-   being there is what says it is done. */
-const movedFolder=migrateProductFolder();
-if(movedFolder.status==='moved')for(const home of new Set([studioHomeDir(),originalSharedHome()]))migrateOwnerRoots({home,from:movedFolder.from,to:movedFolder.to});
+const {libraryRoot:originalLibraryRoot,sharedHome:originalSharedHome,studioHomeDir}=await import(pathToFileURL(join(nativeRoot,'src','locations.mjs')).href);
 const desktopAuth=createDesktopAuth({
   configuration:readDesktopAuthConfiguration(process.env),
   /* the main process resolved why there is none, when it did: an installed app whose installer lacks the environment

@@ -62,10 +62,10 @@ function world() {
   mkdirSync(join(home, '.copilot'), { recursive: true });
   writeFileSync(join(home, '.copilot', 'mcp-config.json'), JSON.stringify({ mcpServers: { ctool: { command: 'ctool' } } }));
   /* OrangeFilm's: the project's and the person's own */
-  const openfilmHome = join(home, '.orangefilm');
+  const orangefilmHome = join(home, '.orangefilm');
   skill(join(project, 'skills', 'brand'), 'brand');
-  skill(join(openfilmHome, 'skills', 'lyric-pv'), 'lyric-pv');
-  return { root, home, project, openfilmHome, dataDir: join(root, 'data') };
+  skill(join(orangefilmHome, 'skills', 'lyric-pv'), 'lyric-pv');
+  return { root, home, project, orangefilmHome, dataDir: join(root, 'data') };
 }
 
 test("the person's own skills, as each agent keeps them, never its maker's", async () => {
@@ -79,7 +79,7 @@ test("the person's own skills, as each agent keeps them, never its maker's", asy
 
 test("Claude Code: OrangeFilm's skills as a plugin for each owner (owner:name); the person's own skills and MCP servers off but those let in", async () => {
   const w = world();
-  const s = await sessionSkills('claude', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), allowed: ['research'], mcpAllowed: ['notes'] });
+  const s = await sessionSkills('claude', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), allowed: ['research'], mcpAllowed: ['notes'] });
   assert.ok(s.claude.plugins.every((p) => p.type === 'local'));
   const named = Object.fromEntries(s.claude.plugins.map((p) => [JSON.parse(readFileSync(join(p.path, '.claude-plugin', 'plugin.json'), 'utf8')).name, p.path]));
   assert.deepEqual(Object.keys(named).sort(), ['local', 'orangefilm', 'project'], 'one plugin for each owner: OrangeFilm, the person, the project');
@@ -95,7 +95,7 @@ test("Claude Code: OrangeFilm's skills as a plugin for each owner (owner:name); 
 
 test("Codex: each of the person's own not let in turned off by its file, OrangeFilm's as an extra folder", async () => {
   const w = world();
-  const s = await sessionSkills('codex', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), allowed: ['notes'] });
+  const s = await sessionSkills('codex', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), allowed: ['notes'] });
   assert.deepEqual(s.codexConfig.skills.config.map((c) => [c.path, c.enabled]),
     [[join(w.home, '.codex/skills/old-orangefilm/SKILL.md'), false], [join(w.home, '.codex/plugins/cache/someone/pets/0.1/skills/pet/SKILL.md'), false]]);
   assert.equal(s.codexConfig['mcp_servers.my-db.enabled'], false, 'the person\'s server turned off by itself, the rest of it left');
@@ -106,8 +106,8 @@ test("Codex: each of the person's own not let in turned off by its file, OrangeF
 
 test("OpenCode: every skill denied but its own, OrangeFilm's and those let in; Pi: OrangeFilm's only; the others unfiltered", async () => {
   const w = world();
-  mkdirSync(w.openfilmHome, { recursive: true });
-  const oc = await sessionSkills('opencode', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome, allowed: ['research'] });
+  mkdirSync(w.orangefilmHome, { recursive: true });
+  const oc = await sessionSkills('opencode', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome, allowed: ['research'] });
   const config = JSON.parse(oc.env.OPENCODE_CONFIG_CONTENT);
   /* OrangeFilm's own first, in their order (how a film is made, its media, its canvas, its replicate); then the rest by
      name — the one installed from Discover, the project's brand and the person's lyric-pv */
@@ -115,9 +115,9 @@ test("OpenCode: every skill denied but its own, OrangeFilm's and those let in; P
   assert.deepEqual(config.permission.skill, { '*': 'deny', 'customize-opencode': 'allow', ...Object.fromEntries([...names, 'research'].sort().map((n) => [n, 'allow'])) });
   assert.deepEqual(config.mcp, { search: { enabled: false } });
   assert.match(config.skills.paths[0], /agent-skills[\\/].+[\\/]skills$/);
-  const pi = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  const pi = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   assert.deepEqual(pi.piSkills.names, names);
-  const kimi = await sessionSkills('kimi', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  const kimi = await sessionSkills('kimi', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   assert.deepEqual(kimi.log, { orangefilm: names, allowed: [], mcpAllowed: [], filtered: false, mcpFiltered: false });
   /* by its full name, saying whose it is; the rest of it links (a junction on Windows) to the project's own folder */
   assert.match(readFileSync(join(pi.piSkills.paths[0], 'project-brand', 'SKILL.md'), 'utf8'), /^---\nname: project-brand\n[\s\S]*> OrangeFilm skill `project\/brand`, by this project\./);
@@ -125,30 +125,30 @@ test("OpenCode: every skill denied but its own, OrangeFilm's and those let in; P
 
 test('expired session cleanup unlinks skills without removing their real folders', async () => {
   const w = world();
-  const first = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  const first = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   const expired = dirname(first.piSkills.paths[0]);
   const old = Date.now() / 1000 - 3 * 24 * 60 * 60;
   utimesSync(expired, old, old);
-  const second = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  const second = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   assert.notEqual(dirname(second.piSkills.paths[0]), expired);
   assert.equal(existsSync(expired), false, 'the expired session itself is removed');
   assert.equal(readFileSync(join(w.project, 'skills', 'brand', 'SKILL.md'), 'utf8').includes('name: brand'), true, 'the project skill is untouched');
-  assert.equal(readFileSync(join(w.openfilmHome, 'skills', 'lyric-pv', 'SKILL.md'), 'utf8').includes('name: lyric-pv'), true, 'the personal skill is untouched');
+  assert.equal(readFileSync(join(w.orangefilmHome, 'skills', 'lyric-pv', 'SKILL.md'), 'utf8').includes('name: lyric-pv'), true, 'the personal skill is untouched');
   assert.ok(existsSync(join(second.piSkills.paths[0], 'project-brand', 'SKILL.md')), 'the next session has the same skill again');
 });
 
 test("a skill the person turned off, OrangeFilm's own too, is given to no session", async () => {
   const w = world();
-  mkdirSync(w.openfilmHome, { recursive: true });
+  mkdirSync(w.orangefilmHome, { recursive: true });
   /* by uid, and by name as kept before uids */
-  writeFileSync(join(w.openfilmHome, 'prefs.json'), JSON.stringify({ skillsOff: ['brand', 'orangefilm/canvas'] }));
-  const pi = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  writeFileSync(join(w.orangefilmHome, 'prefs.json'), JSON.stringify({ skillsOff: ['brand', 'orangefilm/canvas'] }));
+  const pi = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   assert.ok(!pi.piSkills.names.includes('project-brand'));
   assert.deepEqual(pi.piSkills.names.slice(0, 2), ['orangefilm-edit', 'orangefilm-media'], 'one of OrangeFilm\'s own, too');
   assert.ok(!pi.piSkills.names.includes('orangefilm-canvas'));
   assert.ok(pi.piSkills.names.includes('local-lyric-pv'));
   assert.ok(!existsSync(join(pi.piSkills.paths[0], 'project-brand')), 'not in the folder the agent reads');
-  const codex = await sessionSkills('codex', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  const codex = await sessionSkills('codex', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   assert.ok(!existsSync(join(codex.additionalDirectories[0], '.agents', 'skills', 'project-brand')));
   assert.ok(existsSync(join(codex.additionalDirectories[0], '.agents', 'skills', 'local-lyric-pv', 'SKILL.md')));
 });
@@ -156,11 +156,11 @@ test("a skill the person turned off, OrangeFilm's own too, is given to no sessio
 test('two skills of a name are both given, each by its full name (owner-name), its SKILL.md saying so, beside its own files', async () => {
   const w = world();
   /* the person's own brand beside the project's (local/brand, project/brand): each by whose it is */
-  const mine = skill(join(w.openfilmHome, 'skills', 'brand'), 'brand', 'My brand');
+  const mine = skill(join(w.orangefilmHome, 'skills', 'brand'), 'brand', 'My brand');
   writeFileSync(join(mine, 'look.css'), 'body {}');
   mkdirSync(join(mine, 'scripts'));
   writeFileSync(join(mine, 'scripts', 'make.sh'), 'echo');
-  const pi = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), prefsHome: w.openfilmHome });
+  const pi = await sessionSkills('byok', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), prefsHome: w.orangefilmHome });
   assert.ok(pi.piSkills.names.includes('project-brand') && pi.piSkills.names.includes('local-brand'));
   const folder = join(pi.piSkills.paths[0], 'local-brand');
   assert.match(readFileSync(join(folder, 'SKILL.md'), 'utf8'), /^---\nname: local-brand\ndescription: My brand\n---\n\n> OrangeFilm skill `local\/brand`, by you\.\n\n/);
@@ -176,14 +176,14 @@ test("OrangeFilm's own skill for terminal agents is known, never offered, and al
   const own = await ownSkills('claude', { cwd: w.project, home: w.home });
   assert.equal(own.find((s) => s.name === 'orangefilm')?.ours, true);
   assert.equal(own.find((s) => s.name === 'research')?.ours, undefined);
-  const s = await sessionSkills('claude', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), allowed: ['orangefilm', 'research'] });
+  const s = await sessionSkills('claude', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), allowed: ['orangefilm', 'research'] });
   assert.equal(s.claude.settings.skillOverrides.orangefilm, 'off', 'off even when it was let in');
   assert.equal(s.claude.settings.skillOverrides.research, undefined);
 });
 
 test('Qwen Code: a system-defaults file of the app\'s; Copilot: OrangeFilm\'s folder and its servers off', async () => {
   const w = world();
-  const qwen = await sessionSkills('qwen', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills') });
+  const qwen = await sessionSkills('qwen', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills') });
   const q = JSON.parse(readFileSync(qwen.env.QWEN_CODE_SYSTEM_DEFAULTS_PATH, 'utf8'));
   assert.deepEqual(q.mcp, { excluded: ['qtool', 'qweb'] });
   assert.deepEqual(q.skills.disabled, ['notes', 'qwen-notes']);
@@ -191,7 +191,7 @@ test('Qwen Code: a system-defaults file of the app\'s; Copilot: OrangeFilm\'s fo
   const own = await sessionSkills('qwen', { cwd: w.project, home: w.home, dataDir: w.dataDir, env: { QWEN_CODE_SYSTEM_DEFAULTS_PATH: '/theirs.json' } });
   assert.equal(own.env, undefined, 'a defaults file of the person\'s own is left as it is');
   assert.equal(own.log.filtered, false);
-  const copilot = await sessionSkills('copilot', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.openfilmHome, 'skills'), env: { COPILOT_SKILLS_DIRS: '/mine' } });
+  const copilot = await sessionSkills('copilot', { cwd: w.project, home: w.home, dataDir: w.dataDir, mine: join(w.orangefilmHome, 'skills'), env: { COPILOT_SKILLS_DIRS: '/mine' } });
   assert.match(copilot.env.COPILOT_SKILLS_DIRS, /^\/mine,.+[\\/]skills$/);
   assert.deepEqual(copilot.args, ['--disable-mcp-server', 'ctool']);
   assert.deepEqual(copilot.log.hidden, [], 'Copilot cannot hide a skill: it keeps the person\'s');

@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { agentName, ensureStudio, olderThanThis, openInStudio, updateOpenfilm } from './client.mjs';
+import { agentName, ensureStudio, olderThanThis, openInStudio, updateOrangefilm } from './client.mjs';
 
 /* Studio's port, and the film's next to it, both free. They are below the range every system hands out on its own
    (Linux from 32768, macOS and Windows from 49152), so no connection or other server takes them while one Studio
@@ -125,7 +125,7 @@ test('`orangefilm open` never makes the current folder a project unasked, nor a 
 });
 
 test('a newer orangefilm on npm is told from what was learnt (no network when not asked), never an older one', async () => {
-  const { newerOpenfilm } = await import('./client.mjs');
+  const { newerOrangefilm } = await import('./client.mjs');
   const home = mkdtempSync(join(tmpdir(), 'of-update-'));
   const was = process.env.ORANGE_HOME, wasOff = process.env.ORANGE_NO_UPDATE_CHECK;
   process.env.ORANGE_HOME = home;
@@ -133,9 +133,9 @@ test('a newer orangefilm on npm is told from what was learnt (no network when no
   delete process.env.ORANGE_NO_UPDATE_CHECK;
   try {
     writeFileSync(join(home, 'update.json'), JSON.stringify({ checkedAt: Date.now(), latest: '99.0.0' }));
-    assert.equal(await newerOpenfilm({ network: false }), '99.0.0');
+    assert.equal(await newerOrangefilm({ network: false }), '99.0.0');
     writeFileSync(join(home, 'update.json'), JSON.stringify({ checkedAt: Date.now(), latest: '0.0.1' }));
-    assert.equal(await newerOpenfilm({ network: false }), null);
+    assert.equal(await newerOrangefilm({ network: false }), null);
   } finally {
     if (was === undefined) delete process.env.ORANGE_HOME; else process.env.ORANGE_HOME = was;
     if (wasOff !== undefined) process.env.ORANGE_NO_UPDATE_CHECK = wasOff;
@@ -143,7 +143,7 @@ test('a newer orangefilm on npm is told from what was learnt (no network when no
 });
 
 test('`orangefilm update` in a source checkout says git pull updates it, and touches nothing', async () => {
-  const said = await updateOpenfilm();
+  const said = await updateOrangefilm();
   assert.equal(said.ok, true);
   assert.match(said.lines[0], /source checkout: git pull updates it/);
 });

@@ -47,7 +47,7 @@
 | Library | `/api/library`、voices/missing/fetch/favorites；orangefilm/id内置资源，复制到工程 | [library](../../packages/orangefilm/studio/server/library.mjs) | 智尚经业务适配接原素材UI，不塞内置只读Library当第二业务源 |
 | 素材视图 | WorkspaceResource是派生UI视图；MediaSources提供资源URL；不存在由本计划发明的`/api/sources` | workspace-resources、[project-sources](../../packages/orangefilm/studio/ui/src/lib/project-sources.ts) | 只加必要provider适配，不复制浏览器/资产库 |
 | 导出 | ExportAsk原联合video/gif/audio/stills/poster/subtitles/slides/nle/project；nle含jianying/capcut；POST单ask→export或jobs→exports；DELETE job取消 | exports.mjs、server:1073–1104 | 原Job waiting/running/done/failed/cancelled保留；业务交付/计数状态另映射，不覆盖原枚举 |
-| desktop桥接 | openfilmNative→openfilmHost(version:1)/openfilmDesktop(bridgeVersion:'1')；原HOME view/项目view切换 | [preload](../../apps/desktop/src/preload.cjs)、[bridge](../../apps/desktop/shell/bridge.ts)、[host](../../packages/orangefilm/studio/ui/src/lib/host.ts)、[main](../../apps/desktop/src/main.mjs) | 窄HOME/业务方法；保活原工程，不给任意shell/文件直通 |
+| desktop桥接 | orangefilmNative→orangefilmHost(version:1)/orangefilmDesktop(bridgeVersion:'1')；原HOME view/项目view切换 | [preload](../../apps/desktop/src/preload.cjs)、[bridge](../../apps/desktop/shell/bridge.ts)、[host](../../packages/orangefilm/studio/ui/src/lib/host.ts)、[main](../../apps/desktop/src/main.mjs) | 窄HOME/业务方法；保活原工程，不给任意shell/文件直通 |
 
 原launch key/x-studio-key、Origin/Host校验保留，但不是Supabase对象授权。剪口播必须协调原film/caption写端、外部变化检测、Undo/Redo和读取/预览/导出的已提交闭包；只包新CLI会留下绕过入口。原base过旧而clip仍存在时可成功`rebased:true`，不能写后检查它就称旧计划被拒。
 

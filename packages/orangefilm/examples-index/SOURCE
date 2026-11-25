@@ -1,2 +1,1 @@
-https://github.com/openfilm/examples/commit/2e8f47866bc2d32305cd5d97adcffd7480df2297
-Copied by `pnpm examples:sync`. Change the examples in https://github.com/openfilm/examples, not here.
+The example projects here ship with OrangeFilm. They are copied into the package by `pnpm examples:sync`; edit them here, not in a copy.

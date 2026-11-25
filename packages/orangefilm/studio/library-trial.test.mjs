@@ -33,7 +33,7 @@ async function withLibrary(category, run, prepare = async (_page) => {}) {
     await prepare(page);
     /* the library's drawer is the app's: over its panel */
     await page.addInitScript(() => {
-      window.openfilmHost = {
+      window.orangefilmHost = {
         version: 1,
         refer: () => {},
         panel: { label: 'Chat', open: true, width: 480, assets: { open: true, bottom: 0 }, setOpen: () => {}, setAssetsOpen: () => {}, onChange: () => {} },

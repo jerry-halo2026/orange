@@ -2786,7 +2786,7 @@ export function ProjectView({ projectId, onProject, onLeave, foreground = true, 
 
   /* ── the app Studio is embedded in (lib/host.ts): what the person points at, handed to it; what it asks to be shown ── */
   const hostPanel = useHostPanel();
-  /* an app that hosts Studio can keep the media in a drawer of its own panel (window.openfilmHost panel.assets): no
+  /* an app that hosts Studio can keep the media in a drawer of its own panel (window.orangefilmHost panel.assets): no
      left pane then, the viewer first on the left */
   const hostAssets = hostPanel?.assets ?? null;
   const workspaceLayout: WorkspaceLayout = { ...workspacePrefs, chat: hostPanel?.open ?? workspacePrefs.chat,

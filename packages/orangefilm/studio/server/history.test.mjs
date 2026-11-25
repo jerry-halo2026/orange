@@ -73,7 +73,7 @@ test('nothing is committed unless the person commits; a version holds the projec
   assert.deepEqual((await status(root)).changes.files, [{ path: 'title.html', change: 'modified' }]);
   const second = await saveVersion(root, { message: '  Second   cut ' });
   assert.deepEqual((await versions(root)).map((v) => [v.kind, v.name, v.parents]), [['named', 'Second cut', [first]], ['saved', '', []]]);
-  assert.match(gitOut(root, ['log', '-1', '--format=%B']), /^Second cut\n\nOpenfilm-Version: named\n/, 'readable in git too');
+  assert.match(gitOut(root, ['log', '-1', '--format=%B']), /^Second cut\n\nOrangeFilm-Version: named\n/, 'readable in git too');
   assert.deepEqual(await versionFilesChanged(root, second), [{ path: 'title.html', change: 'modified' }], 'what a version changed');
   assert.equal((await versionFilesChanged(root, first)).length, 5, 'the first: all it holds');
   writeFileSync(join(root, 'notes.md'), 'more notes');

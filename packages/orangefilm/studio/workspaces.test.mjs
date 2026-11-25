@@ -48,7 +48,7 @@ async function withWorkspace(run, {hasChat=true, clips=[]}={}) {
         if (column) { column.hidden = !state.open; column.style.cssText = `position:fixed;${state.bounds ? `left:${state.bounds.left}px;top:${state.bounds.top}px;height:${state.bounds.height}px` : `top:32px;bottom:0;${state.side}:0`};width:${width()}px;background:#1c2024;color:#ddd;z-index:40;padding:20px;box-sizing:border-box`; }
         for (const listener of listeners) listener(snapshot());
       };
-      window.openfilmHost = { version: 1, name: 'Test', panel: {
+      window.orangefilmHost = { version: 1, name: 'Test', panel: {
         label: 'Chat', get open() { return state.open; }, get width() { return width(); }, get preferredWidth() { return state.preferredWidth; }, get assets() { return state.assets; },
         setOpen: open => { state.open = open; place(); }, setAssetsOpen: open => { state.assets = { ...state.assets, open }; place(); },
         setBounds: bounds => { state.bounds=bounds;place(); },
@@ -117,7 +117,7 @@ test('dragging the chat edge with its library open keeps the library and active 
   await withWorkspace(async page => {
     for (const [mode, panel, delta] of [['edit', '[data-viewer-pane]', 120], ['canvas', '[data-studio-canvas]', 160]]) {
       if (mode === 'canvas') await page.locator('[data-work-mode="edit"]').click();
-      await page.evaluate(() => window.openfilmHost.panel.setAssetsOpen(true));
+      await page.evaluate(() => window.orangefilmHost.panel.setAssetsOpen(true));
       await library(page).waitFor();
       await page.waitForFunction(mode => JSON.parse(localStorage.getItem('orangefilm.workspace.current.v2'))?.[mode]?.assets, mode);
       const chat = page.locator('#test-chat');

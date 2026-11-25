@@ -17,8 +17,6 @@ const USAGE = `orangefilm — a film is a function of time: given t, it draws th
   orangefilm skills                      the skills this film can be made with; \`orangefilm skill <name>\` prints one
   orangefilm update                      the newest OrangeFilm; Studio starts again on it
   orangefilm doctor                      what this computer has for OrangeFilm, to paste into an issue
-  orangefilm home status                 the old ~/.orangefilm and the new ~/.orangefilm
-  orangefilm home migrate [--check|--dry-run|--include-library]  copy the old Studio settings into the new home
 
   Run with no arguments for the manual; \`orangefilm <command> --help\` for one command's options; --version for the version.
   look, render, get and canvas work on the project around the current folder.
@@ -68,13 +66,6 @@ orangefilm skill remove <name>
   projects folders, how much the projects' .film folders hold, npm, and the last errors in Studio's log. Paths under
   your home folder read ~; no keys, accounts or projects are in it. Exit status 1 when something needs fixing; the
   report says what.`,
-  home: `orangefilm home status
-orangefilm home migrate [--check] [--dry-run] [--include-library]
-
-  The Studio home before the rename is ~/.orangefilm; new installs use ~/.orangefilm. migrate copies the settings,
-  accounts and saved ownership records into the new home, writes a completion marker, and keeps the old home as it was.
-  It does not copy the material cache or the person's projects unless --include-library is given. A target that already
-  has data and no marker is not merged; run --check or --dry-run first.`,
   material: `orangefilm material search <query>
 
   Searches the company's cloud materials through a running Studio and prints one line per hit:
@@ -164,7 +155,7 @@ const RUN = process.env.ORANGE_RUN || process.env.ORANGE_RUN || (process.env.npm
  * a session starts (the manual, open), else only as learnt before, so look, render and get never wait for it.
  */
 const updateNotice = async (network) => {
-  const latest = await (await import('../studio/client.mjs')).newerOpenfilm({ network }).catch(() => null);
+  const latest = await (await import('../studio/client.mjs')).newerOrangefilm({ network }).catch(() => null);
   if (latest) console.error(`orangefilm ${latest} is out (this is an older one): \`${RUN} update\` updates it, and Studio with it.`);
 };
 if (RAW.length === 0) {
@@ -255,14 +246,13 @@ if (RAW[0] === 'get') {
     },
     canvas: () => import('../studio/client.mjs').then((m) => m.canvasCommand(args, (line) => console.error(line))),
     material: () => import('../studio/client.mjs').then((m) => m.materialCommand(args, { json: o.json, project: o.project ?? process.cwd() })),
-    update: () => import('../studio/client.mjs').then((m) => m.updateOpenfilm((line) => console.error(line))),
+    update: () => import('../studio/client.mjs').then((m) => m.updateOrangefilm((line) => console.error(line))),
     skills: () => import('../src/skills-cli.mjs').then((m) => m.skillsCommand(RUN)),
     skill: () => import('../src/skills-cli.mjs').then((m) => m.skillCommand(args, RUN)),
     doctor: () => import('../src/doctor.mjs').then(async (m) => {
       const report = await m.doctor({ run: RUN });
       return { ok: report.ok, lines: [report.text] };
     }),
-    home: () => import('../src/home-cli.mjs').then((m) => m.homeCommand(args, o)),
   };
   /**
    * Show a project in Studio; `.film/opened` marks a project Studio has shown. A folder named is made a project when it is

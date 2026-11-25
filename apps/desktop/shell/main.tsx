@@ -29,7 +29,7 @@ host.canvasWriting = {
   },
 };
 applyStudioHost();
-const native=(window as unknown as {openfilmNative:{onAuth?:(listener:(state:LoginState)=>void)=>()=>void;authUiState?:()=>Promise<{active:boolean;uiGeneration:number}>}}).openfilmNative;
+const native=(window as unknown as {orangefilmNative:{onAuth?:(listener:(state:LoginState)=>void)=>()=>void;authUiState?:()=>Promise<{active:boolean;uiGeneration:number}>}}).orangefilmNative;
 function DesktopGate(){
   const [state,setState]=useState<LoginState>({kind:'signed-out',reason:null});
   const [opened,setOpened]=useState(false);

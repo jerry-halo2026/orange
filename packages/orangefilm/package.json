@@ -28,7 +28,6 @@
   },
   "exports": {
     "./development-isolation": "./src/development-isolation.mjs",
-    "./home-migration": "./src/home-migration.mjs",
     "./locations": "./src/locations.mjs",
     "./film-doc": "./src/film-doc.mjs",
     "./host": "./src/host.mjs",

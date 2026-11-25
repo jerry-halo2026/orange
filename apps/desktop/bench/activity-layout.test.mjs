@@ -38,7 +38,7 @@ test('running tools keep their DOM, styles and position on completion, and a fin
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
       await page.addInitScript(() => {
-        window.openfilmDesktop = { developer: { get: async () => ({ logs: false, changes: false }), onChange: () => () => {} } };
+        window.orangefilmDesktop = { developer: { get: async () => ({ logs: false, changes: false }), onChange: () => () => {} } };
       });
       await page.goto(`http://127.0.0.1:${port}/activity-layout?${new URLSearchParams(config)}`);
       await page.waitForFunction(() => Boolean(window.activityFixture), null, { timeout: 10_000 }).catch((error) => {
@@ -113,7 +113,7 @@ test('running tools keep their DOM, styles and position on completion, and a fin
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
       await page.addInitScript(() => {
-        window.openfilmDesktop = { developer: { get: async () => ({ logs: false, changes: false }), onChange: () => () => {} } };
+        window.orangefilmDesktop = { developer: { get: async () => ({ logs: false, changes: false }), onChange: () => () => {} } };
       });
       await page.goto(`http://127.0.0.1:${port}/activity-layout?${new URLSearchParams({ scenario: 'asset', width: 440, height: 620, locale })}`);
       await page.waitForFunction(() => Boolean(window.activityFixture));
@@ -141,7 +141,7 @@ test('running tools keep their DOM, styles and position on completion, and a fin
         viewport: { width: 800, height: 800 }, reducedMotion: 'reduce', hasTouch: config.touch, isMobile: config.touch,
       });
       await page.addInitScript(() => {
-        window.openfilmDesktop = { developer: { get: async () => ({ logs: false, changes: false }), onChange: () => () => {} } };
+        window.orangefilmDesktop = { developer: { get: async () => ({ logs: false, changes: false }), onChange: () => () => {} } };
       });
       await page.goto(`http://127.0.0.1:${port}/activity-layout?${new URLSearchParams({ ...config, height: 620, locale: 'zh-CN' })}`);
       await page.waitForFunction(() => Boolean(window.activityFixture));

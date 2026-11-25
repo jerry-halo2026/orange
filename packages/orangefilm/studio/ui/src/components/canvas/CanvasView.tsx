@@ -918,7 +918,7 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     if (entry?.isDirectory && event.dataTransfer.files.length) {
       event.preventDefault();
       event.stopPropagation();
-      const native = (window as unknown as { openfilmNative?: { pathForFile?: (file: File) => string } }).openfilmNative;
+      const native = (window as unknown as { orangefilmNative?: { pathForFile?: (file: File) => string } }).orangefilmNative;
       const path = native?.pathForFile?.(event.dataTransfer.files[0]) ?? '';
       if (path) void addSource(path, at);
       else void api.pickFolder('素材文件夹').then((picked) => { if (picked) void addSource(picked, at); });

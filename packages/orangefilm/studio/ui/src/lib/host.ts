@@ -5,7 +5,7 @@ import React from 'react';
 
 /**
  * The app Studio is embedded in, when there is one. An app that shows Studio in its own window (rather than a browser
- * tab) sets `window.openfilmHost` before Studio's modules run (a preload, or the app's own page that builds Studio's
+ * tab) sets `window.orangefilmHost` before Studio's modules run (a preload, or the app's own page that builds Studio's
  * editor in, served with `startStudio({ editorDir })`); Studio then leaves out what only makes sense in a browser,
  * such as the button that introduces the desktop app.
  */
@@ -444,7 +444,7 @@ export type StudioCommand =
  */
 export type CommunityItem = { kind: 'skill'; name: string } | { kind: 'example'; id: string } | { kind: 'discover' } | { kind: 'examples' };
 
-export const studioHost: StudioHost | null = (globalThis as { openfilmHost?: StudioHost }).openfilmHost ?? null;
+export const studioHost: StudioHost | null = (globalThis as { orangefilmHost?: StudioHost }).orangefilmHost ?? null;
 
 /** Make room for the host window's controls, and let Studio's top bars drag the window (see `titlebar`). */
 export function applyStudioHost(root: HTMLElement = document.documentElement) {

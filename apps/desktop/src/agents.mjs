@@ -49,7 +49,7 @@ import { afterFirstReading, firstWindowsApps, refreshWindowsApps } from './windo
 import { mergeConfig, sessionSkills } from './agent-skills.mjs';
 import { nodeBinary } from './node-runtime.mjs';
 import { orangefilmMcpServerConfig } from './orangefilm-mcp.mjs';
-import { openfilmCommand } from './orangefilm-command.mjs';
+import { orangefilmCommand } from './orangefilm-command.mjs';
 import { outOfBalance } from './pi-config.mjs';
 import { AGENT_DEFINITIONS } from './agent-definitions.mjs';
 
@@ -208,7 +208,7 @@ In your replies, [[clip:ID]] (by its id in film.html), [[t:SECONDS]], [[range:ST
 
 /**
  * What the agent is told about where it is, on top of its own instructions. `command`: the app's `orangefilm` by its
- * whole path (openfilmCommand), named in place of the one on the PATH, which the agent's shell may not find first.
+ * whole path (orangefilmCommand), named in place of the one on the PATH, which the agent's shell may not find first.
  */
 export function agentInstructions(command = null) {
   const run = command ?? 'orangefilm';
@@ -404,7 +404,7 @@ const asNode = (/** @type {string} */ script) => ['--import', pathToFileURL(AS_N
 
 /** This app's MCP server, as an agent is told to start it: an absolute command and script, and Electron read as Node. */
 const ORANGE_MCP_SCRIPT = fileURLToPath(new URL('./orangefilm-mcp.mjs', import.meta.url));
-const openfilmMcpServer = () => orangefilmMcpServerConfig({ command: nodeBinary(), script: ORANGE_MCP_SCRIPT, nodeArgs: asNode('').slice(0, -1) });
+const orangefilmMcpServer = () => orangefilmMcpServerConfig({ command: nodeBinary(), script: ORANGE_MCP_SCRIPT, nodeArgs: asNode('').slice(0, -1) });
 
 /**
  * How to start a program found for an agent: itself, a script with the app's own Node (an npm install on Windows), or
@@ -1326,7 +1326,7 @@ export class AgentSession {
     }
     const node = nodeRuntime();
     const path = [this.opts.binDir, shell.PATH, this.opts.fallbackDir].filter(Boolean).join(PATH_SEP);
-    const instructions = agentInstructions(this.opts.binDir ? openfilmCommand(this.opts.binDir) : null);
+    const instructions = agentInstructions(this.opts.binDir ? orangefilmCommand(this.opts.binDir) : null);
     /* the app's own agent: what Pi runs with (its whole system prompt is ours), and the web search of `orangefilm get`
        (ORANGE_GET_WEB lists it) */
     const own = !harness ? {} : {
@@ -1425,7 +1425,7 @@ export class AgentSession {
 
     const params = {
       cwd: this.opts.cwd,
-      mcpServers: [openfilmMcpServer()],
+      mcpServers: [orangefilmMcpServer()],
       ...(skills?.additionalDirectories ? { additionalDirectories: skills.additionalDirectories } : {}),
       ...(claude ? { _meta: { systemPrompt: { append: instructions }, ...(skills?.claude ? { claudeCode: { options: skills.claude } } : {}) } } : {}),
     };

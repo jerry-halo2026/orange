@@ -236,12 +236,9 @@ export function parseSkillFile(text) {
 const byLanguage = (/** @type {unknown} */ v, max = 200) => (typeof v === 'string' && v.trim() ? { en: v.trim().slice(0, max) }
   : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).filter(([k, w]) => /^[a-z]{2}(-[A-Za-z]{2,4})?$/.test(k) && typeof w === 'string' && w.trim()).map(([k, w]) => [k, String(w).trim().slice(0, max)])) : {});
 
-/** A skill's metadata file: `orangefilm.json`, or the `openfilm.json` a skill made before the rename still carries.
+/** A skill's metadata file: `orangefilm.json`.
  * @param {string} folder */
-const metadataPath = (folder) => {
-  const next = join(folder, 'orangefilm.json');
-  return existsSync(next) ? next : join(folder, 'openfilm.json');
-};
+const metadataPath = (folder) => join(folder, 'orangefilm.json');
 
 /** A file named by orangefilm.json, when it is one in the skill's folder. @param {string} folder @param {unknown} name */
 const fileIn = (folder, name) => (typeof name === 'string' && /^[\w./-]{1,200}$/.test(name) && !name.split('/').includes('..')
@@ -571,7 +568,6 @@ const CHOSEN_COVER = /^orangefilm-cover-[0-9a-f-]{36}\.(?:png|jpg|webp)$/;
  * picture of the skill's own stays, as its content may use it.
  * @param {string} folder @param {{ bytes: Buffer, extension: string } | null} picture */
 function writeSkillCover(folder, picture) {
-  /* a skill made before the rename keeps its fields: they are read from its openfilm.json, written to orangefilm.json */
   const metadataFile = join(folder, 'orangefilm.json');
   /** @type {Record<string, unknown>} */
   let metadata = {};

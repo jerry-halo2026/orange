@@ -110,7 +110,7 @@ test('chat audio uses Studio file URLs: playback, ranges, large files and projec
     const page = await browser.newPage(); page.setDefaultTimeout(30_000);
     await page.addInitScript(project => {
       window.audioProject = project; window.audioCalls = [];
-      window.openfilmDesktop = { chat: { audio: async (_project, href) => { window.audioCalls.push(href); throw new Error('Audio must use Studio, never a native file-reading IPC'); } } };
+      window.orangefilmDesktop = { chat: { audio: async (_project, href) => { window.audioCalls.push(href); throw new Error('Audio must use Studio, never a native file-reading IPC'); } } };
     }, project);
     let popups = 0;
     const errors = [], mediaRequests = [];

@@ -31,7 +31,7 @@ grow(Number(query.get('n') ?? 50_000));
 
 const reads: Array<{ since: unknown; events: number }> = [];
 const each = Number(query.get('grow') ?? 0);
-(window as any).openfilmDesktop = {
+(window as any).orangefilmDesktop = {
   chat: {
     reveal: async () => ({}),
     log: async (_project: string, _turnId: string, since?: { events: number; calls: number; callsFile: number }) => {

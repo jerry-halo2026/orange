@@ -152,9 +152,6 @@ export const api = {
   prefs: () => call<StudioPrefs>('prefs'),
   /** where new projects and exports go, and the free space there */
   locations: () => call<StudioLocations>('locations'),
-  /** the old ~/.orangefilm → ~/.orangefilm plan; copy only with `confirm` */
-  homeMigration: () => call<HomeMigrationPlan>('home/migration'),
-  migrateHome: (includeLibrary = false, dryRun = false) => call<HomeMigrationPlan>('home/migration', { method: 'POST', json: { confirm: true, includeLibrary, dryRun } }),
   /** move the library to `path` (null: the default); with `move`, its projects go too (those that could not are in `failed`) */
   /** `failed`: projects that stay where they were; `left`: moved across disks, their old folder left there (the trash would not take it) */
   moveLibrary: (path: string | null, move: boolean) => call<{ moved: number; failed: { name: string; error: string }[]; left: { name: string; path: string; error: string }[]; locations: StudioLocations }>('locations/projects', { method: 'PUT', json: { path, move } }).then((done) => {

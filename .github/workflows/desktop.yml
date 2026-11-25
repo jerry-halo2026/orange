@@ -41,7 +41,7 @@ jobs:
       - id: plan
         env:
           TAG: ${{ inputs.tag || github.ref_name }}
-          SIGN_IDENTITY: ${{ secrets.ORANGE_SIGN_IDENTITY || secrets.OPENFILM_SIGN_IDENTITY }}
+          SIGN_IDENTITY: ${{ secrets.ORANGE_SIGN_IDENTITY }}
         run: |
           VERSION="${TAG#v}"
           PACKAGE="$(node -p "require('./apps/desktop/package.json').version")"
@@ -120,7 +120,7 @@ jobs:
       - name: Build (npm run release -- --official ${{ matrix.args }})
         working-directory: apps/desktop
         env:
-          ORANGE_SIGN_IDENTITY: ${{ matrix.sign && (secrets.ORANGE_SIGN_IDENTITY || secrets.OPENFILM_SIGN_IDENTITY) || '' }}
+          ORANGE_SIGN_IDENTITY: ${{ matrix.sign && (secrets.ORANGE_SIGN_IDENTITY) || '' }}
           APPLE_TEAM_ID: ${{ matrix.sign && secrets.APPLE_TEAM_ID || '' }}
           ORANGE_NOTARY_PROFILE: orangefilm-notary
           SIGN: ${{ matrix.sign }}

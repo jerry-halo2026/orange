@@ -43,7 +43,7 @@ test('a click only selects; a right click gives the whole menu, Reference first,
     await page.addInitScript(() => {
       localStorage.setItem('orangefilm.project.layers', '1');
       window.referred = [];
-      window.openfilmHost = { version: 1, refer: (ref) => window.referred.push(ref) };
+      window.orangefilmHost = { version: 1, refer: (ref) => window.referred.push(ref) };
     });
     await page.goto(`${studio.origin}/projects/${project.id}?key=${studio.key}`);
     /* the menu open now, as its rows read: `id|label` (`-` a line between groups), null for none */

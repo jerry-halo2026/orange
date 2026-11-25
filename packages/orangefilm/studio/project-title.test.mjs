@@ -191,7 +191,7 @@ test('the project title opens Projects on click and its arrow keeps the card; re
     await page.addInitScript(({ id }) => {
       window.tabEvents = [];
       const tab = (id, projectId, title) => ({ id, projectId, title, active: id === 'self', working: false, asking: false, exporting: null });
-      window.openfilmHost = {
+      window.orangefilmHost = {
         version: 1,
         tabs: {
           list: async () => ({ self: 'self', tabs: [tab('self', id, 'Renamed in place'), tab('other', 'other-project', 'Other open film')] }),

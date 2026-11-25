@@ -10,7 +10,7 @@
  */
 import React from 'react';
 import { useT } from '@/i18n';
-import { api, type HomeMigrationPlan, type StudioLocation, type StudioLocations } from '@/api';
+import { api, type StudioLocation, type StudioLocations } from '@/api';
 import { studioHost } from '@/lib/host';
 import { ConfirmDialog } from '../ConfirmDialog';
 import { SettingsButton, SettingsField, SettingsGroup, SettingsItem, settingsError } from './ui';
@@ -32,13 +32,8 @@ export function StorageGroup() {
   /* a new folder for a library with projects in it: whether they move too */
   const [asking, setAsking] = React.useState<{ which: Which; folder: string | null } | null>(null);
   const [note, setNote] = React.useState<{ which: Which; text: string } | null>(null);
-  const [home, setHome] = React.useState<HomeMigrationPlan | null>(null);
-  const [homeBusy, setHomeBusy] = React.useState(false);
-  const [homeNote, setHomeNote] = React.useState<string | null>(null);
-  const [homeAsking, setHomeAsking] = React.useState(false);
   const load = React.useCallback(() => {
     void api.locations().then(setWhere).catch(() => {});
-    void api.homeMigration().then(setHome).catch(() => {});
   }, []);
   React.useEffect(load, [load]);
   if (!where) return null;
@@ -113,49 +108,9 @@ export function StorageGroup() {
     />
   );
 
-  const migrateHome = async () => {
-    setHomeBusy(true);
-    setHomeNote(null);
-    try {
-      setHome(await api.migrateHome(false, false));
-      setHomeNote(t('settings.storage.homeMigrated'));
-    } catch (e) {
-      setHomeNote(e instanceof Error ? e.message : String(e));
-    } finally {
-      setHomeBusy(false);
-    }
-  };
-
-  const homeRow = home ? (
-    <SettingsItem
-      title={t('settings.storage.home')}
-      description={(
-        <>
-          <span className="mt-1 block break-all font-mono text-[13px]">{home.from} → {home.to}</span>
-          {home.action === 'blocked' ? <span className="mt-1 block text-[13px]">{t('settings.storage.homeBlocked')}</span> : null}
-          {home.action === 'already' ? <span className="mt-1 block text-[13px]">{t('settings.storage.homeAlready')}</span> : null}
-          {homeNote ? <span className="mt-1 block text-[13px]" role="status">{homeNote}</span> : null}
-        </>
-      )}
-      control={home.action === 'copy' || home.action === 'dry-run' ? (
-        <SettingsButton disabled={homeBusy} onClick={() => setHomeAsking(true)}>{t('settings.storage.homeMigrate')}</SettingsButton>
-      ) : null}
-    />
-  ) : null;
-
   return (
     <SettingsGroup title={t('settings.storage.group')}>
       {row('projects', where.projects)}
-      {homeRow}
-      <ConfirmDialog
-        open={homeAsking}
-        title={t('settings.storage.home')}
-        description={t('settings.storage.homeConfirm')}
-        confirmLabel={t('settings.storage.homeMigrate')}
-        cancelLabel={t('settings.storage.homeCancel')}
-        onConfirm={() => { setHomeAsking(false); void migrateHome(); }}
-        onCancel={() => setHomeAsking(false)}
-      />
       <ConfirmDialog
         open={!!asking}
         title={t('settings.storage.moveTitle')}

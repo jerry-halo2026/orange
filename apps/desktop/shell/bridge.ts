@@ -5,11 +5,11 @@
  * The window is one page: Studio's editor, and the chat in the column Studio leaves for it. This is what each gets
  * from the other and from the app, in the page:
  *
- *   · window.openfilmHost    Studio's host (its lib/host.ts StudioHost): the window's controls, the chat's column,
+ *   · window.orangefilmHost    Studio's host (its lib/host.ts StudioHost): the window's controls, the chat's column,
  *                            "Reference in chat", Settings → Agents.
- *   · window.openfilmDesktop the chat's bridge (chat/src/app-bridge.ts and lib/desktop-bridge.ts).
+ *   · window.orangefilmDesktop the chat's bridge (chat/src/app-bridge.ts and lib/desktop-bridge.ts).
  *
- * What only the app can do (the agents, a file on the disk, the window, updates) is the preload's `openfilmNative`
+ * What only the app can do (the agents, a file on the disk, the window, updates) is the preload's `orangefilmNative`
  * (src/preload.cjs). Imported before Studio's modules and the chat's: Studio reads its host as it loads.
  */
 import { flushSync } from 'react-dom';
@@ -49,7 +49,7 @@ interface Native {
   checkForUpdate(): Promise<unknown>;
 }
 
-const native = (window as unknown as { openfilmNative: Native }).openfilmNative;
+const native = (window as unknown as { orangefilmNative: Native }).orangefilmNative;
 const hello = native.hello();
 
 /** A value that tells its listeners when it changes. */
@@ -340,7 +340,7 @@ export const host: StudioHost = {
   skills: { add: () => skillAdd.set(undefined) },
   ask: (request) => { if (!layout.open) setChatOpen(true); asked.set(request); },
 };
-(window as unknown as { openfilmHost: StudioHost }).openfilmHost = host;
+(window as unknown as { orangefilmHost: StudioHost }).orangefilmHost = host;
 
 /* the layout the app kept: the panel starts as it was, before Studio first reads it */
 const ready = hello.then((h) => {
@@ -378,7 +378,7 @@ function commandFor(ref: StudioRef): StudioCommand {
   }
 }
 
-(window as unknown as { openfilmDesktop: unknown }).openfilmDesktop = {
+(window as unknown as { orangefilmDesktop: unknown }).orangefilmDesktop = {
   bridgeVersion: '1',
   platform: native.platform,
   pathForFile: native.pathForFile,

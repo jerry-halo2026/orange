@@ -98,7 +98,7 @@ try {
   await page.getByText('Fixture answer.', { exact: true }).waitFor();
   assert.deepEqual(await app.evaluate(() => globalThis.conversationAgentSent), { model: 'model-x', effort: 'high' }, 'the next message uses the conversation\'s model and effort');
   await page.waitForFunction(async (project) => {
-    const { sessions } = await window.openfilmNative.chat.load(project);
+    const { sessions } = await window.orangefilmNative.chat.load(project);
     return sessions.find((s) => s.id === 'saved')?.turns === 2;
   }, film);
   assert.deepEqual(loadChat(film).sessions.find((s) => s.id === 'saved').agentPrefs.byok, { model: 'model-x', effort: 'high' }, 'sending preserves the saved effort');

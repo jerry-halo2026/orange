@@ -303,7 +303,7 @@ export const es: Words = {
   turnLog: {
     thoughtNotKept: 'no se guarda en el registro del agente',
     skills: 'Skills y MCP',
-    skillsOpenfilm: 'Skills de {brand}',
+    skillsOrangefilm: 'Skills de {brand}',
     skillsHidden: 'Tus skills, desactivadas',
     skillsUnfiltered: 'Este agente usa todas tus skills, como en su propia app',
     mcpHidden: 'Tus servidores MCP, desactivados',

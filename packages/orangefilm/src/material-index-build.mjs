@@ -129,7 +129,7 @@ function wholeNumber(value) {
  * entry — with empty fields — because the name is still worth keeping.
  * @param {unknown} item
  * @returns {{videoId: string, name: string, md5: string, labels: string[], durationMs: number | null, author: string,
- *   coverUrl: string, oneLevel: string, twoLevel: string} | null}
+ *   coverUrl: string, oneLevel: string, twoLevel: string, videoType?: number, createTime?: string | null} | null}
  */
 export function rowOf(item) {
   if (!item || typeof item !== 'object') return null;

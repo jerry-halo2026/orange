@@ -652,8 +652,8 @@ export function defaultIndexLoader({ dir = defaultIndexDir() } = {}) {
  *   index?: (() => any) | null, indexDir?: string | null, tenant?: string, endpoint?: string, model?: string,
  *   composeFile?: string, timeoutMs?: number,
  *   embedder?: 'local' | 'service', modelDir?: string, packDir?: string }} [options]
- * @returns {{ tenant: string, embed: (query: string) => Promise<number[]>,
- *   call: (rpc: string, params: Record<string, unknown>) => Promise<any[]>,
+ * @returns {{ tenant: string | null, local: boolean, embed: (query: string) => Promise<number[]>,
+ *   call: ((rpc: string, params: Record<string, unknown>) => Promise<any[]>) | null,
  *   packSearch: ((query: string, request?: { limit?: number }) => Promise<any>) | null,
  *   search: (request: { query?: unknown, filters?: Record<string, unknown>, limit?: unknown }) =>
  *     Promise<{ mode: 'vector' | 'lexical' | 'index' | 'pack', query: string, count: number, items: any[] }> } | null}

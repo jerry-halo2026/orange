@@ -75,7 +75,10 @@ const RECIPE_MAX = 64 * 1024;
 const BATCH_ID = /^[a-z0-9-]{1,40}$/;
 
 /**
- * @typedef {{ id: string, x: number, y: number, w?: number, h?: number, z?: number, parent?: string, by?: { agent: string, session?: string } } & ({ text: string } | { path: string, title?: string } | { group: string, color: string } | { make: string, title?: string } | { cut: true } | { mix: true, recipe: Record<string, unknown>, recipeId?: string, batchId?: string })} CanvasNode
+ * @typedef {{ id: string, x: number, y: number, w?: number, h?: number, z?: number, parent?: string, by?: { agent: string, session?: string } } & ({ text: string } | { path: string, title?: string } | { group: string, color: string } | { make: string, title?: string } | { cut: true } | { mix: true, recipe: Record<string, unknown>, recipeId?: string, batchId?: string }
+  | { source: true, path?: string, title?: string, groups?: { name: string, videos: number, images: number, take?: number, rule?: 'sequential' | 'random', speed?: number, useThenDelete?: boolean, allowReuse?: boolean }[], settings?: { take: number, rule: 'sequential' | 'random', speed: number, useThenDelete: boolean, allowReuse: boolean } }
+  | { voice: true, path?: string, title?: string, mode: 'tts' | 'none' | 'upload', files: { path: string, text?: string, mode: 'srt' | 'none' | 'recognize' }[] }
+  | { subtitle: true, path?: string, title?: string, mode: 'upload' | 'recognize' | 'none' })} CanvasNode
  * @typedef {{ id: string, from: string, to: string, order?: number }} CanvasEdge
  * @typedef {{ nodes: CanvasNode[], edges: CanvasEdge[], name?: string }} Canvas
  */
@@ -95,6 +98,17 @@ const projectPath = (v) => typeof v === 'string' && v.length > 0 && v.length <= 
 /** 拓扑输入可以指向本机任意目录/文件（素材文件夹、配音），只限绝对路径与长度。 */
 const externalPath = (v) => typeof v === 'string' && v.length > 0 && v.length <= 1024 && isAbsolute(v);
 
+/**
+ * A source node's `settings`, read off a record that is not trusted: what is not one of the four fields, or out of
+ * range, becomes the default. Typed here so the node the parser pushes is a `CanvasNode` and not an unknown bag.
+ * @param {Record<string, unknown>} raw
+ */
+function settingsOf(raw) {
+  const take = Number.isInteger(raw.take) && Number(raw.take) > 0 && Number(raw.take) <= 100 ? Number(raw.take) : 1;
+  const speed = typeof raw.speed === 'number' && raw.speed >= 0.5 && raw.speed <= 4 ? raw.speed : 1;
+  return { take, rule: raw.rule === 'sequential' ? 'sequential' : 'random', speed,
+    useThenDelete: raw.useThenDelete === true, allowReuse: raw.allowReuse === true };
+}
 /** The canvas as kept: what is not a node or an edge is left out, and so is an edge to a node that is not there. @param {unknown} raw @returns {Canvas} */
 export function parseCanvas(raw) {
   /** @type {Canvas} */
@@ -128,12 +142,7 @@ export function parseCanvas(raw) {
             speed: typeof g.speed === 'number' && g.speed >= 0.5 && g.speed <= 4 ? g.speed : undefined,
             useThenDelete: typeof g.useThenDelete === 'boolean' ? g.useThenDelete : undefined,
             allowReuse: typeof g.allowReuse === 'boolean' ? g.allowReuse : undefined })) } : {}),
-        ...(isRecord(n.settings) ? { settings: {
-          take: Number.isInteger(n.settings.take) && n.settings.take > 0 && n.settings.take <= 100 ? n.settings.take : 1,
-          rule: n.settings.rule === 'sequential' ? 'sequential' : 'random',
-          speed: typeof n.settings.speed === 'number' && n.settings.speed >= 0.5 && n.settings.speed <= 4 ? n.settings.speed : 1,
-          useThenDelete: n.settings.useThenDelete === true, allowReuse: n.settings.allowReuse === true,
-        } } : {}) });
+        ...(isRecord(n.settings) ? { settings: settingsOf(n.settings) } : {}) });
     } else if (n.voice === true) {
       out.nodes.push({ ...box, ...parent, ...named, voice: true, ...(externalPath(n.path) ? { path: String(n.path) } : {}),
         mode: n.mode === 'tts' ? 'tts' : n.mode === 'none' ? 'none' : 'upload',

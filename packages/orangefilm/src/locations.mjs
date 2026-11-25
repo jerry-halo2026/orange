@@ -22,7 +22,7 @@ import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 /** Studio's own home (its settings and keys, not the person's work): ORANGE_HOME, else ~/.orangefilm. */
 /** @param {string} key @param {()=>string} fallback */
 const isolatedLocation = (key, fallback) => { const p = readIsolationProfile(); return p ? assertIsolationPath(p,p.paths[key],key) : fallback(); };
-const envText = (name) => process.env[`ORANGE_${name}`];
+const envText = (name) => process.env[`ORANGE_${name}`] ?? '';
 /** Studio's home is ~/.orangefilm, and nothing else: the old ~/.orangefilm is read only by the explicit import. */
 export const defaultStudioHome = (home = homedir()) => join(home, '.orangefilm');
 export const studioHomeDir = () => isolatedLocation('home', () => envText('HOME') || defaultStudioHome());

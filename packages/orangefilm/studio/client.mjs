@@ -378,7 +378,7 @@ export async function canvasCommand(args, say) {
  * `--model <id>` override the person's choices in Studio's Settings (Models) for one run; the listing leaves them
  * out, as it leaves out who makes what. `code` is the exit status: 0 done, 1 it did not run, 2 not a project or a wrong
  * command.
- * @param {string[]} argv @param {(line: string) => void} [say] @param {{ postLibrary?: typeof post }} [options] @returns {Promise<{ code: number, lines: string[] }> }
+ * @param {string[]} argv @param {{ json?: boolean, project?: string }} [options] @returns {Promise<{ code: number, lines: string[] }> }
  */
 export async function materialCommand(argv, { json = false, project = process.cwd() } = {}) {
   const [action, ...rest] = argv;

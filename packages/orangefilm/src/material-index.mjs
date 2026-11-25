@@ -274,6 +274,7 @@ function materialDateOf(createTime, name) {
   return dated ? dated[1] : '';
 }
 
+/** @param {{ sourceTotal?: number, pageable?: number, unreachable?: number } | null} [reach] */
 export function buildMaterialIndex(rows, now = new Date(), reach = null) {
   const batches = new Map();
   const derivedBatches = new Map();

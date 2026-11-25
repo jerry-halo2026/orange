@@ -164,10 +164,10 @@ export function normalizeRecipe(input) {
 /**
  * 把配方摆成引擎要读的目录：`<workRoot>/<batchId>/{video/<组名>/, audio/, bgm/, intro/, outro/}`。
  *
- * `voices` 是已经合成好的整条口播（`voice-step` 的产物）：`[{ file, text }]`，顺序与 `script.lines` 一致。
+ * `voices` 是已经合成好的整条口播（`voice-step` 的产物）：`[{ file, text, cues? }]`，顺序与 `script.lines` 一致。
  * `resolveRef(ref) → 绝对路径 | null` 由调用方提供（asset/dir 在本地解析，cloud/saved 需要下载层）。
  *
- * @param {{ recipe: any, project: string, workRoot: string, batchId: string, voices: { file: string, text: string }[],
+ * @param {{ recipe: any, project: string, workRoot: string, batchId: string, voices: { file: string, text: string, cues?: unknown[] }[],
  *   resolveRef?: (ref: any) => string | null }} options
  */
 export function stageRecipe({ recipe, project, workRoot, batchId, voices, resolveRef = defaultResolveRef(canonicalPath(project)) }) {
@@ -219,6 +219,8 @@ export function stageRecipe({ recipe, project, workRoot, batchId, voices, resolv
   }
 
   /** @type {{ file: string, text: string }[]} */
+  /** @type {{ file: string, text: string, cues?: unknown[] }[]} */
+  /** @type {{ file: string, text: string, cues?: unknown[] }[]} */
   const items = [];
   let index = 0;
   for (const voice of voices) {
@@ -346,7 +348,7 @@ export function jobFromRecipe({ recipe, staged }) {
 }
 
 /** 一次性把配方变成「可跑的输入」：校验 → staging → job。
- * @param {{ recipe: any, project: string, workRoot: string, batchId: string, voices: { file: string, text: string }[],
+ * @param {{ recipe: any, project: string, workRoot: string, batchId: string, voices: { file: string, text: string, cues?: unknown[] }[],
  *   resolveRef?: (ref: any) => string | null }} options
  */
 export function prepareRecipeRun({ recipe, project, workRoot, batchId, voices, resolveRef }) {

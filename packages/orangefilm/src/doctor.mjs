@@ -167,7 +167,7 @@ async function chipText() {
 /**
  * Every check, run now. `studio`: the Studio asking, when it is Studio that runs this (it is not looked for then).
  * `browser: false` and `network: false` leave those checks out (tests).
- * @param {{ run?: string, env?: Record<string, string | undefined>, studio?: { origin: string, version: string, app?: boolean } | null,
+ * @param {{ run?: string, env?: Record<string, string | undefined>, studio?: { origin: string, version?: string, app?: boolean, key?: string } | null,
  *           browser?: boolean, network?: boolean, home?: string }} [options]
  */
 export async function doctor({ run = 'orangefilm', env = process.env, studio = null, browser = true, network = true, home = homedir() } = {}) {

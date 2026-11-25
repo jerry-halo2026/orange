@@ -275,6 +275,20 @@ export async function openInStudio(folder, { fallback = 15, now = false, say } =
  * answer after five minutes).
  * @param {Running} run @param {string} path @param {unknown} payload @returns {Promise<any>}
  */
+/**
+ * Studio's refusal, in words that say where to go. An account-scoped command (`get`, `material`, `canvas`) reaching a
+ * Studio with no signed-in session — the app just started, or was signed out — is answered 403
+ * `authentication-required`: the person signs in in the app's window, not in a terminal, and this sentence says so
+ * instead of "Sign in is required." with no door named (2026-11-25: an agent read it as "the CLI is blocked").
+ * @param {{ code?: unknown, error?: unknown, message?: unknown } | null} answer
+ * @param {string} fallback
+ */
+export function refusal(answer, fallback) {
+  if (answer?.code === 'authentication-required') return 'Studio has no signed-in session: sign in in the OrangeFilm window, then run this again.';
+  if (typeof answer?.error === 'string' && answer.error) return answer.error;
+  if (typeof answer?.message === 'string' && answer.message) return answer.message;
+  return fallback;
+}
 function post(run, path, payload) {
   const body = Buffer.from(JSON.stringify(payload));
   return new Promise((done, fail) => {
@@ -365,7 +379,7 @@ export async function canvasCommand(args, say) {
   const by = agent ? { agent, ...(process.env.ORANGE_SESSION ? { session: process.env.ORANGE_SESSION } : {}) } : undefined;
   const run = await ensureStudio(say);
   const answer = await post(run, '/api/canvas', { folder, ...(ops === undefined ? {} : { ops }), ...(by ? { by } : {}) });
-  if (!answer?.ok) return { ok: false, usage: answer?.code === 2, lines: [`orangefilm canvas: ${answer?.text ?? answer?.error ?? 'Studio did not say how it went'}`] };
+  if (!answer?.ok) return { ok: false, usage: answer?.code === 2, lines: [`orangefilm canvas: ${answer?.text ?? refusal(answer, 'Studio did not say how it went')}`] };
   if (ops === undefined) return { ok: true, lines: [JSON.stringify(answer.canvas, null, 1)] };
   const { nodes, edges } = answer.canvas;
   return { ok: true, lines: [`Done${answer.added.length ? `: added ${answer.added.join(', ')}` : ''}. The board has ${nodes.length} nodes and ${edges.length} wires; the person sees it now.`] };
@@ -410,7 +424,7 @@ export async function materialCommand(argv, { json = false, project = process.cw
   url.searchParams.set('pageSize', '20');
   const response = await fetch(url, { headers: { 'x-studio-key': studio.key, origin: studio.origin } });
   const body = await response.json().catch(() => null);
-  if (!response.ok) return { code: 1, lines: [`orangefilm material: ${body?.code === 'authentication-required' ? 'sign in to Studio first' : body?.message ?? `HTTP ${response.status}`}`] };
+  if (!response.ok) return { code: 1, lines: [`orangefilm material: ${refusal(body, `HTTP ${response.status}`)}`] };
   const rows = Array.isArray(body?.items) ? body.items : [];
   const valueOf = (value) => (value && typeof value === 'object' && 'source' in value ? value.source : value);
   const items = rows.map((row) => {
@@ -478,7 +492,7 @@ export async function getMedia(argv, say, {postLibrary = post} = {}) {
   const run = listing ? await running() : await ensureStudio(say);
   if (!listing && run) {
     const answer = await post(run, '/api/get', { folder, verb, args, ...(via ? { via } : {}), ...(model ? { model } : {}), yes: yes === true });
-    if (typeof answer?.text !== 'string') return { code: 1, lines: [`orangefilm get: ${answer?.error ?? 'Studio did not say how it went'}`] };
+    if (typeof answer?.text !== 'string') return { code: 1, lines: [`orangefilm get: ${refusal(answer, 'Studio did not say how it went')}`] };
     return { code: answer.ok ? 0 : answer.code === 2 ? 2 : 1, lines: [answer.text] };
   }
   const one = verb && verb !== 'help' ? verb : null;

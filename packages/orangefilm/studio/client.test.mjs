@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { agentName, ensureStudio, olderThanThis, openInStudio, updateOrangefilm } from './client.mjs';
+import { agentName, ensureStudio, olderThanThis, openInStudio, refusal, updateOrangefilm } from './client.mjs';
 
 /* Studio's port, and the film's next to it, both free. They are below the range every system hands out on its own
    (Linux from 32768, macOS and Windows from 49152), so no connection or other server takes them while one Studio
@@ -161,4 +161,14 @@ test('the agent running a command: the desktop app\'s by ORANGE_AGENT, else the 
     assert.equal(viaShell, `pid:${process.pid}`);
   }
   assert.equal(agentName().startsWith('pid:') || agentName().startsWith('app:'), true);
+});
+
+/* 2026-11-25: an agent read Studio's "Sign in is required." as "the CLI is blocked" and worked around it. The refusal
+   now names the door: the app's window. */
+test('a Studio refusal without a session says where to sign in, for get, material and canvas', () => {
+  const session = refusal({ code: 'authentication-required', error: 'Sign in is required.' }, 'fallback');
+  assert.match(session, /Studio has no signed-in session/);
+  assert.match(session, /OrangeFilm window/);
+  assert.equal(refusal({ error: 'the project is not there' }, 'fallback'), 'the project is not there');
+  assert.equal(refusal(null, 'fallback'), 'fallback');
 });

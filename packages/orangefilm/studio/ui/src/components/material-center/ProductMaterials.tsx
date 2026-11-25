@@ -27,19 +27,26 @@ export function ProductMaterials({ copy, videoIds, renderEntries, list, entries,
   const [loading, setLoading] = React.useState(false);
   const [failure, setFailure] = React.useState<string | null>(null);
   const wanted = React.useMemo(() => [...new Set(videoIds)], [videoIds]);
+  /* The parent hands these as new arrays/functions on every render; depending on that identity re-ran this effect on
+     every render (clear the wall, refetch, re-render: the view blinked forever). The read is keyed on what actually
+     names it — the ids — and the rest is read from a ref at call time. */
+  const wantedKey = wanted.join(',');
+  const latest = React.useRef({ list, entries, wanted });
+  latest.current = { list, entries, wanted };
 
   React.useEffect(() => {
     let alive = true;
+    const now = latest.current;
     setEntries([]);
     setFailure(null);
-    if (!wanted.length) return () => { alive = false; };
+    if (!now.wanted.length) return () => { alive = false; };
     setLoading(true);
-    void loadProductCards(list, wanted, { videoType: entries?.length ? videoType : undefined, scope, entries }).then(
+    void loadProductCards(now.list, now.wanted, { videoType: now.entries?.length ? videoType : undefined, scope, entries: now.entries }).then(
       cards => { if (alive) setEntries(cloudEntries(cards)); },
       error => { if (alive) setFailure(error instanceof Error ? error.message : String(error)); },
     ).finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [wanted, videoType, scope, list, entries]);
+  }, [wantedKey, videoType, scope]);
 
   if (loading && !materialEntries.length) return <p role="status" className="text-[12px] text-[var(--text-muted)]">{copy.loading}</p>;
   if (failure) return <p role="alert" className="text-[12px] text-[var(--text-muted)]">{failure}</p>;

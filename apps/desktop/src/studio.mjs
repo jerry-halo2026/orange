@@ -73,10 +73,10 @@ async function takeOver(home, log) {
 
 /**
  * @param {{ home: string, port: number, env: Record<string, string>, onOpen: (url: string) => void,
- *           onBrowser: (state: { state: string, message?: string }) => void, onAsk?: AskHandler, log: (line: string) => void }} options
+ *           onBrowser: (state: { state: string, message?: string }) => void, onAsk?: AskHandler, onPick?: PickHandler, log: (line: string) => void }} options
  * @returns {Promise<{ origin: string, filmOrigin: string, key: string, child: Electron.UtilityProcess }>}
  */
-async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire, onAuthRetired, log }) {
+async function fork({ port, env, onOpen, onBrowser, onAsk, onPick, onAuth, onAuthRetire, onAuthRetired, log }) {
   const { utilityProcess } = await import('electron');
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(ENTRY, [], {
@@ -100,6 +100,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
       } else if (message?.type === 'open') onOpen(message.url);
       else if (message?.type === 'browser' || message?.type === 'ffmpeg') onBrowser(message);
       else if (message?.type === 'ask' || message?.type === 'ask-cancel') onAsk?.(message, (answer) => child.postMessage(answer));
+      else if (message?.type === 'pick') onPick?.(message, (answer) => child.postMessage(answer));
       else if (message?.type === 'auth') onAuth?.(message.state, message.scope);
       else if (message?.type === 'auth-retire') {
         void Promise.resolve().then(()=>onAuthRetire?.()).then(ok=>child.postMessage({type:'auth-parent-retired',id:message.id,ok:ok===true}),()=>child.postMessage({type:'auth-parent-retired',id:message.id,ok:false}));
@@ -118,6 +119,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
  * A question Studio asks the person's agent (`{ type: 'ask', id, text }`, or `{ type: 'ask-cancel', id }` to stop
  * it), and how its answer goes back: `{ type: 'answer', id, text }` or `{ type: 'answer', id, error, code? }`.
  * @typedef {(message: { type: 'ask' | 'ask-cancel', id: string, text?: string }, reply: (answer: Record<string, unknown>) => void) => void} AskHandler
+ * @typedef {(message: { type: 'pick', id: string, kind?: 'folder' | 'files', options?: Record<string, unknown> }, reply: (answer: Record<string, unknown>) => void) => void} PickHandler
  */
 
 /**
@@ -125,7 +127,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
  * `onAsk` answers Studio's questions for the person's agent (studio-process.mjs askAgent).
  * @param {{ home: string, port: number, env: Record<string, string>, onOpen: (url: string) => void,
  *           onBrowser: (state: { state: string, message?: string }) => void, onExit: (code: number) => void,
- *           onAsk?: AskHandler, onAuth?: (state: {kind:string,reason:string|null}, scope?:string|null)=>void, onAuthRetire?:()=>Promise<boolean>, onAuthRetired?:()=>void, log: (line: string) => void }} options
+ *           onAsk?: AskHandler, onPick?: PickHandler, onAuth?: (state: {kind:string,reason:string|null}, scope?:string|null)=>void, onAuthRetire?:()=>Promise<boolean>, onAuthRetired?:()=>void, log: (line: string) => void }} options
  */
 export async function startWindowStudio(options, {takeover=takeOver,forkStudio=fork} = {}) {
   const isolation = readIsolationProfile(options.env);

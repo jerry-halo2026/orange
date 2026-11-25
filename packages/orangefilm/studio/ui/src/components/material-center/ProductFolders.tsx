@@ -30,11 +30,16 @@ function FolderCard({ list, folderKey, title, count, videoIds, entries, note, on
   const [urls, setUrls] = React.useState<readonly string[]>(() => cachedCovers(key) ?? []);
   const asked = React.useRef(false);
   const holder = React.useRef<HTMLButtonElement | null>(null);
+  /* `videoIds`/`entries`/`list` are new identities on every parent render; keyed on the folder only, so the observer
+     below is mounted once per card instead of being torn down and rebuilt on every render. */
+  const latest = React.useRef({ list, entries, videoIds });
+  latest.current = { list, entries, videoIds };
   const reveal = React.useCallback(() => {
     if (asked.current) return;
     asked.current = true;
-    void loadCovers(list, key, videoIds, entries).then(next => setUrls(next));
-  }, [key, videoIds, list, entries]);
+    const now = latest.current;
+    void loadCovers(now.list, key, now.videoIds, now.entries).then(next => setUrls(next));
+  }, [key]);
   /* 只有进入视口的文件夹才取封面：73 个文件夹同时挂载时不会一次打 73 个请求。 */
   React.useEffect(() => {
     const node = holder.current;

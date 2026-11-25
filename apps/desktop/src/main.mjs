@@ -18,7 +18,7 @@ import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FLAVOR, IDENTITY, PRODUCT_NAME } from './flavor.mjs';
-import { folderDialogOptions, programDialogOptions } from './folder-dialog.mjs';
+import { fileDialogOptions, folderDialogOptions, programDialogOptions } from './folder-dialog.mjs';
 import { childEnvironment, lastPathSource, loginShellEnvironment } from './environment.mjs';
 import { authEnvironmentReason, materializeAuthEnvironmentFile } from './auth-env-file.mjs';
 import { gatherAppReport } from './app-report.mjs';
@@ -497,8 +497,34 @@ async function studioApi(path, method = 'GET', body = undefined) {
  * a project becomes one); with Studio's own words and starting folder, any other (see folder-dialog.mjs).
  */
 async function pickFolder(options) {
-  const { canceled, filePaths } = await dialog.showOpenDialog(win, folderDialogOptions(options));
+  /* no window as parent: this app's window is a BaseWindow with a WebContentsView, not a BrowserWindow, and macOS
+     hangs a dialog on a BrowserWindow (handed anything else the dialog does not come back). An app-modal dialog with
+     the app in front is what the person sees. */
+  app.focus({ steal: true });
+  const { canceled, filePaths } = await dialog.showOpenDialog(folderDialogOptions(options));
   return canceled || !filePaths[0] ? null : filePaths[0];
+}
+
+/** The files picked by the person (none: cancelled), for Studio's bring-in and relink (see folder-dialog.mjs). */
+async function pickFiles(options) {
+  app.focus({ steal: true });
+  const { canceled, filePaths } = await dialog.showOpenDialog(fileDialogOptions(options));
+  return canceled ? [] : filePaths;
+}
+
+/**
+ * Studio asks for the person's folder or files (studio-process.mjs: the canvas's "选择文件夹", the media pane's
+ * "Import", the subtitle's file): the app's own native dialog, not the system one a page in a browser has to use.
+ * Answer: { type: 'picked', id, paths } (empty when cancelled), or { type: 'picked', id, error }.
+ */
+async function answerPick(message, reply) {
+  const options = message?.options && typeof message.options === 'object' ? message.options : {};
+  try {
+    const paths = message?.kind === 'files' ? await pickFiles(options) : [await pickFolder(options)].filter(Boolean);
+    reply({ type: 'picked', id: message.id, paths });
+  } catch (error) {
+    reply({ type: 'picked', id: message.id, paths: [], error: error?.message ?? String(error) });
+  }
 }
 
 /** File › Open Project…: the folder picked, shown in the window (Studio switches its pages to it). */
@@ -576,6 +602,7 @@ async function runStudio(env) {
   const studioEnv = { ...env, ORANGE_EDITOR_DIR: windowEditorDirectory({packaged:app.isPackaged,isolated:Boolean(isolation),explicit:process.env.ORANGE_EDITOR_DIR,bundled:here('../shell/dist/')}), ORANGE_APP_LOGS: LOGS };
   const studioOptions = {
     onAsk: answerStudio,
+    onPick: answerPick,
     home: env.ORANGE_HOME,
     port: isolation?.ports.studio ?? IDENTITY.studioPort,
     log,

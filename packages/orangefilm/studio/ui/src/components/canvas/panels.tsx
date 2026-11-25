@@ -778,6 +778,23 @@ export function SubtitlePanel({ id, data }: { id: string; data: SubtitleData }) 
             </button>
           ))}
         </div>
+        {data.mode === 'upload' && <div className="mt-2 flex flex-wrap items-center gap-2 text-[11.5px] text-[var(--cv-ink-3)]">
+          <span>字幕文件</span>
+          {data.path ? <span className="max-w-[170px] truncate rounded-[8px] bg-[var(--cv-chip)] px-2 py-0.5 text-[12px] text-[var(--cv-ink-2)]" title={data.path}>{data.path.split(/[\\/]/).pop()}</span> : null}
+          <label className="flex h-7 cursor-pointer items-center gap-1 rounded-[8px] border border-[var(--cv-line)] px-2 text-[12px] text-[var(--cv-ink-2)]">
+            <Plus size={12} />选择文件
+            <input type="file" accept=".srt,.vtt,.ass,.ssa" className="hidden" onChange={(event) => {
+              const file = (event.currentTarget.files ?? [])[0];
+              event.currentTarget.value = '';
+              if (!file) return;
+              void board.importFiles([file]).then((paths) => {
+                if (!paths.length) return;
+                board.willChange();
+                board.setData(id, { mode: 'upload', path: paths[0] } as never);
+              });
+            }} />
+          </label>
+        </div>}
       </div>
     </NodeToolbar>
   );

@@ -118,6 +118,13 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
 }
 
 /**
+ * The app's own folder and file dialogs, handed to Studio (an installed app's window shows a native dialog). Absent:
+ * Studio opens the system's dialog itself (folder-picker.mjs), the way a page in a browser has to.
+ * @typedef {{ folder?: (ask: { title?: string, at?: string | null }) => Promise<string | null>,
+ *   files?: (ask: { title?: string, at?: string | null }) => Promise<string[]> }} StudioPicker
+ */
+
+/**
  * Start Studio. `port` 0 picks a free one. `advertise`:
  * write where it listens to ~/.orangefilm/run.json (removed on close), which is how the CLI finds this machine's Studio,
  * and open with the machine's key (see studioKey); otherwise the key is new each launch.
@@ -128,9 +135,14 @@ export function desktopInstaller(os, arch, base = DESKTOP_FILES) {
  * a chat, one question answered by the person's agent's own model, for Studio's own work that needs a model
  * (translating subtitles); without it, that goes to a service connected for it. Resolves once both servers listen.
  * `autoVersionsFactory`: trusted Node-only dependency injection; defaults to the native automatic versions producer.
- * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth>, localFission?: any, localFissionDraft?: any }} [options]
+ * @param {{ port?: number, key?: string, openBrowser?: (url: string) => void, advertise?: boolean, onQuit?: () => void, stays?: boolean, editorDir?: string, working?: () => string[], askAgent?: import('./get.mjs').AskAgent, pick?: StudioPicker | null, isolation?: boolean, autoVersionsFactory?: typeof createAutoVersions, watchersFactory?: typeof createWatchers, desktopAuth?: ReturnType<typeof import('../../../../apps/desktop/src/desktop-auth.mjs').createDesktopAuth>, localFission?: any, localFissionDraft?: any }} [options]
  */
-export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth, localFission = null, localFissionDraft = null } = {}) {
+
+export async function startStudio({ port = 4747, key, openBrowser = systemBrowser, advertise = false, onQuit, stays = false, editorDir = EDITOR_DIR, working = () => [], askAgent, pick = null, isolation: requiredIsolation = false, autoVersionsFactory = createAutoVersions, watchersFactory = createWatchers, desktopAuth, localFission = null, localFissionDraft = null } = {}) {
+  /* The person's folder and file dialogs: the app's own when it has them (`pick`: an installed app's window shows a
+     native one), else the system's (folder-picker.mjs), which is what a page in a browser has. */
+  const askFolder = (ask) => (typeof pick?.folder === 'function' ? pick.folder(ask) : pickFolder(ask));
+  const askFiles = (ask) => (typeof pick?.files === 'function' ? pick.files(ask) : pickFiles(ask));
   const isolation = readIsolationProfile();
   if (requiredIsolation && !isolation) throw new Error('An explicit isolated Studio profile is required.');
   if (isolation) {
@@ -509,7 +521,7 @@ const savedAccess = createSavedAccess({
     if (parts[0] === 'pick-folder' && parts.length === 1 && req.method === 'POST') {
       const { title, at } = /** @type {{ title?: unknown, at?: unknown }} */ (await readJson(req).catch(() => ({})) ?? {});
       try {
-        const path = await pickFolder({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose a folder', at: typeof at === 'string' ? at : null });
+        const path = await askFolder({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose a folder', at: typeof at === 'string' ? at : null });
         return json(res, 200, { path });
       } catch (e) {
         throw new HttpError(501, /** @type {Error} */ (e).message);
@@ -564,7 +576,7 @@ const savedAccess = createSavedAccess({
         const { into, paths, folder, title } = /** @type {{ into?: unknown, paths?: unknown, folder?: unknown, title?: unknown }} */ (await readJson(req) ?? {});
         const ask = { title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose', at: null };
         const picked = Array.isArray(paths) ? paths.map(String)
-          : await (folder === true ? pickFolder(ask).then((p) => (p ? [p] : [])) : pickFiles(ask)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
+          : await (folder === true ? askFolder(ask).then((p) => (p ? [p] : [])) : askFiles(ask)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
         return json(res, 200, { landed: (await bringIn(lib, rel(into ?? 'saved'), picked, 'copy', { anywhere: true })).map(libraryPath) });
       }
       if (sub === 'reveal' && req.method === 'POST') {
@@ -651,7 +663,7 @@ const savedAccess = createSavedAccess({
     if (parts[0] === 'pick-files' && parts.length === 1 && req.method === 'POST') {
       const { title } = /** @type {{ title?: unknown }} */ (await readJson(req).catch(() => ({})) ?? {});
       try {
-        return json(res, 200, { paths: await pickFiles({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose files', at: null }) });
+        return json(res, 200, { paths: await askFiles({ title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose files', at: null }) });
       } catch (e) {
         throw new HttpError(501, /** @type {Error} */ (e).message);
       }
@@ -1129,7 +1141,7 @@ const savedAccess = createSavedAccess({
       const how = mode === 'link' ? 'link' : 'copy';
       const ask = { title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose', at: null };
       const picked = Array.isArray(paths) ? paths.map(String)
-        : await (folder === true ? pickFolder(ask).then((p) => (p ? [p] : [])) : pickFiles(ask)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
+        : await (folder === true ? askFolder(ask).then((p) => (p ? [p] : [])) : askFiles(ask)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
       return json(res, 200, { landed: await notifyReferences(() => bringIn(project.path, String(into ?? 'assets'), picked, how)) });
     }
     /* a link pointed somewhere else (files.mjs relink): the path given, else the person's pick. { path } (null: cancelled) */
@@ -1137,7 +1149,7 @@ const savedAccess = createSavedAccess({
       const { path: rel, to, folder, title } = /** @type {{ path?: unknown, to?: unknown, folder?: unknown, title?: unknown }} */ (await readJson(req));
       const ask = { title: typeof title === 'string' && title.trim() ? title.trim().slice(0, 120) : 'Choose', at: null };
       const where = typeof to === 'string' ? to
-        : await (folder === true ? pickFolder(ask) : pickFiles(ask).then((p) => p[0] ?? null)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
+        : await (folder === true ? askFolder(ask) : askFiles(ask).then((p) => p[0] ?? null)).catch((e) => { throw new HttpError(501, String(e?.message ?? e)); });
       return json(res, 200, { path: where ? await notifyReferences(() => relink(project.path, String(rel ?? ''), where)) : null });
     }
     /* the proxies the preview plays heavy footage from (proxies.mjs), asked for when not made yet: each heavy video's

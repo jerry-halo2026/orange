@@ -13,6 +13,8 @@
  *   → { type: 'ffmpeg', found }                      whether ffmpeg and ffprobe are on the PATH (video pictures, sound, export)
  *   → { type: 'open', url }                          Studio wants something shown in the person's browser
  *   → { type: 'ask', id, text }                      a question for the person's agent's own model (askAgent)
+ *   → { type: 'pick', id, kind, options }             the person's folder ('folder') or files ('files'), the app's dialog
+ *   ← { type: 'picked', id, paths, error? }           what they picked (empty when cancelled)
  *   → { type: 'ask-cancel', id }                     that question no longer wanted
  *   ← { type: 'answer', id, text | error, code? }    its answer
  *   ← { type: 'quit' }                               stop (history is written first)
@@ -27,7 +29,7 @@ import { startStudio } from 'orangefilm/studio';
 import { launch } from 'orangefilm/host';
 import { readIsolationProfile } from './isolation.mjs';
 import { assertIsolationPath } from 'orangefilm/development-isolation';
-import { createDesktopAuth, migrateOwnerRoots, readDesktopAuthConfiguration } from './desktop-auth.mjs';
+import { createDesktopAuth, readDesktopAuthConfiguration } from './desktop-auth.mjs';
 import { createLocalFissionDraftService } from './fission-local-draft.mjs';
 import { pathToFileURL } from 'node:url';
 const isolation = readIsolationProfile(process.env);
@@ -61,12 +63,30 @@ parent.on('message', ({ data }) => {
   if (data?.type === 'quit') void stop();
   if (data?.type === 'working' && Array.isArray(data.folders)) working = data.folders.filter((f) => typeof f === 'string');
   if (data?.type === 'answer') asking.get(data.id)?.(data);
+  if (data?.type === 'picked') picked.get(data.id)?.(data);
   if (data?.type === 'auth-parent-retired' && parentRetirement?.id === data.id) {
     const held=parentRetirement;parentRetirement=null;clearTimeout(held.timer);
     if(data.ok===true)held.resolve();else held.reject(new Error('Parent preservation is unconfirmed.'));
   }
 });
 
+/** The person's folder and file dialogs, asked of the app (main.mjs answerPick): Studio's own routes call these
+ *  instead of the system dialog a page in a browser has to use, so the window's app is the one that shows it. */
+const picked = new Map();
+function pick(kind) {
+  return (options) => new Promise((resolve, reject) => {
+    const id = randomUUID();
+    const timer = setTimeout(() => { picked.delete(id); resolve(kind === 'files' ? [] : null); }, 15 * 60_000);
+    picked.set(id, (message) => {
+      clearTimeout(timer);
+      picked.delete(id);
+      if (message?.error) { reject(new Error(String(message.error))); return; }
+      const paths = Array.isArray(message?.paths) ? message.paths.filter((p) => typeof p === 'string' && p) : [];
+      resolve(kind === 'files' ? paths : (paths[0] ?? null));
+    });
+    send({ type: 'pick', id, kind, options: options && typeof options === 'object' ? options : {} });
+  });
+}
 const nativeRoot=dirname(createRequire(import.meta.url).resolve('orangefilm/package.json'));
 const {libraryRoot:originalLibraryRoot,sharedHome:originalSharedHome,studioHomeDir}=await import(pathToFileURL(join(nativeRoot,'src','locations.mjs')).href);
 const desktopAuth=createDesktopAuth({
@@ -161,6 +181,7 @@ try {
     localFissionDraft,
     working: () => working,
     askAgent,
+    pick: { folder: pick('folder'), files: pick('files') },
     /* the window's page, Studio's editor with the chat beside it (shell/), in place of the editor alone */
     ...(process.env.ORANGE_EDITOR_DIR ? { editorDir: process.env.ORANGE_EDITOR_DIR } : {}),
   });

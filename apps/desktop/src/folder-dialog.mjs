@@ -27,6 +27,27 @@ export function folderDialogOptions(options) {
 }
 
 /**
+ * The system's file dialog, several files at once (Studio's bring-in and relink ask for these): Studio's words, the
+ * folder it starts in, and the extensions it accepts, each checked the same way the folder dialog's are.
+ * @param {unknown} options
+ * @returns {import('electron').OpenDialogOptions}
+ */
+export function fileDialogOptions(options) {
+  const o = options && typeof options === 'object' ? /** @type {Record<string, unknown>} */ (options) : {};
+  const text = (/** @type {unknown} */ v) => (typeof v === 'string' && v.trim() ? v.trim().slice(0, 120) : null);
+  const at = typeof o.at === 'string' && o.at.length < 4096 && isAbsolute(o.at) ? o.at : null;
+  const extensions = Array.isArray(o.extensions)
+    ? o.extensions.filter((e) => typeof e === 'string' && /^[A-Za-z0-9*]{1,12}$/.test(e)).slice(0, 8)
+    : [];
+  return {
+    title: text(o.title) ?? 'Choose files',
+    message: text(o.title) ?? 'Choose files',
+    ...(at ? { defaultPath: at } : {}),
+    ...(extensions.length ? { filters: [{ name: 'Files', extensions }] } : {}),
+    properties: ['openFile', 'multiSelections'],
+  };
+}
+/**
  * The system's file dialog for the program of one of the person's agents (Settings → Agents → Locate), with Studio's
  * own words. On Windows only programs and the shims installers leave are offered; on a Mac an app can be chosen too
  * (Codex.app: the Codex inside it is used).

@@ -119,3 +119,60 @@ test('doctor: the folders and the log, paths under home as ~', async () => {
     rmSync(home, { recursive: true, force: true });
   }
 });
+
+/* The materials answer and the npm probe both used to say more than they knew (2026-11-25): an app without a session
+   was reported as "not signed in" although the person had bound the steward, and a 404 for this product's unpublished
+   npm name was reported as "the network is down" although the registry answered. */
+const reply = (status, body = null) => ({ ok: status >= 200 && status < 300, status, json: async () => body });
+
+async function doctorWith(replies, { registry } = {}) {
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-doctor-net-'));
+  const before = { home: process.env.ORANGE_HOME, library: process.env.ORANGE_LIBRARY };
+  process.env.ORANGE_HOME = join(home, '.orangefilm');
+  process.env.ORANGE_LIBRARY = join(home, 'Projects');
+  const asked = [];
+  const fetch = async (url) => {
+    asked.push(String(url));
+    if (String(url).includes('/api/materials/binding')) return replies.binding;
+    if (String(url).includes('registry.npmjs.org')) {
+      if (registry === 'throw') throw new Error('offline');
+      return reply(registry ?? 200);
+    }
+    return reply(404);
+  };
+  try {
+    const report = await doctor({ studio: { origin: 'http://127.0.0.1:4848', version: '0.3.0', app: true, key: 'k' }, browser: false, network: true, home, fetch });
+    return { report, asked };
+  } finally {
+    for (const [name, value] of [['ORANGE_HOME', before.home], ['ORANGE_LIBRARY', before.library]]) {
+      if (value === undefined) delete process.env[name]; else process.env[name] = value;
+    }
+    rmSync(home, { recursive: true, force: true });
+  }
+}
+
+test('doctor: without a session the binding is said to be unreadable, not unbound', async () => {
+  const { report } = await doctorWith({ binding: reply(403, { code: 'authentication-required' }) });
+  assert.match(report.text, /Materials +no session yet/);
+  assert.ok(!report.text.includes('not signed in'), 'a bound steward is not called "not signed in"');
+  assert.ok(!/bind the cloud steward account in Settings/.test(report.text), 'and the person is not told to bind it again');
+});
+
+test('doctor: the steward as bound, and a readable answer without one as unbound', async () => {
+  const bound = await doctorWith({ binding: reply(200, { binding: { account: 'zhangqinyuan', status: 'claimed' } }) });
+  assert.match(bound.report.text, /Materials +cloud steward bound: zhangqinyuan/);
+  const empty = await doctorWith({ binding: reply(200, { binding: null }) });
+  assert.match(empty.report.text, /Materials +not bound/);
+});
+
+test('doctor: the registry answering 404 for this product\'s name is still reachable', async () => {
+  const { report, asked } = await doctorWith({ binding: reply(200, { binding: null }) }, { registry: 404 });
+  assert.match(report.text, /Network +npm reachable/);
+  assert.ok(asked.some((url) => url === 'https://registry.npmjs.org/'), 'the registry root is what is asked, not our name');
+  assert.ok(!asked.some((url) => url.startsWith('https://registry.npmjs.org/orangefilm')), 'a name that is not published is never the probe');
+});
+
+test('doctor: only a registry that does not answer is unreachable', async () => {
+  const { report } = await doctorWith({ binding: reply(200, { binding: null }) }, { registry: 'throw' });
+  assert.match(report.text, /Network +npm not reachable/);
+});

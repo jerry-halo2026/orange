@@ -168,9 +168,9 @@ async function chipText() {
  * Every check, run now. `studio`: the Studio asking, when it is Studio that runs this (it is not looked for then).
  * `browser: false` and `network: false` leave those checks out (tests).
  * @param {{ run?: string, env?: Record<string, string | undefined>, studio?: { origin: string, version?: string, app?: boolean, key?: string } | null,
- *           browser?: boolean, network?: boolean, home?: string }} [options]
+ *           browser?: boolean, network?: boolean, home?: string, fetch?: typeof fetch }} [options]
  */
-export async function doctor({ run = 'orangefilm', env = process.env, studio = null, browser = true, network = true, home = homedir() } = {}) {
+export async function doctor({ run = 'orangefilm', env = process.env, studio = null, browser = true, network = true, home = homedir(), fetch: fetchImpl = fetch } = {}) {
   /** @type {Check[]} */
   const checks = [];
   const at = (/** @type {string} */ path) => tidy(path, home);
@@ -199,15 +199,21 @@ export async function doctor({ run = 'orangefilm', env = process.env, studio = n
   }
 
   if (studio && network) {
-    const binding = await fetch(`${studio.origin}/api/materials/binding`, { headers: studio.key ? { 'x-studio-key': studio.key } : {}, signal: AbortSignal.timeout(3000) })
+    const binding = await fetchImpl(`${studio.origin}/api/materials/binding`, { headers: studio.key ? { 'x-studio-key': studio.key } : {}, signal: AbortSignal.timeout(3000) })
       .then(async (r) => ({ ok: r.ok, status: r.status, body: await r.json().catch(() => null) }))
       .catch(() => null);
     const bound = binding?.body?.binding?.account;
     if (bound) checks.push({ label: 'Materials', text: `cloud steward bound: ${bound}` });
+    /* 401/403 is the app having no session *to check with*, not "not bound": an app just started (or signed out) answers
+       this way while the binding itself is on file. Said as it is, so nobody is told to bind what they already bound
+       (2026-11-25: "已绑定" in Settings, "not signed in" here). */
     else if (binding?.status === 401 || binding?.status === 403) {
-      checks.push({ label: 'Materials', text: 'not signed in', problem: 'sign in to Studio, then bind the cloud steward account' });
+      checks.push({ label: 'Materials', text: 'no session yet, so the binding cannot be read',
+        problem: 'Studio has no signed-in session right now: sign in (or wait for it to come back), then run this again' });
+    } else if (binding?.ok === true) {
+      checks.push({ label: 'Materials', text: 'not bound', problem: 'bind the cloud steward account in Settings' });
     } else if (binding) {
-      checks.push({ label: 'Materials', text: `not bound (HTTP ${binding.status})`, problem: 'bind the cloud steward account in Settings' });
+      checks.push({ label: 'Materials', text: `no answer (HTTP ${binding.status})`, problem: 'the material routes did not answer usefully: restart OrangeFilm' });
     } else {
       checks.push({ label: 'Materials', text: 'not reachable', problem: 'the material service did not answer: restart OrangeFilm' });
     }
@@ -250,7 +256,10 @@ export async function doctor({ run = 'orangefilm', env = process.env, studio = n
   checks.push({ label: 'Film files', text: `${size(usage)} in ${films.length} project${films.length === 1 ? '' : 's'}' .film folders (cache, history and logs)` });
 
   if (network) {
-    const reached = await fetch('https://registry.npmjs.org/orangefilm', { method: 'HEAD', signal: AbortSignal.timeout(5000) }).then((r) => r.ok, () => false);
+    /* The registry answering at all is what "reachable" means: this product's name is not published, so asking for it
+       gets a 404, and calling that "the network is down" sent people chasing a proxy that was fine (2026-11-25). */
+    const reached = await fetchImpl('https://registry.npmjs.org/', { method: 'HEAD', signal: AbortSignal.timeout(5000) })
+      .then((r) => r.status < 500, () => false);
     checks.push(reached ? { label: 'Network', text: 'npm reachable' }
       : { label: 'Network', text: 'npm not reachable', problem: 'npx and updates need registry.npmjs.org: check the network, a proxy, or the agent\'s sandbox' });
   }

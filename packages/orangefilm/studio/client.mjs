@@ -515,7 +515,7 @@ export async function getMedia(argv, say, {postLibrary = post} = {}) {
     const query = new URLSearchParams({ ...(one ? { verb: one } : {}), ...(web ? { web: '1' } : {}) }).toString();
     const res = await fetch(`${run.origin}/api/get${query ? `?${query}` : ''}`, { headers: { 'x-studio-key': run.key } });
     listed = await res.json();
-    if (!res.ok) return { code: 2, lines: [`orangefilm get: ${listed.error ?? `Studio answered ${res.status}`}`] };
+    if (!res.ok) return { code: 2, lines: [`orangefilm get: ${refusal(listed, `Studio answered ${res.status}`)}`] };
   } else {
     const { catalog } = await import('./server/get.mjs');
     try { listed = await catalog(one ?? undefined, { web }); } catch (e) { return { code: 2, lines: [`orangefilm get: ${/** @type {Error} */ (e).message}`] }; }

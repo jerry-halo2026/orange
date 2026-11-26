@@ -437,6 +437,9 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
     input.accept = accept;
     input.value = '';
     picked.current = (list) => { void onImportFiles(list).then(done, (e: unknown) => { onError(e instanceof Error ? e.message : String(e)); done([]); }); };
+    /* a cancelled dialog fires nothing: without this the promise waited forever (a panel that asks and then reports
+       would hang on "choosing…") */
+    input.addEventListener('cancel', () => done([]), { once: true });
     input.click();
   });
 
@@ -806,6 +809,8 @@ function BoardView({ shown = true, projectId, folder, files, sources, onAddToFil
       }, (e: unknown) => onError(e instanceof Error ? e.message : String(e)));
     },
     importFiles: (list) => onImportFiles(list),
+    pickFiles: (accept) => pickFiles(accept),
+    report: (message) => onError(message),
     cutout: (id, path) => {
       if (!folder) return;
       onNotice(t('canvas.actions.cutting'));
@@ -1430,7 +1435,7 @@ function Preview({ doc, fileUrl }: { doc: CanvasDoc; fileUrl: (path: string) => 
       files: [...files.values()],
       fileOf: (path) => files.get(path) ?? null,
       sources: { file: (file) => fileUrl(file.path), wave: () => '' },
-      addToFilm: nothing, setData: nothing, resize: nothing, spawn: nothing, bring: nothing, importFiles: async () => [], cutout: nothing, remove: nothing, willChange: nothing, editing: null, edit: nothing, single: null,
+      addToFilm: nothing, setData: nothing, resize: nothing, spawn: nothing, bring: nothing, importFiles: async () => [], pickFiles: async () => [], report: nothing, cutout: nothing, remove: nothing, willChange: nothing, editing: null, edit: nothing, single: null,
       choices: () => [], allChoices: () => [], fallback: () => null, run: () => undefined, error: () => undefined, stale: NOTHING, unused: NONE,
       make: nothing, stop: nothing, runMix: nothing, mix: () => undefined, inputs: (id) => inputViews(drawn.nodes, drawn.edges, id, mediaOf), unwire: nothing, sideMenu: nothing,
       upload: nothing, wireIn: nothing, sendToFilm: nothing, view: nothing,

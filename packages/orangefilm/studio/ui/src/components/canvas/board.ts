@@ -421,6 +421,10 @@ export interface Board {
   spawn: (id: string, kind: SpawnKind, data?: Partial<MakeData>) => void;
   /** files made from a node on this computer (its picture's cells, a frame of its clip): into the project, beside it */
   bring: (id: string, files: File[]) => void;
+  /** the person's files by the canvas's own dialog (a subtitle: srt/vtt/ass): where they landed in the project, [] cancelled */
+  pickFiles: (accept: string) => Promise<string[]>;
+  /** a failure said where the person can see it (the page's error line), not swallowed by a panel */
+  report: (message: string) => void;
   /** files from this computer into the project (their paths, project-relative): the panel's BGM upload */
   importFiles: (files: File[]) => Promise<string[]>;
   /** a picture's background taken out by the person's service: a new picture beside it */

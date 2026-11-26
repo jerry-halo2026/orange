@@ -868,11 +868,13 @@ export function MixPanel({ id, data }: { id: string; data: MixData }) {
   };
   const setScript = (next: Record<string, unknown>) => patch({ script: { ...script, ...next } });
   const voiceFiles = Array.isArray(recipe.voiceFiles) ? recipe.voiceFiles : [];
-  const addVoiceFiles = async (list: File[]) => {
-    if (!list.length) return;
-    const paths = await board.importFiles(list);
-    if (!paths.length) return;
-    patch({ voiceFiles: [...voiceFiles, ...paths.map((path) => ({ path, text: '', subtitleMode: 'recognize' }))] });
+  /* the canvas's own dialog, not this toolbar's (a portal's `<input type=file>` does not open one), and a failure said
+     where the person sees it rather than swallowed */
+  const pickVoiceFiles = () => {
+    void board.pickFiles('audio/*').then((paths) => {
+      if (!paths.length) return;
+      patch({ voiceFiles: [...voiceFiles, ...paths.map((path) => ({ path, text: '', subtitleMode: 'recognize' }))] });
+    }).catch((error: unknown) => board.report(error instanceof Error ? error.message : String(error)));
   };
   const setParams = (next: Record<string, unknown>) => patch({ params: { ...params, ...next } });
   const services = (library?.providers ?? []).filter((service) => ['minimax', 'qwen', 'elevenlabs', 'inworld', 'cartesia'].includes(service.id));
@@ -974,10 +976,9 @@ export function MixPanel({ id, data }: { id: string; data: MixData }) {
                 <button type="button" aria-label="移除" onClick={() => patch({ voiceFiles: voiceFiles.filter((row) => row.path !== file.path) })}><X size={11} /></button>
               </span>
             ))}
-            <label className="flex h-6 cursor-pointer items-center gap-1 rounded-[8px] border border-[var(--cv-line)] px-2 text-[12px]">
+            <button type="button" className="flex h-6 items-center gap-1 rounded-[8px] border border-[var(--cv-line)] px-2 text-[12px]" onClick={pickVoiceFiles}>
               <Plus size={12} />上传配音
-              <input type="file" accept="audio/*" multiple className="hidden" onChange={(event) => { void addVoiceFiles([...(event.currentTarget.files ?? [])]); event.currentTarget.value = ''; }} />
-            </label>
+            </button>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-[11.5px] text-[var(--cv-ink-3)]">
             <label className="flex items-center gap-1">{t('canvas.mix.count')}

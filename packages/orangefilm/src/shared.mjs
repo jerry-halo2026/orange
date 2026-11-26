@@ -118,8 +118,8 @@ export function outDir(root, sub) {
 }
 
 /** A path as the user should see it: relative when it is under the current folder. */
-export function shown(path) {
-  const rel = relative(process.cwd(), path);
+export function shown(path, base = process.cwd()) {
+  const rel = relative(base, path);
   return rel && !rel.startsWith('..') ? rel : path;
 }
 

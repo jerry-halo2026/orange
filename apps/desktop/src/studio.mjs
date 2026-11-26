@@ -4,14 +4,14 @@
 /**
  * Runs Studio for the window (src/studio-process.mjs, in a utility process) and keeps it running.
  *
- * One Studio per machine: when `openfilm open` already started one, it is asked to stop (`POST /api/quit`, after it
+ * One Studio per machine: when `orangefilm open` already started one, it is asked to stop (`POST /api/quit`, after it
  * has written its history) and the app's takes its place, on the same port, so the address agents and bookmarks
  * know keeps working. When the port is held by something else, Studio takes any free one.
  *
  * Asked to stop only once nothing is being exported or made (`whenIdle`): either cut off is lost. While one runs, that
  * Studio says no; the window does not wait for it (an export can take many minutes) but starts its own on another
  * port, and the other one is asked again every few seconds until it has stopped. Its pages lose their Studio then;
- * the window, agents' `openfilm` commands and run.json are the app's from the start.
+ * the window, agents' `orangefilm` commands and run.json are the app's from the start.
  */
 import { readIsolationProfile } from './isolation.mjs';
 import { brandProductName } from './brand.mjs';
@@ -32,13 +32,14 @@ export function windowEditorDirectory({packaged,isolated,explicit,bundled}) {
   return explicit;
 }
 
-/** The Studio `openfilm open` started, if it answers. */
+/** The Studio `orangefilm open` started, if it answers. */
 async function advertised(home) {
   let run;
   try { run = JSON.parse(readFileSync(join(home, 'run.json'), 'utf8')); } catch { return null; }
   try {
     const health = await (await fetch(`${run.origin}/api/health`, { signal: AbortSignal.timeout(1500) })).json();
-    return health.product === 'openfilm-studio' ? run : null;
+    return health.product === 'orangefilm-studio' || health.product === 'orangefilm-studio'
+      || (Array.isArray(health.products) && health.products.includes('orangefilm-studio')) ? run : null;
   } catch { return null; }
 }
 
@@ -72,15 +73,15 @@ async function takeOver(home, log) {
 
 /**
  * @param {{ home: string, port: number, env: Record<string, string>, onOpen: (url: string) => void,
- *           onBrowser: (state: { state: string, message?: string }) => void, onAsk?: AskHandler, log: (line: string) => void }} options
+ *           onBrowser: (state: { state: string, message?: string }) => void, onAsk?: AskHandler, onPick?: PickHandler, log: (line: string) => void }} options
  * @returns {Promise<{ origin: string, filmOrigin: string, key: string, child: Electron.UtilityProcess }>}
  */
-async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire, onAuthRetired, log }) {
+async function fork({ port, env, onOpen, onBrowser, onAsk, onPick, onAuth, onAuthRetire, onAuthRetired, log }) {
   const { utilityProcess } = await import('electron');
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(ENTRY, [], {
       serviceName: `${PRODUCT} Studio`,
-      env: { ...env, OPENFILM_STUDIO_PORT: String(port) },
+      env: { ...env, ORANGE_STUDIO_PORT: String(port) },
       stdio: 'pipe',
     });
     child.stdout?.on('data', (d) => log(String(d)));
@@ -99,6 +100,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
       } else if (message?.type === 'open') onOpen(message.url);
       else if (message?.type === 'browser' || message?.type === 'ffmpeg') onBrowser(message);
       else if (message?.type === 'ask' || message?.type === 'ask-cancel') onAsk?.(message, (answer) => child.postMessage(answer));
+      else if (message?.type === 'pick') onPick?.(message, (answer) => child.postMessage(answer));
       else if (message?.type === 'auth') onAuth?.(message.state, message.scope);
       else if (message?.type === 'auth-retire') {
         void Promise.resolve().then(()=>onAuthRetire?.()).then(ok=>child.postMessage({type:'auth-parent-retired',id:message.id,ok:ok===true}),()=>child.postMessage({type:'auth-parent-retired',id:message.id,ok:false}));
@@ -117,6 +119,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
  * A question Studio asks the person's agent (`{ type: 'ask', id, text }`, or `{ type: 'ask-cancel', id }` to stop
  * it), and how its answer goes back: `{ type: 'answer', id, text }` or `{ type: 'answer', id, error, code? }`.
  * @typedef {(message: { type: 'ask' | 'ask-cancel', id: string, text?: string }, reply: (answer: Record<string, unknown>) => void) => void} AskHandler
+ * @typedef {(message: { type: 'pick', id: string, kind?: 'folder' | 'files', options?: Record<string, unknown> }, reply: (answer: Record<string, unknown>) => void) => void} PickHandler
  */
 
 /**
@@ -124,7 +127,7 @@ async function fork({ port, env, onOpen, onBrowser, onAsk, onAuth, onAuthRetire,
  * `onAsk` answers Studio's questions for the person's agent (studio-process.mjs askAgent).
  * @param {{ home: string, port: number, env: Record<string, string>, onOpen: (url: string) => void,
  *           onBrowser: (state: { state: string, message?: string }) => void, onExit: (code: number) => void,
- *           onAsk?: AskHandler, onAuth?: (state: {kind:string,reason:string|null}, scope?:string|null)=>void, onAuthRetire?:()=>Promise<boolean>, onAuthRetired?:()=>void, log: (line: string) => void }} options
+ *           onAsk?: AskHandler, onPick?: PickHandler, onAuth?: (state: {kind:string,reason:string|null}, scope?:string|null)=>void, onAuthRetire?:()=>Promise<boolean>, onAuthRetired?:()=>void, log: (line: string) => void }} options
  */
 export async function startWindowStudio(options, {takeover=takeOver,forkStudio=fork} = {}) {
   const isolation = readIsolationProfile(options.env);

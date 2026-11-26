@@ -19,7 +19,7 @@ prepare(dir);
 const { PATH } = await loginShellEnvironment();
 const app = await electron.launch({
   executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
-  env: { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir },
+  env: { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir },
 });
 let page;
 try {
@@ -63,8 +63,8 @@ try {
     });
   });
   await app.context().addInitScript(() => {
-    localStorage.setItem('openfilm.language', 'en');
-    localStorage.setItem('openfilm.local-agents.v2', JSON.stringify({ picked: 'byok', prefs: { byok: { model: 'model-y', effort: 'medium' } }, options: {} }));
+    localStorage.setItem('orangefilm.language', 'en');
+    localStorage.setItem('orangefilm.local-agents.v2', JSON.stringify({ picked: 'byok', prefs: { byok: { model: 'model-y', effort: 'medium' } }, options: {} }));
   });
   const run = JSON.parse(readFileSync(join(dir, 'home/run.json'), 'utf8'));
   await signIn(run, auth);
@@ -98,7 +98,7 @@ try {
   await page.getByText('Fixture answer.', { exact: true }).waitFor();
   assert.deepEqual(await app.evaluate(() => globalThis.conversationAgentSent), { model: 'model-x', effort: 'high' }, 'the next message uses the conversation\'s model and effort');
   await page.waitForFunction(async (project) => {
-    const { sessions } = await window.openfilmNative.chat.load(project);
+    const { sessions } = await window.orangefilmNative.chat.load(project);
     return sessions.find((s) => s.id === 'saved')?.turns === 2;
   }, film);
   assert.deepEqual(loadChat(film).sessions.find((s) => s.id === 'saved').agentPrefs.byok, { model: 'model-x', effort: 'high' }, 'sending preserves the saved effort');

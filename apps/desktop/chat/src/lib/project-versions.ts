@@ -1,7 +1,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-import type { Turn, LibraryVideo, PromptDisplay, TurnAttachment } from '@openfilm/shared';
+import type { Turn, LibraryVideo, PromptDisplay, TurnAttachment } from '@orange/shared';
 import { readFileChanges, type FileChange, type TurnFileChanges } from './file-changes.ts';
 import { readBalance, type Balance, type TurnBalance } from './balance.ts';
 

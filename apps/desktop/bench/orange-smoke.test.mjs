@@ -19,7 +19,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { _electron as electron } from 'playwright-core';
-import { filmHtml } from 'openfilm/film-doc';
+import { filmHtml } from 'orangefilm/film-doc';
 import { DESKTOP, prepare, signIn, withBenchAuth } from './app.mjs';
 import { launcherEnvironment, loginShellEnvironment } from '../src/environment.mjs';
 
@@ -53,7 +53,7 @@ test('the bench app signs in, opens a film, the cloud-steward tab answers, a sti
   const { PATH } = await loginShellEnvironment();
   const app = await electron.launch({
     executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
-    env: { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir },
+    env: { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir },
   });
   let page;
   /** Each link of the chain, as it went: the run's own report, whatever the verdict turns out to be. */
@@ -128,7 +128,7 @@ test('the bench app signs in, opens a film, the cloud-steward tab answers, a sti
       }
       assert.ok(page, 'the film never opened in the window');
       await page.waitForSelector('[data-timeline]', { timeout: 90_000 });
-      await page.evaluate(() => localStorage.setItem('openfilm.language', 'zh-CN'));
+      await page.evaluate(() => localStorage.setItem('orangefilm.language', 'zh-CN'));
       await page.reload({ waitUntil: 'domcontentloaded' });
       await page.waitForSelector('[data-timeline]', { timeout: 90_000 });
       return 'the film on screen';

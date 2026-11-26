@@ -195,7 +195,7 @@ test('a supplier failure reaches the client as the fixed code and status, never 
     const response=await fetch(h.base+'/api/materials/list',{headers:{authorization:await bearer()}});
     assert.equal(response.status,403);
     const body=await response.json();
-    assert.equal(body.code,'authorization-denied');
+    assert.equal(body.code,'provider-permission-denied');
     assert.doesNotMatch(JSON.stringify(body),/fixture_secret|fixture_company|20022/);
 
     h.queue.push(()=>Response.json({success:false,code:20001}));

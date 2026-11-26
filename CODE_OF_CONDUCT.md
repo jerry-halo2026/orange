@@ -1,6 +1,6 @@
 # Code of conduct
 
-OpenFilm is made by people from many places, with different backgrounds and levels of experience. We want every one
+OrangeFilm is made by people from many places, with different backgrounds and levels of experience. We want every one
 of them to feel welcome here: in issues, pull requests, Discussions and anywhere else the project meets.
 
 ## What we ask
@@ -13,7 +13,7 @@ of them to feel welcome here: in issues, pull requests, Discussions and anywhere
 
 ## Reporting
 
-If someone makes you or others feel unwelcome, write to **support@openfilm.dev**. Say what happened and where, with
+If someone makes you or others feel unwelcome, write to [the issues](https://github.com/jerry-halo2026/orange/issues). Say what happened and where, with
 links if you have them. Reports are read by the maintainers and kept private.
 
 ## What maintainers may do

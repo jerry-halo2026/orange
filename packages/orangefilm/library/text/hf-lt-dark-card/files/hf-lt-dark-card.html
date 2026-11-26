@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=800, height=176" />
+    <title>Lower third, dark card</title>
+    <!--
+      A lower third, after HyperFrames' block `lt-dark-card`.
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 800px; height: 176px; background: transparent; overflow: hidden; }
+      :root { --lt-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; --lt-accent: #62d0ff; --lt-ink: #f5f7fa; --lt-card: #14161c; }
+      #root { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+      .lt { display: flex; align-items: stretch; border-radius: 14px; overflow: hidden;
+            background: var(--lt-card); box-shadow: 0 16px 40px rgba(0,0,0,.45); font-family: var(--lt-font);
+            will-change: transform, opacity; }
+      .lt-accent { width: 6px; background: var(--lt-accent); transform-origin: 50% 0; }
+      .lt-body { padding: 20px 32px 22px 24px; display: flex; flex-direction: column; gap: 6px; }
+      .lt-name { font-size: 42px; font-weight: 700; color: var(--lt-ink); line-height: 1.06; white-space: nowrap; }
+      .lt-role { font-size: 21px; font-weight: 400; color: #9aa4b2; line-height: 1.2; letter-spacing: .03em; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="card" class="lt">
+      <div id="accent" class="lt-accent"></div>
+      <div class="lt-body">
+        <div id="name" class="lt-name">Ada Lovelace</div>
+        <div id="role" class="lt-role">Mathematician · Writer</div>
+      </div>
+    </div></div>
+
+    <script>
+      const DURATION = 4.8;
+      const card = document.getElementById('card');
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const in2 = (x) => x * x;
+      const accent = document.getElementById('accent');
+      const name = document.getElementById('name');
+      const role = document.getElementById('role');
+      function inside(t) {
+        accent.style.transform = `scaleY(${out3(at(t, 0.1, 0.45)).toFixed(4)})`;
+        const p = out3(at(t, 0.16, 0.55));
+        card.style.transform = `translateY(${(26 * (1 - p)).toFixed(2)}px)`;
+        card.style.opacity = String(p);
+        const n = out2(at(t, 0.3, 0.45));
+        name.style.opacity = String(n);
+        const r = out2(at(t, 0.42, 0.45));
+        role.style.opacity = String(r);
+      }
+      function draw(t) {
+        const out = in2(at(t, 4.3, 0.35));
+        card.style.opacity = String(1 - out);
+        card.style.transform = `translateY(${(18 * out).toFixed(2)}px)`;
+        card.style.visibility = t >= 4.75 ? 'hidden' : 'visible';
+        inside(t);
+      }
+      window.film = {
+        duration: DURATION,
+        width: 800,
+        height: 176,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

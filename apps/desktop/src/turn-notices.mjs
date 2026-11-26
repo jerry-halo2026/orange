@@ -2,13 +2,13 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The system notifications for the chat's turns, while OpenFilm is not in front (#230): a turn done, one stopped by an
+ * The system notifications for the chat's turns, while OrangeFilm is not in front (#230): a turn done, one stopped by an
  * error, and an agent waiting for the person's answer (a question, a permission). Clicking one shows its project's tab
  * (main.mjs). Settings › General switches them off (`notify`, chat-ipc.mjs preferences).
  *
  * Pure: no Electron, so `node --test` runs it.
  */
-import { redact } from 'openfilm/problems';
+import { redact } from 'orangefilm/problems';
 import { TURN_NOTICE_WORDS } from './i18n/turn-notices.mjs';
 
 /**
@@ -23,7 +23,7 @@ export function turnOutcome(result) {
 }
 
 /**
- * A notification's title and words, or null for none: OpenFilm in front (the person sees the chat), or notifications
+ * A notification's title and words, or null for none: OrangeFilm in front (the person sees the chat), or notifications
  * switched off. The project is the title. An error is redacted, as a problem report is (a notification shows on the
  * lock screen and stays in Notification Center and Action Center), and cut long: it shows a line or two.
  * @param {'done' | 'failed' | 'asking'} kind

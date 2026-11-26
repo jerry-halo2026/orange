@@ -44,9 +44,9 @@ importers:
       electron-updater:
         specifier: 6.8.9
         version: 6.8.9
-      openfilm:
+      orangefilm:
         specifier: workspace:*
-        version: link:../../packages/openfilm
+        version: link:../../packages/orangefilm
       undici:
         specifier: 8.12.2
         version: 8.12.2
@@ -57,7 +57,7 @@ importers:
       '@lexical/react':
         specifier: ^0.49.0
         version: 0.49.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@5.9.3)(yjs@13.6.33)
-      '@openfilm/shared':
+      '@orange/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@tailwindcss/vite':
@@ -115,7 +115,7 @@ importers:
         specifier: ^5.0.14
         version: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
 
-  packages/openfilm:
+  packages/orangefilm:
     dependencies:
       playwright-core:
         specifier: 1.61.1

@@ -78,6 +78,7 @@ public static class EnginePathsSource
             FFmpeg = values["FFmpeg"],
             FFprobe = values["FFprobe"],
             FFmpeg6 = values.GetValueOrDefault("FFmpeg6", string.Empty),
+            FontsDir = values.GetValueOrDefault("FontsDir", string.Empty),
             TransitionsDir = values["TransitionsDir"],
             AssetsRoot = values["AssetsRoot"],
             LocalAssetsRoot = values["LocalAssetsRoot"],

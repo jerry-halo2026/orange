@@ -15,7 +15,7 @@
 
 ## 1 结论
 
-1. HyperFrames 是**HTML 原生**的“网页→视频”框架，Apache-2.0，与本项目 [SPEC.md](../../packages/openfilm/SPEC.md) 的 Protocol 0.1 在**契约层高度同构**：都是“无头 Chrome 逐帧求值 + FFmpeg 编码，永不播放”，都要求“同一 t 同一帧”。`[仓库][文档]`
+1. HyperFrames 是**HTML 原生**的“网页→视频”框架，Apache-2.0，与本项目 [SPEC.md](../../packages/orangefilm/SPEC.md) 的 Protocol 0.1 在**契约层高度同构**：都是“无头 Chrome 逐帧求值 + FFmpeg 编码，永不播放”，都要求“同一 t 同一帧”。`[仓库][文档]`
 2. 它的**素材价值在 `registry/`**：实测 **457 条**（blocks 210 / components 238 / examples 9），其中 **231 条带 variables**（可参数化）；交付形态是**单文件 HTML 片段**，不是运行时依赖。`[仓库]`
 3. 它的**底座价值为零**：`@hyperframes/engine|producer|studio|cli` 是一整套渲染/编辑/发布体系，我们用 playwright + ffmpeg + Studio 已经覆盖，引入即第二套底座。`[仓库]`
 4. 两边有 **4 处真实差异**必须在搬运时改：`data-start/data-duration` → `at`；`data-track-index`（只是编辑器行，层叠靠 `z-index`）→ `<section>` 顺序；`window.__timelines[id]` → `window.film.frame(t)`；合成内 `<audio>` → 时间线声音 clip（**我们的页面无声**）。`[仓库][文档]`
@@ -111,7 +111,7 @@ Frame adapter 契约原文要求：帧数有限非负、支持正/反/随机 see
 
 ### 3.4 与我们 Protocol 0.1 的映射
 
-| 维度 | HyperFrames | OpenFilm Protocol 0.1 | 搬运动作 |
+| 维度 | HyperFrames | OrangeFilm Protocol 0.1 | 搬运动作 |
 | --- | --- | --- | --- |
 | 画面单位 | `data-composition-id` 的 div | 页面 `*.html` + `window.film` | 片段包成一个 page |
 | 时间 | `data-start` / `data-duration`（相对引用要算） | `at` + `src#t=in,out` | 算成绝对值 |
@@ -288,7 +288,7 @@ Frame adapter 契约原文要求：帧数有限非负、支持正/反/随机 see
 ### P0（先做，收益最高、风险最低）
 
 1. **转场 8 条 → 重写进 `library/transitions/`**：`whip-pan`、`sdf-iris`、`flash-through-white`、`light-leak`、`glitch`、`beat-freeze-cut`、`ridged-burn`、`swirl-vortex`
-   验收：`openfilm get transition --prompt "whip pan"` 命中；`--take` 打印 clip 行；`openfilm look` 逐帧对照原 preview。
+   验收：`orangefilm get transition --prompt "whip pan"` 命中；`--take` 打印 clip 行；`orangefilm look` 逐帧对照原 preview。
 2. **字幕样式 6 条 → 重写进 `library/text/`**（或 `fonts/` 下的 caption 组）：`caption-highlight`、`caption-kinetic-slam`、`caption-pill-karaoke`、`caption-neon-glow`、`caption-matrix-decode`、`caption-clip-wipe`
 3. **下三分之一 5 条**：`lt-clean-bar`、`lt-bold-block`、`lt-mask-reveal`、`lt-side-rule`、`news-ticker`（我们已有 `news-ticker` 风格，注意去重）
 4. 每进一条：`saved.json` + `files/` + `poster.jpg` + `preview.mp4`，再跑
@@ -312,10 +312,10 @@ Frame adapter 契约原文要求：帧数有限非负、支持正/反/随机 see
 
 | 项 | 状态 | 怎么验 |
 | --- | --- | --- |
-| WebGPU 在 `playwright-core` 内置 Chromium 下能否稳定抓帧 | 未验证 | 拿 `aurora`/`mesh-gradient` 原片段包壳，`openfilm look 0-2` 看是否空白/错帧 |
+| WebGPU 在 `playwright-core` 内置 Chromium 下能否稳定抓帧 | 未验证 | 拿 `aurora`/`mesh-gradient` 原片段包壳，`orangefilm look 0-2` 看是否空白/错帧 |
 | WebGL 片段是否需要 `preserveDrawingBuffer` 之外的处理（合成层、DPR） | 未验证 | 同上，含 `preserveDrawingBuffer: true` 对照 |
 | GSAP 包体（约 50 KB min）与首帧 `ready` 时序 | 未验证 | 打包后看 `ready` 是否覆盖 timeline 构建 |
-| `SVG filter`（`feTurbulence` 等）在 1080p 的渲染耗时 | 未验证 | `openfilm render` 计时，对比纯 CSS |
+| `SVG filter`（`feTurbulence` 等）在 1080p 的渲染耗时 | 未验证 | `orangefilm render` 计时，对比纯 CSS |
 | HyperFrames `examples` 的 `<template>` 结构能否一对一映射 | 部分 | 只读了 compositions 文档，未逐个读 9 个 example |
 | Animista 生成的 keyframes 是否全部 t 可定格（有无 `transition`/JS 依赖） | 未验证 | 抽样 10 条跑 `look a-b` |
 | `library/` 引入重写后的条目对 `search.json` 体积的影响 | 未验证 | 每批后看 `search.json` 大小与检索延迟 |

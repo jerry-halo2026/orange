@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=720, height=150" />
+    <title>Notification, macOS</title>
+    <!--
+      A social card, after HyperFrames' `macos-notification`.
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 720px; height: 150px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --n-accent: #0a84ff; --n-ink: #1d1d1f; --n-card: rgba(250,250,252,.92); --n-muted: #6e6e73; --n-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; display: flex; align-items: center; padding: 10px; }
+      .n-card { width: 690px; display: flex; gap: 14px; align-items: center; padding: 14px 18px;
+                background: var(--n-card); border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,.35);
+                will-change: transform, opacity; }
+      .n-icon { width: 46px; height: 46px; border-radius: 11px; background: var(--n-accent); flex-shrink: 0; }
+      .n-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+      .n-title { font-size: 18px; font-weight: 650; color: var(--n-ink); }
+      .n-body { font-size: 16px; color: var(--n-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .n-when { margin-left: auto; font-size: 14px; color: var(--n-muted); }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="card" class="n-card">
+      <div class="n-icon"></div>
+      <div class="n-main"><div class="n-title">Render finished</div><div class="n-body">launch-video.mp4 · 12.4 MB</div></div>
+      <div class="n-when">now</div>
+    </div></div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const card = document.getElementById('card');
+      function draw(t) {
+        const drop = out3(at(t, 0.12, 0.5));
+        const lift = in2(at(t, 3.3, 0.35));
+        card.style.transform = `translateY(${(-90 * (1 - drop) - 40 * lift).toFixed(2)}px)`;
+        card.style.opacity = String(Math.min(drop, 1 - lift));
+      }
+      const DURATION = 4;
+
+      window.film = {
+        duration: DURATION,
+        width: 720,
+        height: 150,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

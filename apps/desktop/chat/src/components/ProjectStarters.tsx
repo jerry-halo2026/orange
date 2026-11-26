@@ -8,7 +8,7 @@
  * cards, each its cover and its name, two to a row. A card names its skill in the message being written (Enter
  * starts it, or a few words more say what to make with it), installed or not: as the library's Try now, the skill is
  * given to that conversation, nothing installed. Under them, "More skills" opens the library's skills on Discover, all
- * of OpenFilm's, and "Start from an example" the projects window's examples: one copied into a new project, or followed
+ * of OrangeFilm's, and "Start from an example" the projects window's examples: one copied into a new project, or followed
  * by the agent here.
  */
 import React from 'react';

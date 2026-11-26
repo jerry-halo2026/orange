@@ -102,7 +102,7 @@ test('a picture opens in a light viewer: dimmed window, picture centered at its 
     assert.equal(await dialog.getByText(/A thumbnail kept with the message/).isVisible(), true, 'a thumbnail says so');
     await picture.click({ button: 'right' });
     assert.equal(await page.getByRole('menuitem', { name: 'Download' }).count(), 0, 'a thumbnail has no Download: it would pass for the original');
-    if (process.env.OPENFILM_PREVIEW_SHOT) await page.screenshot({ path: process.env.OPENFILM_PREVIEW_SHOT });
+    if (process.env.ORANGE_PREVIEW_SHOT) await page.screenshot({ path: process.env.ORANGE_PREVIEW_SHOT });
     await page.keyboard.press('Escape');
     await dialog.waitFor({ state: 'hidden' });
     assert.deepEqual(errors, []);

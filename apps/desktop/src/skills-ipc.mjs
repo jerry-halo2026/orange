@@ -2,15 +2,15 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The skills and MCP servers the chat and Settings show (apps/desktop/src/agent-skills.mjs, openfilm/skills).
+ * The skills and MCP servers the chat and Settings show (apps/desktop/src/agent-skills.mjs, orangefilm/skills).
  *
  * For the composer's Skills button:
- *   desktop:skills:list     { project, agent } → { openfilm: [Skill], own: { agent, filtered, skills: [OwnSkill] }, mine }
- *                           OpenFilm's skills (the project's, the person's own, the official ones), and the agent's
+ *   desktop:skills:list     { project, agent } → { orangefilm: [Skill], own: { agent, filtered, skills: [OwnSkill] }, mine }
+ *                           OrangeFilm's skills (the project's, the person's own, the official ones), and the agent's
  *                           own skills with whether each is let in (`filtered` false: it has them all, as in its own
- *                           terminal). OpenFilm's own skill for terminal agents is never among them (agent-skills isOurs).
+ *                           terminal). OrangeFilm's own skill for terminal agents is never among them (agent-skills isOurs).
  *   desktop:skills:texts    { project, agent, names } → [{ name, text }]   skills named in a message, as the agent reads
- *                           each (its folder and its SKILL.md whole): any of OpenFilm's but those turned off, an official one
+ *                           each (its folder and its SKILL.md whole): any of OrangeFilm's but those turned off, an official one
  *                           installed or not (Try now, a skill to start from)
  *   desktop:skills:preview  { url } | { folder } → { ok, id, skills: [{ name, description, scripts, size, replaces }] }
  *                           | { ok: false, error } | { ok: false, cancelled }   a GitHub or GitLab address fetched beside
@@ -22,13 +22,13 @@
  *   desktop:skills:reveal   the person's own skills folder in the file manager
  * For Settings → Agents:
  *   desktop:agents:skills   { id } → { filtered, skills: [{ name, description, allowed }] }   the skills the person
- *                           installed in an agent, each let into OpenFilm or not
+ *                           installed in an agent, each let into OrangeFilm or not
  *   desktop:skills:allow    { agent, name, allowed } → { ok }   one let in, or not: the agent's sessions take it up
  *   desktop:agents:mcp      { id } → { filtered, servers: [{ name, detail, allowed }] }   the same for MCP servers
  *   desktop:agents:mcp-allow { id, name, allowed } → { ok }
  *
  * `project` is a folder Studio has as a project, as for the chat's record (chat-ipc.mjs). The person's own skills kept
- * in Studio's home before are moved beside the projects as this starts (openfilm/skills migrateMySkills).
+ * in Studio's home before are moved beside the projects as this starts (orangefilm/skills migrateMySkills).
  * Reads no Electron module, so `node --test` can use it.
  */
 import { createRequire } from 'node:module';
@@ -41,8 +41,8 @@ import { loginShellVariables } from './environment.mjs';
 
 const require = createRequire(import.meta.url);
 /* by their file URLs: import() takes no Windows path (`D:\…`) */
-const lib = () => import(pathToFileURL(require.resolve('openfilm/skills')).href);
-const cli = () => import(pathToFileURL(require.resolve('openfilm/skills-cli')).href);
+const lib = () => import(pathToFileURL(require.resolve('orangefilm/skills')).href);
+const cli = () => import(pathToFileURL(require.resolve('orangefilm/skills-cli')).href);
 
 /** A skill as the page shows it: by the name the agent is given it by (`as`, agentNames), and its uid. */
 const shown = (s) => ({ name: s.as ?? s.name, uid: s.uid, description: s.description, source: s.source, folder: s.folder, scripts: s.scripts ?? [], ...(s.over ? { over: s.over } : {}), ...(s.shown ? { shown: s.shown } : {}) });
@@ -78,11 +78,11 @@ export function registerSkillsIpc(ipcMain, { trusted, projects, dataDir, mine, p
     if (!trusted(event)) throw new Error('not the window\'s page');
     try { return await fn(opts ?? {}); } catch (e) { log(`${channel}: ${e.message}\n`); throw e; }
   });
-  /* the skills the person installed in the agent (OpenFilm's own for terminal agents never among them) */
+  /* the skills the person installed in the agent (OrangeFilm's own for terminal agents never among them) */
   const agentOwn = async (agent, cwd) => (agent && agent !== 'byok'
     ? (await ownSkills(agent, { cwd: cwd ?? '', env: await loginShellVariables({ staleOk: true }) })).filter((s) => !s.ours) : []);
 
-  /* OpenFilm's skills for a project as agents are offered them, each by the name it is given by (openfilm/skills offeredSkills) */
+  /* OrangeFilm's skills for a project as agents are offered them, each by the name it is given by (orangefilm/skills offeredSkills) */
   const offered = async (cwd) => (await lib()).offeredSkills({ project: cwd, mine, ...(prefsHome ? { home: prefsHome } : {}) });
 
   handle('desktop:skills:list', async ({ project: path, agent }) => {
@@ -90,7 +90,7 @@ export function registerSkillsIpc(ipcMain, { trusted, projects, dataDir, mine, p
     const allowed = new Set(store.allowed(agent));
     return {
       /* installed and on (Studio's Skills) */
-      openfilm: (await offered(cwd)).usable.map(shown),
+      orangefilm: (await offered(cwd)).usable.map(shown),
       own: { agent, filtered: FILTERED_AGENTS.includes(agent), skills: (await agentOwn(agent, cwd)).map((s) => ({ name: s.name, description: s.description, folder: s.folder, allowed: allowed.has(s.name) })) },
       mine,
     };
@@ -100,12 +100,12 @@ export function registerSkillsIpc(ipcMain, { trusted, projects, dataDir, mine, p
     const cwd = await project(path);
     const { readSkill, skillText } = await lib();
     const wanted = Array.isArray(names) ? names.filter((n) => typeof n === 'string') : [];
-    /* named in the message: any of OpenFilm's but those turned off, an official one installed or not (Try now), by
+    /* named in the message: any of OrangeFilm's but those turned off, an official one installed or not (Try now), by
        the name the agent knows it by */
-    const openfilm = new Map((await offered(cwd)).named.map((s) => [s.as, s]));
+    const orangefilm = new Map((await offered(cwd)).named.map((s) => [s.as, s]));
     const own = new Map((await agentOwn(agent, cwd)).map((s) => [s.name, s]));
     return wanted.flatMap((name) => {
-      const skill = openfilm.get(name) ?? (own.has(name) ? readSkill(own.get(name).folder, 'mine') : null);
+      const skill = orangefilm.get(name) ?? (own.has(name) ? readSkill(own.get(name).folder, 'mine') : null);
       return skill ? [{ name, text: skillText(skill) }] : [];
     });
   });
@@ -162,7 +162,7 @@ export function registerSkillsIpc(ipcMain, { trusted, projects, dataDir, mine, p
     return { filtered: FILTERED_AGENTS.includes(agent), skills: (await agentOwn(agent, '')).map((s) => ({ name: s.name, description: s.description, allowed: allowed.has(s.name) })) };
   });
 
-  /* one of OpenFilm's skills turned on or off (Studio's Skills): every agent's sessions take it up */
+  /* one of OrangeFilm's skills turned on or off (Studio's Skills): every agent's sessions take it up */
   handle('desktop:skills:changed', async () => { refreshSkills(); return { ok: true }; });
 
   handle('desktop:skills:allow', async ({ agent, name, allowed }) => {

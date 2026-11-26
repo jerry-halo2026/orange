@@ -8,7 +8,7 @@
  *
  * 七步，按依赖顺序，每一步都自己打印一行，失败就在那一步停下并**非零退出**（绝不半启动：窗口只在第 7 步才派生）：
  *
- *   1. 环境     解析 `.dev/auth-runtime.json`（缺省回落到 `packages/openfilm/src/auth-environment.mjs` 的
+ *   1. 环境     解析 `.dev/auth-runtime.json`（缺省回落到 `packages/orangefilm/src/auth-environment.mjs` 的
  *               `LOCAL_DOCKER`，并提示一句）；把 `ORANGE_AUTH_CONFIG_FILE` / `ORANGE_FISSION_CONFIG_FILE`
  *               导给后面所有子进程。publishableKey 永不打印。
  *   2. 依赖服务 本地 Postgres（compose 服务 `db`，容器 `orange-w1-db`，`127.0.0.1:55432`）：先探 `select 1`；
@@ -17,7 +17,7 @@
  *   4. 校验     `node infra/verify.mjs --json`：9 项全过才继续；否则列出 FAIL 的检查项并退出 2。
  *   5. 索引     派发已提交的 `material-index-bootstrap.mjs --detach`（detached、不阻塞、失败也不影响启动），
  *               并把 `--status` 打出来。
- *   6. 单例     `.dev/dev.pid` 指向活进程 / `~/.openfilm-dev/run.json` 的 Studio 能应答 `/api/health` →
+ *   6. 单例     `.dev/dev.pid` 指向活进程 / `~/.orangefilm-dev/run.json` 的 Studio 能应答 `/api/health` →
  *               打印「已在运行：origin …」并 exit 0，不另起第二个 Studio；死 pid 顺手清掉。
  *   7. 起应用   派生 `pnpm dev:desktop`，写 `.dev/dev.pid`（pid/origin/environmentId/startedAt），
  *               等到 Studio 的 `run.json` 出现 origin 且 `/api/health` 通过就把它打出来，退出时删 pid 文件。
@@ -35,7 +35,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import net from 'node:net';
 
-import { LOCAL_DOCKER, environmentProblems } from '../packages/openfilm/src/auth-environment.mjs';
+import { LOCAL_DOCKER, environmentProblems } from '../packages/orangefilm/src/auth-environment.mjs';
 import { startMaterialIndexBootstrap } from './dev-desktop.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -58,7 +58,7 @@ export const PATHS = Object.freeze({
   compose: (root = ROOT) => join(root, 'infra', 'docker-compose.yml'),
   migrate: (root = ROOT) => join(root, 'infra', 'migrate.mjs'),
   verify: (root = ROOT) => join(root, 'infra', 'verify.mjs'),
-  bootstrap: (root = ROOT) => join(root, 'packages', 'openfilm', 'scripts', 'material-index-bootstrap.mjs'),
+  bootstrap: (root = ROOT) => join(root, 'packages', 'orangefilm', 'scripts', 'material-index-bootstrap.mjs'),
 });
 
 /** 某一步自己失败：`step` 是第几步，`code` 是进程该退的码。 */
@@ -266,10 +266,10 @@ export function indexStatus({ root = ROOT, env = process.env, run = captureRun }
 // ---------------------------------------------------------------------------
 // 6. 单例
 // ---------------------------------------------------------------------------
-/** Studio 的 home：dev flavour 的 `~/.openfilm-dev`（`flavor.mjs`），显式 `OPENFILM_HOME` 优先。 */
+/** Studio 的 home：dev flavour 的 `~/.orangefilm-dev`（`flavor.mjs`），显式 `ORANGE_HOME` 优先。 */
 export function studioHome(env = process.env) {
-  const explicit = String(env?.OPENFILM_HOME ?? '').trim();
-  return explicit ? resolve(explicit) : join(homedir(), '.openfilm-dev');
+  const explicit = String(env?.ORANGE_HOME ?? '').trim();
+  return explicit ? resolve(explicit) : join(homedir(), '.orangefilm-dev');
 }
 
 /** `.dev/dev.pid` 的内容；不存在返回 null，坏文件返回 `{invalid:true}`。 */
@@ -290,7 +290,7 @@ export function pidAlive(pid, kill = process.kill) {
   try { kill(pid, 0); return true; } catch (error) { return /** @type {any} */ (error)?.code === 'EPERM'; }
 }
 
-/** `GET <origin>/api/health` 必须是 `product: 'openfilm-studio'`——端口上坐着别的东西不算「已在运行」。 */
+/** `GET <origin>/api/health` 必须是 `product: 'orangefilm-studio'`——端口上坐着别的东西不算「已在运行」。 */
 export async function probeStudio(origin, { fetchImpl = fetch, timeoutMs = 1500 } = {}) {
   const base = String(origin ?? '').trim().replace(/\/+$/, '');
   if (!base) return { ok: false, reason: '没有 origin 可探' };
@@ -301,7 +301,7 @@ export async function probeStudio(origin, { fetchImpl = fetch, timeoutMs = 1500 
     const response = await fetchImpl(url, { signal: controller.signal });
     if (!response?.ok) return { ok: false, reason: `${url} -> HTTP ${response?.status ?? '(无响应)'}` };
     const body = /** @type {any} */ (await response.json());
-    if (body?.product !== 'openfilm-studio') return { ok: false, reason: `${url} 不是 openfilm-studio（product=${body?.product ?? '(缺)'}）` };
+    if (body?.product !== 'orangefilm-studio') return { ok: false, reason: `${url} 不是 orangefilm-studio（product=${body?.product ?? '(缺)'}）` };
     return { ok: true, origin: base, home: body?.home ?? null };
   } catch (error) {
     const reason = /** @type {any} */ (error)?.name === 'AbortError' ? '超时' : String(/** @type {any} */ (error)?.message ?? error);
@@ -319,7 +319,7 @@ export function readRunFile({ home = studioHome(), exists = existsSync, readFile
 }
 
 /**
- * 已有实例？两条证据：`.dev/dev.pid` 的活进程，或 `~/.openfilm-dev/run.json` 的 Studio 能答 `/api/health`。
+ * 已有实例？两条证据：`.dev/dev.pid` 的活进程，或 `~/.orangefilm-dev/run.json` 的 Studio 能答 `/api/health`。
  * 死 pid / 坏 pid 文件顺手清掉。返回 `{running, origin, pid, how}` 或 `{running:false, cleaned}`。
  * @param {{root?: string, env?: NodeJS.ProcessEnv, readPid?: typeof readDevPid, alive?: typeof pidAlive,
  *   probe?: typeof probeStudio, runFile?: typeof readRunFile, log?: (line: string) => void,

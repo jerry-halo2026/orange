@@ -39,7 +39,7 @@ html[data-assets-open] body {
   --titlebar-logo-x: 6px;
 }
 
-html.openfilm-inset-titlebar {
+html.orangefilm-inset-titlebar {
   /* Room at the top of the left bar for the control group, which sits above it. Same as --nav-controls-h. */
   --inset-titlebar-h: 40px;
   /* 40: the traffic lights' centers are at y=20 (top 14 + radius 6), and 26px buttons centered in 40 land
@@ -69,7 +69,7 @@ html.openfilm-inset-titlebar {
  * The class follows the window's enter/leave-full-screen events (apps/desktop/src/main.mjs): CSS can't see
  * the window's fullscreen state, and `display-mode: fullscreen` means something else.
  */
-html.openfilm-inset-titlebar.openfilm-fullscreen {
+html.orangefilm-inset-titlebar.orangefilm-fullscreen {
   --inset-titlebar-w: 8px;
   --nav-controls-w: 97px;
   --titlebar-logo-x: 6px;
@@ -81,7 +81,7 @@ html.openfilm-inset-titlebar.openfilm-fullscreen {
  * One global rule rather than one per element: a missed one only fails in the desktop shell, in a few places,
  * and goes unnoticed. In a browser there are no drag regions and this does nothing.
  */
-html.openfilm-inset-titlebar
+html.orangefilm-inset-titlebar
   :is(button, a, input, select, textarea, [role='button'], [contenteditable='true']) {
   -webkit-app-region: no-drag;
 }
@@ -91,7 +91,7 @@ html.openfilm-inset-titlebar
    their outside-click handlers. Override inline drag styles and their descendants;
    when the last overlay unmounts, the original window drag regions return.
    Do not use role=dialog here: inline conversation cards also have that role. */
-html.openfilm-inset-titlebar:has([data-desktop-overlay]) * {
+html.orangefilm-inset-titlebar:has([data-desktop-overlay]) * {
   -webkit-app-region: no-drag !important;
 }
 
@@ -142,12 +142,12 @@ body {
 }
 
 /* ── keyframes ── */
-@keyframes openfilm-spin {
+@keyframes orangefilm-spin {
   to {
     transform: rotate(360deg);
   }
 }
-@keyframes openfilm-pulse {
+@keyframes orangefilm-pulse {
   0%,
   100% {
     opacity: 1;
@@ -157,7 +157,7 @@ body {
   }
 }
 /* a conversation at work: its light breathes (ConversationSessionBar's StatusLight) */
-@keyframes openfilm-breathe {
+@keyframes orangefilm-breathe {
   0%,
   100% {
     opacity: 0.35;
@@ -169,14 +169,14 @@ body {
   }
 }
 .status-breathe {
-  animation: openfilm-breathe 1.6s ease-in-out infinite;
+  animation: orangefilm-breathe 1.6s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .status-breathe {
     animation: none;
   }
 }
-@keyframes openfilm-rise {
+@keyframes orangefilm-rise {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -186,7 +186,7 @@ body {
     transform: translateY(0);
   }
 }
-@keyframes openfilm-shimmer {
+@keyframes orangefilm-shimmer {
   0% {
     background-position: -200% 0;
   }
@@ -196,7 +196,7 @@ body {
 }
 /* With background-size 200%, background-position moves the other way (offset = −P% × width),
    so 150% → −50% sweeps the highlight from left to right. */
-@keyframes openfilm-text-sweep {
+@keyframes orangefilm-text-sweep {
   from {
     background-position: 150% 0;
   }
@@ -204,12 +204,12 @@ body {
     background-position: -50% 0;
   }
 }
-@keyframes openfilm-tool-spin {
+@keyframes orangefilm-tool-spin {
   to {
     transform: rotate(360deg);
   }
 }
-@keyframes openfilm-vp-spin {
+@keyframes orangefilm-vp-spin {
   to {
     transform: rotate(360deg);
   }
@@ -295,12 +295,12 @@ body {
   background: var(--text);
 }
 
-.openfilm-rise {
-  animation: openfilm-rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.orangefilm-rise {
+  animation: orangefilm-rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 /* Entrance for menus and popovers. */
-@keyframes openfilm-pop {
+@keyframes orangefilm-pop {
   from {
     opacity: 0;
     transform: translateY(6px) scale(0.98);
@@ -310,18 +310,18 @@ body {
     transform: translateY(0) scale(1);
   }
 }
-.openfilm-pop {
-  animation: openfilm-pop 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.orangefilm-pop {
+  animation: orangefilm-pop 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 
 /* The indeterminate bar in BrandLoadingScreen: it says "still working", not how far along. */
-@keyframes openfilm-loading-bar {
+@keyframes orangefilm-loading-bar {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(300%); }
 }
-.openfilm-loading-bar {
-  animation: openfilm-loading-bar 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+.orangefilm-loading-bar {
+  animation: orangefilm-loading-bar 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* User menu popover */
@@ -498,7 +498,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
     var(--bg-raised) 63%
   );
   background-size: 200% 100%;
-  animation: openfilm-shimmer 1.4s ease-in-out infinite;
+  animation: orangefilm-shimmer 1.4s ease-in-out infinite;
 }
 
 /* The "working on it" line: a glint sweeps across the words. Unlike a spinner, it ties the activity to
@@ -516,7 +516,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: openfilm-text-sweep 1.8s linear infinite;
+  animation: orangefilm-text-sweep 1.8s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .text-sweep {
@@ -639,7 +639,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
  * No border: they sit inside the input card, and a ring each would make three layers of frames. All share one
  * size and icon size, since a small difference reads as misalignment. Pressed is a background, not a border.
  */
-.openfilm-composer-tool {
+.orangefilm-composer-tool {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -654,23 +654,23 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   transition: background 150ms ease, color 150ms ease;
 }
 
-.openfilm-composer-tool:hover:not(:disabled) {
+.orangefilm-composer-tool:hover:not(:disabled) {
   background: var(--bg-field);
   color: var(--text);
 }
 
-.openfilm-composer-tool[aria-pressed='true'] {
+.orangefilm-composer-tool[aria-pressed='true'] {
   background: var(--bg-pressed);
   color: var(--text);
 }
 
-.openfilm-composer-tool:disabled {
+.orangefilm-composer-tool:disabled {
   cursor: not-allowed;
   opacity: 0.45;
 }
 
 /* Composer pill buttons: outlined, a light gray fill on hover. */
-.openfilm-chat-pill {
+.orangefilm-chat-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -684,21 +684,21 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   cursor: pointer;
   transition: background 150ms ease, color 150ms ease, border-color 150ms ease, transform 120ms ease;
 }
-.openfilm-chat-pill:hover {
+.orangefilm-chat-pill:hover {
   background: var(--bg-field);
   border-color: var(--border-strong);
   color: var(--text);
 }
-.openfilm-chat-pill:active {
+.orangefilm-chat-pill:active {
   transform: scale(0.96);
 }
-.openfilm-chat-pill:disabled {
+.orangefilm-chat-pill:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
 /* Entrance for chips: a small pop. */
-@keyframes openfilm-pop-in {
+@keyframes orangefilm-pop-in {
   from {
     opacity: 0;
     transform: scale(0.9) translateY(3px);
@@ -708,24 +708,24 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
     transform: none;
   }
 }
-.openfilm-pop-in {
-  animation: openfilm-pop-in 200ms cubic-bezier(0.2, 0.8, 0.3, 1.1);
+.orangefilm-pop-in {
+  animation: orangefilm-pop-in 200ms cubic-bezier(0.2, 0.8, 0.3, 1.1);
 }
 
 /* ── Agent tool timeline ── */
-.openfilm-tool-timeline {
+.orangefilm-tool-timeline {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.openfilm-tool-step {
+.orangefilm-tool-step {
   border: 1px solid var(--border);
   border-radius: 10px;
   transition: background 0.12s ease, border-color 0.12s ease;
   background: var(--bg-raised);
   overflow: hidden;
 }
-.openfilm-tool-step-head {
+.orangefilm-tool-step-head {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -740,11 +740,11 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   position: relative;
   overflow: hidden;
 }
-.openfilm-tool-step[role='button']:hover {
+.orangefilm-tool-step[role='button']:hover {
   background: var(--bg-hover);
   border-color: var(--border-strong);
 }
-.openfilm-tool-step.is-running .openfilm-tool-step-head::after {
+.orangefilm-tool-step.is-running .orangefilm-tool-step-head::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -756,10 +756,10 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
     var(--accent-soft) 62%,
     transparent 100%
   );
-  animation: openfilm-tool-wave 1.5s ease-in-out infinite;
+  animation: orangefilm-tool-wave 1.5s ease-in-out infinite;
   pointer-events: none;
 }
-@keyframes openfilm-tool-wave {
+@keyframes orangefilm-tool-wave {
   0% {
     transform: translateX(-110%);
   }
@@ -767,7 +767,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
     transform: translateX(110%);
   }
 }
-.openfilm-tool-step-icon {
+.orangefilm-tool-step-icon {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
@@ -777,37 +777,37 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   position: relative;
   z-index: 1;
 }
-.openfilm-tool-step-icon.is-running {
+.orangefilm-tool-step-icon.is-running {
   border-radius: 50%;
   border: 1.6px solid color-mix(in srgb, var(--accent) 40%, transparent);
   border-top-color: var(--accent);
-  animation: openfilm-tool-spin 0.7s linear infinite;
+  animation: orangefilm-tool-spin 0.7s linear infinite;
 }
-.openfilm-tool-step-title {
+.orangefilm-tool-step-title {
   font-size: 12.5px;
   font-weight: 600;
   position: relative;
   z-index: 1;
 }
-.openfilm-tool-step-spacer {
+.orangefilm-tool-step-spacer {
   flex: 1;
 }
-.openfilm-tool-step-hint {
+.orangefilm-tool-step-hint {
   font-size: 11px;
   color: var(--text-muted);
   position: relative;
   z-index: 1;
 }
-.openfilm-tool-step-chevron {
+.orangefilm-tool-step-chevron {
   color: var(--text-muted);
   transition: transform 0.15s ease;
   position: relative;
   z-index: 1;
 }
-.openfilm-tool-step.is-open .openfilm-tool-step-chevron {
+.orangefilm-tool-step.is-open .orangefilm-tool-step-chevron {
   transform: rotate(90deg);
 }
-.openfilm-tool-step-body {
+.orangefilm-tool-step-body {
   border-top: 1px solid var(--border);
   margin: 0;
   padding: 10px 11px 11px;
@@ -816,10 +816,10 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   flex-direction: column;
   gap: 10px;
 }
-.openfilm-tool-io-block {
+.orangefilm-tool-io-block {
   min-width: 0;
 }
-.openfilm-tool-io-label {
+.orangefilm-tool-io-label {
   margin-bottom: 5px;
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -827,7 +827,7 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
   color: var(--text-muted);
   font-family: var(--mono);
 }
-.openfilm-tool-io-pre {
+.orangefilm-tool-io-pre {
   margin: 0;
   padding: 9px 10px;
   border: 1px solid var(--border);
@@ -844,16 +844,16 @@ html[data-focus-nav='tab'] :where(a, button, [role='button'], select, summary):f
 }
 
 /* FileTree code panel: select-all and copy follow source lines, not token spans. */
-.openfilm-file-code pre {
+.orangefilm-file-code pre {
   overflow: auto;
   user-select: text;
   -webkit-user-select: text;
 }
-.openfilm-file-code code {
+.orangefilm-file-code code {
   white-space: pre !important;
   word-break: normal;
 }
-.openfilm-file-code code span {
+.orangefilm-file-code code span {
   display: inline;
   white-space: inherit;
 }
@@ -1338,58 +1338,58 @@ body.tl-scrubbing * {
 /* Text in canvas text cards (ProseMirror). Tailwind's preflight strips list markers and heading sizes, so
    this restores them at card scale: a card is about 200px wide, so headings differ by weight and spacing,
    not size. */
-.openfilm-prose {
+.orangefilm-prose {
   font-size: 12px;
   line-height: 1.65;
   color: var(--text);
 }
-.openfilm-prose > * + * {
+.orangefilm-prose > * + * {
   margin-top: 0.5em;
 }
-.openfilm-prose h1,
-.openfilm-prose h2,
-.openfilm-prose h3 {
+.orangefilm-prose h1,
+.orangefilm-prose h2,
+.orangefilm-prose h3 {
   font-weight: 600;
   line-height: 1.35;
 }
-.openfilm-prose h1 { font-size: 15px; }
-.openfilm-prose h2 { font-size: 13.5px; }
-.openfilm-prose h3 { font-size: 12.5px; }
-.openfilm-prose ul,
-.openfilm-prose ol {
+.orangefilm-prose h1 { font-size: 15px; }
+.orangefilm-prose h2 { font-size: 13.5px; }
+.orangefilm-prose h3 { font-size: 12.5px; }
+.orangefilm-prose ul,
+.orangefilm-prose ol {
   padding-left: 1.25em;
 }
-.openfilm-prose ul { list-style: disc; }
-.openfilm-prose ol { list-style: decimal; }
-.openfilm-prose li > * + * { margin-top: 0.25em; }
-.openfilm-prose li + li { margin-top: 0.15em; }
-.openfilm-prose blockquote {
+.orangefilm-prose ul { list-style: disc; }
+.orangefilm-prose ol { list-style: decimal; }
+.orangefilm-prose li > * + * { margin-top: 0.25em; }
+.orangefilm-prose li + li { margin-top: 0.15em; }
+.orangefilm-prose blockquote {
   padding-left: 0.75em;
   border-left: 2px solid var(--border-strong);
   color: var(--text-muted);
 }
-.openfilm-prose code {
+.orangefilm-prose code {
   padding: 0.1em 0.3em;
   border-radius: 4px;
   background: var(--bg-hover);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.9em;
 }
-.openfilm-prose pre {
+.orangefilm-prose pre {
   overflow-x: auto;
   padding: 0.5em 0.65em;
   border-radius: 6px;
   background: var(--bg-hover);
 }
-.openfilm-prose pre code {
+.orangefilm-prose pre code {
   padding: 0;
   background: none;
 }
-.openfilm-prose hr {
+.orangefilm-prose hr {
   border: 0;
   border-top: 1px solid var(--border-strong);
 }
-.openfilm-prose a {
+.orangefilm-prose a {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;

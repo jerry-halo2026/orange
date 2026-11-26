@@ -26,7 +26,7 @@ test('main registers our own channels through one entry, and none of them anywhe
     assert.equal(main.includes(`ipcMain.handle('${channel}'`), false, `${channel} is not registered in main.mjs`);
     assert.equal(main.includes(`ipcMain.on('${channel}'`), false, `${channel} is not listened to in main.mjs`);
   }
-  /* the registrations OpenFilm came with stay where they were */
+  /* the registrations OrangeFilm came with stay where they were */
   for (const upstream of ['registerChatIpc(', 'registerLocalAgentIpc(', 'registerSkillsIpc(']) assert.ok(main.includes(upstream), upstream);
 });
 

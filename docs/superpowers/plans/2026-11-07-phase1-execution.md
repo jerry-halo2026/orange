@@ -6,13 +6,13 @@
 
 U1文档整理基线：70ed6107ad99d6a852c798d57840488946391f4c；执行前核最新dev头，不能从历史subject分新任务。
 
-**Goal:** 在原版 OpenFilm Windows 客户端内完成真实鉴权后的卡片首页、统一素材接缝、Fission 受控运行与原工程交接、剪口播闭环；不另造客户端或时间线。
+**Goal:** 在原版 OrangeFilm Windows 客户端内完成真实鉴权后的卡片首页、统一素材接缝、Fission 受控运行与原工程交接、剪口播闭环；不另造客户端或时间线。
 
 **Architecture:** 原 desktop HOME/项目 WebContentsView、原 Studio UI/本地编辑服务保持主工程。新增业务 TS 模块经受限桥接接入；公司凭据、本人绑定、组内准入、积分留可信 Node/TS 服务，.NET worker 只报告执行事实。
 
 **Tech Stack:** 既有 Electron / React＋TypeScript / Node＋TypeScript / Supabase Auth＋Postgres / .NET Fission；原 `.mjs` 与根 lock 保留，不重选技术栈。
 
-**Spec:** [16原生协议与平台](../../discovery/16_OpenFilm原生接口与平台对齐.md)、[17完整试用门](../../discovery/17_小范围试用交付与Goal验收.md)、 [整体设计](../../architecture/overall-design.md)、[PRD v0.16](../../06_橙子生产级重构PRD.md)、[00 v0.43](../../discovery/00_讨论基线与决策台账.md)、[07 唯一契约登记](../../discovery/07_统一数据契约草案.md)、[13 物理边界](../../discovery/13_技术架构与目录依赖基线.md)、[14 交付流程](../../discovery/14_新会话启动与开发交付流程.md)。
+**Spec:** [16原生协议与平台](../../discovery/16_OrangeFilm原生接口与平台对齐.md)、[17完整试用门](../../discovery/17_小范围试用交付与Goal验收.md)、 [整体设计](../../architecture/overall-design.md)、[PRD v0.16](../../06_橙子生产级重构PRD.md)、[00 v0.43](../../discovery/00_讨论基线与决策台账.md)、[07 唯一契约登记](../../discovery/07_统一数据契约草案.md)、[13 物理边界](../../discovery/13_技术架构与目录依赖基线.md)、[14 交付流程](../../discovery/14_新会话启动与开发交付流程.md)。
 
 状态：2026-11-07 修订3交接稿；本次U1统一后重新独审，旧审查不覆盖新内容；这份计划不是开发已经开始或机器契约已冻结的证明。历史源码/文档subject（不是当前开发头） `3a29a38ea35e488f4769927d816721e19e238076`；上游 `7713d38c8ddc860e1b8e517bb8b0f180988f8f73`；Fission `c28810bcc7704fce4ac0aa1ad8cc57d3628b12e9`。
 
@@ -56,7 +56,7 @@ U1文档整理基线：70ed6107ad99d6a852c798d57840488946391f4c；执行前核�
 | 旧 Auth 核心/测试 | 逐函数审计提取，接原 desktop；重新验证自己的开发 Supabase 目标和会话隔离 | 旧独立红黑壳、假工作区、旧宿主路径 |
 | K01/N1、K07、旧门禁/测试 | 保留原提交和测试意图；按新原版宿主/媒体修改扩充最小包再签收 | 旧通过不自动授权新工程或剪媒体 |
 | Fission 70 文件 | 同仓 worker 原内核；先隔离，再修证伪缺陷/捕获实际决策 | 不从 MP4/seed 反推工程，不启动第二套 Web UI |
-| 原 OpenFilm UI/CLI/编辑/导出 | 直接扩原组件、原操作链和原格式 | 不假造现成 edit/剪口播 CLI，不把 render 当保存 |
+| 原 OrangeFilm UI/CLI/编辑/导出 | 直接扩原组件、原操作链和原格式 | 不假造现成 edit/剪口播 CLI，不把 render 当保存 |
 
 ## 2. 最小依赖与并行图
 
@@ -92,8 +92,8 @@ T05.a 的路径纯函数、T07 的合成样例/纯算法准备可先做，不消
 - 新业务优先在现有合适接缝增加小模块；`packages/orange-application/src/{identity,assets,fission,speech,project-commands}/`仅在确有消费/构建隔离需要时登记创建，不先建一层通用应用框架，不重写原编辑服务。
 - `apps/api/src/{identity,bindings,zhishang,claims}/`：既定 Node/TS 可信服务模块；公司密钥/绑定/共享准入；非每功能新建服务。先本机隔离实例，不改生产或部署配置。
 - 原 `apps/desktop/src` main/preload、`shell/bridge.ts`：受限实例桥接、进程生命周期；新增适配薄层，不复制应用规则。
-- 原 `packages/openfilm/studio/ui/src/components` / `lib`：复用首页、素材、字幕区域；新模块可用 `Home.tsx` / `SpeechCutPane.tsx` 等名，由相应作者单写。
-- 原 `packages/openfilm/studio/server` 和 CLI：只接已校验的原工程操作，必要 `.mjs` 桥接保留原模块风格，不全量改写上游。
+- 原 `packages/orangefilm/studio/ui/src/components` / `lib`：复用首页、素材、字幕区域；新模块可用 `Home.tsx` / `SpeechCutPane.tsx` 等名，由相应作者单写。
+- 原 `packages/orangefilm/studio/server` 和 CLI：只接已校验的原工程操作，必要 `.mjs` 桥接保留原模块风格，不全量改写上游。
 - `workers/fission/src` / `tests`：保留 .NET；路径、worker协议、实际方案记录、纯逻辑与真媒体测试分别交付。
 - `.dev/phase1/<task>/<attempt>/`（忽略）和 D 盘候选运行区：隔离数据/合成媒体/输出/证据；不把测试账号、真实字幕、URL或私有配置提交公开仓。
 
@@ -105,7 +105,7 @@ T05.a 的路径纯函数、T07 的合成样例/纯算法准备可先做，不消
 **前置：** 本计划获批；当前原版提交、适用工具/环境和旧后台进程已核。
 **文件：** 原根 package/workspace/CI、desktop 启动配置；新增 `scripts/phase1-isolation.mjs` 及对应测试、任务范围/证据检查；13登记新增边界。
 **接口：** 产出固定实例ID、目录能力、运行配置与受保护任务卡版本；不定义全首版业务字段。
-- [ ] 写失败测试：默认共享 `~/.openfilm`、C盘增长、跨实例路径、根lock竞争应被拒。
+- [ ] 写失败测试：默认共享 `~/.orangefilm`、C盘增长、跨实例路径、根lock竞争应被拒。
 - [ ] 实际跑失败并记录原因；最小接入独立profile/home/projects/Saved/Library/exports/skills/下载/日志/temp/crash目录与端口，均D/E。
 - [ ] 验原版构建/类型和受影响测试，实跑越界/兼容/skip拒绝；保留N5a适用证据。
 - [ ] CI增量检查在工作分支/后续dev/PR明确触发；只开本仓受控验证，不启官方发布或付费硬件、不写真实云凭据。远端保护另批并核实，不伪称强制门禁已配置。
@@ -203,11 +203,11 @@ T05.a 的路径纯函数、T07 的合成样例/纯算法准备可先做，不消
 从批准的候选绝对路径运行，Node/pnpm版本先核对（根Node≥22.18，pnpm9.15.9，原lock）；不用裸dev启动污染共享用户目录。
 
 ```powershell
-pnpm -C "D:/dev/orange" --filter openfilm typecheck
-pnpm -C "D:/dev/orange" --filter "@openfilm/desktop" typecheck
+pnpm -C "D:/dev/orange" --filter orangefilm typecheck
+pnpm -C "D:/dev/orange" --filter "@orange/desktop" typecheck
 pnpm -C "D:/dev/orange" build
-pnpm -C "D:/dev/orange" --filter "@openfilm/desktop" test
-pnpm -C "D:/dev/orange" --filter openfilm test
+pnpm -C "D:/dev/orange" --filter "@orange/desktop" test
+pnpm -C "D:/dev/orange" --filter orangefilm test
 pnpm -C "D:/dev/orange" audit:public
 pnpm -C "D:/dev/orange" check:pack
 ```

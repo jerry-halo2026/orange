@@ -18,14 +18,14 @@ function claudeSession() {
     { type: 'user', uuid: 'u1', parentUuid: null, timestamp: at(1), message: { role: 'user', content: [{ type: 'text', text: 'Make a title' }] } },
     { type: 'attachment', uuid: 'a1', parentUuid: 'u1', timestamp: at(1), attachment: { type: 'instructions', files: [] }, rendered: [{ content: '<CLAUDE.md>be brief</CLAUDE.md>' }], renderedRole: 'user' },
     { type: 'attachment', uuid: 'a2', parentUuid: 'a1', timestamp: at(1), attachment: { type: 'credential_org', organizationUuid: 'x' } },
-    { type: 'attachment', uuid: 's1', parentUuid: 'a2', timestamp: at(1), attachment: { type: 'prompt_snapshot', systemPrompt: ['You are an agent.', 'You are inside OpenFilm.'], tools: null } },
+    { type: 'attachment', uuid: 's1', parentUuid: 'a2', timestamp: at(1), attachment: { type: 'prompt_snapshot', systemPrompt: ['You are an agent.', 'You are inside OrangeFilm.'], tools: null } },
     { type: 'assistant', uuid: 'r1a', parentUuid: 's1', timestamp: at(3), requestId: 'req1', effort: 'high',
       message: { id: 'msg1', model: 'claude-x', role: 'assistant', content: [{ type: 'thinking', thinking: 'plan' }], stop_reason: null, usage: { input_tokens: 5, cache_read_input_tokens: 100, cache_creation_input_tokens: 10, output_tokens: 1 } } },
     { type: 'assistant', uuid: 'r1b', parentUuid: 'r1a', timestamp: at(4), requestId: 'req1',
-      wireToolInputs: { tu1: { command: 'openfilm look', description: 'as written' } },
-      message: { id: 'msg1', model: 'claude-x', role: 'assistant', content: [{ type: 'tool_use', id: 'tu1', name: 'Bash', input: { command: 'openfilm look' } }], stop_reason: 'tool_use', usage: { input_tokens: 5, cache_read_input_tokens: 100, cache_creation_input_tokens: 10, output_tokens: 40, output_tokens_details: { thinking_tokens: 12 } } } },
+      wireToolInputs: { tu1: { command: 'orangefilm look', description: 'as written' } },
+      message: { id: 'msg1', model: 'claude-x', role: 'assistant', content: [{ type: 'tool_use', id: 'tu1', name: 'Bash', input: { command: 'orangefilm look' } }], stop_reason: 'tool_use', usage: { input_tokens: 5, cache_read_input_tokens: 100, cache_creation_input_tokens: 10, output_tokens: 40, output_tokens_details: { thinking_tokens: 12 } } } },
     { type: 'user', uuid: 'u2', parentUuid: 'r1b', timestamp: at(6), message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: 'tu1', content: 'frames saved', is_error: false }] } },
-    { type: 'attachment', uuid: 's2', parentUuid: 'u2', timestamp: at(6), attachment: { type: 'prompt_snapshot', systemPrompt: ['You are an agent.', 'You are inside OpenFilm.'], cliPrefix: 'You are Claude Code.', tools: [{ name: 'Bash', description: 'Run a command', schema: { type: 'object' } }] } },
+    { type: 'attachment', uuid: 's2', parentUuid: 'u2', timestamp: at(6), attachment: { type: 'prompt_snapshot', systemPrompt: ['You are an agent.', 'You are inside OrangeFilm.'], cliPrefix: 'You are Claude Code.', tools: [{ name: 'Bash', description: 'Run a command', schema: { type: 'object' } }] } },
     { type: 'assistant', uuid: 'r2', parentUuid: 's2', timestamp: at(9), requestId: 'req2',
       message: { id: 'msg2', model: 'claude-x', role: 'assistant', content: [{ type: 'text', text: 'Done.' }], stop_reason: 'end_turn', usage: { input_tokens: 2, cache_read_input_tokens: 150, output_tokens: 3 } } },
     { type: 'last-prompt', lastPrompt: 'Make a title' },
@@ -36,7 +36,7 @@ test("Claude Code's record: each request whole, with its system prompt, the cont
   const calls = claudeCallsOf(claudeSession());
   assert.equal(calls.length, 2, 'one call per request, not per block');
   const [first, second] = calls;
-  assert.equal(first.systemPrompt, 'You are an agent.\n\nYou are inside OpenFilm.');
+  assert.equal(first.systemPrompt, 'You are an agent.\n\nYou are inside OrangeFilm.');
   assert.equal(first.tools, null, 'no tools in the record yet');
   assert.deepEqual(first.messages, [
     { role: 'user', content: [{ type: 'text', text: 'Make a title' }] },
@@ -44,7 +44,7 @@ test("Claude Code's record: each request whole, with its system prompt, the cont
   ], 'the person\'s words and what Claude Code put in; nothing it did not send (credential_org, snapshots)');
   assert.deepEqual(first.answer.content, [
     { type: 'thinking', thinking: 'plan' },
-    { type: 'toolCall', id: 'tu1', name: 'Bash', arguments: { command: 'openfilm look', description: 'as written' } },
+    { type: 'toolCall', id: 'tu1', name: 'Bash', arguments: { command: 'orangefilm look', description: 'as written' } },
   ], 'the request\'s blocks joined; the tool input as the model wrote it');
   assert.equal(first.answer.stopReason, 'tool_use');
   assert.deepEqual(first.answer.usage, { input: 5, cacheRead: 100, cacheWrite: 10, output: 40, reasoning: 12 });
@@ -52,7 +52,7 @@ test("Claude Code's record: each request whole, with its system prompt, the cont
   assert.equal(first.startedAt, Date.parse(at(1)));
   assert.equal(first.ms, 3000, 'from what it was sent to its last block');
 
-  assert.equal(second.systemPrompt, 'You are Claude Code.\n\nYou are an agent.\n\nYou are inside OpenFilm.', 'the CLI prefix first');
+  assert.equal(second.systemPrompt, 'You are Claude Code.\n\nYou are an agent.\n\nYou are inside OrangeFilm.', 'the CLI prefix first');
   assert.deepEqual(second.tools, [{ name: 'Bash', description: 'Run a command', parameters: { type: 'object' } }]);
   assert.equal(second.messages.length, 4);
   assert.equal(second.messages[2].role, 'assistant');
@@ -71,11 +71,11 @@ test("Codex's rollout: base instructions, what Codex put in, each request closed
   const rows = [
     { timestamp: at(0), type: 'session_meta', payload: { id: 'th1', base_instructions: { text: 'You are Codex.' } } },
     { timestamp: at(0), type: 'turn_context', payload: { model: 'gpt-x', effort: 'high', approval_policy: 'never' } },
-    { timestamp: at(1), type: 'response_item', payload: { type: 'message', role: 'developer', content: [{ type: 'input_text', text: 'You are inside OpenFilm.' }] } },
+    { timestamp: at(1), type: 'response_item', payload: { type: 'message', role: 'developer', content: [{ type: 'input_text', text: 'You are inside OrangeFilm.' }] } },
     { timestamp: at(1), type: 'response_item', payload: { type: 'message', role: 'user', content: [{ type: 'input_text', text: '<environment_context>cwd</environment_context>' }] } },
     { timestamp: at(1), type: 'response_item', payload: { type: 'message', role: 'user', content: [{ type: 'input_text', text: 'Make a title' }] } },
     { timestamp: at(3), type: 'response_item', payload: { type: 'reasoning', summary: [{ type: 'summary_text', text: 'look first' }], encrypted_content: 'zzz' } },
-    { timestamp: at(3), type: 'response_item', payload: { type: 'function_call', name: 'exec', arguments: '{"cmd":"openfilm look"}', call_id: 'c1' } },
+    { timestamp: at(3), type: 'response_item', payload: { type: 'function_call', name: 'exec', arguments: '{"cmd":"orangefilm look"}', call_id: 'c1' } },
     { timestamp: at(4), type: 'token_usage_record', payload: { usage: { input_tokens: 120, cached_input_tokens: 100, output_tokens: 9, reasoning_output_tokens: 4 } } },
     { timestamp: at(4), type: 'event_msg', payload: { type: 'token_count', info: { last_token_usage: { input_tokens: 999 } } } },
     { timestamp: at(6), type: 'response_item', payload: { type: 'function_call_output', call_id: 'c1', output: 'frames saved' } },
@@ -90,7 +90,7 @@ test("Codex's rollout: base instructions, what Codex put in, each request closed
   assert.equal(first.toolsUnknown, true);
   assert.deepEqual(first.settings, { model: 'gpt-x', effort: 'high', approval_policy: 'never' });
   assert.deepEqual(first.messages.map((m) => [m.role, m.label ?? null]), [['context', 'developer'], ['context', 'environment_context'], ['user', null]]);
-  assert.deepEqual(first.answer.content, [{ type: 'thinking', thinking: 'look first' }, { type: 'toolCall', id: 'c1', name: 'exec', arguments: { cmd: 'openfilm look' } }]);
+  assert.deepEqual(first.answer.content, [{ type: 'thinking', thinking: 'look first' }, { type: 'toolCall', id: 'c1', name: 'exec', arguments: { cmd: 'orangefilm look' } }]);
   assert.deepEqual(first.answer.usage, { input: 20, cacheRead: 100, cacheWrite: 0, output: 9, reasoning: 4 }, 'input without the cached part');
   assert.equal(first.answer.responseModel, 'gpt-x');
   assert.deepEqual(second.messages.slice(3), [
@@ -123,8 +123,8 @@ test("Codex's rollout: an older one closes requests by token_count; a compaction
 
 test('records are found where each agent keeps them, and a turn reads its own requests from them', () => {
   const home = mkdtempSync(join(tmpdir(), 'of-records-'));
-  const cwd = '/Users/me/Movies/OpenFilm/My film';
-  assert.equal(claudeProjectName(cwd), '-Users-me-Movies-OpenFilm-My-film');
+  const cwd = '/Users/me/Movies/OrangeFilm/My film';
+  assert.equal(claudeProjectName(cwd), '-Users-me-Movies-OrangeFilm-My-film');
   const claudeDir = join(home, 'claude', 'projects', claudeProjectName(cwd));
   mkdirSync(join(claudeDir, 'sess-1234', 'subagents'), { recursive: true });
   writeFileSync(join(claudeDir, 'sess-1234.jsonl'), jsonl(claudeSession()));
@@ -164,7 +164,7 @@ test("Kimi's wire: each request from llm.request to step.end, with the system pr
     { type: 'llm.tools_snapshot', tools: [{ name: 'Bash', description: 'Run', parameters: { type: 'object' } }], time: t(1) },
     { type: 'llm.request', model: 'k2', thinkingEffort: 'high', messageCount: 1, time: t(1) },
     { type: 'context.append_loop_event', event: { type: 'content.part', part: { type: 'think', think: 'plan' } }, time: t(2) },
-    { type: 'context.append_loop_event', event: { type: 'tool.call', toolCallId: 'k1', name: 'Bash', args: { command: 'openfilm look' } }, time: t(3) },
+    { type: 'context.append_loop_event', event: { type: 'tool.call', toolCallId: 'k1', name: 'Bash', args: { command: 'orangefilm look' } }, time: t(3) },
     { type: 'context.append_loop_event', event: { type: 'tool.result', toolCallId: 'k1', result: { output: 'frames saved' } }, time: t(30) },
     { type: 'context.append_loop_event', event: { type: 'step.end', usage: { inputOther: 20, inputCacheRead: 100, output: 9 }, finishReason: 'tool_calls', llmFirstTokenLatencyMs: 500, llmStreamDurationMs: 1500 }, time: t(30) },
     { type: 'llm.request', model: 'k2', messageCount: 3, time: t(31) },
@@ -176,7 +176,7 @@ test("Kimi's wire: each request from llm.request to step.end, with the system pr
   assert.equal(calls[0].systemPrompt, 'You are Kimi.');
   assert.deepEqual(calls[0].tools, [{ name: 'Bash', description: 'Run', parameters: { type: 'object' } }]);
   assert.equal(calls[0].ms, 2000, 'the model\'s own time, not the tool\'s');
-  assert.deepEqual(calls[0].answer.content, [{ type: 'thinking', thinking: 'plan' }, { type: 'toolCall', id: 'k1', name: 'Bash', arguments: { command: 'openfilm look' } }]);
+  assert.deepEqual(calls[0].answer.content, [{ type: 'thinking', thinking: 'plan' }, { type: 'toolCall', id: 'k1', name: 'Bash', arguments: { command: 'orangefilm look' } }]);
   assert.deepEqual(calls[0].answer.usage, { input: 20, cacheRead: 100, cacheWrite: 0, output: 9, reasoning: 0 });
   assert.equal(calls[1].messages.length, calls[1].settings.messageCount, 'as many messages as Kimi says it sent');
   assert.deepEqual(calls[1].messages[2], { role: 'toolResult', toolCallId: 'k1', toolName: 'Bash', content: [{ type: 'text', text: 'frames saved' }], isError: false });
@@ -197,7 +197,7 @@ test("Copilot's events: a request for each usage record, its answer by its API c
     { type: 'user.message', data: { content: 'Make a title', transformedContent: '<current_datetime>now</current_datetime>\n\nMake a title' }, timestamp: at(1) },
     { type: 'system.message', data: { role: 'system', content: 'You are GitHub Copilot.' }, timestamp: at(1) },
     { type: 'session.usage_record', data: { usage: { model: 'gpt-x', inputTokens: 120, cacheReadTokens: 100, outputTokens: 9, duration: 2000, apiCallId: 'a1', initiator: 'user', requestBodyBytes: 41569 } }, timestamp: at(4) },
-    { type: 'assistant.message', data: { content: '', apiCallId: 'a1', toolRequests: [{ toolCallId: 'k1', name: 'bash', arguments: { command: 'openfilm look' } }] }, timestamp: at(4) },
+    { type: 'assistant.message', data: { content: '', apiCallId: 'a1', toolRequests: [{ toolCallId: 'k1', name: 'bash', arguments: { command: 'orangefilm look' } }] }, timestamp: at(4) },
     { type: 'tool.execution_complete', data: { toolCallId: 'k1', success: true, result: { content: 'frames saved' } }, timestamp: at(6) },
     { type: 'session.usage_record', data: { usage: { model: 'gpt-x', inputTokens: 10, outputTokens: 2, duration: 1000, apiCallId: 'a2', initiator: 'agent' } }, timestamp: at(8) },
     { type: 'assistant.message', data: { content: 'Done.', apiCallId: 'a2', toolRequests: [] }, timestamp: at(8) },
@@ -209,7 +209,7 @@ test("Copilot's events: a request for each usage record, its answer by its API c
   assert.equal(first.tools, null);
   assert.deepEqual(first.lacks, ['copilotRebuilt']);
   assert.deepEqual(first.messages, [{ role: 'user', content: [{ type: 'text', text: '<current_datetime>now</current_datetime>\n\nMake a title' }] }], 'as the model got it');
-  assert.deepEqual(first.answer.content, [{ type: 'toolCall', id: 'k1', name: 'bash', arguments: { command: 'openfilm look' } }]);
+  assert.deepEqual(first.answer.content, [{ type: 'toolCall', id: 'k1', name: 'bash', arguments: { command: 'orangefilm look' } }]);
   assert.deepEqual(first.answer.usage, { input: 20, cacheRead: 100, cacheWrite: 0, output: 9, reasoning: 0 });
   assert.equal(first.startedAt, Date.parse(at(2)));
   assert.equal(first.ms, 2000);

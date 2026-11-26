@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { changes, snapshot, undoTurn } from './file-changes.mjs';
 import { readFileChanges } from '../chat/src/lib/file-changes.ts';
 
-const project = () => mkdtempSync(join(tmpdir(), 'openfilm-file-changes-'));
+const project = () => mkdtempSync(join(tmpdir(), 'orangefilm-file-changes-'));
 
 test('nothing written: no changes', async () => {
   const dir = project();

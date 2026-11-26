@@ -17,7 +17,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import { DEFAULT_ANALYZER_VER, mediaDocText } from '../packages/openfilm/src/material-doc.mjs';
+import { DEFAULT_ANALYZER_VER, mediaDocText } from '../packages/orangefilm/src/material-doc.mjs';
 import {
   DEFAULT_BATCH,
   EMBED_DIMS,
@@ -48,7 +48,7 @@ const TEA = '20261106-柠檬宝藏茶200g罐-外包装 (46)';
 const OIL = '20261109-油弃乌龙茶-茶干 (12)';
 const vector = (fill = 0.5) => Array.from({ length: EMBED_DIMS }, () => fill);
 
-/** 一个两层的索引（外层 build 信封 + `index` 树），和 `~/.openfilm-dev/material-index/index.json` 同形状。 */
+/** 一个两层的索引（外层 build 信封 + `index` 树），和 `~/.orangefilm-dev/material-index/index.json` 同形状。 */
 function fixtureIndex() {
   return {
     schema: 'orange/material-index-build/1',

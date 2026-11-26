@@ -10,7 +10,7 @@
  */
 import React from 'react';
 import { ArrowDown, Coins, CornerDownLeft, LibraryBig, Loader2, Plus, Square } from 'lucide-react';
-import { buildPromptDisplay, type Turn } from '@openfilm/shared';
+import { buildPromptDisplay, type Turn } from '@orange/shared';
 import { useT, useUiLocale } from '@/i18n';
 import { ConversationBar } from '@/components/ConversationSessionBar';
 import { ProjectConversation, TurnUndoContext, primeStoredTranscript } from '@/components/ProjectConversation';
@@ -19,7 +19,7 @@ import { ProjectStarters } from '@/components/ProjectStarters';
 import { AttachmentPreview, type AttachmentPreviewItem } from '@/components/AttachmentPreview';
 import { ModelPopover } from '@/components/ModelPopover';
 import { AddSkillDialog, type PickedSkill } from '@/components/AddSkill';
-import { SKILLS_CHANGED } from 'openfilm/studio-ui/lib/project-sources.ts';
+import { SKILLS_CHANGED } from 'orangefilm/studio-ui/lib/project-sources.ts';
 import { CardActions, CardButton, ComposerCard } from '@/components/ComposerCard';
 import { AgentPermissionCard } from '@/components/AgentPermissionCard';
 import { LocalAgentQuestionCard } from '@/components/TurnQuestionCard';
@@ -98,7 +98,7 @@ const CONTEXT_NOTICE_SHARE = 0.85;
 
 /** On a video's thumbnail: it plays, it is not a picture. */
 /* between the chat's root (the add-skill dialog) and the project's chat: a skill added, a skill to make */
-const MAKE_SKILL = 'openfilm:make-skill';
+const MAKE_SKILL = 'orangefilm:make-skill';
 
 export function App({ initialProject, initialSelection, initialFfmpeg }: {
   initialProject: Project | null;
@@ -428,7 +428,7 @@ function ChatPane({ project, banners, selection, assetsOpen, assetsOverlay }: { 
   /* the skills named from a card or Try now, not installed so not in the listing: their words as they came */
   const pickedSkills = React.useRef(new Map<string, PickedSkill>());
   const skillWords = React.useCallback((name: string, description = '') => {
-    const shown = skillListing?.openfilm.find((s) => s.name === name)?.shown;
+    const shown = skillListing?.orangefilm.find((s) => s.name === name)?.shown;
     const picked = pickedSkills.current.get(name);
     const about = description || picked?.description || '';
     const pick = (words?: Record<string, string>) => (words ? words[locale] ?? words[locale.split('-')[0]!] ?? words.en ?? Object.values(words)[0] : undefined);
@@ -450,9 +450,9 @@ function ChatPane({ project, banners, selection, assetsOpen, assetsOverlay }: { 
     const pill = skillPill(skill);
     requestAnimationFrame(() => { composerRef.current?.insertReference(pill); composerRef.current?.focus(); });
   }, [skillPill]);
-  /* the skills a message can name: OpenFilm's, and of the agent's own those it has (let in, or all when it cannot be told) */
+  /* the skills a message can name: OrangeFilm's, and of the agent's own those it has (let in, or all when it cannot be told) */
   const nameableSkills = React.useMemo(() => [
-    ...(skillListing?.openfilm ?? []),
+    ...(skillListing?.orangefilm ?? []),
     ...(skillListing?.own.skills ?? []).filter((s) => !skillListing?.own.filtered || s.allowed),
   ], [skillListing]);
   /* a skill picked in Studio's skills: named in the message; Try now there: in a new conversation */
@@ -1092,13 +1092,13 @@ function ChatPane({ project, banners, selection, assetsOpen, assetsOverlay }: { 
           onChange={(event) => { attachFiles(Array.from(event.target.files ?? [])); event.target.value = ''; }}
         />
         <Tooltip label={t('project.addAttachment')}>
-          <button type="button" onClick={() => attachInputRef.current?.click()} className="openfilm-composer-tool" aria-label={t('project.addAttachment')}>
+          <button type="button" onClick={() => attachInputRef.current?.click()} className="orangefilm-composer-tool" aria-label={t('project.addAttachment')}>
             <Plus size={16} strokeWidth={1.75} />
           </button>
         </Tooltip>
 
         <Tooltip label={t('project.assets')}>
-          <button type="button" onClick={() => app.setAssetsOpen(!assetsOpen)} aria-pressed={assetsOpen} className="openfilm-composer-tool" aria-label={t('project.assets')}>
+          <button type="button" onClick={() => app.setAssetsOpen(!assetsOpen)} aria-pressed={assetsOpen} className="orangefilm-composer-tool" aria-label={t('project.assets')}>
             <LibraryBig size={16} strokeWidth={1.75} />
           </button>
         </Tooltip>

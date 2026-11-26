@@ -13,14 +13,14 @@ import { fileURLToPath } from 'node:url';
  * The app's window: one page, Studio's editor and the chat beside it, built into shell/dist and served by the app's
  * Studio as its editor (studio-process.mjs `editorDir`). Studio's sources are the open-source ones as they are.
  */
-const STUDIO = join(dirname(createRequire(import.meta.url).resolve('openfilm/package.json')), 'studio/ui/src/');
+const STUDIO = join(dirname(createRequire(import.meta.url).resolve('orangefilm/package.json')), 'studio/ui/src/');
 /* with forward slashes, as Vite names files on Windows too */
 const CHAT = normalizePath(fileURLToPath(new URL('../chat/src/', import.meta.url)));
 
 /** `@/…` is the importing file's own tree: Studio's files and the chat's each name their `src` so. */
 function twoTrees(): Plugin {
   return {
-    name: 'openfilm-two-trees',
+    name: 'orangefilm-two-trees',
     enforce: 'pre',
     resolveId(source, importer, options) {
       if (!source.startsWith('@/') || !importer) return null;
@@ -37,7 +37,7 @@ function twoTrees(): Plugin {
  * cursor Studio already has) are left out.
  */
 const scopeChat: PostcssPlugin = {
-  postcssPlugin: 'openfilm-scope-chat',
+  postcssPlugin: 'orangefilm-scope-chat',
   Once(root, { result }) {
     if (!normalizePath(result.opts.from ?? '').startsWith(CHAT)) return;
     root.walkRules((rule) => {
@@ -45,7 +45,7 @@ const scopeChat: PostcssPlugin = {
       const selectors = new Set<string>();
       for (const raw of rule.selectors) {
         const s = raw.trim();
-        if (/:not\(\[data-theme\]\)|data-assets-open|openfilm-inset-titlebar|openfilm-fullscreen|tl-scrubbing|data-focus-nav/.test(s)) continue;
+        if (/:not\(\[data-theme\]\)|data-assets-open|orangefilm-inset-titlebar|orangefilm-fullscreen|tl-scrubbing|data-focus-nav/.test(s)) continue;
         const page = /^(?::root|html|body)(?![\w-])/.exec(s);
         const theme = /^\[data-theme='(?:light|dark)'\]/.exec(s);
         if (page) selectors.add(`.of-chat${s.slice(page[0].length)}`);

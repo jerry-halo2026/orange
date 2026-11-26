@@ -24,7 +24,7 @@ export function createManualUpdateCheck({ controller, showMessage, focusWindow, 
   return function manualCheck(language = 'en') {
     pending ??= (async () => {
       const words = UPDATE_DIALOG_WORDS[language] ?? UPDATE_DIALOG_WORDS.en;
-      /* a version not known yet leaves no gap ("Downloading OpenFilm") */
+      /* a version not known yet leaves no gap ("Downloading OrangeFilm") */
       const fill = (text, values = {}) => Object.entries({ name: productName, ...values })
         .reduce((out, [key, value]) => out.replaceAll(`{${key}}`, value), text).replace(/ {2,}/g, ' ').trim();
       const error = (code) => fill(words.errors[code] ?? words.errors.failed);

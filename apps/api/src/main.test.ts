@@ -85,7 +85,8 @@ function stubSupplier(options:{accountRow?:Record<string,unknown>|null;rawUrl?:s
     if(path==='/openapi/label/list')return Response.json({success:true,code:1,data:{list:[],total:0}});
     if(path==='/openapi/video/query/raw')return Response.json({success:true,code:1,data:{rawUrl:options.rawUrl??'https://'+CDN+'/videos/clip.mp4'}});
     const key=headers.get('account_key')??'unknown';
-    return Response.json({success:true,code:1,data:{list:[{videoId:'v1',accountKey:key}],total:1}});
+    const asked=(rest[0] as RequestInit|undefined)?.body?JSON.parse(String((rest[0] as RequestInit).body)):null;
+    return Response.json({success:true,code:1,data:{list:[{videoId:asked?.videoIds??'v1',accountKey:key}],total:1}});
   }) as typeof fetch;
   globalThis.fetch=wrapped;
   return {calls,restore:()=>{globalThis.fetch=original;}};

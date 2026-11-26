@@ -32,7 +32,7 @@ test('Settings allows cancelling sign-in and restores the login button on termin
       const errors = [];
       page.on('pageerror', (error) => errors.push(error.message));
       await page.addInitScript((locale) => {
-        localStorage.setItem('openfilm.language', locale);
+        localStorage.setItem('orangefilm.language', locale);
         let agents = [{ id: 'qwen', name: 'Qwen Code', shown: true, status: 'waiting' }];
         const listeners = new Set();
         const calls = { cancel: 0, connect: 0, disconnect: 0 };
@@ -40,7 +40,7 @@ test('Settings allows cancelling sign-in and restores the login button on termin
           agents = [{ ...agents[0], status }];
           for (const listener of listeners) listener(agents);
         };
-        window.openfilmHost = { version: 1, agents: {
+        window.orangefilmHost = { version: 1, agents: {
           list: async () => agents,
           connect: async () => { calls.connect++; publish('waiting'); return { ok: true }; },
           cancelSignIn: async () => { calls.cancel++; publish('sign-in'); return { ok: true }; },

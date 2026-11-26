@@ -1,7 +1,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-import type { PromptDisplay, TurnAttachment } from '@openfilm/shared';
+import type { PromptDisplay, TurnAttachment } from '@orange/shared';
 import type { FileChange } from '@/lib/file-changes';
 import type { Balance } from '@/lib/balance';
 

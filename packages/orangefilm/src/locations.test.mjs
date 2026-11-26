@@ -1,0 +1,117 @@
+// © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
+// No modification or redistribution without the owner’s written permission.
+
+import { test, beforeEach, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { testRoot } from './test-roots.mjs';
+import { defaultStudioHome, exportsRoot, libraryDefault, libraryProjects, libraryRoot, locations, usableFolder } from './locations.mjs';
+
+const KEYS = ['ORANGE_HOME', 'ORANGE_LIBRARY', 'ORANGE_EXPORTS', 'ORANGE_SHARED_HOME'];
+let saved;
+let home;
+beforeEach(() => {
+  saved = Object.fromEntries(KEYS.map((k) => [k, process.env[k]]));
+  /* a home the isolation validator can accept: `os.tmpdir()` is on `C:` with a short-name alias, which
+     `development-isolation.mjs`'s rootPath refuses, so a profile built on it could never round-trip. */
+  home = mkdtempSync(join(testRoot('locations'), 'of-locations-'));
+  process.env.ORANGE_HOME = home;
+  delete process.env.ORANGE_LIBRARY;
+  delete process.env.ORANGE_EXPORTS;
+  delete process.env.ORANGE_SHARED_HOME;
+});
+afterEach(() => {
+  for (const k of KEYS) { if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k]; }
+});
+const prefs = (value) => writeFileSync(join(home, 'prefs.json'), JSON.stringify(value));
+
+test('new projects go to the folder chosen, before any default', () => {
+  process.env.ORANGE_LIBRARY = join(home, 'lib');
+  assert.equal(libraryRoot(), join(home, 'lib'), 'the default: what the build set');
+  const projects = join(tmpdir(), 'D', 'OrangeFilm', 'Projects');
+  prefs({ proxies: { on: true }, projectsFolder: projects });
+  assert.equal(libraryRoot(), projects);
+  assert.equal(libraryDefault(), join(home, 'lib'), 'the default stays what it was');
+  /* a value that is not a full path is no choice */
+  prefs({ projectsFolder: 'relative/folder' });
+  assert.equal(libraryRoot(), join(home, 'lib'));
+});
+
+test('exports go to the default: no folder kept in prefs.json moves them (the export dialog picks one)', () => {
+  process.env.ORANGE_EXPORTS = join(home, 'out');
+  prefs({ exportsFolder: join(tmpdir(), 'D', 'OrangeFilm', 'Exports') });
+  assert.equal(exportsRoot(), join(home, 'out'));
+});
+
+test('without a choice or a build\'s own: a Studio kept apart exports into its home; the person\'s own to the Desktop', () => {
+  assert.equal(exportsRoot(), join(home, 'exports'));
+  assert.match(libraryRoot(), /OrangeFilm[\\/]Projects$/);
+});
+
+test('each folder for Settings: where it is, its default, whether chosen, and free space on its disk', () => {
+  const projects = join(home, 'work', 'Projects');
+  prefs({ projectsFolder: projects });
+  const now = locations();
+  assert.equal(now.projects.path, projects);
+  assert.equal(now.projects.chosen, true);
+  assert.notEqual(now.projects.default, projects);
+  assert.ok(now.projects.free > 0, 'measured on the disk above a folder not made yet');
+  assert.deepEqual(Object.keys(now), ['projects'], 'only where new projects go is a setting');
+});
+
+test('a folder offered is made and kept by its full path; a disk, Studio\'s own home or a relative path is refused', () => {
+  const folder = join(home, '..', `of-pick-${process.pid}`, 'Projects');
+  const kept = usableFolder(folder);
+  assert.ok(existsSync(kept));
+  assert.throws(() => usableFolder('Projects'), /full path/);
+  assert.throws(() => usableFolder(process.platform === 'win32' ? 'C:\\' : '/'), /not the disk itself/);
+  assert.throws(() => usableFolder(join(home, 'inside')), /own settings/);
+});
+
+test('a library\'s projects are its folders that hold a film; Settings counts them', () => {
+  const lib = join(home, 'lib');
+  process.env.ORANGE_LIBRARY = lib;
+  for (const name of ['One', 'Two', '.hidden']) { mkdirSync(join(lib, name), { recursive: true }); writeFileSync(join(lib, name, 'film.html'), ''); }
+  mkdirSync(join(lib, 'Lost its film', '.film'), { recursive: true });
+  writeFileSync(join(lib, 'Lost its film', '.film', 'id'), 'abcdef');
+  mkdirSync(join(lib, 'Plain'));
+  writeFileSync(join(lib, 'notes.txt'), '');
+  assert.deepEqual(libraryProjects().map((p) => p.slice(lib.length + 1)).sort(), ['Lost its film', 'One', 'Two']);
+  assert.equal(locations().projects.count, 3);
+  assert.deepEqual(libraryProjects(join(home, 'none')), [], 'a folder not there holds none');
+});
+
+test('with a shared home, the folder chosen there is the library; a folder inside either home is refused', () => {
+  const shared = join(home, '..', `of-shared-${process.pid}`);
+  process.env.ORANGE_SHARED_HOME = shared;
+  mkdirSync(shared, { recursive: true });
+  writeFileSync(join(shared, 'prefs.json'), JSON.stringify({ projectsFolder: join(home, 'X', 'Projects') }));
+  prefs({ projectsFolder: join(home, 'Own') });
+  assert.equal(libraryRoot(), join(home, 'X', 'Projects'), 'the shared one, not its own');
+  assert.throws(() => usableFolder(join(shared, 'inside')), /own settings/);
+});
+
+test('isolated effective projects preferences and folder selection cannot escape before mkdir', async () => {
+  const { readIsolationProfile, isolationEnvironment } = await import('./development-isolation.mjs');
+  const { chooseFolder } = await import('./locations.mjs');
+  const c={baseRoot:join(home,'approved'),instanceId:'instance-a',taskId:'T01',attemptId:'attempt-1',ports:{studio:18471,film:18472}};
+  const p=readIsolationProfile({ORANGE_ISOLATION_PROFILE:Buffer.from(JSON.stringify(c)).toString('base64url'),ORANGE_ISOLATION_ROOT:c.baseRoot});
+  const env=isolationEnvironment(p);const old=Object.fromEntries(Object.keys(env).map(k=>[k,process.env[k]]));
+  try{
+    Object.assign(process.env,env);mkdirSync(p.paths.sharedHome,{recursive:true});
+    writeFileSync(join(p.paths.sharedHome,'prefs.json'),JSON.stringify({projectsFolder:join(home,'outside')}));
+    assert.throws(()=>libraryRoot(),/isolat/);
+    assert.throws(()=>chooseFolder('projectsFolder',join(home,'outside')),/isolat/);
+    const outside=join(home,'new-external');assert.throws(()=>usableFolder(outside),/isolat/);assert.equal(existsSync(outside),false);
+  }finally{for(const[k,v]of Object.entries(old)){if(v===undefined)delete process.env[k];else process.env[k]=v}}
+});
+
+test('there is one Studio home, and no old one to prefer', () => {
+  const base = mkdtempSync(join(testRoot('locations'), 'of-home-'));
+  /* 只认 ~/.orangefilm：旧的主目录不再被读，也没有"完成标记"来决定用哪一个 */
+  assert.equal(defaultStudioHome(base), join(base, '.orangefilm'));
+  mkdirSync(join(base, '.orangefilm'), { recursive: true });
+  assert.equal(defaultStudioHome(base), join(base, '.orangefilm'), 'the same home whether or not it exists yet');
+});

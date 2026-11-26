@@ -3,12 +3,18 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { testRoot } from '../../../packages/openfilm/src/test-roots.mjs';
+import { testRoot } from '../../../packages/orangefilm/src/test-roots.mjs';
+/* TSX 编成 CJS 后 require 不了两个 .ts/.tsx 依赖（见 display-name.test.mjs 的同名垫片） */
+const repoBrand = JSON.parse(readFileSync(new URL('../../../brand.json', import.meta.url), 'utf8'));
+const shimFor = (req) => (id) => (id.endsWith('brand.generated.ts') ? { brand: repoBrand }
+  : id.startsWith('orangefilm/studio-ui/') ? { BrandMark: () => null }
+  : req(id));
 
 // The controller's home/projects roots must be an owned, absolute, canonical
 // directory: `testRoot()` returns the long form so `resolve(root) === root`.
@@ -20,7 +26,7 @@ const mod = await import('./desktop-auth.mjs').catch(error => {
   return {};
 });
 // The same native modules the controller itself resolves, so the project API below is the one it guards.
-const { createProject, listProjects, projectById, openProject } = await import(new URL('./projects.mjs', pathToFileURL(createRequire(import.meta.url).resolve('openfilm/studio'))));
+const { createProject, listProjects, projectById, openProject } = await import(new URL('./projects.mjs', pathToFileURL(createRequire(import.meta.url).resolve('orangefilm/studio'))));
 const A = '11111111-1111-4111-8111-111111111111';
 const B = '22222222-2222-4222-8222-222222222222';
 const configuration = {environmentId:'isolated-test',authOrigin:'https://auth.invalid',publishableKey:'public-fixture'};
@@ -128,7 +134,8 @@ test('original desktop Login component renders accessible native account fields 
   assert.ok(source.length>0,'the original desktop shell has an actual Login component');
   const ts=require('typescript'),React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
   const compiled=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}}).outputText;
-  const module={exports:{}};new Function('require','module','exports',compiled)(require,module,module.exports);
+  const module={exports:{}};
+new Function('require','module','exports',compiled)(shimFor(require),module,module.exports);
   assert.equal(typeof module.exports.Login,'function');
   const html=renderToStaticMarkup(React.createElement(module.exports.Login,{state:{kind:'signed-out',reason:null},onSignedIn(){}}));
   assert.match(html,/type="email"/);assert.match(html,/type="password"/);assert.match(html,/autocomplete="current-password"/i);assert.match(html,/登录/);
@@ -224,8 +231,8 @@ async function degradedPair(environmentId) {
   const base=await mkdtemp(join(root,'degraded-'));
   const home=join(base,'home'),library=join(base,'library');
   await mkdir(home);await mkdir(library);
-  const saved={OPENFILM_HOME:process.env.OPENFILM_HOME,OPENFILM_SHARED_HOME:process.env.OPENFILM_SHARED_HOME,OPENFILM_LIBRARY:process.env.OPENFILM_LIBRARY};
-  Object.assign(process.env,{OPENFILM_HOME:home,OPENFILM_SHARED_HOME:home,OPENFILM_LIBRARY:library});
+  const saved={ORANGE_HOME:process.env.ORANGE_HOME,ORANGE_SHARED_HOME:process.env.ORANGE_SHARED_HOME,ORANGE_LIBRARY:process.env.ORANGE_LIBRARY};
+  Object.assign(process.env,{ORANGE_HOME:home,ORANGE_SHARED_HOME:home,ORANGE_LIBRARY:library});
   const calls=[];let now=10,subject=A;
   const fetch=async(url,request)=>{
     calls.push({url,method:request.method});
@@ -267,4 +274,70 @@ test('a sign-in without its reservation lists and opens this device\'s projects,
     assert.equal(registry.readers.length,0);assert.equal(registry.reservations.length,1);
     await degraded.dispose();await resident.dispose();
   } finally { f.restore(); }
+});
+
+/* 2026-11-26: the session outlives the process. A sign-in seals the rotating refresh token under the home; the next
+   controller exchanges it at start-up and is active without a password — activated exactly as a sign-in is. */
+test('a sealed session resumes at the next start, and signing out forgets it', async () => {
+  const s = await setup();
+  assert.equal((await s.controller.signIn(input)).ok, true);
+  const sealed = join(s.home, 'session', 'refresh.bin');
+  assert.ok(existsSync(sealed), 'the refresh token is sealed under the home');
+  assert.equal((readFileSync(sealed, 'utf8')).includes('synthetic-refresh'), true, 'the fixture seals its own token');
+  await s.controller.dispose();
+
+  /* the next start: same home, a fresh controller, a fetch that only answers a refresh exchange */
+  const resumed = mod.createDesktopAuth({configuration, home: s.home, projects: s.projects, coordinationRoot: join(s.home, 'coord2'), instanceId: 'next-instance'}, {
+    fetch: async (url) => {
+      if (url.endsWith('/auth/v1/token?grant_type=refresh_token')) return Response.json({access_token: 'next-access', refresh_token: 'next-refresh', token_type: 'bearer', expires_in: 60, user: {id: A}});
+      if (url.endsWith('/auth/v1/user')) return Response.json({id: A, is_anonymous: false});
+      throw Error('unexpected endpoint');
+    },
+    monotonicNow: () => 30, retire: async () => {}, onState: () => {},
+  });
+  const restored = await resumed.restore();
+  assert.equal(restored.ok, true, 'the sealed session resumes');
+  assert.equal(resumed.getPublicState().kind, 'active');
+  /* the restored session holds the project authority a signed-in one holds: it can take a project into its care */
+  const project = { id: 'resumed-project-1', path: join(s.projects, 'resumed') };
+  await mkdir(project.path, { recursive: true });
+  await writeFile(join(project.path, 'film.html'), '{"stage":{"w":1920,"h":1080},"tracks":[]}');
+  await resumed.registerCreatedProject(project);
+  assert.equal(resumed.authorizeProject(project), true, 'the restored session owns what it registers');
+  await resumed.dispose();
+
+  /* a controller that signs out leaves nothing for the next start */
+  const s2 = await setup();
+  assert.equal((await s2.controller.signIn(input)).ok, true);
+  assert.ok(existsSync(join(s2.home, 'session', 'refresh.bin')));
+  await s2.controller.signOut();
+  assert.equal(existsSync(join(s2.home, 'session', 'refresh.bin')), false, 'signing out forgets the sealed session');
+  await s2.controller.dispose();
+});
+
+test('a sealed session the upstream refuses is forgotten, and an unreadable one never throws', async () => {
+  const s = await setup();
+  assert.equal((await s.controller.signIn(input)).ok, true);
+  await s.controller.dispose();
+  const refused = mod.createDesktopAuth({configuration, home: s.home, projects: s.projects, coordinationRoot: join(s.home, 'coord3'), instanceId: 'refused-instance'}, {
+    fetch: async () => Response.json({error_code: 'refresh_token_not_found'}, {status: 400}),
+    monotonicNow: () => 40, retire: async () => {}, onState: () => {},
+  });
+  const result = await refused.restore();
+  assert.equal(result.ok, false);
+  assert.equal(refused.getPublicState().kind, 'signed-out', 'a refused token is a signed-out start, not a half state');
+  assert.equal(existsSync(join(s.home, 'session', 'refresh.bin')), false, 'the refused token is forgotten');
+  await refused.dispose();
+
+  /* a blob that is not ours: signed out, no throw */
+  const home = await mkdtemp(join(root, 'corrupt-'));
+  const projects = join(home, 'projects'); await mkdir(projects);
+  mkdirSync(join(home, 'session'), {recursive: true});
+  writeFileSync(join(home, 'session', 'refresh.bin'), 'garbage-not-a-sealed-record');
+  const corrupt = mod.createDesktopAuth({configuration, home, projects, coordinationRoot: join(home, 'coord'), instanceId: 'corrupt-instance'}, {
+    fetch: () => { throw Error('must not transport for an unreadable blob'); }, monotonicNow: () => 50, retire: async () => {}, onState: () => {},
+  });
+  assert.equal((await corrupt.restore()).ok, false);
+  assert.equal(corrupt.getPublicState().kind, 'signed-out');
+  await corrupt.dispose();
 });

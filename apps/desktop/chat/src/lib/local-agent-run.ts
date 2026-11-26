@@ -26,8 +26,8 @@ import {
   AGENT_ASK_ANSWER_MAX,
   type AgentAct,
   type PublicGenerationEvent,
-} from '@openfilm/shared';
-import type { Turn } from '@openfilm/shared';
+} from '@orange/shared';
+import type { Turn } from '@orange/shared';
 import type { Balance } from '@/lib/balance';
 import { chatTurns, putChatTurn, type SavedTurn } from '@/lib/chat-store';
 import { withConversationSoFar } from '@/lib/conversation-so-far';
@@ -132,22 +132,22 @@ function searchedFor(title: string, rawInput: Record<string, unknown>): string |
 }
 
 /**
- * The name of our own MCP tool in this call (`mcp__openfilm__look`); undefined for anyone else's tools.
- * Codex reports the title `mcp.openfilm.check` with kind execute and the input wrapped in
- * rawInput.arguments (next to server / tool); Claude Code reports the title `mcp__openfilm__look`.
+ * The name of our own MCP tool in this call (`mcp__orangefilm__look`); undefined for anyone else's tools.
+ * Codex reports the title `mcp.orangefilm.check` with kind execute and the input wrapped in
+ * rawInput.arguments (next to server / tool); Claude Code reports the title `mcp__orangefilm__look`.
  */
 export function ourToolName(title: string | undefined, rawInput: unknown): string | undefined {
   const input = (rawInput && typeof rawInput === 'object' ? rawInput : {}) as { server?: unknown; tool?: unknown };
-  if (input.server === 'openfilm' && typeof input.tool === 'string') return `mcp__openfilm__${input.tool}`;
-  const ours = /^(?:mcp__|mcp\.)?openfilm(?:__|\.|:|\/)(.+)$/i.exec((title ?? '').trim());
-  return ours ? `mcp__openfilm__${ours[1]!.trim()}` : undefined;
+  if (input.server === 'orangefilm' && typeof input.tool === 'string') return `mcp__orangefilm__${input.tool}`;
+  const ours = /^(?:mcp__|mcp\.)?orangefilm(?:__|\.|:|\/)(.+)$/i.exec((title ?? '').trim());
+  return ours ? `mcp__orangefilm__${ours[1]!.trim()}` : undefined;
 }
 
 /**
  * One tool call → its act row in the chat panel, or null (not drawn).
  *
  * Our own MCP tools go through the same projection as on the server (publicActivity): titles such as
- * `mcp__openfilm__look` or `openfilm.look` give the tool name once the prefix is stripped.
+ * `mcp__orangefilm__look` or `orangefilm.look` give the tool name once the prefix is stripped.
  *
  * The agent's own tools (read, search, edit files, run commands) are drawn by ACP kind as files.* /
  * command.run, with the file name or the command. This is the user's own agent working in the user's own
@@ -162,11 +162,11 @@ export function localToolActivity(
   const name = (title ?? '').trim();
   /* Internal steps such as MCP startup (`…__startup`) are not drawn */
   if (/__startup$/.test(name)) return null;
-  /* How Codex reports an MCP call: title `mcp.openfilm.check`, kind execute, the real input wrapped in
+  /* How Codex reports an MCP call: title `mcp.orangefilm.check`, kind execute, the real input wrapped in
      rawInput.arguments (next to server / tool). Recognize that first. */
   const input = (rawInput && typeof rawInput === 'object' ? rawInput : {}) as Record<string, unknown> & { server?: unknown; tool?: unknown; arguments?: unknown };
   const tool = ourToolName(name, rawInput);
-  if (tool) return publicActivity(tool, input.arguments ?? (input.server === 'openfilm' ? {} : rawInput)) ?? null;
+  if (tool) return publicActivity(tool, input.arguments ?? (input.server === 'orangefilm' ? {} : rawInput)) ?? null;
   /* Other MCP tools (Codex's own browser, computer use…): not film work, not drawn */
   if (typeof input.server === 'string' || /^mcp[._]/.test(name)) return null;
   const files = touchedFiles(extra, input);
@@ -353,7 +353,7 @@ export class LocalAgentTurn {
       /* It asked the user through our MCP (ask_user): the question and options go on this row, and the panel shows the card */
       const input = (u.rawInput && typeof u.rawInput === 'object' ? u.rawInput : {}) as { tool?: unknown; arguments?: unknown };
       this.pendingAsk = publicAsk(
-        typeof input.tool === 'string' ? `mcp__openfilm__${input.tool}` : String(u.title ?? '').replace(/^mcp[._]openfilm[._]/, 'mcp__openfilm__'),
+        typeof input.tool === 'string' ? `mcp__orangefilm__${input.tool}` : String(u.title ?? '').replace(/^mcp[._]orangefilm[._]/, 'mcp__orangefilm__'),
         input.arguments ?? u.rawInput,
       ) ?? undefined;
       this.pendingDetail = localToolActivity(
@@ -866,7 +866,7 @@ export async function runLocalAgentTurn({
     for (const entry of picked.filter((entry) => !isModel(entry))) await setOption(entry);
     onOptions?.(live.info.configOptions);
 
-    /* where it is and how to work (the project, the `openfilm` manual, Studio already open) it was told when the
+    /* where it is and how to work (the project, the `orangefilm` manual, Studio already open) it was told when the
        session started (apps/desktop src/agents.mjs INSTRUCTIONS): the message goes as the person wrote it */
     const r = await bridge.prompt(key, text, meta, images?.length ? images : undefined);
     /* The answer to the prompt can overtake its last updates (the closing words of its reply): stop

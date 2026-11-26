@@ -10,7 +10,7 @@
  * is, to an agent that takes pictures (attachedPictures), in the order of their pills.
  */
 import React from 'react';
-import type { TurnAttachment } from '@openfilm/shared';
+import type { TurnAttachment } from '@orange/shared';
 import { isImageAttachment, isVideoAttachment, makeAttachmentThumb, readFileDataUrl, videoFrameDataUrl } from '@/lib/composer-attachments';
 import { app } from '../app-bridge';
 import type { PromptImage } from '@/lib/desktop-bridge';
@@ -66,7 +66,7 @@ export function useDesktopAttachments(project: string) {
 
   /** Takes the files in; their records come back at once, for their pills to go into the sentence. */
   const add = React.useCallback((incoming: File[]): DesktopAttachment[] => {
-    const bridge = (window as unknown as { openfilmDesktop?: { pathForFile?: (f: File) => string } }).openfilmDesktop;
+    const bridge = (window as unknown as { orangefilmDesktop?: { pathForFile?: (f: File) => string } }).orangefilmDesktop;
     const items = incoming.map((file) => {
       const image = isImageAttachment(file);
       const item: DesktopAttachment = {

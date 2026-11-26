@@ -9,7 +9,7 @@ import {
   rescanMarkdown,
   type MarkdownBlock,
   type MarkdownScan,
-} from '@openfilm/shared/markdown';
+} from '@orange/shared/markdown';
 import type { StudioRef } from '../app-bridge';
 import { audioLinkPath, projectAudioUrl } from '@/lib/audio-link';
 import { AttachmentPreview } from './AttachmentPreview';

@@ -16,10 +16,10 @@ import { homedir, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { resolveEnginePaths } from '../packages/openfilm/studio/server/fission-engine-paths.mjs';
-import { buildBatch, runBatch, batchVerdict } from '../packages/openfilm/studio/server/fission-batch.mjs';
-import { runFission } from '../packages/openfilm/studio/server/fission-run.mjs';
-import { writePlan } from '../packages/openfilm/src/plan-store.mjs';
+import { resolveEnginePaths } from '../packages/orangefilm/studio/server/fission-engine-paths.mjs';
+import { buildBatch, runBatch, batchVerdict } from '../packages/orangefilm/studio/server/fission-batch.mjs';
+import { runFission } from '../packages/orangefilm/studio/server/fission-run.mjs';
+import { writePlan } from '../packages/orangefilm/src/plan-store.mjs';
 
 const args = process.argv.slice(2);
 const keep = args.includes('--keep');
@@ -30,9 +30,9 @@ const packagedAt = (() => {
 
 /** 应用的数据目录：Windows 是 %APPDATA%，macOS 是 ~/Library/Application Support。 */
 export function appDataDir(platform = process.platform, env = process.env) {
-  const explicit = String(env.OPENFILM_DATA_DIR ?? '').trim();
+  const explicit = String(env.ORANGE_DATA_DIR ?? '').trim();
   if (explicit) return explicit;
-  const product = 'OpenFilm Dev';
+  const product = 'OrangeFilm Dev';
   if (platform === 'win32') return join(env.APPDATA ?? join(homedir(), 'AppData', 'Roaming'), product);
   if (platform === 'darwin') return join(homedir(), 'Library', 'Application Support', product);
   return join(env.XDG_DATA_HOME ?? join(homedir(), '.local', 'share'), product);

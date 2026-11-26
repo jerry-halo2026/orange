@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { holdDir, snapshot, undoTurn } from './file-changes.mjs';
 import { registerChatIpc } from './chat-ipc.mjs';
 
-const project = () => mkdtempSync(join(tmpdir(), 'openfilm-turn-undo-'));
+const project = () => mkdtempSync(join(tmpdir(), 'orangefilm-turn-undo-'));
 const FOOTAGE = Buffer.alloc(64 * 1024, 7);
 
 /** The system's trash, as a folder beside the project: what went there, by name. */

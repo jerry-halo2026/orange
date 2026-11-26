@@ -17,7 +17,7 @@ prepare(dir);
 const { PATH } = await loginShellEnvironment();
 const app = await electron.launch({
   executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
-  env: { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir },
+  env: { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir },
 });
 let page;
 try {
@@ -47,7 +47,7 @@ try {
     await new Promise((done) => setTimeout(done, 100));
   }
   await page.waitForSelector('[data-prompt-editor]');
-  await page.evaluate(() => localStorage.setItem('openfilm.language', 'zh-CN'));
+  await page.evaluate(() => localStorage.setItem('orangefilm.language', 'zh-CN'));
   await page.reload({ waitUntil: 'domcontentloaded' });
   const errors = [], filePicks = [];
   page.on('pageerror', (error) => errors.push(error.message));

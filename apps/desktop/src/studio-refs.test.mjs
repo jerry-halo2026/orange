@@ -13,7 +13,7 @@ const says = (text) => new RegExp(text.replaceAll('{brand}', NAME));
 
 const frame = (ms) => ({ src: `/api/projects/p1/media?what=frame&path=film.html&ms=${ms}&w=1280`, stage: { w: 1920, h: 1080 } });
 const clip = { kind: 'clip', id: 's3', loc: 'film.html#0.2', label: 'Title', clipKind: 'mg', src: 's3.html', start: 13.6, end: 18.2, track: 0, in: 2, speed: 1 };
-const region = { kind: 'region', time: 15.4, box: { x: 576, y: 216, w: 730.4, h: 594 }, clipIds: ['s3'], texts: ['OpenFilm'], image: { ...frame(15400), crop: { x: 576, y: 216, w: 730, h: 594 } } };
+const region = { kind: 'region', time: 15.4, box: { x: 576, y: 216, w: 730.4, h: 594 }, clipIds: ['s3'], texts: ['OrangeFilm'], image: { ...frame(15400), crop: { x: 576, y: 216, w: 730, h: 594 } } };
 const moment = { kind: 'time', time: 15.4, image: frame(15400) };
 const range = { kind: 'range', start: 12.6, end: 17.2, clipIds: ['s3', 's3-logo', 'l3'], image: frame(12600) };
 const layer = { kind: 'layer', label: 'h1', loc: 'film.html#0.2', clipId: 's3', text: 'Open\n  Film', tag: 'h1', time: 15.4, box: { x: 600, y: 300, w: 700, h: 120 }, source: 's3.html:42' };
@@ -29,7 +29,7 @@ test('the block after the message says what each number is, with the film\'s sta
 
 <studio_references film="film.html" stage="1920x1080">
 [1] clip \`s3\` (s3.html) · track 0 · 13.600–18.200 s of the film · in 2.000 s · speed 1 · film.html#0.2
-[2] region of the picture at 15.400 s · x=576 y=216 w=730 h=594 · clips s3 · words: "OpenFilm" · picture: .film/refs/local-abc-2.jpg
+[2] region of the picture at 15.400 s · x=576 y=216 w=730 h=594 · clips s3 · words: "OrangeFilm" · picture: .film/refs/local-abc-2.jpg
 [3] moment 15.400 s · picture: .film/refs/local-abc-3.jpg
 [4] range 12.600–17.200 s · clips s3, s3-logo, l3
 [5] layer <h1> "Open Film" in clip \`s3\` at 15.400 s · x=600 y=300 w=700 h=120 · source s3.html:42 · film.html#0.2
@@ -48,11 +48,11 @@ test('no references, no block; the stage comes from a picture when the selection
 test('a pill keeps its picture and what it points at, and the pill alone takes the person back there', () => {
   const pill = refPill(undefined, region);
   assert.equal(pill.kind, 'region');
-  assert.equal(pill.label, 'OpenFilm');
+  assert.equal(pill.label, 'OrangeFilm');
   assert.equal(pill.detail, undefined);                     /* its moment is on the card, not the pill */
   assert.deepEqual(pill.image, region.image);
   assert.equal('image' in pill.target, false);
-  assert.deepEqual(refFromPill(JSON.parse(JSON.stringify(pill))), { kind: 'region', time: 15.4, box: region.box, clipIds: ['s3'], texts: ['OpenFilm'] });
+  assert.deepEqual(refFromPill(JSON.parse(JSON.stringify(pill))), { kind: 'region', time: 15.4, box: region.box, clipIds: ['s3'], texts: ['OrangeFilm'] });
   assert.equal(refPill(undefined, range).label, '12.6–17.2 s');
   assert.equal(refPill(undefined, clip).detail, undefined, 'a clip on the timeline: no time on its pill');
   assert.equal(refPill(undefined, track).kind, 'track');
@@ -145,13 +145,13 @@ test('the message being written numbers its references as the agent will: each o
 });
 
 test('an example, or a part of it: its pill names it and the part, the agent reads another film\'s folder', () => {
-  const part = { kind: 'example', id: 'openfilm-intro', title: 'OpenFilm intro', url: 'https://github.com/openfilm/examples/tree/main/openfilm-intro', folder: '/cache/examples/openfilm-intro', start: 16.12, end: 31.6, segment: 'S4-Studio' };
-  const whole = { kind: 'example', id: 'one-prompt', title: 'One Prompt', url: 'https://github.com/openfilm/examples/tree/main/one-prompt', folder: '/cache/examples/one-prompt' };
+  const part = { kind: 'example', id: 'orangefilm-intro', title: 'OrangeFilm intro', url: 'https://github.com/orangefilm/examples/tree/main/orangefilm-intro', folder: '/cache/examples/orangefilm-intro', start: 16.12, end: 31.6, segment: 'S4-Studio' };
+  const whole = { kind: 'example', id: 'one-prompt', title: 'One Prompt', url: 'https://github.com/orangefilm/examples/tree/main/one-prompt', folder: '/cache/examples/one-prompt' };
   const pill = refPill(undefined, part);
-  assert.deepEqual([pill.id, pill.kind, pill.label, pill.detail], ['studio:example:openfilm-intro:16.12-31.6', 'example', 'OpenFilm intro', 'S4-Studio']);
+  assert.deepEqual([pill.id, pill.kind, pill.label, pill.detail], ['studio:example:orangefilm-intro:16.12-31.6', 'example', 'OrangeFilm intro', 'S4-Studio']);
   assert.equal(refPill(undefined, whole).detail, undefined);
   const text = studioReferencesText([part, whole]);
-  assert.match(text, says(String.raw`\[1\] example film "OpenFilm intro" \(another {brand} film, not this one: read its film\.html and pages for how it is made\) · folder \/cache\/examples\/openfilm-intro · its 16\.120–31\.600 s \("S4-Studio"\) · source https:\/\/github\.com\/`));
+  assert.match(text, says(String.raw`\[1\] example film "OrangeFilm intro" \(another {brand} film, not this one: read its film\.html and pages for how it is made\) · folder \/cache\/examples\/orangefilm-intro · its 16\.120–31\.600 s \("S4-Studio"\) · source https:\/\/github\.com\/`));
   assert.match(text, /\[2\] example film "One Prompt" .* · the whole film · source /);
   assert.match(studioReferencesText([{ ...whole, folder: undefined }]), /could not be fetched: read it at its source · the whole film · source https:/, 'not fetched: its source said instead');
   assert.ok(sameStudioThing(part, { ...part }) && !sameStudioThing(part, whole));
@@ -159,12 +159,12 @@ test('an example, or a part of it: its pill names it and the part, the agent rea
 });
 
 test('a voice of the library: its pill names it and its service, the agent reads how to speak in it', () => {
-  const voice = { kind: 'voice', provider: 'cartesia', service: 'Cartesia', id: 'db6b0ed5', name: 'Skylar', via: 'openfilm', models: ['cartesia/sonic-3.6'], language: 'en-US', description: 'Friendly guide' };
+  const voice = { kind: 'voice', provider: 'cartesia', service: 'Cartesia', id: 'db6b0ed5', name: 'Skylar', via: 'orangefilm', models: ['cartesia/sonic-3.6'], language: 'en-US', description: 'Friendly guide' };
   const away = { ...voice, id: 'Aanya', provider: 'inworld', service: 'Inworld', name: 'Aanya', via: null, models: [] };
   const pill = refPill(undefined, voice);
   assert.deepEqual([pill.id, pill.kind, pill.label, pill.detail], ['studio:voice:cartesia/db6b0ed5', 'voice', 'Skylar', 'Cartesia']);
   const text = studioReferencesText([voice, away]);
-  assert.match(text, /\[1\] voice "Skylar" of Cartesia for voice-over, id `db6b0ed5` · speaks en-US · speak in it with `openfilm get tts --via openfilm --model cartesia\/sonic-3\.6 --voice db6b0ed5`/);
+  assert.match(text, /\[1\] voice "Skylar" of Cartesia for voice-over, id `db6b0ed5` · speaks en-US · speak in it with `orangefilm get tts --via orangefilm --model cartesia\/sonic-3\.6 --voice db6b0ed5`/);
   assert.match(text, says(String.raw`\[2\] voice "Aanya" of Inworld .* not connected: the person connects Inworld or {brand} in Studio's Settings › Services first`));
   assert.ok(sameStudioThing(voice, { ...voice, via: null }));
   assert.ok(!sameStudioThing(voice, away));

@@ -8,7 +8,7 @@
  * self-contained (the computer never has .NET), the small host that starts it the way Studio starts `dotnet`, and
  * the three folders its explicit paths name. What a build cannot ship is the configuration itself: Studio only
  * accepts it with absolute paths and rejects anything it cannot stat (readLocalFissionConfiguration,
- * packages/openfilm/studio/server/fission-local.mjs), while the install folder is chosen by whoever installs.
+ * packages/orangefilm/studio/server/fission-local.mjs), while the install folder is chosen by whoever installs.
  * This module turns the resources folder the app is actually running from into that absolute configuration and
  * writes it into the app's data folder, where main.mjs hands it to Studio (ORANGE_FISSION_CONFIG_FILE).
  *
@@ -36,7 +36,7 @@ const exe = (name, platform) => (platform === 'win32' ? `${name}.exe` : name);
 export function fissionConfigFor(resourcesPath, { platform = process.platform } = {}) {
   const under = (...parts) => join(resourcesPath, ...parts);
   return {
-    cli: under('fission', 'Fission.Cli.dll'),
+    cli: under('fission', platform === 'win32' ? 'Fission.Cli.dll' : 'Fission.Cli'),
     dotnet: under('fission', exe('fission-host', platform)),
     paths: {
       FFmpeg: under('runtime', 'ffmpeg', exe('ffmpeg', platform)),
@@ -44,6 +44,8 @@ export function fissionConfigFor(resourcesPath, { platform = process.platform } 
       TransitionsDir: under('fission', 'transitions'),
       AssetsRoot: under('fission', 'assets'),
       LocalAssetsRoot: under('fission', 'local-assets'),
+      /* 随包字体目录：目录可以缺席（Windows 回落到系统字体），所以 readiness 不要求它存在。 */
+      FontsDir: under('fission', 'fonts'),
     },
   };
 }

@@ -10,7 +10,7 @@ import { LANGUAGES } from './i18n/language.mjs';
 
 const away = { project: 'Launch film', agent: 'Codex', language: 'en', inFront: false, on: true };
 
-test('a turn done, stopped by an error, or waiting for an answer is told while OpenFilm is not in front, its project the title', () => {
+test('a turn done, stopped by an error, or waiting for an answer is told while OrangeFilm is not in front, its project the title', () => {
   assert.deepEqual(turnNotice('done', away), { title: 'Launch film', body: 'Codex has finished.' });
   assert.deepEqual(turnNotice('asking', away), { title: 'Launch film', body: 'Codex is waiting for your answer.' });
   assert.deepEqual(turnNotice('failed', { ...away, error: 'Rate limit\nreached.' }), { title: 'Launch film', body: 'Codex stopped: Rate limit reached.' });
@@ -22,7 +22,7 @@ test('a turn done, stopped by an error, or waiting for an answer is told while O
   assert.deepEqual(turnNotice('done', { ...away, language: 'xx' }), { title: 'Launch film', body: 'Codex has finished.' }, 'an unknown language: English');
 });
 
-test('nothing is told with OpenFilm in front, or with notifications switched off', () => {
+test('nothing is told with OrangeFilm in front, or with notifications switched off', () => {
   assert.equal(turnNotice('done', { ...away, inFront: true }), null);
   assert.equal(turnNotice('asking', { ...away, on: false }), null);
 });

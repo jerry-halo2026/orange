@@ -58,7 +58,7 @@ test('the bench app signs in, opens a film, opens Fission, and the three-step wi
   const { PATH } = await loginShellEnvironment();
   const app = await electron.launch({
     executablePath: createRequire(import.meta.url)('electron'), args: [DESKTOP], cwd: DESKTOP,
-    env: { ...launcherEnvironment(process.env, PATH), OPENFILM_DESKTOP_FLAVOR: 'bench', OPENFILM_BENCH_DIR: dir },
+    env: { ...launcherEnvironment(process.env, PATH), ORANGE_DESKTOP_FLAVOR: 'bench', ORANGE_BENCH_DIR: dir },
   });
   let page = null;
   /** Each link of the chain, as it went: the run's own report, whatever the verdict turns out to be. */
@@ -118,9 +118,9 @@ test('the bench app signs in, opens a film, opens Fission, and the three-step wi
         if (!page) await sleep(100);
       }
       assert.ok(page, 'the app never showed Studio');
-      const card = page.getByRole('button').filter({ has: page.getByRole('heading', { name: FISSION_CARD, exact: true }) });
+      const card = page.getByRole('button', { name: FISSION_CARD, exact: true });
       await card.first().waitFor({ timeout: 90_000 });
-      await page.evaluate(() => localStorage.setItem('openfilm.language', 'zh-CN'));
+      await page.evaluate(() => localStorage.setItem('orangefilm.language', 'zh-CN'));
       await page.reload({ waitUntil: 'domcontentloaded' });
       await card.first().waitFor({ timeout: 90_000 });
       return 'Studio home on screen, zh-CN';
@@ -154,7 +154,7 @@ test('the bench app signs in, opens a film, opens Fission, and the three-step wi
     const home = await link('fission-entry', async () => {
       if (!film) throw new Error('no film on screen');
       await page.locator('div[data-titlebar] button[aria-label="首页"]').first().click();
-      const card = page.getByRole('button').filter({ has: page.getByRole('heading', { name: FISSION_CARD, exact: true }) });
+      const card = page.getByRole('button', { name: FISSION_CARD, exact: true });
       await card.first().waitFor({ timeout: 30_000 });
       await card.first().click();
       await page.getByRole('heading', { name: FISSION_CARD, exact: true }).first().waitFor({ timeout: 30_000 });
@@ -174,6 +174,12 @@ test('the bench app signs in, opens a film, opens Fission, and the three-step wi
         throw new Error(`${unavailable} - the pane says "${said}"`);
       }
       assert.ok(Array.isArray(answer.body), `the batch list is not a list: ${JSON.stringify(answer.body)?.slice(0, 120)}`);
+      /* 工作区把老向导收进默认折叠的「高级设置（原来的向导）」：先展开它，步骤栏才在首屏。 */
+      const advanced = page.locator('details').filter({ hasText: '高级设置' }).first();
+      if (await advanced.count()) {
+        const open = await advanced.evaluate((element) => element.hasAttribute('open'));
+        if (!open) await advanced.locator('summary').click();
+      }
       await page.locator(STEPS[0]).first().waitFor({ timeout: 30_000 });
       return `ready, ${answer.body.length} batch(es)`;
     });

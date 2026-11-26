@@ -317,14 +317,14 @@ test('clearDevPid：只删自己那份', () => {
   assert.equal(existsSync(join(root, '.dev', 'dev.pid')), false);
 });
 
-test('probeStudio 只认 openfilm-studio', async () => {
-  const healthy = async () => ({ ok: true, json: async () => ({ product: 'openfilm-studio', home: 'ab' }) });
+test('probeStudio 只认 orangefilm-studio', async () => {
+  const healthy = async () => ({ ok: true, json: async () => ({ product: 'orangefilm-studio', home: 'ab' }) });
   assert.equal((await probeStudio('http://127.0.0.1:4757/', { fetchImpl: healthy })).ok, true);
 
   const other = async () => ({ ok: true, json: async () => ({ product: 'vite' }) });
   const refused = await probeStudio('http://127.0.0.1:4757', { fetchImpl: other });
   assert.equal(refused.ok, false);
-  assert.match(refused.reason, /不是 openfilm-studio/);
+  assert.match(refused.reason, /不是 orangefilm-studio/);
 
   const down = async () => { throw Object.assign(new Error('connect ECONNREFUSED'), { name: 'TypeError' }); };
   assert.equal((await probeStudio('http://127.0.0.1:4757', { fetchImpl: down })).ok, false);

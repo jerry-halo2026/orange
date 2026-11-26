@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=760, height=160" />
+    <title>Lower third, clean bar</title>
+    <!--
+      OrangeFilm page: a minimal white-card lower third, after HyperFrames' block `lt-clean-bar`
+      (github.com/heygen-com/hyperframes, Apache-2.0, pinned v0.9.60). Rewritten for OrangeFilm:
+      the page is its own box (760 x 160, placed by the host), the GSAP timeline is a pure
+      `frame(t)` computation (SPEC §3), the CDN script and the web font are gone (offline,
+      deterministic), and the words and colours are the clip's `data-props`.
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 760px; height: 160px; background: transparent; overflow: hidden; }
+      :root {
+        --lt-accent: #ff5a36;
+        --lt-card: #ffffff;
+        --lt-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif;
+        --lt-name-color: #0f1115;
+        --lt-role-color: #5a6170;
+      }
+      #root { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+      .lt {
+        display: flex; align-items: stretch;
+        border-radius: 16px; overflow: hidden;
+        box-shadow: 0 14px 44px rgba(15, 17, 21, 0.18);
+        font-family: var(--lt-font);
+        will-change: clip-path, transform, opacity;
+      }
+      .lt-tab { width: 12px; background: var(--lt-accent); flex-shrink: 0; transform-origin: 50% 0%; will-change: transform; }
+      .lt-body { background: var(--lt-card); padding: 18px 34px 20px 26px; display: flex; flex-direction: column; gap: 6px; }
+      .lt-name {
+        font-size: 46px; font-weight: 700; color: var(--lt-name-color);
+        line-height: 1.06; letter-spacing: -0.015em; white-space: nowrap;
+        will-change: transform, opacity;
+      }
+      .lt-role {
+        font-size: 24px; font-weight: 400; color: var(--lt-role-color);
+        line-height: 1.2; letter-spacing: 0.01em; white-space: nowrap;
+        will-change: transform, opacity;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="lt" class="lt">
+        <div id="lt-tab" class="lt-tab"></div>
+        <div class="lt-body">
+          <div id="lt-name" class="lt-name">Ada Lovelace</div>
+          <div id="lt-role" class="lt-role">Mathematician · Writer</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DURATION = 4.8;
+      const card = document.getElementById('lt');
+      const tab = document.getElementById('lt-tab');
+      const nameEl = document.getElementById('lt-name');
+      const roleEl = document.getElementById('lt-role');
+
+      /* easing, the shapes the source's GSAP eases have */
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);   /* power3.out */
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);   /* power2.out */
+      const in2 = (x) => x * x;                      /* power2.in  */
+      /** progress of a tween starting at `at` for `secs`, 0 before and 1 after */
+      const at = (t, start, secs) => Math.min(1, Math.max(0, (t - start) / secs));
+
+      function draw(t) {
+        /* in: the card wipes open from the left, the tab grows, the two lines rise */
+        const wipe = out3(at(t, 0.1, 0.55));
+        card.style.clipPath = `inset(0 ${((1 - wipe) * 100).toFixed(3)}% 0 0)`;
+        tab.style.transform = `scaleY(${out2(at(t, 0.28, 0.45)).toFixed(4)})`;
+
+        const name = out3(at(t, 0.34, 0.5));
+        nameEl.style.transform = `translateY(${(22 * (1 - name)).toFixed(2)}px)`;
+        nameEl.style.opacity = String(name);
+
+        const role = out3(at(t, 0.44, 0.5));
+        roleEl.style.transform = `translateY(${(22 * (1 - role)).toFixed(2)}px)`;
+        roleEl.style.opacity = String(role);
+
+        /* out: settle down and fade, then gone */
+        const out = in2(at(t, 4.3, 0.35));
+        card.style.transform = `translateY(${(18 * out).toFixed(2)}px)`;
+        card.style.opacity = String(1 - out);
+        card.style.visibility = t >= 4.75 ? 'hidden' : 'visible';
+      }
+
+      window.film = {
+        duration: DURATION,
+        width: 760,
+        height: 160,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

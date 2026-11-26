@@ -10,7 +10,7 @@
  * Sorting is kept apart from reading bytes: the first is pure and tested with plain objects; the second only
  * makes sense in a browser (FileReader) and has no branches worth testing.
  */
-import { TURN_ATTACHMENT_THUMB_MAX_CHARS } from '@openfilm/shared';
+import { TURN_ATTACHMENT_THUMB_MAX_CHARS } from '@orange/shared';
 import {
   DOCUMENT_MEDIA_TYPES,
   IMAGE_EXTENSIONS,

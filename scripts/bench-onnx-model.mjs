@@ -4,7 +4,7 @@
 
 // 用一个 **ONNX 模型**（客户端要跑的那条路）在本地语料上排名，量和 bge-m3 同样的题。
 //
-//   node scripts/bench-onnx-model.mjs --model-dir packages/openfilm/library/models/bge-small-zh-onnx --dims 512
+//   node scripts/bench-onnx-model.mjs --model-dir packages/orangefilm/library/models/bge-small-zh-onnx --dims 512
 //   node scripts/bench-onnx-model.mjs --model-dir … --query-prefix "为这个句子生成表示以用于检索相关文章："
 //
 // # 为什么单独一个脚本
@@ -28,8 +28,8 @@ export function defaultOptions() {
   return {
     tenant: 'tenant-a',
     analyzerVer: 'card-meta-2',
-    modelDir: path.join(ROOT, 'packages', 'openfilm', 'library', 'models', 'bge-small-zh-onnx'),
-    runtime: path.join(ROOT, 'packages', 'openfilm', 'library', 'models', 'onnxruntime-web-1.31.1', 'ort.wasm.min.mjs'),
+    modelDir: path.join(ROOT, 'packages', 'orangefilm', 'library', 'models', 'bge-small-zh-onnx'),
+    runtime: path.join(ROOT, 'packages', 'orangefilm', 'library', 'models', 'onnxruntime-web-1.31.1', 'ort.wasm.min.mjs'),
     dims: 512,
     pooling: 'cls',
     threads: 1,
@@ -160,7 +160,7 @@ async function main() {
   const rows = JSON.parse(String(read.stdout).trim() || '[]');
   if (!rows.length) { console.error('没有语料'); return 1; }
 
-  const { loadEmbedder } = await import('../packages/openfilm/src/sentence-model.mjs');
+  const { loadEmbedder } = await import('../packages/orangefilm/src/sentence-model.mjs');
   const onnx = path.join(options.modelDir, 'model_quantized.onnx');
   console.log(`模型 ${(statSync(onnx).size / 1048576).toFixed(1)} MB`);
   const startedAt = Date.now();
@@ -170,7 +170,7 @@ async function main() {
     : options.tokenizer;
   const files = { runtime: options.runtime, onnx, pooling: options.pooling, threads: options.threads };
   if (kind === 'wordpiece') {
-    const { readWordPiece, tokenizeWordPiece } = await import('../packages/openfilm/src/wordpiece.mjs');
+    const { readWordPiece, tokenizeWordPiece } = await import('../packages/orangefilm/src/wordpiece.mjs');
     const vocab = readWordPiece(tokenizerFile);
     files.tokenize = (/** @type {string} */ text) => tokenizeWordPiece(vocab, text);
     console.log('分词器 WordPiece');

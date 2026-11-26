@@ -35,7 +35,7 @@ export function defaultOptions() {
   return {
     tenant: 'tenant-a',
     analyzerVer: 'card-meta-2',
-    column: 'embedding',
+    column: 'embedding_768_bge_base',
     model: 'bge-base-zh-v1.5',
     dims: 768,
     out: path.join(ROOT, '.dev', 'vector-pack'),

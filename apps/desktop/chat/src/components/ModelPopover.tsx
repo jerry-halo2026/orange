@@ -59,7 +59,7 @@ function failureReason(error: { text: string } | undefined): string | null {
 }
 
 export function ChatAgentIcon({ id, size = 14 }: { id: LocalAgentId; size?: number }) {
-  if (id === 'openfilm') return <BrandLogo size={size} />;
+  if (id === 'orangefilm') return <BrandLogo size={size} />;
   if (id === 'byok') return <KeyRound size={size} />;
   return <AgentIcon id={id} size={size} />;
 }
@@ -230,14 +230,14 @@ export function ModelPopover({ placement = 'bottom', align = 'start', agent: con
   const sideMenu = open && choosing && typeof document !== 'undefined' ? createPortal(
     <div ref={sideRef} onMouseEnter={() => showSide(choosing.id)} onMouseLeave={hideSideSoon}
       style={{ ...POPOVER_CHROME, padding: 4, overflowY: 'auto', ...(sideStyle ?? { position: 'fixed', left: -9999, top: 0 }) }}>
-      {/* The model's maker for OpenFilm, then its name; the choices follow Settings' order and visibility. */}
+      {/* The model's maker for OrangeFilm, then its name; the choices follow Settings' order and visibility. */}
       {rowChoices(agent, choosing, chosenValue(choosing)).map((choice) => {
         const selected = chosenValue(choosing) === choice.value;
         return (
           <button key={String(choice.value)} type="button" onMouseDown={keepFocus}
             disabled={choice.disabled} title={choice.disabled ? t('composer.modelUnavailableInfo') : undefined}
             onClick={() => pickChoice(choosing, choice.value)} className={`${ROW} disabled:cursor-default disabled:opacity-50`}>
-            {agent === 'openfilm' && choosing.category === 'model' ? <span className="flex w-4 shrink-0 justify-center text-[var(--text-muted)]"><AgentIcon id={String(choice.value).startsWith('anthropic/') ? 'claude' : String(choice.value).startsWith('openai/') ? 'codex' : 'deepseek'} size={14} /></span> : null}
+            {agent === 'orangefilm' && choosing.category === 'model' ? <span className="flex w-4 shrink-0 justify-center text-[var(--text-muted)]"><AgentIcon id={String(choice.value).startsWith('anthropic/') ? 'claude' : String(choice.value).startsWith('openai/') ? 'codex' : 'deepseek'} size={14} /></span> : null}
             <span className="min-w-0 flex-1 truncate text-[var(--text)]">{choice.name}</span>
             {choice.disabled ? <span className="text-[11px] text-[var(--text-muted)]">{t('composer.modelUnavailable')}</span> : null}
             <Check size={13} className={`ml-2 shrink-0 text-[var(--text)] ${selected ? '' : 'invisible'}`} />

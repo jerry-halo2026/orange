@@ -7,7 +7,7 @@ import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { AgentSession, agentInstructions, setChosenPaths } from './agents.mjs';
-import { openfilmCommand } from './openfilm-command.mjs';
+import { orangefilmCommand } from './orangefilm-command.mjs';
 import { loggedBlocks, readLog, writeModelLog } from './chat-store.mjs';
 
 /** An agent speaking ACP that keeps every prompt it is sent in `out`, one JSON line each. */
@@ -41,17 +41,17 @@ test('the turn log has what the agent was started with and each message as it go
     agent: 'qwen',
     cwd: mkdtempSync(join(tmpdir(), 'of-project-')),
     binDir: '/app/bin',
-    env: { OPENFILM_HOME: '/data', SOME_API_KEY: 'sk-secret' },
+    env: { ORANGE_HOME: '/data', SOME_API_KEY: 'sk-secret' },
     onSend: (message) => sent.push(message),
   });
-  const told = agentInstructions(openfilmCommand('/app/bin'));
+  const told = agentInstructions(orangefilmCommand('/app/bin'));
   try {
     await session.start();
     const opened = session.opened;
     assert.deepEqual(opened.command.slice(-3), ['--acp', '--approval-mode', 'yolo'], 'started as the registry starts it');
     assert.equal(opened.firstMessage, told, 'an agent with no place for them is told in its first message');
-    if (process.platform !== 'win32') assert.ok(told.includes("`'/app/bin/openfilm' look`"), "the app's openfilm by its whole path");
-    assert.equal(opened.env.OPENFILM_HOME, '/data');
+    if (process.platform !== 'win32') assert.ok(told.includes("`'/app/bin/orangefilm' look`"), "the app's orangefilm by its whole path");
+    assert.equal(opened.env.ORANGE_HOME, '/data');
     assert.equal(opened.env.SOME_API_KEY, '(hidden)', 'a key is named, never its value');
     assert.ok(!JSON.stringify(opened).includes('sk-secret'));
     assert.equal(opened.path.first, '/app/bin');
@@ -59,10 +59,10 @@ test('the turn log has what the agent was started with and each message as it go
     /* the window's own MCP server travels with the session: an absolute command and script, and Electron as Node */
     assert.equal(opened.session.params.mcpServers.length, 1);
     const [mcp] = opened.session.params.mcpServers;
-    assert.equal(mcp.name, 'openfilm');
+    assert.equal(mcp.name, 'orangefilm');
     assert.match(mcp.command, /^(?:\/|[A-Za-z]:\\)/, 'the command is an absolute path');
-    assert.match(mcp.args.at(-1), /openfilm-mcp\.mjs$/);
-    assert.ok(mcp.args.slice(0, -1).every((arg) => !arg.endsWith('openfilm-mcp.mjs')), 'the script is the last argument');
+    assert.match(mcp.args.at(-1), /orangefilm-mcp\.mjs$/);
+    assert.ok(mcp.args.slice(0, -1).every((arg) => !arg.includes('orangefilm-mcp.mjs')), 'the script is the last argument');
     assert.deepEqual(mcp.env, [{ name: 'ELECTRON_RUN_AS_NODE', value: '1' }]);
     assert.equal(opened.initialize.response.agentInfo.name, 'fake');
 

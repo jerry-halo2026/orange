@@ -2,7 +2,7 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * ffmpeg and ffprobe: Studio and `openfilm` need them for video pictures, sound and every export. The installer brings
+ * ffmpeg and ffprobe: Studio and `orangefilm` need them for video pictures, sound and every export. The installer brings
  * its own (scripts/release.mjs puts them in the app's resources, `runtime/ffmpeg`, with their license), so the app
  * works without a download. A build without them (from source) downloads them once into its data folder when the
  * computer has none on its PATH. Static builds (GPL-3.0, as published), each checked against the sha256 pinned here:
@@ -16,7 +16,7 @@
  */
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdirSync, renameSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { inflateRawSync } from 'node:zlib';
 
@@ -31,10 +31,12 @@ const GPL3 = (version) => `https://raw.githubusercontent.com/FFmpeg/FFmpeg/n${ve
  */
 const BUILDS = Object.freeze({
   'darwin-arm64': {
-    version: '8.1.2',
-    by: `the Shaka project's static build n8.1.2-1 (${SHAKA}), made by its scripts at https://github.com/shaka-project/static-ffmpeg-binaries`,
-    ffmpeg: { url: `${SHAKA}/ffmpeg-osx-arm64`, sha256: 'e7b9fcd97f95f333512d6e8b8ac24d9dbc08f189f36047695499bd7b57214b22' },
-    ffprobe: { url: `${SHAKA}/ffprobe-osx-arm64`, sha256: 'ded4c698b8ff38d0bc1fd30fcc5e768dc46f58bc15a8dfd61f98615ba49cde5c' },
+    /* osxexperts' 9.0.2 arm64 static build: same FFmpeg version as the Windows pin, and — unlike the Shaka build
+       it replaces — it carries libass/fontconfig/freetype, so burned-in subtitles work on the Mac. */
+    version: '9.0.2',
+    by: `osxexperts.net's static arm64 build 9.0.2 (https://www.osxexperts.net/), GPLv3 configuration with libass, fontconfig and freetype`,
+    ffmpeg: { url: 'https://www.osxexperts.net/ffmpeg902arm.zip', zipSha256: '4597f0f3a397cc0027bfd03dc4dd9c3066be15943cc788370846b4305d178bcb', entry: 'ffmpeg', sha256: '6deb2860c3dc0c08e0f96bab119196c024103046fa3cc7ef72e3a77797d8553c' },
+    ffprobe: { url: 'https://www.osxexperts.net/ffprobe902arm.zip', zipSha256: 'c765d316eb210f3c98de6f9688df784552f3f8f586090e2a8cb871be9003164e', entry: 'ffprobe', sha256: '8d56278ec2ba80f35138e7dceccb1a72eff951156691d8c733066ebd7628d3f2' },
   },
   'darwin-x64': {
     version: '8.1.2',
@@ -71,6 +73,39 @@ export function ffmpegOnPath(path) {
 
 /** Whether this machine has a build to download. */
 export const ffmpegDownloadable = (platform = process.platform, arch = process.arch) => Object.hasOwn(BUILDS, `${platform}-${arch}`);
+
+/**
+ * What is wrong with a folder offered as `ORANGE_FFMPEG_CACHE` — the folder `scripts/release.mjs` copies into the build
+ * as the app's `resources/runtime/ffmpeg`, so its shape is that folder's: the two programs beside each other.
+ *
+ * The check is the one the copy cannot make for itself. A folder that merely *looks* like a cache — a parent holding an
+ * `ffmpeg/` folder, which is what an `existsSync(dir + '/ffmpeg')` gate invites on Windows, where the program is
+ * `ffmpeg.exe` — was copied whole and left the installer without `resources/runtime/ffmpeg/ffmpeg.exe`; the build then
+ * failed its own self-check, on a machine whose only problem was the cache's layout (2026-11-25).
+ *
+ * Where the pin names each program's sha256 (the Mac builds ship one file per program), the bytes are checked too, so a
+ * cache of another version — an old 8.1.2 folder beside a 9.0.2 pin — is refused instead of shipped. The Windows pin is
+ * one zip of both programs and has no per-file sha256; there the check is that both programs are there.
+ * @param {string} dir @param {{ platform?: string, arch?: string }} [options] @returns {string[]} empty when usable
+ */
+export function ffmpegCacheProblems(dir, { platform = process.platform, arch = process.arch } = {}) {
+  const key = `${platform}-${arch}`;
+  const build = BUILDS[key];
+  if (!build) return [`there is no ${key} build to compare the cache with`];
+  const problems = [];
+  for (const name of /** @type {const} */ (['ffmpeg', 'ffprobe'])) {
+    const file = join(dir, exe(name, platform));
+    if (!existsSync(file)) {
+      problems.push(`${exe(name, platform)} is missing`);
+      continue;
+    }
+    const from = build[name];
+    if (!from || !('sha256' in from)) continue;
+    const got = createHash('sha256').update(readFileSync(file)).digest('hex');
+    if (got !== from.sha256) problems.push(`${exe(name, platform)} is not the pinned ${build.version} program (sha256 ${got.slice(0, 12)}…)`);
+  }
+  return problems;
+}
 
 let downloading = null;
 
@@ -125,7 +160,22 @@ export async function fetchFfmpeg(dir, { platform = process.platform, arch = pro
       for (const name of missing) place(name, unzipEntry(zip, `${build.zip.folder}/bin/${exe(name, platform)}`));
     }
   } else {
-    await Promise.all(missing.map(async (name) => place(name, await pinned(build[name], name))));
+    /** A program of this build: its own pinned file, or an entry of its own pinned archive (osxexperts ships one per
+        program, with the program at the archive's root). */
+    const program = async (/** @type {string} */ name) => {
+      const from = build[name];
+      if (!from) throw new Error(`The ${key} build has no ${name}.`);
+      if ('zipSha256' in from) {
+        const archive = await pinned({ url: from.url, sha256: from.zipSha256 }, `${name} archive`);
+        const bytes = unzipEntry(archive, from.entry ?? name);
+        if (createHash('sha256').update(bytes).digest('hex') !== from.sha256) {
+          throw new Error(`The ${name} inside its archive did not match its checksum; nothing was kept.`);
+        }
+        return bytes;
+      }
+      return pinned(from, name);
+    };
+    await Promise.all(missing.map(async (name) => place(name, await program(name))));
   }
   if (license) {
     if (zip) {

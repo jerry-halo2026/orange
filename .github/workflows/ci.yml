@@ -37,7 +37,7 @@ jobs:
       # the editor's page and the window's shell are built before the tests: several Studio tests read what the build
       # produces (studio/ui/dist), and without it they wait out their timeout instead of failing for a reason
       - run: pnpm build
-      - run: pnpm --filter openfilm exec playwright-core install chromium-headless-shell
+      - run: pnpm --filter orangefilm exec playwright-core install chromium-headless-shell
         timeout-minutes: 15
       - run: brew install ffmpeg
         if: runner.os == 'macOS'
@@ -55,7 +55,7 @@ jobs:
       - run: pnpm test
         env:
           # what a failing test keeps to be looked at (look's two pictures of a t that differed)
-          OPENFILM_TEST_ARTIFACTS: ${{ runner.temp }}/test-artifacts
+          ORANGE_TEST_ARTIFACTS: ${{ runner.temp }}/test-artifacts
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -64,7 +64,50 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-  # what npm would get: the tarball of openfilm, listed in the log and checked (no tests, fixtures or dev files; the
+  # The .NET engine (workers/fission): its own toolchain, its own runner — the Node job above never compiles it, so a
+  # C# change could reach the platform builds unnoticed. Both platforms that ship it: Windows x64 and macOS arm64.
+  #
+  # The test subset is deliberate, not an oversight. The suite's baseline is red — 48 of 299 fail against the imported
+  # source (FissionEditPlan*, the native edit-plan tests; docs/execution/ holds the tracked state) — and this job is not
+  # the place to turn that green: a job that whitelists the whole suite would report "tests pass" while 48 are red, and
+  # a job that runs all of it would be red on every commit for reasons no change here caused. So it runs exactly what a
+  # change in this repository is expected to keep green: the core logic cases, and the EnginePaths/EngineRunConfiguration
+  # side of the optional FontsDir contract (paths parsing, unknown-field and non-string rejection). Widen the filter only
+  # when a failing case is actually fixed.
+  engine:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet build workers/fission/src/Fission.Cli/Fission.Cli.csproj -c Debug
+      # `--no-build` below needs an assembly to run, and building the test project is what produces it (it references
+      # the CLI, so this also proves the engine compiles)
+      - run: dotnet build workers/fission/tests/Fission.UnitTests -c Debug
+      - run: >
+          dotnet test workers/fission/tests/Fission.UnitTests -c Debug --no-build
+          --filter "FullyQualifiedName~CoreLogicTests|FullyQualifiedName~EnginePathsSourceTests|FullyQualifiedName~EngineRunConfigurationTests.Load_OptionalFontsDir|FullyQualifiedName~EngineRunConfigurationTests.Load_UnknownPathsField|FullyQualifiedName~EngineRunConfigurationTests.Load_NonStringFontsDir"
+      # the Node side of the same feature: the recipe/runner/render-route/voice-step modules and the desktop's
+      # Fission configuration. They import `node:` builtins and files beside them, so they need no `pnpm install`.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: >
+          node --test
+          packages/orangefilm/studio/server/fission-recipe.test.mjs
+          packages/orangefilm/studio/server/fission-runner.test.mjs
+          packages/orangefilm/studio/server/fission-render-routes.test.mjs
+          packages/orangefilm/studio/server/voice-step.test.mjs
+          apps/desktop/scripts/fission-publish.test.mjs
+          apps/desktop/src/fission-config.test.mjs
+
+  # what npm would get: the tarball of orangefilm, listed in the log and checked (no tests, fixtures or dev files; the
   # official product.json)
   pack:
     runs-on: ubuntu-latest

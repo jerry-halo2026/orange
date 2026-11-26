@@ -68,7 +68,7 @@ test('the app is launched after the bootstrap, with the desktop package\'s own s
 
 test('the app\'s exit code is the script\'s, and a signal exit is reported as a failure', async () => {
   const child = fakeChild();
-  const coded = startDesktop({ spawnFn: () => child, env: { OPENFILM_DESKTOP_START: 'electron.exe --dev' }, forwardSignals: false });
+  const coded = startDesktop({ spawnFn: () => child, env: { ORANGE_DESKTOP_START: 'electron.exe --dev' }, forwardSignals: false });
   child.emit('exit', 7);
   assert.equal(await coded, 7);
 
@@ -91,7 +91,7 @@ test('the app finishing is what ends the script: a failed bootstrap never reache
   assert.equal(await app, 0);
 });
 
-test('OPENFILM_DESKTOP_START replaces the command line, and the default is the real one', () => {
+test('ORANGE_DESKTOP_START replaces the command line, and the default is the real one', () => {
   assert.deepEqual(desktopCommand({}), ['pnpm', ...DESKTOP_ARGS]);
-  assert.deepEqual(desktopCommand({ OPENFILM_DESKTOP_START: '  electron.exe  --dev ' }), ['electron.exe', '--dev']);
+  assert.deepEqual(desktopCommand({ ORANGE_DESKTOP_START: '  electron.exe  --dev ' }), ['electron.exe', '--dev']);
 });

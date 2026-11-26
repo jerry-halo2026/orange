@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   check:
-    if: github.repository == 'openfilm/openfilm'
+    if: github.repository == 'jerry-halo2026/orange'
     strategy:
       fail-fast: false
       matrix:

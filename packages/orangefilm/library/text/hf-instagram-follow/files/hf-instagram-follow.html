@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=640, height=180" />
+    <title>Follow card</title>
+    <!--
+      A social card, after HyperFrames' `instagram-follow`.
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 640px; height: 180px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --f-accent: #e1306c; --f-ink: #ffffff; --f-card: #1a1a1c; --f-muted: #a1a1a6; --f-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; display: flex; align-items: center; }
+      .f-card { width: 620px; display: flex; align-items: center; gap: 16px; padding: 16px 20px;
+                background: var(--f-card); border-radius: 18px; box-shadow: 0 18px 44px rgba(0,0,0,.5);
+                will-change: transform, opacity; }
+      .f-avatar { width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0;
+                  background: conic-gradient(from 210deg, #feda75, #fa7e1e, var(--f-accent), #962fbf, #4f5bd5, #feda75); }
+      .f-main { display: flex; flex-direction: column; gap: 2px; }
+      .f-handle { font-size: 22px; font-weight: 700; color: var(--f-ink); }
+      .f-note { font-size: 15px; color: var(--f-muted); }
+      .f-btn { margin-left: auto; padding: 11px 24px; border-radius: 10px; background: var(--f-accent);
+               color: #fff; font-size: 17px; font-weight: 650; will-change: transform; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="card" class="f-card">
+      <div class="f-avatar"></div>
+      <div class="f-main"><div class="f-handle">@ada.builds</div><div class="f-note">Films, made as pages</div></div>
+      <div id="btn" class="f-btn">Follow</div>
+    </div></div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const card = document.getElementById('card');
+      const btn = document.getElementById('btn');
+      function draw(t) {
+        const p = out3(at(t, 0.12, 0.5));
+        card.style.opacity = String(p);
+        card.style.transform = `translateY(${(16 * (1 - p)).toFixed(2)}px)`;
+        const press = at(t, 2.4, 0.12) * (1 - at(t, 2.52, 0.18));
+        btn.style.transform = `scale(${(1 - 0.08 * press).toFixed(3)})`;
+        btn.textContent = t > 2.7 ? 'Following' : 'Follow';
+      }
+      const DURATION = 4.5;
+
+      window.film = {
+        duration: DURATION,
+        width: 640,
+        height: 180,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

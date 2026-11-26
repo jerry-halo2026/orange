@@ -1,0 +1,104 @@
+{
+ "version": 1,
+ "about": "Pages rewritten for OrangeFilm from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0, pinned v0.9.60). Kept in a catalog of their own so library/index.json stays upstream's.",
+ "groups": {
+  "text": [
+   {
+    "id": "lower",
+    "name": {
+     "en": "Names and places",
+     "zh-CN": "人名地点",
+     "ja": "名前と場所",
+     "ko": "이름과 장소",
+     "es": "Nombres y lugares"
+    }
+   },
+   {
+    "id": "caption",
+    "name": {
+     "en": "Captions",
+     "zh-CN": "字幕",
+     "ja": "字幕",
+     "ko": "자막",
+     "es": "Subtítulos"
+    }
+   },
+   {
+    "id": "social",
+    "name": {
+     "en": "Social cards",
+     "zh-CN": "社交卡",
+     "ja": "SNSカード",
+     "ko": "소셜 카드",
+     "es": "Tarjetas sociales"
+    }
+   },
+   {
+    "id": "data",
+    "name": {
+     "en": "Numbers and charts",
+     "zh-CN": "数字与图表",
+     "ja": "数字とグラフ",
+     "ko": "숫자와 차트",
+     "es": "Números y gráficos"
+    }
+   },
+   {
+    "id": "cursor",
+    "name": {
+     "en": "Cursor and clicks",
+     "zh-CN": "光标与点击",
+     "ja": "カーソルとクリック",
+     "ko": "커서와 클릭",
+     "es": "Cursor y clics"
+    }
+   }
+  ],
+  "transition": [
+   {
+    "id": "slide",
+    "name": {
+     "en": "Slides",
+     "zh-CN": "滑动",
+     "ja": "スライド",
+     "ko": "슬라이드",
+     "es": "Deslizar"
+    }
+   },
+   {
+    "id": "mask",
+    "name": {
+     "en": "Masks",
+     "zh-CN": "遮罩",
+     "ja": "マスク",
+     "ko": "마스크",
+     "es": "Máscaras"
+    }
+   },
+   {
+    "id": "camera",
+    "name": {
+     "en": "Camera",
+     "zh-CN": "镜头",
+     "ja": "カメラ",
+     "ko": "카메라",
+     "es": "Cámara"
+    }
+   }
+  ],
+  "effect": [
+   {
+    "id": "background",
+    "name": {
+     "en": "Backgrounds",
+     "zh-CN": "背景",
+     "ja": "背景",
+     "ko": "배경",
+     "es": "Fondos"
+    }
+   }
+  ],
+  "template": []
+ },
+ "items": []
+}

@@ -103,8 +103,8 @@ public static class Program
                         // 运行结果先通知父进程；父进程写完结果记录再发 DONE，命名空间在此期间保持固定。
                         Console.Error.WriteLine("[Fission:JOB-FINISHED] " + exitCode.ToString(System.Globalization.CultureInfo.InvariantCulture));
                         Console.Error.Flush();
-                        var released = await Task.WhenAny(releaseSignal.Task, Task.Delay(TimeSpan.FromMinutes(2))).ConfigureAwait(false);
-                        if (released != releaseSignal.Task) Console.Error.WriteLine("[Fission:NAMESPACE-RELEASED-UNCONFIRMED]");
+                        try { await releaseSignal.Task.WaitAsync(TimeSpan.FromMinutes(2)).ConfigureAwait(false); }
+                        catch (TimeoutException) { Console.Error.WriteLine("[Fission:NAMESPACE-RELEASED-UNCONFIRMED]"); }
                     }
                     return exitCode;
                 }
@@ -198,8 +198,8 @@ public static class Program
         var deadline = DateTime.UtcNow + TimeSpan.FromMinutes(5);
         while (true)
         {
-            var finished = await Task.WhenAny(read, Task.Delay(TimeSpan.FromMilliseconds(500))).ConfigureAwait(false);
-            if (finished == read) break;
+            try { await read.WaitAsync(TimeSpan.FromMilliseconds(500)).ConfigureAwait(false); break; }
+            catch (TimeoutException) { }
             if (stopped.IsCancellationRequested) return false;
             if (DateTime.UtcNow >= deadline) throw new ConfigException("CFG_NAMESPACE", "父进程未在约定时间内启动混剪任务。");
         }

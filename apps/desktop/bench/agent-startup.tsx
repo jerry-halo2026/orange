@@ -10,8 +10,8 @@ import type { RosterAgent } from '../chat/src/lib/desktop-bridge';
 import '../shell/shell.css';
 import '../chat/src/chat.css';
 
-localStorage.setItem('openfilm.language', 'en');
-localStorage.setItem('openfilm.local-agents.v2', JSON.stringify({ picked: 'codex', prefs: {}, options: {} }));
+localStorage.setItem('orangefilm.language', 'en');
+localStorage.setItem('orangefilm.local-agents.v2', JSON.stringify({ picked: 'codex', prefs: {}, options: {} }));
 let roster: RosterAgent[] = [
   { id: 'codex', name: 'Codex', shown: true, status: 'checking' },
   { id: 'opencode', name: 'OpenCode', shown: true, status: 'ready' },
@@ -24,7 +24,7 @@ let release: (list: RosterAgent[]) => void = () => {};
 let released = false;
 const oldList = new Promise<RosterAgent[]>((done) => { release = done; });
 const publish = () => { for (const listener of listeners) listener(roster); };
-(window as any).openfilmDesktop = {
+(window as any).orangefilmDesktop = {
   agents: {
     list: async () => released ? roster : oldList,
     onChange: (listener: (list: RosterAgent[]) => void) => { listeners.add(listener); return () => listeners.delete(listener); },

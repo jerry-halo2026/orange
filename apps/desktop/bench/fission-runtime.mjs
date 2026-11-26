@@ -51,7 +51,8 @@ function entries(file) {
  * @returns {string[]}
  */
 export function configurationIssues(config, { fs = { lstat: lstatSync } } = {}) {
-  const problems = configurationProblems(config);
+  /* 平台必须显式传：configurationProblems 默认 win32，会把 mac 的 `ffmpeg`（无 .exe）判成缺件。 */
+  const problems = configurationProblems(config, { platform: process.platform });
   if (problems.length) return problems;
   const value = /** @type {any} */ (config);
   const look = (path) => { try { return fs.lstat(path); } catch { return null; } };
@@ -59,10 +60,11 @@ export function configurationIssues(config, { fs = { lstat: lstatSync } } = {}) 
     const stat = look(value[key]);
     if (!stat || !stat.isFile()) problems.push(`${key} is not a file: ${value[key]}`);
   }
-  const folders = new Set(['TransitionsDir', 'AssetsRoot', 'LocalAssetsRoot']);
+  const folders = new Set(['TransitionsDir', 'AssetsRoot', 'LocalAssetsRoot', 'FontsDir']);
   for (const [key, path] of Object.entries(value.paths ?? {})) {
     const stat = look(String(path));
-    if (!stat) problems.push(`paths.${key} does not exist: ${path}`);
+    /* FontsDir 是可选的随包字体目录：缺席不算问题（引擎回落到系统字体）。 */
+    if (!stat) { if (key !== 'FontsDir') problems.push(`paths.${key} does not exist: ${path}`); }
     else if (folders.has(key) ? !stat.isDirectory() : !stat.isFile()) problems.push(`paths.${key} is not a ${folders.has(key) ? 'folder' : 'file'}: ${path}`);
   }
   return problems;
@@ -201,9 +203,11 @@ export function findFissionRuntime({ environment = process.env, desktop = proces
   }
 
   for (const candidate of derived) {
+    /* The three engine folders are this file's own to make (a source build has none), so they are made before the
+       paths are judged existent — judging first is what made a fresh checkout un-derivable. */
+    for (const dir of [candidate.config.paths.TransitionsDir, candidate.config.paths.AssetsRoot, candidate.config.paths.LocalAssetsRoot]) mkdirSync(dir, { recursive: true });
     const problems = configurationIssues(candidate.config);
     if (problems.length) { tried.push(...problems.map((problem) => `${candidate.source}: ${problem}`)); continue; }
-    for (const dir of [candidate.config.paths.TransitionsDir, candidate.config.paths.AssetsRoot, candidate.config.paths.LocalAssetsRoot]) mkdirSync(dir, { recursive: true });
     if (write) {
       try {
         mkdirSync(join(desktop, '.dev'), { recursive: true });

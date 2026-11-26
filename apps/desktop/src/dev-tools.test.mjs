@@ -16,7 +16,7 @@ import { devToolsView, isDevToolsShortcut, toggleDevTools } from './dev-tools.mj
 
 const noop = () => {};
 const menu = (packaged, language = 'en') => applicationMenuTemplate({
-  productName: 'OpenFilm', packaged, language, toggleChat: noop, openProject: noop, reload: noop, devTools: noop,
+  productName: 'OrangeFilm', packaged, language, toggleChat: noop, openProject: noop, reload: noop, devTools: noop,
   openSettings: noop, tabs: { open: noop, close: noop, reopen: noop, step: noop, pick: noop },
 });
 /** The View submenu, named in the language the menu was built in. */
@@ -38,17 +38,16 @@ test('the item reads as Chinese in a Chinese interface, with the same key', () =
   assert.equal(item.accelerator, 'F12');
 });
 
-test('a packaged build has no developer tools item, and keeps the rest of the View menu', () => {
+test('a packaged build keeps the developer tools item (debugging a black window), and the rest of the View menu', () => {
   const template = menu(true);
-  assert.equal(devToolsItem(template), undefined, 'no F12 item');
-  assert.equal(viewItems(template).some((item) => /开发者工具|Developer Tools/.test(String(item.label))), false);
+  assert.ok(devToolsItem(template), 'the F12 item is there');
   assert.ok(viewItems(template).some((item) => item.role === 'zoomIn'), 'the ordinary View items are still there');
 });
 
 test('the menu callback opens the tools on the page in front', () => {
   let opened = 0;
   const template = applicationMenuTemplate({
-    productName: 'OpenFilm', packaged: false, language: 'en', toggleChat: noop, openProject: noop, reload: noop,
+    productName: 'OrangeFilm', packaged: false, language: 'en', toggleChat: noop, openProject: noop, reload: noop,
     devTools: () => { opened += 1; }, openSettings: noop, tabs: { open: noop, close: noop, reopen: noop, step: noop, pick: noop },
   });
   devToolsItem(template).click();
@@ -89,10 +88,10 @@ test('F12 and Alt+CmdOrCtrl+I both ask for the tools; nothing else does', () => 
   assert.equal(isDevToolsShortcut(null), false);
 });
 
-test('the window keeps the flag, binds both keys only when unpackaged, and uses the fallback callback', () => {
+test('the window keeps the flag, binds both keys in every build, and uses the fallback callback', () => {
   const main = readFileSync(new URL('./main.mjs', import.meta.url), 'utf8');
-  assert.match(main, /devTools: !app\.isPackaged,/, 'the pages keep their developer tools in a development build');
-  assert.match(main, /devTools: \(\) => toggleDevTools\(activeView\(\), views\.get\(HOME\)\)/, 'the menu callback falls back to home');
-  assert.match(main, /if \(!app\.isPackaged\) \{\s*v\.webContents\.on\('before-input-event'/, 'the second key is bound only when unpackaged');
+  assert.match(main, /devTools: true,/, 'the pages keep their developer tools');
+  assert.match(main, /devTools: \(\) => \{ if \(readPreferences\(DATA\)\.devtools !== false\) toggleDevTools\(activeView\(\), views\.get\(HOME\)\); \}/, 'the menu callback honours the preference and falls back to home');
+  assert.match(main, /v\.webContents\.on\('before-input-event'/, 'the second key is bound');
   assert.match(main, /event\.preventDefault\(\);\s*toggleDevTools\(v, v\);/, 'the page that saw the key opens the tools itself');
 });

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>橙子创作中心</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox%3D%220 0 1024 1024%22 role%3D%22img%22 aria-label%3D%22%E6%A9%99%E5%AD%90%E5%88%9B%E4%BD%9C%E4%B8%AD%E5%BF%83%22%3E%3Ctitle%3E%E6%A9%99%E5%AD%90%E5%88%9B%E4%BD%9C%E4%B8%AD%E5%BF%83%3C%2Ftitle%3E%3Crect width%3D%221024%22 height%3D%221024%22 rx%3D%22220%22 fill%3D%22%230B0B0C%22%2F%3E%3Crect x%3D%22187%22 y%3D%22470%22 width%3D%22154%22 height%3D%22320%22 rx%3D%2245%22 fill%3D%22%23F3BF9C%22 transform%3D%22rotate(8 264 630)%22%2F%3E%3Crect x%3D%22426%22 y%3D%22355%22 width%3D%22154%22 height%3D%22435%22 rx%3D%2245%22 fill%3D%22%23F0A06A%22 transform%3D%22rotate(8 503 572)%22%2F%3E%3Crect x%3D%22665%22 y%3D%22225%22 width%3D%22154%22 height%3D%22565%22 rx%3D%2245%22 fill%3D%22%23ED7B2D%22 transform%3D%22rotate(8 742 507)%22%2F%3E%3C%2Fsvg%3E">
+<script>
+  /* the theme before the first paint, so the wrong one never flashes: dark unless the person chose another */
+  (function () {
+    var t = 'dark';
+    try { t = localStorage.getItem('orangefilm.theme') || 'dark'; } catch (e) {}
+    if (t === 'system') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
+  })();
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

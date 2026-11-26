@@ -331,7 +331,7 @@ test('the token is single-flight across contract calls, refreshed before 24h, an
 });
 
 test('supplier codes surface as the fixed first-party errors through the contract layer',async()=>{
-  for(const [code,expected,status] of [[20000,'provider-response-unconfirmed',502],[20001,'provider-timeout',504],[20002,'provider-rate-limited',429],[20010,'provider-company-unconfirmed',503],[20011,'provider-unavailable',502],[20012,'provider-state-unconfirmed',503],[20013,'provider-credential-expired',401],[20014,'provider-credential-rejected',403],[20015,'provider-signature-rejected',502],[20020,'account-not-found',404],[20022,'authorization-denied',403],[777,'provider-unconfirmed',503]] as const){
+  for(const [code,expected,status] of [[20000,'provider-response-unconfirmed',502],[20001,'provider-timeout',504],[20002,'provider-rate-limited',429],[20010,'provider-company-unconfirmed',503],[20011,'provider-unavailable',502],[20012,'provider-state-unconfirmed',503],[20013,'provider-credential-expired',401],[20014,'provider-credential-rejected',403],[20015,'provider-signature-rejected',502],[20020,'account-not-found',404],[20022,'provider-permission-denied',403],[777,'provider-unconfirmed',503]] as const){
     const s=fixture();s.token();
     s.queue.push(()=>wire(JSON.stringify({success:false,code,message:'fixture_secret must not escape'})));
     await assert.rejects(async()=>s.materials.list(await principal(),{}),(error:unknown)=>{

@@ -2,17 +2,17 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * Run the app from this repository: `pnpm --filter @openfilm/desktop start`.
+ * Run the app from this repository: `pnpm --filter @orange/desktop start`.
  *
  * It is the `dev` flavour (src/flavor.mjs): on macOS a renamed copy of Electron.app with its own name, bundle id and
- * data folder, so it never shares a Dock icon, a lock or a Studio with an installed OpenFilm. The window's page
+ * data folder, so it never shares a Dock icon, a lock or a Studio with an installed OrangeFilm. The window's page
  * (shell/) is built first (`--no-build` skips it). Electron gets a clean environment: run from inside Claude Code or Codex, this
  * process carries their variables, which the app's agents would inherit (src/environment.mjs). Arguments after the
  * script go to Electron as they are (e.g. --remote-debugging-port=9333).
  */
 import { execFileSync, spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launcherEnvironment, loginShellEnvironment } from '../src/environment.mjs';
@@ -20,13 +20,23 @@ import { FLAVORS } from '../src/flavor.mjs';
 import { readIsolationProfile, isolationEnvironment, prepareIsolationDirectories } from '../src/isolation.mjs';
 export async function startDevelopment({ source = process.env, argv = process.argv.slice(2), adapters = {} } = {}) {
     const profile = readIsolationProfile(source);
-    const env = { ...source, OPENFILM_DESKTOP_FLAVOR: 'dev', ...(profile ? isolationEnvironment(profile) : {}) };
+    const env = { ...source, ORANGE_DESKTOP_FLAVOR: 'dev', ...(profile ? isolationEnvironment(profile) : {}) };
     if (profile)
         prepareIsolationDirectories(profile, adapters.mkdir ?? mkdirSync);
     const control = adapters.control ?? process;
     const identity = FLAVORS.dev;
     const require = createRequire(import.meta.url);
     const desktop = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+    /* dev 自配置：.dev/bench-auth.env（登录环境、Fission 配置、测试账号）存在就注入，
+       与安装包读 resources/auth-environment.json 的行为对齐，避免“尚未配置登录连接”。 */
+    for (const candidate of [join(desktop, '.dev', 'bench-auth.env'), join(desktop, '..', '..', '.dev', 'bench-auth.env')]) {
+        if (!existsSync(candidate)) continue;
+        for (const line of readFileSync(candidate, 'utf8').split(/\r?\n/)) {
+            const match = /^([A-Z_][A-Z0-9_]*)=(.*)$/.exec(line.trim());
+            if (match && !(match[1] in env)) env[match[1]] = match[2];
+        }
+        break;
+    }
     const args = argv.filter((a) => a !== '--no-build');
     if (!argv.includes('--no-build')) {
         if (adapters.build)
@@ -44,7 +54,7 @@ export async function startDevelopment({ source = process.env, argv = process.ar
         const version = require('electron/package.json').version;
         const productVersion = require('../package.json').version;
         /* .dev/ is git-ignored */
-        const runtime = profile ? join(profile.paths.cache, 'electron', `${version}-openfilm-dev-v2-${productVersion}`) : join(desktop, '.dev', 'runtime', `${version}-openfilm-dev-v2-${productVersion}`);
+        const runtime = profile ? join(profile.paths.cache, 'electron', `${version}-orangefilm-dev-v2-${productVersion}`) : join(desktop, '.dev', 'runtime', `${version}-orangefilm-dev-v2-${productVersion}`);
         const bundle = join(runtime, `${identity.productName}.app`);
         const marker = join(runtime, 'ready');
         /* the executable keeps Electron's own name: Electron decides `app.isPackaged` from it. The name people see comes
@@ -62,8 +72,8 @@ export async function startDevelopment({ source = process.env, argv = process.ar
             set('CFBundleShortVersionString', productVersion);
             set('CFBundleVersion', productVersion);
             set('CFBundleIdentifier', identity.bundleId);
-            set('CFBundleIconFile', 'openfilm.icns');
-            copyFileSync(join(desktop, 'build/icon-dev.icns'), join(bundle, 'Contents/Resources/openfilm.icns'));
+            set('CFBundleIconFile', 'orangefilm.icns');
+            copyFileSync(join(desktop, 'build/icon-dev.icns'), join(bundle, 'Contents/Resources/orangefilm.icns'));
             /* a local ad-hoc signature covers the changed bundle */
             execFileSync('/usr/bin/codesign', ['--force', '--deep', '--sign', '-', bundle], { stdio: 'ignore' });
             execFileSync('/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister', ['-f', bundle]);

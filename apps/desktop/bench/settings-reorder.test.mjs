@@ -30,7 +30,7 @@ test('Advanced library categories reorder live, save once per gesture and keep M
       const saved = [];
       let prefs = { libraryCategories: null };
       page.on('pageerror', (e) => errors.push(e.message));
-      await page.addInitScript((lang) => { localStorage.setItem('openfilm.language', lang); }, locale);
+      await page.addInitScript((lang) => { localStorage.setItem('orangefilm.language', lang); }, locale);
       await page.route('**/api/prefs', async (route) => {
         if (route.request().method() === 'PATCH') {
           const patch = route.request().postDataJSON();
@@ -103,7 +103,7 @@ test('Advanced library categories reorder live, save once per gesture and keep M
       assert.equal(await list.locator('[data-library-category="template"]').getByRole('switch').getAttribute('aria-checked'), 'false');
       await page.evaluate(() => { document.documentElement.dataset.theme = 'dark'; });
       await rows.evaluateAll((items) => Promise.all(items.flatMap((item) => item.getAnimations()).map((animation) => animation.finished.catch(() => {}))));
-      await page.screenshot({ path: `/tmp/openfilm-library-reorder-${locale}.png`, fullPage: true });
+      await page.screenshot({ path: `/tmp/orangefilm-library-reorder-${locale}.png`, fullPage: true });
       assert.deepEqual(errors, []);
       await page.close();
     }

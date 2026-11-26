@@ -184,7 +184,7 @@ test('media that is not a local file is named, not guessed at', async () => {
 });
 
 test('the pipeline’s default extractor is this adapter, and ffmpegFrames stays exported as the fallback', async () => {
-  const runner = await import('../../../packages/openfilm/src/analyze-runner.mjs');
+  const runner = await import('../../../packages/orangefilm/src/analyze-runner.mjs');
   assert.equal(typeof runner.studioFrames, 'function');
   assert.equal(typeof runner.ffmpegFrames, 'function', 'the extractor with the cut pass is still there');
   const root = dir('runner');

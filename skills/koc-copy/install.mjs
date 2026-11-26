@@ -4,7 +4,7 @@
 
 // 把 koc-copy 技能装到本机技能目录，并把体检模块一起带过去（装完之后不依赖仓库路径）。
 //
-//   node skills/koc-copy/install.mjs              # 装到 ~/.openfilm/skills/koc-copy
+//   node skills/koc-copy/install.mjs              # 装到 ~/.orangefilm/skills/koc-copy
 //   node skills/koc-copy/install.mjs --to DIR     # 装到别处（比如另一个技能根）
 //   node skills/koc-copy/install.mjs --dry-run
 //
@@ -23,9 +23,9 @@ const value = (/** @type {string} */ name) => {
   return at === -1 ? '' : argv[at + 1] ?? '';
 };
 
-const target = value('to') || join(process.env.OPENFILM_HOME || join(homedir(), '.openfilm'), 'skills', 'koc-copy');
+const target = value('to') || join(process.env.ORANGE_HOME || join(homedir(), '.orangefilm'), 'skills', 'koc-copy');
 const dryRun = flag('dry-run');
-const checker = resolve(here, '..', '..', 'packages', 'openfilm', 'src', 'claim-check.mjs');
+const checker = resolve(here, '..', '..', 'packages', 'orangefilm', 'src', 'claim-check.mjs');
 if (!existsSync(checker)) throw new Error(`找不到体检模块：${checker}`);
 
 /** 递归列出要复制的东西（SKILL.md、references、examples、check.mjs）。 */

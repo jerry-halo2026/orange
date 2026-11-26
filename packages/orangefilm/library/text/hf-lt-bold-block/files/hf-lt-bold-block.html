@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=780, height=170" />
+    <title>Lower third, bold block</title>
+    <!--
+      A lower third, after HyperFrames' block `lt-bold-block`.
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 780px; height: 170px; background: transparent; overflow: hidden; }
+      :root { --lt-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; --lt-accent: #ffcc00; --lt-ink: #ffffff; --lt-block: #111114; }
+      #root { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+      .lt { display: flex; align-items: stretch; font-family: var(--lt-font); will-change: clip-path; }
+      .lt-body { background: var(--lt-block); padding: 20px 34px 22px 30px; display: flex; flex-direction: column; gap: 4px; }
+      .lt-name { font-size: 50px; font-weight: 800; color: var(--lt-ink); line-height: 1.05; letter-spacing: -0.01em; white-space: nowrap; will-change: transform, opacity; }
+      .lt-role { font-size: 22px; font-weight: 700; color: var(--lt-accent); line-height: 1.2; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; will-change: transform, opacity; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="card" class="lt">
+      <div class="lt-body">
+        <div id="name" class="lt-name">Ada Lovelace</div>
+        <div id="role" class="lt-role">Mathematician</div>
+      </div>
+    </div></div>
+
+    <script>
+      const DURATION = 4.8;
+      const card = document.getElementById('card');
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const in2 = (x) => x * x;
+      const name = document.getElementById('name');
+      const role = document.getElementById('role');
+      function inside(t) {
+        const wipe = out3(at(t, 0.1, 0.5));
+        card.style.clipPath = `inset(0 ${((1 - wipe) * 100).toFixed(3)}% 0 0)`;
+        const n = out3(at(t, 0.32, 0.45));
+        name.style.transform = `translateY(${(16 * (1 - n)).toFixed(2)}px)`;
+        name.style.opacity = String(n);
+        const r = out2(at(t, 0.44, 0.45));
+        role.style.transform = `translateY(${(12 * (1 - r)).toFixed(2)}px)`;
+        role.style.opacity = String(r);
+      }
+      function draw(t) {
+        const out = in2(at(t, 4.3, 0.35));
+        card.style.opacity = String(1 - out);
+        card.style.transform = `translateY(${(18 * out).toFixed(2)}px)`;
+        card.style.visibility = t >= 4.75 ? 'hidden' : 'visible';
+        inside(t);
+      }
+      window.film = {
+        duration: DURATION,
+        width: 780,
+        height: 170,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

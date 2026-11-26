@@ -14,7 +14,6 @@ dist/
 
 # what a film's tools keep beside it
 .film/
-.openfilm/
 
 # local settings and secrets
 .env*

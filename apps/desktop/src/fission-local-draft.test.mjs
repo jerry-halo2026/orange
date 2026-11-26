@@ -7,8 +7,8 @@ import {mkdir,mkdtemp,readFile,writeFile,copyFile,readdir} from 'node:fs/promise
 import {randomUUID,createHash} from 'node:crypto';
 import path from 'node:path';
 import {createLocalFissionDraftService} from './fission-local-draft.mjs';
-import {resolveIsolationProfile,isolationEnvironment} from '../../../packages/openfilm/src/development-isolation.mjs';
-import {testRoot} from '../../../packages/openfilm/src/test-roots.mjs';
+import {resolveIsolationProfile,isolationEnvironment} from '../../../packages/orangefilm/src/development-isolation.mjs';
+import {testRoot} from '../../../packages/orangefilm/src/test-roots.mjs';
 
 const own=testRoot('fission-local-draft');
 await mkdir(own,{recursive:true});
@@ -52,9 +52,9 @@ test('real C# EditPlan creates one native project, edits, undoes, saves and reop
  if(original.transitions.shader){const item=original.transitions.shader,target=path.join(stage,'transition'+path.extname(item.path));await copyFile(item.path,target);item.path=target;}
  const planPath=path.join(root,'plan.json');await writeFile(planPath,JSON.stringify(original));
  const profile=resolveIsolationProfile({baseRoot,instanceId:'draft',taskId:'T_LOCAL',attemptId:'test-'+process.pid,ports:{studio:19841,film:19842}},{approvedBaseRoot:baseRoot});for(const dir of Object.values(profile.paths))await mkdir(dir,{recursive:true});Object.assign(process.env,isolationEnvironment(profile));
- const {projectById,listProjects}=await import('../../../packages/openfilm/studio/server/projects.mjs');
- const {readProjectFilm,editProjectFilm}=await import('../../../packages/openfilm/studio/server/film.mjs');
- const service=createLocalFissionDraftService({approvedBaseRoot:baseRoot,ffprobePath:process.env.ORANGE_FISSION_FFPROBE,assertSession:()=>account,runNative:fn=>fn(),getDraftSource:async()=>({recordRoot,planPath,sourceRoots:[stage]}),findProject:projectById,importPlan:async()=>(await import('../../../packages/openfilm/studio/server/fission-import.mjs')).importFissionEditPlan});
+ const {projectById,listProjects}=await import('../../../packages/orangefilm/studio/server/projects.mjs');
+ const {readProjectFilm,editProjectFilm}=await import('../../../packages/orangefilm/studio/server/film.mjs');
+ const service=createLocalFissionDraftService({approvedBaseRoot:baseRoot,ffprobePath:process.env.ORANGE_FISSION_FFPROBE,assertSession:()=>account,runNative:fn=>fn(),getDraftSource:async()=>({recordRoot,planPath,sourceRoots:[stage]}),findProject:projectById,importPlan:async()=>(await import('../../../packages/orangefilm/studio/server/fission-import.mjs')).importFissionEditPlan});
  const ref={jobId:randomUUID(),index:0};assert.equal((await listProjects()).length,0);
  const result=await service.importSelected(ref);assert.equal(result.status,'ready');assert.equal((await listProjects()).length,1);assert.equal((await service.importSelected(ref)).project.id,result.project.id);assert.equal((await listProjects()).length,1);
  const project=await projectById(result.project.id),film=await readProjectFilm(project.path);assert.equal(film.problems.length,0);

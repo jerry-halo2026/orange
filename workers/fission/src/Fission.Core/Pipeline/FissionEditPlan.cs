@@ -16,7 +16,7 @@ public sealed record AudioDecision(AudioTrackDecision Voice, AudioTrackDecision?
 public sealed record ShaderDecision(string Path, string Sha256);
 public sealed record TransitionDecision(string RequestedName, double DurationSec, string? SelectedName, ShaderDecision? Shader, string Outcome, double TailPaddingSec = 0.2);
 public sealed record SubtitleCue(double StartSec, double EndSec, string Text);
-public sealed record SubtitleStyleDecision(string Preset, string Position, int FontSize, string AssStyle, double FadeInSec = 0.12, double FadeOutSec = 0.12);
+public sealed record SubtitleStyleDecision(string Preset, string Position, int FontSize, string AssStyle, double FadeInSec = 0.12, double FadeOutSec = 0.12, double? PositionPct = null);
 public sealed record SubtitleDecision(bool Requested, string Outcome, string TimingSource, IReadOnlyList<SubtitleCue> Cues, SubtitleStyleDecision? Style);
 
 /// <summary>

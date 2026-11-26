@@ -13,17 +13,21 @@ namespace Fission.Core.Pipeline;
 /// </summary>
 public static class SubtitlePlanner
 {
+    /// <summary>缺省字幕字体族（契约 §2：Windows 兼容 Microsoft YaHei；macOS 随包字体须由调用方显式给出）。</summary>
+    public const string DefaultFontFamily = "Microsoft YaHei";
+
     /// <summary>生成完整 ASS 文本。</summary>
     /// <param name="text">口播全文。</param>
     /// <param name="totalSec">成片总时长（字幕铺满）。</param>
     /// <param name="style">样式预设（white-outline / yellow-outline / white-box / center-bold）。</param>
     /// <param name="pos">位置（top / middle / bottom）。</param>
     /// <param name="fontSize">字号。</param>
-    public static string BuildAss(string text, double totalSec, string style, string pos, int fontSize)
-        => BuildAss(BuildCues(text, totalSec), style, pos, fontSize);
+    /// <param name="fontFamily">字体族（ASS Style 行的 Fontname；空/null = 缺省 Microsoft YaHei）。</param>
+    public static string BuildAss(string text, double totalSec, string style, string pos, int fontSize, string? fontFamily = null, double? posPct = null)
+        => BuildAss(BuildCues(text, totalSec), style, pos, fontSize, fontFamily, posPct);
 
     /// <summary>Render exactly the cues stored in the edit decision receipt.</summary>
-    public static string BuildAss(IReadOnlyList<SubtitleCue> cues, string style, string pos, int fontSize)
+    public static string BuildAss(IReadOnlyList<SubtitleCue> cues, string style, string pos, int fontSize, string? fontFamily = null, double? posPct = null)
     {
         var sb = new StringBuilder();
         _ = sb.Append("[Script Info]\n");
@@ -32,7 +36,7 @@ public static class SubtitlePlanner
         _ = sb.Append("WrapStyle: 0\nScaledBorderAndShadow: yes\n\n");
         _ = sb.Append("[V4+ Styles]\n");
         _ = sb.Append("Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n");
-        _ = sb.Append(StyleLine(style, pos, fontSize)).Append('\n');
+        _ = sb.Append(StyleLine(style, pos, fontSize, fontFamily, posPct)).Append('\n');
         _ = sb.Append("\n[Events]\n");
         _ = sb.Append("Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n");
 
@@ -73,7 +77,7 @@ public static class SubtitlePlanner
         foreach (var ch in text)
         {
             _ = buf.Append(ch);
-            if (ch is '。' or '！' or '？' or '!' or '?' or ';' or '；' or '\n')
+            if (buf.Length >= 8 || ch is '。' or '！' or '？' or '，' or '!' or '?' or ';' or '；' or '\n')
             {
                 var s = buf.ToString().Trim();
                 if (s.Length > 0)
@@ -94,8 +98,8 @@ public static class SubtitlePlanner
         return parts;
     }
 
-    /// <summary>ASS Style 行（预设 × 位置）。</summary>
-    public static string StyleLine(string style, string pos, int fontSize)
+    /// <summary>ASS Style 行（预设 × 位置；字体族来自参数，空/null 用缺省 Microsoft YaHei）。</summary>
+    public static string StyleLine(string style, string pos, int fontSize, string? fontFamily = null, double? posPct = null)
     {
         var (primary, borderStyle, outline, bold) = style switch
         {
@@ -106,14 +110,18 @@ public static class SubtitlePlanner
         };
 
         var size = style == "center-bold" ? (int)(fontSize * 1.2) : fontSize;
-        var (alignment, marginV) = pos switch
-        {
-            "top" => (8, 120),
-            "middle" => (5, 0),
-            _ => (2, 140),
-        };
+        var (alignment, marginV) = posPct is double pct
+            ? (2, (int)Math.Round(1920 * (1 - Math.Clamp(pct, 0, 100) / 100)))
+            : pos switch
+            {
+                "top" => (8, 120),
+                "middle" => (5, 0),
+                _ => (2, 140),
+            };
+        // 字体族缺省/空白时回落 Windows 兼容字体（recipe 的 subtitleFontFamily 允许显式 null）。
+        var family = string.IsNullOrWhiteSpace(fontFamily) ? DefaultFontFamily : fontFamily;
 
-        return $"Style: Default,Microsoft YaHei,{size},{primary},&H000000FF,&H00000000,&H66000000,{bold},0,0,0,100,100,0,0,{borderStyle},{outline},1,{alignment},40,40,{marginV},1";
+        return $"Style: Default,{family},{size},{primary},&H000000FF,&H00000000,&H66000000,{bold},0,0,0,100,100,0,0,{borderStyle},{outline},1,{alignment},40,40,{marginV},1";
     }
 
     private static string Ts(double sec)

@@ -9,7 +9,7 @@
 import React from 'react';
 
 let open = 0;
-const tell = () => (window as unknown as { openfilmDesktop?: { setMenuOpen?: (open: boolean) => void } }).openfilmDesktop?.setMenuOpen?.(open > 0);
+const tell = () => (window as unknown as { orangefilmDesktop?: { setMenuOpen?: (open: boolean) => void } }).orangefilmDesktop?.setMenuOpen?.(open > 0);
 
 export function useChatMenu(shown: boolean) {
   React.useEffect(() => {

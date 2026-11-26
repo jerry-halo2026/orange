@@ -303,7 +303,7 @@ export const ja: Words = {
   turnLog: {
     thoughtNotKept: 'エージェントの記録には思考内容が保存されていません',
     skills: 'スキルと MCP',
-    skillsOpenfilm: '{brand} のスキル',
+    skillsOrangefilm: '{brand} のスキル',
     skillsHidden: '自分のスキル（オフ）',
     skillsUnfiltered: 'このエージェントは本来のアプリと同じく、自分のスキルをすべて使います',
     mcpHidden: '自分の MCP サーバー（オフ）',

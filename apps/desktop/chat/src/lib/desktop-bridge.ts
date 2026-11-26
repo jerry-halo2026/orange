@@ -2,8 +2,8 @@
 // No modification or redistribution without the owner’s written permission.
 
 /**
- * The desktop shell's bridge. In the OpenFilm app (Electron) the window's page puts it on
- * `window.openfilmDesktop`; in a plain browser there is no such object.
+ * The desktop shell's bridge. In the OrangeFilm app (Electron) the window's page puts it on
+ * `window.orangefilmDesktop`; in a plain browser there is no such object.
  *
  * It holds only what a web page cannot do by itself, such as a system folder picker or showing a path
  * in Finder.
@@ -16,7 +16,7 @@ import type { Balance } from './balance';
 export type DesktopAgentId = 'claude' | 'codex' | 'cursor' | 'copilot' | 'opencode' | 'codebuddy' | 'devin';
 
 /** The chat's agents: the person's own (Codex, Claude Code, Qwen Code, …), and the app's own on their own key. */
-export type LocalAgentId = 'openfilm' | 'claude' | 'codex' | 'copilot' | 'cursor' | 'opencode' | 'codebuddy' | 'qwen' | 'kimi' | 'minimax' | 'deepseek' | 'antigravity' | 'byok';
+export type LocalAgentId = 'orangefilm' | 'claude' | 'codex' | 'copilot' | 'cursor' | 'opencode' | 'codebuddy' | 'qwen' | 'kimi' | 'minimax' | 'deepseek' | 'antigravity' | 'byok';
 
 /** One agent as the app's roster has it (apps/desktop/src/agent-roster.mjs; Studio's lib/host.ts HostAgent). */
 export interface RosterAgent {
@@ -27,7 +27,7 @@ export interface RosterAgent {
   install?: string | null;
   setupRequired?: string | null;
   configurationRevision?: number;
-  openfilm?: { order: string[]; hidden: string[]; defaultOrder: string[]; model?: string; models: Array<{ id: string; name: string; shown: boolean; available: boolean; levels?: string[]; effort?: string }> };
+  orangefilm?: { order: string[]; hidden: string[]; defaultOrder: string[]; model?: string; models: Array<{ id: string; name: string; shown: boolean; available: boolean; levels?: string[]; effort?: string }> };
   error?: string;
   /** Whose sign-in it uses, when the agent tells (no key or token). */
   account?: { method: string; email?: string; org?: string; plan?: string };
@@ -194,7 +194,7 @@ export interface DesktopBridge {
   onLanguage?(listener: (language: string) => void): () => void;
   localAgents?: {
     list(): Promise<LocalAgentState[]>;
-    /** Close OpenFilm's open sessions with it (its own login is left alone). Older shells lack it. */
+    /** Close OrangeFilm's open sessions with it (its own login is left alone). Older shells lack it. */
     disconnect?(agent: LocalAgentId): Promise<{ ok: boolean }>;
     /** Opens Terminal to run its own sign-in command, which opens Anthropic's / OpenAI's sign-in page. */
     signIn(agent: LocalAgentId): Promise<{ ok: true } | { ok: false; error: string }>;
@@ -234,7 +234,7 @@ export interface DesktopBridge {
     setBadge(count: number): void;
     onNavigate(cb: (href: string) => void): () => void;
   };
-  /** OpenFilm Studio only: the page runs in a plain browser */
+  /** OrangeFilm Studio only: the page runs in a plain browser */
   studio?: boolean;
   /**
    * The agents' status: the MCP endpoint's half (who is connected, who is remembered) plus each agent's
@@ -263,7 +263,7 @@ export interface DesktopAgentStatus {
   trusted: Array<{ name: string; approvedAt: number; expiresAt: number; secret?: true }>;
   audit: string;
   /**
-   * The openfilm address each agent's config holds now; null if never connected.
+   * The orangefilm address each agent's config holds now; null if never connected.
    *
    * Not the same as `sessions`: connected only means the config is written; the agent connects on its
    * next start. The UI tells three states from the two: never connected / connected (waiting for the
@@ -275,7 +275,7 @@ export interface DesktopAgentStatus {
 
 declare global {
   interface Window {
-    openfilmDesktop?: DesktopBridge;
+    orangefilmDesktop?: DesktopBridge;
   }
 }
 
@@ -288,9 +288,9 @@ export const LOCAL_PUT_MAX_BYTES = 15 * 1024 * 1024;
 
 /** Whether this runs in the desktop shell. Always false during SSR. */
 export function isDesktop(): boolean {
-  return typeof window !== 'undefined' && !!window.openfilmDesktop;
+  return typeof window !== 'undefined' && !!window.orangefilmDesktop;
 }
 
 export function desktopBridge(): DesktopBridge | null {
-  return typeof window !== 'undefined' ? window.openfilmDesktop ?? null : null;
+  return typeof window !== 'undefined' ? window.orangefilmDesktop ?? null : null;
 }

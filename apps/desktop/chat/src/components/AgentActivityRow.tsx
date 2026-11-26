@@ -9,7 +9,7 @@ import {
   FileText, Globe, ImagePlus, Languages, Layers, MessageCircleQuestion, Mic, Music, Pause, PenLine, Play, Search, SquareTerminal,
   UserRound, Video, type LucideIcon,
 } from 'lucide-react';
-import type { AgentActAsset } from '@openfilm/shared';
+import type { AgentActAsset } from '@orange/shared';
 import { Markdown } from './Markdown';
 import { AttachmentPreview } from './AttachmentPreview';
 import { elapsedLabel, useTick } from './useTicker';
@@ -35,7 +35,7 @@ export interface AgentActivityItem {
   kind: 'text' | 'act' | 'notice' | 'thought' | 'plan';
   /**
    * i18n token.
-   *   · act    — `act.<name>`, a closed set (see AGENT_ACTS in @openfilm/shared)
+   *   · act    — `act.<name>`, a closed set (see AGENT_ACTS in @orange/shared)
    *   · notice — the note the platform leaves (empty for an agent's own notice: its words are in `text`)
    *   · text   — unused; the body is in `text`
    */

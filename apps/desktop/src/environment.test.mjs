@@ -94,7 +94,7 @@ test("on Windows, an agent given this machine's registry environment starts cmd.
 });
 
 test("on Windows, a registry value naming folders in Chinese reads as it is, whatever the console's code page", { skip: process.platform !== 'win32' }, async () => {
-  const key = `HKCU\\Software\\OpenFilm test ${process.pid}`;
+  const key = `HKCU\\Software\\OrangeFilm test ${process.pid}`;
   const path = 'E:\\软件安装;D:\\工具\\bin;C:\\plain';
   const reg = (...args) => spawnSync('reg.exe', args, { windowsHide: true });
   assert.equal(reg('add', key, '/v', 'Path', '/t', 'REG_EXPAND_SZ', '/d', path, '/f').status, 0);
@@ -153,7 +153,7 @@ test('an old one can be taken at once, the new one read for whoever asks next', 
 test("the agents get all the person's shell sets, but what the shell and its terminal set for themselves; Studio a part", () => {
   const dump = {
     PATH: '/opt/homebrew/bin:/usr/bin', ANTHROPIC_BASE_URL: 'https://gateway.example', GITHUB_TOKEN: 't', NODE_EXTRA_CA_CERTS: '/ca.pem',
-    HTTPS_PROXY: 'http://proxy', PWD: '/x', SHLVL: '2', _: '/usr/bin/env', TERM_PROGRAM: 'iTerm.app', ELECTRON_RUN_AS_NODE: '1', OPENFILM_HOME: '/o',
+    HTTPS_PROXY: 'http://proxy', PWD: '/x', SHLVL: '2', _: '/usr/bin/env', TERM_PROGRAM: 'iTerm.app', ELECTRON_RUN_AS_NODE: '1', ORANGE_HOME: '/o',
   };
   const all = shellVariables(dump, '/home/me/');
   assert.deepEqual(Object.keys(all).sort(), ['ANTHROPIC_BASE_URL', 'GITHUB_TOKEN', 'HTTPS_PROXY', 'NODE_EXTRA_CA_CERTS', 'PATH']);

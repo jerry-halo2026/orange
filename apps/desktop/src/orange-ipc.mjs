@@ -4,7 +4,7 @@
 /**
  * The app's own IPC, in one place.
  *
- * OpenFilm's desktop brings its own channels (chat, agents, skills, the window's tabs, updates) and those keep their
+ * OrangeFilm's desktop brings its own channels (chat, agents, skills, the window's tabs, updates) and those keep their
  * registrations where they were. What this product added on top — the account UI's state, and the material draft two
  * tabs share — is registered here, by one call, so `main.mjs` says what it adds in one word and `preload.cjs` can name
  * the very same channels in one list. `main.test.mjs` holds the two lists equal, and holds `main.mjs` from registering

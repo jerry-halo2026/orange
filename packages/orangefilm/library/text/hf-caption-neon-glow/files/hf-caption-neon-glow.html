@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1720, height=130" />
+    <title>Caption, neon glow</title>
+    <!--
+      undefined
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { width: 1720px; height: 130px; margin: 0; overflow: hidden; background: transparent; }
+      :root {
+        --cap-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif;
+        --cap-ink: #ffffff;
+        --cap-accent: #ff1745;
+        --cap-accent-2: #df1238;
+      }
+      #stage { position: relative; width: 100%; height: 100%; overflow: hidden; background: transparent; }
+      #container { position: absolute; inset: 0; }
+      .line { position: absolute; bottom: 0; left: 0; width: 100%; display: flex; flex-wrap: nowrap;
+              align-items: flex-end; justify-content: center; gap: 8px; padding: 0 10px; visibility: hidden; opacity: 0; }
+      .w { font-family: var(--cap-font); color: var(--cap-ink); letter-spacing: .01em; line-height: 1;
+           white-space: nowrap; will-change: transform, opacity, filter; }
+      :root { --cap-accent: #21e6ff; --cap-accent-2: #ff2fd0; }
+      .w { font-size: 74px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: #eafcff; }
+    </style>
+  </head>
+  <body>
+    <div id="stage"><div id="container"></div></div>
+    <script>
+      const DURATION = 8;
+      const WORDS = [
+        ['Every', 0.0, 0.3], ['great', 0.3, 0.55], ['video', 0.55, 0.85], ['starts', 0.85, 1.1],
+        ['with', 1.1, 1.25], ['a', 1.25, 1.35], ['single', 1.35, 1.65], ['frame.', 1.65, 2.0],
+        ['OrangeFilm', 2.1, 2.65], ['lets', 2.65, 2.85], ['you', 2.85, 2.95], ['write', 2.95, 3.15],
+        ['HTML', 3.15, 3.55], ['and', 3.55, 3.65], ['render', 3.65, 3.95], ['professional', 3.95, 4.45],
+        ['video.', 4.45, 4.8],
+        ['No', 4.9, 5.05], ['timeline.', 5.05, 5.45], ['No', 5.5, 5.65],
+        ['drag', 5.65, 5.85], ['and', 5.85, 5.95], ['drop.', 5.95, 6.25],
+        ['Just', 6.35, 6.55], ['code', 6.55, 6.8], ['that', 6.8, 6.95], ['becomes', 6.95, 7.3], ['cinema.', 7.3, 7.7],
+      ].map(([text, start, end]) => ({ text, start, end }));
+      const GROUPS = [[0, 3], [4, 7], [8, 8], [9, 12], [13, 15], [16, 16], [17, 19], [20, 22], [23, 24], [25, 27]];
+
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const in2 = (x) => x * x;
+
+      const container = document.getElementById('container');
+      const groups = [];
+      GROUPS.forEach(([a, b], gi) => {
+        const nextStart = gi + 1 < GROUPS.length ? WORDS[GROUPS[gi + 1][0]].start : Infinity;
+        const end = Math.min(WORDS[b].end + 0.5, nextStart - 0.05);
+        const el = document.createElement('div');
+        el.className = 'line';
+        const words = [];
+        for (let i = a; i <= b; i++) {
+          const span = document.createElement('span');
+          span.className = 'w';
+          span.dataset.text = WORDS[i].text.toUpperCase();
+          span.textContent = span.dataset.text;
+          el.appendChild(span);
+          words.push({ el: span, start: WORDS[i].start, end: WORDS[i].end, i });
+        }
+        container.appendChild(el);
+        groups.push({ el, start: WORDS[a].start, end, words });
+      });
+
+      function paintWord(w, t) {
+        const live = t >= w.start && t < w.end;
+        const k = live ? Math.sin(Math.PI * clamp((t - w.start) / Math.max(0.12, w.end - w.start))) : 0;
+        const glow = live ? 0.35 + 0.65 * k : 0.12;
+        w.el.style.opacity = String(live ? 1 : 0.55);
+        w.el.style.color = live ? '#ffffff' : '#bfeffc';
+        w.el.style.textShadow = `0 0 ${(10 + 22 * glow).toFixed(0)}px var(--cap-accent), 0 0 ${(24 + 40 * glow).toFixed(0)}px var(--cap-accent-2), 0 6px 18px rgba(0,0,0,.5)`;
+      }
+
+      function draw(t) {
+        for (const g of groups) {
+          const shown = t >= g.start && t < g.end;
+          g.el.style.visibility = shown ? 'visible' : 'hidden';
+          if (!shown) { g.el.style.opacity = '0'; continue; }
+          g.el.style.opacity = String(Math.min(out2(at(t, g.start, 0.1)), 1 - in2(at(t, g.end - 0.1, 0.1))));
+          for (const w of g.words) paintWord(w, t);
+        }
+      }
+      window.film = {
+        duration: DURATION,
+        width: 1720,
+        height: 130,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

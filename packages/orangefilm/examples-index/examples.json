@@ -1,0 +1,20 @@
+{
+  "repo": "https://github.com/orangefilm/examples",
+  "branch": "main",
+  "examples": [
+    {
+      "folder": "one-prompt",
+      "title": "One Prompt",
+      "description": "A 90-second lyric music video where every frame is code.",
+      "poster": "one-prompt/look.jpg",
+      "duration": "1:31"
+    },
+    {
+      "folder": "orangefilm-intro",
+      "title": "OrangeFilm intro",
+      "description": "The 1:42 film that introduces OrangeFilm, made with OrangeFilm: footage, app recordings and motion graphics cut to a Chinese voice-over.",
+      "poster": "orangefilm-intro/look.jpg",
+      "duration": "1:42"
+    }
+  ]
+}

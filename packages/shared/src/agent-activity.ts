@@ -76,7 +76,7 @@ export function publicActivity(name: string, args: unknown): AgentActivity | nul
 }
 
 /**
- * An MCP client names a tool with its server (`mcp__openfilm__audio_sfx`): stripped to the tool's own name before it
+ * An MCP client names a tool with its server (`mcp__orangefilm__audio_sfx`): stripped to the tool's own name before it
  * is recognized; one not recognized is `working`.
  */
 function hostedToolName(name: string): string {

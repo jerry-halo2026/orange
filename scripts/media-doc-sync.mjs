@@ -245,11 +245,11 @@ async function main() {
 
   /* 云端数据面已删（Supabase 只留 auth）。这个脚本原本只做一件事：把 media_doc 推到云端。
      现在它的用途只剩考古，所以默认直接停住，并说清替代品 —— 静默连一个不存在的库是最坏的结果。 */
-  if (process.env.OPENFILM_ALLOW_RETIRED_CLOUD !== '1') {
+  if (process.env.ORANGE_ALLOW_RETIRED_CLOUD !== '1') {
     console.error('已停用：Supabase 的数据面在 2026-11-18 删掉了（只留 auth）。向量现在打成包随客户端分发：\n'
       + '  node scripts/material-vector-pack.mjs --out .dev/vector-pack\n'
       + '  node scripts/material-pack-publish.mjs --out dist/materials [--base-url URL]\n'
-      + '确实要考古这一次推送（比如某个旧库还没删）：OPENFILM_ALLOW_RETIRED_CLOUD=1');
+      + '确实要考古这一次推送（比如某个旧库还没删）：ORANGE_ALLOW_RETIRED_CLOUD=1');
     return 2;
   }
 

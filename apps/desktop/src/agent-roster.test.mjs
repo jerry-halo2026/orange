@@ -7,8 +7,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRoster, keyAddress, probeRequest, readChoices } from './agent-roster.mjs';
-import { LANGUAGES as STUDIO_LANGUAGES } from '../../../packages/openfilm/studio/ui/src/i18n/index.ts';
-import { ownModelError } from '../../../packages/openfilm/studio/ui/src/lib/agent-row.ts';
+import { LANGUAGES as STUDIO_LANGUAGES } from '../../../packages/orangefilm/studio/ui/src/i18n/index.ts';
+import { ownModelError } from '../../../packages/orangefilm/studio/ui/src/lib/agent-row.ts';
 
 const roster = (dataDir, fetch, extra = {}) => createRoster({
   dataDir,
@@ -318,11 +318,11 @@ test('each model is its own service with its own key; a key left empty is the on
   assert.equal(h.home, join(dir, 'agents', 'byok', 'pi'), 'its own folder, never the person\'s ~/.pi');
   assert.equal(h.model, gpt.id, 'the first one to begin with');
   assert.deepEqual(h.models, [
-    { id: gpt.id, name: 'GPT', api: 'openai-responses', baseUrl: 'https://api.openai.com/v1', keyEnv: 'OPENFILM_BYOK_KEY_1', model: 'gpt-x', levels: ['auto', 'medium', 'high'], effort: 'medium' },
-    { id: flash.id, name: 'DeepSeek Flash', api: 'openai-completions', baseUrl: 'https://api.deepseek.com/v1', keyEnv: 'OPENFILM_BYOK_KEY_2', model: 'deepseek-chat', levels: ['auto'], effort: 'auto' },
-    { id: pro.id, name: 'deepseek-reasoner', api: 'openai-completions', baseUrl: 'https://api.deepseek.com/v1', keyEnv: 'OPENFILM_BYOK_KEY_3', model: 'deepseek-reasoner', levels: ['auto'], effort: 'auto' },
+    { id: gpt.id, name: 'GPT', api: 'openai-responses', baseUrl: 'https://api.openai.com/v1', keyEnv: 'ORANGE_BYOK_KEY_1', model: 'gpt-x', levels: ['auto', 'medium', 'high'], effort: 'medium' },
+    { id: flash.id, name: 'DeepSeek Flash', api: 'openai-completions', baseUrl: 'https://api.deepseek.com/v1', keyEnv: 'ORANGE_BYOK_KEY_2', model: 'deepseek-chat', levels: ['auto'], effort: 'auto' },
+    { id: pro.id, name: 'deepseek-reasoner', api: 'openai-completions', baseUrl: 'https://api.deepseek.com/v1', keyEnv: 'ORANGE_BYOK_KEY_3', model: 'deepseek-reasoner', levels: ['auto'], effort: 'auto' },
   ], 'the official address when none is given; known efforts, in order');
-  assert.deepEqual(h.env, { OPENFILM_BYOK_KEY_1: 'sk-a', OPENFILM_BYOK_KEY_2: 'sk-d', OPENFILM_BYOK_KEY_3: 'sk-d' });
+  assert.deepEqual(h.env, { ORANGE_BYOK_KEY_1: 'sk-a', ORANGE_BYOK_KEY_2: 'sk-d', ORANGE_BYOK_KEY_3: 'sk-d' });
   assert.deepEqual(r.list().find((a) => a.id === 'byok').byok.models.map((m) => m.name), ['GPT', 'DeepSeek Flash', 'deepseek-reasoner']);
 });
 
@@ -334,7 +334,7 @@ test('a model changed keeps its place, its id and, given none, its key; one remo
   const b = await r.saveOwnModel({ format: 'chat', baseUrl: 'https://api.deepseek.com/v1', model: 'ds', key: 'sk-d' });
   assert.deepEqual(await r.saveOwnModel({ id: a.id, name: 'Mine', format: 'responses', model: 'gpt-b', levels: ['low', 'max'], effort: 'max' }), { ok: true, id: a.id });
   assert.deepEqual(readChoices(dir).byok.models.map((m) => [m.id, m.name, m.model, m.effort]), [[a.id, 'Mine', 'gpt-b', 'max'], [b.id, 'ds', 'ds', 'auto']]);
-  assert.equal(r.harness('byok').env.OPENFILM_BYOK_KEY_1, 'sk-a');
+  assert.equal(r.harness('byok').env.ORANGE_BYOK_KEY_1, 'sk-a');
   assert.equal((await r.saveOwnModel({ id: 'gone', format: 'responses', model: 'x' })).ok, false);
 
   r.removeOwnModel(b.id);
@@ -456,7 +456,7 @@ test('a kept path for something that is not one of the agents is dropped', () =>
   assert.deepEqual(readChoices(dir).paths, { codex: '/opt/codex' });
 });
 
-test('disconnecting only stops OpenFilm using an agent; connecting again uses the account signed in then', async () => {
+test('disconnecting only stops OrangeFilm using an agent; connecting again uses the account signed in then', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'of-roster-'));
   let account = { method: 'claude.ai', email: 'a@b.test' };
   const closed = [];

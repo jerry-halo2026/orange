@@ -2,7 +2,7 @@
 // © 2026 OrangeFilm. All rights reserved. Proprietary and confidential.
 // No modification or redistribution without the owner’s written permission.
 
-// 素材清洗报表：把 `~/.openfilm-dev/material-index/index.json` 全量过一遍 `material-clean.mjs`，
+// 素材清洗报表：把 `~/.orangefilm-dev/material-index/index.json` 全量过一遍 `material-clean.mjs`，
 // 打印上云前要看的每一个数字（A 清单、C 前后对照），并给出 10 组「前 → 后」真实样本。
 //
 //   node scripts/material-clean-report.mjs                 # 全量，含库侧只读对照
@@ -17,7 +17,7 @@
 //
 //  1. `index.json` —— 权威行集（78 874 条 entry）与 md5 / labels / duration / author / 分类。`A` 里的绝大多数
 //     数字来自它，`C` 是把它全量喂给 `summarizeClean`。
-//  2. 供应商页缓存 `~/.openfilm-dev/material-cache/materials/meta/*.json` —— **只有它带 `videoType`**
+//  2. 供应商页缓存 `~/.orangefilm-dev/material-cache/materials/meta/*.json` —— **只有它带 `videoType`**
 //     （索引的 entry 不存这个字段，构建外壳的 `pages.perType` 在缓存回放模式下是空的）。索引就是这批缓存回放的，
 //     所以按 videoId 对上是同一批素材、不是第二个来源。没对上的行如实报"未采集"，不猜。
 //  3. 本机库 `media_doc`（`docker compose exec db psql`，与 `scripts/material-doc-index.mjs` 同一条通道）——
@@ -38,12 +38,12 @@ import {
   splitIdentity,
   summarizeClean,
   trailingNameRule,
-} from '../packages/openfilm/src/material-clean.mjs';
-import { classifyUnparsedName } from '../packages/openfilm/src/material-index.mjs';
+} from '../packages/orangefilm/src/material-clean.mjs';
+import { classifyUnparsedName } from '../packages/orangefilm/src/material-index.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = path.join(ROOT, 'infra', 'docker-compose.yml');
-const HOME_DIR = path.join(homedir(), '.openfilm-dev');
+const HOME_DIR = path.join(homedir(), '.orangefilm-dev');
 const DEFAULT_INDEX = path.join(HOME_DIR, 'material-index', 'index.json');
 const DEFAULT_CACHE = path.join(HOME_DIR, 'material-cache', 'materials', 'meta');
 

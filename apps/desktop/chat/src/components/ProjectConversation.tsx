@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { AGENT_DEFINITIONS, isAgentId } from '../../../src/agent-definitions.mjs';
-import type { PublicProgressSnapshot, TurnAttachment } from '@openfilm/shared';
+import type { PublicProgressSnapshot, TurnAttachment } from '@orange/shared';
 import { BellRing, Check, ChevronRight, Copy, KeyRound, Undo2 } from 'lucide-react';
 import { AgentActivityList, formatWorkDuration, StatusLine, type AgentActivityItem } from './AgentActivityRow';
 import { AgentIcon, hasAgentIcon } from './AgentIcons';
@@ -421,7 +421,7 @@ const ConversationTurn = React.memo(function ConversationTurn({
           in the tree: a log opened from it stays open as the turn finishes. An interruption doesn't
           show Failed here: the reason and Resume appear above the composer (the last turn's, even after a
           restart); an older one's reason is on its footer's Interrupted, on hover. */}
-      {running ? <StatusLine items={rows ?? NO_ROWS} fallback={liveActivity} ownAgent={entry.agent === 'byok' || entry.agent === 'openfilm'} /> : null}
+      {running ? <StatusLine items={rows ?? NO_ROWS} fallback={liveActivity} ownAgent={entry.agent === 'byok' || entry.agent === 'orangefilm'} /> : null}
       <TurnFooter entry={entry} items={items} running={running} last={isLast} />
       </div>
     </div>

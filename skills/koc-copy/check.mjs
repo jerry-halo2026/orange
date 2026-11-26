@@ -9,7 +9,7 @@
 //   node check.mjs --file script.txt            # 一行一句，逐行体检
 //   echo "文案" | node check.mjs
 //
-// 这个文件在仓库里时直接用仓库的 `claim-check.mjs`；装到 `~/.openfilm/skills/koc-copy/` 之后
+// 这个文件在仓库里时直接用仓库的 `claim-check.mjs`；装到 `~/.orangefilm/skills/koc-copy/` 之后
 // 用安装时复制到本目录的 `claim-check.mjs`（install.mjs 会做这件事），所以两种情况都能跑。
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -17,11 +17,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-/** 依次找体检模块：本目录（安装后的副本）→ 仓库 `packages/openfilm/src/`。 */
+/** 依次找体检模块：本目录（安装后的副本）→ 仓库 `packages/orangefilm/src/`。 */
 async function loadChecker() {
   const candidates = [
     join(here, 'claim-check.mjs'),
-    join(here, '..', '..', 'packages', 'openfilm', 'src', 'claim-check.mjs'),
+    join(here, '..', '..', 'packages', 'orangefilm', 'src', 'claim-check.mjs'),
   ];
   for (const file of candidates) {
     if (existsSync(file)) return import(pathToFileURL(file).href);
@@ -69,9 +69,9 @@ const wantRewrite = argv.includes('--rewrite');
 const sceneArg = arg('scene');
 const detailArg = arg('detail');
 
-/** 依次找改写模块：安装后的副本 → 仓库 packages/openfilm/src/。 */
+/** 依次找改写模块：安装后的副本 → 仓库 packages/orangefilm/src/。 */
 async function loadRewrite() {
-  const candidates = [join(here, 'copy-rewrite.mjs'), join(here, '..', '..', 'packages', 'openfilm', 'src', 'copy-rewrite.mjs')];
+  const candidates = [join(here, 'copy-rewrite.mjs'), join(here, '..', '..', 'packages', 'orangefilm', 'src', 'copy-rewrite.mjs')];
   for (const file of candidates) {
     if (existsSync(file)) return import(pathToFileURL(file).href);
   }

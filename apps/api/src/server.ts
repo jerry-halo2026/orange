@@ -222,7 +222,7 @@ export function createMaterialsServer(dependencies:MaterialsServerDependencies){
   const server=createServer((request,response)=>{
     const task=handle(request,response).catch((error:unknown)=>{
       const body=toPublicError(error);
-      send(response,body.status,{code:body.code,message:body.message});
+      send(response,body.status,{code:body.code,message:body.message,...(body.reason?{reason:body.reason}:{})});
     });
     void task;
   });

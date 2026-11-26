@@ -333,7 +333,7 @@ public sealed class FissionEngine
         var videoByGroup = pool.VideosByGroup();
         var audios = pool.AudioList();
         var totalVoiceUses = audios.Count * Math.Max(job.AudioUses, 1);
-        var planned = job.Count == 0 ? totalVoiceUses : Math.Min(job.Count, job.AudioUses == 0 ? job.Count : totalVoiceUses);
+        var planned = job.PreviewMode ? 1 : (job.Count == 0 ? totalVoiceUses : Math.Min(job.Count, job.AudioUses == 0 ? job.Count : totalVoiceUses));
         var totalVideo = videoByGroup.SelectMany(g => g).Count(v => !v.IsImage);
         var totalImage = videoByGroup.SelectMany(g => g).Count(v => v.IsImage);
         var groupCount = videoByGroup.Count(g => g.Key.Length > 0);
@@ -363,7 +363,7 @@ public sealed class FissionEngine
         var normSeq = new StrongBox<int>(0); // 任务级共享序号：产物名全局唯一（教训：每输出独立计数器 → 不同素材同名双写）
         using var nvencGate = new SemaphoreSlim(job.UseNvenc && _hasNvenc ? Math.Max(job.NvencGate, 1) : int.MaxValue);
         var encThreads = Math.Clamp((int)Math.Ceiling(16.0 / Math.Max(job.Threads, 1)), 1, 8);
-        using var workerGate = new SemaphoreSlim(Math.Clamp(job.Threads, 1, 64));
+        using var workerGate = new SemaphoreSlim(job.PreviewMode ? 1 : Math.Clamp(job.Threads, 1, 64));
         var audioCursor = -1;
         var stopReason = "countReached";
 
@@ -406,6 +406,12 @@ public sealed class FissionEngine
                 {
                     Interlocked.CompareExchange(ref stopReason, "materialShort", "countReached");
                     failures.Add(new FailureRecord(index, ex.Code, ex.Message));
+                }
+                catch (MaterialException ex) when (ex.Code is "MAT_COMBINATION_DUP")
+                {
+                    /* 组合空间用尽：不是渲染失败，是"素材组合不够多"。这一条不出片，其余照常；
+                       批次以 materialShort 收尾、Succeeded 少于 planned，前端据此说"组合用尽，少出 N 条"。 */
+                    Interlocked.CompareExchange(ref stopReason, "materialShort", "countReached");
                 }
                 catch (FissionException ex)
                 {
@@ -490,9 +496,9 @@ public sealed class FissionEngine
 
                 break;
             }
-            catch (MaterialException ex) when (ex.Code is "MAT_COMBINATION_DUP" && attempt < 3)
+            catch (MaterialException ex) when (ex.Code is "MAT_COMBINATION_DUP" && attempt < 12)
             {
-                continue; // 换一组画面重试
+                continue; // 换一组画面重试（小素材池里 3 次常常不够找到剩余组合）
             }
             catch (MaterialException ex) when (ex.Code is "MAT_AUDIO_EXHAUSTED" && attempt < 64)
             {
@@ -603,7 +609,7 @@ public sealed class FissionEngine
             transition = transition with { SelectedName = name, Shader = shader };
         }
         // Keep PickBgm after every original RNG-consuming choice; intervening old codec/align stages consumed no RNG.
-        var bgm = PickBgm(job, rng);
+        var bgm = PickBgm(job, rng, index);
         var voiceSource = await captured.SourceAsync(audio!.Path, "sound", audio.DurationSec, ct).ConfigureAwait(false);
         await versions.PinAsync(audio.Path, ct).ConfigureAwait(false);
         var musicSource = -1;
@@ -624,9 +630,13 @@ public sealed class FissionEngine
                 _files?.ValidateOptionalReadOnlyFile(textFile);
                 if (File.Exists(textFile)) await versions.PinAsync(textFile, ct).ConfigureAwait(false);
             }
-            var text = FindScriptText(job, audio);
-            if (text is not null) subtitle = new SubtitleDecision(true, "prepared-intent", "sentence-weighted-approximation", SubtitlePlanner.BuildCues(text, targetSec),
-                new SubtitleStyleDecision(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, SubtitlePlanner.StyleLine(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize)));
+            var providedCues = FindScriptCues(job, audio);
+            var text = providedCues is null ? FindScriptText(job, audio) : null;
+            if (providedCues is { Count: > 0 })
+                subtitle = new SubtitleDecision(true, "prepared-intent", "provided-cues", providedCues,
+                    new SubtitleStyleDecision(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, SubtitlePlanner.StyleLine(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, job.SubtitleFontFamily, job.SubtitlePosPct), PositionPct: job.SubtitlePosPct));
+            else if (text is not null) subtitle = new SubtitleDecision(true, "prepared-intent", "sentence-weighted-approximation", SubtitlePlanner.BuildCues(text, targetSec),
+                new SubtitleStyleDecision(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, SubtitlePlanner.StyleLine(job.SubtitleStyle, job.SubtitlePos, job.SubtitleFontSize, job.SubtitleFontFamily, job.SubtitlePosPct), PositionPct: job.SubtitlePosPct));
         }
         // An expected effective frame clock, not a fictitious probe of an unrendered assembly.
         var expectedSec = preparedCuts.Sum(c => c.Decision.DurationSec / c.Decision.Speed);
@@ -758,10 +768,14 @@ public sealed class FissionEngine
         if (subtitle.Outcome == "prepared-intent" && subtitle.Style is not null)
         {
                 var ass = NewOutput(Path.Combine(workDir, "sub.ass"));
-                await File.WriteAllTextAsync(ass, SubtitlePlanner.BuildAss(subtitle.Cues, subtitle.Style!.Preset, subtitle.Style.Position, subtitle.Style.FontSize), new System.Text.UTF8Encoding(false), ct).ConfigureAwait(false);
+                await File.WriteAllTextAsync(ass, SubtitlePlanner.BuildAss(subtitle.Cues, subtitle.Style!.Preset, subtitle.Style.Position, subtitle.Style.FontSize, job.SubtitleFontFamily, subtitle.Style.PositionPct), new System.Text.UTF8Encoding(false), ct).ConfigureAwait(false);
                 var subTmp = NewOutput(Path.Combine(workDir, "subbed.mp4"));
+                // 字体目录：显式 FontsDir 优先；未注入才回落平台字体目录（macOS 该目录无效，必须由 app 给出 FontsDir）。
+                var fontsDir = string.IsNullOrWhiteSpace(_paths.FontsDir)
+                    ? Environment.GetFolderPath(Environment.SpecialFolder.Fonts)
+                    : _paths.FontsDir;
                 await RunEncodeGuardedAsync(
-                    nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.BurnSubtitle(finalTmp, subTmp, ass, nvenc && job.UseNvenc, encThreads, Environment.GetFolderPath(Environment.SpecialFolder.Fonts)), targetSec), job.UseNvenc && nvenc),
+                    nvenc => (new VideoEngineRequest(_paths.FFmpeg, CommandBuilders.BurnSubtitle(finalTmp, subTmp, ass, nvenc && job.UseNvenc, encThreads, fontsDir), targetSec), job.UseNvenc && nvenc),
                     nvencGate, jobId, index, ct).ConfigureAwait(false);
                 finalTmp = subTmp;
                 subtitle = subtitle with { Outcome = "applied" };
@@ -796,13 +810,14 @@ public sealed class FissionEngine
         // CONSUME：确认消耗（计次/删；「用过是否删除=是」且未开重复抽取的组 → 视频转 Consumed 落跨批次缓存）
         var finalInfo = qualifiedFinal ?? await _probe.ProbeAsync(outPath, ct).ConfigureAwait(false);
         var consumeVideos = facts.ConsumeVideoPaths.ToList();
-        pool.Confirm(res, Path.GetFileName(outPath), consumeVideos);
+        if (job.PreviewMode) pool.Release(res);
+        else pool.Confirm(res, Path.GetFileName(outPath), consumeVideos);
         if (consumeVideos.Count > 0)
         {
             Emit(jobId, index, JobStage.Consuming, null, $"用过的素材正在删除（{consumeVideos.Count} 个入跨批次缓存，后续批次不再选取）");
         }
 
-        if (audio is not null && job.AudioUses == 1)
+        if (!job.PreviewMode && audio is not null && job.AudioUses == 1)
         {
             Emit(jobId, index, JobStage.Consuming, null, "用过的音频正在删除");
             if (_files is not null)
@@ -1000,7 +1015,7 @@ public sealed class FissionEngine
             }
         }
 
-        var cacheIni = NewOutput(Path.Combine(_policy?.CacheRoot ?? _paths.WorkRoot, "多场景素材缓存.ini"));
+        var cacheIni = job.PreviewMode ? null : NewOutput(Path.Combine(_policy?.CacheRoot ?? _paths.WorkRoot, "多场景素材缓存.ini"));
         var pool = new MaterialPool(items.Concat(audioItems), cacheIni,
             audioItems.Select(audio => audio.Path).ToHashSet(StringComparer.Ordinal));
         foreach (var a in audioItems)
@@ -1156,9 +1171,48 @@ public sealed class FissionEngine
     }
 
     /// <summary>取口播文案文本：配音目录上级的 meta.json（AIGC 生成时带 items[].text）。</summary>
-    private string? FindScriptText(FissionJob job, MaterialItem? audio)
+    private System.Collections.ObjectModel.ReadOnlyCollection<SubtitleCue>? FindScriptCues(FissionJob job, MaterialItem? audio)
     {
-        if (audio is null || string.IsNullOrWhiteSpace(job.AudioDir))
+        if (audio is null || string.IsNullOrWhiteSpace(job.AudioDir)) return null;
+        var metaPath = Path.Combine(Directory.GetParent(job.AudioDir.TrimEnd(Path.DirectorySeparatorChar))?.FullName ?? string.Empty, "meta.json");
+        _files?.ValidateOptionalReadOnlyFile(metaPath);
+        if (!File.Exists(metaPath)) return null;
+        try
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(metaPath));
+            var name = Path.GetFileName(audio.Path);
+            foreach (var it in doc.RootElement.GetProperty("items").EnumerateArray())
+            {
+                if (!it.TryGetProperty("file", out var f) || f.GetString() != name) continue;
+                if (!it.TryGetProperty("cues", out var cues) || cues.ValueKind != System.Text.Json.JsonValueKind.Array) return null;
+                var made = new List<SubtitleCue>();
+                foreach (var cue in cues.EnumerateArray())
+                {
+                    if (!cue.TryGetProperty("startSec", out var s) || !cue.TryGetProperty("endSec", out var e) || !cue.TryGetProperty("text", out var t)) continue;
+                    var text = t.GetString()?.Trim();
+                    if (string.IsNullOrEmpty(text)) continue;
+                    var start = s.GetDouble();
+                    var end = e.GetDouble();
+                    if (end <= start) continue;
+                    var parts = SubtitlePlanner.Split(text);
+                    var chars = parts.Sum((part) => part.Length);
+                    var at = start;
+                    foreach (var part in parts)
+                    {
+                        var span = chars > 0 ? (end - start) * part.Length / chars : (end - start) / Math.Max(1, parts.Count);
+                        made.Add(new SubtitleCue(at, at + span, part));
+                        at += span;
+                    }
+                }
+                return made.Count > 0 ? made.AsReadOnly() : null;
+            }
+        }
+        catch { /* 坏的 meta.json 退回文本近似 */ }
+        return null;
+    }
+
+private string? FindScriptText(FissionJob job, MaterialItem? audio)
+    {        if (audio is null || string.IsNullOrWhiteSpace(job.AudioDir))
         {
             return null;
         }
@@ -1332,7 +1386,7 @@ public sealed class FissionEngine
         }
     }
 
-    private static string? PickBgm(FissionJob job, SeededRandom rng)
+    private static string? PickBgm(FissionJob job, SeededRandom rng, int index)
     {
         if (job.BgmDir is null || !Directory.Exists(job.BgmDir) || job.BgmVolume <= 0)
         {
@@ -1340,7 +1394,13 @@ public sealed class FissionEngine
         }
 
         var files = EnumerateByExt(job.BgmDir, AudioExt, false).ToList();
-        return files.Count == 0 ? null : files[rng.Next(files.Count)];
+        if (files.Count == 0) return null;
+        return job.BgmMode switch
+        {
+            "fixed" => files[0],
+            "sequence" => files[index % files.Count],
+            _ => files[rng.Next(files.Count)],
+        };
     }
 
     private static void TryDeleteFile(string path)

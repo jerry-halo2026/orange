@@ -1,6 +1,6 @@
 # OrangeFilm
 
-OrangeFilm is a proprietary video production workspace: a desktop app (Electron), Studio (the editor), the `openfilm`
+OrangeFilm is a proprietary video production workspace: a desktop app (Electron), Studio (the editor), the `orangefilm`
 format and CLI, and a .NET batch-mixing worker under `workers/fission`.
 
 **Proprietary and confidential.** Copyright (c) 2026 OrangeFilm. All rights reserved. Read, run and modify only with
@@ -12,7 +12,7 @@ this repository as read-only. Names and marks are covered separately by [TRADEMA
 | Path | What |
 | --- | --- |
 | `apps/desktop` | the desktop app: window shell, Studio in a utility process, the agent chat |
-| `packages/openfilm` | the format, the CLI, Studio's server and UI |
+| `packages/orangefilm` | the format, the CLI, Studio's server and UI |
 | `packages/shared` | what the app's renderer and Studio share |
 | `workers/fission` | the .NET batch mixer Studio starts |
 | `docs/` | the maintained development source; start at [docs/README.md](docs/README.md) |
@@ -24,7 +24,7 @@ pnpm install
 pnpm build            # brand codegen, Studio's editor, the window's page
 pnpm typecheck
 pnpm test
-pnpm --filter @openfilm/desktop release --dir   # unpacked app, then the self check
+pnpm --filter @orange/desktop release --dir   # unpacked app, then the self check
 ```
 
 Platforms: Windows x64 is the first release target; macOS Apple Silicon (arm64) is supported and tested separately. No

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=780, height=420" />
+    <title>Message thread</title>
+    <!--
+      A social card, after HyperFrames' `thread-message-stack`.
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 780px; height: 420px; background: transparent; overflow: hidden;
+        font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+      :root { --m-accent: #2a7fff; --m-ink: #ffffff; --m-them: #2c2c2e; --m-muted: #9a9aa0; --m-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; }
+      #root { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 8px; }
+      .m-row { display: flex; }
+      .m-row.them { justify-content: flex-start; }
+      .m-row.me { justify-content: flex-end; }
+      .m-bubble { max-width: 70%; padding: 14px 18px; font-size: 24px; line-height: 1.3;
+                  border-radius: 22px; will-change: transform, opacity; }
+      .them .m-bubble { background: var(--m-them); color: var(--m-ink); border-bottom-left-radius: 6px; }
+      .me .m-bubble { background: var(--m-accent); color: #ffffff; border-bottom-right-radius: 6px; }
+      .m-typing { display: flex; gap: 6px; padding: 14px 18px; border-radius: 22px; background: var(--m-them); width: fit-content; }
+      .m-typing i { width: 9px; height: 9px; border-radius: 50%; background: var(--m-muted); display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="m-row them"><div id="b1" class="m-bubble m1">Do we have a lower third for this?</div></div>
+      <div class="m-row me"><div id="b2" class="m-bubble m2">Two of them, and six caption styles.</div></div>
+      <div class="m-row them"><div id="typing" class="m-typing"><i></i><i></i><i></i></div></div>
+      <div class="m-row them"><div id="b3" class="m-bubble">Show me.</div></div>
+    </div>
+    <script>
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const in2 = (x) => x * x;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const b1 = document.getElementById('b1');
+      const b2 = document.getElementById('b2');
+      const b3 = document.getElementById('b3');
+      const typing = document.getElementById('typing');
+      const pop = (el, k, dx) => {
+        el.style.opacity = String(k);
+        el.style.transform = `translateY(${(16 * (1 - k)).toFixed(2)}px) scale(${(0.92 + 0.08 * k).toFixed(3)})`;
+        el.style.visibility = k > 0 ? 'visible' : 'hidden';
+      };
+      function draw(t) {
+        pop(b1, out2(at(t, 0.2, 0.3)), 0);
+        pop(b2, out2(at(t, 1.3, 0.3)), 0);
+        const dots = t >= 2.5 && t < 4.0;
+        typing.style.visibility = dots ? 'visible' : 'hidden';
+        pop(typing, dots ? out2(at(t, 2.5, 0.2)) : 0, 0);
+        pop(b3, out2(at(t, 4.0, 0.3)), 0);
+      }
+      const DURATION = 6;
+
+      window.film = {
+        duration: DURATION,
+        width: 780,
+        height: 420,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

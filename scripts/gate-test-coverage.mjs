@@ -5,7 +5,7 @@
 // G04: every tracked test file must be run by some workspace's `test` script.
 //
 // The repo has 13 tracked test files that no `pnpm test` reaches (apps/desktop/bench/**.test.mjs,
-// packages/openfilm/bin/openfilm-auth.test.mjs). Treating them as "passing" is the current biggest
+// packages/orangefilm/bin/orangefilm-auth.test.mjs). Treating them as "passing" is the current biggest
 // consistency lie, so this gate fails until each one is either run or explicitly exempted below.
 //
 // Usage: node scripts/gate-test-coverage.mjs [--json]
@@ -22,8 +22,8 @@ const EXEMPT = new Map([
   ...[
     'activity-layout', 'agent-outdated', 'agent-setup', 'agent-sign-in', 'agent-startup', 'attachment-preview',
     'conversation-agent', 'media-menu', 'model-options', 'model-popover-layout', 'prompt-pills', 'turn-log',
-  ].map((name) => [`apps/desktop/bench/${name}.test.mjs`, 'slow Electron bench (~20 s each); run by `pnpm --filter @openfilm/desktop test:bench` (G05)']),
-  ['packages/openfilm/bin/openfilm-auth.test.mjs', 'needs ORANGE_LOGIN_TEST_ROOT (owned scratch); run via `pnpm --filter openfilm test:login`'],
+  ].map((name) => [`apps/desktop/bench/${name}.test.mjs`, 'slow Electron bench (~20 s each); run by `pnpm --filter @orange/desktop test:bench` (G05)']),
+  ['packages/orangefilm/bin/orangefilm-auth.test.mjs', 'needs ORANGE_LOGIN_TEST_ROOT (owned scratch); run via `pnpm --filter orangefilm test:login`'],
 ]);
 
 const TEST_FILE = /\.(test|spec)\.(mjs|cjs|js|ts|tsx)$/;

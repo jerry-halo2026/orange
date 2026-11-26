@@ -9,7 +9,7 @@
  *
  *   cjk       Chinese, Japanese or Korean prose outside the i18n dictionaries (and the library's names, library/index.json, audio.json, stickers.json and each of library/catalogs/, the words it is searched by, library/tags.json, and its keyword index, library/search.json, its voices as their services describe them, library/voices.json, what a made sample says, scripts/library-voice-lines.json, the text's names, scripts/library-text-names.json, and the templates', scripts/library-templates.json, and the table that keeps a local transcript in one Chinese script,
  *             src/zh-script.json), the release notes (whats-new.ts), translated docs
- *             and a skill's openfilm.json, OpenFilm's own in manual/ too (its title and summary in each language)
+ *             and a skill's orangefilm.json, OrangeFilm's own in manual/ too (its title and summary in each language)
  *             (README.zh-CN.md): comments and text are in English.
  *             A line is prose when its CJK characters outweigh its Latin words (one character for four letters), so
  *             an English comment that quotes 永 or 2026年10月7日 passes. In tests and fixtures, string literals are
@@ -18,7 +18,7 @@
  *             `--terms <file>` (one regular expression per line, as /source/flags or plain source; # comments):
  *             maintainers keep their own list of names that must not appear, outside the repository.
  *   path      a relative path out of the repository (tests may name one, to check it is refused).
- *   deps      a dependency on an `@openfilm/` package, or a `workspace:` range, that is not a package of this
+ *   deps      a dependency on an `@orangefilm/` package, or a `workspace:` range, that is not a package of this
  *             workspace: everything here builds from this repository and npm alone.
  *   secret    gitleaks (`gitleaks dir`, with .gitleaks.toml: its default rules and this repository's allowlist).
  *
@@ -46,11 +46,11 @@ const ROOT = resolve(opts.dir ?? join(import.meta.dirname, '..'));
 /* `docs/` and `overlay/` are internal records, not product content: they hold evidence from our own machines (paths
    under a home folder) and the vendoring patches, and neither ships in an installer. The checks below are for what
    does ship and for the repository's own configuration. */
-const SKIP_DIR = /(^|\/)(node_modules|dist|\.dev|\.release|\.git|docs|overlay)\//;
+const SKIP_DIR = /(^|\/)(node_modules|dist|\.dev|\.release|\.git|docs|overlay|packages\/orangefilm\/library\/models)\//;
 /* the source files that must carry the proprietary header: someone reading one file — or an agent pointed at it —
    sees the copyright before the code. `docs/`, JSON and assets are covered by LICENSE and TRADEMARK instead. */
 const SOURCE = /\.(mjs|cjs|js|jsx|ts|tsx|mts|cts|cs|sh|ps1)$/;
-const LOCALE = /(^|\/)(i18n|locales)\/|\/whats-new\.ts$|\.(zh-CN|ja|ko|es)\.md$|(^|\/)(skills|manual)\/[^/]+\/openfilm\.json$|(^|\/)library\/(index|voices|audio|stickers|tags|search|catalogs\/[^/]+)\.json$|\/scripts\/library-(voice-lines|text-names|sticker-groups|templates)\.json$|\/src\/zh-script\.json$/;
+const LOCALE = /(^|\/)(i18n|locales)\/|\/whats-new\.ts$|\.(zh-CN|ja|ko|es)\.md$|(^|\/)(skills|manual)\/[^/]+\/orangefilm\.json$|(^|\/)library\/(index|voices|audio|stickers|tags|search|catalogs\/[^/]+)\.json$|\/scripts\/library-(voice-lines|text-names|sticker-groups|templates)\.json$|\/src\/zh-script\.json$/;
 const TESTISH = /(\.test\.[cm]?[jt]sx?$|(^|\/)(test|tests|fixtures?|__fixtures__)\/)/;
 
 /** A home folder with a real name in it; the placeholders docs and tests use are fine. */
@@ -62,10 +62,10 @@ const HOME = /(?:\/Users\/|\/home\/|[A-Za-z]:\\{1,2}Users\\{1,2})(?!(?:me|you|so
  */
 const ALLOWED = [
   { file: 'apps/desktop/scripts/start.mjs', check: 'path', match: /resolve\(electron, '(\.\.\/){2}\.\.'\)/, why: 'up from the Electron binary to its .app, not from this file' },
-  { file: 'packages/openfilm/src/render.mjs', check: 'private', match: "C:\\\\Users\\\\O'Brien", why: 'a made-up Windows path with a quote in it' },
+  { file: 'packages/orangefilm/src/render.mjs', check: 'private', match: "C:\\\\Users\\\\O'Brien", why: 'a made-up Windows path with a quote in it' },
   /* the 8.3 short name is what these files *refuse*: it is the counter-example in a rule about canonical long paths,
      not a home folder anyone's data lives in */
-  { file: /(^|\/)packages\/openfilm\/(src\/test-roots\.mjs|studio\/server\/fission-(engine-paths|run)\.mjs)$/, check: 'private', match: /ADMINI~1/, why: 'the short name these files reject, quoted as the reason' },
+  { file: /(^|\/)packages\/orangefilm\/(src\/test-roots\.mjs|studio\/server\/fission-(engine-paths|run)\.mjs)$/, check: 'private', match: /ADMINI~1/, why: 'the short name these files reject, quoted as the reason' },
   { file: 'workers/fission/tests/Fission.UnitTests/TestSupport.cs', check: 'private', match: /ADMINI~1/, why: 'the short name the engine refuses, quoted in the assertion message' },
   /* a comment about where Vite lives inside a dependency folder, not a path this repository resolves */
   { file: 'scripts/verify-macos.sh', check: 'path', match: /node_modules\/\.pnpm\/vite@/, why: 'the glob the verification greps for, printed as an example' },
@@ -173,7 +173,7 @@ function scan(files) {
   return { locales, prose };
 }
 
-/** Every package.json: its `@openfilm/` and `workspace:` dependencies must be packages of this workspace. */
+/** Every package.json: its `@orangefilm/` and `workspace:` dependencies must be packages of this workspace. */
 function checkDeps(files) {
   const manifests = files.filter((f) => f === 'package.json' || f.endsWith('/package.json'));
   const pkgs = manifests.map((f) => ({ file: f, json: JSON.parse(readFileSync(join(ROOT, f), 'utf8')) }));
@@ -183,7 +183,7 @@ function checkDeps(files) {
     for (const field of ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']) {
       for (const [name, range] of Object.entries(json[field] ?? {})) {
         if (local.has(name)) continue;
-        if (!name.startsWith('@openfilm/') && !String(range).startsWith('workspace:')) continue;
+        if (!name.startsWith('@orangefilm/') && !String(range).startsWith('workspace:')) continue;
         const n = text.findIndex((l) => l.includes(`"${name}"`)) + 1;
         report(file, n, 'deps', `${field}: ${name}@${range} is not a package of this workspace`);
       }

@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { readUpdateChannel, useUpdateChannel, writeUpdateChannel } from './update-channel.mjs';
 
 test('the channel is stable until beta is chosen, and stays chosen', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-channel-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-channel-'));
   try {
     assert.equal(readUpdateChannel(dir), 'stable');
     writeUpdateChannel(dir, 'beta');

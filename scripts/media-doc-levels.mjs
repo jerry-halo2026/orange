@@ -23,7 +23,7 @@ import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { indexEntries } from '../packages/openfilm/src/material-clean.mjs';
+import { indexEntries } from '../packages/orangefilm/src/material-clean.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = path.join(ROOT, 'infra', 'docker-compose.yml');
@@ -37,7 +37,7 @@ export function defaultOptions() {
     /* 云端：给了就走 docker run postgres:17 psql <url>，不给仍是本机 compose。 */
     dbUrl: '',
     dryRun: false,
-    indexFile: path.join(homedir(), '.openfilm-dev', 'material-index', 'index.json'),
+    indexFile: path.join(homedir(), '.orangefilm-dev', 'material-index', 'index.json'),
   };
 }
 

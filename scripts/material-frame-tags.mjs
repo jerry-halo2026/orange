@@ -15,7 +15,7 @@
  *
  * 1. 按 `visual_ver` 挑待办（`--limit` 先小批量看准确率）；
  * 2. ffmpeg 抽三帧到临时目录（10%/50%/90%）；
- * 3. 调视觉模型（`--vision` 指向一个可执行脚本，或设 `OPENFILM_VISION_CMD`）：
+ * 3. 调视觉模型（`--vision` 指向一个可执行脚本，或设 `ORANGE_VISION_CMD`）：
  *    它收到 `{ images: [三个文件], prompt }`，输出 JSON；
  * 4. 合并三帧 → `visual_tags` + `visual_ver`；同时把 `tagText()` 的文本写进 `text` 的检索段。
  *
@@ -30,7 +30,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 
-import { frameTimes, mergeFrameTags, parseTagAnswer, tagText, taggingPrompt, tagsDigest, VISUAL_VER } from '../packages/openfilm/src/visual-tags.mjs';
+import { frameTimes, mergeFrameTags, parseTagAnswer, tagText, taggingPrompt, tagsDigest, VISUAL_VER } from '../packages/orangefilm/src/visual-tags.mjs';
 
 const run = promisify(execFile);
 
@@ -149,7 +149,7 @@ if (import.meta.url === `file://${process.argv[1]?.replace(/\\/g, '/')}`) {
   const limit = Number(args.get('--limit') ?? 20);
   const dryRun = args.has('--dry-run');
   const ffmpeg = args.get('--ffmpeg') ?? process.env.FFMPEG ?? 'ffmpeg';
-  const visionCmd = args.get('--vision') ?? process.env.OPENFILM_VISION_CMD ?? '';
+  const visionCmd = args.get('--vision') ?? process.env.ORANGE_VISION_CMD ?? '';
   console.log(`frame-tags: limit=${limit} dryRun=${dryRun} vision=${visionCmd || '(未配置，只抽帧)'}`);
   console.log('提示：抽帧走 ffmpeg；DB 取行与写回由调用方注入（见 scripts/material-frame-tags.mjs 的用法）。');
   void extractFrames;

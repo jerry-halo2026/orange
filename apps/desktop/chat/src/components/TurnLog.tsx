@@ -431,11 +431,11 @@ function SentBlocks({ blocks, t }: { blocks: Item[]; t: T }) {
   );
 }
 
-/** How a session's skills and MCP servers were set (agent-skills.mjs `log`): OpenFilm's, and the person's own hidden or let in. */
+/** How a session's skills and MCP servers were set (agent-skills.mjs `log`): OrangeFilm's, and the person's own hidden or let in. */
 function skillsLines(skills: Item, t: T): string[] {
   const list = (v: unknown) => (Array.isArray(v) && v.length ? v.join(', ') : '—');
   return [
-    `${t('turnLog.skillsOpenfilm')}: ${list(skills.openfilm)}`,
+    `${t('turnLog.skillsOrangefilm')}: ${list(skills.orangefilm)}`,
     skills.filtered ? `${t('turnLog.skillsHidden')}: ${list(skills.hidden)}` : t('turnLog.skillsUnfiltered'),
     ...(skills.mcpFiltered ? [`${t('turnLog.mcpHidden')}: ${list(skills.mcpHidden)}`] : []),
     ...([...(skills.allowed ?? []), ...(skills.mcpAllowed ?? [])].length ? [`${t('turnLog.letIn')}: ${list([...(skills.allowed ?? []), ...(skills.mcpAllowed ?? [])])}`] : []),

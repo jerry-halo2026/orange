@@ -11,7 +11,7 @@ import { AGENT_ACTS, AGENT_ACT_QUERY_MAX, AGENT_ASK_LABEL_MAX, AGENT_ASK_QUESTIO
 
 test('anything not recognized is working, so a new tool shows nothing of itself', () => {
   assert.deepEqual(publicActivity('some_future_tool', { anything: 1 }), { act: 'working' });
-  assert.deepEqual(publicActivity('mcp__openfilm__bogus', { path: 'notes.md' }), { act: 'working' });
+  assert.deepEqual(publicActivity('mcp__orangefilm__bogus', { path: 'notes.md' }), { act: 'working' });
   for (const tool of ['look', 'check', 'audio_tts', 'audio_sfx', 'image_gen', 'video_gen', 'web_fetch', 'ask_user', 'bogus']) {
     const activity = publicActivity(tool, {});
     if (activity) assert.ok(AGENT_ACTS.includes(activity.act), `${tool} → ${activity.act}`);
@@ -42,20 +42,20 @@ test('each tool reads the same by its own name and with an MCP client prefix', (
     ['check', { timeline: true }, 'film.check', undefined],
   ];
   for (const [tool, args, act, query] of cases) {
-    for (const name of [tool, `mcp__openfilm__${tool}`]) {
+    for (const name of [tool, `mcp__orangefilm__${tool}`]) {
       const got = publicActivity(name, args);
       assert.equal(got?.act, act, name);
       assert.equal(got?.query, query, name);
     }
   }
   assert.equal(publicActivity('transcript_read', { src: 'assets/audio/vo/s1.m4a' }), null);
-  assert.equal(publicActivity('mcp__openfilm__transcript_words', {}), null);
+  assert.equal(publicActivity('mcp__orangefilm__transcript_words', {}), null);
 });
 
 test('made media: only from tools that make it, only a media path under assets/ and its duration', () => {
   const receipt = JSON.stringify({ src: 'assets/audio/sfx/hum.mp3', dur: 2.481, peakDb: -2, attack: 1.1 });
   assert.deepEqual(publicActivityResult('audio_sfx', receipt), { kind: 'audio', src: 'assets/audio/sfx/hum.mp3', dur: 2.48 });
-  assert.deepEqual(publicActivityResult('mcp__openfilm__image_gen', JSON.stringify({ src: 'assets/image/wall.png', dur: 3 })),
+  assert.deepEqual(publicActivityResult('mcp__orangefilm__image_gen', JSON.stringify({ src: 'assets/image/wall.png', dur: 3 })),
     { kind: 'image', src: 'assets/image/wall.png' });
   assert.deepEqual(publicActivityResult('audio_tts', JSON.stringify({ src: 'assets/audio/vo/s1.m4a', dur: 5.9, voiceId: 'Nadia', transcript: 'assets/transcripts/x.vtt' })),
     { kind: 'audio', src: 'assets/audio/vo/s1.m4a', dur: 5.9 });
@@ -71,8 +71,8 @@ test('made media: only from tools that make it, only a media path under assets/ 
 });
 
 test('asking the person: the question and options only, each clipped', () => {
-  assert.deepEqual(publicActivity('mcp__openfilm__ask_user', { question: '做给谁看?' }), { act: 'chat.ask', query: '做给谁看?' });
-  const ask = publicAsk('mcp__openfilm__ask_user', {
+  assert.deepEqual(publicActivity('mcp__orangefilm__ask_user', { question: '做给谁看?' }), { act: 'chat.ask', query: '做给谁看?' });
+  const ask = publicAsk('mcp__orangefilm__ask_user', {
     question: '  这支片子\n做给谁看?  ',
     options: [{ label: '投资人', description: '偏数据', secret: 'x' }, '客户', { label: '' }, { label: 'a' }, { label: 'b' }, { label: 'c' }],
     internal: '/Users/me/film.json',
@@ -81,7 +81,7 @@ test('asking the person: the question and options only, each clipped', () => {
     question: '这支片子 做给谁看?',
     options: [{ label: '投资人', description: '偏数据' }, { label: '客户' }, { label: 'a' }, { label: 'b' }],
   });
-  assert.equal(publicAsk('mcp__openfilm__check', { question: 'x' }), null);
+  assert.equal(publicAsk('mcp__orangefilm__check', { question: 'x' }), null);
   assert.equal(publicAsk('ask_user', { question: '   ' }), null);
   const long = publicAsk('ask_user', { question: 'q'.repeat(500), options: [{ label: 'l'.repeat(90) }] })!;
   assert.equal(long.question.length, AGENT_ASK_QUESTION_MAX);

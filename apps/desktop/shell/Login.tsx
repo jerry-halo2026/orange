@@ -7,20 +7,17 @@ import { useState, type FormEvent } from 'react';
  * brand.json into ordinary source (scripts/brand-codegen.mjs), so the sign-in renders under `node --test` too.
  */
 import { brand as brandData } from '../../../brand.generated.ts';
+import { BrandMark } from 'orangefilm/studio-ui/components/BrandLogo.tsx';
 
 /*
- * The brand's words and mark, from brand.json (schema orange/brand/1). It keeps the words this page had before when
- * brand.json says nothing; a mark only an app can load (not an http(s)/data URL or a rooted path) is left to the
- * sign-in's own type, as this page cannot load it.
+ * The brand's two names, from brand.json: OrangeFilm in English, 橙子创作中心 in Chinese. The mark is the three
+ * orange bars alone (BrandMark bare), with no dark rounded square behind them.
  */
-const FALLBACK_WORDS = 'Orange 橙子创作中心';
-const LOADABLE_MARK = /^(?:https?:|data:|file:|\/)/i;
 
-function readBrandWords(): { words: string; mark: string } {
-  const said = [brandData.companyName, brandData.productName].flatMap(w => { const word = typeof w === 'string' ? w.trim() : ''; return word ? [word] : []; });
-  const words = said.filter((word, at) => said.indexOf(word) === at).join(' ');
-  const mark = typeof brandData.logo?.mark === 'string' ? brandData.logo.mark.trim() : '';
-  return { words: words || FALLBACK_WORDS, mark: LOADABLE_MARK.test(mark) ? mark : '' };
+function readBrandWords(): { product: string; chinese: string } {
+  const product = typeof brandData.productName === 'string' && brandData.productName.trim() ? brandData.productName.trim() : 'OrangeFilm';
+  const chinese = typeof brandData.windowTitle === 'string' && brandData.windowTitle.trim() ? brandData.windowTitle.trim() : '橙子创作中心';
+  return { product, chinese };
 }
 
 const BRAND = readBrandWords();
@@ -58,21 +55,21 @@ export function Login({state,onSignedIn}:{state:LoginState,onSignedIn:()=>void})
     finally{setBusy(false);}
   }
   return <main className="orange-login" aria-labelledby="orange-login-title">
+    <div className="orange-login-texture" aria-hidden="true"><i /><i /><i /></div>
     <div className="orange-login-drag" aria-hidden="true" />
     <form className="orange-login-card" onSubmit={event=>void submit(event)}>
-      <div className="orange-login-wordmark" style={{ display:'flex', alignItems:'center', gap:8 }}>
-        {BRAND.mark?<img src={BRAND.mark} alt="" aria-hidden="true" style={{ width:20, height:20, borderRadius:5 }} />:null}
-        {BRAND.words}
+      <div className="orange-login-brand">
+        <BrandMark size={72} bare label={BRAND.chinese} />
+        <div className="orange-login-name">{BRAND.product}</div>
+        <div className="orange-login-sub">{BRAND.chinese}</div>
       </div>
       <h1 id="orange-login-title">登录橙子</h1>
-      <p>登录后进入创作中心。工程保存在本机，不会因退出登录被删除。</p>
       <label htmlFor="orange-login-email">邮箱</label>
       <input id="orange-login-email" type="email" name="email" autoComplete="username" required maxLength={320} value={email} disabled={busy||locked} onChange={event=>setEmail(event.target.value)} />
       <label htmlFor="orange-login-password">密码</label>
       <input id="orange-login-password" type="password" name="password" autoComplete="current-password" required value={password} disabled={busy||locked} onChange={event=>setPassword(event.target.value)} />
       {(error||state.reason)&&<p className="orange-login-message" role="alert">{error??messages[state.reason??'']??'当前会话已锁定，请重新登录。'}</p>}
       <button type="submit" disabled={busy||locked}>{busy?'正在验证…':'登录并进入创作中心'}</button>
-      <small>使用橙子账号登录；智尚素材账号在登录后单独绑定。</small>
     </form>
   </main>;
 }

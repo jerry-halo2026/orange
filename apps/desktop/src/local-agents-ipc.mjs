@@ -49,7 +49,7 @@
  */
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
-import { recordProblem, problemsFile } from 'openfilm/problems';
+import { recordProblem, problemsFile } from 'orangefilm/problems';
 import { LOG_SETTLE_MS } from './agent-logs.mjs';
 import { RECORDED_AGENTS, agentRecordCalls, compactCalls, recordedModel } from './agent-records.mjs';
 import { skillStore } from './agent-skills.mjs';
@@ -132,7 +132,7 @@ export function sentError(e) {
 
 /**
  * An agent that did not start, did not answer, or whose process ended by itself, as Studio's problems keep it
- * (openfilm's problems.mjs): why, the step it stopped at, its program, the last of its stderr, and where its turn's log
+ * (orangefilm's problems.mjs): why, the step it stopped at, its program, the last of its stderr, and where its turn's log
  * is.
  * @param {{ agent: string, cwd: string, session?: any }} entry @param {string} step @param {any} e @param {string | null} [turnId]
  */
@@ -155,7 +155,7 @@ export function agentProblem(entry, step, e, turnId = null) {
  * folders where an agent waits for the person's answer. `onTurn` hears each turn done or stopped by an error (not one
  * the person stopped) and each time an agent asks the person something, for the system's notifications (turn-notices.mjs).
  * `logDir()`, as each session starts: the folder for the logs an agent is started with (Developer mode on), or null.
- * `skills`: where the app keeps its record of skills (`dataDir`) and the person's own skills (`mine`): each session has its maker's skills and MCP servers, OpenFilm's skills, and of the person's own those let
+ * `skills`: where the app keeps its record of skills (`dataDir`) and the person's own skills (`mine`): each session has its maker's skills and MCP servers, OrangeFilm's skills, and of the person's own those let
  * in (agent-skills.mjs).
  * @param {{ trusted: (event: any) => boolean, binDir?: string | null, fallbackDir?: string | null, env?: Record<string, string>,
  *           harness?: (id: string) => Promise<any>, onWorking?: (folders: string[]) => void, onAsking?: (folders: string[]) => void, onTurn?: (turn: { kind: 'done' | 'failed' | 'asking', agent: string, cwd: string, meta: any, error?: string }) => void, onConnectionResult?: (id: string, error: unknown | null) => void, logDir?: () => string | null,
@@ -191,10 +191,10 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
     assertAdmission();return value;
   };
   const skillRecord = skills ? skillStore(skills.dataDir) : null;
-  /* what went wrong, kept in Studio's home with Studio's own problems (openfilm's problems.mjs), for its report */
-  const problems = env.OPENFILM_HOME ? problemsFile(env.OPENFILM_HOME) : undefined;
+  /* what went wrong, kept in Studio's home with Studio's own problems (orangefilm's problems.mjs), for its report */
+  const problems = env.ORANGE_HOME ? problemsFile(env.ORANGE_HOME) : undefined;
   const noteProblem = (entry, step, e, turnId = null) => recordProblem(agentProblem(entry, step, e, turnId), { file: problems });
-  /** a session's skills and MCP servers: OpenFilm's, and of the person's own those let in (agent-skills.mjs) */
+  /** a session's skills and MCP servers: OrangeFilm's, and of the person's own those let in (agent-skills.mjs) */
   const skillsFor = (agent) => (skills && skillRecord ? { ...skills, allowed: skillRecord.allowed(agent), mcpAllowed: skillRecord.mcpAllowed(agent) } : null);
   /** @type {Map<string, { session: AgentSession, sender: import('electron').WebContents, pending: Map<string, (answer: any) => void>, agent: string, cwd: string, turn: any }>} */
   const sessions = new Map();
@@ -312,9 +312,9 @@ export function registerLocalAgentIpc(ipcMain, { trusted, binDir = null, fallbac
         resume,
         binDir,
         fallbackDir,
-        /* its name to Studio, by the chat's conversation: the `openfilm` commands it runs say so, and Studio tells it
-           once what the person changed while it worked (openfilm's studio/client.mjs agentName) */
-        env: { ...env, OPENFILM_AGENT: `app:${typeof meta?.sessionId === 'string' && meta.sessionId ? meta.sessionId : key}` },
+        /* its name to Studio, by the chat's conversation: the `orangefilm` commands it runs say so, and Studio tells it
+           once what the person changed while it worked (orangefilm's studio/client.mjs agentName) */
+        env: { ...env, ORANGE_AGENT: `app:${typeof meta?.sessionId === 'string' && meta.sessionId ? meta.sessionId : key}` },
         logDir: logDir(),
         skills: skillsFor(agent),
         harness: await harnessFor(agent),

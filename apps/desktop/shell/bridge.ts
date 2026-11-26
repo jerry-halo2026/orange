@@ -5,16 +5,16 @@
  * The window is one page: Studio's editor, and the chat in the column Studio leaves for it. This is what each gets
  * from the other and from the app, in the page:
  *
- *   · window.openfilmHost    Studio's host (its lib/host.ts StudioHost): the window's controls, the chat's column,
+ *   · window.orangefilmHost    Studio's host (its lib/host.ts StudioHost): the window's controls, the chat's column,
  *                            "Reference in chat", Settings → Agents.
- *   · window.openfilmDesktop the chat's bridge (chat/src/app-bridge.ts and lib/desktop-bridge.ts).
+ *   · window.orangefilmDesktop the chat's bridge (chat/src/app-bridge.ts and lib/desktop-bridge.ts).
  *
- * What only the app can do (the agents, a file on the disk, the window, updates) is the preload's `openfilmNative`
+ * What only the app can do (the agents, a file on the disk, the window, updates) is the preload's `orangefilmNative`
  * (src/preload.cjs). Imported before Studio's modules and the chat's: Studio reads its host as it loads.
  */
 import { flushSync } from 'react-dom';
-import { workspaceChatWidth } from 'openfilm/studio-ui/lib/workspaces.ts';
-import type { CommunityItem, HostAgent, HostAsk, HostProject as Project, HostUpdate, HostUpdateState, StudioCommand, StudioHost, StudioRef, StudioSelection } from 'openfilm/studio-ui/lib/host.ts';
+import { workspaceChatWidth } from 'orangefilm/studio-ui/lib/workspaces.ts';
+import type { CommunityItem, HostAgent, HostAsk, HostProject as Project, HostUpdate, HostUpdateState, StudioCommand, StudioHost, StudioRef, StudioSelection } from 'orangefilm/studio-ui/lib/host.ts';
 
 type Listener<T> = (value: T) => void;
 type Stop = () => void;
@@ -49,7 +49,7 @@ interface Native {
   checkForUpdate(): Promise<unknown>;
 }
 
-const native = (window as unknown as { openfilmNative: Native }).openfilmNative;
+const native = (window as unknown as { orangefilmNative: Native }).orangefilmNative;
 const hello = native.hello();
 
 /** A value that tells its listeners when it changes. */
@@ -238,15 +238,16 @@ const asks = signal<HostAsk[]>([]);
 let answerAsk: (id: string, allow: boolean) => void = () => {};
 
 /* ── Settings → Developer (kept by the app): Studio switches it, the chat shows each turn's log and changes by it ── */
-interface AppPrefs { developer: boolean; changes: boolean; notify?: boolean }
-const developerOf = (prefs: AppPrefs) => ({ logs: prefs.developer === true, changes: prefs.changes !== false });
+interface AppPrefs { developer: boolean; changes: boolean; notify?: boolean; devtools?: boolean }
+const developerOf = (prefs: AppPrefs) => ({ logs: prefs.developer === true, changes: prefs.changes !== false, devtools: prefs.devtools !== false });
 const developer = {
   get: async () => developerOf(await native.prefs.get()),
-  set: (next: { logs?: boolean; changes?: boolean }) => native.prefs.set({
+  set: (next: { logs?: boolean; changes?: boolean; devtools?: boolean }) => native.prefs.set({
     ...(typeof next.logs === 'boolean' ? { developer: next.logs } : {}),
     ...(typeof next.changes === 'boolean' ? { changes: next.changes } : {}),
+    ...(typeof next.devtools === 'boolean' ? { devtools: next.devtools } : {}),
   }),
-  onChange: (listener: Listener<{ logs: boolean; changes: boolean }>) => native.prefs.onChange((prefs) => listener(developerOf(prefs))),
+  onChange: (listener: Listener<{ logs: boolean; changes: boolean; devtools: boolean }>) => native.prefs.onChange((prefs) => listener(developerOf(prefs))),
 };
 
 /* ── Settings → Advanced (kept by the app): the system's notifications of a turn done, stopped or waiting ── */
@@ -291,7 +292,7 @@ const INSET_RIGHT = 138;
 
 export const host: StudioHost = {
   version: 1,
-  name: 'OpenFilm',
+  name: 'OrangeFilm',
   projectChanged,
   ...(mac ? { titlebar: { get inset() { return fullScreen.get() ? 0 : INSET; }, onChange: (listener: Listener<number>) => { fullScreen.on((full) => listener(full ? 0 : INSET)); } } } : {}),
   ...(windows ? { titlebar: { get inset() { return fullScreen.get() ? 0 : 6; }, insetRight: INSET_RIGHT, onChange: (listener: Listener<number>) => { fullScreen.on(full => listener(full ? 0 : 6)); } } } : {}),
@@ -339,7 +340,7 @@ export const host: StudioHost = {
   skills: { add: () => skillAdd.set(undefined) },
   ask: (request) => { if (!layout.open) setChatOpen(true); asked.set(request); },
 };
-(window as unknown as { openfilmHost: StudioHost }).openfilmHost = host;
+(window as unknown as { orangefilmHost: StudioHost }).orangefilmHost = host;
 
 /* the layout the app kept: the panel starts as it was, before Studio first reads it */
 const ready = hello.then((h) => {
@@ -377,7 +378,7 @@ function commandFor(ref: StudioRef): StudioCommand {
   }
 }
 
-(window as unknown as { openfilmDesktop: unknown }).openfilmDesktop = {
+(window as unknown as { orangefilmDesktop: unknown }).orangefilmDesktop = {
   bridgeVersion: '1',
   platform: native.platform,
   pathForFile: native.pathForFile,

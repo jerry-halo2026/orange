@@ -17,7 +17,7 @@ const transcript = (startedAt: number): TranscriptItem[] => [
   { id: 'intro', kind: 'text', text: 'I will check the project first.', pending: false },
   { id: 'read', kind: 'act', act: 'files.read', detail: 'film.html', pending: false },
   { id: 'update', kind: 'text', text: 'The files are ready. Checking the result next.', pending: false },
-  { id: 'check', kind: 'act', act: 'command.run', detail: 'openfilm check', pending: false },
+  { id: 'check', kind: 'act', act: 'command.run', detail: 'orangefilm check', pending: false },
   { id: 'search', kind: 'act', act: 'files.search', detail: '**/*.{html,md}', pending: true, startedAt },
   { id: 'answer', kind: 'text', text: 'Final answer anchor.', pending: true },
 ];
@@ -55,14 +55,14 @@ function Fixture() {
     ];
     return scenario === 'single' ? [
       { id: 'intro', kind: 'text', text: 'I will check the project first.', pending: false },
-      { id: 'command', kind: 'act', act: 'command.run', detail: 'openfilm check --project example-with-a-long-folder-name', pending: true, startedAt },
+      { id: 'command', kind: 'act', act: 'command.run', detail: 'orangefilm check --project example-with-a-long-folder-name', pending: true, startedAt },
       { id: 'answer', kind: 'text', text: 'Final answer anchor.', pending: true },
     ] : transcript(startedAt);
   }, [scenario]);
   // Real transcript updates preserve unchanged object identities; this also exercises the row cache.
   const items = React.useMemo(() => initial.map((item) => item.pending
     ? { ...item, pending: item.kind === 'act' || item.kind === 'thought' ? toolPending : active } : item)
-    .concat(phase === 'second-tool' ? [{ id: 'after', kind: 'act', act: 'command.run', detail: 'openfilm check', pending: true, startedAt: Date.now() }] : []),
+    .concat(phase === 'second-tool' ? [{ id: 'after', kind: 'act', act: 'command.run', detail: 'orangefilm check', pending: true, startedAt: Date.now() }] : []),
   [initial, active, toolPending, phase]);
   const thread = useStickToBottom();
   const tail = useTailSpacer(thread.viewport, thread.pinIfFollowing, active);

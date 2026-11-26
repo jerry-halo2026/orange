@@ -25,7 +25,7 @@ const runs = Math.max(1, Number(values.runs) || 5);
 buildShell();
 const results = { label: values.label, date: new Date().toISOString(), machine: `${process.platform}-${process.arch}`, runs: [] };
 for (let i = 0; i < runs; i += 1) {
-  const dir = mkdtempSync(join(tmpdir(), 'openfilm-bench-'));
+  const dir = mkdtempSync(join(tmpdir(), 'orangefilm-bench-'));
   process.stdout.write(`run ${i + 1}/${runs} … `);
   let failed = false;
   try {

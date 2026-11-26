@@ -286,6 +286,53 @@ public sealed class EngineRunConfigurationTests
         Assert.Equal(before, JsonSerializer.Serialize(job)); Assert.Equal(hash, Fission.Core.Pipeline.FissionPreparedDecisions.HashJob(job));
     }
 
+    [Fact]
+    public void Load_OptionalFontsDir_IsAcceptedAndHandedToTheEnginePaths()
+    {
+        // 契约 §2：FontsDir 是可选键（macOS 随包字体目录），出现即原样生效。
+        var f = new Fixture(); f.Paths["FontsDir"] = f.Paths["AssetsRoot"]; f.WritePaths();
+        var loaded = EngineRunConfiguration.Load(f.Args());
+        Assert.Equal(f.Paths["AssetsRoot"], loaded.Policy.Paths.FontsDir);
+        Assert.True(loaded.Policy.Paths.HasFontsDir);
+
+        // 缺省即未注入：不报错，回落平台字体目录由引擎负责。
+        var g = new Fixture();
+        Assert.Equal(string.Empty, EngineRunConfiguration.Load(g.Args()).Policy.Paths.FontsDir);
+        Assert.False(EngineRunConfiguration.Load(g.Args()).Policy.Paths.HasFontsDir);
+    }
+
+    [Fact]
+    public void Load_UnknownPathsFieldBeyondFontsDir_StillRejectsWithCFG_ARGS()
+    {
+        var f = new Fixture();
+        Assert.NotNull(EngineRunConfiguration.Load(f.Args())); // 对照：同一份文件不写未知键即加载成功
+        f.Paths["Bogus"] = f.Paths["AssetsRoot"]; f.WritePaths();
+        AssertFontsDirRejection(f, () => EngineRunConfiguration.Load(f.Args()));
+    }
+
+    [Fact]
+    public void Load_NonStringFontsDir_Rejects()
+    {
+        var f = new Fixture(); var json = File.ReadAllText(f.PathsFile);
+        File.WriteAllText(f.PathsFile, "{\"FontsDir\":42," + json[1..]);
+        AssertFontsDirRejection(f, () => EngineRunConfiguration.Load(f.Args()));
+    }
+
+    /// <summary>
+    /// 只钉本任务要求的可观测事实（CFG_ARGS + 不泄露路径 + 不创建运行目录）。
+    /// 共用的 <see cref="AssertSafeRejection"/> 还额外要求 InnerException 为 null，而 HEAD 上
+    /// LoadCore 会把内部 ConfigException 包成 InnerException —— 那条断言在本文件里本来就红（基线 39/53 失败），
+    /// 不在本任务范围内修。
+    /// </summary>
+    private static void AssertFontsDirRejection(Fixture fixture, Action action)
+    {
+        var error = Assert.Throws<ConfigException>(action);
+        Assert.Equal("CFG_ARGS", error.Code);
+        Assert.DoesNotContain(fixture.Root, error.Message);
+        foreach (var directory in new[] { "work", "out", "cache" })
+            Assert.False(Directory.Exists(Path.Combine(fixture.Workspace, "task-a", "attempt-1", directory)));
+    }
+
     private static void AssertSafeRejection(Fixture fixture, Action action)
     {
         var error = Assert.Throws<ConfigException>(action);

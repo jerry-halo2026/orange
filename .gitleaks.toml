@@ -1,6 +1,6 @@
 # gitleaks: its default rules, less the made-up values the tests use. Read by CI (`gitleaks git`) and by
 # `pnpm audit:public` (`gitleaks dir`). Each allowance names the files it covers and what the values look like.
-title = "openfilm"
+title = "orangefilm"
 
 [extend]
 useDefault = true
@@ -8,13 +8,20 @@ useDefault = true
 [[allowlists]]
 description = "made-up provider keys Studio's tests set and read back, and RFC 6455's sample Sec-WebSocket-Key"
 condition = "AND"
-paths = ['''(^|/)packages/openfilm/studio/server/(providers/)?[\w-]+\.test\.mjs$''']
+paths = ['''(^|/)packages/orangefilm/studio/server/(providers/)?[\w-]+\.test\.mjs$''']
 regexTarget = "secret"
-regexes = ['''0123456789|12345678|123456|abcdef1234|ABCDEFGH9876''', '''^dGhlIHNhbXBsZSBub25jZQ==$''']
+regexes = ['''0123456789|12345678|123456|abcdef1234|ABCDEFGH9876|ofk_fixture|fixture-owned-key''', '''^dGhlIHNhbXBsZSBub25jZQ==$''']
 
 [[allowlists]]
 description = "the library's ids in the order of its vectors, and numbers: nothing else is in the file (the emoji keycap-… reads as a key)"
-paths = ['''(^|/)packages/openfilm/library/vectors\.json$''']
+paths = ['''(^|/)packages/orangefilm/library/vectors\.json$''']
+
+[[allowlists]]
+description = "apps/api tests: one made-up internal secret and fixture-signed JWTs, never a real credential"
+condition = "AND"
+paths = ['''(^|/)apps/api/src/.*\.test\.ts$''']
+regexTarget = "secret"
+regexes = ['''fixture-internal-secret-0123456789abcdef''', '''fixture-signature''']
 
 # The environment every installer carries (scripts/release-environment.mjs, resources/auth-environment.json). Its
 # `publishableKey` is the client-side key Supabase hands to browsers: it is inside every installed app by design, and

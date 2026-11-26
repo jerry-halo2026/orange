@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=720, height=160" />
+    <title>Lower third, side rule</title>
+    <!--
+      A lower third, after HyperFrames' block `lt-side-rule`.
+      OrangeFilm page, rewritten from HyperFrames' registry (github.com/heygen-com/hyperframes, Apache-2.0,
+      pinned v0.9.60). No CDN, no web font: the picture is a pure computation of t (SPEC §3).
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 720px; height: 160px; background: transparent; overflow: hidden; }
+      :root { --lt-font: "PingFang SC", "Microsoft YaHei", "Segoe UI", -apple-system, Helvetica, Arial, sans-serif; --lt-accent: #7c8cff; --lt-ink: #ffffff; }
+      #root { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+      .lt { display: flex; align-items: stretch; gap: 18px; font-family: var(--lt-font); }
+      .lt-rule { width: 4px; background: var(--lt-accent); border-radius: 2px; transform-origin: 50% 0; }
+      .lt-body { display: flex; flex-direction: column; gap: 6px; padding: 4px 0 6px; }
+      .lt-name { font-size: 46px; font-weight: 600; color: var(--lt-ink); line-height: 1.06; white-space: nowrap; text-shadow: 0 4px 18px rgba(0,0,0,.5); will-change: transform, opacity; }
+      .lt-role { font-size: 22px; font-weight: 400; color: var(--lt-ink); opacity: .75; line-height: 1.2; letter-spacing: .04em; white-space: nowrap; will-change: transform, opacity; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div id="card" class="lt">
+      <div id="rule" class="lt-rule"></div>
+      <div class="lt-body">
+        <div id="name" class="lt-name">Ada Lovelace</div>
+        <div id="role" class="lt-role">Mathematician · Writer</div>
+      </div>
+    </div></div>
+
+    <script>
+      const DURATION = 4.8;
+      const card = document.getElementById('card');
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const at = (t, start, secs) => clamp((t - start) / secs);
+      const out3 = (x) => 1 - Math.pow(1 - x, 3);
+      const out2 = (x) => 1 - Math.pow(1 - x, 2);
+      const in2 = (x) => x * x;
+      const name = document.getElementById('name');
+      const role = document.getElementById('role');
+      const rule = document.getElementById('rule');
+      function inside(t) {
+        rule.style.transform = `scaleY(${out3(at(t, 0.1, 0.5)).toFixed(4)})`;
+        const n = out3(at(t, 0.26, 0.5));
+        name.style.transform = `translateX(${(-26 * (1 - n)).toFixed(2)}px)`;
+        name.style.opacity = String(n);
+        const r = out3(at(t, 0.38, 0.5));
+        role.style.transform = `translateX(${(-26 * (1 - r)).toFixed(2)}px)`;
+        role.style.opacity = String(r * 0.75);
+      }
+      function draw(t) {
+        const out = in2(at(t, 4.3, 0.35));
+        card.style.opacity = String(1 - out);
+        card.style.transform = `translateY(${(18 * out).toFixed(2)}px)`;
+        card.style.visibility = t >= 4.75 ? 'hidden' : 'visible';
+        inside(t);
+      }
+      window.film = {
+        duration: DURATION,
+        width: 720,
+        height: 160,
+        ready: document.fonts.ready,
+        frame(t) { draw(Math.max(0, t)); },
+      };
+      draw(0);
+    </script>
+  </body>
+</html>

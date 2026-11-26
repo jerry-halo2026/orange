@@ -32,7 +32,7 @@ test('agent setup guides desktop-only installs, folder selection and model failu
       const antigravityInstaller = installCommand('antigravity');
       assert.ok(antigravityInstaller, 'Antigravity uses the terminal installer registry');
       await page.addInitScript(({ locale, antigravityInstaller, antigravityPage }) => {
-        localStorage.setItem('openfilm.language', locale);
+        localStorage.setItem('orangefilm.language', locale);
         let agents = [
           { id: 'claude', name: 'Claude Code', shown: true, status: 'missing', setupRequired: 'code-tab' },
           { id: 'cursor', name: 'Cursor', shown: false, status: 'missing', app: 'Cursor', installer: 'official-install-command' },
@@ -44,7 +44,7 @@ test('agent setup guides desktop-only installs, folder selection and model failu
         const calls = { setup: [], locate: [], connect: [], install: [], refresh: 0, parentEscape: 0, diagnose: 0 };
         window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !event.defaultPrevented) calls.parentEscape++; });
         const publish = (id, patch) => { agents = agents.map((a) => a.id === id ? { ...a, ...patch } : a); for (const listener of listeners) listener(agents); };
-        window.openfilmHost = { version: 1, agents: {
+        window.orangefilmHost = { version: 1, agents: {
           list: async () => agents,
           refresh: async () => { calls.refresh++; publish('opencode', { connectionIssue: undefined }); publish('deepseek', { connectionIssue: undefined }); return agents; },
           connect: async (id) => { calls.connect.push(id); return { ok: true }; },
@@ -79,14 +79,14 @@ test('agent setup guides desktop-only installs, folder selection and model failu
       assert.ok(helpBounds.x >= descriptionBounds.x + descriptionBounds.width - 1, 'help icon follows the description text');
       assert.ok(helpBounds.y < descriptionBounds.y + descriptionBounds.height && helpBounds.y + helpBounds.height > descriptionBounds.y, 'help stays on the description line without an extra row');
       assert.equal(await page.getByRole('button', { name: zh ? '为什么检测不到？' : 'Why isn’t it found?', exact: true }).count(), 0);
-      if (zh && process.env.OPENFILM_HELP_LIST_PREVIEW) await page.screenshot({ path: process.env.OPENFILM_HELP_LIST_PREVIEW, fullPage: true });
+      if (zh && process.env.ORANGE_HELP_LIST_PREVIEW) await page.screenshot({ path: process.env.ORANGE_HELP_LIST_PREVIEW, fullPage: true });
       await helpButton('Cursor').click();
       await helpDialog().getByRole('heading', { name: zh ? '如何连接' : 'How to connect', exact: true }).waitFor();
       assert.equal(await manual().count(), 1, 'manual location remains available in the help dialog');
       assert.equal(await helpDialog().getByRole('button', { name: zh ? '手动选择…' : 'Locate…', exact: true }).count(), 0, 'the separate program-file selector has been removed');
       assert.equal(await helpDialog().getByRole('heading', { name: zh ? '检测不到怎么办' : 'If the agent is not found', exact: true }).isVisible(), true);
       assert.equal(await page.evaluate(() => window.agentSetupFixture.calls.diagnose), 0, 'opening instructions does not start a diagnostic process');
-      if (zh && process.env.OPENFILM_HELP_PREVIEW) await page.screenshot({ path: process.env.OPENFILM_HELP_PREVIEW, fullPage: true });
+      if (zh && process.env.ORANGE_HELP_PREVIEW) await page.screenshot({ path: process.env.ORANGE_HELP_PREVIEW, fullPage: true });
       await page.keyboard.press('Tab');
       assert.equal(await helpDialog().evaluate((dialog) => dialog.contains(document.activeElement)), true, 'keyboard focus stays inside connection help');
       await page.keyboard.press('Escape');

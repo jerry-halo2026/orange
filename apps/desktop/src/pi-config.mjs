@@ -20,7 +20,7 @@ const PRODUCT = brandProductName();
 /**
  * The reasoning efforts a model of the person's own can offer, in order: `auto` sends no reasoning setting (the
  * service decides, as it always did), the others are Pi's thinking levels. Which of them a model offers is the
- * person's to say in Settings (OpenFilm cannot know what a service's model takes); a model they said nothing of offers
+ * person's to say in Settings (OrangeFilm cannot know what a service's model takes); a model they said nothing of offers
  * `auto` alone.
  */
 export const EFFORTS = Object.freeze(['auto', 'off', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max']);
@@ -102,7 +102,7 @@ export function fitImages(messages, budget) {
 
 /**
  * A model's context length as kept: a whole number of tokens from 32K to 10M, as the person gave it in Settings (the
- * service documents it; OpenFilm cannot know it). Null for none or anything else: the model gets 128K.
+ * service documents it; OrangeFilm cannot know it). Null for none or anything else: the model gets 128K.
  */
 export function contextLength(/** @type {unknown} */ value) {
   return typeof value === 'number' && Number.isInteger(value) && value >= 32_000 && value <= 10_000_000 ? value : null;

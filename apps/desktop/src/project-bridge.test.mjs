@@ -6,10 +6,10 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import vm from 'node:vm';
 import ts from 'typescript';
-import { workspaceChatWidth } from '../../../packages/openfilm/studio/ui/src/lib/workspaces.ts';
+import { workspaceChatWidth } from '../../../packages/orangefilm/studio/ui/src/lib/workspaces.ts';
 
 const bridgeSource = readFileSync(new URL('../shell/bridge.ts', import.meta.url), 'utf8');
-const apiSource = readFileSync(new URL('../../../packages/openfilm/studio/ui/src/api.ts', import.meta.url), 'utf8');
+const apiSource = readFileSync(new URL('../../../packages/orangefilm/studio/ui/src/api.ts', import.meta.url), 'utf8');
 
 // Run the real bridge and API together; only their native, DOM and network boundaries are replaced.
 function loadSource(context, source) {
@@ -29,7 +29,7 @@ function harness() {
     setTheme() {}, setLanguage() {}, onFullScreen() {}, onToggleChat() {},
   };
   const context = vm.createContext({
-    window: { openfilmNative: native },
+    window: { orangefilmNative: native },
     location,
     history: Object.fromEntries(['pushState', 'replaceState'].map((method) => [method, (_state, _title, url) => { location.pathname = url; }])),
     document: { documentElement: element(), getElementById: () => column, createElement: element, head: { append() {} } },
@@ -50,11 +50,11 @@ function harness() {
     }),
   });
   loadSource(context, bridgeSource);
-  context.studioHost = context.window.openfilmHost;
+  context.studioHost = context.window.orangefilmHost;
   loadSource(context, apiSource);
   const api = vm.runInContext('api', context);
   const projectEvents = vm.runInContext('projectEvents', context);
-  const bridge = context.window.openfilmDesktop;
+  const bridge = context.window.orangefilmDesktop;
   const changed = [];
   bridge.onProject((project) => changed.push({ ...project }));
   return {

@@ -16,9 +16,9 @@
  *
  * Pure: no React, no bridge, so `node --test` runs it (src/agent-refs.test.mjs).
  */
-import type { PromptReference as StoredPromptReference } from '@openfilm/shared';
+import type { PromptReference as StoredPromptReference } from '@orange/shared';
 import type { StudioRef } from '../app-bridge';
-import { kindOf, soundRole } from 'openfilm/film-doc';
+import { kindOf, soundRole } from 'orangefilm/film-doc';
 import { refPill } from '../studio-refs.ts';
 
 export type AgentRefSegment = { kind: 'text'; text: string } | { kind: 'ref'; ref: StudioRef; raw: string };

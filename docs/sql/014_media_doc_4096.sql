@@ -34,7 +34,7 @@
 --   4. 新检索函数 `media_search_4096`：与 `media_search` 同语义（向量/ilike/trigram 三路、按 media_key 去重 shot 优先），
 --      只是向量那一路走 4096 列；
 --   5. 契约同步：contract.json（表列 + 两个函数）、docs/contracts/media-doc.schema.json、
---      packages/openfilm/src/index-client.mjs 的 RPC_NAMES、docs/sql/README.md。
+--      packages/orangefilm/src/index-client.mjs 的 RPC_NAMES、docs/sql/README.md。
 --
 -- 幂等：`ADD COLUMN IF NOT EXISTS` / `CREATE INDEX IF NOT EXISTS` / `CREATE OR REPLACE FUNCTION`；
 --       第二轮执行是 no-op（索引已存在即跳过，函数体等价重写）。

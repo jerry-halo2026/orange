@@ -3,7 +3,7 @@
 
 /**
  * On the notice of a turn that failed: the diagnostic report on the clipboard, to paste into an issue (the app's main.mjs makes it:
- * what OpenFilm finds on this computer, the last week's problems, the agents). Not shown by a shell that lacks it.
+ * what OrangeFilm finds on this computer, the last week's problems, the agents). Not shown by a shell that lacks it.
  */
 import React from 'react';
 import { useT } from '@/i18n';

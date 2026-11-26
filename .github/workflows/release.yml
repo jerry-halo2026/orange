@@ -1,13 +1,13 @@
 name: release
-# npm releases of `openfilm` (CONTRIBUTING.md, Releases). On every push to main, with the
+# npm releases of `orangefilm` (CONTRIBUTING.md, Releases). On every push to main, with the
 # changesets merged since the last release, changesets/action opens or updates the "Version packages" pull request;
 # merging it publishes the packages whose versions changed. npm trusted publishing: npm takes this workflow's OIDC
 # token instead of a stored token, and adds provenance once the repository is public.
 #
 # Set up once, by a maintainer:
-#   - npmjs.com: the package `openfilm` → Settings → Trusted publishing → GitHub Actions:
-#     openfilm / openfilm, workflow release.yml, no environment, publish allowed (or, npm 11.15+:
-#     `npm trust github openfilm --file release.yml --repo openfilm/openfilm --allow-publish`). Then Settings → Publishing access:
+#   - npmjs.com: the package `orangefilm` → Settings → Trusted publishing → GitHub Actions:
+#     orangefilm / orangefilm, workflow release.yml, no environment, publish allowed (or, npm 11.15+:
+#     `npm trust github orangefilm --file release.yml --repo orangefilm/orangefilm --allow-publish`). Then Settings → Publishing access:
 #     "Require two-factor authentication and disallow tokens".
 #   - GitHub: Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests".
 # A pull request this workflow's token opens or updates starts no workflow (GitHub's rule), and main takes a pull
@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
-    if: github.repository == 'openfilm/openfilm'
+    if: github.repository == 'jerry-halo2026/orange' && vars.NPM_PUBLISH == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write       # the version branch, the packages' tags and GitHub releases
@@ -58,7 +58,7 @@ jobs:
       - run: |
           mkdir -p ~/apt-archives
           sudo cp ~/apt-archives/*.deb /var/cache/apt/archives/ 2>/dev/null || true
-      - run: pnpm --filter openfilm exec playwright-core install --with-deps chromium-headless-shell
+      - run: pnpm --filter orangefilm exec playwright-core install --with-deps chromium-headless-shell
         timeout-minutes: 15
       - run: sudo apt-get install -y --no-install-recommends ffmpeg
         timeout-minutes: 10

@@ -11,8 +11,8 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { filmHtml } from '../../../packages/openfilm/src/film-doc.mjs';
-import { createOpenFilmMcpServer, toolCallLine } from './openfilm-mcp.mjs';
+import { filmHtml } from '../../../packages/orangefilm/src/film-doc.mjs';
+import { createOrangeFilmMcpServer, toolCallLine } from './orangefilm-mcp.mjs';
 import { createIndexRpc, readIndexConfig } from './index-rpc.mjs';
 import { analysisWorkspace, runAnalyze } from './analyze-service.mjs';
 
@@ -24,19 +24,19 @@ const project = () => {
 };
 const home = (allowed) => {
   const directory = mkdtempSync(join(tmpdir(), 'w5-home-'));
-  mkdirSync(join(directory, '.openfilm-dev'), { recursive: true });
-  if (allowed) writeFileSync(join(directory, '.openfilm-dev', 'mcp-write.json'), JSON.stringify({ version: 1, allowWrite: true, projects: [allowed] }));
+  mkdirSync(join(directory, '.orangefilm-dev'), { recursive: true });
+  if (allowed) writeFileSync(join(directory, '.orangefilm-dev', 'mcp-write.json'), JSON.stringify({ version: 1, allowWrite: true, projects: [allowed] }));
   return directory;
 };
 const call = async (server, name, args) => (await server.handle({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } })).result;
 
 test('with no index configured, all four read tools answer not-configured and none of them throws', async () => {
   const previous = { ...process.env };
-  for (const key of ['OPENFILM_INDEX_URL', 'OPENFILM_INDEX_SESSION', 'OPENFILM_INDEX_COMPANY']) delete process.env[key];
+  for (const key of ['ORANGE_INDEX_URL', 'ORANGE_INDEX_SESSION', 'ORANGE_INDEX_COMPANY']) delete process.env[key];
   try {
     assert.equal(readIndexConfig({}), null);
     assert.equal(await createIndexRpc(), null, 'no configuration, no client');
-    const server = createOpenFilmMcpServer({ surface: 'compat', cwd: project(), home: home(null), log: () => {} });
+    const server = createOrangeFilmMcpServer({ surface: 'compat', cwd: project(), home: home(null), log: () => {} });
     for (const [name, args] of [['materials.search', { query: 'kitten' }], ['wiki.video', { videoId: 'v1' }], ['wiki.timeline', { videoId: 'v1' }], ['wiki.shot', { videoId: 'v1', index: 0 }]]) {
       const result = await call(server, name, args);
       assert.equal(result.isError ?? false, false, name + ' is not a failure, it is an answer');
@@ -57,7 +57,7 @@ test('an injected index answers search with its own shape, and the log line coun
     async wikiTimeline() { return { wiki: { shots: 3 } }; },
     async wikiShot() { return { wiki: { index: 0 } }; },
   };
-  const server = createOpenFilmMcpServer({ surface: 'compat', cwd: project(), home: home(null), indexClient: () => client, log: (line) => lines.push(line) });
+  const server = createOrangeFilmMcpServer({ surface: 'compat', cwd: project(), home: home(null), indexClient: () => client, log: (line) => lines.push(line) });
   const found = await call(server, 'materials.search', { query: 'kitten', limit: 5 });
   assert.equal(found.structuredContent.ok, true);
   assert.equal(found.structuredContent.hits.length, 1);
@@ -71,7 +71,7 @@ test('taking a material lands it in assets/ through the editor\'s import, and an
   const root = project();
   const source = join(mkdtempSync(join(tmpdir(), 'w5-src-')), 'clip.mp4');
   writeFileSync(source, 'bytes');
-  const server = createOpenFilmMcpServer({ surface: 'compat', cwd: root, home: home(root), takeMaterial: async () => ({ source, name: 'clip.mp4' }), log: () => {} });
+  const server = createOrangeFilmMcpServer({ surface: 'compat', cwd: root, home: home(root), takeMaterial: async () => ({ source, name: 'clip.mp4' }), log: () => {} });
   const taken = await call(server, 'materials.take', { videoId: 'v1' });
   assert.equal(taken.isError ?? false, false);
   assert.equal(taken.structuredContent.path, 'assets/clip.mp4');
@@ -135,7 +135,7 @@ test('analyze keeps its result locally, and publishes it only when an index is t
   const broken = await runAnalyze({ project: root, media, videoId, runner: async () => ({ ok: false, code: 'step-failed' }), rpc: null });
   assert.equal(broken.ok, false);
   assert.equal(broken.reason, 'step-failed');
-  assert.equal(analysisWorkspace(root), join(root, '.openfilm', 'analysis'));
+  assert.equal(analysisWorkspace(root), join(root, '.orangefilm', 'analysis'));
 });
 
 test('the tool log line never carries a whole path: not a media file, not the project, not a key', () => {
@@ -144,7 +144,7 @@ test('the tool log line never carries a whole path: not a media file, not the pr
   const parsed = JSON.parse(line);
   assert.equal(parsed.path, 'a.mp4');
   assert.ok(!line.includes(root), 'the project path is not in the log');
-  const look = toolCallLine('openfilm.look', 30, { structuredContent: { ok: true, path: 'C:\\work\\p\\looks\\0001.png' } });
+  const look = toolCallLine('orangefilm.look', 30, { structuredContent: { ok: true, path: 'C:\\work\\p\\looks\\0001.png' } });
   assert.ok(!look.includes('C:\\work'), 'a look is a file name, not a path');
   assert.deepEqual(Object.keys(JSON.parse(toolCallLine('x', 1, { structuredContent: {} }))), ['tool', 'ms']);
 });
@@ -158,7 +158,7 @@ test('a configured index goes through the one client: token in the header, tenan
   };
   const b64 = (value) => Buffer.from(JSON.stringify(value), 'utf8').toString('base64url');
   const jwt = [b64({ alg: 'ES256' }), b64({ sub: 'user-1', app_metadata: { company_key: 'company-a' } }), 'sig'].join('.');
-  const config = readIndexConfig({ OPENFILM_INDEX_URL: 'https://db.fixture.test/', OPENFILM_INDEX_SESSION: jwt, OPENFILM_INDEX_COMPANY: ' ' });
+  const config = readIndexConfig({ ORANGE_INDEX_URL: 'https://db.fixture.test/', ORANGE_INDEX_SESSION: jwt, ORANGE_INDEX_COMPANY: ' ' });
   assert.deepEqual(config, { baseUrl: 'https://db.fixture.test', jwt }, 'a trailing slash is normalised, and the company setting is not read at all');
 
   const rpc = await createIndexRpc({ config, fetch: fetchImpl });

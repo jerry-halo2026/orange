@@ -31,33 +31,33 @@ test('the update noted as ready waits until the app runs it; then the note goes'
 test('ShipIt runs while launchd lists a process for the app\'s job', () => {
   const asked = [];
   const listed = (out) => (file, args) => { asked.push([file, ...args]); return out; };
-  assert.equal(installerPid('dev.openfilm.desktop', listed('{\n\t"Label" = "dev.openfilm.desktop.ShipIt";\n\t"PID" = 4242;\n};\n')), 4242);
-  assert.deepEqual(asked[0], ['/bin/launchctl', 'list', 'dev.openfilm.desktop.ShipIt']);
-  assert.equal(installerPid('dev.openfilm.desktop', listed('{\n\t"LastExitStatus" = 0;\n};\n')), null);
-  assert.equal(installerPid('dev.openfilm.desktop', () => { throw new Error('no such job'); }), null);
+  assert.equal(installerPid('dev.orangefilm.desktop', listed('{\n\t"Label" = "dev.orangefilm.desktop.ShipIt";\n\t"PID" = 4242;\n};\n')), 4242);
+  assert.deepEqual(asked[0], ['/bin/launchctl', 'list', 'dev.orangefilm.desktop.ShipIt']);
+  assert.equal(installerPid('dev.orangefilm.desktop', listed('{\n\t"LastExitStatus" = 0;\n};\n')), null);
+  assert.equal(installerPid('dev.orangefilm.desktop', () => { throw new Error('no such job'); }), null);
 });
 
 test('a launch steps aside only while ShipIt installs the update it was quit for, and never twice', () => {
   const dir = folder();
   const started = [];
   const start = (file, args, options) => { started.push({ file, args, options }); return { unref() {} }; };
-  const base = { dir, version: '0.2.0', bundleId: 'dev.openfilm.desktop', execPath: '/Applications/OpenFilm.app/Contents/MacOS/OpenFilm', argv: ['OpenFilm'], start };
+  const base = { dir, version: '0.2.0', bundleId: 'dev.orangefilm.desktop', execPath: '/Applications/OrangeFilm.app/Contents/MacOS/OrangeFilm', argv: ['OrangeFilm'], start };
   /* nothing waiting */
   assert.equal(stepAside({ ...base, pidOf: () => 4242 }), false);
   writePendingUpdate(dir, '0.2.1');
   /* waiting, and ShipIt not running: the launch installs it itself (readyToInstall) */
   assert.equal(stepAside({ ...base, pidOf: () => null }), false);
   /* the script's own launch, or the new version (ShipIt still finishing): it opens */
-  assert.equal(stepAside({ ...base, argv: ['OpenFilm', AFTER_INSTALL], pidOf: () => 4242 }), false);
+  assert.equal(stepAside({ ...base, argv: ['OrangeFilm', AFTER_INSTALL], pidOf: () => 4242 }), false);
   assert.equal(stepAside({ ...base, version: '0.2.1', pidOf: () => 4242 }), false);
   assert.equal(started.length, 0);
   writePendingUpdate(dir, '0.2.1');
   assert.equal(stepAside({ ...base, pidOf: () => 4242 }), true);
   assert.equal(started.length, 1);
   assert.equal(started[0].file, '/bin/sh');
-  assert.deepEqual(started[0].args.slice(3), ['4242', '/Applications/OpenFilm.app']);
+  assert.deepEqual(started[0].args.slice(3), ['4242', '/Applications/OrangeFilm.app']);
   assert.equal(started[0].options.detached, true);
-  assert.equal(appBundle('/Applications/OpenFilm Preview.app/Contents/MacOS/OpenFilm Preview'), '/Applications/OpenFilm Preview.app');
+  assert.equal(appBundle('/Applications/OrangeFilm Preview.app/Contents/MacOS/OrangeFilm Preview'), '/Applications/OrangeFilm Preview.app');
 });
 
 test('the script opens the app once ShipIt is gone, saying the install is over', { skip: process.platform === 'win32' && 'macOS only: the updater\'s helper is a sh script, as ShipIt runs it' }, async () => {
@@ -67,11 +67,11 @@ test('the script opens the app once ShipIt is gone, saying the install is over',
   chmodSync(join(dir, 'open'), 0o755);
   const installer = spawn('sleep', ['1']);
   const env = { ...process.env, PATH: `${dir}:${process.env.PATH}` };
-  const script = spawn('/bin/sh', ['-c', HAND_OFF_SCRIPT, 'openfilm-update', String(installer.pid), '/Applications/OpenFilm.app'], { env });
+  const script = spawn('/bin/sh', ['-c', HAND_OFF_SCRIPT, 'orangefilm-update', String(installer.pid), '/Applications/OrangeFilm.app'], { env });
   await new Promise((resolve) => setTimeout(resolve, 300));
   assert.equal(existsSync(said), false, 'not while ShipIt runs');
   await new Promise((resolve) => script.on('exit', resolve));
-  assert.equal(readFileSync(said, 'utf8').trim(), `/Applications/OpenFilm.app --args ${AFTER_INSTALL}`);
+  assert.equal(readFileSync(said, 'utf8').trim(), `/Applications/OrangeFilm.app --args ${AFTER_INSTALL}`);
 });
 
 function controllerFixture() {
@@ -123,13 +123,13 @@ test('the install window speaks the language Studio was last in, else the system
   assert.equal(installLanguage(null, ['zh-Hans-CN', 'en-US']), 'zh-CN');
   assert.equal(installLanguage('fr', ['zh-TW', 'es-MX']), 'es');
   assert.equal(installLanguage(null, ['de-DE']), 'en');
-  assert.deepEqual(installWords('zh-CN', { name: 'OpenFilm', version: '0.2.1' }), {
-    lang: 'zh-CN', title: '正在安装 OpenFilm 0.2.1…', detail: '安装完成后 OpenFilm 会自动打开。',
+  assert.deepEqual(installWords('zh-CN', { name: 'OrangeFilm', version: '0.2.1' }), {
+    lang: 'zh-CN', title: '正在安装 OrangeFilm 0.2.1…', detail: '安装完成后 OrangeFilm 会自动打开。',
   });
   for (const language of ['en', 'zh-CN', 'ja', 'ko', 'es']) {
-    const words = installWords(language, { name: 'OpenFilm', version: '9.9.9' });
-    assert.match(words.title, /OpenFilm/);
+    const words = installWords(language, { name: 'OrangeFilm', version: '9.9.9' });
+    assert.match(words.title, /OrangeFilm/);
     assert.match(words.title, /9\.9\.9/);
-    assert.match(words.detail, /OpenFilm/);
+    assert.match(words.detail, /OrangeFilm/);
   }
 });

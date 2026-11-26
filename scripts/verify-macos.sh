@@ -42,26 +42,26 @@ fi
 
 step "3. 纯逻辑单测（不需要网络与数据库）"
 node --test \
-  packages/openfilm/src/plan-schema.test.mjs \
-  packages/openfilm/src/plan-store.test.mjs \
-  packages/openfilm/src/plan-tools.test.mjs \
-  packages/openfilm/src/voice-timing.test.mjs \
-  packages/openfilm/src/planset.test.mjs \
-  packages/openfilm/src/dedupe-check.test.mjs \
-  packages/openfilm/src/copy-rewrite.test.mjs \
-  packages/openfilm/src/visual-tags.test.mjs \
-  packages/openfilm/src/claim-check.test.mjs \
-  packages/openfilm/src/shot-plan.test.mjs \
+  packages/orangefilm/src/plan-schema.test.mjs \
+  packages/orangefilm/src/plan-store.test.mjs \
+  packages/orangefilm/src/plan-tools.test.mjs \
+  packages/orangefilm/src/voice-timing.test.mjs \
+  packages/orangefilm/src/planset.test.mjs \
+  packages/orangefilm/src/dedupe-check.test.mjs \
+  packages/orangefilm/src/copy-rewrite.test.mjs \
+  packages/orangefilm/src/visual-tags.test.mjs \
+  packages/orangefilm/src/claim-check.test.mjs \
+  packages/orangefilm/src/shot-plan.test.mjs \
   || fail "纯逻辑单测失败" "上面列出的具体用例"
 
 step "4. Studio 侧 fission（路径/计划/批次/路由）"
 node --test \
-  packages/openfilm/studio/server/fission-engine-paths.test.mjs \
-  packages/openfilm/studio/server/fission-plan.test.mjs \
-  packages/openfilm/studio/server/fission-batch.test.mjs \
-  packages/openfilm/studio/server/fission-batch-jobs.test.mjs \
-  packages/openfilm/studio/server/fission-render-routes.test.mjs \
-  packages/openfilm/studio/ui/src/components/batch/batch-model.test.ts \
+  packages/orangefilm/studio/server/fission-engine-paths.test.mjs \
+  packages/orangefilm/studio/server/fission-plan.test.mjs \
+  packages/orangefilm/studio/server/fission-batch.test.mjs \
+  packages/orangefilm/studio/server/fission-batch-jobs.test.mjs \
+  packages/orangefilm/studio/server/fission-render-routes.test.mjs \
+  packages/orangefilm/studio/ui/src/components/batch/batch-model.test.ts \
   || fail "Studio 侧测试失败" "fission-*.mjs 与 batch-model.ts"
 
 step "5. .NET 渲染器构建"
@@ -70,7 +70,7 @@ printf 'dll：%s\n' "$(ls workers/fission/src/Fission.Cli/bin/Debug/net10.0/Fiss
 
 if [[ "$skip_ui" == "0" ]]; then
   step "6. UI 构建（vite）"
-  (cd packages/openfilm && node ../../node_modules/.pnpm/vite@*/node_modules/vite/bin/vite.js build --config studio/ui/vite.config.ts) \
+  (cd packages/orangefilm && node ../../node_modules/.pnpm/vite@*/node_modules/vite/bin/vite.js build --config studio/ui/vite.config.ts) \
     || fail "UI 构建失败" "studio/ui（看 vite 输出里的第一个错误）"
 fi
 

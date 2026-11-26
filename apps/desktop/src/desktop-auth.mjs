@@ -199,6 +199,35 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
   }
 
   /**
+   * The session kept alive while the person is in the app: a renewal does not re-run the seal (the marker and the
+   * reservation belong to the activation and stay valid) — it takes the new evidence, a policy made from it, and
+   * seals the rotated token. A refusal the upstream is certain about forgets the token it can no longer use.
+   * @param {number} [withinMs] renew when the access token runs out within this many milliseconds
+   */
+  async function renewIfNeeded(withinMs = 300000){
+    if(disposed||failed||retiring)return Object.freeze({ok:false,code:'unavailable',state:getPublicState()});
+    if(!service)return Object.freeze({ok:false,code:'configuration-required',state:getPublicState()});
+    const now=getPublicState();
+    if(now.kind!=='active'&&now.kind!=='expired')return Object.freeze({ok:false,code:'not-active',state:now});
+    const deadline=service.expiresAt?.()??null;
+    const clock=dependencies?.monotonicNow?.()??0;
+    if(now.kind==='active'&&deadline!==null&&deadline-clock>withinMs)return Object.freeze({ok:false,code:'not-yet',state:now});
+    const result=await service.renew();
+    if(!result.ok){
+      if(result.code==='authentication-rejected'||result.code==='identity-mismatch'||result.code==='invalid-response')clearSealed();
+      if(result.state.kind!=='active')notify(result.state);
+      return Object.freeze({ok:false,code:result.code,state:getPublicState()});
+    }
+    const evidence=service.getVerifiedEvidence();
+    if(!evidence)return Object.freeze({ok:false,code:'project-access-denied',state:getPublicState()});
+    try{ policy?.dispose?.(); }catch{ /* replaced, not repaired */ }
+    verified=evidence;
+    try{ policy=createProjectAccessPolicy(evidence,{monotonicNow:dependencies.monotonicNow}); }catch{ policy=null; }
+    sealed=false;sealSession();notify(getPublicState());
+    return Object.freeze({ok:true,code:'ok',state:getPublicState()});
+  }
+
+  /**
    * The session the service has, made this device's authority: the marker, the reservation, the policy — and the
    * refresh token sealed for the next start. Shared by `signIn` and `restore`: a session that came back from disk is
    * activated exactly the way a signed-in one is, so nothing is loosened for it.
@@ -277,7 +306,7 @@ export function createDesktopAuth({configuration,home,sharedHome=home,projects,c
     await remote;return Object.freeze({state:getPublicState()});
   }
   const controller={
-    getPublicState,assertActive,signIn,restore,signOut,
+    getPublicState,assertActive,signIn,restore,renewIfNeeded,signOut,
     onState(listener){if(typeof listener!=='function')throw deny();listeners.add(listener);return()=>listeners.delete(listener);},
     windowScope(){const evidence=assertActive();return createHash('sha256').update(evidence.environmentId+'\0'+evidence.subjectId).digest('hex');},
     revalidate:async()=>service?service.revalidate():{ok:false,code:'configuration-required',state:getPublicState()},

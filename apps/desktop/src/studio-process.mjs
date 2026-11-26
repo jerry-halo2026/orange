@@ -129,6 +129,11 @@ const desktopAuth=createDesktopAuth({
    for someone to sign in again. A refusal (no sealed token, an expired one, no keystore) leaves the app signed out — the
    controller says so on `onState`, which is the same path a sign-in takes. */
 try { await desktopAuth.restore(); } catch { /* a restore that fails is a signed-out start, never a failed start */ }
+/* Kept alive while the app runs: the access token's lifetime is short (about an hour), and an `expired` session stops
+   the window and this machine's CLI and agents alike. A minute is often enough to renew well before the deadline; a
+   renewal that fails leaves the state the service reports, so a signed-out app stays signed out. */
+const renewTimer = setInterval(() => { void desktopAuth.renewIfNeeded().catch(() => {}); }, 60_000);
+renewTimer.unref?.();
 // An explicit configuration is the opt-in, whether an isolated development run or the installed app supplies it
 // (main.mjs writes it from the package's own resources: src/fission-config.mjs).
 // A missing or invalid configuration leaves only this feature unavailable.

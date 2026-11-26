@@ -156,10 +156,12 @@ test('04 happy chain uses fixed endpoints, preserves password, and feeds actual 
   const s = h.service;
   assert.deepEqual(Object.keys(s).sort(), [
     'dispose',
+    'expiresAt',
     'getPublicState',
     'getVerifiedEvidence',
     'refresh',
     'refreshTokenOf',
+    'renew',
     'revalidate',
     'signIn',
     'signOut',
@@ -1047,4 +1049,55 @@ test('refresh: a sign-in keeps its refresh token for the controller that seals i
   assert.deepEqual(Object.keys(result).sort(), ['code', 'ok', 'state']);
   assert.equal(h.service.refreshTokenOf(), 'synthetic-refresh-sentinel');
   assert.ok(!JSON.stringify(result).includes('sentinel'));
+});
+
+/* 2026-11-26: an access token lasts about an hour, so the app renews it with the session's own refresh token instead of
+   falling to `expired` mid-day. Same person only. */
+test('renew: the session is extended with its own token, and expiresAt moves with it', async () => {
+  const h = setup([
+    () => json(session({ expires_in: 10 })),
+    () => json(user()),
+    () => json(session({ refresh_token: 'renewed-refresh', access_token: 'renewed-access', expires_in: 10 })),
+    () => json(user()),
+  ]);
+  assert.equal((await h.service.signIn(credentials())).ok, true);
+  const first = h.service.expiresAt();
+  assert.equal(typeof first, 'number');
+  /* renewed a little before the deadline, which is what the app's minute-by-minute timer does; past it the session is
+     gone, so there is nothing left to renew and a sign-in is the only way back */
+  h.setNow(first - 1000);
+  assert.equal(h.service.getPublicState().kind, 'active', 'still inside its lifetime');
+  const renewed = await h.service.renew();
+  assert.equal(renewed.ok, true);
+  assert.equal(renewed.state.kind, 'active');
+  assert.equal(h.calls[2].url, 'https://auth.invalid/auth/v1/token?grant_type=refresh_token');
+  assert.equal(JSON.parse(h.calls[2].init.body).refresh_token, 'synthetic-refresh-sentinel', 'its own token, not a new sign-in');
+  assert.equal(h.service.refreshTokenOf(), 'renewed-refresh');
+  assert.ok(h.service.expiresAt() > first, 'the deadline moved forward');
+});
+
+test('renew: another subject in the renewed token is refused, never a quiet account switch', async () => {
+  const h = setup([
+    () => json(session()),
+    () => json(user()),
+    () => json(session({ user: { id: B } })),
+    () => json(user({ id: B })),
+  ]);
+  assert.equal((await h.service.signIn(credentials())).ok, true);
+  const renewed = await h.service.renew();
+  assert.equal(renewed.ok, false);
+  assert.equal(renewed.code, 'identity-mismatch');
+  assert.notEqual(h.service.getPublicState().kind, 'active');
+});
+
+test('renew: without a session there is nothing to renew, and past the deadline the session is gone', async () => {
+  const h = setup([]);
+  assert.equal((await h.service.renew()).code, 'not-active');
+  assert.equal(h.calls.length, 0);
+
+  const late = setup([() => json(session({ expires_in: 10 })), () => json(user())]);
+  assert.equal((await late.service.signIn(credentials())).ok, true);
+  late.setNow(late.service.expiresAt() + 1);
+  assert.equal(late.service.getPublicState().kind, 'expired');
+  assert.equal((await late.service.renew()).code, 'no-refresh-token', 'an expired session keeps no token to renew with');
 });

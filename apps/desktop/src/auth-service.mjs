@@ -509,6 +509,74 @@ export function createAuthService(configuration, dependencies) {
     }
   }
 
+  /**
+   * The same session kept alive: its own rotating refresh token exchanged before the access token runs out, so a long
+   * day in the app does not fall to `expired` and sign the person out — and does not stop the app's CLI and agents,
+   * which read the session this holds. Allowed on an active or an expired session, and only ever continues the same
+   * person: a different subject in the renewed token is `identity-mismatch`, never a switch.
+   */
+  async function renew() {
+    if (notifying) return result(false, 'busy');
+    tick();
+    if (hardTerminal()) return result(false, state.kind);
+    if (flight) return result(false, 'busy');
+    const previous = session;
+    const token = previous?.refreshToken;
+    if (state.kind !== 'active' && state.kind !== 'expired') return result(false, 'not-active');
+    if (typeof token !== 'string' || !token) return result(false, 'no-refresh-token');
+    const operation = { generation: ++generation };
+    flight = operation;
+    try {
+      const m0 = lastNow;
+      setState('signing-in');
+      const response = await request(
+        operation,
+        '/auth/v1/token?grant_type=refresh_token',
+        'POST',
+        null,
+        JSON.stringify({ refresh_token: token })
+      );
+      check(operation);
+      const candidate = exchangeData(response, m0);
+      if (candidate.subjectId !== previous.evidence.subjectId) fail('identity-mismatch');
+      const online = await request(operation, '/auth/v1/user', 'GET', candidate.token);
+      check(operation);
+      if (online.status === 401 || online.status === 403) fail('authentication-rejected');
+      if (online.status < 200 || online.status >= 300)
+        fail(unsupportedCode(online.data) ? 'unsupported-auth-flow' : 'verification-unconfirmed');
+      const error = online.malformed ? 'invalid-response' : inspectUser(online.data);
+      if (error) fail(error);
+      if (online.data.id !== candidate.subjectId) fail('identity-mismatch');
+      if (lastNow >= candidate.deadline) {
+        invalidate('expired', 'expired');
+        fail('expired');
+      }
+      const verified = Object.freeze({
+        environmentId: config.environmentId,
+        subjectId: candidate.subjectId,
+        instanceId: config.instanceId,
+        epoch: config.epoch,
+        establishedAtMs: previous.evidence.establishedAtMs,
+        expiresAtMs: candidate.deadline,
+      });
+      session = { token: candidate.token, refreshToken: candidate.refreshToken, evidence: verified };
+      setState('active');
+      return result(true, 'ok');
+    } catch (error) {
+      const code = stopped(operation) || (error instanceof Failure ? error.code : 'invalid-input');
+      if (operation.generation === generation && !hardTerminal() && state.kind !== 'active' && state.kind !== 'expired')
+        setState('signed-out', code);
+      return result(false, code);
+    } finally {
+      if (flight === operation) flight = null;
+    }
+  }
+
+  /** When the session's access token runs out (monotonic milliseconds), or null when there is none. */
+  function expiresAt() {
+    tick();
+    return state.kind === 'active' || state.kind === 'expired' ? (session?.evidence.expiresAtMs ?? null) : null;
+  }
   /** The session's rotating refresh token, for the trusted controller that seals it; null unless active. */
   function refreshTokenOf() {
     tick();
@@ -591,6 +659,8 @@ export function createAuthService(configuration, dependencies) {
   return Object.freeze({
     getPublicState: publicState,
     signIn,
+    renew,
+    expiresAt,
     refresh,
     refreshTokenOf,
     revalidate,

@@ -679,6 +679,7 @@ export function NotePanel({ id }: { id: string }) {
  * said here and on the node's card: the board keeps no progress of its own.
  */
 export function SourcePanel({ id, data }: { id: string; data: SourceData }) {
+  const t = useT();
   const board = useBoard();
   const shown = board.single === id && !board.readOnly;
   const settings = data.settings ?? { take: 1, rule: 'random', speed: 1, useThenDelete: false, allowReuse: false };
@@ -691,17 +692,17 @@ export function SourcePanel({ id, data }: { id: string; data: SourceData }) {
     <NodeToolbar nodeId={id} isVisible={shown} position={Position.Bottom} offset={14}>
       <div className="w-[420px] rounded-[12px] border border-[var(--cv-line)] bg-[var(--cv-card)] p-3 text-[12.5px] text-[var(--cv-ink-2)] shadow-lg">
         <div className="mb-2 flex items-center gap-2">
-          <FolderOpen size={14} /><span className="font-medium text-[var(--cv-ink)]">素材文件夹</span>
+          <FolderOpen size={14} /><span className="font-medium text-[var(--cv-ink)]">{t('canvas.labels.materialsFolder')}</span>
           <span className="flex-1" />
-          <button type="button" className="rounded-[8px] border border-[var(--cv-line)] px-2 py-1" onClick={() => { void api.pickFolder('素材文件夹').then((path) => { if (path) void scan(path); }); }}>选择文件夹</button>
+          <button type="button" className="rounded-[8px] border border-[var(--cv-line)] px-2 py-1" onClick={() => { void api.pickFolder(t('canvas.labels.materialsFolder')).then((path) => { if (path) void scan(path); }); }}>{t('canvas.panel.upload')}夹</button>
         </div>
         <div className="mb-2 truncate text-[11.5px] text-[var(--cv-ink-3)]">{data.path}</div>
         <div className="flex flex-wrap items-center gap-2">
-          <label className="flex items-center gap-1">每次抽取
+          <label className="flex items-center gap-1">{t('canvas.labels.perTake')}
             <input type="number" min={1} max={20} value={settings.take} onChange={(event) => patch({ settings: { ...settings, take: Math.max(1, Number(event.target.value) || 1) } })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none" />
           </label>
           <select value={settings.rule} onChange={(event) => patch({ settings: { ...settings, rule: event.target.value === 'sequential' ? 'sequential' : 'random' } })} className="h-7 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none">
-            <option value="random">随机</option><option value="sequential">顺序</option>
+            <option value="random">{t('canvas.labels.random')}</option><option value="sequential">{t('canvas.labels.sequential')}</option>
           </select>
           <label className="flex items-center gap-1">变速
             <input type="number" min={0.5} max={4} step={0.1} value={settings.speed} onChange={(event) => patch({ settings: { ...settings, speed: Math.min(4, Math.max(0.5, Number(event.target.value) || 1)) } })} className="h-7 w-14 rounded-[8px] bg-[var(--cv-chip)] px-2 outline-none" />
@@ -716,11 +717,11 @@ export function SourcePanel({ id, data }: { id: string; data: SourceData }) {
               <span className="w-8 text-right tabular-nums">{group.videos + group.images}</span>
               <input type="number" min={1} max={20} value={group.take ?? settings.take}
                 onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, take: Math.max(1, Number(event.target.value) || 1) }; patch({ groups }); }}
-                className="h-6 w-12 rounded-[6px] bg-[var(--cv-chip)] px-1 outline-none" title="该组每次抽取" />
+                className="h-6 w-12 rounded-[6px] bg-[var(--cv-chip)] px-1 outline-none" title="该组{t('canvas.labels.perTake')}" />
               <select value={group.rule ?? settings.rule}
                 onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, rule: event.target.value === 'sequential' ? 'sequential' : 'random' }; patch({ groups }); }}
                 className="h-6 rounded-[6px] bg-[var(--cv-chip)] px-1 outline-none">
-                <option value="random">随机</option><option value="sequential">顺序</option>
+                <option value="random">{t('canvas.labels.random')}</option><option value="sequential">{t('canvas.labels.sequential')}</option>
               </select>
               <label className="flex items-center gap-1"><input type="checkbox" checked={group.useThenDelete ?? settings.useThenDelete}
                 onChange={(event) => { const groups = [...(data.groups ?? [])]; groups[at] = { ...group, useThenDelete: event.target.checked }; patch({ groups }); }} />删</label>
@@ -764,22 +765,23 @@ export function VoicePanel({ id, data }: { id: string; data: VoiceData }) {
 }
 
 export function SubtitlePanel({ id, data }: { id: string; data: SubtitleData }) {
+  const t = useT();
   const board = useBoard();
   const shown = board.single === id && !board.readOnly;
   return (
     <NodeToolbar nodeId={id} isVisible={shown} position={Position.Bottom} offset={14}>
       <div className="w-[320px] rounded-[12px] border border-[var(--cv-line)] bg-[var(--cv-card)] p-3 text-[12.5px] text-[var(--cv-ink-2)] shadow-lg">
-        <div className="mb-2 flex items-center gap-2"><Subtitles size={14} /><span className="font-medium text-[var(--cv-ink)]">字幕</span></div>
+        <div className="mb-2 flex items-center gap-2"><Subtitles size={14} /><span className="font-medium text-[var(--cv-ink)]">{t('canvas.labels.subtitles')}</span></div>
         <div className="flex gap-1">
           {(['recognize', 'upload', 'none'] as const).map((mode) => (
             <button key={mode} type="button" onClick={() => { board.willChange(); board.setData(id, { mode } as never); }}
               className={`h-7 rounded-[8px] px-2 ${data.mode === mode ? 'bg-[var(--primary)] text-[var(--on-primary)]' : 'bg-[var(--cv-chip)]'}`}>
-              {mode === 'recognize' ? '自动识别' : mode === 'upload' ? '上传' : '无'}
+              {mode === 'recognize' ? t('canvas.labels.recognize') : mode === 'upload' ? t('canvas.panel.upload') : t('canvas.labels.none')}
             </button>
           ))}
         </div>
         {data.mode === 'upload' && <div className="mt-2 flex flex-wrap items-center gap-2 text-[11.5px] text-[var(--cv-ink-3)]">
-          <span>字幕文件</span>
+          <span>{t('canvas.labels.subtitleFile')}</span>
           {data.path ? <span className="max-w-[170px] truncate rounded-[8px] bg-[var(--cv-chip)] px-2 py-0.5 text-[12px] text-[var(--cv-ink-2)]" title={data.path}>{data.path.split(/[\\/]/).pop()}</span> : null}
           {/* The canvas's own dialog (an input at the canvas root, not in this toolbar's portal): a subtitle picked in a
               portal panel opened nothing, which is why "上传" seemed dead (2026-11-26). A failure is said out loud. */}
@@ -791,7 +793,7 @@ export function SubtitlePanel({ id, data }: { id: string; data: SubtitleData }) 
                 board.setData(id, { mode: 'upload', path: paths[0] } as never);
               }).catch((error: unknown) => board.report(error instanceof Error ? error.message : String(error)));
             }}>
-            <Plus size={12} />选择文件
+            <Plus size={12} />{t('canvas.panel.upload')}
           </button>
         </div>}
       </div>
@@ -969,7 +971,7 @@ export function MixPanel({ id, data }: { id: string; data: MixData }) {
               className="w-full resize-none rounded-[8px] bg-[var(--cv-chip)] px-2 py-1.5 text-[12.5px] text-[var(--cv-ink)] outline-none placeholder:text-[var(--cv-ink-3)]" />
           </div>
           <div className="flex flex-wrap items-center gap-2 text-[11.5px] text-[var(--cv-ink-3)]">
-            <span className={OPTION_TITLE}>配音文件</span>
+            <span className={OPTION_TITLE}>{t('canvas.labels.voiceFiles')}</span>
             {voiceFiles.map((file) => (
               <span key={file.path} className="flex h-6 items-center gap-1 rounded-[8px] bg-[var(--cv-chip)] px-2 text-[12px]">
                 <span className="max-w-[180px] truncate">{file.path.split(/[\\/]/).pop()}</span>
@@ -977,7 +979,7 @@ export function MixPanel({ id, data }: { id: string; data: MixData }) {
               </span>
             ))}
             <button type="button" className="flex h-6 items-center gap-1 rounded-[8px] border border-[var(--cv-line)] px-2 text-[12px]" onClick={pickVoiceFiles}>
-              <Plus size={12} />上传配音
+              <Plus size={12} />{t('canvas.labels.uploadVoice')}
             </button>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-[11.5px] text-[var(--cv-ink-3)]">

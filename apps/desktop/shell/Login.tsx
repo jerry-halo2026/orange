@@ -72,6 +72,9 @@ export function Login({state,onSignedIn}:{state:LoginState,onSignedIn:()=>void})
       <input id="orange-login-password" type="password" name="password" autoComplete="current-password" required value={password} disabled={busy||locked} onChange={event=>setPassword(event.target.value)} />
       {(error||state.reason)&&<p className="orange-login-message" role="alert">{error??messages[state.reason??'']??'当前会话已锁定，请重新登录。'}</p>}
       <button type="submit" disabled={busy||locked}>{busy?'正在验证…':'登录并进入创作中心'}</button>
+      {/* 2026-11-26: a test address was typed into this form expecting a sign-up path that does not exist here.
+          Accounts are made by the administrator; saying so saves that hunt. */}
+      <p className="orange-login-note">账号由管理员创建。忘记密码或换了邮箱，请联系管理员；登录后可在设置里换自己的账号。</p>
     </form>
   </main>;
 }

@@ -35,6 +35,7 @@
 .orange-login-card button:disabled,.orange-login-card input:disabled { opacity:.55;cursor:default; }
 .orange-login-card :focus-visible { outline:2px solid var(--accent,#b5b5ee);outline-offset:3px; }
 .orange-login-card .orange-login-message { color:var(--text-primary,#ebebed);font-size:13px; }
+.orange-login-card .orange-login-note { margin:2px 0 0;font-size:12px;line-height:1.5;color:var(--text-secondary,#b3b3be); }
 .orange-login-card small { font-size:12px;color:var(--text-secondary,#b3b3be); }
 /* 退出登录, in the window's top-right corner: a 20×20 button (⋯, in the 32px top bar's 6px inset), and the 120px panel
    it opens. The old one wide button at right:150px sat on Studio's 剪辑/画布 switch; this one is out of its way. */

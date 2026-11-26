@@ -536,12 +536,13 @@ export function MixNodeView({ id, data, selected }: NodeProps<MixNode>) {
 }
 
 export function SourceNodeView({ id, data, selected }: NodeProps<SourceNode>) {
-  const name = data.path.split(/[\\/]/).filter(Boolean).pop() ?? '素材文件夹';
+  const t = useT();
+  const name = data.path.split(/[\\/]/).filter(Boolean).pop() ?? t('canvas.labels.materialsFolder');
   const groups = data.groups ?? [];
   return (
     <div className="h-full w-full">
       <SourcePanel id={id} data={data} />
-      <Frame id={id} selected={selected} icon={FolderOpen} title={name} meta={groups.length ? `${groups.length} 组` : null} by={data.by} ins={false} outs>
+      <Frame id={id} selected={selected} icon={FolderOpen} title={name} meta={groups.length ? t('canvas.labels.groups').replace('{n}', String(groups.length)) : null} by={data.by} ins={false} outs>
       <div className="flex h-full w-full flex-col gap-1 p-2.5 text-[12px] text-[var(--cv-ink-2)]">
         <div className="truncate text-[var(--cv-ink-3)]">{data.path}</div>
         <div className="mt-1 space-y-0.5 overflow-hidden">
@@ -549,7 +550,7 @@ export function SourceNodeView({ id, data, selected }: NodeProps<SourceNode>) {
             <div key={group.name} className="flex items-center justify-between gap-2"><span className="truncate">{group.name}</span><span className="shrink-0 tabular-nums text-[var(--cv-ink-3)]">{group.videos + group.images}</span></div>
           ))}
           {groups.length > 4 ? <div className="text-[var(--cv-ink-3)]">+{groups.length - 4}</div> : null}
-          {!groups.length ? <div className="text-[var(--cv-ink-3)]">选文件夹后扫描</div> : null}
+          {!groups.length ? <div className="text-[var(--cv-ink-3)]">t('canvas.labels.scanAfterFolder')</div> : null}
         </div>
       </div>
     </Frame>
@@ -558,16 +559,17 @@ export function SourceNodeView({ id, data, selected }: NodeProps<SourceNode>) {
 }
 
 export function VoiceNodeView({ id, data, selected }: NodeProps<VoiceNode>) {
+  const t = useT();
   const files = data.files ?? [];
   return (
     <div className="h-full w-full">
       <VoicePanel id={id} data={data} />
-      <Frame id={id} selected={selected} icon={Mic} title="配音" meta={`${files.length} 条`} by={data.by} outs>
+      <Frame id={id} selected={selected} icon={Mic} title={t('canvas.labels.voice')} meta={t('canvas.labels.files').replace('{n}', String(files.length))} by={data.by} outs>
       <div className="flex h-full w-full flex-col gap-1 p-2.5 text-[12px] text-[var(--cv-ink-2)]">
-        <div className="text-[var(--cv-ink-3)]">{data.mode === 'none' ? '无配音' : data.mode === 'tts' ? 'TTS' : '上传/文件夹'}</div>
+        <div className="text-[var(--cv-ink-3)]">{data.mode === 'none' ? t('canvas.labels.noVoice') : data.mode === 'tts' ? 'TTS' : t('canvas.labels.uploadOrFolder')}</div>
         {files.slice(0, 4).map((file) => <div key={file.path} className="truncate">{file.path.split(/[\\/]/).pop()}</div>)}
         {files.length > 4 ? <div className="text-[var(--cv-ink-3)]">+{files.length - 4}</div> : null}
-        {!files.length ? <div className="text-[var(--cv-ink-3)]">上传配音或选择文件夹</div> : null}
+        {!files.length ? <div className="text-[var(--cv-ink-3)]">t('canvas.labels.uploadVoiceOrFolder')</div> : null}
       </div>
     </Frame>
     </div>
@@ -575,12 +577,13 @@ export function VoiceNodeView({ id, data, selected }: NodeProps<VoiceNode>) {
 }
 
 export function SubtitleNodeView({ id, data, selected }: NodeProps<SubtitleNode>) {
+  const t = useT();
   return (
     <div className="h-full w-full">
       <SubtitlePanel id={id} data={data} />
-      <Frame id={id} selected={selected} icon={Subtitles} title="字幕" meta={data.mode === 'upload' ? 'SRT' : data.mode === 'recognize' ? '识别' : '无'} by={data.by} outs>
+      <Frame id={id} selected={selected} icon={Subtitles} title={t('canvas.labels.subtitles')} meta={data.mode === 'upload' ? 'SRT' : data.mode === 'recognize' ? '识别' : '无'} by={data.by} outs>
       <div className="flex h-full w-full flex-col gap-1 p-2.5 text-[12px] text-[var(--cv-ink-2)]">
-        <div>{data.mode === 'upload' ? '上传字幕' : data.mode === 'recognize' ? '本地 Whisper 识别' : '不显示字幕'}</div>
+        <div>{data.mode === 'upload' ? t('canvas.labels.uploadSubtitle') : data.mode === 'recognize' ? t('canvas.labels.whisperLocal') : t('canvas.labels.noSubtitles')}</div>
         {data.path ? <div className="truncate text-[var(--cv-ink-3)]">{data.path}</div> : null}
       </div>
     </Frame>

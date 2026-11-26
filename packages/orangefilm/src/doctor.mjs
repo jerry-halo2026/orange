@@ -176,10 +176,20 @@ async function chipText() {
  */
 export function findCommand(name) {
   try {
-    const out = process.platform === 'win32'
-      ? execFileSync('where', [name], { encoding: 'utf8', windowsHide: true, timeout: 4000 })
-      : execFileSync('/bin/sh', ['-c', `command -v ${name}`], { encoding: 'utf8', timeout: 4000 });
-    return out.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)[0] ?? null;
+    /* a *login* shell on a Mac: it reads ~/.zprofile, which is where the app's own "put it on PATH" action writes the
+       line (2026-11-26: `sh -c` reads no profile and called a working terminal's command missing) */
+    if (process.platform === 'win32') {
+      const out = execFileSync('where', [name], { encoding: 'utf8', windowsHide: true, timeout: 4000 });
+      return out.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)[0] ?? null;
+    }
+    for (const shell of ['/bin/zsh', '/bin/sh']) {
+      try {
+        const out = execFileSync(shell, ['-l', '-c', `command -v ${name}`], { encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'] });
+        const found = out.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)[0];
+        if (found) return found;
+      } catch { /* that shell is not here, or it does not answer: the next one decides */ }
+    }
+    return null;
   } catch { return null; }
 }
 

@@ -57,8 +57,14 @@ function FolderCard({ list, folderKey, title, count, videoIds, entries, note, on
   </button>;
 }
 
+/* The folder the person was in, kept across a remount of this view: leaving the material centre for the canvas and
+   coming back to the top folder lost the drill-down every time (2026-11-26). A product that no longer exists in the
+   tree sends it back to the root, so the memory cannot outlive what it names. */
+let remembered: Level = { kind: 'root' };
+
 export function ProductFolders({ copy, tree, renderEntries, list }: ProductFoldersProps) {
-  const [level, setLevel] = React.useState<Level>({ kind: 'root' });
+  const [level, setLevelState] = React.useState<Level>(() => remembered);
+  const setLevel = React.useCallback((next: Level) => { remembered = next; setLevelState(next); }, []);
   const products = React.useMemo(() => [...(tree.products ?? [])].sort((a, b) => {
     const dateA = a.dates[0]?.date ?? '';
     const dateB = b.dates[0]?.date ?? '';
@@ -66,8 +72,16 @@ export function ProductFolders({ copy, tree, renderEntries, list }: ProductFolde
   }), [tree.products]);
   const oneLevels = React.useMemo(() => [...new Set(products.map(product => product.oneLevel || '未分类'))], [products]);
 
+  /* a remembered drill-down into a product that is no longer in the tree would show an empty wall */
+  React.useEffect(() => {
+    const at = level;
+    if (at.kind === 'root' || at.kind === 'oneLevel') return;
+    if (!products.some((p) => p.id === at.product.id)) setLevel({ kind: 'root' });
+  }, [products, level, setLevel]);
+
   const crumbs = <nav data-product-crumb="" className="flex flex-wrap items-center gap-1 text-[11px] text-[var(--text-muted)]">
-    <button type="button" onClick={() => setLevel({ kind: 'root' })} className="rounded px-1 hover:bg-[var(--bg-hover)]">产品</button>
+    <button type="button" onClick={() => setLevel({ kind: 'root' })} title="全部产品" aria-label="全部产品"
+      className="rounded px-1 hover:bg-[var(--bg-hover)]">{level.kind === 'root' ? '产品' : '⌂ 产品'}</button>
     {level.kind !== 'root' && level.kind !== 'oneLevel' && <>
       <span aria-hidden>/</span>
       <button type="button" onClick={() => setLevel({ kind: 'oneLevel', name: level.product.oneLevel || '未分类' })} className="rounded px-1 hover:bg-[var(--bg-hover)]">{level.product.oneLevel || '未分类'}</button>

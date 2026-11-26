@@ -13,8 +13,8 @@
  * ffmpeg, updates (preload.cjs). The window opens straight into the last project.
  */
 import { BaseWindow, Menu, WebContentsView, app, clipboard, dialog, ipcMain, nativeTheme, safeStorage, screen, shell } from 'electron';
-import { appendFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { spawn } from 'node:child_process';
+import { appendFileSync, copyFileSync, existsSync, linkSync, mkdirSync, writeFileSync } from 'node:fs';
+import { execFileSync, spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FLAVOR, IDENTITY, PRODUCT_NAME } from './flavor.mjs';
@@ -65,6 +65,50 @@ if (isolation) Object.assign(process.env,isolationEnvironment(isolation));
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 const mac = process.platform === 'darwin';
+const win32 = process.platform === 'win32';
+
+/**
+ * The `orangefilm` command, findable where a person — or an agent, or a script — types it, on Windows:
+ *  - `<app>\orangefilm.exe`, a hard link to this program, for whatever asks for the .exe by name (the shim is a .cmd,
+ *    and no `orangefilm.exe` existed anywhere: 2026-11-26, "找不到 orangefilm.exe");
+ *  - the shim folder appended to the user's PATH (HKCU\Environment, no administrator needed), after a backup of the
+ *    value it replaces, so a new terminal finds `orangefilm`. It is only ever added; the backup says how to take it out.
+ * Both are best effort: a program that cannot write them still starts.
+ * @param {string} bin the shim folder @param {(line: string) => void} log
+ */
+function exposeCommandEverywhere(bin, log) {
+  try {
+    const alias = join(dirname(process.execPath), 'orangefilm.exe');
+    if (!existsSync(alias)) {
+      try {
+        linkSync(process.execPath, alias);
+        log(`command alias: ${alias} (hard link)`);
+      } catch (error) {
+        try {
+          copyFileSync(process.execPath, alias);
+          log(`command alias: ${alias} (copied: ${error?.message ?? error})`);
+        } catch (second) {
+          log(`command alias skipped: ${second?.message ?? second}`);
+        }
+      }
+    }
+  } catch (error) {
+    log(`command alias skipped: ${error?.message ?? error}`);
+  }
+  try {
+    const read = execFileSync('reg', ['query', 'HKCU\\Environment', '/v', 'Path'], { encoding: 'utf8', windowsHide: true });
+    const line = read.split(/\r?\n/).find((row) => /^\s*Path\s+REG_/i.test(row)) ?? '';
+    const current = line.replace(/^\s*Path\s+REG_(?:EXPAND_)?SZ\s+/i, '').trim();
+    const parts = current ? current.split(';').map((part) => part.trim()).filter(Boolean) : [];
+    const already = parts.some((part) => part.toLowerCase() === bin.toLowerCase() || part.toLowerCase() === '%appdata%\\orangefilm\\bin');
+    if (already) return;
+    writeFileSync(join(DATA, 'path-backup.txt'), `${new Date().toISOString()}\n${current}\n`, 'utf8');
+    execFileSync('reg', ['add', 'HKCU\\Environment', '/v', 'Path', '/t', 'REG_EXPAND_SZ', '/d', [...parts, bin].join(';'), '/f'], { windowsHide: true });
+    log(`PATH: ${bin} added (backup: ${join(DATA, 'path-backup.txt')})`);
+  } catch (error) {
+    log(`PATH not changed: ${error?.message ?? error}`);
+  }
+}
 const windows = process.platform === 'win32';
 /** Windows' window buttons over the top bar: the board's color, and the text's */
 const overlayColours = (t) => ({ color: t === 'dark' ? '#111114' : '#e9e9eb', symbolColor: t === 'dark' ? '#ebebed' : '#161619', height: 32 });
@@ -920,7 +964,15 @@ async function start() {
     onConnectionResult: (id, error) => roster?.recordConnectionResult(id, error),
     /* the `orangefilm` command first (with the app's ffmpeg and browser in it); the app's ffmpeg last, for a computer
        that has none of its own: the person's own ffmpeg and browsers are what the agent's commands use */
-    binDir: installOrangefilmCommand(DATA, { ffmpeg: ffmpegHere, env: { ...browsers, ...(isolation ? isolationEnvironment(isolation) : {}) } }),
+    binDir: (() => {
+      const bin = installOrangefilmCommand(DATA, { ffmpeg: ffmpegHere, env: { ...browsers, ...(isolation ? isolationEnvironment(isolation) : {}) } });
+      /* Windows only, packaged only: the command a person or a tool types by name has to be findable. Two things make
+         it so — `orangefilm.exe` beside the app (a hard link to this executable: same bytes on disk, and Electron finds
+         `resources/` beside whichever name it was started by), and the shim folder on the user's PATH (2026-11-26: a
+         field report was "找不到 orangefilm.exe", because neither existed). */
+      if (win32 && app.isPackaged && !isolation) exposeCommandEverywhere(bin, log);
+      return bin;
+    })(),
     fallbackDir: ffmpegHere,
     env: {
       ...(isolation ? isolationEnvironment(isolation) : {}),

@@ -1101,3 +1101,12 @@ test('renew: without a session there is nothing to renew, and past the deadline 
   assert.equal(late.service.getPublicState().kind, 'expired');
   assert.equal((await late.service.renew()).code, 'no-refresh-token', 'an expired session keeps no token to renew with');
 });
+
+/* 2026-11-26: an account whose email was never confirmed read as "check the network". It has its own code now. */
+test('an unconfirmed account is its own refusal, not an unconfirmed network', async () => {
+  const h = setup([() => json({ code: 400, error_code: 'email_not_confirmed', msg: 'Email not confirmed' }, 400)]);
+  const result = await h.service.signIn(credentials());
+  assert.equal(result.ok, false);
+  assert.equal(result.code, 'email-not-confirmed');
+  exactState(h.service.getPublicState(), 'signed-out', 'email-not-confirmed');
+});

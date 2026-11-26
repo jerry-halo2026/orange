@@ -31,6 +31,8 @@ const messages: Record<string,string> = {
   'install-conflict':'安装包同时配置了两个登录环境，无法登录。请重新下载安装包。',
   'authentication-rejected':'账号或密码未通过验证，请检查后重试。',
   'verification-unconfirmed':'暂时无法确认登录，请检查网络后重试。',
+  /* the account exists and its email was never confirmed: say what to do, not "check the network" */
+  'email-not-confirmed':'这个账号的邮箱还没验证：请在注册时收到的确认邮件里点链接；收不到就让管理员在 Supabase 后台把该邮箱标记为已确认，或重发确认邮件。',
   'request-timeout':'登录请求超时，请稍后重试。',
   'unsupported-auth-flow':'此账号需要额外验证，当前密码登录不能继续。',
   'preservation-pending':'正在保全原工程并关闭旧会话，请稍候。',

@@ -347,6 +347,9 @@ export function createAuthService(configuration, dependencies) {
   function exchangeData(response, m0) {
     if (unsupportedCode(response.data)) fail('unsupported-auth-flow');
     if (response.status === 400 && record(response.data) && response.data.error_code === 'invalid_credentials') fail('authentication-rejected');
+    /* An account that exists but never confirmed its email: the upstream says so, and it is not a network problem.
+       2026-11-26: it read as "暂时无法确认登录，请检查网络" and sent the person chasing the wrong thing. */
+    if (response.status === 400 && record(response.data) && response.data.error_code === 'email_not_confirmed') fail('email-not-confirmed');
     if (response.status === 401 || response.status === 403) fail('authentication-rejected');
     if (response.status < 200 || response.status >= 300) fail('verification-unconfirmed');
     const data = response.data;

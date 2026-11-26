@@ -341,3 +341,49 @@ test('a sealed session the upstream refuses is forgotten, and an unreadable one 
   assert.equal(corrupt.getPublicState().kind, 'signed-out');
   await corrupt.dispose();
 });
+
+/* 2026-11-26: an hour-long access token would sign the app out mid-day; the app renews it a minute at a time, and only
+   ever for the same person. */
+test('a session near its deadline is renewed in place, and the rotated token is what stays sealed', async () => {
+  const home = await mkdtemp(join(root, 'renew-'));
+  const projects = join(home, 'projects'); await mkdir(projects);
+  let now = 10;
+  const calls = [];
+  const fetch = async (url) => {
+    calls.push(url);
+    if (url.endsWith('/auth/v1/token?grant_type=password')) return Response.json({access_token:'first',refresh_token:'first-refresh',token_type:'bearer',expires_in:3600,user:{id:A}});
+    if (url.endsWith('/auth/v1/token?grant_type=refresh_token')) return Response.json({access_token:'second',refresh_token:'second-refresh',token_type:'bearer',expires_in:3600,user:{id:A}});
+    if (url.endsWith('/auth/v1/user')) return Response.json({id:A,is_anonymous:false});
+    throw Error('unexpected endpoint');
+  };
+  const controller = mod.createDesktopAuth({configuration, home, projects, coordinationRoot: join(home,'coord'), instanceId:'renew-instance'}, {fetch, monotonicNow: () => now, retire: async () => {}, onState: () => {}});
+  assert.equal((await controller.signIn(input)).ok, true);
+  assert.equal((await controller.renewIfNeeded()).code, 'not-yet', 'a fresh session is left alone');
+
+  now = 3600_000 - 60_000;           /* one minute of the hour left: inside the five-minute window */
+  const renewed = await controller.renewIfNeeded();
+  assert.equal(renewed.ok, true);
+  assert.equal(renewed.state.kind, 'active');
+  assert.equal(controller.assertActive().subjectId, A, 'the same person');
+  assert.equal(readFileSync(join(home,'session','refresh.bin'),'utf8').includes('second-refresh'), true, 'the rotated token is sealed');
+  assert.equal(calls.filter((u) => u.endsWith('grant_type=refresh_token')).length, 1);
+  await controller.dispose();
+});
+
+test('a renewal the upstream refuses forgets the token instead of pretending to be signed in', async () => {
+  const home = await mkdtemp(join(root, 'renew-no-'));
+  const projects = join(home, 'projects'); await mkdir(projects);
+  let now = 10, refuse = false;
+  const fetch = async (url) => {
+    if (url.endsWith('grant_type=password')) return Response.json({access_token:'first',refresh_token:'first-refresh',token_type:'bearer',expires_in:3600,user:{id:A}});
+    if (url.endsWith('grant_type=refresh_token')) return refuse ? Response.json({error_code:'refresh_token_not_found'}, {status:400}) : Response.json({access_token:'second',refresh_token:'second-refresh',token_type:'bearer',expires_in:3600,user:{id:A}});
+    return Response.json({id:A,is_anonymous:false});
+  };
+  const controller = mod.createDesktopAuth({configuration, home, projects, coordinationRoot: join(home,'coord'), instanceId:'renew-refused'}, {fetch, monotonicNow: () => now, retire: async () => {}, onState: () => {}});
+  assert.equal((await controller.signIn(input)).ok, true);
+  refuse = true;
+  now = 3600_000 - 60_000;
+  const refused = await controller.renewIfNeeded();
+  assert.equal(refused.ok, false);
+  await controller.dispose();
+});

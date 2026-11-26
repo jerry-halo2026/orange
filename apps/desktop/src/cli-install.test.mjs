@@ -5,11 +5,11 @@
    searches and that this user may write to, and must never replace a command that is somebody else's. The linking
    itself needs POSIX symlinks, so that part runs on a Mac and is skipped where they are not allowed (Windows). */
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, readlinkSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, readlinkSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
-import { candidateDirs, cliStatus, installCli, pathLine } from './cli-install.mjs';
+import { addToProfile, candidateDirs, cliStatus, installCli, pathLine } from './cli-install.mjs';
 
 test('only folders that exist and this user may write to are offered, and Windows offers none', () => {
   /* joined the way the module joins them, so the test does not depend on the host's path separator */
@@ -71,6 +71,26 @@ test('the link points at the shim, and a second press is not an error', { skip: 
     } finally {
       if (previous === undefined) delete process.env.PATH; else process.env.PATH = previous;
     }
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test('when no searched folder is writable, the login file gets the line once, with a backup', () => {
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-cli-profile-'));
+  try {
+    const shim = join(home, 'bin', 'orangefilm');
+    mkdirSync(join(home, 'bin'));
+    writeFileSync(shim, '#!/bin/sh\n', { mode: 0o755 });
+    writeFileSync(join(home, '.zprofile'), 'export LANG=en_US.UTF-8');
+    const first = addToProfile({ shim, home, now: new Date('2026-11-26T00:00:00Z') });
+    assert.equal(first.code, 'profile-added');
+    const text = readFileSync(join(home, '.zprofile'), 'utf8');
+    assert.match(text, /Added by OrangeFilm 2026-11-26/);
+    assert.ok(text.includes(`export PATH="${join(home, 'bin')}:$PATH"`), 'the line names the folder the shim lives in');
+    assert.match(readFileSync(join(home, '.zprofile.orangefilm-backup'), 'utf8'), /export LANG/, 'the old file is kept');
+    assert.equal(addToProfile({ shim, home }).code, 'already', 'pressing twice does not add the line twice');
+    assert.equal(readFileSync(join(home, '.zprofile'), 'utf8').split('export PATH=').length - 1, 1);
   } finally {
     rmSync(home, { recursive: true, force: true });
   }

@@ -14,7 +14,7 @@
  * `orangefilm.exe` beside itself (main.mjs `exposeCommandEverywhere`).
  */
 import { execFileSync } from 'node:child_process';
-import { accessSync, constants, existsSync, lstatSync, mkdirSync, readlinkSync, symlinkSync, unlinkSync } from 'node:fs';
+import { accessSync, appendFileSync, constants, copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readlinkSync, symlinkSync, unlinkSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 
@@ -35,6 +35,21 @@ export function onPath(name) {
 }
 
 /**
+ * The PATH a terminal gets when it opens (a login shell reads the profile), split into folders.
+ * @returns {string[]}
+ */
+export function shellPath() {
+  for (const shell of ['/bin/zsh', '/bin/sh']) {
+    try {
+      const out = execFileSync(shell, ['-l', '-c', 'printf %s "$PATH"'], { encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'] });
+      const dirs = out.split(':').map((dir) => dir.trim()).filter(Boolean);
+      if (dirs.length) return dirs;
+    } catch { /* the next shell decides */ }
+  }
+  return [];
+}
+
+/**
  * The folders a symlink may be put in, best first: the ones a command line already searches, then two that people add.
  * Only the ones that exist and this user may write to are returned — a folder that needs an administrator is not one.
  * @param {{ platform?: NodeJS.Platform, home?: string, exists?: (path: string) => boolean, writable?: (path: string) => boolean }} [where]
@@ -48,7 +63,7 @@ export function candidateDirs(where = {}) {
   const writable = where.writable ?? ((/** @type {string} */ path) => {
     try { accessSync(path, constants.W_OK); return true; } catch { return false; }
   });
-  return ['/usr/local/bin', join(home, '.local', 'bin'), join(home, 'bin')]
+  return ['/opt/homebrew/bin', '/usr/local/bin', join(home, '.local', 'bin'), join(home, 'bin')]
     .filter((dir) => exists(dir) && writable(dir));
 }
 
@@ -63,32 +78,67 @@ export function cliStatus({ platform = process.platform, home = homedir(), shim,
 }
 
 /**
- * Point a symlink at the shim, in the first folder on PATH that this user may write to. An existing `orangefilm` that
- * does not point at our shim is left alone (it is somebody else's command), and said so.
- * @param {{ platform?: NodeJS.Platform, home?: string, shim: string, found?: (name: string) => string | null }} where
- * @returns {{ ok: boolean, code: string, path?: string, onPathAfter?: string | null }}
+ * Point a symlink at the shim, in a folder a terminal already searches when one is writable, else in a folder of the
+ * person's own — which then needs the `export PATH=` line, said so by the code `linked-needs-path`. An existing
+ * `orangefilm` that does not point at our shim is left alone (it is somebody else's command).
+ * @param {{ platform?: NodeJS.Platform, home?: string, shim: string, found?: (name: string) => string | null, onPathDirs?: string[] }} where
+ * @returns {{ ok: boolean, code: string, path?: string, line?: string, onPathAfter?: string | null }}
  */
-export function installCli({ platform = process.platform, home = homedir(), shim, found = onPath }) {
+export function installCli({ platform = process.platform, home = homedir(), shim, found = onPath, onPathDirs = shellPath() }) {
   if (platform === 'win32') return { ok: false, code: 'not-needed' };
   if (!existsSync(shim)) return { ok: false, code: 'shim-missing' };
+  makeUserBin(home);
   const dirs = candidateDirs({ platform, home });
   if (!dirs.length) return { ok: false, code: 'no-writable-folder' };
-  for (const dir of dirs) {
+  /* a folder the terminal already searches first: then the command simply works, no profile edit and no line to paste */
+  const searched = new Set(onPathDirs.map((dir) => dir.replace(/\/+$/, '')));
+  const ordered = [...dirs.filter((dir) => searched.has(dir.replace(/\/+$/, ''))), ...dirs.filter((dir) => !searched.has(dir.replace(/\/+$/, '')))];
+  for (const dir of ordered) {
     const link = join(dir, 'orangefilm');
+    const onSearchedFolder = searched.has(dir.replace(/\/+$/, ''));
     try {
       if (existsSync(link)) {
         const mine = lstatSync(link).isSymbolicLink() && readlinkSync(link) === shim;
-        if (mine) return { ok: true, code: 'already', path: link, onPathAfter: found('orangefilm') };
+        if (mine) {
+          /* the link is there but its folder is not searched: the login file is what makes the command findable */
+          if (onSearchedFolder) return { ok: true, code: 'already', path: link, onPathAfter: found('orangefilm') };
+          return { ...addToProfile({ home, shim }), path: link };
+        }
         continue; /* somebody else's `orangefilm`: not ours to replace */
       }
       symlinkSync(shim, link);
-      return { ok: true, code: 'linked', path: link, onPathAfter: found('orangefilm') };
+      if (onSearchedFolder) return { ok: true, code: 'linked', path: link, onPathAfter: found('orangefilm') };
+      /* no folder the terminal already searches can be written: put the line in the person's login file instead
+         (they pressed the button; the block is marked and the old file is kept beside it) */
+      return { ...addToProfile({ home, shim }), path: link };
     } catch (error) {
       /* a folder that looked writable and is not: try the next one */
       try { if (existsSync(link) && lstatSync(link).isSymbolicLink() && readlinkSync(link) === shim) unlinkSync(link); } catch { /* nothing of ours to undo */ }
     }
   }
   return { ok: false, code: 'link-failed' };
+}
+
+/**
+ * Append the `export PATH=` line to the person's zsh login file, once, with a backup beside it. It is a real edit of a
+ * file the person owns, so it only happens when *they* pressed the button (Settings → Diagnostics), never on start-up,
+ * and the block says who wrote it.
+ * @param {{ home?: string, shim: string, now?: Date }} where
+ * @returns {{ ok: boolean, code: string, profile?: string, line?: string }}
+ */
+export function addToProfile({ home = homedir(), shim, now = new Date() }) {
+  const profile = join(home, '.zprofile');
+  const line = pathLine(shim);
+  const marked = `# Added by OrangeFilm ${now.toISOString().slice(0, 10)}: the orangefilm command`;
+  try {
+    const current = existsSync(profile) ? readFileSync(profile, 'utf8') : '';
+    if (current.includes(line)) return { ok: true, code: 'already', profile, line };
+    if (current) copyFileSync(profile, `${profile}.orangefilm-backup`);
+    appendFileSync(profile, `${current && !current.endsWith('\n') ? '\n' : ''}${marked}\n${line}\n`);
+    return { ok: true, code: 'profile-added', profile, line };
+  } catch (error) {
+    return { ok: false, code: 'profile-failed', profile };
+  }
 }
 
 /** The folder the shim lives in, from the shim itself (the app passes the shim it wrote). */

@@ -28,3 +28,15 @@ test('a build that is incomplete says which file, and does not read a list that 
   assert.doesNotMatch(script, /report\.checks/);
   assert.match(script, /report\.lines\.filter\(\(line\) => line\.startsWith\('MISSING '\)\)/);
 });
+
+/* 2026-11-26: an installed OrangeFilm.exe reported "Electron 44.9.3" in its Properties. `windowsResources` computed the
+   icon and the version strings and never wrote them back; the file write is what this test is about (a PE round trip
+   needs the real electron.exe, so the script's own text is the cheapest honest check). */
+test('the Windows resources it builds are written back to the executable', () => {
+  const text = readFileSync(new URL('./release.mjs', import.meta.url), 'utf8');
+  const body = text.slice(text.indexOf('async function windowsResources'));
+  const end = body.indexOf('\n}\n');
+  const fn = body.slice(0, end);
+  assert.match(fn, /res\.outputResource\(exe\)/, 'the resource is applied to the PE');
+  assert.match(fn, /writeFileSync\(file, Buffer\.from\(exe\.generate\(\)\)\)/, 'and the PE is written to the file');
+});

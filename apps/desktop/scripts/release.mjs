@@ -551,5 +551,8 @@ async function windowsResources(context) {
   });
   info.outputToResourceEntries(res.entries);
   res.outputResource(exe);
+  /* Written back: everything above computed the icon and the version strings and dropped them on the floor, which is
+     why an installed OrangeFilm.exe still said "Electron 44.9.3" in its Properties (2026-11-26). */
+  writeFileSync(file, Buffer.from(exe.generate()));
 }
 

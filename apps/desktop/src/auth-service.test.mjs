@@ -1110,3 +1110,30 @@ test('an unconfirmed account is its own refusal, not an unconfirmed network', as
   assert.equal(result.code, 'email-not-confirmed');
   exactState(h.service.getPublicState(), 'signed-out', 'email-not-confirmed');
 });
+
+/* 2026-11-26: one flaky minute during a renewal showed "暂时无法确认登录，请检查网络后重试" and signed the person out.
+   A failure the upstream is not sure about leaves the session alone — it stays good until its deadline. */
+test('renew: a network failure does not sign the session out; a rejection does', async () => {
+  const h = setup([
+    () => json(session({ expires_in: 3600 })),
+    () => json(user()),
+    () => { throw new Error('synthetic offline'); },
+  ]);
+  assert.equal((await h.service.signIn(credentials())).ok, true);
+  h.setNow(h.service.expiresAt() - 60_000);
+  const offline = await h.service.renew();
+  assert.equal(offline.ok, false, 'the renewal itself failed');
+  assert.equal(h.service.getPublicState().kind, 'active', 'but the session is still there');
+  assert.equal(h.service.refreshTokenOf(), 'synthetic-refresh-sentinel', 'and still holds its token');
+
+  const rejected = setup([
+    () => json(session({ expires_in: 3600 })),
+    () => json(user()),
+    () => json({ error_code: 'refresh_token_not_found' }, 400),
+  ]);
+  assert.equal((await rejected.service.signIn(credentials())).ok, true);
+  rejected.setNow(rejected.service.expiresAt() - 60_000);
+  const gone = await rejected.service.renew();
+  assert.equal(gone.ok, false);
+  assert.notEqual(rejected.service.getPublicState().kind, 'active', 'a token the upstream refuses does end it');
+});

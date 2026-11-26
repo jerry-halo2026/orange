@@ -11,6 +11,7 @@ import React from 'react';
 import { Check, Copy, Download, Loader2 } from 'lucide-react';
 import { useLanguage, useT } from '@/i18n';
 import { studioHost } from '@/lib/host';
+import { CliToolRow } from './CliToolRow';
 import { fullReport, pageFacts } from '@/lib/diagnostics';
 import { api, type StudioProblem } from '@/api';
 import { SettingsButton, SettingsGroup, SettingsInset, SettingsItem, SettingsSwitch } from './ui';
@@ -126,9 +127,9 @@ export function DiagnosticsGroup() {
   const shown = problems ? (all ? problems : problems.slice(0, PROBLEMS_SHOWN)) : [];
 
   return (
-    <SettingsGroup title={t('settings.report.group')}>
-      <SettingsItem
-        title={t('settings.report.title')}
+    <>
+      <SettingsGroup title={t('settings.report.group')}>
+        <SettingsItem title={t('settings.report.title')}
         description={copying.state === 'failed' ? t('settings.report.failed') : copying.shown ? t('settings.report.select') : t('settings.report.hint')}
         control={<CopyReportButton copying={copying} />}
       >
@@ -200,6 +201,10 @@ export function DiagnosticsGroup() {
           </button>
         ) : null}
       </SettingsItem>
-    </SettingsGroup>
+      </SettingsGroup>
+      <SettingsGroup title={t('settings.cli.group')}>
+        <CliToolRow />
+      </SettingsGroup>
+    </>
   );
 }

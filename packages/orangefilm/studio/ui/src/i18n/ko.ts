@@ -2454,6 +2454,16 @@ export const ko: Words = {
       appUnavailable: '지금은 업데이트를 사용할 수 없습니다. 나중에 다시 시도하세요.',
       appFailed: '업데이트를 완료하지 못했습니다. 나중에 다시 시도하세요.',
     },
+    cli: {
+      group: '명령줄',
+      title: '`orangefilm` 명령',
+      onPath: '{path} 에서 쓸 수 있습니다',
+      notOnPath: 'PATH 에 없어 터미널에서 아직 찾을 수 없습니다',
+      install: 'PATH 에 추가',
+      installing: '추가하는 중…',
+      installed: '완료: {path}',
+      failed: '추가하지 못했습니다 ({code})',
+    },
     report: {
       title: '진단 보고서',
       hint: '{brand}이 이 컴퓨터와 이 브라우저에서 확인한 내용, 에이전트, 최근 일주일의 문제입니다. 이슈에 붙여 넣으세요. 홈 폴더 안의 경로는 ~로 표시되며, 키, 계정, 프로젝트는 포함되지 않습니다.',

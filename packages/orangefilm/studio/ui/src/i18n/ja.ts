@@ -2460,6 +2460,16 @@ export const ja: Words = {
       appUnavailable: '現在アップデートを利用できません。しばらくしてからお試しください。',
       appFailed: 'アップデートを完了できませんでした。しばらくしてからお試しください。',
     },
+    cli: {
+      group: 'コマンドライン',
+      title: '`orangefilm` コマンド',
+      onPath: '{path} で使えます',
+      notOnPath: 'PATH に入っていないため、ターミナルからはまだ使えません',
+      install: 'PATH に追加',
+      installing: '追加しています…',
+      installed: '完了: {path}',
+      failed: '追加できませんでした ({code})',
+    },
     report: {
       title: '診断レポート',
       hint: 'このコンピュータとこのブラウザで {brand} が確認した内容、エージェント、この 1 週間の問題です。Issue に貼り付けてください。ホームフォルダ内のパスは ~ で表示され、キー、アカウント、プロジェクトは含まれません。',

@@ -2487,6 +2487,16 @@ workspace: {fissionPurpose:'独立批量创作：先生成和管理成片，仅�
       appUnavailable: '更新服务暂时不可用，请稍后再试。',
       appFailed: '更新没能完成，请稍后再试。',
     },
+    cli: {
+      group: '命令行',
+      title: '`orangefilm` 命令',
+      onPath: '可以用（{path}）',
+      notOnPath: '不在 PATH 上：终端还找不到它',
+      install: '放进 PATH',
+      installing: '正在添加…',
+      installed: '完成：{path}',
+      failed: '没能添加（{code}）',
+    },
     report: {
       title: '诊断报告',
       hint: '{brand} 在这台电脑和这个浏览器里检查到的情况、各个智能体和最近一周的问题，可以贴到 issue 里。主目录下的路径显示为 ~，不含密钥、账号和项目。',

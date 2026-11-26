@@ -27,6 +27,7 @@ interface Native {
   revealPath(path: string): Promise<void>;
   pickFolder(options?: { title?: string; button?: string; at?: string }): Promise<string | null>;
   capture(rect: { x: number; y: number; width: number; height: number }): Promise<string | null>;
+  cli: NonNullable<StudioHost['cli']>;
   agents: NonNullable<StudioHost['agents']>;
   /* the window's tabs (src/tabs.mjs) */
   tabs: NonNullable<StudioHost['tabs']>;
@@ -335,6 +336,7 @@ export const host: StudioHost = {
   notifications,
   update,
   folders: { pick: native.pickFolder, pathOf: native.pathForFile },
+  cli: native.cli,
   tabs: native.tabs,
   useSkill: (skill) => skillPicked.set(skill),
   skills: { add: () => skillAdd.set(undefined) },

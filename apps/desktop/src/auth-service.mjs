@@ -350,6 +350,11 @@ export function createAuthService(configuration, dependencies) {
     /* An account that exists but never confirmed its email: the upstream says so, and it is not a network problem.
        2026-11-26: it read as "暂时无法确认登录，请检查网络" and sent the person chasing the wrong thing. */
     if (response.status === 400 && record(response.data) && response.data.error_code === 'email_not_confirmed') fail('email-not-confirmed');
+    /* a refresh token the upstream will not take: that is a rejection, not an unclear moment — the session it belongs
+       to is over, and saying "could not confirm" would leave a dead token in place */
+    if (response.status === 400 && record(response.data) &&
+      ['refresh_token_not_found', 'invalid_grant', 'refresh_token_already_used', 'session_not_found'].includes(String(response.data.error_code ?? response.data.error ?? '')))
+      fail('authentication-rejected');
     if (response.status === 401 || response.status === 403) fail('authentication-rejected');
     if (response.status < 200 || response.status >= 300) fail('verification-unconfirmed');
     const data = response.data;
@@ -528,6 +533,7 @@ export function createAuthService(configuration, dependencies) {
     if (state.kind !== 'active' && state.kind !== 'expired') return result(false, 'not-active');
     if (typeof token !== 'string' || !token) return result(false, 'no-refresh-token');
     const operation = { generation: ++generation };
+    const wasActive = state.kind === 'active';
     flight = operation;
     try {
       const m0 = lastNow;
@@ -567,7 +573,13 @@ export function createAuthService(configuration, dependencies) {
       return result(true, 'ok');
     } catch (error) {
       const code = stopped(operation) || (error instanceof Failure ? error.code : 'invalid-input');
-      if (operation.generation === generation && !hardTerminal() && state.kind !== 'active' && state.kind !== 'expired')
+      /* A renewal that failed because the network did (or the upstream said nothing useful) must not sign the person
+         out: the session they have is still good until its deadline, and the next attempt is a minute away. Only an
+         answer the upstream is sure about — rejected, another subject, a malformed answer — ends it (2026-11-26:
+         one flaky minute showed "暂时无法确认登录，请检查网络后重试"). */
+      const certain = code === 'authentication-rejected' || code === 'identity-mismatch' || code === 'invalid-response' || code === 'unsupported-auth-flow' || code === 'expired';
+      if (wasActive && !certain) setState('active');
+      else if (operation.generation === generation && !hardTerminal() && state.kind !== 'active' && state.kind !== 'expired')
         setState('signed-out', code);
       return result(false, code);
     } finally {

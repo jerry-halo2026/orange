@@ -535,7 +535,9 @@ const savedAccess = createSavedAccess({
       }
       const range = typeof body.range === 'string' && /^[\d.]+(-[\d.]+)?$/.test(body.range) ? body.range : null;
       const { look } = await import('../../src/look.mjs');
-      const drawn = await desktopAuth.runNative(() => look(range ? [folder, range] : [folder], opts));
+      /* cwd: the paths it prints are relative to the project it drew, not to this server's folder */
+      const asked = /** @type {any} */ ({ ...opts, cwd: folder });
+      const drawn = await desktopAuth.runNative(() => look(range ? [folder, range] : [folder], asked));
       return json(res, 200, { ok: drawn?.ok !== false, lines: Array.isArray(drawn?.lines) ? drawn.lines : [], files: Array.isArray(drawn?.files) ? drawn.files : [] });
     }    if (parts[0] === 'canvas-characters') return charactersRoute(req, res, parts.slice(1));
 

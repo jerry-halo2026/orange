@@ -41,7 +41,9 @@ export async function look(args, opts = {}) {
   const passed = [];
   const sounds = [];
   const dir = outDir(homeFor(s.dir), 'look');
-  const rel = shown;
+  /* relative to the project being looked at, not to whatever folder the process happens to run in (a Studio drawing
+   frames for a CLI runs elsewhere: its cwd made '/Users/…' read 'Users/…') */
+const rel = (path) => shown(path, opts.cwd);
   try {
     // The contract
     if (m.duration != null && !(Number.isFinite(m.duration) && m.duration > 0)) errors.push('film.duration, when set, must be a finite number of seconds > 0');

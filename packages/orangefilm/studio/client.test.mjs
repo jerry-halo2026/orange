@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { agentName, ensureStudio, olderThanThis, openInStudio, refusal, updateOrangefilm } from './client.mjs';
+import { agentName, ensureStudio, lookThroughStudio, olderThanThis, openInStudio, refusal, updateOrangefilm } from './client.mjs';
 
 /* Studio's port, and the film's next to it, both free. They are below the range every system hands out on its own
    (Linux from 32768, macOS and Windows from 49152), so no connection or other server takes them while one Studio
@@ -171,4 +171,36 @@ test('a Studio refusal without a session says where to sign in, for get, materia
   assert.match(session, /OrangeFilm window/);
   assert.equal(refusal({ error: 'the project is not there' }, 'fallback'), 'the project is not there');
   assert.equal(refusal(null, 'fallback'), 'fallback');
+});
+
+/* 2026-11-26: a controlled project's lease belongs to the Studio that has it open, so the CLI asks that Studio for the
+   frames instead of drawing them itself ("controlled projects must use the logged-in Studio"). */
+test('lookThroughStudio asks the Studio and hands its lines back, and is null when it cannot help', async () => {
+  const served = [];
+  const server = createHttpServer((req, res) => {
+    served.push(req.url);
+    if (req.url !== '/api/look') { res.writeHead(404).end(); return; }
+    let body = '';
+    req.on('data', (c) => { body += c; });
+    req.on('end', () => {
+      const asked = JSON.parse(body);
+      if (asked.folder === '/refused') { res.writeHead(403, { 'content-type': 'application/json' }).end(JSON.stringify({ code: 'authentication-required' })); return; }
+      res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: true, lines: ['film  640x360 · 2s', '→ .film/cache/look/0-2s.png'], files: ['.film/cache/look/0-2s.png'] }));
+    });
+  });
+  await new Promise((done) => server.listen(0, '127.0.0.1', done));
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  try {
+    const run = { origin, key: 'k' };
+    const drawn = await lookThroughStudio(run, '/project', ['--count', '2']);
+    assert.equal(drawn.ok, true);
+    assert.deepEqual(drawn.lines, ['film  640x360 · 2s', '→ .film/cache/look/0-2s.png']);
+    assert.deepEqual(drawn.files, ['.film/cache/look/0-2s.png']);
+    assert.equal(served[0], '/api/look');
+
+    assert.equal(await lookThroughStudio(run, '/refused', []), null, 'a refusal is not an answer');
+    assert.equal(await lookThroughStudio({ origin: 'http://127.0.0.1:1', key: 'k' }, '/project', []), null, 'no Studio, no answer');
+  } finally {
+    server.close();
+  }
 });

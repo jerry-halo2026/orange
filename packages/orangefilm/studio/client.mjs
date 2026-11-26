@@ -322,6 +322,31 @@ const BETWEEN = /^(\S*\/)?-?(sh|bash|zsh|fish|dash|ksh|tcsh|csh|env|login|sudo)(
  * command, past the shells and package runners between: `pid:<its process id>`. On Windows, the process that started
  * this one. A name that changes from command to command only means a note is given again.
  */
+/**
+ * A film's frames, drawn by the Studio that owns the project: a controlled project's control lease belongs to that
+ * Studio, so this process cannot hold it itself (`createProjectControlGuard` says so), and asking is the only way an
+ * agent gets frames of the person's own films. Null when no Studio answers, or when it refuses (no signed-in session,
+ * an unknown project): the caller then falls back to drawing here, which is what an uncontrolled project allows.
+ * @param {{ origin: string, key: string }} run
+ * @param {string} folder @param {string[]} args
+ * @returns {Promise<{ ok: boolean, lines: string[], files: string[] } | null>}
+ */
+export async function lookThroughStudio(run, folder, args) {
+  try {
+    const response = await fetch(`${run.origin}/api/look`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-studio-key': run.key, origin: run.origin },
+      body: JSON.stringify({ folder, args }),
+      signal: AbortSignal.timeout(10 * 60_000),
+    });
+    if (!response.ok) return null;
+    const body = await response.json().catch(() => null);
+    if (!body || !Array.isArray(body.lines)) return null;
+    return { ok: body.ok !== false, lines: body.lines.map(String), files: Array.isArray(body.files) ? body.files.map(String) : [] };
+  } catch {
+    return null;
+  }
+}
 export function agentName() {
   if (process.env.ORANGE_AGENT) return process.env.ORANGE_AGENT;
   let pid = process.ppid;

@@ -413,13 +413,24 @@ if (RAW[0] === 'get') {
   }
   }
   if (guardedProject) {
-    const { createProjectControlGuard } = await import('../studio/server/project-control-guard.mjs');
-    try {
-      // The original native reader lives until look/render and its cleanup really finish.
-      await createProjectControlGuard().withNativeAccess(guardedResources,execute);
-    } catch {
-      console.error(`${RUN} ${cmd}: controlled projects must use the logged-in Studio; direct native execution is unavailable.`);
-      process.exitCode = 1;
+    /* A controlled project's lease belongs to the Studio that has it open: this process cannot hold it, so it asks
+       that Studio to draw instead (the same engine, under the app's own authority). An uncontrolled project — or no
+       Studio running — draws here, as before. */
+    const { running, lookThroughStudio } = await import('../studio/client.mjs');
+    const studio = await running().catch(() => null);
+    const drawn = studio ? await lookThroughStudio(studio, guardedProject, args) : null;
+    if (drawn) {
+      for (const line of drawn.lines) console.log(line);
+      if (!drawn.ok) process.exitCode = 1;
+    } else {
+      const { createProjectControlGuard } = await import('../studio/server/project-control-guard.mjs');
+      try {
+        // The original native reader lives until look/render and its cleanup really finish.
+        await createProjectControlGuard().withNativeAccess(guardedResources,execute);
+      } catch {
+        console.error(`${RUN} ${cmd}: controlled projects must use the logged-in Studio; direct native execution is unavailable.`);
+        process.exitCode = 1;
+      }
     }
   } else await execute();
 }

@@ -514,7 +514,20 @@ const savedAccess = createSavedAccess({
     /* the person's characters, the same for every project (canvas-characters.mjs); kept on this computer, so the
        list is read the way the boards are: a store that cannot be read answers the empty list, not a 503 */
     if (parts[0] === 'canvas-characters' && parts.length === 1 && req.method === 'GET') return machineStore('the characters', { characters: [] }, async () => ({ characters: await listCharacters() }), res);
-    if (parts[0] === 'canvas-characters') return charactersRoute(req, res, parts.slice(1));
+    /* A film's frames, drawn **here**: the control lease of a controlled project belongs to this Studio, so a
+       separately started CLI cannot hold it (`orangefilm look` says exactly that). The CLI asks this route instead —
+       the drawing then runs under this Studio's own authority, in this process, and the person's login is what allows
+       it. Body: { folder, args? } (args as the CLI's own flags, e.g. ["--count","4"]). Answer: { ok, lines, files }. */
+    if (parts[0] === 'look' && parts.length === 1 && req.method === 'POST') {
+      const body = /** @type {{ folder?: unknown, args?: unknown }} */ (await readJson(req).catch(() => ({})) ?? {});
+      const folder = typeof body.folder === 'string' && body.folder ? resolve(body.folder) : null;
+      if (!folder || !isAbsolute(folder) || !existsSync(join(folder, 'film.html'))) throw new HttpError(400, 'Not a project.');
+      if (!desktopAuth) throw new HttpError(403, 'Sign in is required.', { code: 'authentication-required' });
+      const args = [folder, ...(Array.isArray(body.args) ? body.args.filter((a) => typeof a === 'string').slice(0, 12) : [])];
+      const { look } = await import('../../src/look.mjs');
+      const drawn = await desktopAuth.runNative(() => look(args, {}));
+      return json(res, 200, { ok: drawn?.ok !== false, lines: Array.isArray(drawn?.lines) ? drawn.lines : [], files: Array.isArray(drawn?.files) ? drawn.files : [] });
+    }    if (parts[0] === 'canvas-characters') return charactersRoute(req, res, parts.slice(1));
 
     /* the system's folder dialog, opened here for a page in a browser (folder-picker.mjs): { path } (null: cancelled);
        501 when this system has none Studio can open */

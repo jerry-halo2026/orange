@@ -52,6 +52,8 @@ contextBridge.exposeInMainWorld('orangefilmNative', {
   pickFolder: (options) => ipcRenderer.invoke('desktop:pick-folder', options ?? null),
   /* part of the window as a JPEG (base64), for a reference's picture: null when it could not be taken */
   capture: (rect) => ipcRenderer.invoke('desktop:capture', rect),
+  /* the orangefilm command on PATH (macOS): what it is now, and putting it there */
+  cli: { status: () => ipcRenderer.invoke('desktop:cli-status'), install: () => ipcRenderer.invoke('desktop:cli-install') },
 
   /* the window's tabs (tabs.mjs), drawn by the page in Studio's top bar */
   tabs: {

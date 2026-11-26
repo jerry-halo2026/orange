@@ -2487,6 +2487,16 @@ workspace: {fissionPurpose:'Create batches independently. Keep videos first; mak
       appUnavailable: 'Updates are unavailable right now. Try again later.',
       appFailed: 'Could not complete the update. Try again later.',
     },
+    cli: {
+      group: 'Command line',
+      title: 'The `orangefilm` command',
+      onPath: 'findable at {path}',
+      notOnPath: 'not on PATH: a terminal cannot find it yet',
+      install: 'Put it on PATH',
+      installing: 'Adding…',
+      installed: 'Done: {path}',
+      failed: 'Could not add it ({code})',
+    },
     report: {
       title: 'Diagnostic report',
       hint: 'What {brand} finds on this computer and in this browser, the agents and the last week’s problems, to paste into an issue. Paths in your home folder show as ~; no keys, accounts or projects.',

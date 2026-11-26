@@ -2460,6 +2460,16 @@ export const es: Words = {
       appUnavailable: 'Las actualizaciones no están disponibles ahora. Inténtalo más tarde.',
       appFailed: 'No se pudo completar la actualización. Inténtalo más tarde.',
     },
+    cli: {
+      group: 'Línea de comandos',
+      title: 'El comando `orangefilm`',
+      onPath: 'disponible en {path}',
+      notOnPath: 'no está en PATH: una terminal todavía no lo encuentra',
+      install: 'Añadir a PATH',
+      installing: 'Añadiendo…',
+      installed: 'Hecho: {path}',
+      failed: 'No se pudo añadir ({code})',
+    },
     report: {
       title: 'Informe de diagnóstico',
       hint: 'Lo que {brand} encuentra en este equipo y en este navegador, los agentes y los problemas de la última semana, para pegarlo en un issue. Las rutas de tu carpeta personal aparecen como ~; sin claves, cuentas ni proyectos.',

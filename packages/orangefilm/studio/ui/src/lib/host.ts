@@ -217,6 +217,14 @@ export interface StudioHost {
     pathOf: (file: File) => string;
   };
   /**
+   * The orangefilm command on PATH (macOS): where it is now, and putting it there. Absent on Windows, where the app
+   * appends the shim folder to the user PATH itself.
+   */
+  cli?: {
+    status: () => Promise<{ supported: boolean, here: boolean, onPath: string | null, shim: string, installable: string[] } | null>;
+    install: () => Promise<{ ok: boolean, code: string, path?: string, onPathAfter?: string | null } | null>;
+  };
+  /**
    * The app's notifications, for Settings → Advanced: the system's notification of a chat's turn done, stopped by an
    * error, or waiting for an answer, while the window is not in front (on, until switched off).
    */

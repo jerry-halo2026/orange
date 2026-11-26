@@ -19,6 +19,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FLAVOR, IDENTITY, PRODUCT_NAME } from './flavor.mjs';
 import { fileDialogOptions, folderDialogOptions, programDialogOptions } from './folder-dialog.mjs';
+import { cliStatus, installCli, makeUserBin } from './cli-install.mjs';
 import { childEnvironment, lastPathSource, loginShellEnvironment } from './environment.mjs';
 import { authEnvironmentReason, materializeAuthEnvironmentFile } from './auth-env-file.mjs';
 import { gatherAppReport } from './app-report.mjs';
@@ -1076,6 +1077,22 @@ async function start() {
     if (!Object.values(box).every((n) => Number.isFinite(n)) || box.width < 2 || box.height < 2 || box.width > 8000 || box.height > 8000) return null;
     const image = await event.sender.capturePage(box).catch(() => null);
     return image && !image.isEmpty() ? image.toJPEG(88).toString('base64') : null;
+  });
+
+  /* Settings → Diagnostics: the `orangefilm` command on PATH. macOS writes the shim but never touches PATH, so the app
+     offers to point a symlink at it from a folder a terminal already searches (cli-install.mjs says why). */
+  ipcMain.handle('desktop:cli-status', (event) => {
+    if (!fromPage(event)) return null;
+    const shim = join(DATA, 'bin', win32 ? 'orangefilm.cmd' : 'orangefilm');
+    return cliStatus({ shim });
+  });
+  ipcMain.handle('desktop:cli-install', (event) => {
+    if (!fromPage(event)) return { ok: false, code: 'refused' };
+    const shim = join(DATA, 'bin', win32 ? 'orangefilm.cmd' : 'orangefilm');
+    makeUserBin();
+    const result = installCli({ shim });
+    log(`cli: ${result.code}${result.path ? ` ${result.path}` : ''}`);
+    return result;
   });
 
   ipcMain.handle('desktop:update-restart', (event) => (fromPage(event) ? updates?.restart() : { ok: false }));

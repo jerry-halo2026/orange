@@ -176,3 +176,27 @@ test('doctor: only a registry that does not answer is unreachable', async () => 
   const { report } = await doctorWith({ binding: reply(200, { binding: null }) }, { registry: 'throw' });
   assert.match(report.text, /Network +npm not reachable/);
 });
+
+/* 2026-11-26: the command itself has to be findable — a person copies `orangefilm look` from the manual, an agent types
+   it, and with the shim folder off PATH neither works. */
+test('doctor: the command is reported as findable, or with the line that puts it on PATH', async () => {
+  const home = mkdtempSync(join(tmpdir(), 'orangefilm-doctor-cli-'));
+  const before = { home: process.env.ORANGE_HOME, library: process.env.ORANGE_LIBRARY };
+  process.env.ORANGE_HOME = join(home, '.orangefilm');
+  process.env.ORANGE_LIBRARY = join(home, 'Projects');
+  try {
+    const there = await doctor({ studio: null, browser: false, network: false, home, which: () => '/usr/local/bin/orangefilm' });
+    assert.match(there.text, /✓ CLI +findable as orangefilm/);
+    const missing = await doctor({ studio: null, browser: false, network: false, home, which: () => null });
+    assert.match(missing.text, /✗ CLI +not on PATH/);
+    assert.match(missing.text, /add .*OrangeFilm.* to PATH/, 'it says which folder to add');
+    const asked = [];
+    await doctor({ studio: null, browser: false, network: false, home, which: (name) => { asked.push(name); return null; } });
+    assert.deepEqual(asked, ['orangefilm'], 'it asks for the command by name');
+  } finally {
+    for (const [name, value] of [['ORANGE_HOME', before.home], ['ORANGE_LIBRARY', before.library]]) {
+      if (value === undefined) delete process.env[name]; else process.env[name] = value;
+    }
+    rmSync(home, { recursive: true, force: true });
+  }
+});

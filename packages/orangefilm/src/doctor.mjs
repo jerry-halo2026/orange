@@ -11,7 +11,7 @@
  * their names, which say which agent ran the command. After the checks, the problems of the last week (problems.mjs)
  * and the last errors in Studio's log.
  */
-import { spawnSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { accessSync, constants, existsSync, readFileSync } from 'node:fs';
 import { arch, homedir, platform, release, version as osVersion } from 'node:os';
 import { join } from 'node:path';
@@ -168,9 +168,41 @@ async function chipText() {
  * Every check, run now. `studio`: the Studio asking, when it is Studio that runs this (it is not looked for then).
  * `browser: false` and `network: false` leave those checks out (tests).
  * @param {{ run?: string, env?: Record<string, string | undefined>, studio?: { origin: string, version?: string, app?: boolean, key?: string } | null,
- *           browser?: boolean, network?: boolean, home?: string, fetch?: typeof fetch }} [options]
+ *           browser?: boolean, network?: boolean, home?: string, fetch?: typeof fetch, which?: typeof findCommand }} [options]
  */
-export async function doctor({ run = 'orangefilm', env = process.env, studio = null, browser = true, network = true, home = homedir(), fetch: fetchImpl = fetch } = {}) {
+/**
+ * Where `name` is on this machine, or null: the shell's own lookup, so the answer is what a terminal would get.
+ * @param {string} name @returns {string | null}
+ */
+export function findCommand(name) {
+  try {
+    const out = process.platform === 'win32'
+      ? execFileSync('where', [name], { encoding: 'utf8', windowsHide: true, timeout: 4000 })
+      : execFileSync('/bin/sh', ['-c', `command -v ${name}`], { encoding: 'utf8', timeout: 4000 });
+    return out.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)[0] ?? null;
+  } catch { return null; }
+}
+
+/**
+ * What to say about the command: found (and where), or the line that puts it on PATH. Pure, so the wording is tested.
+ * @param {string | null} found @param {{ platform: NodeJS.Platform, home: string }} where
+ */
+export function commandVerdict(found, { platform, home }) {
+  if (found) return { found: true, text: `findable as orangefilm (${tidy(found, home)})`, problem: '' };
+  const folder = platform === 'win32' ? '%APPDATA%\\OrangeFilm\\bin' : `${tidy(join(home, 'Library', 'Application Support', 'OrangeFilm', 'bin'), home)}`;
+  const line = platform === 'win32'
+    ? `powershell -Command "[Environment]::SetEnvironmentVariable('Path', [Environment]::GetEnvironmentVariable('Path','User') + ';${folder}', 'User')"`
+    : `export PATH="${tidy(join(home, 'Library', 'Application Support', 'OrangeFilm', 'bin'), home)}:$PATH"`;
+  return { found: false, text: 'not on PATH', problem: `add ${folder} to PATH, then open a new terminal: ${line}` };
+}
+
+/**
+ * Everything the report says, as checks. `browser: false` and `network: false` leave those checks out (tests).
+ * @param {{ run?: string, env?: Record<string, string | undefined>, studio?: { origin: string, version?: string, app?: boolean, key?: string } | null,
+ *           browser?: boolean, network?: boolean, home?: string, fetch?: typeof fetch,
+ *           which?: (name: string) => string | null }} [options]
+ */
+export async function doctor({ run = 'orangefilm', env = process.env, studio = null, browser = true, network = true, home = homedir(), fetch: fetchImpl = fetch, which = findCommand } = {}) {
   /** @type {Check[]} */
   const checks = [];
   const at = (/** @type {string} */ path) => tidy(path, home);
@@ -254,6 +286,15 @@ export async function doctor({ run = 'orangefilm', env = process.env, studio = n
   let usage = 0;
   for (const folder of films) usage += await folderSizeAsync(join(folder, '.film'));
   checks.push({ label: 'Film files', text: `${size(usage)} in ${films.length} project${films.length === 1 ? '' : 's'}' .film folders (cache, history and logs)` });
+
+  /* Is the command itself findable? A person copies `orangefilm look` out of the manual, and an agent types it: with the
+     shim folder off PATH neither works, so say the line that puts it there (2026-11-26). */
+  {
+    const verdict = commandVerdict(which('orangefilm'), { platform: process.platform, home });
+    checks.push(verdict.found
+      ? { label: 'CLI', text: verdict.text }
+      : { label: 'CLI', text: verdict.text, problem: verdict.problem });
+  }
 
   if (network) {
     /* The registry answering at all is what "reachable" means: this product's name is not published, so asking for it

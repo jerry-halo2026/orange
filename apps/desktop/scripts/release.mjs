@@ -419,6 +419,9 @@ await builder.build({
       installerIcon: join(desktop, 'build/icon.ico'),
       uninstallerIcon: join(desktop, 'build/icon.ico'),
       shortcutName: NAME,
+      /* our own install-time checks: the executable must be where the shortcut will point (build/installer.nsh says
+         why, and what the two causes look like) */
+      include: join(desktop, 'build/installer.nsh'),
       deleteAppDataOnUninstall: false,
       artifactName: `${INSTALLER.replace(' ', '-')}-Setup-\${arch}.\${ext}`,
     },

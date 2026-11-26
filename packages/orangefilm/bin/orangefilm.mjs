@@ -145,22 +145,6 @@ result is worth having.`,
 
 /* `orangefilm` alone: the manual, the whole of what an agent needs to know. `get` takes any options its verb has,
    so it goes to Studio (studio/client.mjs) before the fixed options below are parsed. */
-/* Everything after the command that is a flag and, when it takes one, its value: what the Studio needs to draw the
-   same frames this command was asked for. A positional (a time range) is left out on purpose — the project path is the
-   only positional the route is given. */
-function flagsAfter(argv, command) {
-  const start = argv.findIndex((a) => a === command);
-  const tokens = start < 0 ? [] : argv.slice(start + 1);
-  const flags = [];
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-    if (!token.startsWith('--')) continue;
-    flags.push(token);
-    const next = tokens[i + 1];
-    if (next !== undefined && !next.startsWith('--')) { flags.push(next); i++; }
-  }
-  return flags;
-}
 const RAW = process.argv.slice(2);
 /* the command as the agent can type it here: the one that ran it when it says so (ORANGE_RUN: the development
    checkout's .dev/bin/orangefilm), through npx always the newest (npx keeps the first one it fetched for a bare name),
@@ -434,8 +418,10 @@ if (RAW[0] === 'get') {
        Studio running — draws here, as before. */
     const { running, lookThroughStudio } = await import('../studio/client.mjs');
     const studio = await running().catch(() => null);
-    /* the flags too (--count, --frames, a range): they live in RAW, not in the positionals */
-    const drawn = studio ? await lookThroughStudio(studio, guardedProject, flagsAfter(RAW, cmd)) : null;
+    /* the flags as this command parsed them (`opts`), and a time range when one was given: the Studio draws exactly
+       what was asked for */
+    const askedRange = typeof args[0] === 'string' && /^[\d.]+(-[\d.]+)?$/.test(args[0]) ? args[0] : null;
+    const drawn = studio ? await lookThroughStudio(studio, guardedProject, opts, askedRange) : null;
     if (drawn) {
       for (const line of drawn.lines) console.log(line);
       if (!drawn.ok) process.exitCode = 1;

@@ -177,6 +177,7 @@ test('a Studio refusal without a session says where to sign in, for get, materia
    frames instead of drawing them itself ("controlled projects must use the logged-in Studio"). */
 test('lookThroughStudio asks the Studio and hands its lines back, and is null when it cannot help', async () => {
   const served = [];
+  let askedOpts = null, askedRange = undefined;
   const server = createHttpServer((req, res) => {
     served.push(req.url);
     if (req.url !== '/api/look') { res.writeHead(404).end(); return; }
@@ -184,6 +185,7 @@ test('lookThroughStudio asks the Studio and hands its lines back, and is null wh
     req.on('data', (c) => { body += c; });
     req.on('end', () => {
       const asked = JSON.parse(body);
+      askedOpts = asked.opts; askedRange = asked.range;
       if (asked.folder === '/refused') { res.writeHead(403, { 'content-type': 'application/json' }).end(JSON.stringify({ code: 'authentication-required' })); return; }
       res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: true, lines: ['film  640x360 · 2s', '→ .film/cache/look/0-2s.png'], files: ['.film/cache/look/0-2s.png'] }));
     });
@@ -192,14 +194,16 @@ test('lookThroughStudio asks the Studio and hands its lines back, and is null wh
   const origin = `http://127.0.0.1:${server.address().port}`;
   try {
     const run = { origin, key: 'k' };
-    const drawn = await lookThroughStudio(run, '/project', ['--count', '2']);
+    const drawn = await lookThroughStudio(run, '/project', { count: 2, full: true }, '3-6');
     assert.equal(drawn.ok, true);
     assert.deepEqual(drawn.lines, ['film  640x360 · 2s', '→ .film/cache/look/0-2s.png']);
     assert.deepEqual(drawn.files, ['.film/cache/look/0-2s.png']);
     assert.equal(served[0], '/api/look');
+    assert.deepEqual(askedOpts, { count: 2, full: true }, 'the flags travel as opts, the way the command reads them');
+    assert.equal(askedRange, '3-6', 'and a time range as a range');
 
-    assert.equal(await lookThroughStudio(run, '/refused', []), null, 'a refusal is not an answer');
-    assert.equal(await lookThroughStudio({ origin: 'http://127.0.0.1:1', key: 'k' }, '/project', []), null, 'no Studio, no answer');
+    assert.equal(await lookThroughStudio(run, '/refused'), null, 'a refusal is not an answer');
+    assert.equal(await lookThroughStudio({ origin: 'http://127.0.0.1:1', key: 'k' }, '/project'), null, 'no Studio, no answer');
   } finally {
     server.close();
   }

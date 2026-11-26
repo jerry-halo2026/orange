@@ -328,15 +328,15 @@ const BETWEEN = /^(\S*\/)?-?(sh|bash|zsh|fish|dash|ksh|tcsh|csh|env|login|sudo)(
  * agent gets frames of the person's own films. Null when no Studio answers, or when it refuses (no signed-in session,
  * an unknown project): the caller then falls back to drawing here, which is what an uncontrolled project allows.
  * @param {{ origin: string, key: string }} run
- * @param {string} folder @param {string[]} args
+ * @param {string} folder @param {Record<string, unknown>} [opts] @param {string | null} [range]
  * @returns {Promise<{ ok: boolean, lines: string[], files: string[] } | null>}
  */
-export async function lookThroughStudio(run, folder, args) {
+export async function lookThroughStudio(run, folder, opts = {}, range = null) {
   try {
     const response = await fetch(`${run.origin}/api/look`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-studio-key': run.key, origin: run.origin },
-      body: JSON.stringify({ folder, args }),
+      body: JSON.stringify({ folder, opts, ...(range ? { range } : {}) }),
       signal: AbortSignal.timeout(10 * 60_000),
     });
     if (!response.ok) return null;
